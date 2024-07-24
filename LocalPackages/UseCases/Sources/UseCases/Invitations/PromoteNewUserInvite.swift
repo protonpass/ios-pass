@@ -54,7 +54,7 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
         guard let activeKey = publicKeys.first else {
             throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
         }
-        let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
+        let vaultKey = try await passKeyManager.getLatestShareKey(userId: userData.user.ID, shareId: vault.shareId)
         let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,
                                                              publicReceiverKey: activeKey,
                                                              userData: userData,

@@ -25,15 +25,18 @@ import Foundation
 
 protocol CheckAndAutoFillUseCase: Sendable {
     func execute(_ request: AutoFillRequest,
+                 userId: String,
                  context: ASCredentialProviderExtensionContext,
                  localAuthenticationMethod: LocalAuthenticationMethod) async throws
 }
 
 extension CheckAndAutoFillUseCase {
     func callAsFunction(_ request: AutoFillRequest,
+                        userId: String,
                         context: ASCredentialProviderExtensionContext,
                         localAuthenticationMethod: LocalAuthenticationMethod) async throws {
         try await execute(request,
+                          userId: userId,
                           context: context,
                           localAuthenticationMethod: localAuthenticationMethod)
     }
@@ -59,17 +62,20 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     }
 
     func execute(_ request: AutoFillRequest,
+                 userId: String,
                  context: ASCredentialProviderExtensionContext,
                  localAuthenticationMethod: LocalAuthenticationMethod) async throws {
-        let userId = try await userManager.getActiveUserId()
+        // TODO: should be other user based on item selected
+//        let userId = try await userManager.getActiveUserId()
         guard credentialProvider.isAuthenticated(userId: userId), localAuthenticationMethod == .none else {
             cancelAutoFill(reason: .userInteractionRequired, context: context)
             return
         }
-        let (itemContent, credential) = try await generateAuthorizationCredential(request)
+        let (itemUserId, itemContent, credential) = try await generateAuthorizationCredential(request)
         try await completeAutoFill(quickTypeBar: true,
                                    identifiers: request.serviceIdentifiers,
                                    credential: credential,
+                                   userId: userId,
                                    itemContent: itemContent,
                                    context: context)
     }

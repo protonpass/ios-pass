@@ -71,6 +71,7 @@ final class CreateEditVaultViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let createVaultUseCase = resolve(\UseCasesContainer.createVault)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     weak var delegate: (any CreateEditVaultViewModelDelegate)?
 
@@ -152,7 +153,8 @@ private extension CreateEditVaultViewModel {
             do {
                 logger.trace("Creating vault")
                 loading = true
-                try await createVaultUseCase(with: generateVaultProtobuf())
+                let userId = try await userManager.getActiveUserId()
+                try await createVaultUseCase(userId: userId, with: generateVaultProtobuf())
                 router.display(element: .successMessage(#localized("Vault created"),
                                                         config: .dismissAndRefresh))
                 logger.info("Created vault")

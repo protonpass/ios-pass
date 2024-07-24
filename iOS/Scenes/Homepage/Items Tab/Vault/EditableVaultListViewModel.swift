@@ -46,6 +46,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -101,8 +102,9 @@ private extension EditableVaultListViewModel {
             defer { loading = false }
             do {
                 loading = true
+                let userId = try await userManager.getActiveUserId()
                 try await vaultsManager.delete(vault: vault)
-                vaultsManager.refresh()
+                vaultsManager.refresh(userId: userId)
                 router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vault.name)))
             } catch {
                 logger.error(error)
@@ -136,7 +138,8 @@ extension EditableVaultListViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await leaveShare(with: vault.shareId)
+                let userId = try await userManager.getActiveUserId()
+                try await leaveShare(userId: userId, with: vault.shareId)
                 syncEventLoop.forceSync()
             } catch {
                 logger.error(error)
@@ -156,7 +159,8 @@ extension EditableVaultListViewModel {
             do {
                 logger.trace("Restoring all trashed items")
                 loading = true
-                try await vaultsManager.restoreAllTrashedItems()
+                let userId = try await userManager.getActiveUserId()
+                try await vaultsManager.restoreAllTrashedItems(userId: userId)
                 router.display(element: .successMessage(#localized("All items restored"),
                                                         config: .refresh))
                 logger.info("Restored all trashed items")
@@ -174,7 +178,8 @@ extension EditableVaultListViewModel {
             do {
                 logger.trace("Emptying all trashed items")
                 loading = true
-                try await vaultsManager.permanentlyDeleteAllTrashedItems()
+                let userId = try await userManager.getActiveUserId()
+                try await vaultsManager.permanentlyDeleteAllTrashedItems(userId: userId)
                 router.display(element: .infosMessage(#localized("All items permanently deleted"),
                                                       config: .refresh))
                 logger.info("Emptied all trashed items")

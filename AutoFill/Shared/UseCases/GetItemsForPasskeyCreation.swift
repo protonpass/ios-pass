@@ -23,12 +23,14 @@ import Entities
 import Foundation
 
 protocol GetItemsForPasskeyCreationUseCase: Sendable {
-    func execute(_ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel])
+    func execute(userId: String, _ request: PasskeyCredentialRequest) async throws
+        -> ([SearchableItem], [ItemUiModel])
 }
 
 extension GetItemsForPasskeyCreationUseCase {
-    func callAsFunction(_ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel]) {
-        try await execute(request)
+    func callAsFunction(userId: String,
+                        _ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel]) {
+        try await execute(userId: userId, request)
     }
 }
 
@@ -48,10 +50,11 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
         self.accessRepository = accessRepository
     }
 
-    func execute(_ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel]) {
+    func execute(userId: String,
+                 _ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel]) {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
-        async let getVaults = shareRepository.getVaults()
-        async let getActiveLogInItems = itemRepositiry.getActiveLogInItems()
+        async let getVaults = shareRepository.getVaults(userId: userId)
+        async let getActiveLogInItems = itemRepositiry.getActiveLogInItems(userId: userId)
         async let getPlan = accessRepository.getPlan()
 
         let symmetricKey = try await getSymmetricKey

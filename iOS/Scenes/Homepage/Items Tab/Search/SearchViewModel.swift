@@ -61,7 +61,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     var selectedSortType = SortType.mostRecent { didSet { filterAndSortResults() } }
 
     // Injected properties
-    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let searchEntryDatasource = resolve(\SharedRepositoryContainer.localSearchEntryDatasource)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -69,6 +68,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private(set) var searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -105,8 +105,8 @@ private extension SearchViewModel {
             if case .error = state {
                 state = .initializing
             }
-
-            searchableItems = try await getSearchableItems(for: searchMode)
+            let userId = try await userManager.getActiveUserId()
+            searchableItems = try await getSearchableItems(userId: userId, for: searchMode)
             try await refreshSearchHistory()
         } catch {
             state = .error(error)

@@ -28,6 +28,7 @@ protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: any ASAuthorizationCredential,
+                 userId: String,
                  itemContent: ItemContent,
                  context: ASCredentialProviderExtensionContext) async throws
 }
@@ -36,11 +37,13 @@ extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
                         identifiers: [ASCredentialServiceIdentifier],
                         credential: any ASAuthorizationCredential,
+                        userId: String,
                         itemContent: ItemContent,
                         context: ASCredentialProviderExtensionContext) async throws {
         try await execute(quickTypeBar: quickTypeBar,
                           identifiers: identifiers,
                           credential: credential,
+                          userId: userId,
                           itemContent: itemContent,
                           context: context)
     }
@@ -53,9 +56,11 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let copyTotpTokenAndNotify: any CopyTotpTokenAndNotifyUseCase
     private let updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase
     private let resetFactory: any ResetFactoryUseCase
+    private let userManager: any UserManagerProtocol
 
     init(logManager: any LogManagerProtocol,
          telemetryRepository: any TelemetryEventRepositoryProtocol,
+         userManager: any UserManagerProtocol,
          copyTotpTokenAndNotify: any CopyTotpTokenAndNotifyUseCase,
          updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase,
          resetFactory: any ResetFactoryUseCase) {
@@ -65,6 +70,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
         self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.resetFactory = resetFactory
+        self.userManager = userManager
     }
 
     /*
@@ -76,6 +82,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: any ASAuthorizationCredential,
+                 userId: String,
                  itemContent: ItemContent,
                  context: ASCredentialProviderExtensionContext) async throws {
         defer {
@@ -96,7 +103,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             try await copyTotpTokenAndNotify(itemContent: itemContent)
             let completion: (Bool) -> Void = { [weak self] _ in
                 guard let self else { return }
-                update(item: itemContent, identifiers: identifiers)
+                update(userId: userId, item: itemContent, identifiers: identifiers)
             }
 
             if let passwordCredential = credential as? ASPasswordCredential {
@@ -121,11 +128,13 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
 }
 
 private extension CompleteAutoFill {
-    func update(item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
+    func update(userId: String, item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await updateLastUseTimeAndReindex(item: item,
+//                let userId = try await userManager.getActiveUserId()
+                try await updateLastUseTimeAndReindex(userId: userId,
+                                                      item: item,
                                                       date: .now,
                                                       identifiers: identifiers)
                 await logManager.saveAllLogs()
