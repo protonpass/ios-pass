@@ -53,14 +53,6 @@ public final class APIManager: Sendable, APIManagerProtocol {
     private var forceUpgradeHelper: ForceUpgradeHelper!
     private var allCurrentApiServices = [APIManagerElements]()
 
-//    public var apiService: any APIService {
-//        guard let userId = userManager.activeUserId,
-//              let service = try? getApiService(userId: userId) else {
-//            return createNewApiService()
-//        }
-//        return service
-//    }
-
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,
                 themeProvider: any ThemeProvider,
@@ -75,11 +67,6 @@ public final class APIManager: Sendable, APIManagerProtocol {
         logger = .init(manager: logManager)
 
         Self.setUpCertificatePinning()
-
-        // TODO: create all apiservices for all current session recorded and set main apiservice
-        // also have function to switch main api service when user switch
-
-        //        let apiService: PMAPIService
 
         // This could also be tweaked as we only log 2 phrases as delegates of forceupgradeHelper
         if let appStoreUrl = URL(string: Constants.appStoreUrl) {
@@ -114,8 +101,8 @@ public final class APIManager: Sendable, APIManagerProtocol {
         }
 
         if allCurrentApiServices.isEmpty {
-            let newApiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
-                                                                            challengeParametersProvider: challengeProvider)
+            let newApiService = PMAPIService
+                .createAPIServiceWithoutSession(doh: doh, challengeParametersProvider: challengeProvider)
             newApiService.authDelegate = authManager
             newApiService.serviceDelegate = self
             let humanHelper = HumanCheckHelper(apiService: newApiService,
@@ -136,68 +123,24 @@ public final class APIManager: Sendable, APIManagerProtocol {
             setUpCore(apiService: apiService.apiService)
         }
 
-//        if let activeUserId = userManager.activeUserId,
-//           let credential = authManager.getCredential(userId: activeUserId) {
-//            apiService = PMAPIService.createAPIService(doh: doh,
-//                                                       sessionUID: credential.sessionID,
-//                                                       challengeParametersProvider: challengeProvider)
-//        } else {
-//            apiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
-//                                                                     challengeParametersProvider: challengeProvider)
-//        }
-//        self.apiService = apiService
-
-//        humanHelper = HumanCheckHelper(apiService: apiService,
-//                                       inAppTheme: {
-//                                           themeProvider.sharedPreferences.unwrapped().theme.inAppTheme
-//                                       },
-//                                       clientApp: .pass)
-//
-//        apiService.humanDelegate = humanHelper
-
         authManager.setUpDelegate(self)
-//        self.apiService.authDelegate = authManager
-//        self.apiService.serviceDelegate = self
-//        (apiService as? PMAPIService)?.loggingDelegate = self
     }
-
-//    public func updateCurrentSession(sessionId: String) {
-//        guard let service = allCurrentApiServices.first(where: { $0.sessionUID == sessionId }) else {
-//            return
-//        }
-//        apiService = service
-    ////        apiService.setSessionUID(uid: sessionId)
-//    }
-
-//    public func updateCurrentSession(userId: String) async {
-//        guard let session = authManager.getCredential(userId: userId),
-//              session.sessionID != apiService.sessionUID,
-//              let service = allCurrentApiServices.first(where: { $0.sessionUID == session.sessionID }) else {
-//            return
-//        }
-    ////        apiService.setSessionUID(uid: session.sessionID)
-//        apiService = service
-//    }
 
     @discardableResult
     public func createNewApiService() -> any APIService {
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
-//        let newApiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
-//                                                                        challengeParametersProvider: challengeProvider)
-//        newApiService.authDelegate = authManager
-//        newApiService.serviceDelegate = self
-//        allCurrentApiServices.append(newApiService)
-//        apiService = newApiService
-//
         let newApiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
                                                                         challengeParametersProvider: challengeProvider)
         newApiService.authDelegate = authManager
         newApiService.serviceDelegate = self
         let humanHelper = HumanCheckHelper(apiService: newApiService,
                                            inAppTheme: { [weak self] in
-                                               self?.themeProvider.sharedPreferences.unwrapped().theme
-                                                   .inAppTheme ?? .matchSystem
+                                               guard let self else {
+                                                   return .matchSystem
+                                               }
+                                               return themeProvider.sharedPreferences.unwrapped().theme
+                                                   .inAppTheme
                                            },
                                            clientApp: .pass)
 
@@ -320,6 +263,7 @@ extension APIManager: APIServiceDelegate {
 
 // MARK: - ForceUpgradeResponseDelegate
 
+// swiftlint:disable:next todo
 // TODO: DO we need these logs ?
 extension APIManager: ForceUpgradeResponseDelegate {
     public func onQuitButtonPressed() {

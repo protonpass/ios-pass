@@ -272,14 +272,16 @@ public extension PassMonitorRepository {
     func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDataSource.toggleMonitoringFor(userId: userId, address: address,
+        return try await remoteDataSource.toggleMonitoringFor(userId: userId,
+                                                              address: address,
                                                               shouldMonitor: shouldMonitor)
     }
 
     func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDataSource.toggleMonitoringFor(userId: userId, email: email,
+        return try await remoteDataSource.toggleMonitoringFor(userId: userId,
+                                                              email: email,
                                                               shouldMonitor: shouldMonitor)
     }
 
