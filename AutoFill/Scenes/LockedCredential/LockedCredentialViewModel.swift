@@ -22,7 +22,7 @@
 import Entities
 import Factory
 
-typealias LockedCredentialResult = Result<(any ASAuthorizationCredential, ItemContent), any Error>
+typealias LockedCredentialResult = Result<(any ASAuthorizationCredential, ItemContent, String), any Error>
 
 @MainActor
 final class LockedCredentialViewModel: ObservableObject {
@@ -45,8 +45,8 @@ final class LockedCredentialViewModel: ObservableObject {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let (itemContent, credential) = try await generateAuthorizationCredential(request)
-                onResult(.success((credential, itemContent)))
+                let (userId, itemContent, credential) = try await generateAuthorizationCredential(request)
+                onResult(.success((credential, itemContent, userId)))
             } catch {
                 logger.error(error)
                 onResult(.failure(error))

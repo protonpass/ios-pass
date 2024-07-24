@@ -23,12 +23,12 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol CreateAndMoveItemToNewVaultUseCase: Sendable {
-    func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault
+    func execute(userId: String, vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault
 }
 
 public extension CreateAndMoveItemToNewVaultUseCase {
-    func callAsFunction(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
-        try await execute(vault: vault, itemContent: itemContent)
+    func callAsFunction(userId: String, vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
+        try await execute(userId: userId, vault: vault, itemContent: itemContent)
     }
 }
 
@@ -45,12 +45,12 @@ public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCa
         self.vaultsManager = vaultsManager
     }
 
-    public func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
+    public func execute(userId: String, vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
         do {
-            if let vault = try await createVault(with: vault) {
+            if let vault = try await createVault(userId: userId, with: vault) {
                 try await moveItemsBetweenVaults(context: .singleItem(itemContent),
                                                  to: vault.shareId)
-                vaultsManager.refresh()
+                vaultsManager.refresh(userId: userId)
                 return vault
             } else {
                 throw PassError.sharing(.failedToCreateNewVault)

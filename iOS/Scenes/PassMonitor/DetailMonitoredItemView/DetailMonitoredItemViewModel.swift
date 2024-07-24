@@ -51,6 +51,7 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
     private let toggleMonitoringForCustomEmail = resolve(\UseCasesContainer.toggleMonitoringForCustomEmail)
     private let toggleMonitoringForProtonAddress = resolve(\UseCasesContainer.toggleMonitoringForProtonAddress)
     private let removeEmailFromBreachMonitoring = resolve(\UseCasesContainer.removeEmailFromBreachMonitoring)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
     private var currentTask: Task<Void, Never>?
@@ -143,10 +144,11 @@ final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
             }
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
+                let userId = try await userManager.getActiveUserId()
                 router.display(element: .globalLoading(shouldShow: true))
                 switch infos {
                 case let .alias(aliasInfos):
-                    try await toggleMonitoringForAlias(alias: aliasInfos.alias)
+                    try await toggleMonitoringForAlias(userId: userId, alias: aliasInfos.alias)
                 case let .customEmail(email):
                     _ = try await toggleMonitoringForCustomEmail(email: email)
                 case let .protonAddress(address):
@@ -208,6 +210,7 @@ private extension DetailMonitoredItemViewModel {
     }
 
     func refreshUiModel() async throws -> DetailMonitoredItemUiModel {
+        let userId = try await userManager.getActiveUserId()
         let breaches: EmailBreaches
         switch infos {
         case let .alias(aliasInfos):
@@ -223,7 +226,7 @@ private extension DetailMonitoredItemViewModel {
         case let .fetched(uiModel):
             uiModel.linkedItems
         default:
-            try await getItemsLinkedToBreach(email: infos.email)
+            try await getItemsLinkedToBreach(userId: userId, email: infos.email)
         }
         return .init(email: infos.email,
                      unresolvedBreaches: breaches.breaches.allUnresolvedBreaches,

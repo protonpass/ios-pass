@@ -61,6 +61,7 @@ final class AutoFillPassword: AutoFillPasswordUseCase {
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,
                                    credential: credential,
+                                   userId: itemContent.userId,
                                    itemContent: itemContent,
                                    context: context)
     }

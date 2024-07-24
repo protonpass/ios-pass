@@ -31,8 +31,11 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
     @Published private(set) var loading = true
 
     let item: ItemContent
+
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+
     private var canLoadMoreItems = true
     private var currentTask: Task<Void, Never>?
     private var lastToken: String?
@@ -63,7 +66,9 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
                 currentTask = nil
             }
             do {
-                let items = try await getItemHistory(shareId: item.shareId,
+                let userId = try await userManager.getActiveUserId()
+                let items = try await getItemHistory(userId: userId,
+                                                     shareId: item.shareId,
                                                      itemId: item.itemId,
                                                      lastToken: lastToken)
 

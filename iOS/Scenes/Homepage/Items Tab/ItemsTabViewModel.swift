@@ -77,6 +77,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -103,6 +104,20 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     func openAppOnAppStore() {
         router.navigate(to: .urlPage(urlString: Constants.appStoreUrl))
     }
+
+    func refresh() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
 }
 
 // MARK: - Private APIs
@@ -126,8 +141,10 @@ private extension ItemsTabViewModel {
             do {
                 showingUpgradeAppBanner = try await shouldDisplayUpgradeAppBanner()
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
+//
+//                logger.error(error)
+//                router.display(element: .displayErrorBanner(error))
             }
         }
 
@@ -324,7 +341,8 @@ extension ItemsTabViewModel {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 let items = currentSelectedItems.value
-                try await doPermanentlyDeleteSelectedItems(items)
+                let userId = try await userManager.getActiveUserId()
+                try await doPermanentlyDeleteSelectedItems(userId: userId, items)
                 currentSelectedItems.send([])
                 let message = #localized("Permanently deleted %lld items", items.count)
                 router.display(element: .infosMessage(message, config: .dismissAndRefresh))

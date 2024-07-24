@@ -62,6 +62,8 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
 
         guard let oldContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                        itemId: item.itemId),
+            let oldItem = try await itemRepository.getItem(shareId: item.shareId,
+                                                           itemId: item.itemId),
             let oldData = oldContent.loginItem else {
             throw PassError.itemNotFound(item)
         }
@@ -78,7 +80,8 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
                                              itemUuid: oldContent.itemUuid,
                                              data: newLoginData,
                                              customFields: oldContent.customFields)
-        try await itemRepository.updateItem(oldItem: oldContent.item,
+        try await itemRepository.updateItem(userId: oldItem.userId,
+                                            oldItem: oldContent.item,
                                             newItemContent: newContent,
                                             shareId: oldContent.shareId)
         let credential = ASPasswordCredential(user: oldData.authIdentifier,
@@ -86,6 +89,7 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,
                                    credential: credential,
+                                   userId: oldItem.userId,
                                    itemContent: oldContent,
                                    context: context)
     }

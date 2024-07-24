@@ -30,36 +30,40 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
     public init() {}
 
     // MARK: - getShares
-    public var getSharesThrowableError1: Error?
+    public var getSharesUserIdThrowableError1: Error?
     public var closureGetShares: () -> () = {}
     public var invokedGetSharesfunction = false
     public var invokedGetSharesCount = 0
+    public var invokedGetSharesParameters: (userId: String, Void)?
+    public var invokedGetSharesParametersList = [(userId: String, Void)]()
     public var stubbedGetSharesResult: [SymmetricallyEncryptedShare]!
 
-    public func getShares() async throws -> [SymmetricallyEncryptedShare] {
+    public func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare] {
         invokedGetSharesfunction = true
         invokedGetSharesCount += 1
-        if let error = getSharesThrowableError1 {
+        invokedGetSharesParameters = (userId, ())
+        invokedGetSharesParametersList.append((userId, ()))
+        if let error = getSharesUserIdThrowableError1 {
             throw error
         }
         closureGetShares()
         return stubbedGetSharesResult
     }
     // MARK: - getRemoteShares
-    public var getRemoteSharesEventStreamThrowableError2: Error?
+    public var getRemoteSharesUserIdEventStreamThrowableError2: Error?
     public var closureGetRemoteShares: () -> () = {}
     public var invokedGetRemoteSharesfunction = false
     public var invokedGetRemoteSharesCount = 0
-    public var invokedGetRemoteSharesParameters: (eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?, Void)?
-    public var invokedGetRemoteSharesParametersList = [(eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?, Void)]()
+    public var invokedGetRemoteSharesParameters: (userId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
+    public var invokedGetRemoteSharesParametersList = [(userId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
     public var stubbedGetRemoteSharesResult: [Share]!
 
-    public func getRemoteShares(eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Share] {
+    public func getRemoteShares(userId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Share] {
         invokedGetRemoteSharesfunction = true
         invokedGetRemoteSharesCount += 1
-        invokedGetRemoteSharesParameters = (eventStream, ())
-        invokedGetRemoteSharesParametersList.append((eventStream, ()))
-        if let error = getRemoteSharesEventStreamThrowableError2 {
+        invokedGetRemoteSharesParameters = (userId, eventStream)
+        invokedGetRemoteSharesParametersList.append((userId, eventStream))
+        if let error = getRemoteSharesUserIdEventStreamThrowableError2 {
             throw error
         }
         closureGetRemoteShares()
@@ -80,37 +84,37 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         closureDeleteAllCurrentUserSharesLocally()
     }
     // MARK: - deleteShareLocally
-    public var deleteShareLocallyShareIdThrowableError4: Error?
+    public var deleteShareLocallyUserIdShareIdThrowableError4: Error?
     public var closureDeleteShareLocally: () -> () = {}
     public var invokedDeleteShareLocallyfunction = false
     public var invokedDeleteShareLocallyCount = 0
-    public var invokedDeleteShareLocallyParameters: (shareId: String, Void)?
-    public var invokedDeleteShareLocallyParametersList = [(shareId: String, Void)]()
+    public var invokedDeleteShareLocallyParameters: (userId: String, shareId: String)?
+    public var invokedDeleteShareLocallyParametersList = [(userId: String, shareId: String)]()
 
-    public func deleteShareLocally(shareId: String) async throws {
+    public func deleteShareLocally(userId: String, shareId: String) async throws {
         invokedDeleteShareLocallyfunction = true
         invokedDeleteShareLocallyCount += 1
-        invokedDeleteShareLocallyParameters = (shareId, ())
-        invokedDeleteShareLocallyParametersList.append((shareId, ()))
-        if let error = deleteShareLocallyShareIdThrowableError4 {
+        invokedDeleteShareLocallyParameters = (userId, shareId)
+        invokedDeleteShareLocallyParametersList.append((userId, shareId))
+        if let error = deleteShareLocallyUserIdShareIdThrowableError4 {
             throw error
         }
         closureDeleteShareLocally()
     }
     // MARK: - upsertShares
-    public var upsertSharesEventStreamThrowableError5: Error?
+    public var upsertSharesUserIdSharesEventStreamThrowableError5: Error?
     public var closureUpsertShares: () -> () = {}
     public var invokedUpsertSharesfunction = false
     public var invokedUpsertSharesCount = 0
-    public var invokedUpsertSharesParameters: (shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
-    public var invokedUpsertSharesParametersList = [(shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
+    public var invokedUpsertSharesParameters: (userId: String, shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
+    public var invokedUpsertSharesParametersList = [(userId: String, shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
 
-    public func upsertShares(_ shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
+    public func upsertShares(userId: String, shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
         invokedUpsertSharesfunction = true
         invokedUpsertSharesCount += 1
-        invokedUpsertSharesParameters = (shares, eventStream)
-        invokedUpsertSharesParametersList.append((shares, eventStream))
-        if let error = upsertSharesEventStreamThrowableError5 {
+        invokedUpsertSharesParameters = (userId, shares, eventStream)
+        invokedUpsertSharesParametersList.append((userId, shares, eventStream))
+        if let error = upsertSharesUserIdSharesEventStreamThrowableError5 {
             throw error
         }
         closureUpsertShares()
@@ -176,36 +180,40 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         return stubbedDeleteUserShareResult
     }
     // MARK: - deleteShare
-    public var deleteShareShareIdThrowableError9: Error?
+    public var deleteShareUserIdShareIdThrowableError9: Error?
     public var closureDeleteShare: () -> () = {}
     public var invokedDeleteSharefunction = false
     public var invokedDeleteShareCount = 0
-    public var invokedDeleteShareParameters: (shareId: String, Void)?
-    public var invokedDeleteShareParametersList = [(shareId: String, Void)]()
+    public var invokedDeleteShareParameters: (userId: String, shareId: String)?
+    public var invokedDeleteShareParametersList = [(userId: String, shareId: String)]()
     public var stubbedDeleteShareResult: Bool!
 
-    public func deleteShare(shareId: String) async throws -> Bool {
+    public func deleteShare(userId: String, shareId: String) async throws -> Bool {
         invokedDeleteSharefunction = true
         invokedDeleteShareCount += 1
-        invokedDeleteShareParameters = (shareId, ())
-        invokedDeleteShareParametersList.append((shareId, ()))
-        if let error = deleteShareShareIdThrowableError9 {
+        invokedDeleteShareParameters = (userId, shareId)
+        invokedDeleteShareParametersList.append((userId, shareId))
+        if let error = deleteShareUserIdShareIdThrowableError9 {
             throw error
         }
         closureDeleteShare()
         return stubbedDeleteShareResult
     }
     // MARK: - getVaults
-    public var getVaultsThrowableError10: Error?
+    public var getVaultsUserIdThrowableError10: Error?
     public var closureGetVaults: () -> () = {}
     public var invokedGetVaultsfunction = false
     public var invokedGetVaultsCount = 0
+    public var invokedGetVaultsParameters: (userId: String, Void)?
+    public var invokedGetVaultsParametersList = [(userId: String, Void)]()
     public var stubbedGetVaultsResult: [Vault]!
 
-    public func getVaults() async throws -> [Vault] {
+    public func getVaults(userId: String) async throws -> [Vault] {
         invokedGetVaultsfunction = true
         invokedGetVaultsCount += 1
-        if let error = getVaultsThrowableError10 {
+        invokedGetVaultsParameters = (userId, ())
+        invokedGetVaultsParametersList.append((userId, ()))
+        if let error = getVaultsUserIdThrowableError10 {
             throw error
         }
         closureGetVaults()

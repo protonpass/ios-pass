@@ -27,20 +27,20 @@ public final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCa
     public init() {}
 
     // MARK: - execute
-    public var executeWithThrowableError1: Error?
+    public var executeUserIdWithThrowableError1: Error?
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
-    public var invokedExecuteParameters: (vault: VaultProtobuf, Void)?
-    public var invokedExecuteParametersList = [(vault: VaultProtobuf, Void)]()
+    public var invokedExecuteParameters: (userId: String, vault: VaultProtobuf)?
+    public var invokedExecuteParametersList = [(userId: String, vault: VaultProtobuf)]()
     public var stubbedExecuteResult: Vault?
 
-    public func execute(with vault: VaultProtobuf) async throws -> Vault? {
+    public func execute(userId: String, with vault: VaultProtobuf) async throws -> Vault? {
         invokedExecutefunction = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (vault, ())
-        invokedExecuteParametersList.append((vault, ()))
-        if let error = executeWithThrowableError1 {
+        invokedExecuteParameters = (userId, vault)
+        invokedExecuteParametersList.append((userId, vault))
+        if let error = executeUserIdWithThrowableError1 {
             throw error
         }
         closureExecute()

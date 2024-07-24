@@ -58,8 +58,10 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
             logger.trace("Removed all spotlight indexed items")
             return
         }
+        let userId = try await userManager.getActiveUserId()
+
         logger.trace("Begin to index items for Spotlight")
-        let allItems = try await itemRepository.getAllItemContents()
+        let allItems = try await itemRepository.getAllItemContents(userId: userId)
 
         logger.trace("Found \(allItems.count) items")
 
@@ -69,7 +71,6 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
             selectedItems = allItems
             logger.trace("Indexing \(selectedItems.count) items in all vaults for Spotlight")
         case .selected:
-            let userId = try await userManager.getActiveUserId()
             let ids = try await datasource.getIds(for: userId)
             selectedItems = allItems.filter { ids.contains($0.shareId) }
             logger.trace("Indexing \(selectedItems.count) items in \(ids.count) vaults for Spotlight")

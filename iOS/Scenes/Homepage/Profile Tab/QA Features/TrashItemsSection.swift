@@ -134,6 +134,7 @@ private final class TrashItemsViewModel: ObservableObject {
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     private let bannerManager = resolve(\SharedViewContainer.bannerManager)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     init() {
         loadVaults()
@@ -144,8 +145,9 @@ private final class TrashItemsViewModel: ObservableObject {
             guard let self else { return }
             do {
                 state = .loading
-                let items = try await itemRepository.getAllItems()
-                let vaults = try await shareRepository.getVaults()
+                let userId = try await userManager.getActiveUserId()
+                let items = try await itemRepository.getAllItems(userId: userId)
+                let vaults = try await shareRepository.getVaults(userId: userId)
 
                 let vaultListUiModels: [VaultListUiModel] = vaults.map { vault in
                     let activeItems =

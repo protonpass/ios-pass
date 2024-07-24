@@ -66,6 +66,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
 
@@ -177,8 +178,26 @@ private extension CredentialProviderCoordinator {
         Task { [weak self] in
             guard let self, let context else { return }
             do {
+//                let userId = try await userManager.getActiveUserId()
+                guard let recordIdentifier = request.recordIdentifier else {
+                    throw ASExtensionError(.credentialIdentityNotFound)
+                }
+
+                let ids = try IDs.deserializeBase64(recordIdentifier)
+
+//                guard let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
+//                                                                                itemId: ids.itemId),
+//                    let logInData = itemContent.loginItem else {
+//                    throw ASExtensionError(.credentialIdentityNotFound)
+//                }
+//
+                guard let item = try await itemRepository.getItem(shareId: ids.shareId, itemId: ids.itemId) else {
+                    throw ASExtensionError(.credentialIdentityNotFound)
+                }
+
                 let localAuthenticationMethod = getSharedPreferences().localAuthenticationMethod
                 try await checkAndAutoFill(request,
+                                           userId: item.userId,
                                            context: context,
                                            localAuthenticationMethod: localAuthenticationMethod)
             } catch {
@@ -192,12 +211,13 @@ private extension CredentialProviderCoordinator {
         let viewModel = LockedCredentialViewModel(request: request) { [weak self] result in
             guard let self, let context else { return }
             switch result {
-            case let .success((credential, itemContent)):
+            case let .success((credential, itemContent, userId)):
                 Task { [weak self] in
                     guard let self else { return }
                     try? await completeAutoFill(quickTypeBar: false,
                                                 identifiers: request.serviceIdentifiers,
                                                 credential: credential,
+                                                userId: userId,
                                                 itemContent: itemContent,
                                                 context: context)
                 }
@@ -397,8 +417,9 @@ private extension CredentialProviderCoordinator {
     func showCreateLoginView(url: URL?, request: PasskeyCredentialRequest?) async {
         do {
             showLoadingHud()
+            let userId = try await userManager.getActiveUserId()
             if vaultsManager.getAllVaultContents().isEmpty {
-                try await vaultsManager.asyncRefresh()
+                try await vaultsManager.asyncRefresh(userId: userId)
             }
             let vaults = vaultsManager.getAllVaultContents().map(\.vault)
 
@@ -558,8 +579,9 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self, let context else { return }
                 do {
+                    // TODO: will have to index for all accounts
                     if getSharedPreferences().quickTypeBar {
-                        try await indexAllLoginItems()
+                        try await indexAllLoginItems(userId: item.userId)
                     }
                     if let response {
                         completePasskeyRegistration(response, context: context)

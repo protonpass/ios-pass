@@ -67,9 +67,12 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         guard let baseInfo = infos.first else {
             throw PassError.sharing(.incompleteInformation)
         }
-        let vault = try await getVault(from: baseInfo)
-        let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
-        let inviteesData = try await infos.asyncCompactMap { try await generateInviteeData(from: $0,
+        let userData = try await userManager.getUnwrappedActiveUserData()
+        let userId = userData.user.ID
+        let vault = try await getVault(userId: userId, from: baseInfo)
+        let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: vault.shareId)
+        let inviteesData = try await infos.asyncCompactMap { try await generateInviteeData(userData: userData,
+                                                                                           from: $0,
                                                                                            vault: vault,
                                                                                            vaultKey: vaultKey) }
         let invited = try await shareInviteRepository.sendInvites(shareId: vault.shareId,
@@ -87,19 +90,19 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
 }
 
 private extension SendVaultShareInvite {
-    func getVault(from info: SharingInfos) async throws -> Vault {
+    func getVault(userId: String, from info: SharingInfos) async throws -> Vault {
         switch info.vault {
         case let .existing(vault):
             vault
         case let .new(vaultProtobuf, itemContent):
-            try await createAndMoveItemToNewVault(vault: vaultProtobuf, itemContent: itemContent)
+            try await createAndMoveItemToNewVault(userId: userId, vault: vaultProtobuf, itemContent: itemContent)
         }
     }
 
-    func generateInviteeData(from info: SharingInfos,
+    func generateInviteeData(userData: UserData,
+                             from info: SharingInfos,
                              vault: Vault,
                              vaultKey: DecryptedShareKey) async throws -> InviteeData {
-        let userData = try await userManager.getUnwrappedActiveUserData()
         let email = info.email
         if let key = info.receiverPublicKeys?.first {
             let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,

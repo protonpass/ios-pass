@@ -23,12 +23,12 @@
 import Client
 
 public protocol FullVaultsSyncUseCase: Sendable {
-    func execute() async throws
+    func execute(userId: String) async throws
 }
 
 public extension FullVaultsSyncUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(userId: String) async throws {
+        try await execute(userId: userId)
     }
 }
 
@@ -42,9 +42,9 @@ public final class FullVaultsSync: FullVaultsSyncUseCase {
         self.vaultsManager = vaultsManager
     }
 
-    public func execute() async throws {
+    public func execute(userId: String) async throws {
         syncEventLoop.stop()
-        try await vaultsManager.fullSync()
+        try await vaultsManager.fullSync(userId: userId)
         syncEventLoop.start()
     }
 }

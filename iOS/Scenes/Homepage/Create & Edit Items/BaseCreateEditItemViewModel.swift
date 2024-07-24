@@ -108,6 +108,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    @LazyInjected(\SharedServiceContainer.userManager) var userManager
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -265,11 +266,12 @@ private extension BaseCreateEditItemViewModel {
             logger.warning("No item content")
             return nil
         }
-
+        let userId = try await userManager.getActiveUserId()
         switch type {
         case .alias:
             if let aliasCreationInfo = generateAliasCreationInfo() {
-                return try await itemRepository.createAlias(info: aliasCreationInfo,
+                return try await itemRepository.createAlias(userId: userId,
+                                                            info: aliasCreationInfo,
                                                             itemContent: itemContent,
                                                             shareId: shareId)
             } else {
@@ -282,7 +284,8 @@ private extension BaseCreateEditItemViewModel {
             if let aliasCreationInfo = generateAliasCreationInfo(),
                let aliasItemContent = generateAliasItemContent() {
                 let (_, createdLoginItem) = try await itemRepository
-                    .createAliasAndOtherItem(info: aliasCreationInfo,
+                    .createAliasAndOtherItem(userId: userId,
+                                             info: aliasCreationInfo,
                                              aliasItemContent: aliasItemContent,
                                              otherItemContent: itemContent,
                                              shareId: shareId)
@@ -293,7 +296,7 @@ private extension BaseCreateEditItemViewModel {
             break
         }
 
-        return try await itemRepository.createItem(itemContent: itemContent, shareId: shareId)
+        return try await itemRepository.createItem(userId: userId, itemContent: itemContent, shareId: shareId)
     }
 
     /// Return `true` if item is edited, `false` otherwise
@@ -313,7 +316,8 @@ private extension BaseCreateEditItemViewModel {
             logger.trace("Skipped editing because no changes \(oldItemContent.debugDescription)")
             return false
         }
-        try await itemRepository.updateItem(oldItem: oldItem.item,
+        try await itemRepository.updateItem(userId: oldItem.userId,
+                                            oldItem: oldItem.item,
                                             newItemContent: newItemContent,
                                             shareId: oldItem.shareId)
         return true
