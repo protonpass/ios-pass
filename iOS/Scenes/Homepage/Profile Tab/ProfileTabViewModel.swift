@@ -463,6 +463,7 @@ private extension ProfileTabViewModel {
         // Attempting to populate this database will throw an error anyway so early exit here
         guard autoFillEnabled else { return }
         logger.trace("Reindexing credentials")
+        // swiftlint:disable:next todo
         // TODO: SHould reindex for all account in the futur
         let userId = try await userManager.getActiveUserId()
         if indexable {

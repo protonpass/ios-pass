@@ -144,6 +144,7 @@ extension CredentialsViewModel {
 
     func sync() async {
         do {
+            // swiftlint:disable:next todo
             // TODO: will need to loo on all accounts
             let userId = try await userManager.getActiveUserId()
             let hasNewEvents = try await eventSynchronizer.sync(userId: userId)
@@ -165,7 +166,8 @@ extension CredentialsViewModel {
                 if case .error = state {
                     state = .loading
                 }
-                // TODO: will need to loo on all accounts
+                // swiftlint:disable:next todo
+                // TODO: will need to loop on all accounts
                 let userId = try await userManager.getActiveUserId()
                 async let plan = accessRepository.getPlan()
                 async let vaults = shareRepository.getVaults(userId: userId)
@@ -295,7 +297,6 @@ private extension CredentialsViewModel {
             // Item has only 1 passkey => autofill right away
             try await autoFillPasskey(passkey,
                                       itemContent: itemContent,
-                                      userId: item.userId,
                                       identifiers: serviceIdentifiers,
                                       params: params,
                                       context: context)

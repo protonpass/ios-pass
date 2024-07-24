@@ -211,13 +211,12 @@ private extension CredentialProviderCoordinator {
         let viewModel = LockedCredentialViewModel(request: request) { [weak self] result in
             guard let self, let context else { return }
             switch result {
-            case let .success((credential, itemContent, userId)):
+            case let .success((credential, itemContent)):
                 Task { [weak self] in
                     guard let self else { return }
                     try? await completeAutoFill(quickTypeBar: false,
                                                 identifiers: request.serviceIdentifiers,
                                                 credential: credential,
-                                                userId: userId,
                                                 itemContent: itemContent,
                                                 context: context)
                 }
@@ -579,6 +578,7 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self, let context else { return }
                 do {
+                    // swiftlint:disable:next todo
                     // TODO: will have to index for all accounts
                     if getSharedPreferences().quickTypeBar {
                         try await indexAllLoginItems(userId: item.userId)

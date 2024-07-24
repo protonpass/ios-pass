@@ -42,7 +42,9 @@ public extension RemoteAliasDatasource {
         return response.alias
     }
 
-    func changeMailboxes(userId: String, shareId: String, itemId: String,
+    func changeMailboxes(userId: String,
+                         shareId: String,
+                         itemId: String,
                          mailboxIDs: [Int]) async throws -> Alias {
         let endpoint = ChangeMailboxesEndpoint(shareId: shareId,
                                                itemId: itemId,

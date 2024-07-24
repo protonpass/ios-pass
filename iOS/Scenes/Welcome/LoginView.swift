@@ -38,10 +38,10 @@ struct LoginViewResult {
 struct LoginView: UIViewControllerRepresentable {
     @Binding private var loginData: Result<LoginViewResult?, LoginViewError>
     private let apiServicing: any APIManagerProtocol
-//    private let apiService: any APIService
     private let theme: Theme
 
-    init(apiServicing: any APIManagerProtocol, theme: Theme,
+    init(apiServicing: any APIManagerProtocol,
+         theme: Theme,
          loginData: Binding<Result<LoginViewResult?, LoginViewError>>) {
         self.apiServicing = apiServicing
         self.theme = theme

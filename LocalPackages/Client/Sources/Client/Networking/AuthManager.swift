@@ -145,7 +145,8 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: sessionUID, currentModule: passModule)
-                let newCredentials = getAuthElement(credential: credential, module: passModule,
+                let newCredentials = getAuthElement(credential: credential,
+                                                    module: passModule,
                                                     lastTimeUpdated: .now)
                 let newAuthCredential = newCredentials.authCredential
                     .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
@@ -167,7 +168,8 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
             // should be removed
             for passModule in PassModule.allCases {
                 let key = getCacheKeyFor(sessionId: credential.UID, currentModule: passModule)
-                let newCredentials = getAuthElement(credential: credential, module: passModule,
+                let newCredentials = getAuthElement(credential: credential,
+                                                    module: passModule,
                                                     lastTimeUpdated: .now)
                 cachedCredentials[key] = newCredentials
             }

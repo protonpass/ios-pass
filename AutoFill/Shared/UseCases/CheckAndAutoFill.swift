@@ -65,17 +65,14 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
                  userId: String,
                  context: ASCredentialProviderExtensionContext,
                  localAuthenticationMethod: LocalAuthenticationMethod) async throws {
-        // TODO: should be other user based on item selected
-//        let userId = try await userManager.getActiveUserId()
         guard credentialProvider.isAuthenticated(userId: userId), localAuthenticationMethod == .none else {
             cancelAutoFill(reason: .userInteractionRequired, context: context)
             return
         }
-        let (itemUserId, itemContent, credential) = try await generateAuthorizationCredential(request)
+        let (itemContent, credential) = try await generateAuthorizationCredential(request)
         try await completeAutoFill(quickTypeBar: true,
                                    identifiers: request.serviceIdentifiers,
                                    credential: credential,
-                                   userId: userId,
                                    itemContent: itemContent,
                                    context: context)
     }

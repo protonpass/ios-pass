@@ -84,7 +84,8 @@ public actor PassKeyManager {
 }
 
 extension PassKeyManager: PassKeyManagerProtocol {
-    public func getShareKey(userId: String, shareId: String,
+    public func getShareKey(userId: String,
+                            shareId: String,
                             keyRotation: Int64) async throws -> DecryptedShareKey {
         // ⚠️ Do not add logs to this function because it's supposed to be called all the time
         // when decrypting items. As IO operations caused by the log system take time
@@ -108,17 +109,19 @@ extension PassKeyManager: PassKeyManagerProtocol {
         return try decryptAndCache(latestShareKey)
     }
 
-    public func getLatestItemKey(userId: String, shareId: String,
+    public func getLatestItemKey(userId: String,
+                                 shareId: String,
                                  itemId: String) async throws -> DecryptedItemKey {
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
-//        let userId = try await userManager.getActiveUserId()
-        let latestItemKey = try await itemKeyDatasource.getLatestKey(userId: userId, shareId: shareId,
+        let latestItemKey = try await itemKeyDatasource.getLatestKey(userId: userId,
+                                                                     shareId: shareId,
                                                                      itemId: itemId)
 
         logger.trace("Decrypting latest item key \(keyDescription)")
 
-        let vaultKey = try await getShareKey(userId: userId, shareId: shareId,
+        let vaultKey = try await getShareKey(userId: userId,
+                                             shareId: shareId,
                                              keyRotation: latestItemKey.keyRotation)
 
         guard let encryptedItemKeyData = try latestItemKey.key.base64Decode() else {
