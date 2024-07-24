@@ -22,9 +22,8 @@ import Client
 import DesignSystem
 import Entities
 import Macro
+import ProtonCoreServices
 import SwiftUI
-
-@preconcurrency import ProtonCoreServices
 
 struct ExtraPasswordLockView: View {
     @StateObject private var viewModel: ExtraPasswordLockViewModel
@@ -35,13 +34,13 @@ struct ExtraPasswordLockView: View {
     let onSuccess: () -> Void
     let onFailure: () -> Void
 
-    init(apiService: any APIManagerProtocol,
+    init(apiServicing: any APIManagerProtocol,
          email: String,
          username: String,
          userId: String,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(apiService: apiService, userId: userId))
+        _viewModel = .init(wrappedValue: .init(apiServicing: apiServicing, userId: userId))
         self.email = email
         self.username = username
         self.onSuccess = onSuccess

@@ -40,9 +40,9 @@ final class ExtraPasswordLockViewModel: ObservableObject {
     private let extraPasswordRepository: any ExtraPasswordRepositoryProtocol
     private let userId: String
 
-    init(apiService: any APIManagerProtocol, userId: String) {
+    init(apiServicing: any APIManagerProtocol, userId: String) {
         self.userId = userId
-        extraPasswordRepository = ExtraPasswordRepository(apiServicing: apiService)
+        extraPasswordRepository = ExtraPasswordRepository(apiServicing: apiServicing)
     }
 }
 

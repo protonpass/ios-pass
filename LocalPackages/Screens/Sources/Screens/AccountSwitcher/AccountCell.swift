@@ -28,17 +28,20 @@ public struct AccountCellDetail: Identifiable {
     public let isPremium: Bool
     public let initial: String
     public let displayName: String
+    public let planName: String?
     public let email: String
 
     public init(id: String,
                 isPremium: Bool,
                 initial: String,
                 displayName: String,
+                planName: String?,
                 email: String) {
         self.id = id
         self.isPremium = isPremium
         self.initial = initial
         self.displayName = displayName
+        self.planName = planName
         self.email = email
     }
 
@@ -47,6 +50,7 @@ public struct AccountCellDetail: Identifiable {
               isPremium: false,
               initial: "",
               displayName: "",
+              planName: nil,
               email: "")
     }
 }
@@ -60,6 +64,7 @@ public struct AccountCell: View {
     enum EffectID: String {
         case initial
         case displayName
+        case planName
         case email
         case chevron
 
@@ -88,6 +93,10 @@ public struct AccountCell: View {
             VStack(alignment: .leading) {
                 displayName
                     .matchedGeometryEffect(id: EffectID.displayName.fullId(itemId: detail.id),
+                                           in: animationNamespace)
+
+                planName
+                    .matchedGeometryEffect(id: EffectID.planName.fullId(itemId: detail.id),
                                            in: animationNamespace)
 
                 email
@@ -120,54 +129,40 @@ public struct AccountCell: View {
 private extension AccountCell {
     var initial: some View {
         ZStack {
-            if detail.isPremium {
-                RectangleBottomRightCornerCut()
-                    .fill(PassColor.interactionNormMajor2.toColor)
-            } else {
-                PassColor.interactionNormMajor2.toColor
-            }
-
+            PassColor.interactionNormMajor2.toColor
             Text(verbatim: detail.initial)
                 .foregroundStyle(PassColor.textInvert.toColor)
                 .fontWeight(.medium)
         }
         .frame(width: 36, height: 36)
         .clipShape(RoundedRectangle(cornerRadius: 8))
-        .if(detail.isPremium) { view in
-            view.overlay {
-                SwiftUIImage(image: PassIcon.badgePaid,
-                             width: 10,
-                             tintColor: PassColor.textInvert)
-                    .padding(4)
-                    .background(PassColor.noteInteractionNormMajor2.toColor)
-                    .clipShape(.circle)
-                    .offset(x: 16, y: 16)
-            }
+    }
+
+    @ViewBuilder
+    var displayName: some View {
+        if detail.displayName.isEmpty {
+            EmptyView()
+        } else {
+            Text(verbatim: detail.displayName)
+                .foregroundStyle(PassColor.textNorm.toColor)
         }
     }
 
-    var displayName: some View {
-        Text(verbatim: detail.displayName)
-            .foregroundStyle(PassColor.textNorm.toColor)
+    @ViewBuilder
+    var planName: some View {
+        if let planName = detail.planName {
+            Text(verbatim: planName)
+                .font(.caption)
+                .foregroundStyle((detail.isPremium ? PassColor.noteInteractionNormMajor2 : PassColor.textNorm)
+                    .toColor)
+        } else {
+            EmptyView()
+        }
     }
 
     var email: some View {
         Text(verbatim: detail.email)
             .font(.caption)
             .foregroundStyle(PassColor.textWeak.toColor)
-    }
-}
-
-private struct RectangleBottomRightCornerCut: Shape {
-    func path(in rect: CGRect) -> Path {
-        var path = Path()
-        let offset: CGFloat = 3 / 5
-        path.move(to: CGPoint(x: rect.minX, y: rect.minY))
-        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
-        path.addLine(to: CGPoint(x: rect.maxX * offset, y: rect.maxY))
-        path.addQuadCurve(to: CGPoint(x: rect.maxX, y: rect.maxY * offset),
-                          control: CGPoint(x: rect.maxX * offset, y: rect.maxY * offset))
-        path.addLine(to: CGPoint(x: rect.maxX, y: rect.minY))
-        return path
     }
 }
