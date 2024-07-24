@@ -100,7 +100,8 @@ final class BreachEntitiesExtensionsTests: XCTestCase {
 extension ItemContent {
     var monitoredAlias: ItemContent {
         ItemContent(shareId: "test",
-                    itemUuid: "test",
+                    itemUuid: "test", 
+                    userId: "userIdtest",
                     item: Item(itemID: "test",
                                revision: 1,
                                contentFormatVersion: 1,
@@ -124,6 +125,7 @@ extension ItemContent {
     var unmonitoredAlias: ItemContent {
         ItemContent(shareId: "test",
                     itemUuid: "test",
+                    userId: "test",
                     item: Item(itemID: "test",
                                revision: 1,
                                contentFormatVersion: 1,
