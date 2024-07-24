@@ -50,13 +50,7 @@ struct ProfileTabView: View {
                                                     onSelect: { viewModel.switch(to: $0) },
                                                     onManage: { viewModel.manageAccount($0) },
                                                     onSignOut: { viewModel.signOut(account: $0) },
-                                                    onAddAccount: { handleAddAccount() }))
-            }
-            .sheet(isPresented: $viewModel.showLoginFlow) {
-                LoginView(apiServicing: viewModel.apiManager,
-                          theme: SharedToolingContainer.shared.preferencesManager().sharedPreferences.unwrapped()
-                              .theme,
-                          loginData: $viewModel.newLoggedUser)
+                                                    onAddAccount: { viewModel.addAccount() }))
             }
             .navigationStackEmbeded()
             .task {
@@ -109,10 +103,6 @@ struct ProfileTabView: View {
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
             .animation(.default, value: viewModel.localAuthenticationMethod)
         }
-    }
-
-    func handleAddAccount() {
-        viewModel.showLoginFlow.toggle()
     }
 
     @ToolbarContentBuilder
