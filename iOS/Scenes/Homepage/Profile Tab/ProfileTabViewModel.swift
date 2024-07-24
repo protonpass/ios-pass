@@ -67,8 +67,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
-    @LazyInjected(\UseCasesContainer
-        .createApiService) private var createApiService: any CreateApiServiceUseCase
+//    @LazyInjected(\UseCasesContainer
+//        .createApiService) private var createApiService: any CreateApiServiceUseCase
     @LazyInjected(\SharedUseCasesContainer
         .addAndSwitchToNewUserAccount) private var addAndSwitchToNewUserAccount: any AddAndSwitchToNewUserAccountUseCase
     @LazyInjected(\SharedToolingContainer

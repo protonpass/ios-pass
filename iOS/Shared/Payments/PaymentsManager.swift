@@ -50,8 +50,8 @@ final class PaymentsManager {
     private let storage: UserDefaults
     // swiftlint:disable:next todo
     // TODO: should we provide the actual BugAlertHandler?
-    init(storage: UserDefaults,
-         bugAlertHandler: BugAlertHandler = nil) {
+    init(storage: UserDefaults /* , */
+    /* bugAlertHandler: BugAlertHandler = nil*/ ) {
         inMemoryTokenStorage = InMemoryTokenStorage()
         self.storage = storage
     }
