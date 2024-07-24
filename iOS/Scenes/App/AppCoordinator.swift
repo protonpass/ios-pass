@@ -140,7 +140,7 @@ final class AppCoordinator {
                     showHomeScene(mode: .alreadyLoggedIn)
                     if let userId = userManager.activeUserId,
                        let sessionID = authManager.getCredential(userId: userId)?.sessionID {
-                        registerForPushNotificationsIfNeededAndAddHandlers(uid: sessionID)
+                        registerForPushNotificationsIfNeededAndAddHandlers( /* uid: sessionID */ )
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
                     Task { [weak self] in
@@ -161,7 +161,7 @@ final class AppCoordinator {
                         } else {
                             showHomeScene(mode: .manualLogin)
                         }
-                        registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
+                        registerForPushNotificationsIfNeededAndAddHandlers(/* uid: userData.credential.sessionID */ )
                     }
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -340,7 +340,7 @@ private extension AppCoordinator {
 // }
 
 private extension AppCoordinator {
-    func registerForPushNotificationsIfNeededAndAddHandlers(uid: String) {
+    func registerForPushNotificationsIfNeededAndAddHandlers( /* uid: String */ ) {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.pushNotifications, reloadValue: true)
         else { return }
 
