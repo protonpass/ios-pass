@@ -39,12 +39,14 @@ private struct AccountSwitcherView: View {
                                          isPremium: true,
                                          initial: "E",
                                          displayName: "Eric Norbert",
+                                         planName: "Pass Plus",
                                          email: "eric.norbert@proton.me")
 
     private let john = AccountCellDetail(id: UUID().uuidString,
                                          isPremium: false,
                                          initial: "J",
                                          displayName: "John Doe",
+                                         planName: "Pass Free",
                                          email: "john.doe@proton.me")
 
     var body: some View {
