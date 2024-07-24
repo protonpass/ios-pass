@@ -313,7 +313,8 @@ public extension ItemRepository {
                      itemContent: any ProtobufableItemContentProtocol,
                      shareId: String) async throws -> SymmetricallyEncryptedItem {
         logger.trace("Creating alias item for user \(userId)")
-        let createItemRequest = try await createItemRequest(itemContent: itemContent, userId: userId,
+        let createItemRequest = try await createItemRequest(itemContent: itemContent,
+                                                            userId: userId,
                                                             shareId: shareId)
         let createAliasRequest = CreateCustomAliasRequest(info: info,
                                                           item: createItemRequest)
@@ -337,9 +338,11 @@ public extension ItemRepository {
                                  shareId: String)
         async throws -> (SymmetricallyEncryptedItem, SymmetricallyEncryptedItem) {
         logger.trace("Creating alias and another item")
-        let createAliasItemRequest = try await createItemRequest(itemContent: aliasItemContent, userId: userId,
+        let createAliasItemRequest = try await createItemRequest(itemContent: aliasItemContent,
+                                                                 userId: userId,
                                                                  shareId: shareId)
-        let createOtherItemRequest = try await createItemRequest(itemContent: otherItemContent, userId: userId,
+        let createOtherItemRequest = try await createItemRequest(itemContent: otherItemContent,
+                                                                 userId: userId,
                                                                  shareId: shareId)
 
         let request = CreateAliasAndAnotherItemRequest(info: info,
@@ -662,7 +665,6 @@ public extension ItemRepository {
 // MARK: - Refresh Data
 
 private extension ItemRepository {
-    // TODO: maybe put userID here also but not sure it is usefull as we only display pinned items of current user
     func refreshPinnedItemDataStream() async throws {
         let userId = try await userManager.getActiveUserId()
         let pinnedItems = try await localDatasource.getAllPinnedItems(userId: userId)

@@ -26,7 +26,6 @@ import UseCases
 protocol AutoFillPasskeyUseCase: Sendable {
     func execute(_ passkey: Passkey,
                  itemContent: ItemContent,
-                 userId: String,
                  identifiers: [ASCredentialServiceIdentifier],
                  params: any PasskeyRequestParametersProtocol,
                  context: ASCredentialProviderExtensionContext) async throws
@@ -35,13 +34,11 @@ protocol AutoFillPasskeyUseCase: Sendable {
 extension AutoFillPasskeyUseCase {
     func callAsFunction(_ passkey: Passkey,
                         itemContent: ItemContent,
-                        userId: String,
                         identifiers: [ASCredentialServiceIdentifier],
                         params: any PasskeyRequestParametersProtocol,
                         context: ASCredentialProviderExtensionContext) async throws {
         try await execute(passkey,
                           itemContent: itemContent,
-                          userId: userId,
                           identifiers: identifiers,
                           params: params,
                           context: context)
@@ -60,7 +57,6 @@ final class AutoFillPasskey: AutoFillPasskeyUseCase {
 
     func execute(_ passkey: Passkey,
                  itemContent: ItemContent,
-                 userId: String,
                  identifiers: [ASCredentialServiceIdentifier],
                  params: any PasskeyRequestParametersProtocol,
                  context: ASCredentialProviderExtensionContext) async throws {
@@ -81,7 +77,6 @@ final class AutoFillPasskey: AutoFillPasskeyUseCase {
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: identifiers,
                                    credential: credential,
-                                   userId: userId,
                                    itemContent: itemContent,
                                    context: context)
     }

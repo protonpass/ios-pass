@@ -28,7 +28,6 @@ protocol CompleteAutoFillUseCase: Sendable {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: any ASAuthorizationCredential,
-                 userId: String,
                  itemContent: ItemContent,
                  context: ASCredentialProviderExtensionContext) async throws
 }
@@ -37,13 +36,11 @@ extension CompleteAutoFillUseCase {
     func callAsFunction(quickTypeBar: Bool,
                         identifiers: [ASCredentialServiceIdentifier],
                         credential: any ASAuthorizationCredential,
-                        userId: String,
                         itemContent: ItemContent,
                         context: ASCredentialProviderExtensionContext) async throws {
         try await execute(quickTypeBar: quickTypeBar,
                           identifiers: identifiers,
                           credential: credential,
-                          userId: userId,
                           itemContent: itemContent,
                           context: context)
     }
@@ -82,7 +79,6 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     func execute(quickTypeBar: Bool,
                  identifiers: [ASCredentialServiceIdentifier],
                  credential: any ASAuthorizationCredential,
-                 userId: String,
                  itemContent: ItemContent,
                  context: ASCredentialProviderExtensionContext) async throws {
         defer {
@@ -103,7 +99,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             try await copyTotpTokenAndNotify(itemContent: itemContent)
             let completion: (Bool) -> Void = { [weak self] _ in
                 guard let self else { return }
-                update(userId: userId, item: itemContent, identifiers: identifiers)
+                update(userId: itemContent.userId, item: itemContent, identifiers: identifiers)
             }
 
             if let passwordCredential = credential as? ASPasswordCredential {

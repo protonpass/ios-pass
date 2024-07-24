@@ -54,15 +54,6 @@ final class PaymentsManager {
          bugAlertHandler: BugAlertHandler = nil) {
         inMemoryTokenStorage = InMemoryTokenStorage()
         self.storage = storage
-//        let userId = userManager.activeUserId
-//        let apiService = try? apiManager.getApiService(userId: userId)
-//
-//        payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
-//                            apiService: apiManager.apiService,
-//                            localStorage: persistentDataStorage,
-//                            reportBugAlertHandler: bugAlertHandler)
-//        payments.storeKitManager.delegate = self
-//        initializePaymentsStack()
     }
 
     func createPaymentsUI() -> PaymentsUI? {
