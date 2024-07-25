@@ -47,8 +47,7 @@ final class PaymentsManager {
     private let theme = resolve(\SharedToolingContainer.theme)
     private let inMemoryTokenStorage: any PaymentTokenStorage
     private let storage: UserDefaults
-    // swiftlint:disable:next todo
-    // TODO: should we provide the actual BugAlertHandler?
+
     init(storage: UserDefaults) {
         inMemoryTokenStorage = InMemoryTokenStorage()
         self.storage = storage

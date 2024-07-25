@@ -37,7 +37,7 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     func syncEventLoopDidStopLooping()
 
     /// Called at the beginning of every sync loop.
-    func syncEventLoopDidBeginNewLoop()
+    func syncEventLoopDidBeginNewLoop(userId: String)
 
     /// Called when a loop is skipped
     /// - Parameters:
@@ -48,32 +48,32 @@ public protocol SyncEventLoopDelegate: AnyObject, Sendable {
     /// - Parameters:
     ///   - hasNewEvents: whether there are new events like items being updated or deleted.
     /// Client should rely on this boolean to act accordingly like refreshing the item list.
-    func syncEventLoopDidFinishLoop(hasNewEvents: Bool)
+    func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool)
 
     /// Called when a sync loop is failed.
     /// - Parameters:
     ///   - error: Occured error
-    func syncEventLoopDidFailLoop(error: any Error)
+    func syncEventLoopDidFailLoop(userId: String, error: any Error)
 
     /// Called when an additional task is started to be executed
     /// - Parameters:
     ///  - label: the uniquely identifiable label of the failed task
-    func syncEventLoopDidBeginExecutingAdditionalTask(label: String)
+    func syncEventLoopDidBeginExecutingAdditionalTask(userId: String, label: String)
 
     /// Called when an additional task is executed successfully
     /// - Parameters:
-    func syncEventLoopDidFinishAdditionalTask(label: String)
+    func syncEventLoopDidFinishAdditionalTask(userId: String, label: String)
 
     /// Called when an additional task is failed
     /// - Parameters:
     ///  - label: the uniquely identifiable label of the failed task.
     ///  - error: the underlying error
-    func syncEventLoopDidFailedAdditionalTask(label: String, error: any Error)
+    func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error)
 }
 
 public enum SyncEventLoopSkipReason {
     case noInternetConnection
-    case previousLoopNotFinished
+    case previousLoopNotFinished(userId: String)
     case backOff
 }
 
@@ -128,7 +128,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     public weak var delegate: (any SyncEventLoopDelegate)?
     public weak var pullToRefreshDelegate: (any SyncEventLoopPullToRefreshDelegate)?
 
-    private let queue = DispatchQueue(label: "com.syncEventLoop.queue")
+    private let queue = DispatchQueue(label: "me.proton.pass.synceventloop")
 
     public init(currentDateProvider: any CurrentDateProviderProtocol,
                 synchronizer: any EventSynchronizerProtocol,
@@ -228,7 +228,7 @@ private extension SyncEventLoop {
 
         for userData in userManager.allUserAccounts.value {
             if activeTasks[userData.user.ID] != nil {
-                delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished)
+                delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished(userId: userData.user.ID))
             } else {
                 activeTasks[userData.user.ID] = Task { @MainActor [weak self] in
                     guard let self else { return }
@@ -251,7 +251,7 @@ private extension SyncEventLoop {
 
     func executeEventSync(currentUserId: String) async {
         do {
-            delegate?.syncEventLoopDidBeginNewLoop()
+            delegate?.syncEventLoopDidBeginNewLoop(userId: currentUserId)
             if Task.isCancelled { return }
 
             let hasNewEvents = try await synchronizer.sync(userId: currentUserId)
@@ -260,21 +260,22 @@ private extension SyncEventLoop {
             if let userId = userManager.activeUserId, userId == currentUserId {
                 for task in additionalTasks {
                     do {
-                        delegate?.syncEventLoopDidBeginExecutingAdditionalTask(label: task.label)
+                        delegate?.syncEventLoopDidBeginExecutingAdditionalTask(userId: userId, label: task.label)
                         if Task.isCancelled { return }
                         try await task()
-                        delegate?.syncEventLoopDidFinishAdditionalTask(label: task.label)
+                        delegate?.syncEventLoopDidFinishAdditionalTask(userId: userId, label: task.label)
                     } catch {
-                        delegate?.syncEventLoopDidFailedAdditionalTask(label: task.label, error: error)
+                        delegate?.syncEventLoopDidFailedAdditionalTask(userId: userId, label: task.label,
+                                                                       error: error)
                     }
                 }
             }
 
-            delegate?.syncEventLoopDidFinishLoop(hasNewEvents: hasNewEvents)
+            delegate?.syncEventLoopDidFinishLoop(userId: currentUserId, hasNewEvents: hasNewEvents)
             await backOffManager.recordSuccess()
         } catch {
             logger.error(error)
-            delegate?.syncEventLoopDidFailLoop(error: error)
+            delegate?.syncEventLoopDidFailLoop(userId: currentUserId, error: error)
             if let responseError = error as? ResponseError,
                let httpCode = responseError.httpCode,
                (500...599).contains(httpCode) {

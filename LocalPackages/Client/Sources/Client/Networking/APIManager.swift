@@ -41,6 +41,19 @@ public enum APIManagerError: Error {
 private struct APIManagerElements {
     let apiService: any APIService
     let humanVerification: any HumanVerifyDelegate
+    var isAuthenticated: Bool
+
+    func copy(isAuthenticated: Bool) -> APIManagerElements {
+        APIManagerElements(apiService: apiService,
+                           humanVerification: humanVerification,
+                           isAuthenticated: isAuthenticated)
+    }
+}
+
+private extension [APIManagerElements] {
+    var unauthApiService: (any APIService)? {
+        first(where: { !$0.isAuthenticated })?.apiService
+    }
 }
 
 public final class APIManager: Sendable, APIManagerProtocol {
@@ -97,7 +110,8 @@ public final class APIManager: Sendable, APIManagerProtocol {
             newApiService.loggingDelegate = self
             newApiService.forceUpgradeDelegate = forceUpgradeHelper
             allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
-                                                            humanVerification: humanHelper))
+                                                            humanVerification: humanHelper,
+                                                            isAuthenticated: true))
         }
 
         if allCurrentApiServices.isEmpty {
@@ -115,7 +129,8 @@ public final class APIManager: Sendable, APIManagerProtocol {
             newApiService.loggingDelegate = self
             newApiService.forceUpgradeDelegate = forceUpgradeHelper
             allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
-                                                            humanVerification: humanHelper))
+                                                            humanVerification: humanHelper,
+                                                            isAuthenticated: false))
             fetchUnauthSessionIfNeeded(apiService: newApiService)
         }
 
@@ -128,6 +143,9 @@ public final class APIManager: Sendable, APIManagerProtocol {
 
     @discardableResult
     public func createNewApiService() -> any APIService {
+        if let unauthApiService = allCurrentApiServices.unauthApiService {
+            return unauthApiService
+        }
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                           challenge: .init())
         let newApiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
@@ -147,7 +165,9 @@ public final class APIManager: Sendable, APIManagerProtocol {
         newApiService.humanDelegate = humanHelper
         newApiService.loggingDelegate = self
         newApiService.forceUpgradeDelegate = forceUpgradeHelper
-        allCurrentApiServices.append(APIManagerElements(apiService: newApiService, humanVerification: humanHelper))
+        allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
+                                                        humanVerification: humanHelper,
+                                                        isAuthenticated: false))
 
         fetchUnauthSessionIfNeeded(apiService: newApiService)
 
@@ -155,12 +175,21 @@ public final class APIManager: Sendable, APIManagerProtocol {
     }
 
     public func getApiService(userId: String) throws -> any APIService {
-        guard let credentials = authManager.getCredential(userId: userId),
-              let service = allCurrentApiServices
-              .first(where: { $0.apiService.sessionUID == credentials.sessionID }) else {
-            throw APIManagerError.noApiServiceLinkedToUserId
+        if let credentials = authManager.getCredential(userId: userId),
+           let service = allCurrentApiServices
+           .first(where: { $0.apiService.sessionUID == credentials.sessionID }) {
+            return service.apiService
+        } else if let unauthApiService = allCurrentApiServices.unauthApiService {
+            return unauthApiService
         }
-        return service.apiService
+
+        throw APIManagerError.noApiServiceLinkedToUserId
+//        guard let credentials = authManager.getCredential(userId: userId),
+//              let service = allCurrentApiServices
+//              .first(where: { $0.apiService.sessionUID == credentials.sessionID }) else {
+//            throw APIManagerError.noApiServiceLinkedToUserId
+//        }
+//        return service.apiService
     }
 
     public func reset() {
@@ -216,13 +245,6 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        // swiftlint:disable:next todo
-        // TODO: I the futur when we have multiple api services should remove the api services link to session id/ user id
-        // if no more apiservice we should recreate a new one and execute fetchUnauthSessionIfNeeded on it as
-
-        // For now the switch of session id should be done by calling updateCurrentSession with user id through the
-        // logout user process
-
         allCurrentApiServices = allCurrentApiServices.filter { $0.apiService.sessionUID != sessionUID }
         if allCurrentApiServices.isEmpty {
             createNewApiService()
@@ -238,6 +260,14 @@ extension APIManager: AuthHelperDelegate {
     public func credentialsWereUpdated(authCredential: AuthCredential,
                                        credential: Credential,
                                        for sessionUID: String) {
+        allCurrentApiServices = allCurrentApiServices.map { element in
+            guard element.apiService.sessionUID == sessionUID else {
+                return element
+            }
+
+            return element.copy(isAuthenticated: !authCredential.isForUnauthenticatedSession)
+        }
+
         logger.info("Session credentials are updated")
     }
 }

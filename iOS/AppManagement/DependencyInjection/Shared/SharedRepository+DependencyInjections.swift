@@ -70,23 +70,17 @@ private extension SharedRepositoryContainer {
     var keychain: any KeychainProtocol {
         SharedToolingContainer.shared.keychain()
     }
-
-    var corruptedSessionEventStream: CorruptedSessionEventStream {
-        SharedDataStreamContainer.shared.corruptedSessionEventStream()
-    }
 }
 
 // MARK: Datasources
 
 extension SharedRepositoryContainer {
     var remoteAliasDatasource: Factory<any RemoteAliasDatasourceProtocol> {
-        self { RemoteAliasDatasource(apiServicing: self.apiManager,
-                                     eventStream: self.corruptedSessionEventStream) }
+        self { RemoteAliasDatasource(apiServicing: self.apiManager) }
     }
 
     var remoteShareKeyDatasource: Factory<any RemoteShareKeyDatasourceProtocol> {
-        self { RemoteShareKeyDatasource(apiServicing: self.apiManager,
-                                        eventStream: self.corruptedSessionEventStream) }
+        self { RemoteShareKeyDatasource(apiServicing: self.apiManager) }
     }
 
     var localShareEventIDDatasource: Factory<any LocalShareEventIDDatasourceProtocol> {
@@ -94,13 +88,11 @@ extension SharedRepositoryContainer {
     }
 
     var remoteShareEventIDDatasource: Factory<any RemoteShareEventIDDatasourceProtocol> {
-        self { RemoteShareEventIDDatasource(apiServicing: self.apiManager,
-                                            eventStream: self.corruptedSessionEventStream) }
+        self { RemoteShareEventIDDatasource(apiServicing: self.apiManager) }
     }
 
     var remoteItemKeyDatasource: Factory<any RemoteItemKeyDatasourceProtocol> {
-        self { RemoteItemKeyDatasource(apiServicing: self.apiManager,
-                                       eventStream: self.corruptedSessionEventStream) }
+        self { RemoteItemKeyDatasource(apiServicing: self.apiManager) }
     }
 
     var localItemDatasource: Factory<any LocalItemDatasourceProtocol> {
@@ -108,8 +100,7 @@ extension SharedRepositoryContainer {
     }
 
     var remoteItemDatasource: Factory<any RemoteItemDatasourceProtocol> {
-        self { RemoteItemDatasource(apiServicing: self.apiManager,
-                                    eventStream: self.corruptedSessionEventStream) }
+        self { RemoteItemDatasource(apiServicing: self.apiManager) }
     }
 
     var localAccessDatasource: Factory<any LocalAccessDatasourceProtocol> {
@@ -117,13 +108,11 @@ extension SharedRepositoryContainer {
     }
 
     var remoteAccessDatasource: Factory<any RemoteAccessDatasourceProtocol> {
-        self { RemoteAccessDatasource(apiServicing: self.apiManager,
-                                      eventStream: self.corruptedSessionEventStream) }
+        self { RemoteAccessDatasource(apiServicing: self.apiManager) }
     }
 
     var remoteAccountDatasource: Factory<any RemoteAccountDatasourceProtocol> {
-        self { RemoteAccountDatasource(apiServicing: self.apiManager,
-                                       eventStream: self.corruptedSessionEventStream) }
+        self { RemoteAccountDatasource(apiServicing: self.apiManager) }
     }
 
     var localShareDatasource: Factory<any LocalShareDatasourceProtocol> {
@@ -131,8 +120,7 @@ extension SharedRepositoryContainer {
     }
 
     var remoteShareDatasource: Factory<any RemoteShareDatasourceProtocol> {
-        self { RemoteShareDatasource(apiServicing: self.apiManager,
-                                     eventStream: self.corruptedSessionEventStream) }
+        self { RemoteShareDatasource(apiServicing: self.apiManager) }
     }
 
     var localPublicKeyDatasource: Factory<any LocalPublicKeyDatasourceProtocol> {
@@ -140,13 +128,11 @@ extension SharedRepositoryContainer {
     }
 
     var remotePublicKeyDatasource: Factory<any RemotePublicKeyDatasourceProtocol> {
-        self { RemotePublicKeyDatasource(apiServicing: self.apiManager,
-                                         eventStream: self.corruptedSessionEventStream) }
+        self { RemotePublicKeyDatasource(apiServicing: self.apiManager) }
     }
 
     var remoteShareInviteDatasource: Factory<any RemoteShareInviteDatasourceProtocol> {
-        self { RemoteShareInviteDatasource(apiServicing: self.apiManager,
-                                           eventStream: self.corruptedSessionEventStream) }
+        self { RemoteShareInviteDatasource(apiServicing: self.apiManager) }
     }
 
     var localTelemetryEventDatasource: Factory<any LocalTelemetryEventDatasourceProtocol> {
@@ -154,8 +140,7 @@ extension SharedRepositoryContainer {
     }
 
     var remoteTelemetryEventDatasource: Factory<any RemoteTelemetryEventDatasourceProtocol> {
-        self { RemoteTelemetryEventDatasource(apiServicing: self.apiManager,
-                                              eventStream: self.corruptedSessionEventStream) }
+        self { RemoteTelemetryEventDatasource(apiServicing: self.apiManager) }
     }
 
     var telemetryScheduler: Factory<any TelemetrySchedulerProtocol> {
@@ -164,8 +149,7 @@ extension SharedRepositoryContainer {
     }
 
     var remoteFavIconDatasource: Factory<any RemoteFavIconDatasourceProtocol> {
-        self { RemoteFavIconDatasource(apiServicing: self.apiManager,
-                                       eventStream: self.corruptedSessionEventStream) }
+        self { RemoteFavIconDatasource(apiServicing: self.apiManager) }
     }
 
     var localOrganizationDatasource: Factory<any LocalOrganizationDatasourceProtocol> {
@@ -173,13 +157,11 @@ extension SharedRepositoryContainer {
     }
 
     var remoteOrganizationDatasource: Factory<any RemoteOrganizationDatasourceProtocol> {
-        self { RemoteOrganizationDatasource(apiServicing: self.apiManager,
-                                            eventStream: self.corruptedSessionEventStream) }
+        self { RemoteOrganizationDatasource(apiServicing: self.apiManager) }
     }
 
     var remoteBreachDataSource: Factory<any RemoteBreachDataSourceProtocol> {
-        self { RemoteBreachDataSource(apiServicing: self.apiManager,
-                                      eventStream: self.corruptedSessionEventStream) }
+        self { RemoteBreachDataSource(apiServicing: self.apiManager) }
     }
 
     var localItemReadEventDatasource: Factory<any LocalItemReadEventDatasourceProtocol> {
@@ -187,8 +169,7 @@ extension SharedRepositoryContainer {
     }
 
     var remoteItemReadEventDatasource: Factory<any RemoteItemReadEventDatasourceProtocol> {
-        self { RemoteItemReadEventDatasource(apiServicing: self.apiManager,
-                                             eventStream: self.corruptedSessionEventStream) }
+        self { RemoteItemReadEventDatasource(apiServicing: self.apiManager) }
     }
 
     var localShareKeyDatasource: Factory<any LocalShareKeyDatasourceProtocol> {
@@ -214,8 +195,7 @@ extension SharedRepositoryContainer {
     }
 
     var remoteSecureLinkDatasource: Factory<any RemoteSecureLinkDatasourceProtocol> {
-        self { RemoteSecureLinkDatasource(apiServicing: self.apiManager,
-                                          eventStream: self.corruptedSessionEventStream) }
+        self { RemoteSecureLinkDatasource(apiServicing: self.apiManager) }
     }
 
     var localUserDataDatasource: Factory<any LocalUserDataDatasourceProtocol> {
@@ -233,8 +213,7 @@ extension SharedRepositoryContainer {
 
 extension SharedRepositoryContainer {
     var remoteUserSettingsDatasource: Factory<any RemoteUserSettingsDatasourceProtocol> {
-        self { RemoteUserSettingsDatasource(apiServicing: self.apiManager,
-                                            eventStream: self.corruptedSessionEventStream) }
+        self { RemoteUserSettingsDatasource(apiServicing: self.apiManager) }
     }
 
     var aliasRepository: Factory<any AliasRepositoryProtocol> {
@@ -353,8 +332,7 @@ extension SharedRepositoryContainer {
     }
 
     var remoteSyncEventsDatasource: Factory<any RemoteSyncEventsDatasourceProtocol> {
-        self { RemoteSyncEventsDatasource(apiServicing: self.apiManager,
-                                          eventStream: self.corruptedSessionEventStream) }
+        self { RemoteSyncEventsDatasource(apiServicing: self.apiManager) }
     }
 
     var userSettingsRepository: Factory<any UserSettingsRepositoryProtocol> {
