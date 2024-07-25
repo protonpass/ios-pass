@@ -34,7 +34,7 @@ public extension AddAndSwitchToNewUserAccountUseCase {
 }
 
 public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUseCase {
-    private let syncEventLoop: any SyncEventLoopActionProtocol
+    private let syncEventLoop: any SyncEventLoopProtocol
     private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let preferencesManager: any PreferencesManagerProtocol
@@ -42,7 +42,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
     private let fullVaultsSync: any FullVaultsSyncUseCase
     private let refreshFeatureFlags: any RefreshFeatureFlagsUseCase
 
-    public init(syncEventLoop: any SyncEventLoopActionProtocol,
+    public init(syncEventLoop: any SyncEventLoopProtocol,
                 userManager: any UserManagerProtocol,
                 authManager: any AuthManagerProtocol,
                 preferencesManager: any PreferencesManagerProtocol,
