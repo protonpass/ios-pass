@@ -274,6 +274,7 @@ private extension HomepageCoordinator {
             do {
                 let userId = try await userManager.getActiveUserId()
                 try await vaultsManager.asyncRefresh(userId: userId)
+                eventLoop.forceSync()
                 eventLoop.start()
             } catch {
                 logger.error(error)
