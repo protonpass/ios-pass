@@ -42,8 +42,7 @@ final class RemoteFavIconDatasourceTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-        sut = RemoteFavIconDatasource(apiServicing: APIManagerProtocolMock(),
-                                      eventStream: .init())
+        sut = RemoteFavIconDatasource(apiServicing: APIManagerProtocolMock())
     }
 
     override func tearDown() {
