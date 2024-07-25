@@ -47,7 +47,6 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
 
     init(itemRepository: any ItemRepositoryProtocol,
          userManager: any UserManagerProtocol,
-
          createPasskey: any CreatePasskeyUseCase,
          updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase,
          completePasskeyRegistration: any CompletePasskeyRegistrationUseCase) {
