@@ -49,8 +49,13 @@ enum AppDataKey: String {
 extension UserData: @unchecked Sendable {}
 
 final class AppData: AppDataProtocol {
+    /// Can be removed after july 2025
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
+
+    /// Can be removed after july 2025
+    @LockedKeychainStorage(key: AppDataKey.mainCredential, defaultValue: nil)
+    private var mainCredential: AuthCredential?
 
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
@@ -72,6 +77,10 @@ final class AppData: AppDataProtocol {
 
     func getUserData() -> UserData? {
         userData
+    }
+
+    func getMainCredential() -> AuthCredential? {
+        mainCredential
     }
 
     func resetData() {
