@@ -180,8 +180,12 @@ final class AppCoordinator {
                         guard let self, let userId = sessionInfos.userId else { return }
                         defer { task = nil }
                         do {
+                            let userData = try await userManager.getUserData(userId)
                             if try await logOutUser(userId: userId) {
                                 appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
+                            } else if let email = userData?.user.email {
+                                alert(title: #localized("Session expired"),
+                                      message: #localized("You're logged out from %@", email))
                             }
                             sendMessageToSentry("Invalidated session",
                                                 userId: userId,
@@ -319,11 +323,15 @@ private extension AppCoordinator {
 }
 
 private extension AppCoordinator {
-    /// Show an alert with a single "OK" button that does nothing
+    /// Show an alert with a single "OK" button that dismisses all current sheets
     func alert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(.init(title: #localized("OK"), style: .default))
-        rootViewController?.present(alert, animated: true)
+        let okAction = UIAlertAction(title: #localized("OK"), style: .default) { [weak self] _ in
+            guard let self else { return }
+            rootViewController?.dismiss(animated: true)
+        }
+        alert.addAction(okAction)
+        rootViewController?.topMostViewController.present(alert, animated: true)
     }
 
     func handle(logOutReason: LogOutReason) {
