@@ -1693,8 +1693,8 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Stopped looping")
     }
 
-    nonisolated func syncEventLoopDidBeginNewLoop() {
-        logger.info("Began new sync loop")
+    nonisolated func syncEventLoopDidBeginNewLoop(userId: String) {
+        logger.info("Began new sync loop for userId \(userId)")
     }
 
     #warning("Handle no connection reason")
@@ -1702,9 +1702,9 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Skipped sync loop \(reason)")
     }
 
-    nonisolated func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+    nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {
         if hasNewEvents {
-            logger.info("Has new events. Refreshing items")
+            logger.info("Has new events. Refreshing items for userId \(userId)")
             Task { [weak self] in
                 guard let self else {
                     return
@@ -1712,25 +1712,25 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
                 await refresh()
             }
         } else {
-            logger.info("Has no new events. Do nothing.")
+            logger.info("Has no new events for userId \(userId). Do nothing.")
         }
     }
 
-    nonisolated func syncEventLoopDidFailLoop(error: any Error) {
+    nonisolated func syncEventLoopDidFailLoop(userId: String, error: any Error) {
         // Silently fail & not show error to users
         logger.error(error)
     }
 
-    nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(label: String) {
-        logger.trace("Began executing additional task \(label)")
+    nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(userId: String, label: String) {
+        logger.trace("Began executing additional task \(label) for userId \(userId)")
     }
 
-    nonisolated func syncEventLoopDidFinishAdditionalTask(label: String) {
-        logger.info("Finished executing additional task \(label)")
+    nonisolated func syncEventLoopDidFinishAdditionalTask(userId: String, label: String) {
+        logger.info("Finished executing additional task \(label) for userId \(userId)")
     }
 
-    nonisolated func syncEventLoopDidFailedAdditionalTask(label: String, error: any Error) {
-        logger.error(message: "Failed to execute additional task \(label)", error: error)
+    nonisolated func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error) {
+        logger.error(message: "Failed to execute additional task \(label) for userId \(userId)", error: error)
     }
 }
 

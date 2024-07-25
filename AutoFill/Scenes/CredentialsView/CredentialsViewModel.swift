@@ -280,8 +280,6 @@ private extension CredentialsViewModel {
         guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),
-            let item = try await itemRepository.getItem(shareId: item.shareId,
-                                                        itemId: item.itemId),
             let loginData = itemContent.loginItem else {
             throw PassError.itemNotFound(item)
         }
