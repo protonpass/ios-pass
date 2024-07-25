@@ -232,6 +232,7 @@ private extension SyncEventLoop {
             } else {
                 activeTasks[userData.user.ID] = Task { @MainActor [weak self] in
                     guard let self else { return }
+                    
                     defer {
                         self.activeTasks[userData.user.ID] = nil
                         self.pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
@@ -243,6 +244,7 @@ private extension SyncEventLoop {
                         return
                     }
                     await executeEventSync(currentUserId: userData.user.ID)
+                    
                 }
             }
         }
