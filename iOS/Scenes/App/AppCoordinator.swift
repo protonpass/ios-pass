@@ -83,6 +83,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let sendMessageToSentry = resolve(\SharedUseCasesContainer.sendMessageToSentry)
 
     private var task: Task<Void, Never>?
 
@@ -180,13 +181,15 @@ final class AppCoordinator {
                         defer { task = nil }
                         do {
                             if try await logOutUser(userId: userId) {
-                                captureErrorAndLogOut(PassError.unexpectedLogout,
-                                                      sessionId: sessionInfos.sessionId)
-                            } else {
-                                sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
+                                appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
                             }
+                            sendMessageToSentry("Invalidated session",
+                                                userId: userId,
+                                                sessionId: sessionInfos.sessionId)
                         } catch {
-                            sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
+                            sendErrorToSentry(error,
+                                              userId: userId,
+                                              sessionId: sessionInfos.sessionId)
                         }
                     }
                 }
@@ -251,29 +254,25 @@ private extension AppCoordinator {
     }
 
     func showExtraPasswordLockScreen(_ userData: UserData) {
-        do {
-            let onSuccess: () -> Void = { [weak self] in
-                guard let self else { return }
-                appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
-            }
-
-            let onFailure: () -> Void = { [weak self] in
-                guard let self else { return }
-                appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
-            }
-
-            let username = userData.credential.userName
-            let view = ExtraPasswordLockView(apiServicing: apiManager,
-                                             email: userData.user.email ?? username,
-                                             username: username,
-                                             userId: userData.user.ID,
-                                             onSuccess: onSuccess,
-                                             onFailure: onFailure)
-            let viewController = UIHostingController(rootView: view)
-            animateUpdateRootViewController(viewController)
-        } catch {
-            logger.error(error)
+        let onSuccess: () -> Void = { [weak self] in
+            guard let self else { return }
+            appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
         }
+
+        let onFailure: () -> Void = { [weak self] in
+            guard let self else { return }
+            appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
+        }
+
+        let username = userData.credential.userName
+        let view = ExtraPasswordLockView(apiServicing: apiManager,
+                                         email: userData.user.email ?? username,
+                                         username: username,
+                                         userId: userData.user.ID,
+                                         onSuccess: onSuccess,
+                                         onFailure: onFailure)
+        let viewController = UIHostingController(rootView: view)
+        animateUpdateRootViewController(viewController)
     }
 
     func animateUpdateRootViewController(_ newRootViewController: UIViewController,
@@ -343,11 +342,6 @@ private extension AppCoordinator {
         default:
             break
         }
-    }
-
-    func captureErrorAndLogOut(_ error: any Error, sessionId: String) {
-        sendErrorToSentry(error, sessionId: sessionId)
-        appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
     }
 }
 
