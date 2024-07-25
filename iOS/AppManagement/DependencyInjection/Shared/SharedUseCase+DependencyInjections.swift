@@ -77,6 +77,10 @@ private extension SharedUseCasesContainer {
         SharedToolingContainer.shared.apiManager()
     }
 
+    var authManager: any AuthManagerProtocol {
+        SharedToolingContainer.shared.authManager()
+    }
+
     var syncEventLoop: any SyncEventLoopProtocol {
         SharedServiceContainer.shared.syncEventLoop()
     }
@@ -281,8 +285,8 @@ extension SharedUseCasesContainer {
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
                        vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                       apiManager: SharedToolingContainer.shared.apiManager(),
-                       authManager: SharedToolingContainer.shared.authManager(),
+                       apiManager: self.apiManager,
+                       authManager: self.authManager,
                        credentialManager: SharedServiceContainer.shared.credentialManager(),
                        switchUser: self.switchUser())
         }
@@ -460,6 +464,7 @@ extension SharedUseCasesContainer {
         self { ApplyAppMigration(dataMigrationManager: SharedServiceContainer.shared.dataMigrationManager(),
                                  userManager: self.userManager,
                                  appData: SharedDataContainer.shared.appData(),
+                                 authManager: self.authManager,
                                  itemDatasource: SharedRepositoryContainer.shared.localItemDatasource(),
                                  searchEntryDatasource: SharedRepositoryContainer.shared
                                      .localSearchEntryDatasource(),
