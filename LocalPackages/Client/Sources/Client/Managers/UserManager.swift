@@ -55,6 +55,10 @@ public extension UserManagerProtocol {
         }
         return userData
     }
+
+    func getUserData(_ userId: String) async throws -> UserData? {
+        try await getAllUsers().first(where: { $0.user.ID == userId })
+    }
 }
 
 public actor UserManager: UserManagerProtocol {
