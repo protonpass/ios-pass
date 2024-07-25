@@ -68,4 +68,18 @@ public final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoop
         invokedStopCount += 1
         closureStop()
     }
+    // MARK: - addAdditionalTask
+    public var closureAddAdditionalTask: () -> () = {}
+    public var invokedAddAdditionalTaskfunction = false
+    public var invokedAddAdditionalTaskCount = 0
+    public var invokedAddAdditionalTaskParameters: (task: SyncEventLoop.AdditionalTask, Void)?
+    public var invokedAddAdditionalTaskParametersList = [(task: SyncEventLoop.AdditionalTask, Void)]()
+
+    public func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask) {
+        invokedAddAdditionalTaskfunction = true
+        invokedAddAdditionalTaskCount += 1
+        invokedAddAdditionalTaskParameters = (task, ())
+        invokedAddAdditionalTaskParametersList.append((task, ()))
+        closureAddAdditionalTask()
+    }
 }

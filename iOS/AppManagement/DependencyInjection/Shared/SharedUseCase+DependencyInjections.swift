@@ -77,7 +77,7 @@ private extension SharedUseCasesContainer {
         SharedToolingContainer.shared.apiManager()
     }
 
-    var syncEventLoop: any SyncEventLoopActionProtocol {
+    var syncEventLoop: any SyncEventLoopProtocol {
         SharedServiceContainer.shared.syncEventLoop()
     }
 }
