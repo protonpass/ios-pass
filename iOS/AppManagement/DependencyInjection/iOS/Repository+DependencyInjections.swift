@@ -41,10 +41,6 @@ private extension RepositoryContainer {
         SharedToolingContainer.shared.apiManager()
     }
 
-    var corruptedSessionEventStream: CorruptedSessionEventStream {
-        SharedDataStreamContainer.shared.corruptedSessionEventStream()
-    }
-
     var logManager: any LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
@@ -56,8 +52,7 @@ private extension RepositoryContainer {
 
 private extension RepositoryContainer {
     var remoteInviteDatasource: Factory<any RemoteInviteDatasourceProtocol> {
-        self { RemoteInviteDatasource(apiServicing: self.apiManager,
-                                      eventStream: self.corruptedSessionEventStream) }
+        self { RemoteInviteDatasource(apiServicing: self.apiManager) }
     }
 }
 

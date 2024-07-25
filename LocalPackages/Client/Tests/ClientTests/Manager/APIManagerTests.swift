@@ -135,7 +135,7 @@ final class APIManagerTests: XCTestCase {
         super.tearDown()
     }
 
-    let unauthSessionCredentials =  Credential(UID: "test_session_id",
+    let unauthSessionCredentials =  Credential(UID: "",
                                                accessToken: "test_access_token_unauth",
                                                refreshToken: "test_refresh_token_unauth",
                                                userName: "",
@@ -177,264 +177,128 @@ final class APIManagerTests: XCTestCase {
         scopes: ["test_scope"]
     )
 
-//    func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() async {
-//        sut = APIManager(authManager: authManager,
-//                         userManager: userManager,
-//                         themeProvider: ThemeProviderMock(),
-//                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
-//                         doh: ProtonPassDoHMock(),
-//                         logManager: LogManagerProtocolMock())
-//
-//        // THEN
-//        XCTAssertEqual(sut.apiService.sessionUID, .empty)
-//    }
-
-//    func testAPIServiceIsCreatedWithSessionIfUnauthSessionIsPersisted() async throws {
-//        sut = APIManager(authManager: authManager,
-//                         userManager: userManager,
-//                         themeProvider: ThemeProviderMock(),
-//                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
-//                         doh: ProtonPassDoHMock(),
-//                         logManager: LogManagerProtocolMock())
-//        
-//        authManager.onSessionObtaining(credential: unauthSessionCredentials)
-//       
-//        let apiService = try sut.getApiService(userId: unauthSessionCredentials.userID)
-//        let credential = authManager.credential(sessionUID: apiService.sessionUID)
-//
-//        // THEN
-//        XCTAssertEqual(apiService.sessionUID, "test_session_id")
-//        XCTAssertEqual(credential, unauthSessionCredentials)
-//    }
-
-    func testAPIServiceIsCreatedWithSessionIfAuthSessionIsPersisted() async throws {
-        // GIVEN
-        try await userManager.setUp()
-        authManager.onSessionObtaining(credential: Credential(userData.credential))
-        try await userManager.addAndMarkAsActive(userData: userData)
-        stubbedCurrentActiveUser = .init(userData)
-        userManager.stubbedGetActiveUserIdResult = userData.user.ID
-        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
-
-        // WHEN
+    func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() throws {
         sut = APIManager(authManager: authManager,
                          userManager: userManager,
                          themeProvider: ThemeProviderMock(),
                          appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                          doh: ProtonPassDoHMock(),
                          logManager: LogManagerProtocolMock())
+       
+        let credentials = authManager.getAllCurrentCredentials()
 
-        let apiService = try sut.getApiService(userId: userData.user.ID)
-
-        let credential = authManager.credential(sessionUID: apiService.sessionUID)
         // THEN
-        XCTAssertEqual(apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(credential, Credential(userData.credential))
+        XCTAssertTrue(credentials.isEmpty)
     }
-
-    func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForUnauthSession() async throws {
-        // GIVEN
-        try await userManager.setUp()
-        authManager.onSessionObtaining(credential: Credential(userData.credential))
-        try await userManager.addAndMarkAsActive(userData: userData)
-        stubbedCurrentActiveUser = .init(userData)
-        userManager.stubbedGetActiveUserIdResult = userData.user.ID
-        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
-
-        // WHEN
+    
+    func testApiManger_ShouldCreateNewUnauthAPIService_ShouldSucceed() {
+        // Given
         sut = APIManager(authManager: authManager,
                          userManager: userManager,
                          themeProvider: ThemeProviderMock(),
                          appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                          doh: ProtonPassDoHMock(),
                          logManager: LogManagerProtocolMock())
+        
+        let apiService = sut.createNewApiService()
+        
+        // Then
+        XCTAssertTrue(apiService.sessionUID.isEmpty)
+        XCTAssertTrue(apiService.authDelegate?.credential(sessionUID: apiService.sessionUID) == nil)
 
-        authManager.onUpdate(credential: unauthSessionCredentials,
-                             sessionUID: userData.credential.sessionID)
-
-        let apiService = try sut.getApiService(userId: unauthSessionCredentials.userID)
-
-        let credential = authManager.credential(sessionUID: apiService.sessionUID)
-
-        // THEN
-        XCTAssertEqual(apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(credential, unauthSessionCredentials)
     }
-
-
-    func testAPIServiceUpdateCredentialsUpdatesBothAPIServiceAndStorageForAuthSession() async throws {
-        // GIVEN
-        try await userManager.setUp()
-        authManager.onSessionObtaining(credential: unauthSessionCredentials)
-        try await userManager.addAndMarkAsActive(userData: userData)
-        stubbedCurrentActiveUser = .init(userData)
-        userManager.stubbedGetActiveUserIdResult = userData.user.ID
-        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
-
-        // WHEN
-        sut = APIManager(authManager: authManager,
-                         userManager: userManager,
-                         themeProvider: ThemeProviderMock(),
-                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
-                         doh: ProtonPassDoHMock(),
-                         logManager: LogManagerProtocolMock())
-
-        authManager.onUpdate(credential: Credential(userData.credential),
-                             sessionUID: userData.credential.sessionID)
-
-        let apiService = try sut.getApiService(userId: userData.user.ID)
-
-        let credential = authManager.credential(sessionUID: apiService.sessionUID)
-
-        // THEN
-        XCTAssertEqual(apiService.sessionUID, "test_session_id")
-        XCTAssertEqual(credential, Credential(userData.credential))
-    }
-
-//    func testAPIServiceClearCredentialsClearsAPIServiceAndUnauthSessionStorage() async throws {
-//        // GIVEN
-//        try await userManager.setUp()
-//        authManager.onSessionObtaining(credential: Credential(userData.credential))
-//        try await userManager.addAndMarkAsActive(userData: userData)
-//        stubbedCurrentActiveUser = .init(userData)
-//        userManager.stubbedGetActiveUserIdResult = userData.user.ID
-//        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
-//
-//        // WHEN
-//        sut = APIManager(authManager: authManager,
-//                         userManager: userManager,
-//                         themeProvider: ThemeProviderMock(),
-//                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
-//                         doh: ProtonPassDoHMock(),
-//                         logManager: LogManagerProtocolMock())
-//
-//        authManager.onAuthenticatedSessionInvalidated(sessionUID: userData.credential.sessionID)
-//        let apiService = try sut.getApiService(userId: userData.user.ID)
-//
-//        let credential = authManager.credential(sessionUID: apiService.sessionUID)
-//        sut.reset()
-//        
-//        // THEN
-//        XCTAssertEqual(apiService.sessionUID, "")
-//        XCTAssertNil(credential)
-//    }
-
-//    func testAPIServiceUnauthSessionInvalidationClearsCredentials() async throws {
-//        // GIVEN
-//        try await userManager.setUp()
-//        authManager.onSessionObtaining(credential: unauthSessionCredentials)
-//        try await userManager.addAndMarkAsActive(userData: userData)
-//        stubbedCurrentActiveUser = .init(nil)
-//
-//        // WHEN
-//        sut = APIManager(authManager: authManager,
-//                         userManager: userManager,
-//                         themeProvider: ThemeProviderMock(),
-//                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
-//                         doh: ProtonPassDoHMock(),
-//                         logManager: LogManagerProtocolMock())
-//        let apiService = try sut.getApiService(userId: unauthSessionCredentials.userID)
-//        sut.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: false)
-//        let credential = authManager.credential(sessionUID: apiService.sessionUID)
-//        XCTAssertNil(credential)
-//
-//        XCTAssertThrowsError(try sut.getApiService(userId: userData.user.ID))
-//        
-//
-//        // THEN
-////        XCTAssertEqual(sut.apiService.sessionUID, "")
-//    }
-
-//
-//    func testAPIServiceShouldAlwayGetTheLastAuthCredentialsFromKeychain() async throws {
-//
-//        try await userManager.setUp()
-//        stubbedCurrentActiveUser = .init(nil)
-//        userManager.stubbedGetActiveUserIdResult = unauthSessionCredentials.userID
-//        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
-//
-//        // WHEN
-//        sut = APIManager(authManager: authManager,
-//                         userManager: userManager,
-//                         themeProvider: ThemeProviderMock(),
-//                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
-//                         doh: ProtonPassDoHMock(),
-//                         logManager: LogManagerProtocolMock())
-//
-//        authManager.onSessionObtaining(credential: unauthSessionCredentials)
-//        let credential1 = authManager.credential(sessionUID: sut.apiService.sessionUID)
-//
-//        XCTAssertEqual(credential1, unauthSessionCredentials)
-//
-//        authManager.onSessionObtaining(credential: Credential(userData.credential))
-//
-//        let credential2 =  authManager.credential(sessionUID: sut.apiService.sessionUID)
-//
-//        // THEN
-//        XCTAssertEqual(credential2, Credential(userData.credential))
-//    }
-//
-//    func testAPIServiceAuthSessionInvalidationClearsCredentialsAndLogsOut() async throws {
-//        // GIVEN
-//        try await userManager.setUp()
-//        authManager.onSessionObtaining(credential: Credential(userData.credential))
-//        try await userManager.addAndMarkAsActive(userData: userData)
-//        stubbedCurrentActiveUser = .init(userData)
-//        userManager.stubbedGetActiveUserIdResult = userData.user.ID
-//        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
-//        
-//        // WHEN
-//        sut = APIManager(authManager: authManager,
-//                         userManager: userManager,
-//                         themeProvider: ThemeProviderMock(),
-//                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
-//                         doh: ProtonPassDoHMock(),
-//                         logManager: LogManagerProtocolMock())
-//        sut.sessionWasInvalidated(for: "test_session_id", isAuthenticatedSession: true)
-//
-////        let credential = authManager.credential(sessionUID: sut.apiService.sessionUID)
-//
-//        sut.reset()
-//        // THEN
-//        XCTAssertEqual(sut.apiService.sessionUID, "")
-////        XCTAssertNil(credential)
-//    }
-
-    func testAPIServiceAuthCredentialsUpdateSetsNewUnauthCredentials() async throws {
-        // GIVEN
-        try await userManager.setUp()
-        authManager.onSessionObtaining(credential: unauthSessionCredentials)
-        try await userManager.addAndMarkAsActive(userData: userData)
-        stubbedCurrentActiveUser = .init(nil)
-
-        sut = APIManager(authManager: authManager,
-                         userManager: userManager,
-                         themeProvider: ThemeProviderMock(),
-                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
-                         doh: ProtonPassDoHMock(),
-                         logManager: LogManagerProtocolMock())
-
-        let newUnauthCredentials = AuthCredential(sessionID: "test_session_id",
-                                                  accessToken: "new_test_access_token",
-                                                  refreshToken: "new_test_refresh_token",
-                                                  userName: "",
-                                                  userID: "",
-                                                  privateKey: nil,
-                                                  passwordKeySalt: nil)
-
-        // WHEN
-        (authManager as? AuthManager)?.onUpdate(credential: Credential(newUnauthCredentials), sessionUID: "test_session_id")
-
-        // THEN
-        guard let authCredential = authManager.authCredential(sessionUID: unauthSessionCredentials.UID) else {
-            XCTFail("Should contain authCredential")
-            return
+    
+        func  testApiManger_WhenUserAccountExist_ShouldHaveApiServiceForUser() async throws {
+            // GIVEN
+            try await userManager.setUp()
+            authManager.onSessionObtaining(credential: Credential(userData.credential))
+            try await userManager.addAndMarkAsActive(userData: userData)
+            stubbedCurrentActiveUser = .init(userData)
+            userManager.stubbedGetActiveUserIdResult = userData.user.ID
+            userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
+    
+            // WHEN
+            sut = APIManager(authManager: authManager,
+                             userManager: userManager,
+                             themeProvider: ThemeProviderMock(),
+                             appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
+                             doh: ProtonPassDoHMock(),
+                             logManager: LogManagerProtocolMock())
+    
+            let apiService = try sut.getApiService(userId: userData.user.ID)
+           
+            XCTAssertEqual(apiService.sessionUID, userData.credential.sessionID)
+            XCTAssertEqual(apiService.authDelegate?.credential(sessionUID: apiService.sessionUID), Credential(userData.credential))
         }
+    
+    func  testApiManger_WithExpiredSession_ShouldRemoveLinkedAPIService() async throws {
+        // GIVEN
+        try await userManager.setUp()
+        authManager.onSessionObtaining(credential: Credential(userData.credential))
+        authManager.onSessionObtaining(credential: Credential(UID: "test_session_id2",
+                                                              accessToken: "test_access_token2",
+                                                              refreshToken: "test_refresh_token2",
+                                                              userName: "test_user_name2",
+                                                              userID: "test_user_id2",
+                                                              scopes: [],
+                                                              mailboxPassword: ""))
 
-        XCTAssertEqual(authCredential.accessToken, newUnauthCredentials.accessToken)
-        XCTAssertEqual(authCredential.refreshToken, newUnauthCredentials.refreshToken)
-        XCTAssertEqual(authCredential.sessionID, newUnauthCredentials.sessionID)
-        XCTAssertEqual(authCredential.userName, newUnauthCredentials.userName)
-        XCTAssertEqual(authCredential.userID, newUnauthCredentials.userID)
+        try await userManager.addAndMarkAsActive(userData: userData)
+        stubbedCurrentActiveUser = .init(userData)
+        userManager.stubbedGetActiveUserIdResult = userData.user.ID
+        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
+
+        // WHEN
+        sut = APIManager(authManager: authManager,
+                         userManager: userManager,
+                         themeProvider: ThemeProviderMock(),
+                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
+                         doh: ProtonPassDoHMock(),
+                         logManager: LogManagerProtocolMock())
+
+        let apiService = try sut.getApiService(userId: userData.user.ID)
+       
+        XCTAssertEqual(apiService.sessionUID, userData.credential.sessionID)
+        XCTAssertEqual(apiService.authDelegate?.credential(sessionUID: apiService.sessionUID), Credential(userData.credential))
+        
+        authManager.onAuthenticatedSessionInvalidated(sessionUID: userData.credential.sessionID)
+        
+        XCTAssertThrowsError(
+            try sut.getApiService(userId: userData.user.ID)
+          ) { error in
+              XCTAssertEqual(
+                  error as? APIManagerError, .noApiServiceLinkedToUserId
+              )
+          }
+    }
+    
+    
+    func testApiManger_WithLastSessionExpire_ShouldCreateANewUnauthSession() async throws {
+        // GIVEN
+        try await userManager.setUp()
+        authManager.onSessionObtaining(credential: Credential(userData.credential))
+        try await userManager.addAndMarkAsActive(userData: userData)
+        stubbedCurrentActiveUser = .init(userData)
+        userManager.stubbedGetActiveUserIdResult = userData.user.ID
+        userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
+
+        // WHEN
+        sut = APIManager(authManager: authManager,
+                         userManager: userManager,
+                         themeProvider: ThemeProviderMock(),
+                         appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
+                         doh: ProtonPassDoHMock(),
+                         logManager: LogManagerProtocolMock())
+
+        let apiService = try sut.getApiService(userId: userData.user.ID)
+       
+        XCTAssertEqual(apiService.sessionUID, userData.credential.sessionID)
+        XCTAssertEqual(apiService.authDelegate?.credential(sessionUID: apiService.sessionUID), Credential(userData.credential))
+        
+        authManager.onAuthenticatedSessionInvalidated(sessionUID: userData.credential.sessionID)
+        
+        let unauthApiService = try sut.getApiService(userId: "")
+        
+        XCTAssertTrue(unauthApiService.sessionUID.isEmpty)
     }
 }

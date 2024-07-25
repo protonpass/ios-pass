@@ -24,44 +24,16 @@ import ProtonCoreServices
 
 public class RemoteDatasource: @unchecked Sendable {
     private let apiServicing: any APIManagerProtocol
-    private let eventStream: CorruptedSessionEventStream
 
-    public init(apiServicing: some APIManagerProtocol, eventStream: CorruptedSessionEventStream) {
+    public init(apiServicing: some APIManagerProtocol) {
         self.apiServicing = apiServicing
-        self.eventStream = eventStream
     }
 
     func exec<E: Endpoint>(userId: String, endpoint: E) async throws -> E.Response {
-//        do {
         try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
-//        } catch {
-//            throw streamAndReturn(error: error)
-//        }
     }
 
     func execExpectingData(userId: String, endpoint: some Endpoint) async throws -> DataResponse {
-//        do {
         try await apiServicing.getApiService(userId: userId).execExpectingData(endpoint: endpoint)
-//        } catch {
-//            throw streamAndReturn(error: error)
-//        }
     }
 }
-
-// private extension RemoteDatasource {
-//    /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as
-//    /normal
-//    func streamAndReturn(error: any Error) -> any Error {
-//        if let responseError = error as? ResponseError,
-//           let httpCode = responseError.httpCode {
-//            let sessionId = apiService.sessionUID
-//            switch httpCode {
-//            case 403:
-//                eventStream.send(.unauthSessionMakingAuthRequests(sessionId))
-//            default:
-//                break
-//            }
-//        }
-//        return error
-//    }
-// }
