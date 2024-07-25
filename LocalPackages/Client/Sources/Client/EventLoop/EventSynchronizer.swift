@@ -227,7 +227,6 @@ private extension EventSynchronizer {
 
     /// Sync a single share. Can be a recursion if share has many events
     func sync(userId: String, share: Share) async throws -> Bool {
-//        let userId = try await userManager.getActiveUserId()
         let shareId = share.shareID
         logger.trace("Syncing share \(shareId)")
         return try await performSyncOperations(userId: userId, shareId: shareId)

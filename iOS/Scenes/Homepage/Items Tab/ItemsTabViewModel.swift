@@ -142,9 +142,6 @@ private extension ItemsTabViewModel {
                 showingUpgradeAppBanner = try await shouldDisplayUpgradeAppBanner()
             } catch {
                 handle(error: error)
-//
-//                logger.error(error)
-//                router.display(element: .displayErrorBanner(error))
             }
         }
 

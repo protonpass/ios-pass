@@ -84,8 +84,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
-//    @LazyInjected(\UseCasesContainer.createUnauthApiService) var createUnauthApiService
-
     @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
     var addAndSwitchToNewUserAccount
 
@@ -102,7 +100,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var customCoordinator: (any CustomCoordinator)?
     private var cancellables = Set<AnyCancellable>()
 
-//    lazy var unauthApiService = createUnauthApiService()
     lazy var logInAndSignUp = makeLoginAndSignUp()
 
     // MARK: - Navigation Router

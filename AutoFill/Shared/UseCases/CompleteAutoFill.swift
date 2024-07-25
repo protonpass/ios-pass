@@ -128,7 +128,6 @@ private extension CompleteAutoFill {
         Task { [weak self] in
             guard let self else { return }
             do {
-//                let userId = try await userManager.getActiveUserId()
                 try await updateLastUseTimeAndReindex(userId: userId,
                                                       item: item,
                                                       date: .now,

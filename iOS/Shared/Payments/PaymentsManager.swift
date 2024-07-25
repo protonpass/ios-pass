@@ -39,7 +39,6 @@ final class PaymentsManager {
 
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-//    private let payments: Payments
 
     // Strongly reference to make the payment page responsive during payment flow
     // periphery:ignore
@@ -50,8 +49,7 @@ final class PaymentsManager {
     private let storage: UserDefaults
     // swiftlint:disable:next todo
     // TODO: should we provide the actual BugAlertHandler?
-    init(storage: UserDefaults /* , */
-    /* bugAlertHandler: BugAlertHandler = nil*/ ) {
+    init(storage: UserDefaults) {
         inMemoryTokenStorage = InMemoryTokenStorage()
         self.storage = storage
     }
