@@ -178,19 +178,11 @@ private extension CredentialProviderCoordinator {
         Task { [weak self] in
             guard let self, let context else { return }
             do {
-//                let userId = try await userManager.getActiveUserId()
                 guard let recordIdentifier = request.recordIdentifier else {
                     throw ASExtensionError(.credentialIdentityNotFound)
                 }
 
                 let ids = try IDs.deserializeBase64(recordIdentifier)
-
-//                guard let itemContent = try await itemRepository.getItemContent(shareId: ids.shareId,
-//                                                                                itemId: ids.itemId),
-//                    let logInData = itemContent.loginItem else {
-//                    throw ASExtensionError(.credentialIdentityNotFound)
-//                }
-//
                 guard let item = try await itemRepository.getItem(shareId: ids.shareId, itemId: ids.itemId) else {
                     throw ASExtensionError(.credentialIdentityNotFound)
                 }

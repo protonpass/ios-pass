@@ -116,7 +116,6 @@ public actor ShareRepository: ShareRepositoryProtocol {
 
 public extension ShareRepository {
     func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare] {
-//        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all local shares for user \(userId)")
         do {
             let shares = try await localDatasource.getAllShares(userId: userId)
@@ -131,7 +130,6 @@ public extension ShareRepository {
     func getRemoteShares(userId: String,
                          eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
         -> [Share] {
-//        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all remote shares for user \(userId)")
         do {
             let shares = try await remoteDatasouce.getShares(userId: userId)
@@ -152,7 +150,6 @@ public extension ShareRepository {
     }
 
     func deleteShareLocally(userId: String, shareId: String) async throws {
-//        let userId = try await userManager.getActiveUserId()
         logger.trace("Deleting local share \(shareId) for user \(userId)")
         try await localDatasource.removeShare(shareId: shareId, userId: userId)
         logger.trace("Deleted local share \(shareId) for user \(userId)")
@@ -161,7 +158,6 @@ public extension ShareRepository {
     func upsertShares(userId: String,
                       shares: [Share],
                       eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
-//        let userId = try await userManager.getActiveUserId()
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
         let encryptedShares = try await shares
             .parallelMap { [weak self] in
@@ -225,7 +221,6 @@ public extension ShareRepository {
     func deleteShare(userId: String, shareId: String) async throws -> Bool {
         let logInfo = "share \(shareId)"
         logger.trace("Deleting share \(logInfo)")
-//        let userId = try await userManager.getActiveUserId()
         let deleted = try await remoteDatasouce.deleteShare(userId: userId, shareId: shareId)
         logger.trace("Deleted \(deleted) user share \(logInfo)")
         return deleted
@@ -236,7 +231,6 @@ public extension ShareRepository {
 
 public extension ShareRepository {
     func getVaults(userId: String) async throws -> [Vault] {
-//        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting local vaults for user \(userId)")
 
         let shares = try await getShares(userId: userId)

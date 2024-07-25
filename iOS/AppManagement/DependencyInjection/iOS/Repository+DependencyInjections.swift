@@ -37,10 +37,6 @@ final class RepositoryContainer: SharedContainer, AutoRegistering, Sendable {
 // MARK: - Computed properties
 
 private extension RepositoryContainer {
-//    var apiService: any APIService {
-//        SharedToolingContainer.shared.apiManager().apiService
-//    }
-
     var apiManager: any APIManagerProtocol {
         SharedToolingContainer.shared.apiManager()
     }
