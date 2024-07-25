@@ -265,7 +265,8 @@ private extension SyncEventLoop {
                         try await task()
                         delegate?.syncEventLoopDidFinishAdditionalTask(userId: userId, label: task.label)
                     } catch {
-                        delegate?.syncEventLoopDidFailedAdditionalTask(userId: userId, label: task.label,
+                        delegate?.syncEventLoopDidFailedAdditionalTask(userId: userId,
+                                                                       label: task.label,
                                                                        error: error)
                     }
                 }
