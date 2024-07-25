@@ -20,7 +20,9 @@
 
 import Foundation
 import ProtonCoreLogin
+import ProtonCoreNetworking
 
 public protocol UserDataMigrationProtocol {
     func getUserData() -> UserData?
+    func getMainCredential() -> AuthCredential?
 }

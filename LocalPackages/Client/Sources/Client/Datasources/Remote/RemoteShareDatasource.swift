@@ -48,7 +48,7 @@ public extension RemoteShareDatasource {
         let getSharesResponse = try await exec(userId: userId, endpoint: getSharesEndpoint)
         return getSharesResponse.shares
     }
-    
+
     func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos] {
         let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
         let response = try await exec(userId: userId, endpoint: endpoint)
