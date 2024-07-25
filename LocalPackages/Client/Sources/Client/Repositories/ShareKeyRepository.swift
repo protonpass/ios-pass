@@ -75,7 +75,6 @@ public extension ShareKeyRepository {
     }
 
     func refreshKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
-//        let userId = try await userManager.getActiveUserId()
         logger.trace("Refreshing keys for share \(shareId), user \(userId)")
 
         let keys = try await remoteDatasource.getKeys(userId: userId, shareId: shareId)
