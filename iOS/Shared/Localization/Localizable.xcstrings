@@ -90600,6 +90600,16 @@
         }
       }
     },
+    "Session expired" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Session expired"
+          }
+        }
+      }
+    },
     "Set access level" : {
       "comment" : "Used in sharing context, this is the title of the page in which an owner of the vault can set permission before sharing.",
       "localizations" : {
@@ -119962,6 +119972,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn được mời vào một kho lưu trữ. Chạm vào để biết thêm thông tin."
+          }
+        }
+      }
+    },
+    "You're logged out from %@" : {
+      "comment" : "Placeholder is an email address",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're logged out from %@"
           }
         }
       }

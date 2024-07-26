@@ -330,7 +330,7 @@ private extension ShareCoordinator {
         Task { [weak self] in
             guard let self else { return }
             if let error {
-                sendErrorToSentry(error, sessionId: sessionId)
+                sendErrorToSentry(error, userId: userId, sessionId: sessionId)
             }
 
             // Show logged out screen if no more account linked to user else reload new content

@@ -378,7 +378,7 @@ private extension CredentialProviderCoordinator {
         Task { [weak self] in
             guard let self else { return }
             if let error {
-                sendErrorToSentry(error, sessionId: sessionId)
+                sendErrorToSentry(error, userId: userId, sessionId: sessionId)
             }
 
             // swiftlint:disable:next todo
