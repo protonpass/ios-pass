@@ -39,16 +39,19 @@ public extension UpdateUserAddressesUseCase {
 
 public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
     private let userManager: any UserManagerProtocol
-    private let authenticator: any AuthenticatorInterface
+    private let apiServicing: any APIManagerProtocol
 
     public init(userManager: any UserManagerProtocol,
-                authenticator: any AuthenticatorInterface) {
+                apiServicing: any APIManagerProtocol) {
         self.userManager = userManager
-        self.authenticator = authenticator
+        self.apiServicing = apiServicing
     }
 
     public func execute() async throws -> [Address]? {
         let userData = try await userManager.getUnwrappedActiveUserData()
+        let apiService = try apiServicing.getApiService(userId: userData.user.ID)
+        let authenticator = Authenticator(api: apiService)
+
         let newAddresses = try await authenticator.getAddresses(userData.getCredential)
 
         let newUserData = UserData(credential: userData.credential,

@@ -89,7 +89,7 @@ public extension ItemReadEventRepository {
             }
             let action: @Sendable ([ItemReadEvent], String) async throws -> Void = { [weak self] events, shareId in
                 guard let self else { return }
-                try await remoteDatasource.send(events: events, shareId: shareId)
+                try await remoteDatasource.send(userId: userId, events: events, shareId: shareId)
                 try await localDatasource.removeEvents(events)
                 logger.trace("Sent \(events.count) events for user \(userId)")
             }

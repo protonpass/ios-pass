@@ -81,7 +81,7 @@ private extension SharedUseCasesContainer {
         SharedToolingContainer.shared.authManager()
     }
 
-    var syncEventLoop: any SyncEventLoopActionProtocol {
+    var syncEventLoop: any SyncEventLoopProtocol {
         SharedServiceContainer.shared.syncEventLoop()
     }
 }
@@ -148,7 +148,7 @@ extension SharedUseCasesContainer {
     }
 
     var setUpCoreTelemetry: Factory<any SetUpCoreTelemetryUseCase> {
-        self { SetUpCoreTelemetry(apiService: SharedToolingContainer.shared.apiManager().apiService,
+        self { SetUpCoreTelemetry(apiServicing: SharedToolingContainer.shared.apiManager(),
                                   logManager: self.logManager,
                                   userSettingsRepository: self.userSettingsRepository,
                                   userManager: self.userManager) }
@@ -265,7 +265,8 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var revokeCurrentSession: Factory<any RevokeCurrentSessionUseCase> {
-        self { RevokeCurrentSession(networkRepository: SharedRepositoryContainer.shared.networkRepository()) }
+        self { RevokeCurrentSession(networkRepository: SharedRepositoryContainer.shared.networkRepository(),
+                                    userManager: self.userManager) }
     }
 
     var deleteLocalDataBeforeFullSync: Factory<any DeleteLocalDataBeforeFullSyncUseCase> {
@@ -283,7 +284,7 @@ extension SharedUseCasesContainer {
                        removeUserLocalData: self.removeUserLocalData(),
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
-                       vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+                       vaultsManager: self.vaultsManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
                        credentialManager: SharedServiceContainer.shared.credentialManager(),
@@ -337,7 +338,8 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var forkSession: Factory<any ForkSessionUseCase> {
-        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository()) }
+        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository(),
+                           userManager: self.userManager) }
     }
 }
 
@@ -394,11 +396,24 @@ extension SharedUseCasesContainer {
     var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
         self { AddAndSwitchToNewUserAccount(syncEventLoop: self.syncEventLoop,
                                             userManager: self.userManager,
-                                            authManager: SharedToolingContainer.shared.authManager(),
+                                            authManager: self.authManager,
                                             preferencesManager: self.preferencesManager,
                                             apiManager: self.apiManager,
                                             fullVaultsSync: self.fullVaultsSync(),
                                             refreshFeatureFlags: self.refreshFeatureFlags()) }
+    }
+
+    var logOutAllAccounts: Factory<any LogOutAllAccountsUseCase> {
+        self { LogOutAllAccounts(userManager: self.userManager,
+                                 syncEventLoop: self.syncEventLoop,
+                                 preferencesManager: self.preferencesManager,
+                                 removeUserLocalData: self.removeUserLocalData(),
+                                 featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                                 vaultsManager: self.vaultsManager,
+                                 apiManager: self.apiManager,
+                                 authManager: self.authManager,
+                                 credentialManager: SharedServiceContainer.shared.credentialManager()) }
     }
 }
 
@@ -494,6 +509,7 @@ extension SharedUseCasesContainer {
 extension SharedUseCasesContainer {
     var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
         self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   apiServicing: self.apiManager,
                                    userManager: self.userManager,
                                    logManager: self.logManager) }
     }

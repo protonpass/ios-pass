@@ -35,10 +35,6 @@ public protocol FavIconRepositoryProtocol: Sendable {
     /// Check if the icon is cached on disk and decryptable. Otherwise go fetch a new icon.
     func getIcon(for domain: String) async throws -> FavIcon?
 
-//    /// Always return `nil` if fav icons are disabled in `Preferences`
-//    /// Only get icon from disk. Do not go fetch if icon is not cached.
-//    func getCachedIcon(for domain: String) async -> FavIcon?
-
     /// For debugging purposes only
     func getAllCachedIcons() async throws -> [FavIcon]
 
@@ -55,15 +51,18 @@ public actor FavIconRepository: FavIconRepositoryProtocol, DeinitPrintable {
     private let cacheExpirationDays: Int
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private var activeTasks = [String: Task<FavIcon?, any Error>]()
+    private let userManager: any UserManagerProtocol
 
     public init(datasource: any RemoteFavIconDatasourceProtocol,
                 containerUrl: URL,
                 symmetricKeyProvider: any SymmetricKeyProvider,
+                userManager: any UserManagerProtocol,
                 cacheExpirationDays: Int = 14) {
         self.datasource = datasource
         self.containerUrl = containerUrl
         self.cacheExpirationDays = cacheExpirationDays
         self.symmetricKeyProvider = symmetricKeyProvider
+        self.userManager = userManager
     }
 }
 
@@ -92,20 +91,6 @@ public extension FavIconRepository {
         if checkAndHandleCancellation(for: domain) { return nil }
         return try await task.value
     }
-
-//    func getCachedIcon(for domain: String) -> FavIcon? {
-//        guard settings.shouldDisplayFavIcons else { return nil }
-//        let domain = URL(string: domain)?.host ?? domain
-//        let hashedDomain = domain.sha256
-//        let dataUrl = containerUrl.appendingPathComponent("\(hashedDomain).data",
-//                                                          conformingTo: .data)
-//        if let data = try? getDataOrRemoveIfObsolete(url: dataUrl) {
-//            return try? FavIcon(domain: domain,
-//                                data: getSymmetricKey().decrypt(data),
-//                                isFromCache: true)
-//        }
-//        return nil
-//    }
 
     func getAllCachedIcons() async throws -> [FavIcon] {
         let urls = try FileManager.default.contentsOfDirectory(at: containerUrl,
@@ -168,9 +153,9 @@ private extension FavIconRepository {
             }
 
             if checkAndHandleCancellation(for: domain) { return nil }
-
+            let userId = try await userManager.getActiveUserId()
             // Fav icon is not cached (or cached but is obsolete/deleted/not decryptable), fetch from remote
-            let result = try await datasource.fetchFavIcon(for: domain)
+            let result = try await datasource.fetchFavIcon(userId: userId, for: domain)
 
             let dataToWrite: Data = switch result {
             case let .positive(data):
