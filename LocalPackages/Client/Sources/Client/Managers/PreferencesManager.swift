@@ -182,16 +182,22 @@ public extension PreferencesManager {
 
     func reset() async throws {
         assertDidSetUp()
-        try await updateSharedPreferences(\.localAuthenticationMethod, value: .none)
-        try await updateSharedPreferences(\.pinCode, value: nil)
-        try await updateSharedPreferences(\.failedAttemptCount, value: 0)
+        try await resetSharedPreferences()
         try await removeUserPreferences()
     }
 
     func resetAll() async throws {
         assertDidSetUp()
-        try await reset()
+        try await resetSharedPreferences()
         try await removeAllPreferences()
+    }
+}
+
+private extension PreferencesManager {
+    func resetSharedPreferences() async throws {
+        try await updateSharedPreferences(\.localAuthenticationMethod, value: .none)
+        try await updateSharedPreferences(\.pinCode, value: nil)
+        try await updateSharedPreferences(\.failedAttemptCount, value: 0)
     }
 
     func assertDidSetUp() {
