@@ -26,9 +26,9 @@ public extension CurrentValueSubject {
     /// Return unwrapped value if not `nil`, return default value otherwise
     func unwrapped<T: Defaultable>() -> T where Output == T? {
         if let value {
-            return value
+            value
         } else {
-            return T.default
+            T.default
         }
     }
 }

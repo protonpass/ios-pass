@@ -37,6 +37,8 @@ final class MonitorAliasesViewModel: ObservableObject {
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+
     private var cancellables = Set<AnyCancellable>()
 
     var breachedAliases: [AliasMonitorInfo] {
@@ -52,7 +54,7 @@ final class MonitorAliasesViewModel: ObservableObject {
     }
 
     init(infos: [AliasMonitorInfo]) {
-        access = accessRepository.access.value
+        access = accessRepository.access.value?.access
         dismissedCustomDomainExplanation = getAppPreferences().dismissedCustomDomainExplanation
         self.infos = infos
         setUp()
@@ -83,8 +85,9 @@ extension MonitorAliasesViewModel {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 let enabled = !access.monitor.aliases
+                let userId = try await userManager.getActiveUserId()
                 try await accessRepository.updateAliasesMonitor(enabled)
-                try await refreshAccessAndMonitorState()
+                try await refreshAccessAndMonitorState(userId: userId)
 
                 if enabled {
                     let message = #localized("Hide-my-email aliases monitoring resumed")
@@ -130,7 +133,7 @@ private extension MonitorAliasesViewModel {
             .compactMap { $0 }
             .sink { [weak self] newValue in
                 guard let self else { return }
-                access = newValue
+                access = newValue.access
             }
             .store(in: &cancellables)
     }

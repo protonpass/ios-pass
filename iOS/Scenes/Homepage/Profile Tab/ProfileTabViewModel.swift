@@ -24,11 +24,14 @@ import Core
 import Entities
 import Factory
 import Macro
+import ProtonCoreLogin
+import ProtonCoreServices
+import Screens
 import SwiftUI
+import UseCases
 
 @MainActor
 protocol ProfileTabViewModelDelegate: AnyObject {
-    func profileTabViewModelWantsToShowAccountMenu()
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowFeedback()
     func profileTabViewModelWantsToQaFeatures()
@@ -42,6 +45,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    private let localAccessDatasource = resolve(\SharedRepositoryContainer.localAccessDatasource)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
@@ -59,6 +63,9 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
+    @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
+
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private(set) var appLockTime: AppLockTime
     @Published private(set) var canUpdateAppLockTime = true
@@ -71,6 +78,35 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var plan: Plan?
     @Published private(set) var secureLinks: [SecureLink]?
 
+    // Accounts management
+    @Published private var currentActiveUser: UserData?
+    var activeAccountDetail: AccountCellDetail? {
+        if let currentActiveUser {
+            .init(id: currentActiveUser.userId,
+                  isPremium: isPremiumUser(currentActiveUser.userId),
+                  initial: currentActiveUser.initial,
+                  displayName: currentActiveUser.displayName,
+                  planName: planName(currentActiveUser.userId),
+                  email: currentActiveUser.email)
+        } else {
+            nil
+        }
+    }
+
+    /// User data of all logged in accounts
+    @Published private var userAccounts = [UserData]()
+    var accountDetails: [AccountCellDetail] {
+        userAccounts.map { .init(id: $0.userId,
+                                 isPremium: isPremiumUser($0.userId),
+                                 initial: $0.initial,
+                                 displayName: $0.displayName,
+                                 planName: planName($0.userId),
+                                 email: $0.email) }
+    }
+
+    /// Accesses of all logged in accounts
+    @Published private var accesses = [UserAccess]()
+
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
@@ -78,7 +114,12 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
     }
 
+    var isMultiAccountActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
+    }
+
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
+        plan = accessRepository.access.value?.access.plan
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
@@ -103,10 +144,8 @@ extension ProfileTabViewModel {
 
     func refreshPlan() async {
         do {
-            // First get local plan to optimistically display it
-            // and then try to refresh the plan to have it updated
-            plan = try await accessRepository.getPlan()
-            plan = try await accessRepository.refreshAccess().plan
+            plan = try await accessRepository.refreshAccess().access.plan
+            accesses = try await localAccessDatasource.getAllAccesses()
         } catch {
             handle(error: error)
         }
@@ -196,8 +235,8 @@ extension ProfileTabViewModel {
         }
     }
 
-    func showAccountMenu() {
-        delegate?.profileTabViewModelWantsToShowAccountMenu()
+    func manageAccount(_ account: AccountCellDetail) {
+        router.action(.manage(userId: account.id))
     }
 
     func showSettingsMenu() {
@@ -226,6 +265,28 @@ extension ProfileTabViewModel {
 
     func qaFeatures() {
         delegate?.profileTabViewModelWantsToQaFeatures()
+    }
+
+    func `switch`(to account: AccountCellDetail) {
+        guard account.id != currentActiveUser?.userId else { return }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                try await switchUser(userId: account.id)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func addAccount() {
+        router.present(for: .addAccount)
+    }
+
+    func signOut(account: AccountCellDetail) {
+        router.action(.signOut(userId: account.id))
     }
 }
 
@@ -306,6 +367,31 @@ private extension ProfileTabViewModel {
                 secureLinks = newLinks
             }
             .store(in: &cancellables)
+
+        userManager
+            .allUserAccounts
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] accounts in
+                guard let self else { return }
+                userAccounts = accounts
+            }
+            .store(in: &cancellables)
+
+        userManager
+            .currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] user in
+                guard let self else { return }
+                currentActiveUser = user
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await refreshPlan()
+                    fetchSecureLinks()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func refresh() {
@@ -351,19 +437,37 @@ private extension ProfileTabViewModel {
 
     func reindexCredentials(_ indexable: Bool) async throws {
         // When not enabled, iOS already deleted the credential database.
-        // Atempting to populate this database will throw an error anyway so early exit here
+        // Attempting to populate this database will throw an error anyway so early exit here
         guard autoFillEnabled else { return }
         logger.trace("Reindexing credentials")
+        // swiftlint:disable:next todo
+        // TODO: SHould reindex for all account in the futur
+        let userId = try await userManager.getActiveUserId()
         if indexable {
-            try await indexAllLoginItems()
+            try await indexAllLoginItems(userId: userId)
         } else {
             try await unindexAllLoginItems()
         }
         logger.info("Reindexed credentials")
     }
 
+    func isPremiumUser(_ userId: String) -> Bool {
+        accesses.first(where: { $0.userId == userId })?.access.plan.isFreeUser == false
+    }
+
+    func planName(_ userId: String) -> String? {
+        accesses.first(where: { $0.userId == userId })?.access.plan.displayName
+    }
+
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }
+}
+
+private extension UserData {
+    var userId: String { user.ID }
+    var displayName: String { user.name ?? "?" }
+    var email: String { user.email ?? "?" }
+    var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
 }

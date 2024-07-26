@@ -53,8 +53,8 @@ private extension SharedUseCasesContainer {
         SharedRepositoryContainer.shared.itemRepository()
     }
 
-    var userDataProvider: any UserDataProvider {
-        SharedDataContainer.shared.userDataProvider()
+    var userManager: any UserManagerProtocol {
+        SharedServiceContainer.shared.userManager()
     }
 
     var symmetricKeyProvider: any SymmetricKeyProvider {
@@ -67,6 +67,32 @@ private extension SharedUseCasesContainer {
 
     var accessRepository: any AccessRepositoryProtocol {
         SharedRepositoryContainer.shared.accessRepository()
+    }
+
+    var vaultsManager: any VaultsManagerProtocol {
+        SharedServiceContainer.shared.vaultsManager()
+    }
+
+    var apiManager: any APIManagerProtocol {
+        SharedToolingContainer.shared.apiManager()
+    }
+
+    var authManager: any AuthManagerProtocol {
+        SharedToolingContainer.shared.authManager()
+    }
+
+    var syncEventLoop: any SyncEventLoopProtocol {
+        SharedServiceContainer.shared.syncEventLoop()
+    }
+}
+
+// MARK: App
+
+extension SharedUseCasesContainer {
+    var setUpBeforeLaunching: Factory<any SetUpBeforeLaunchingUseCase> {
+        self { SetUpBeforeLaunching(userManager: self.userManager,
+                                    prefererencesManager: self.preferencesManager,
+                                    applyMigration: self.applyAppMigration()) }
     }
 }
 
@@ -114,7 +140,11 @@ extension SharedUseCasesContainer {
     }
 
     var sendErrorToSentry: Factory<any SendErrorToSentryUseCase> {
-        self { SendErrorToSentry(userDataProvider: self.userDataProvider) }
+        self { SendErrorToSentry() }
+    }
+
+    var sendMessageToSentry: Factory<any SendMessageToSentryUseCase> {
+        self { SendMessageToSentry() }
     }
 
     var setCoreLoggerEnvironment: Factory<any SetCoreLoggerEnvironmentUseCase> {
@@ -122,10 +152,10 @@ extension SharedUseCasesContainer {
     }
 
     var setUpCoreTelemetry: Factory<any SetUpCoreTelemetryUseCase> {
-        self { SetUpCoreTelemetry(apiService: SharedToolingContainer.shared.apiManager().apiService,
+        self { SetUpCoreTelemetry(apiServicing: SharedToolingContainer.shared.apiManager(),
                                   logManager: self.logManager,
                                   userSettingsRepository: self.userSettingsRepository,
-                                  userDataProvider: self.userDataProvider) }
+                                  userManager: self.userManager) }
     }
 }
 
@@ -154,7 +184,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var indexItemsForSpotlight: Factory<any IndexItemsForSpotlightUseCase> {
-        self { IndexItemsForSpotlight(userDataProvider: self.userDataProvider,
+        self { IndexItemsForSpotlight(userManager: self.userManager,
                                       itemRepository: self.itemRepository,
                                       datasource: SharedRepositoryContainer.shared
                                           .localSpotlightVaultDatasource(),
@@ -170,7 +200,12 @@ extension SharedUseCasesContainer {
     }
 
     var getMainVault: Factory<any GetMainVaultUseCase> {
-        self { GetMainVault(vaultsManager: SharedServiceContainer.shared.vaultsManager()) }
+        self { GetMainVault(vaultsManager: self.vaultsManager) }
+    }
+
+    var fullVaultsSync: Factory<any FullVaultsSyncUseCase> {
+        self { FullVaultsSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                              vaultsManager: self.vaultsManager) }
     }
 }
 
@@ -178,7 +213,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var getCurrentSelectedShareId: Factory<any GetCurrentSelectedShareIdUseCase> {
-        self { GetCurrentSelectedShareId(vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+        self { GetCurrentSelectedShareId(vaultsManager: self.vaultsManager,
                                          getMainVault: self.getMainVault()) }
     }
 }
@@ -234,7 +269,8 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var revokeCurrentSession: Factory<any RevokeCurrentSessionUseCase> {
-        self { RevokeCurrentSession(networkRepository: SharedRepositoryContainer.shared.networkRepository()) }
+        self { RevokeCurrentSession(networkRepository: SharedRepositoryContainer.shared.networkRepository(),
+                                    userManager: self.userManager) }
     }
 
     var deleteLocalDataBeforeFullSync: Factory<any DeleteLocalDataBeforeFullSyncUseCase> {
@@ -244,19 +280,20 @@ extension SharedUseCasesContainer {
                                                  .shareKeyRepository()) }
     }
 
-    var wipeAllData: Factory<any WipeAllDataUseCase> {
-        self { WipeAllData(logManager: self.logManager,
-                           appData: SharedDataContainer.shared.appData(),
-                           apiManager: SharedToolingContainer.shared.apiManager(),
-                           preferencesManager: self.preferencesManager,
-                           databaseService: SharedServiceContainer.shared.databaseService(),
-                           syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
-                           vaultsManager: SharedServiceContainer.shared.vaultsManager(),
-                           vaultSyncEventStream: SharedDataStreamContainer.shared.vaultSyncEventStream(),
-                           credentialManager: SharedServiceContainer.shared.credentialManager(),
-                           userDataProvider: self.userDataProvider,
-                           featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                           passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository()) }
+    var logOutUser: Factory<any LogOutUserUseCase> {
+        self {
+            LogOutUser(userManager: self.userManager,
+                       syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                       preferencesManager: self.preferencesManager,
+                       removeUserLocalData: self.removeUserLocalData(),
+                       featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                       passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                       vaultsManager: self.vaultsManager,
+                       apiManager: self.apiManager,
+                       authManager: self.authManager,
+                       credentialManager: SharedServiceContainer.shared.credentialManager(),
+                       switchUser: self.switchUser())
+        }
     }
 }
 
@@ -305,7 +342,8 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var forkSession: Factory<any ForkSessionUseCase> {
-        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository()) }
+        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository(),
+                           userManager: self.userManager) }
     }
 }
 
@@ -319,16 +357,67 @@ extension SharedUseCasesContainer {
 
     var toggleSentinel: Factory<any ToggleSentinelUseCase> {
         self { ToggleSentinel(userSettingsProtocol: self.userSettingsRepository,
-                              userDataProvider: self.userDataProvider) }
+                              userManager: self.userManager) }
     }
 
     var getSentinelStatus: Factory<any GetSentinelStatusUseCase> {
         self { GetSentinelStatus(userSettingsProtocol: self.userSettingsRepository,
-                                 userDataProvider: self.userDataProvider) }
+                                 userManager: self.userManager) }
     }
 
     var getUserPlan: Factory<any GetUserPlanUseCase> {
         self { GetUserPlan(repository: SharedRepositoryContainer.shared.accessRepository()) }
+    }
+
+    var removeUserLocalData: Factory<any RemoveUserLocalDataUseCase> {
+        self {
+            let container = SharedRepositoryContainer.shared
+            return RemoveUserLocalData(accessDatasource: container.localAccessDatasource(),
+                                       authCredentialDatasource: container.localAuthCredentialDatasource(),
+                                       itemDatasource: container.localItemDatasource(),
+                                       itemReadEventDatasource: container.localItemReadEventDatasource(),
+                                       organizationDatasource: container.localOrganizationDatasource(),
+                                       searchEntryDatasource: container.localSearchEntryDatasource(),
+                                       shareDatasource: container.localShareDatasource(),
+                                       shareEventIdDatasource: container.localShareEventIDDatasource(),
+                                       shareKeyDatasource: container.localShareKeyDatasource(),
+                                       spotlightVaultDatasource: container.localSpotlightVaultDatasource(),
+                                       telemetryEventDatasource: container.localTelemetryEventDatasource(),
+                                       userDataDatasource: container.localUserDataDatasource(),
+                                       userPreferencesDatasource: container.userPreferencesDatasource())
+        }
+    }
+
+    var switchUser: Factory<any SwitchUserUseCase> {
+        self { SwitchUser(userManager: self.userManager,
+                          vaultsManager: self.vaultsManager,
+                          preferencesManager: self.preferencesManager,
+                          apiManager: self.apiManager,
+                          syncEventLoop: self.syncEventLoop,
+                          refreshFeatureFlags: self.refreshFeatureFlags()) }
+    }
+
+    var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
+        self { AddAndSwitchToNewUserAccount(syncEventLoop: self.syncEventLoop,
+                                            userManager: self.userManager,
+                                            authManager: self.authManager,
+                                            preferencesManager: self.preferencesManager,
+                                            apiManager: self.apiManager,
+                                            fullVaultsSync: self.fullVaultsSync(),
+                                            refreshFeatureFlags: self.refreshFeatureFlags()) }
+    }
+
+    var logOutAllAccounts: Factory<any LogOutAllAccountsUseCase> {
+        self { LogOutAllAccounts(userManager: self.userManager,
+                                 syncEventLoop: self.syncEventLoop,
+                                 preferencesManager: self.preferencesManager,
+                                 removeUserLocalData: self.removeUserLocalData(),
+                                 featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                                 vaultsManager: self.vaultsManager,
+                                 apiManager: self.apiManager,
+                                 authManager: self.authManager,
+                                 credentialManager: SharedServiceContainer.shared.credentialManager()) }
     }
 }
 
@@ -387,6 +476,18 @@ extension SharedUseCasesContainer {
         self { SetUpEmailAndUsername(featureFlags: self.getFeatureFlagStatus(),
                                      emailValidator: self.validateEmail()) }
     }
+
+    var applyAppMigration: Factory<any ApplyAppMigrationUseCase> {
+        self { ApplyAppMigration(dataMigrationManager: SharedServiceContainer.shared.dataMigrationManager(),
+                                 userManager: self.userManager,
+                                 appData: SharedDataContainer.shared.appData(),
+                                 authManager: self.authManager,
+                                 itemDatasource: SharedRepositoryContainer.shared.localItemDatasource(),
+                                 searchEntryDatasource: SharedRepositoryContainer.shared
+                                     .localSearchEntryDatasource(),
+                                 shareKeyDatasource: SharedRepositoryContainer.shared.localShareKeyDatasource(),
+                                 logManager: self.logManager) }
+    }
 }
 
 // MARK: - Dark web monitor
@@ -404,5 +505,16 @@ extension SharedUseCasesContainer {
 
     var getAllAliases: Factory<any GetAllAliasesUseCase> {
         self { GetAllAliases(itemRepository: self.itemRepository) }
+    }
+}
+
+// MARK: - Flags
+
+extension SharedUseCasesContainer {
+    var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
+        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                   apiServicing: self.apiManager,
+                                   userManager: self.userManager,
+                                   logManager: self.logManager) }
     }
 }

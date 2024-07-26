@@ -24,7 +24,7 @@ import Foundation
 // All the models related to vault sync progress feature
 
 /// Object to track events when fetching items for vaults
-public struct GetRemoteItemsProgress {
+public struct GetRemoteItemsProgress: Sendable {
     /// ID of the vault
     public let shareId: String
     /// Number of total items
@@ -40,7 +40,7 @@ public struct GetRemoteItemsProgress {
 }
 
 /// Object to track events when decrypting fetched remote items
-public struct DecryptItemsProgress {
+public struct DecryptItemsProgress: Sendable {
     /// ID of the vault
     public let shareId: String
     /// Number of total items
@@ -50,7 +50,7 @@ public struct DecryptItemsProgress {
 }
 
 /// Possible events when synching vaults
-public enum VaultSyncProgressEvent {
+public enum VaultSyncProgressEvent: Sendable {
     /// An initial value for the sake of being able to make a `CurrentValueSubject`
     case initialization
     /// The sync progress has started (log in or full sync)
@@ -69,8 +69,8 @@ public enum VaultSyncProgressEvent {
 }
 
 /// The sync progress of a given vault
-public struct VaultSyncProgress {
-    public enum ItemsState {
+public struct VaultSyncProgress: Sendable {
+    public enum ItemsState: Sendable {
         case loading
         case download(downloaded: Int, total: Int)
         case decrypt(decrypted: Int, total: Int)

@@ -34,16 +34,16 @@ public extension GetSentinelStatusUseCase {
 
 public final class GetSentinelStatus: GetSentinelStatusUseCase {
     private let settingsService: any UserSettingsRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
 
     public init(userSettingsProtocol: any UserSettingsRepositoryProtocol,
-                userDataProvider: any UserDataProvider) {
+                userManager: any UserManagerProtocol) {
         settingsService = userSettingsProtocol
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
     }
 
     public func execute() async -> Bool {
-        guard let userId = try? userDataProvider.getUserId() else {
+        guard let userId = try? await userManager.getActiveUserId() else {
             return false
         }
         let settings = await settingsService.getSettings(for: userId)

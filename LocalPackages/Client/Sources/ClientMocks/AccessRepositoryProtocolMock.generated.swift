@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -30,12 +30,12 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     // MARK: - access
     public var invokedAccessSetter = false
     public var invokedAccessSetterCount = 0
-    public var invokedAccess: CurrentValueSubject<Access?, Never>?
-    public var invokedAccessList = [CurrentValueSubject<Access?, Never>?]()
+    public var invokedAccess: CurrentValueSubject<UserAccess?, Never>?
+    public var invokedAccessList = [CurrentValueSubject<UserAccess?, Never>?]()
     public var invokedAccessGetter = false
     public var invokedAccessGetterCount = 0
-    public var stubbedAccess: CurrentValueSubject<Access?, Never>!
-    public var access: CurrentValueSubject<Access?, Never> {
+    public var stubbedAccess: CurrentValueSubject<UserAccess?, Never>!
+    public var access: CurrentValueSubject<UserAccess?, Never> {
         set {
             invokedAccessSetter = true
             invokedAccessSetterCount += 1
@@ -72,9 +72,9 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var closureGetAccess: () -> () = {}
     public var invokedGetAccessfunction = false
     public var invokedGetAccessCount = 0
-    public var stubbedGetAccessResult: Access!
+    public var stubbedGetAccessResult: UserAccess!
 
-    public func getAccess() async throws -> Access {
+    public func getAccess() async throws -> UserAccess {
         invokedGetAccessfunction = true
         invokedGetAccessCount += 1
         if let error = getAccessThrowableError1 {
@@ -104,9 +104,9 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public var closureRefreshAccess: () -> () = {}
     public var invokedRefreshAccessfunction = false
     public var invokedRefreshAccessCount = 0
-    public var stubbedRefreshAccessResult: Access!
+    public var stubbedRefreshAccessResult: UserAccess!
 
-    public func refreshAccess() async throws -> Access {
+    public func refreshAccess() async throws -> UserAccess {
         invokedRefreshAccessfunction = true
         invokedRefreshAccessCount += 1
         if let error = refreshAccessThrowableError3 {

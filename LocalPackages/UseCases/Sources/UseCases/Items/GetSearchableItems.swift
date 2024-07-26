@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol GetSearchableItemsUseCase: Sendable {
-    func execute(for searchMode: SearchMode) async throws -> [SearchableItem]
+    func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem]
 }
 
 public extension GetSearchableItemsUseCase {
-    func callAsFunction(for searchMode: SearchMode) async throws -> [SearchableItem] {
-        try await execute(for: searchMode)
+    func callAsFunction(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem] {
+        try await execute(userId: userId, for: searchMode)
     }
 }
 
@@ -49,8 +49,8 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
-    public func execute(for searchMode: SearchMode) async throws -> [SearchableItem] {
-        let vaults = try await shareRepository.getVaults()
+    public func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem] {
+        let vaults = try await shareRepository.getVaults(userId: userId)
 
         var items: [SymmetricallyEncryptedItem] = []
 
@@ -60,11 +60,11 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         case let .all(vaultSelection):
             switch vaultSelection {
             case .all:
-                items = try await itemRepository.getItems(state: .active)
+                items = try await itemRepository.getItems(userId: userId, state: .active)
             case let .precise(vault):
                 items = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
             case .trash:
-                items = try await itemRepository.getItems(state: .trashed)
+                items = try await itemRepository.getItems(userId: userId, state: .trashed)
             }
         }
         return try items.map { try SearchableItem(from: $0,

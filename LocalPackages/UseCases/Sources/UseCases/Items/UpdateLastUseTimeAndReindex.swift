@@ -25,16 +25,18 @@ import Entities
 import Foundation
 
 public protocol UpdateLastUseTimeAndReindexUseCase: Sendable {
-    func execute(item: ItemContent,
+    func execute(userId: String,
+                 item: ItemContent,
                  date: Date,
                  identifiers: [ASCredentialServiceIdentifier]) async throws
 }
 
 public extension UpdateLastUseTimeAndReindexUseCase {
-    func callAsFunction(item: ItemContent,
+    func callAsFunction(userId: String,
+                        item: ItemContent,
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
-        try await execute(item: item, date: date, identifiers: identifiers)
+        try await execute(userId: userId, item: item, date: date, identifiers: identifiers)
     }
 }
 
@@ -48,10 +50,11 @@ public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCa
         self.reindexLoginItem = reindexLoginItem
     }
 
-    public func execute(item: ItemContent,
+    public func execute(userId: String,
+                        item: ItemContent,
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
-        try await itemRepository.updateLastUseTime(item: item, date: date)
+        try await itemRepository.updateLastUseTime(userId: userId, item: item, date: date)
         try await reindexLoginItem(item: item, identifiers: identifiers, lastUseTime: date)
     }
 }

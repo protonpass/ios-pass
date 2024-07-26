@@ -29,6 +29,7 @@ public protocol LocalUserPreferencesDatasourceProtocol: Sendable {
     func getPreferences(for userId: String) async throws -> UserPreferences?
     func upsertPreferences(_ preferences: UserPreferences, for userId: String) async throws
     func removePreferences(for userId: String) async throws
+    func removeAllPreferences() async throws
 }
 
 public final class LocalUserPreferencesDatasource: LocalDatasource, LocalUserPreferencesDatasourceProtocol {
@@ -80,6 +81,13 @@ public extension LocalUserPreferencesDatasource {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserPreferencesEntity")
         fetchRequest.predicate = .init(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
+    func removeAllPreferences() async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserPreferencesEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }

@@ -1,7 +1,7 @@
 //
-// PassModule.swift
-// Proton Pass - Created on 09/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// APIManagerProtocol.swift
+// Proton Pass - Created on 09/07/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,7 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import ProtonCoreServices
 
-public enum PassModule: String, CaseIterable, Sendable {
-    case hostApp, autoFillExtension, shareExtension
+public protocol APIManagerProtocol: Sendable {
+    func getApiService(userId: String) throws -> any APIService
+    func getUnauthApiService() -> any APIService
+    func reset()
 }

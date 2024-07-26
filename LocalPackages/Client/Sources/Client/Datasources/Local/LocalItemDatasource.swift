@@ -24,10 +24,12 @@ import Entities
 // sourcery: AutoMockable
 public protocol LocalItemDatasourceProtocol: Sendable {
     // Get all items (both active & trashed)
-    func getAllItems() async throws -> [SymmetricallyEncryptedItem]
+    func getAllItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
+
+    func getAllPinnedItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
     // Get all items by state
-    func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem]
+    func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
 
     /// Get items by state
     func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem]
@@ -63,12 +65,13 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     /// Nuke items of a share
     func removeAllItems(shareId: String) async throws
 
+    /// Nuke items of a specific user
+    func removeAllItems(userId: String) async throws
+
     // MARK: - AutoFill related operations
 
     /// Get all active log in items
-    func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem]
-
-    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
+    func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
     func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
 }
@@ -76,25 +79,45 @@ public protocol LocalItemDatasourceProtocol: Sendable {
 public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}
 
 public extension LocalItemDatasource {
-    func getAllItems() async throws -> [SymmetricallyEncryptedItem] {
+    func getAllItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
-    func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem] {
+    func getAllPinnedItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "pinned = %d", true)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "pinned = %d", true),
+            .init(format: "userID = %@", userId)
+        ])
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
-    func getItems(state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+    func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "state = %d", state.rawValue)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "state = %d", state.rawValue),
+            .init(format: "userID = %@", userId)
+        ])
+        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+
+    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "shareID = %@", shareId),
+            .init(format: "state = %d", state.rawValue)
+        ])
+        fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
@@ -115,19 +138,8 @@ public extension LocalItemDatasource {
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "aliasEmail = %@", email)
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        assert(itemEntities.count <= 1, "Could not have more than 1 matched alias item")
         return try itemEntities.map { try $0.toEncryptedItem() }.first
-    }
-
-    func getItems(shareId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {
-        let taskContext = newTaskContext(type: .fetch)
-        let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            .init(format: "shareID = %@", shareId),
-            .init(format: "state = %d", state.rawValue)
-        ])
-        fetchRequest.sortDescriptors = [.init(key: "modifyTime", ascending: false)]
-        let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        return try itemEntities.map { try $0.toEncryptedItem() }
     }
 
     // periphery:ignore
@@ -170,6 +182,7 @@ public extension LocalItemDatasource {
                                         revisionTime: modifiedItem.revisionTime,
                                         flags: item.item.flags)
                 try await upsertItems([.init(shareId: item.shareId,
+                                             userId: item.userId,
                                              item: modifiedItem,
                                              encryptedContent: item.encryptedContent,
                                              isLogInItem: item.isLogInItem)])
@@ -223,6 +236,14 @@ public extension LocalItemDatasource {
                           context: taskContext)
     }
 
+    func removeAllItems(userId: String) async throws {
+        let taskContext = newTaskContext(type: .delete)
+        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
+                          context: taskContext)
+    }
+
     func removeAllItems(shareId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemEntity")
@@ -231,10 +252,11 @@ public extension LocalItemDatasource {
                           context: taskContext)
     }
 
-    func getActiveLogInItems() async throws -> [SymmetricallyEncryptedItem] {
+    func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId),
             .init(format: "state = %d", ItemState.active.rawValue),
             .init(format: "isLogInItem = %d", true)
         ])
@@ -262,5 +284,25 @@ public extension LocalItemDatasource {
         // Set the batch size to optimize fetching
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
+    }
+}
+
+public extension LocalItemDatasource {
+    /// Temporary migration, can be removed after july 2025
+    func updateLocalItems(with userId: String) async throws {
+        let allItems = try await getAllItems(userId: "")
+        let updatedItems = allItems.map { $0.copy(newUserId: userId) }
+        try await removeAllItems(userId: "")
+        try await upsertItems(updatedItems)
+    }
+}
+
+private extension SymmetricallyEncryptedItem {
+    func copy(newUserId: String) -> SymmetricallyEncryptedItem {
+        SymmetricallyEncryptedItem(shareId: shareId,
+                                   userId: newUserId,
+                                   item: item,
+                                   encryptedContent: encryptedContent,
+                                   isLogInItem: isLogInItem)
     }
 }

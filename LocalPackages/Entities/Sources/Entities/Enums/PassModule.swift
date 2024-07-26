@@ -1,6 +1,6 @@
 //
-// CredentialProvider.swift
-// Proton Pass - Created on 23/11/2023.
+// PassModule.swift
+// Proton Pass - Created on 09/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,25 +17,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import ProtonCoreNetworking
+import Foundation
 
-public protocol CredentialProvider: Sendable {
-    func getCredential() -> AuthCredential?
-    func setCredential(_ credential: AuthCredential?)
-
-    var isAuthenticated: Bool { get }
-
-    // Should be removed after session forking
-//    func migrateToSeparatedCredentialsIfNeccessary()
+// swiftlint:disable raw_value_for_camel_cased_codable_enum
+public enum PassModule: String, CaseIterable, Sendable, Codable, Hashable {
+    case hostApp, autoFillExtension, shareExtension
 }
 
-public extension CredentialProvider {
-    var isAuthenticated: Bool {
-        guard let credential = getCredential() else {
-            return false
-        }
-        return !credential.isForUnauthenticatedSession
-    }
-}
+// swiftlint:enable raw_value_for_camel_cased_codable_enum

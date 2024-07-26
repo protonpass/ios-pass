@@ -67,7 +67,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private var passkeyResponse: CreatePasskeyResponse?
 
     /// Proton account email address
-    let emailAddress: String
+    private(set) var emailAddress: String = ""
 
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -79,7 +79,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let checkCameraPermission = resolve(\SharedUseCasesContainer.checkCameraPermission)
     private let sanitizeTotpUriForEditing = resolve(\SharedUseCasesContainer.sanitizeTotpUriForEditing)
     private let sanitizeTotpUriForSaving = resolve(\SharedUseCasesContainer.sanitizeTotpUriForSaving)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
@@ -99,10 +98,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
                   vaults: [Vault]) throws {
-        emailAddress = try userDataProvider.getUnwrappedUserData().addresses.first?.email ?? ""
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)
+        emailAddress = userManager.currentActiveUser.value?.addresses.first?.email ?? ""
+
         setUp()
     }
 
@@ -218,9 +218,11 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     override func additionalEdit() async throws {
         // Create new alias item if applicable
+        let userId = try await userManager.getActiveUserId()
         if let aliasCreationInfo = generateAliasCreationInfo(),
            let aliasItemContent = generateAliasItemContent() {
-            try await itemRepository.createAlias(info: aliasCreationInfo,
+            try await itemRepository.createAlias(userId: userId,
+                                                 info: aliasCreationInfo,
                                                  itemContent: aliasItemContent,
                                                  shareId: selectedVault.shareId)
         }

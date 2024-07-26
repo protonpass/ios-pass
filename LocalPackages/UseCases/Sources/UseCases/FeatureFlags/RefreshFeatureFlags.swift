@@ -34,14 +34,17 @@ public extension RefreshFeatureFlagsUseCase {
 
 public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlagsUseCase {
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
+    private let apiServicing: any APIManagerProtocol
     private let logger: Logger
 
     public init(repository: any FeatureFlagsRepositoryProtocol,
-                userDataProvider: any UserDataProvider,
+                apiServicing: any APIManagerProtocol,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         featureFlagsRepository = repository
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
+        self.apiServicing = apiServicing
         logger = .init(manager: logManager)
     }
 
@@ -49,8 +52,10 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = userDataProvider.getUserData()?.user.ID ?? ""
+                let userId = await (try? userManager.getActiveUserId()) ?? ""
 
+                let apiservice = try apiServicing.getApiService(userId: userId)
+                featureFlagsRepository.setApiService(apiservice)
                 featureFlagsRepository.setUserId(userId)
 
                 logger.trace("Refreshing feature flags for user \(userId)")

@@ -89,6 +89,7 @@ public extension AppPreferences {
             try container.decodeIfPresent(Bool.self, forKey: .dismissedCustomDomainExplanation)
         let didMigratePreferences = try container.decodeIfPresent(Bool.self,
                                                                   forKey: .didMigratePreferences)
+
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
                   createdItemsCount: createdItemsCount ?? Default.createdItemsCount,

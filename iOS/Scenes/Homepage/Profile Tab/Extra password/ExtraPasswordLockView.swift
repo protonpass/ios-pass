@@ -18,19 +18,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Macro
+import ProtonCoreServices
 import SwiftUI
 
 struct ExtraPasswordLockView: View {
-    @StateObject private var viewModel = ExtraPasswordLockViewModel()
+    @StateObject private var viewModel: ExtraPasswordLockViewModel
     @FocusState private var focused
     @State private var showWrongPasswordError = false
     let email: String
     let username: String
     let onSuccess: () -> Void
     let onFailure: () -> Void
+
+    init(apiServicing: any APIManagerProtocol,
+         email: String,
+         username: String,
+         userId: String,
+         onSuccess: @escaping () -> Void,
+         onFailure: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(apiServicing: apiServicing, userId: userId))
+        self.email = email
+        self.username = username
+        self.onSuccess = onSuccess
+        self.onFailure = onFailure
+    }
 
     var body: some View {
         VStack(alignment: .center) {
