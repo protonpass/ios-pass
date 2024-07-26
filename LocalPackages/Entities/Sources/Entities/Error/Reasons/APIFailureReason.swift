@@ -27,7 +27,7 @@ public extension PassError {
         public var debugDescription: String {
             switch self {
             case .noApiServiceLinkedToUserId:
-                "Could not create the payment stack"
+                "Could not find any apiservice linked to the user id"
             }
         }
     }
