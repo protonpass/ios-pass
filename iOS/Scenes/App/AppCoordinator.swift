@@ -83,6 +83,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let sendMessageToSentry = resolve(\SharedUseCasesContainer.sendMessageToSentry)
 
     private var task: Task<Void, Never>?
 
@@ -179,14 +180,20 @@ final class AppCoordinator {
                         guard let self, let userId = sessionInfos.userId else { return }
                         defer { task = nil }
                         do {
+                            let userData = try await userManager.getUserData(userId)
                             if try await logOutUser(userId: userId) {
-                                captureErrorAndLogOut(PassError.unexpectedLogout,
-                                                      sessionId: sessionInfos.sessionId)
-                            } else {
-                                sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
+                                appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
+                            } else if let email = userData?.user.email {
+                                alert(title: #localized("Session expired"),
+                                      message: #localized("You're logged out from %@", email))
                             }
+                            sendMessageToSentry("Invalidated session",
+                                                userId: userId,
+                                                sessionId: sessionInfos.sessionId)
                         } catch {
-                            sendErrorToSentry(PassError.unexpectedLogout, sessionId: sessionInfos.sessionId)
+                            sendErrorToSentry(error,
+                                              userId: userId,
+                                              sessionId: sessionInfos.sessionId)
                         }
                     }
                 }
@@ -251,29 +258,25 @@ private extension AppCoordinator {
     }
 
     func showExtraPasswordLockScreen(_ userData: UserData) {
-        do {
-            let onSuccess: () -> Void = { [weak self] in
-                guard let self else { return }
-                appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
-            }
-
-            let onFailure: () -> Void = { [weak self] in
-                guard let self else { return }
-                appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
-            }
-
-            let username = userData.credential.userName
-            let view = ExtraPasswordLockView(apiServicing: apiManager,
-                                             email: userData.user.email ?? username,
-                                             username: username,
-                                             userId: userData.user.ID,
-                                             onSuccess: onSuccess,
-                                             onFailure: onFailure)
-            let viewController = UIHostingController(rootView: view)
-            animateUpdateRootViewController(viewController)
-        } catch {
-            logger.error(error)
+        let onSuccess: () -> Void = { [weak self] in
+            guard let self else { return }
+            appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
         }
+
+        let onFailure: () -> Void = { [weak self] in
+            guard let self else { return }
+            appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
+        }
+
+        let username = userData.credential.userName
+        let view = ExtraPasswordLockView(apiServicing: apiManager,
+                                         email: userData.user.email ?? username,
+                                         username: username,
+                                         userId: userData.user.ID,
+                                         onSuccess: onSuccess,
+                                         onFailure: onFailure)
+        let viewController = UIHostingController(rootView: view)
+        animateUpdateRootViewController(viewController)
     }
 
     func animateUpdateRootViewController(_ newRootViewController: UIViewController,
@@ -320,11 +323,15 @@ private extension AppCoordinator {
 }
 
 private extension AppCoordinator {
-    /// Show an alert with a single "OK" button that does nothing
+    /// Show an alert with a single "OK" button that dismisses all current sheets
     func alert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(.init(title: #localized("OK"), style: .default))
-        rootViewController?.present(alert, animated: true)
+        let okAction = UIAlertAction(title: #localized("OK"), style: .default) { [weak self] _ in
+            guard let self else { return }
+            rootViewController?.dismiss(animated: true)
+        }
+        alert.addAction(okAction)
+        rootViewController?.topMostViewController.present(alert, animated: true)
     }
 
     func handle(logOutReason: LogOutReason) {
@@ -343,11 +350,6 @@ private extension AppCoordinator {
         default:
             break
         }
-    }
-
-    func captureErrorAndLogOut(_ error: any Error, sessionId: String) {
-        sendErrorToSentry(error, sessionId: sessionId)
-        appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
     }
 }
 

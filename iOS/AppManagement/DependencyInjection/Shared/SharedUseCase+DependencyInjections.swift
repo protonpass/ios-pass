@@ -140,7 +140,11 @@ extension SharedUseCasesContainer {
     }
 
     var sendErrorToSentry: Factory<any SendErrorToSentryUseCase> {
-        self { SendErrorToSentry(userManager: self.userManager) }
+        self { SendErrorToSentry() }
+    }
+
+    var sendMessageToSentry: Factory<any SendMessageToSentryUseCase> {
+        self { SendMessageToSentry() }
     }
 
     var setCoreLoggerEnvironment: Factory<any SetCoreLoggerEnvironmentUseCase> {

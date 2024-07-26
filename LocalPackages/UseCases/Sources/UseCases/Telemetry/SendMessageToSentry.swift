@@ -1,7 +1,7 @@
 //
-// SendErrorToSentry.swift
-// Proton Pass - Created on 14/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// SendMessageToSentry.swift
+// Proton Pass - Created on 25/07/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,26 +17,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Core
 import Foundation
 import Sentry
 
-public protocol SendErrorToSentryUseCase: Sendable {
-    func execute(_ error: any Error, userId: String, sessionId: String?)
+public protocol SendMessageToSentryUseCase: Sendable {
+    func execute(_ message: String, userId: String, sessionId: String?)
 }
 
-public extension SendErrorToSentryUseCase {
-    func callAsFunction(_ error: any Error, userId: String, sessionId: String?) {
-        execute(error, userId: userId, sessionId: sessionId)
+public extension SendMessageToSentryUseCase {
+    func callAsFunction(_ message: String, userId: String, sessionId: String?) {
+        execute(message, userId: userId, sessionId: sessionId)
     }
 }
 
-public final class SendErrorToSentry: SendErrorToSentryUseCase {
+public final class SendMessageToSentry: SendMessageToSentryUseCase {
     public init() {}
 
-    public func execute(_ error: any Error, userId: String, sessionId: String?) {
-        SentrySDK.capture(error: error) { scope in
+    public func execute(_ message: String, userId: String, sessionId: String?) {
+        SentrySDK.capture(message: message) { scope in
             if let sessionId {
                 scope.setTag(value: sessionId, key: Constants.Sentry.sessionId)
             }
