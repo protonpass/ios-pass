@@ -2483,7 +2483,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Appuyez longuement sur un élément pour afficher des options supplémentaires."
+            "value" : "Appuyez longuement sur un élément pour afficher les options supplémentaires."
           }
         },
         "id" : {
@@ -3768,7 +3768,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lajitteluperuste"
+            "value" : "Järjestys"
           }
         },
         "fr" : {
