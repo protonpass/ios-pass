@@ -35,9 +35,14 @@ extension HomepageCoordinator {
 
                 let handler: () -> Void = { [weak self] in
                     guard let self else { return }
-                    showLoadingHud()
-                    loggingOutUser(userId: userId)
-                    hideLoadingHud()
+                    dismissAllViewControllers { [weak self] in
+                        guard let self else {
+                            return
+                        }
+                        showLoadingHud()
+                        loggingOutUser(userId: userId)
+                        hideLoadingHud()
+                    }
                 }
 
                 let alert = signOutAlert(accountToSignOut: user,

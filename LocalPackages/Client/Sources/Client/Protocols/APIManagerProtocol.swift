@@ -23,6 +23,6 @@ import ProtonCoreServices
 
 public protocol APIManagerProtocol: Sendable {
     func getApiService(userId: String) throws -> any APIService
-    func createNewApiService() -> any APIService
+    func getUnauthApiService() -> any APIService
     func reset()
 }

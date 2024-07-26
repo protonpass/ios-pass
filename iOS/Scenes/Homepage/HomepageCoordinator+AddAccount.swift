@@ -44,7 +44,7 @@ extension HomepageCoordinator {
                                       summaryScreenVariant: .noSummaryScreen)
         return .init(appName: "Proton Pass",
                      clientApp: .pass,
-                     apiService: apiManager.createNewApiService(),
+                     apiService: apiManager.getUnauthApiService(),
                      minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: params))

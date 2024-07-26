@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -112,5 +112,19 @@ public final class LocalUserDataDatasourceProtocolMock: @unchecked Sendable, Loc
         }
         closureGetActiveUser()
         return stubbedGetActiveUserResult
+    }
+    // MARK: - removeAll
+    public var removeAllThrowableError6: Error?
+    public var closureRemoveAll: () -> () = {}
+    public var invokedRemoveAllfunction = false
+    public var invokedRemoveAllCount = 0
+
+    public func removeAll() async throws {
+        invokedRemoveAllfunction = true
+        invokedRemoveAllCount += 1
+        if let error = removeAllThrowableError6 {
+            throw error
+        }
+        closureRemoveAll()
     }
 }
