@@ -51,7 +51,7 @@ public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProvider
     /// Remove user preferences and some shared preferences like PIN code & biometric
     /// (e.g user is logged out because of failed local authentication)
     func reset() async throws
-
+    func resetAll() async throws
     // App preferences
     var appPreferences: CurrentValueSubject<AppPreferences?, Never> { get }
     var appPreferencesUpdates: PassthroughSubject<AppPreferencesUpdate, Never> { get }
@@ -185,6 +185,14 @@ public extension PreferencesManager {
         try await removeUserPreferences()
     }
 
+    func resetAll() async throws {
+        guard didSetUp else { return }
+        try await updateSharedPreferences(\.localAuthenticationMethod, value: .none)
+        try await updateSharedPreferences(\.pinCode, value: nil)
+        try await updateSharedPreferences(\.failedAttemptCount, value: 0)
+        try await removeAllPreferences()
+    }
+
     func assertDidSetUp() {
         assert(didSetUp, "PreferencesManager not set up. Call setUp() function as soon as possible.")
         if !didSetUp {
@@ -265,6 +273,13 @@ public extension PreferencesManager {
         try await userPreferencesDatasource.removePreferences(for: userId)
         userPreferences.send(nil)
         logger.info("Removed user preferences for user \(userId)")
+    }
+
+    func removeAllPreferences() async throws {
+        logger.trace("Removing all preferences")
+        try await userPreferencesDatasource.removeAllPreferences()
+        userPreferences.send(nil)
+        logger.info("Removed all preferences")
     }
 
     func switchUserPreferences(userId: String) async throws {

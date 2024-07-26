@@ -1,6 +1,6 @@
 //
-// APIManagerProtocol.swift
-// Proton Pass - Created on 09/07/2024.
+// PaymentFailureReason.swift
+// Proton Pass - Created on 26/07/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,10 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCoreServices
 
-public protocol APIManagerProtocol: Sendable {
-    func getApiService(userId: String) throws -> any APIService
-    func getUnauthApiService() -> any APIService
-    func reset()
+public extension PassError {
+    enum PaymentFailureReason: CustomDebugStringConvertible, Sendable {
+        case couldNotCreatePaymentStack
+
+        public var debugDescription: String {
+            switch self {
+            case .couldNotCreatePaymentStack:
+                "Could not create the payment stack"
+            }
+        }
+    }
 }
