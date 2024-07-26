@@ -20,15 +20,12 @@
 
 import Client
 import Core
+import Entities
 import Factory
 import Foundation
 import ProtonCoreFeatureFlags
 import ProtonCorePayments
 import ProtonCorePaymentsUI
-
-enum PaymentsManagerError: Error {
-    case couldNotCreatePaymentStack
-}
 
 final class PaymentsManager {
     typealias PaymentsResult = Result<InAppPurchasePlan?, any Error>
@@ -53,10 +50,40 @@ final class PaymentsManager {
         self.storage = storage
     }
 
-    func createPaymentsUI() -> PaymentsUI? {
-        guard let payments = initializePaymentsStack() else {
-            return nil
+    func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
+        guard !Bundle.main.isBetaBuild else { return }
+
+        do {
+            let paymentsUI = try createPaymentsUI()
+            paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
+                guard let self else { return }
+                handlePaymentsResponse(result: result, completion: completion)
+            }
+        } catch {
+            completion(.failure(error))
         }
+    }
+
+    func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
+        guard !Bundle.main.isBetaBuild else { return }
+
+        do {
+            let paymentsUI = try createPaymentsUI()
+            paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
+                guard let self else { return }
+                handlePaymentsResponse(result: reason, completion: completion)
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+}
+
+// MARK: - Utils
+
+private extension PaymentsManager {
+    func createPaymentsUI() throws -> PaymentsUI {
+        let payments = try initializePaymentsStack()
         let ui = PaymentsUI(payments: payments,
                             clientApp: PaymentsConstants.clientApp,
                             shownPlanNames: PaymentsConstants.shownPlanNames,
@@ -65,10 +92,10 @@ final class PaymentsManager {
         return ui
     }
 
-    private func initializePaymentsStack() -> Payments? {
+    func initializePaymentsStack() throws -> Payments {
         guard let userId = userManager.activeUserId,
               let apiService = try? apiManager.getApiService(userId: userId) else {
-            return nil
+            throw PassError.payments(.couldNotCreatePaymentStack)
         }
         let persistentDataStorage = UserDefaultsServicePlanDataStorage(storage: storage)
 
@@ -97,36 +124,8 @@ final class PaymentsManager {
         return payments
     }
 
-    func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
-        guard !Bundle.main.isBetaBuild else { return }
-
-        guard let paymentsUI = createPaymentsUI() else {
-            completion(.failure(PaymentsManagerError.couldNotCreatePaymentStack))
-            return
-        }
-
-        paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
-            guard let self else { return }
-            handlePaymentsResponse(result: result, completion: completion)
-        }
-    }
-
-    func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
-        guard !Bundle.main.isBetaBuild else { return }
-
-        guard let paymentsUI = createPaymentsUI() else {
-            completion(.failure(PaymentsManagerError.couldNotCreatePaymentStack))
-            return
-        }
-
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
-            guard let self else { return }
-            handlePaymentsResponse(result: reason, completion: completion)
-        }
-    }
-
-    private func handlePaymentsResponse(result: PaymentsUIResultReason,
-                                        completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
+    func handlePaymentsResponse(result: PaymentsUIResultReason,
+                                completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
         switch result {
         case let .purchasedPlan(accountPlan: plan):
             logger.trace("Purchased plan: \(plan.protonName)")

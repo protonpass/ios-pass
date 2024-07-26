@@ -284,7 +284,7 @@ extension SharedUseCasesContainer {
                        removeUserLocalData: self.removeUserLocalData(),
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
-                       vaultsManager: SharedServiceContainer.shared.vaultsManager(),
+                       vaultsManager: self.vaultsManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
                        credentialManager: SharedServiceContainer.shared.credentialManager(),
@@ -396,11 +396,24 @@ extension SharedUseCasesContainer {
     var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
         self { AddAndSwitchToNewUserAccount(syncEventLoop: self.syncEventLoop,
                                             userManager: self.userManager,
-                                            authManager: SharedToolingContainer.shared.authManager(),
+                                            authManager: self.authManager,
                                             preferencesManager: self.preferencesManager,
                                             apiManager: self.apiManager,
                                             fullVaultsSync: self.fullVaultsSync(),
                                             refreshFeatureFlags: self.refreshFeatureFlags()) }
+    }
+
+    var logOutAllAccounts: Factory<any LogOutAllAccountsUseCase> {
+        self { LogOutAllAccounts(userManager: self.userManager,
+                                 syncEventLoop: self.syncEventLoop,
+                                 preferencesManager: self.preferencesManager,
+                                 removeUserLocalData: self.removeUserLocalData(),
+                                 featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
+                                 passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                                 vaultsManager: self.vaultsManager,
+                                 apiManager: self.apiManager,
+                                 authManager: self.authManager,
+                                 credentialManager: SharedServiceContainer.shared.credentialManager()) }
     }
 }
 

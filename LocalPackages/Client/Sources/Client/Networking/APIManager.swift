@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import Entities
 import Factory
 import Foundation
 import ProtonCoreAuthentication
@@ -34,14 +35,10 @@ import ProtonCoreHumanVerification
 import ProtonCoreObservability
 import ProtonCoreServices
 
-public enum APIManagerError: Error {
-    case noApiServiceLinkedToUserId
-}
-
 private struct APIManagerElements {
     let apiService: any APIService
     let humanVerification: any HumanVerifyDelegate
-    var isAuthenticated: Bool
+    let isAuthenticated: Bool
 
     func copy(isAuthenticated: Bool) -> APIManagerElements {
         APIManagerElements(apiService: apiService,
@@ -63,7 +60,7 @@ public final class APIManager: Sendable, APIManagerProtocol {
     private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let appVer: String
-    private var forceUpgradeHelper: ForceUpgradeHelper!
+    private let forceUpgradeHelper: ForceUpgradeHelper
     private var allCurrentApiServices = [APIManagerElements]()
 
     public init(authManager: any AuthManagerProtocol,
@@ -81,15 +78,14 @@ public final class APIManager: Sendable, APIManagerProtocol {
 
         Self.setUpCertificatePinning()
 
-        // This could also be tweaked as we only log 2 phrases as delegates of forceupgradeHelper
         if let appStoreUrl = URL(string: Constants.appStoreUrl) {
-            forceUpgradeHelper = .init(config: .mobile(appStoreUrl), responseDelegate: self)
+            forceUpgradeHelper = .init(config: .mobile(appStoreUrl))
         } else {
             // Should never happen
             let message = "Can not parse App Store URL"
             assertionFailure(message)
             logger.warning(message)
-            forceUpgradeHelper = .init(config: .desktop, responseDelegate: self)
+            forceUpgradeHelper = .init(config: .desktop)
         }
 
         let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
@@ -100,18 +96,15 @@ public final class APIManager: Sendable, APIManagerProtocol {
                                                               challengeParametersProvider: challengeProvider)
             newApiService.authDelegate = authManager
             newApiService.serviceDelegate = self
-            let humanHelper = HumanCheckHelper(apiService: newApiService,
-                                               inAppTheme: {
-                                                   themeProvider.sharedPreferences.unwrapped().theme.inAppTheme
-                                               },
-                                               clientApp: .pass)
+            let humanHelper = createHumanChecker(apiService: newApiService)
 
             newApiService.humanDelegate = humanHelper
             newApiService.loggingDelegate = self
             newApiService.forceUpgradeDelegate = forceUpgradeHelper
             allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
                                                             humanVerification: humanHelper,
-                                                            isAuthenticated: true))
+                                                            isAuthenticated: !credential
+                                                                .isForUnauthenticatedSession))
         }
 
         if allCurrentApiServices.isEmpty {
@@ -119,11 +112,7 @@ public final class APIManager: Sendable, APIManagerProtocol {
                 .createAPIServiceWithoutSession(doh: doh, challengeParametersProvider: challengeProvider)
             newApiService.authDelegate = authManager
             newApiService.serviceDelegate = self
-            let humanHelper = HumanCheckHelper(apiService: newApiService,
-                                               inAppTheme: {
-                                                   themeProvider.sharedPreferences.unwrapped().theme.inAppTheme
-                                               },
-                                               clientApp: .pass)
+            let humanHelper = createHumanChecker(apiService: newApiService)
 
             newApiService.humanDelegate = humanHelper
             newApiService.loggingDelegate = self
@@ -142,7 +131,7 @@ public final class APIManager: Sendable, APIManagerProtocol {
     }
 
     @discardableResult
-    public func createNewApiService() -> any APIService {
+    public func getUnauthApiService() -> any APIService {
         if let unauthApiService = allCurrentApiServices.unauthApiService {
             return unauthApiService
         }
@@ -152,16 +141,8 @@ public final class APIManager: Sendable, APIManagerProtocol {
                                                                         challengeParametersProvider: challengeProvider)
         newApiService.authDelegate = authManager
         newApiService.serviceDelegate = self
-        let humanHelper = HumanCheckHelper(apiService: newApiService,
-                                           inAppTheme: { [weak self] in
-                                               guard let self else {
-                                                   return .matchSystem
-                                               }
-                                               return themeProvider.sharedPreferences.unwrapped().theme
-                                                   .inAppTheme
-                                           },
-                                           clientApp: .pass)
 
+        let humanHelper = createHumanChecker(apiService: newApiService)
         newApiService.humanDelegate = humanHelper
         newApiService.loggingDelegate = self
         newApiService.forceUpgradeDelegate = forceUpgradeHelper
@@ -183,19 +164,13 @@ public final class APIManager: Sendable, APIManagerProtocol {
             return unauthApiService
         }
 
-        throw APIManagerError.noApiServiceLinkedToUserId
-//        guard let credentials = authManager.getCredential(userId: userId),
-//              let service = allCurrentApiServices
-//              .first(where: { $0.apiService.sessionUID == credentials.sessionID }) else {
-//            throw APIManagerError.noApiServiceLinkedToUserId
-//        }
-//        return service.apiService
+        throw PassError.api(.noApiServiceLinkedToUserId)
     }
 
     public func reset() {
         // swiftlint:disable:next todo
         // TODO: Should maybe remove all apiservices
-        createNewApiService()
+        getUnauthApiService()
         if let apiService = allCurrentApiServices.first {
             setUpCore(apiService: apiService.apiService)
         }
@@ -245,9 +220,9 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        allCurrentApiServices = allCurrentApiServices.filter { $0.apiService.sessionUID != sessionUID }
+        allCurrentApiServices.removeAll { $0.apiService.sessionUID == sessionUID }
         if allCurrentApiServices.isEmpty {
-            createNewApiService()
+            getUnauthApiService()
         }
 
         if isAuthenticatedSession {
@@ -270,6 +245,17 @@ extension APIManager: AuthHelperDelegate {
 
         logger.info("Session credentials are updated")
     }
+
+    func createHumanChecker(apiService: any APIService) -> HumanCheckHelper {
+        HumanCheckHelper(apiService: apiService,
+                         inAppTheme: { [weak self] in
+                             guard let self else {
+                                 return .matchSystem
+                             }
+                             return themeProvider.sharedPreferences.unwrapped().theme
+                                 .inAppTheme
+                         }, clientApp: .pass)
+    }
 }
 
 // MARK: - APIServiceDelegate
@@ -290,20 +276,6 @@ extension APIManager: APIServiceDelegate {
         // swiftlint:disable:next todo
         // TODO: Handle this
         true
-    }
-}
-
-// MARK: - ForceUpgradeResponseDelegate
-
-// swiftlint:disable:next todo
-// TODO: DO we need these logs ?
-extension APIManager: ForceUpgradeResponseDelegate {
-    public func onQuitButtonPressed() {
-        logger.info("Quit force upgrade page")
-    }
-
-    public func onUpdateButtonPressed() {
-        logger.info("Forced upgrade")
     }
 }
 

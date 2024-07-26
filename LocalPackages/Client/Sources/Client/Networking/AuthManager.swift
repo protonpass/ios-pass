@@ -38,6 +38,7 @@ public protocol AuthManagerProtocol: Sendable, AuthDelegate {
     func clearSessions(userId: String)
     func getAllCurrentCredentials() -> [Credential]
     func removeCredentials(userId: String)
+    func removeAllCredentials()
 }
 
 public extension AuthManagerProtocol {
@@ -108,6 +109,13 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         }
     }
 
+    public func removeAllCredentials() {
+        serialAccessQueue.sync {
+            cachedCredentials = [:]
+            saveCachedCredentialsToKeychain()
+        }
+    }
+
     public func credential(sessionUID: String) -> Credential? {
         logger.info("Getting credential for session id \(sessionUID)")
 
@@ -139,8 +147,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                     .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
                 cachedCredentials[key] = Credentials(credential: credential,
                                                      authCredential: newAuthCredential,
-                                                     module: passModule,
-                                                     lastTimeUpdated: .now)
+                                                     module: passModule)
             }
             saveCachedCredentialsToKeychain()
             sendCredentialUpdateInfo(sessionId: sessionUID)
@@ -184,7 +191,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                 let saltToUpdate = salt ?? element.authCredential.passwordKeySalt
                 let privateKeyToUpdate = privateKey ?? element.authCredential.privateKey
                 element.authCredential.update(salt: saltToUpdate, privateKey: privateKeyToUpdate)
-                cachedCredentials[key] = element.copy(lastTimeUpdated: .now)
+                cachedCredentials[key] = element
             }
             saveCachedCredentialsToKeychain()
             sendCredentialUpdateInfo(sessionId: sessionUID)
@@ -252,8 +259,7 @@ public extension AuthManager {
             let key = CredentialsKey(sessionId: credential.sessionID, module: module)
             cachedCredentials[key] = .init(credential: .init(credential),
                                            authCredential: credential,
-                                           module: module,
-                                           lastTimeUpdated: .now)
+                                           module: module)
         }
         saveCachedCredentialsToKeychain()
     }
@@ -268,8 +274,7 @@ private extension AuthManager {
                         lastTimeUpdated: Date) -> Credentials {
         Credentials(credential: credential,
                     authCredential: authCredential ?? AuthCredential(credential),
-                    module: module,
-                    lastTimeUpdated: lastTimeUpdated)
+                    module: module)
     }
 
     func sendCredentialUpdateInfo(sessionId: String) {
@@ -314,7 +319,7 @@ private extension AuthManager {
 
         do {
             let decryptedContent = try symmetricKey.decrypt(encryptedContent)
-            return try JSONDecoder().decode(CachedCredentials.self, from: decryptedContent).filteredUnused
+            return try JSONDecoder().decode(CachedCredentials.self, from: decryptedContent)
         } catch {
             logger.error("Failed to decrypted user sessions from keychain: \(error)")
             try? keychain.removeOrError(forKey: Self.storageKey)
@@ -332,41 +337,10 @@ private extension AuthManager {
 
 // MARK: - Keychain codable wrappers for credential elements & extensions
 
-private extension [CredentialsKey: Credentials] {
-    var filteredUnused: [CredentialsKey: Credentials] {
-        var saved = [CredentialsKey: Credentials]()
-        for (key, value) in self {
-            if !value.credential.userID.isEmpty || value.lastTimeUpdated.isWithinLastSevenDays {
-                saved[key] = value
-            }
-        }
-        return saved
-    }
-}
-
-extension Date {
-    var isWithinLastSevenDays: Bool {
-        let calendar = Calendar.current
-        let now = Date()
-        let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: now)
-        return self >= (sevenDaysAgo ?? now)
-    }
-}
-
-// MARK: - Keychain codable wrappers for credential elements & extensions
-
 private struct Credentials: Hashable, Sendable, Codable {
     let credential: Credential
     let authCredential: AuthCredential
     let module: PassModule
-    let lastTimeUpdated: Date
-
-    func copy(lastTimeUpdated: Date) -> Credentials {
-        Credentials(credential: credential,
-                    authCredential: authCredential,
-                    module: module,
-                    lastTimeUpdated: lastTimeUpdated)
-    }
 }
 
 private struct CredentialsKey: Hashable, Codable {

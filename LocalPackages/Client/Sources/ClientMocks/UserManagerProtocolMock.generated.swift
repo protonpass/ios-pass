@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -202,6 +202,20 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         }
         closureGetActiveUserId()
         return stubbedGetActiveUserIdResult
+    }
+    // MARK: - cleanAllUsers
+    public var cleanAllUsersThrowableError9: Error?
+    public var closureCleanAllUsers: () -> () = {}
+    public var invokedCleanAllUsersfunction = false
+    public var invokedCleanAllUsersCount = 0
+
+    public func cleanAllUsers() async throws {
+        invokedCleanAllUsersfunction = true
+        invokedCleanAllUsersCount += 1
+        if let error = cleanAllUsersThrowableError9 {
+            throw error
+        }
+        closureCleanAllUsers()
     }
     // MARK: - setUserData
     public var closureSetUserData: () -> () = {}
