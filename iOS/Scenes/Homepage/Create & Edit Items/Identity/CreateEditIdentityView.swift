@@ -637,7 +637,7 @@ private extension CreateEditIdentityView {
                      subtitle: String? = nil,
                      value: Binding<String>,
                      focusedField: Field? = nil,
-                     keyboardType: UIKeyboardType = .asciiCapable) -> some View {
+                     keyboardType: UIKeyboardType = .default) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
