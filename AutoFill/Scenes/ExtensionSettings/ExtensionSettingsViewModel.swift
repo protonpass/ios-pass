@@ -36,6 +36,7 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     init() {
         let preferences = getSharedPreferences()
@@ -87,10 +88,13 @@ final class ExtensionSettingsViewModel: ObservableObject {
 // MARK: - Private APIs
 
 private extension ExtensionSettingsViewModel {
+    // swiftlint:disable:next todo
+    // TODO: will have to be for all accounts
     func reindexCredentials(_ indexable: Bool) async throws {
         logger.trace("Reindexing credentials")
+        let userId = try await userManager.getActiveUserId()
         if indexable {
-            try await indexAllLoginItems()
+            try await indexAllLoginItems(userId: userId)
         } else {
             try await unindexAllLoginItems()
         }

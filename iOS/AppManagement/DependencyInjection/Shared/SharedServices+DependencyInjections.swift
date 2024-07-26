@@ -68,6 +68,7 @@ extension SharedServiceContainer {
     var syncEventLoop: Factory<SyncEventLoop> {
         self { SyncEventLoop(currentDateProvider: self.currentDateProvider,
                              synchronizer: self.eventSynchronizer(),
+                             userManager: self.userManager(),
                              logManager: self.logManager,
                              reachability: SharedServiceContainer.shared.reachabilityService()) }
     }

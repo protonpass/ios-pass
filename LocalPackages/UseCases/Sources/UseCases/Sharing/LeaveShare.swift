@@ -23,12 +23,12 @@
 import Client
 
 public protocol LeaveShareUseCase: Sendable {
-    func execute(with shareId: String) async throws
+    func execute(userId: String, with shareId: String) async throws
 }
 
 public extension LeaveShareUseCase {
-    func callAsFunction(with shareId: String) async throws {
-        try await execute(with: shareId)
+    func callAsFunction(userId: String, with shareId: String) async throws {
+        try await execute(userId: userId, with: shareId)
     }
 }
 
@@ -39,8 +39,8 @@ public final class LeaveShare: @unchecked Sendable, LeaveShareUseCase {
         self.vaultManager = vaultManager
     }
 
-    public func execute(with shareId: String) async throws {
-        try await vaultManager.delete(shareId: shareId)
-        vaultManager.refresh()
+    public func execute(userId: String, with shareId: String) async throws {
+        try await vaultManager.delete(userId: userId, shareId: shareId)
+        vaultManager.refresh(userId: userId)
     }
 }

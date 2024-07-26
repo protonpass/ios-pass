@@ -23,15 +23,15 @@ import Entities
 import Foundation
 
 public protocol RemoteOrganizationDatasourceProtocol: Sendable {
-    func getOrganization() async throws -> Organization?
+    func getOrganization(userId: String) async throws -> Organization?
 }
 
 public final class RemoteOrganizationDatasource: RemoteDatasource, RemoteOrganizationDatasourceProtocol {}
 
 public extension RemoteOrganizationDatasource {
-    func getOrganization() async throws -> Organization? {
+    func getOrganization(userId: String) async throws -> Organization? {
         let endpoint = GetOrganizationEndpoint()
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.organization
     }
 }

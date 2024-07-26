@@ -36,7 +36,9 @@ public protocol AuthManagerProtocol: Sendable, AuthDelegate {
     func getCredential(userId: String) -> AuthCredential?
     func clearSessions(sessionId: String)
     func clearSessions(userId: String)
+    func getAllCurrentCredentials() -> [Credential]
     func removeCredentials(userId: String)
+    func removeAllCredentials()
 }
 
 public extension AuthManagerProtocol {
@@ -48,7 +50,7 @@ public extension AuthManagerProtocol {
     }
 }
 
-public final class AuthManager: AuthManagerProtocol {
+public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     public private(set) weak var delegate: (any AuthHelperDelegate)?
     // swiftlint:disable:next identifier_name
     public weak var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
@@ -107,6 +109,13 @@ public final class AuthManager: AuthManagerProtocol {
         }
     }
 
+    public func removeAllCredentials() {
+        serialAccessQueue.sync {
+            cachedCredentials = [:]
+            saveCachedCredentialsToKeychain()
+        }
+    }
+
     public func credential(sessionUID: String) -> Credential? {
         logger.info("Getting credential for session id \(sessionUID)")
 
@@ -131,7 +140,9 @@ public final class AuthManager: AuthManagerProtocol {
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
-                let newCredentials = getCredentials(credential: credential, module: passModule)
+                let newCredentials = getCredentials(credential: credential,
+                                                    module: passModule,
+                                                    lastTimeUpdated: .now)
                 let newAuthCredential = newCredentials.authCredential
                     .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
                 cachedCredentials[key] = Credentials(credential: credential,
@@ -151,7 +162,9 @@ public final class AuthManager: AuthManagerProtocol {
             // should be removed
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: credential.UID, module: passModule)
-                let newCredentials = getCredentials(credential: credential, module: passModule)
+                let newCredentials = getCredentials(credential: credential,
+                                                    module: passModule,
+                                                    lastTimeUpdated: .now)
                 cachedCredentials[key] = newCredentials
             }
             saveCachedCredentialsToKeychain()
@@ -228,6 +241,15 @@ public final class AuthManager: AuthManagerProtocol {
             saveCachedCredentialsToKeychain()
         }
     }
+
+    public func getAllCurrentCredentials() -> [Credential] {
+        cachedCredentials.compactMap { key, element -> Credential? in
+            guard key.module == module else {
+                return nil
+            }
+            return element.credential
+        }
+    }
 }
 
 public extension AuthManager {
@@ -248,7 +270,8 @@ public extension AuthManager {
 private extension AuthManager {
     func getCredentials(credential: Credential,
                         authCredential: AuthCredential? = nil,
-                        module: PassModule) -> Credentials {
+                        module: PassModule,
+                        lastTimeUpdated: Date) -> Credentials {
         Credentials(credential: credential,
                     authCredential: authCredential ?? AuthCredential(credential),
                     module: module)

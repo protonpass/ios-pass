@@ -26,13 +26,13 @@ import Entities
 // sourcery: AutoMockable
 public protocol CreateVaultUseCase: Sendable {
     @discardableResult
-    func execute(with vault: VaultProtobuf) async throws -> Vault?
+    func execute(userId: String, with vault: VaultProtobuf) async throws -> Vault?
 }
 
 public extension CreateVaultUseCase {
     @discardableResult
-    func callAsFunction(with vault: VaultProtobuf) async throws -> Vault? {
-        try await execute(with: vault)
+    func callAsFunction(userId: String, with vault: VaultProtobuf) async throws -> Vault? {
+        try await execute(userId: userId, with: vault)
     }
 }
 
@@ -46,9 +46,9 @@ public final class CreateVault: CreateVaultUseCase {
         self.repository = repository
     }
 
-    public func execute(with vault: VaultProtobuf) async throws -> Vault? {
+    public func execute(userId: String, with vault: VaultProtobuf) async throws -> Vault? {
         let share = try await repository.createVault(vault)
-        vaultsManager.refresh()
+        vaultsManager.refresh(userId: userId)
 
         return try await repository.getVault(shareId: share.shareID)
     }

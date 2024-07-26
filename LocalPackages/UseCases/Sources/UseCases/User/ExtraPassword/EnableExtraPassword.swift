@@ -28,12 +28,13 @@ import ProtonCoreCrypto
 import ProtonCoreUtilities
 
 public protocol EnableExtraPasswordUseCase: Sendable {
-    func execute(_ password: String) async throws
+    func execute(userId: String, password: String) async throws
 }
 
 public extension EnableExtraPasswordUseCase {
-    func callAsFunction(_ password: String) async throws {
-        try await execute(password)
+    func callAsFunction(userId: String,
+                        password: String) async throws {
+        try await execute(userId: userId, password: password)
     }
 }
 
@@ -44,9 +45,10 @@ public final class EnableExtraPassword: Sendable, EnableExtraPasswordUseCase {
         self.repository = repository
     }
 
-    public func execute(_ password: String) async throws {
+    public func execute(userId: String,
+                        password: String) async throws {
         // Step 1: get modulus from the BE
-        let modulus = try await repository.getModulus()
+        let modulus = try await repository.getModulus(userId: userId)
 
         // Step 2: hash the password from the modulus
         guard let salt = try SrpRandomBits(PasswordSaltSize.login.IntBits) else {
@@ -63,6 +65,6 @@ public final class EnableExtraPassword: Sendable, EnableExtraPasswordUseCase {
                                   salt: salt.encodeBase64())
 
         // Step 3: finalize the SRP process and enable extra password
-        try await repository.enableExtraPassword(userSrp)
+        try await repository.enableExtraPassword(userId: userId, userSrp: userSrp)
     }
 }
