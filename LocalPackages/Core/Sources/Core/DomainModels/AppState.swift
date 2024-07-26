@@ -28,7 +28,7 @@ public enum LogOutReason: Equatable {
     case failedBiometricAuthentication
     case sessionInvalidated
     case userInitiated
-    case failedToInitializePreferences(any Error)
+    case failedToSetUpAppCoordinator(any Error)
     case tooManyWrongExtraPasswordAttempts
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
@@ -41,7 +41,7 @@ public enum LogOutReason: Equatable {
              (.userInitiated, .userInitiated):
             true
 
-        case let (.failedToInitializePreferences(lError), .failedToInitializePreferences(rError)):
+        case let (.failedToSetUpAppCoordinator(lError), .failedToSetUpAppCoordinator(rError)):
             lError.localizedDescription == rError.localizedDescription
 
         default:

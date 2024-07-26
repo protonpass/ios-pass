@@ -35,15 +35,13 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     /// Self-initialized properties
-    private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
-
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
+//    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private weak var rootViewController: UIViewController?
     private weak var context: ASCredentialProviderExtensionContext?
@@ -52,7 +50,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     // Use cases
     private let completeConfiguration = resolve(\AutoFillUseCaseContainer.completeConfiguration)
     private let cancelAutoFill = resolve(\AutoFillUseCaseContainer.cancelAutoFill)
-    private let wipeAllData = resolve(\SharedUseCasesContainer.wipeAllData)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
     // Lazily injected because some use cases are dependent on repositories
@@ -65,8 +62,13 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
-    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
+//    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -90,23 +92,15 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         AppearanceSettings.apply()
         setUpRouting()
 
-        apiManager.sessionWasInvalidated
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] sessionUID in
-                guard let self else { return }
-                logOut(error: PassError.unexpectedLogout, sessionId: sessionUID)
-            }
-            .store(in: &cancellables)
-
-        corruptedSessionEventStream
-            .removeDuplicates()
-            .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] reason in
-                guard let self else { return }
-                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
-            }
-            .store(in: &cancellables)
+//        corruptedSessionEventStream
+//            .removeDuplicates()
+//            .compactMap { $0 }
+//            .receive(on: DispatchQueue.main)
+//            .sink { [weak self] reason in
+//                guard let self else { return }
+//                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
+//            }
+//            .store(in: &cancellables)
     }
 
     /// Necessary set up like initializing preferences and theme before starting user flow
@@ -114,7 +108,18 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await preferencesManager.setUp()
+                try await setUpBeforeLaunching()
+                // This need to be set after user data is loaded as we now depend on active user id to set session
+                // to the api service
+                authManager.sessionWasInvalidated
+                    .receive(on: DispatchQueue.main)
+                    .sink { [weak self] sessionInfos in
+                        guard let self, let userId = sessionInfos.userId else { return }
+                        logOut(userId: userId,
+                               error: PassError.unexpectedLogout,
+                               sessionId: sessionInfos.sessionId)
+                    }
+                    .store(in: &cancellables)
                 let theme = preferencesManager.sharedPreferences.unwrapped().theme
                 rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)
@@ -150,7 +155,8 @@ private extension CredentialProviderCoordinator {
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
 
-        guard credentialProvider.isAuthenticated else {
+        guard let activeUserId = userManager.activeUserId,
+              credentialProvider.isAuthenticated(userId: activeUserId) else {
             showNotLoggedInView()
             return
         }
@@ -172,8 +178,18 @@ private extension CredentialProviderCoordinator {
         Task { [weak self] in
             guard let self, let context else { return }
             do {
+                guard let recordIdentifier = request.recordIdentifier else {
+                    throw ASExtensionError(.credentialIdentityNotFound)
+                }
+
+                let ids = try IDs.deserializeBase64(recordIdentifier)
+                guard let item = try await itemRepository.getItem(shareId: ids.shareId, itemId: ids.itemId) else {
+                    throw ASExtensionError(.credentialIdentityNotFound)
+                }
+
                 let localAuthenticationMethod = getSharedPreferences().localAuthenticationMethod
                 try await checkAndAutoFill(request,
+                                           userId: item.userId,
                                            context: context,
                                            localAuthenticationMethod: localAuthenticationMethod)
             } catch {
@@ -230,7 +246,8 @@ private extension CredentialProviderCoordinator {
 private extension CredentialProviderCoordinator {
     func configureExtension() {
         guard let context else { return }
-        guard credentialProvider.isAuthenticated else {
+        guard let activeUserId = userManager.activeUserId,
+              credentialProvider.isAuthenticated(userId: activeUserId) else {
             showNotLoggedInView()
             return
         }
@@ -240,7 +257,7 @@ private extension CredentialProviderCoordinator {
             completeConfiguration(context: context)
         }, onLogOut: { [weak self] in
             guard let self else { return }
-            logOut { [weak self] in
+            logOut(userId: activeUserId) { [weak self] in
                 guard let self else { return }
                 completeConfiguration(context: context)
             }
@@ -334,8 +351,14 @@ private extension CredentialProviderCoordinator {
             return
 
         case .failedToAuthenticate:
-            logOut { [weak self] in
+            guard let userId = userManager.activeUserId else {
+                return defaultHandler(error)
+            }
+            return logOut(userId: userId) { [weak self] in
                 guard let self else { return }
+                // swiftlint:disable:next todo
+                // TODO: should we always call the cancelAutoFill as we will be able to have multiple account for one user
+                // this means we should in some case only reload the data to remove the deleted content.
                 cancelAutoFill(reason: .failed, context: context)
             }
 
@@ -348,17 +371,23 @@ private extension CredentialProviderCoordinator {
         addTelemetryEvent(with: type)
     }
 
-    func logOut(error: (any Error)? = nil,
+    func logOut(userId: String,
+                error: (any Error)? = nil,
                 sessionId: String? = nil,
                 completion: (() -> Void)? = nil) {
         Task { [weak self] in
             guard let self else { return }
             if let error {
-                sendErrorToSentry(error, sessionId: sessionId)
+                sendErrorToSentry(error, userId: userId, sessionId: sessionId)
             }
-            await revokeCurrentSession()
-            await wipeAllData()
-            showNotLoggedInView()
+
+            // swiftlint:disable:next todo
+            // TODO: why do we revoke session as this seems to be linked to import export of data never really implemented in main app ?
+            // await revokeCurrentSession()
+
+            if let wasLastAccount = try? await logOutUser(userId: userId), wasLastAccount {
+                showNotLoggedInView()
+            }
             completion?()
         }
     }
@@ -379,8 +408,9 @@ private extension CredentialProviderCoordinator {
     func showCreateLoginView(url: URL?, request: PasskeyCredentialRequest?) async {
         do {
             showLoadingHud()
+            let userId = try await userManager.getActiveUserId()
             if vaultsManager.getAllVaultContents().isEmpty {
-                try await vaultsManager.asyncRefresh()
+                try await vaultsManager.asyncRefresh(userId: userId)
             }
             let vaults = vaultsManager.getAllVaultContents().map(\.vault)
 
@@ -460,7 +490,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
     }
 
     func credentialsViewModelWantsToLogOut() {
-        logOut()
+        guard let userId = userManager.activeUserId else {
+            return
+        }
+        logOut(userId: userId)
     }
 
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
@@ -537,8 +570,10 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self, let context else { return }
                 do {
+                    // swiftlint:disable:next todo
+                    // TODO: will have to index for all accounts
                     if getSharedPreferences().quickTypeBar {
-                        try await indexAllLoginItems()
+                        try await indexAllLoginItems(userId: item.userId)
                     }
                     if let response {
                         completePasskeyRegistration(response, context: context)

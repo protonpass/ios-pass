@@ -42,7 +42,6 @@ extension HomepageCoordinator {
         viewController.setDetentType(.custom(CreateSecureLinkViewModelState.created.sheetHeight),
                                      parentViewController: rootViewController)
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        secureLinkDetailViewController = viewController
         present(viewController)
     }
 }

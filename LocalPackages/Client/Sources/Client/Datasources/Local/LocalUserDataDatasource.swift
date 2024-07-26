@@ -28,9 +28,12 @@ import ProtonCoreLogin
 // sourcery: AutoMockable
 public protocol LocalUserDataDatasourceProtocol: Sendable {
     /// Get all users sorted by `updateTime` from least to most recent (the last one is the latest)
-    func getAll() async throws -> [UserData]
+    func getAll() async throws -> [UserProfile]
     func remove(userId: String) async throws
     func upsert(_ userData: UserData) async throws
+    func updateNewActiveUser(userId: String) async throws
+    func getActiveUser() async throws -> UserProfile?
+    func removeAll() async throws
 }
 
 public final class LocalUserDataDatasource: LocalDatasource, LocalUserDataDatasourceProtocol {
@@ -44,18 +47,18 @@ public final class LocalUserDataDatasource: LocalDatasource, LocalUserDataDataso
 }
 
 public extension LocalUserDataDatasource {
-    func getAll() async throws -> [UserData] {
+    func getAll() async throws -> [UserProfile] {
         let context = newTaskContext(type: .fetch)
-        let request = UserDataEntity.fetchRequest()
+        let request = UserProfileEntity.fetchRequest()
         request.sortDescriptors = [.init(key: "updateTime", ascending: true)]
         let entities = try await execute(fetchRequest: request, context: context)
         let key = try symmetricKeyProvider.getSymmetricKey()
-        return try entities.map { try $0.toUserData(key) }
+        return try entities.map { try $0.toUserProfile(key) }
     }
 
     func remove(userId: String) async throws {
         let context = newTaskContext(type: .delete)
-        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserDataEntity")
+        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserProfileEntity")
         request.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: request), context: context)
     }
@@ -65,10 +68,10 @@ public extension LocalUserDataDatasource {
         let context = newTaskContext(type: .insert)
         let key = try symmetricKeyProvider.getSymmetricKey()
         var hydrationError: (any Error)?
-        let request = newBatchInsertRequest(entity: UserDataEntity.entity(context: context),
+        let request = newBatchInsertRequest(entity: UserProfileEntity.entity(context: context),
                                             sourceItems: [userData]) { object, userData in
             do {
-                try (object as? UserDataEntity)?.hydrate(userData: userData, key: key)
+                try (object as? UserProfileEntity)?.hydrate(userData: userData, key: key)
             } catch {
                 hydrationError = error
             }
@@ -77,5 +80,41 @@ public extension LocalUserDataDatasource {
             throw hydrationError
         }
         try await execute(batchInsertRequest: request, context: context)
+    }
+
+    func getActiveUser() async throws -> UserProfile? {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = UserProfileEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "isActive = %d", true)
+        let userDataEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
+        let key = try symmetricKeyProvider.getSymmetricKey()
+        assert(userDataEntities.count <= 1, "Should not have more than 1 active profile")
+        return try userDataEntities.map { try $0.toUserProfile(key) }.first
+    }
+
+    func updateNewActiveUser(userId: String) async throws {
+        let context = newTaskContext(type: .insert)
+        try await context.perform {
+            let request = UserProfileEntity.fetchRequest()
+            let profiles = try context.fetch(request)
+
+            if let activeProfile = profiles.first(where: { $0.isActive }) {
+                activeProfile.isActive = false
+            }
+
+            // Find the new item by its ID and set it to active
+            if let newActiveProfile = profiles.first(where: { $0.userID == userId }) {
+                newActiveProfile.isActive = true
+            }
+
+            // Save the context to persist changes
+            try context.save()
+        }
+    }
+
+    func removeAll() async throws {
+        let context = newTaskContext(type: .delete)
+        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserProfileEntity")
+        try await execute(batchDeleteRequest: .init(fetchRequest: request), context: context)
     }
 }

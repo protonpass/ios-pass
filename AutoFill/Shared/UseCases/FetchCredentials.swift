@@ -28,14 +28,16 @@ import UseCases
 
 /// Fetch credentials from the database to display to users
 protocol FetchCredentialsUseCase: Sendable {
-    func execute(identifiers: [ASCredentialServiceIdentifier],
+    func execute(userId: String,
+                 identifiers: [ASCredentialServiceIdentifier],
                  params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult
 }
 
 extension FetchCredentialsUseCase {
-    func callAsFunction(identifiers: [ASCredentialServiceIdentifier],
+    func callAsFunction(userId: String,
+                        identifiers: [ASCredentialServiceIdentifier],
                         params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult {
-        try await execute(identifiers: identifiers, params: params)
+        try await execute(userId: userId, identifiers: identifiers, params: params)
     }
 }
 
@@ -64,12 +66,13 @@ final class FetchCredentials: FetchCredentialsUseCase {
         logger = .init(manager: logManager)
     }
 
-    func execute(identifiers: [ASCredentialServiceIdentifier],
+    func execute(userId: String,
+                 identifiers: [ASCredentialServiceIdentifier],
                  params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult {
         async let symmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let plan = accessRepository.getPlan()
-        async let vaults = shareRepository.getVaults()
-        async let encryptedItems = itemRepository.getActiveLogInItems()
+        async let vaults = shareRepository.getVaults(userId: userId)
+        async let encryptedItems = itemRepository.getActiveLogInItems(userId: userId)
         try await logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
         if let params {

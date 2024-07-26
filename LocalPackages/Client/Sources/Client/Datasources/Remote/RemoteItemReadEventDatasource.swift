@@ -24,16 +24,16 @@ import Foundation
 
 // sourcery: AutoMockable
 public protocol RemoteItemReadEventDatasourceProtocol: Sendable {
-    func send(events: [ItemReadEvent], shareId: String) async throws
+    func send(userId: String, events: [ItemReadEvent], shareId: String) async throws
 }
 
 public final class RemoteItemReadEventDatasource: RemoteDatasource, RemoteItemReadEventDatasourceProtocol {}
 
 public extension RemoteItemReadEventDatasource {
-    func send(events: [ItemReadEvent], shareId: String) async throws {
+    func send(userId: String, events: [ItemReadEvent], shareId: String) async throws {
         assert(events.allSatisfy { $0.shareId == shareId },
                "Events must be batched by shareID")
         let endpoint = SendItemReadEventsEndpoint(events: events, shareId: shareId)
-        _ = try await exec(endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }

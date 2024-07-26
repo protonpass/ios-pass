@@ -34,6 +34,7 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -46,7 +47,7 @@ final class MonitorProtonAddressesViewModel: ObservableObject {
     }
 
     init(addresses: [ProtonAddress]) {
-        access = accessRepository.access.value
+        access = accessRepository.access.value?.access
         allAddresses = addresses
         setUp()
     }
@@ -64,8 +65,9 @@ extension MonitorProtonAddressesViewModel {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 let enabled = !access.monitor.protonAddress
+                let userId = try await userManager.getActiveUserId()
                 try await accessRepository.updateProtonAddressesMonitor(enabled)
-                try await refreshAccessAndMonitorState()
+                try await refreshAccessAndMonitorState(userId: userId)
 
                 if enabled {
                     let message = #localized("Proton addresses monitoring resumed")
@@ -89,7 +91,7 @@ private extension MonitorProtonAddressesViewModel {
             .compactMap { $0 }
             .sink { [weak self] newValue in
                 guard let self else { return }
-                access = newValue
+                access = newValue.access
             }
             .store(in: &cancellables)
 

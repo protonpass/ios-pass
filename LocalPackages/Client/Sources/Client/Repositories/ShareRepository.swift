@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import Combine
 import Core
 import CryptoKit
 import Entities
@@ -28,19 +29,22 @@ public protocol ShareRepositoryProtocol: Sendable {
     // MARK: - Shares
 
     /// Get all local shares
-    func getShares() async throws -> [SymmetricallyEncryptedShare]
+    func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
 
     /// Get all remote shares
-    func getRemoteShares(updateEventStream: Bool) async throws -> [Share]
+    func getRemoteShares(userId: String,
+                         eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Share]
 
     /// Delete all local shares
-    func deleteAllSharesLocally() async throws
+    func deleteAllCurrentUserSharesLocally() async throws
 
     /// Delete locally a given share
-    func deleteShareLocally(shareId: String) async throws
+    func deleteShareLocally(userId: String, shareId: String) async throws
 
     /// Re-encrypt and then upserting shares, emit `decryptedVault` events if `eventStream` is provided
-    func upsertShares(_ shares: [Share], updateEventStream: Bool) async throws
+    func upsertShares(userId: String,
+                      shares: [Share],
+                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
 
@@ -55,12 +59,12 @@ public protocol ShareRepositoryProtocol: Sendable {
     func deleteUserShare(userId: String, shareId: String) async throws -> Bool
 
     @discardableResult
-    func deleteShare(shareId: String) async throws -> Bool
+    func deleteShare(userId: String, shareId: String) async throws -> Bool
 
     // MARK: - Vault Functions
 
     /// Get all local vaults
-    func getVaults() async throws -> [Vault]
+    func getVaults(userId: String) async throws -> [Vault]
 
     /// Get local vault by ID
     func getVault(shareId: String) async throws -> Vault?
@@ -78,41 +82,40 @@ public protocol ShareRepositoryProtocol: Sendable {
 }
 
 public extension ShareRepositoryProtocol {
-    func getRemoteShares() async throws -> [Share] {
-        try await getRemoteShares(updateEventStream: false)
+    func getRemoteShares(userId: String) async throws -> [Share] {
+        try await getRemoteShares(userId: userId, eventStream: nil)
     }
 
-    func upsertShares(_ shares: [Share]) async throws {
-        try await upsertShares(shares, updateEventStream: false)
+    func upsertShares(userId: String, shares: [Share]) async throws {
+        try await upsertShares(userId: userId, shares: shares, eventStream: nil)
     }
 }
 
 public actor ShareRepository: ShareRepositoryProtocol {
-    private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+    private let userManager: any UserManagerProtocol
     private let localDatasource: any LocalShareDatasourceProtocol
     private let remoteDatasouce: any RemoteShareDatasourceProtocol
     private let passKeyManager: any PassKeyManagerProtocol
-    private let eventStream: VaultSyncEventStream
     private let logger: Logger
 
-    public init(userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider,
+    public init(symmetricKeyProvider: any SymmetricKeyProvider,
+                userManager: any UserManagerProtocol,
                 localDatasource: any LocalShareDatasourceProtocol,
                 remoteDatasouce: any RemoteShareDatasourceProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
-                logManager: any LogManagerProtocol,
-                eventStream: VaultSyncEventStream) {
-        self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
+                logManager: any LogManagerProtocol) {
+        self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
         self.remoteDatasouce = remoteDatasouce
         self.passKeyManager = passKeyManager
-        self.eventStream = eventStream
         logger = .init(manager: logManager)
+        self.userManager = userManager
     }
 }
 
 public extension ShareRepository {
-    func getShares() async throws -> [SymmetricallyEncryptedShare] {
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+    func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare] {
         logger.trace("Getting all local shares for user \(userId)")
         do {
             let shares = try await localDatasource.getAllShares(userId: userId)
@@ -124,14 +127,13 @@ public extension ShareRepository {
         }
     }
 
-    func getRemoteShares(updateEventStream: Bool = true) async throws -> [Share] {
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+    func getRemoteShares(userId: String,
+                         eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+        -> [Share] {
         logger.trace("Getting all remote shares for user \(userId)")
         do {
-            let shares = try await remoteDatasouce.getShares()
-            if updateEventStream {
-                eventStream.send(.downloadedShares(shares))
-            }
+            let shares = try await remoteDatasouce.getShares(userId: userId)
+            eventStream?.send(.downloadedShares(shares))
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return shares
         } catch {
@@ -140,35 +142,35 @@ public extension ShareRepository {
         }
     }
 
-    func deleteAllSharesLocally() async throws {
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+    func deleteAllCurrentUserSharesLocally() async throws {
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Deleting all local shares for user \(userId)")
         try await localDatasource.removeAllShares(userId: userId)
         logger.trace("Deleted all local shares for user \(userId)")
     }
 
-    func deleteShareLocally(shareId: String) async throws {
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+    func deleteShareLocally(userId: String, shareId: String) async throws {
         logger.trace("Deleting local share \(shareId) for user \(userId)")
         try await localDatasource.removeShare(shareId: shareId, userId: userId)
         logger.trace("Deleted local share \(shareId) for user \(userId)")
     }
 
-    func upsertShares(_ shares: [Share], updateEventStream: Bool = true) async throws {
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+    func upsertShares(userId: String,
+                      shares: [Share],
+                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
         let encryptedShares = try await shares
             .parallelMap { [weak self] in
                 // swiftlint:disable:next discouraged_optional_self
-                try await self?.symmetricallyEncryptNullable($0)
+                try await self?.symmetricallyEncryptNullable(userId: userId, $0)
             }
             .compactMap { $0 }
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
 
-        if updateEventStream {
+        if eventStream != nil {
             for share in encryptedShares {
                 if let vault = try share.toVault(symmetricKey: getSymmetricKey()) {
-                    eventStream.send(.decryptedVault(vault))
+                    eventStream?.send(.decryptedVault(vault))
                 }
             }
         }
@@ -177,24 +179,12 @@ public extension ShareRepository {
     }
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId)")
-        let users = try await remoteDatasouce.getShareLinkedUsers(shareId: shareId)
+        let users = try await remoteDatasouce.getShareLinkedUsers(userId: userId, shareId: shareId)
         logger.trace("Got \(users.count) remote user for \(shareId)")
         return users
     }
-
-//    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos {
-//        let logInfo = "user \(userId), share \(shareId)"
-//        logger.trace("Getting user information \(logInfo)")
-//        do {
-//            let user = try await remoteDatasouce.getUserInformationForShare(shareId: shareId, userId: userId)
-//            logger.trace("Got user information \(logInfo)")
-//            return user
-//        } catch {
-//            logger.error(message: "Failed to get user information \(logInfo)", error: error)
-//            throw error
-//        }
-//    }
 
     func updateUserPermission(userId: String,
                               shareId: String,
@@ -228,10 +218,10 @@ public extension ShareRepository {
         }
     }
 
-    func deleteShare(shareId: String) async throws -> Bool {
+    func deleteShare(userId: String, shareId: String) async throws -> Bool {
         let logInfo = "share \(shareId)"
         logger.trace("Deleting share \(logInfo)")
-        let deleted = try await remoteDatasouce.deleteShare(shareId: shareId)
+        let deleted = try await remoteDatasouce.deleteShare(userId: userId, shareId: shareId)
         logger.trace("Deleted \(deleted) user share \(logInfo)")
         return deleted
     }
@@ -240,18 +230,17 @@ public extension ShareRepository {
 // MARK: - Vaults
 
 public extension ShareRepository {
-    func getVaults() async throws -> [Vault] {
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+    func getVaults(userId: String) async throws -> [Vault] {
         logger.trace("Getting local vaults for user \(userId)")
 
-        let shares = try await getShares()
+        let shares = try await getShares(userId: userId)
         let vaults = try shares.compactMap { try $0.toVault(symmetricKey: getSymmetricKey()) }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
     }
 
     func getVault(shareId: String) async throws -> Vault? {
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         logger.trace("Getting local vault with shareID \(shareId) for user \(userId)")
         guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId) else {
             logger.trace("Found no local vault with shareID \(shareId) for user \(userId)")
@@ -262,12 +251,12 @@ public extension ShareRepository {
     }
 
     func createVault(_ vault: VaultProtobuf) async throws -> Share {
-        let userData = try userDataSymmetricKeyProvider.getUnwrappedUserData()
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
-        let createdVault = try await remoteDatasouce.createVault(request: request)
-        let encryptedShare = try await symmetricallyEncrypt(createdVault)
+        let createdVault = try await remoteDatasouce.createVault(userId: userId, request: request)
+        let encryptedShare = try await symmetricallyEncrypt(userId: userId, createdVault)
         logger.trace("Saving newly created vault to local for user \(userId)")
         try await localDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Created vault for user \(userId)")
@@ -275,24 +264,26 @@ public extension ShareRepository {
     }
 
     func edit(oldVault: Vault, newVault: VaultProtobuf) async throws {
-        let userData = try userDataSymmetricKeyProvider.getUnwrappedUserData()
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         logger.trace("Editing vault \(oldVault.id) for user \(userId)")
         let shareId = oldVault.shareId
-        let shareKey = try await passKeyManager.getLatestShareKey(shareId: shareId)
+        let shareKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let request = try UpdateVaultRequest(vault: newVault, shareKey: shareKey)
-        let updatedVault = try await remoteDatasouce.updateVault(request: request, shareId: shareId)
+        let updatedVault = try await remoteDatasouce.updateVault(userId: userId,
+                                                                 request: request,
+                                                                 shareId: shareId)
         logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
-        let encryptedShare = try await symmetricallyEncrypt(updatedVault)
+        let encryptedShare = try await symmetricallyEncrypt(userId: userId, updatedVault)
         try await localDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Updated vault \(oldVault.id) for user \(userId)")
     }
 
     func deleteVault(shareId: String) async throws {
-        let userId = try userDataSymmetricKeyProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         // Remote deletion
         logger.trace("Deleting remote vault \(shareId) for user \(userId)")
-        try await remoteDatasouce.deleteVault(shareId: shareId)
+        try await remoteDatasouce.deleteVault(userId: userId, shareId: shareId)
         logger.trace("Deleted remote vault \(shareId) for user \(userId)")
 
         // Local deletion
@@ -305,9 +296,10 @@ public extension ShareRepository {
 
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool {
         logger.trace("Setting new owner \(newOwnerShareId) for vault \(vaultShareId)")
-
+        let userId = try await userManager.getActiveUserId()
         let request = TransferOwnershipVaultRequest(newOwnerShareID: newOwnerShareId)
-        let updated = try await remoteDatasouce.transferVaultOwnership(vaultShareId: vaultShareId,
+        let updated = try await remoteDatasouce.transferVaultOwnership(userId: userId,
+                                                                       vaultShareId: vaultShareId,
                                                                        request: request)
         logger.info("Finished transfer of ownership")
         return updated
@@ -316,10 +308,10 @@ public extension ShareRepository {
 
 private extension ShareRepository {
     func getSymmetricKey() throws -> SymmetricKey {
-        try userDataSymmetricKeyProvider.getSymmetricKey()
+        try symmetricKeyProvider.getSymmetricKey()
     }
 
-    func symmetricallyEncrypt(_ share: Share) async throws -> SymmetricallyEncryptedShare {
+    func symmetricallyEncrypt(userId: String, _ share: Share) async throws -> SymmetricallyEncryptedShare {
         guard let content = share.content,
               let keyRotation = share.contentKeyRotation else {
             return .init(encryptedContent: nil, share: share)
@@ -333,7 +325,8 @@ private extension ShareRepository {
             throw PassError.crypto(.corruptedShareContent(shareID: share.shareID))
         }
 
-        let key = try await passKeyManager.getShareKey(shareId: share.shareID,
+        let key = try await passKeyManager.getShareKey(userId: userId,
+                                                       shareId: share.shareID,
                                                        keyRotation: keyRotation)
         let decryptedContent = try AES.GCM.open(contentData,
                                                 key: key.keyData,
@@ -344,9 +337,10 @@ private extension ShareRepository {
 
     /// Symmetrically encrypt but return `nil` when encounting inactive user key instead of throwing
     /// We don't want to throw errors and stop the whole decryption process when we find an inactive user key
-    @Sendable func symmetricallyEncryptNullable(_ share: Share) async throws -> SymmetricallyEncryptedShare? {
+    @Sendable func symmetricallyEncryptNullable(userId: String,
+                                                _ share: Share) async throws -> SymmetricallyEncryptedShare? {
         do {
-            return try await symmetricallyEncrypt(share)
+            return try await symmetricallyEncrypt(userId: userId, share)
         } catch {
             if let passError = error as? PassError,
                case let .crypto(reason) = passError,

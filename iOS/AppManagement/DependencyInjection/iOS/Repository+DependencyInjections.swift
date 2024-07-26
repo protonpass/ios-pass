@@ -37,38 +37,38 @@ final class RepositoryContainer: SharedContainer, AutoRegistering, Sendable {
 // MARK: - Computed properties
 
 private extension RepositoryContainer {
-    var apiService: any APIService {
-        SharedToolingContainer.shared.apiManager().apiService
-    }
-
-    var corruptedSessionEventStream: CorruptedSessionEventStream {
-        SharedDataStreamContainer.shared.corruptedSessionEventStream()
+    var apiManager: any APIManagerProtocol {
+        SharedToolingContainer.shared.apiManager()
     }
 
     var logManager: any LogManagerProtocol {
         SharedToolingContainer.shared.logManager()
     }
+
+    var userManager: any UserManagerProtocol {
+        SharedServiceContainer.shared.userManager()
+    }
 }
 
 private extension RepositoryContainer {
     var remoteInviteDatasource: Factory<any RemoteInviteDatasourceProtocol> {
-        self { RemoteInviteDatasource(apiService: self.apiService,
-                                      eventStream: self.corruptedSessionEventStream) }
+        self { RemoteInviteDatasource(apiServicing: self.apiManager) }
     }
 }
 
 extension RepositoryContainer {
     var reportRepository: Factory<any ReportRepositoryProtocol> {
-        self { ReportRepository(apiService: self.apiService,
-                                userDataProvider: SharedDataContainer.shared.userDataProvider()) }
+        self { ReportRepository(apiServicing: self.apiManager,
+                                userManager: self.userManager) }
     }
 
     var inviteRepository: Factory<any InviteRepositoryProtocol> {
         self { InviteRepository(remoteInviteDatasource: self.remoteInviteDatasource(),
+                                userManager: self.userManager,
                                 logManager: self.logManager) }
     }
 
     var extraPasswordRepository: Factory<any ExtraPasswordRepositoryProtocol> {
-        self { ExtraPasswordRepository(apiService: self.apiService) }
+        self { ExtraPasswordRepository(apiServicing: self.apiManager) }
     }
 }

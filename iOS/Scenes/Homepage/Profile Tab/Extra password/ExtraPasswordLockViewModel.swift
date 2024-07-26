@@ -18,11 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import Entities
 import Factory
 import Foundation
 import Macro
+
+@preconcurrency import ProtonCoreServices
 
 @MainActor
 final class ExtraPasswordLockViewModel: ObservableObject {
@@ -34,8 +37,13 @@ final class ExtraPasswordLockViewModel: ObservableObject {
     var canProceed: Bool { extraPassword.count >= Constants.ExtraPassword.minLength }
 
     private let verifyExtraPassword = resolve(\UseCasesContainer.verifyExtraPassword)
+    private let extraPasswordRepository: any ExtraPasswordRepositoryProtocol
+    private let userId: String
 
-    init() {}
+    init(apiServicing: any APIManagerProtocol, userId: String) {
+        self.userId = userId
+        extraPasswordRepository = ExtraPasswordRepository(apiServicing: apiServicing)
+    }
 }
 
 extension ExtraPasswordLockViewModel {
@@ -46,7 +54,9 @@ extension ExtraPasswordLockViewModel {
             do {
                 result = nil
                 loading = true
-                result = try await verifyExtraPassword(username: username,
+                result = try await verifyExtraPassword(repository: extraPasswordRepository,
+                                                       userId: userId,
+                                                       username: username,
                                                        password: extraPassword)
             } catch {
                 self.error = error

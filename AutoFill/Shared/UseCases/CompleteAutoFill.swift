@@ -53,9 +53,11 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
     private let copyTotpTokenAndNotify: any CopyTotpTokenAndNotifyUseCase
     private let updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase
     private let resetFactory: any ResetFactoryUseCase
+    private let userManager: any UserManagerProtocol
 
     init(logManager: any LogManagerProtocol,
          telemetryRepository: any TelemetryEventRepositoryProtocol,
+         userManager: any UserManagerProtocol,
          copyTotpTokenAndNotify: any CopyTotpTokenAndNotifyUseCase,
          updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase,
          resetFactory: any ResetFactoryUseCase) {
@@ -65,6 +67,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
         self.copyTotpTokenAndNotify = copyTotpTokenAndNotify
         self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.resetFactory = resetFactory
+        self.userManager = userManager
     }
 
     /*
@@ -96,7 +99,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             try await copyTotpTokenAndNotify(itemContent: itemContent)
             let completion: (Bool) -> Void = { [weak self] _ in
                 guard let self else { return }
-                update(item: itemContent, identifiers: identifiers)
+                update(userId: itemContent.userId, item: itemContent, identifiers: identifiers)
             }
 
             if let passwordCredential = credential as? ASPasswordCredential {
@@ -121,11 +124,12 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
 }
 
 private extension CompleteAutoFill {
-    func update(item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
+    func update(userId: String, item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await updateLastUseTimeAndReindex(item: item,
+                try await updateLastUseTimeAndReindex(userId: userId,
+                                                      item: item,
                                                       date: .now,
                                                       identifiers: identifiers)
                 await logManager.saveAllLogs()

@@ -19,33 +19,34 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
 import SwiftUI
 
 public struct AccountSwitchModifier: ViewModifier {
-    let details: [any AccountCellDetail]
+    let details: [AccountCellDetail]
     let activeId: String
     @Binding var showSwitcher: Bool
     let animationNamespace: Namespace.ID
-    let onSelect: (String) -> Void
-    let onSignOut: (String) -> Void
-    let onDelete: (String) -> Void
+    let onSelect: (AccountCellDetail) -> Void
+    let onManage: (AccountCellDetail) -> Void
+    let onSignOut: (AccountCellDetail) -> Void
     let onAddAccount: () -> Void
 
-    public init(details: [any AccountCellDetail],
+    public init(details: [AccountCellDetail],
                 activeId: String,
                 showSwitcher: Binding<Bool>,
                 animationNamespace: Namespace.ID,
-                onSelect: @escaping (String) -> Void,
-                onSignOut: @escaping (String) -> Void,
-                onDelete: @escaping (String) -> Void,
+                onSelect: @escaping (AccountCellDetail) -> Void,
+                onManage: @escaping (AccountCellDetail) -> Void,
+                onSignOut: @escaping (AccountCellDetail) -> Void,
                 onAddAccount: @escaping () -> Void) {
         self.details = details
         self.activeId = activeId
         _showSwitcher = showSwitcher
         self.animationNamespace = animationNamespace
         self.onSelect = onSelect
+        self.onManage = onManage
         self.onSignOut = onSignOut
-        self.onDelete = onDelete
         self.onAddAccount = onAddAccount
     }
 
@@ -73,15 +74,35 @@ public struct AccountSwitchModifier: ViewModifier {
                     AccountList(details: details,
                                 activeId: activeId,
                                 animationNamespace: animationNamespace,
-                                onSelect: onSelect,
-                                onSignOut: onSignOut,
-                                onDelete: onDelete,
-                                onAddAccount: onAddAccount)
+                                onSelect: { account in toggleSwitcher(onSelect(account)) },
+                                onManage: { account in toggleSwitcher(onManage(account)) },
+                                onSignOut: { account in toggleSwitcher(onSignOut(account)) },
+                                onAddAccount: { toggleSwitcher(onAddAccount()) })
                     Spacer()
                 }
                 .padding(.horizontal)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+    }
+}
+
+private extension AccountSwitchModifier {
+    func toggleSwitcher(_ completion: @autoclosure @escaping () -> Void) {
+        if #available(iOS 17.0, *) {
+            withAnimation {
+                showSwitcher.toggle()
+            } completion: {
+                completion()
+            }
+        } else {
+            let duration = DesignConstant.animationDuration
+            withAnimation(.linear(duration: duration)) {
+                showSwitcher.toggle()
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+                completion()
+            }
         }
     }
 }

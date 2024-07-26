@@ -37,30 +37,32 @@ public extension SetUpCoreTelemetryUseCase {
 
 public final class SetUpCoreTelemetry: SetUpCoreTelemetryUseCase {
     private let telemetryService: any TelemetryServiceProtocol
-    private let apiService: any APIService
+    private let apiServicing: any APIManagerProtocol
     private let userSettingsRepository: any UserSettingsRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(telemetryService: any TelemetryServiceProtocol = TelemetryService.shared,
-                apiService: any APIService,
+                apiServicing: any APIManagerProtocol,
                 logManager: any LogManagerProtocol,
                 userSettingsRepository: any UserSettingsRepositoryProtocol,
-                userDataProvider: any UserDataProvider) {
+                userManager: any UserManagerProtocol) {
         self.telemetryService = telemetryService
-        self.apiService = apiService
+        self.apiServicing = apiServicing
         self.userSettingsRepository = userSettingsRepository
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 
     public func execute() {
         Task { [weak self] in
             guard let self else { return }
-            telemetryService.setApiService(apiService: apiService)
             var telemetry = true
             do {
-                let userId = try userDataProvider.getUserId()
+                let userId = try await userManager.getActiveUserId()
+                let apiService = try apiServicing.getApiService(userId: userId)
+                telemetryService.setApiService(apiService: apiService)
+
                 telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
             } catch {
                 logger.error(error)
