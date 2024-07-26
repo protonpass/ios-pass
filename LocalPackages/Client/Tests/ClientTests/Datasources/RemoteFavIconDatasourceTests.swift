@@ -28,7 +28,7 @@ final class APIManagerProtocolMock: APIManagerProtocol {
         PMAPIService.dummyService()
     }
     
-    func createNewApiService() -> any APIService {
+    func getUnauthApiService() -> any APIService {
         PMAPIService.dummyService()
     }
     
