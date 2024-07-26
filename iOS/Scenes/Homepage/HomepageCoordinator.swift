@@ -151,10 +151,11 @@ private extension HomepageCoordinator {
         userManager.currentActiveUser
             .dropFirst()
             .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
             .sink { [weak self] userData in
                 guard let self else { return }
                 homepageTabDelegate?.refreshTabIcons()
-                let message = #localized("Switched to %@", userData?.user.email ?? "")
+                let message = #localized("Switched to %@", userData.user.email ?? "")
                 bannerManager.displayBottomInfoMessage(message)
             }
             .store(in: &cancellables)
