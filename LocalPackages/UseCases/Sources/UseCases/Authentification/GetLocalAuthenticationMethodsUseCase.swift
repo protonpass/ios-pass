@@ -49,7 +49,7 @@ public final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsU
     public func execute(policy: LAPolicy) async throws -> [LocalAuthenticationMethodUiModel] {
         var supportedTypes = [LocalAuthenticationMethodUiModel]()
 
-        if accessRepository.access.value?.plan.isBusinessUser == true {
+        if accessRepository.access.value?.access.plan.isBusinessUser == true {
             if let organization = try await organizationRepository.getOrganization(),
                organization.settings?.appLockTime == nil {
                 supportedTypes.append(.none)

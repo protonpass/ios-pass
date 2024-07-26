@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol ToggleMonitoringForAliasUseCase: Sendable {
-    func execute(alias: ItemContent) async throws
+    func execute(userId: String, alias: ItemContent) async throws
 }
 
 public extension ToggleMonitoringForAliasUseCase {
-    func callAsFunction(alias: ItemContent) async throws {
-        try await execute(alias: alias)
+    func callAsFunction(userId: String, alias: ItemContent) async throws {
+        try await execute(userId: userId, alias: alias)
     }
 }
 
@@ -43,11 +43,11 @@ public final class ToggleMonitoringForAlias: ToggleMonitoringForAliasUseCase {
         self.getAllAliasMonitorInfo = getAllAliasMonitorInfo
     }
 
-    public func execute(alias: ItemContent) async throws {
+    public func execute(userId: String, alias: ItemContent) async throws {
         try await repository.toggleMonitoringForAlias(sharedId: alias.shareId,
                                                       itemId: alias.itemId,
                                                       shouldMonitor: !alias.item.monitoringDisabled)
-        let aliasesMonitorInfos = try await getAllAliasMonitorInfo()
+        let aliasesMonitorInfos = try await getAllAliasMonitorInfo(userId: userId)
         repository.darkWebDataSectionUpdate.send(.aliases(aliasesMonitorInfos))
     }
 }

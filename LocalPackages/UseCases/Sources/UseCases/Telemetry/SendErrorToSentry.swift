@@ -18,36 +18,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
+import Core
 import Foundation
 import Sentry
 
 public protocol SendErrorToSentryUseCase: Sendable {
-    func execute(_ error: any Error, sessionId: String?)
+    func execute(_ error: any Error, userId: String, sessionId: String?)
 }
 
 public extension SendErrorToSentryUseCase {
-    func callAsFunction(_ error: any Error, sessionId: String?) {
-        execute(error, sessionId: sessionId)
+    func callAsFunction(_ error: any Error, userId: String, sessionId: String?) {
+        execute(error, userId: userId, sessionId: sessionId)
     }
 }
 
 public final class SendErrorToSentry: SendErrorToSentryUseCase {
-    private let userDataProvider: any UserDataProvider
+    public init() {}
 
-    public init(userDataProvider: any UserDataProvider) {
-        self.userDataProvider = userDataProvider
-    }
-
-    public func execute(_ error: any Error, sessionId: String?) {
-        let userId = userDataProvider.getUserData()?.user.ID
+    public func execute(_ error: any Error, userId: String, sessionId: String?) {
         SentrySDK.capture(error: error) { scope in
             if let sessionId {
-                scope.setTag(value: sessionId, key: "sessionUID")
+                scope.setTag(value: sessionId, key: Constants.Sentry.sessionId)
             }
-            if let userId {
-                scope.setTag(value: userId, key: "userID")
-            }
+            scope.setTag(value: userId, key: Constants.Sentry.userId)
         }
     }
 }

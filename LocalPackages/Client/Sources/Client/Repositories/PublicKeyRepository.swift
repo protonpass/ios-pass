@@ -29,13 +29,16 @@ public protocol PublicKeyRepositoryProtocol: Sendable {
 public actor PublicKeyRepository: PublicKeyRepositoryProtocol {
     private let localPublicKeyDatasource: any LocalPublicKeyDatasourceProtocol
     private let remotePublicKeyDatasource: any RemotePublicKeyDatasourceProtocol
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(localPublicKeyDatasource: any LocalPublicKeyDatasourceProtocol,
                 remotePublicKeyDatasource: any RemotePublicKeyDatasourceProtocol,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.localPublicKeyDatasource = localPublicKeyDatasource
         self.remotePublicKeyDatasource = remotePublicKeyDatasource
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }
@@ -44,12 +47,13 @@ public extension PublicKeyRepository {
     func getPublicKeys(email: String) async throws -> [PublicKey] {
         logger.trace("Getting public keys for email \(email)")
         let localPublicKeys = try await localPublicKeyDatasource.getPublicKeys(email: email)
+        let currentUserId = try await userManager.getActiveUserId()
 
         if localPublicKeys.isEmpty {
             logger.trace("No public keys in local for email \(email)")
             logger.trace("Fetching public keys from remote for email \(email)")
             let remotePublicKeys =
-                try await remotePublicKeyDatasource.getPublicKeys(email: email)
+                try await remotePublicKeyDatasource.getPublicKeys(userId: currentUserId, email: email)
 
             let count = remotePublicKeys.count
             logger.trace("Fetched \(count) public keys from remote for email \(email)")

@@ -36,25 +36,25 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
     private let publicKeyRepository: any PublicKeyRepositoryProtocol
     private let passKeyManager: any PassKeyManagerProtocol
     private let shareInviteRepository: any ShareInviteRepositoryProtocol
-    private let userDataProvider: any UserDataProvider
+    private let userManager: any UserManagerProtocol
 
     public init(publicKeyRepository: any PublicKeyRepositoryProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 shareInviteRepository: any ShareInviteRepositoryProtocol,
-                userDataProvider: any UserDataProvider) {
+                userManager: any UserManagerProtocol) {
         self.publicKeyRepository = publicKeyRepository
         self.passKeyManager = passKeyManager
         self.shareInviteRepository = shareInviteRepository
-        self.userDataProvider = userDataProvider
+        self.userManager = userManager
     }
 
     public func execute(vault: Vault, inviteId: String, email: String) async throws {
-        let userData = try userDataProvider.getUnwrappedUserData()
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: email)
         guard let activeKey = publicKeys.first else {
             throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
         }
-        let vaultKey = try await passKeyManager.getLatestShareKey(shareId: vault.shareId)
+        let vaultKey = try await passKeyManager.getLatestShareKey(userId: userData.user.ID, shareId: vault.shareId)
         let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,
                                                              publicReceiverKey: activeKey,
                                                              userData: userData,

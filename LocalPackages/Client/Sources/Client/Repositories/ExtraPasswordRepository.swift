@@ -24,46 +24,46 @@ import Foundation
 @preconcurrency import ProtonCoreServices
 
 public protocol ExtraPasswordRepositoryProtocol: Sendable {
-    func getModulus() async throws -> Modulus
-    func enableExtraPassword(_ userSrp: PassUserSrp) async throws
-    func disableExtraPassword() async throws
-    func initiateSrpAuthentication() async throws -> SrpAuthenticationData
-    func validateSrpAuthentication(_ data: SrpValidationData) async throws
+    func getModulus(userId: String) async throws -> Modulus
+    func enableExtraPassword(userId: String, userSrp: PassUserSrp) async throws
+    func disableExtraPassword(userId: String) async throws
+    func initiateSrpAuthentication(userId: String) async throws -> SrpAuthenticationData
+    func validateSrpAuthentication(userId: String, data: SrpValidationData) async throws
 }
 
 public final class ExtraPasswordRepository: Sendable, ExtraPasswordRepositoryProtocol {
-    private let apiService: any APIService
+    private let apiServicing: any APIManagerProtocol
 
-    public init(apiService: any APIService) {
-        self.apiService = apiService
+    public init(apiServicing: some APIManagerProtocol) {
+        self.apiServicing = apiServicing
     }
 }
 
 public extension ExtraPasswordRepository {
-    func getModulus() async throws -> Modulus {
+    func getModulus(userId: String) async throws -> Modulus {
         let endpoint = GetModulusEndpoint()
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
         return response
     }
 
-    func enableExtraPassword(_ userSrp: PassUserSrp) async throws {
+    func enableExtraPassword(userId: String, userSrp: PassUserSrp) async throws {
         let endpoint = EnableExtraPasswordEndpoint(userSrp)
-        _ = try await apiService.exec(endpoint: endpoint)
+        _ = try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
     }
 
-    func disableExtraPassword() async throws {
+    func disableExtraPassword(userId: String) async throws {
         let endpoint = DisableExtraPasswordEndpoint()
-        _ = try await apiService.exec(endpoint: endpoint)
+        _ = try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
     }
 
-    func initiateSrpAuthentication() async throws -> SrpAuthenticationData {
+    func initiateSrpAuthentication(userId: String) async throws -> SrpAuthenticationData {
         let endpoint = InitiateSrpAuthenticationEndpoint()
-        let response = try await apiService.exec(endpoint: endpoint)
+        let response = try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
         return response.srpData
     }
 
-    func validateSrpAuthentication(_ data: SrpValidationData) async throws {
+    func validateSrpAuthentication(userId: String, data: SrpValidationData) async throws {
         let endpoint = ValidateSrpAuthenticationEndpoint(data)
-        _ = try await apiService.exec(endpoint: endpoint)
+        _ = try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
     }
 }

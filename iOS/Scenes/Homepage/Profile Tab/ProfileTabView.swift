@@ -18,68 +18,90 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import DesignSystem
 import Entities
 import Macro
+import ProtonCoreLogin
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
+    @Namespace private var animationNamespace
+    @State private var showSwitcher = false
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack {
-                    itemCountSection
-
-                    securitySection
-                        .padding(.vertical)
-
-                    if viewModel.autoFillEnabled {
-                        autoFillEnabledSection
-                    } else {
-                        autoFillDisabledSection
-                    }
-
-                    if viewModel.isSecureLinkActive {
-                        secureLinkSection
-                            .padding(.vertical)
-                    }
-
-                    accountAndSettingsSection
-                        .padding(.vertical)
-
-                    aboutSection
-
-                    helpCenterSection
-                        .padding(.vertical)
-
-                    if Bundle.main.isQaBuild {
-                        qaFeaturesSection
-                    }
-
-                    Text("Version \(Bundle.main.displayedAppVersion)")
-                        .sectionTitleText()
-                        .frame(maxWidth: .infinity, alignment: .center)
-                    Spacer()
-                }
-                .padding(.top)
-                .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
-                .animation(.default, value: viewModel.localAuthenticationMethod)
-            }
+        mainContainer
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { toolbarContent }
-        }
-        .task {
-            await viewModel.refreshPlan()
-        }
-        .onAppear {
-            viewModel.fetchSecureLinks()
+            .if(viewModel.activeAccountDetail) { view, activeAccount in
+                view
+                    .modifier(AccountSwitchModifier(details: viewModel.accountDetails,
+                                                    activeId: activeAccount.id,
+                                                    showSwitcher: $showSwitcher,
+                                                    animationNamespace: animationNamespace,
+                                                    onSelect: { viewModel.switch(to: $0) },
+                                                    onManage: { viewModel.manageAccount($0) },
+                                                    onSignOut: { viewModel.signOut(account: $0) },
+                                                    onAddAccount: { viewModel.addAccount() }))
+            }
+            .navigationStackEmbeded()
+            .task {
+                await viewModel.refreshPlan()
+            }
+            .onAppear {
+                viewModel.fetchSecureLinks()
+            }
+    }
+
+    var mainContainer: some View {
+        ScrollView {
+            VStack {
+                accountSection
+
+                itemCountSection
+
+                securitySection
+                    .padding(.vertical)
+
+                if viewModel.autoFillEnabled {
+                    autoFillEnabledSection
+                } else {
+                    autoFillDisabledSection
+                }
+
+                if viewModel.isSecureLinkActive {
+                    secureLinkSection
+                        .padding(.top)
+                }
+
+                settingsSection
+                    .padding(.vertical)
+
+                aboutSection
+
+                helpCenterSection
+                    .padding(.vertical)
+
+                if Bundle.main.isQaBuild {
+                    qaFeaturesSection
+                }
+
+                Text("Version \(Bundle.main.displayedAppVersion)")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .center)
+                Spacer()
+            }
+            .padding(.top)
+            .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
+            .animation(.default, value: viewModel.localAuthenticationMethod)
         }
     }
 
@@ -95,6 +117,38 @@ struct ProfileTabView: View {
             } else {
                 EmptyView()
             }
+        }
+    }
+
+    @ViewBuilder
+    private var accountSection: some View {
+        if let activeUser = viewModel.activeAccountDetail {
+            VStack {
+                Text("Account")
+                    .profileSectionTitle()
+
+                Group {
+                    if showSwitcher {
+                        AccountCell(detail: AccountCellDetail.empty,
+                                    animationNamespace: animationNamespace)
+                    } else {
+                        AccountCell(detail: activeUser,
+                                    animationNamespace: animationNamespace)
+                            .animation(.default, value: showSwitcher)
+                            .onTapGesture {
+                                if viewModel.isMultiAccountActive {
+                                    withAnimation {
+                                        showSwitcher.toggle()
+                                    }
+                                } else {
+                                    viewModel.manageAccount(activeUser)
+                                }
+                            }
+                    }
+                }
+                .padding()
+                .roundedEditableSection()
+            }.padding()
         }
     }
 
@@ -281,39 +335,11 @@ struct ProfileTabView: View {
         .padding(.horizontal)
     }
 
-    private var accountAndSettingsSection: some View {
-        VStack(spacing: 0) {
-            OptionRow(action: { viewModel.showAccountMenu() },
-                      content: {
-                          HStack {
-                              Text("Account")
-                                  .foregroundStyle(PassColor.textNorm.toColor)
-
-                              Spacer()
-
-                              if let associatedPlanInfo = viewModel.plan?.associatedPlanInfo {
-                                  Label(title: {
-                                      Text(associatedPlanInfo.title)
-                                          .font(.callout)
-                                  }, icon: {
-                                      Image(uiImage: associatedPlanInfo.icon)
-                                          .resizable()
-                                          .scaledToFit()
-                                          .frame(maxWidth: associatedPlanInfo.iconWidth)
-                                  })
-                                  .foregroundStyle(associatedPlanInfo.tintColor.toColor)
-                                  .padding(.horizontal)
-                              }
-                          }
-                      },
-                      trailing: { ChevronRight() })
-
-            PassSectionDivider()
-
-            TextOptionRow(title: #localized("Settings"), action: { viewModel.showSettingsMenu() })
-        }
-        .roundedEditableSection()
-        .padding(.horizontal)
+    private var settingsSection: some View {
+        TextOptionRow(title: #localized("Settings"), action: { viewModel.showSettingsMenu() })
+            .frame(height: 75)
+            .roundedEditableSection()
+            .padding(.horizontal)
     }
 
     private var aboutSection: some View {
@@ -372,34 +398,6 @@ private extension View {
         foregroundStyle(PassColor.textNorm.toColor)
             .font(.callout.weight(.bold))
             .frame(maxWidth: .infinity, alignment: .leading)
-    }
-}
-
-private struct AssociatedPlanInfo {
-    let title: String
-    let icon: UIImage
-    let iconWidth: CGFloat
-    let tintColor: UIColor
-}
-
-private extension Plan {
-    var associatedPlanInfo: AssociatedPlanInfo? {
-        switch planType {
-        case .free:
-            nil
-
-        case .trial:
-            .init(title: #localized("Free trial"),
-                  icon: PassIcon.badgeTrial,
-                  iconWidth: 12,
-                  tintColor: PassColor.interactionNormMajor2)
-
-        case .business, .plus:
-            .init(title: displayName,
-                  icon: PassIcon.badgePaid,
-                  iconWidth: 16,
-                  tintColor: PassColor.noteInteractionNormMajor2)
-        }
     }
 }
 

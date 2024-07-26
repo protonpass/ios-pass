@@ -27,7 +27,8 @@ import Entities
 import XCTest
 
 final class ItemRepositoryTests: XCTestCase {
-    var userDataSymmetricKeyProvider: UserDataSymmetricKeyProvider!
+    var symmetricKeyProvider: SymmetricKeyProviderMock!
+    var userManager: UserManagerProtocolMock!
     var localDatasource: LocalItemDatasourceProtocolMock!
     var remoteDatasource: RemoteItemDatasourceProtocol!
     var shareEventIDRepository: ShareEventIDRepositoryProtocol!
@@ -38,8 +39,9 @@ final class ItemRepositoryTests: XCTestCase {
 
     override func setUp() {
         super.setUp()
-         userDataSymmetricKeyProvider = UserDataSymmetricKeyProviderMock()
+        symmetricKeyProvider = SymmetricKeyProviderMock()
          localDatasource = LocalItemDatasourceProtocolMock()
+            userManager = UserManagerProtocolMock()
          localDatasource.stubbedGetAllPinnedItemsResult = []
          remoteDatasource = RemoteItemDatasourceProtocolMock()
          shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
@@ -49,7 +51,7 @@ final class ItemRepositoryTests: XCTestCase {
     }
 
     override func tearDown() {
-        userDataSymmetricKeyProvider = nil
+        symmetricKeyProvider = nil
         localDatasource = nil
         remoteDatasource = nil
         shareEventIDRepository = nil
@@ -65,19 +67,26 @@ final class ItemRepositoryTests: XCTestCase {
 extension ItemRepositoryTests {
     
     func testGetAllPinnedItem() async throws {
-        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(item:.random(pinned: true)))
-        
-        sut = ItemRepository(userDataSymmetricKeyProvider: userDataSymmetricKeyProvider,
+    let currentUserId = "test"
+
+        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(userId: currentUserId,
+                                                                                                                               item:.random(pinned: true)))
+        userManager.stubbedGetActiveUserIdResult = currentUserId
+
+        sut = ItemRepository(symmetricKeyProvider: symmetricKeyProvider, 
+                             userManager: userManager,
                              localDatasource: localDatasource,
                              remoteDatasource: remoteDatasource,
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
                              logManager: logManager)
+        
         let expectation = expectation(description: "Init of ItemRepository")
         
         let pinnedItems = try await sut.getAllPinnedItems()
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
         sut.currentlyPinnedItems
+            .receive(on: DispatchQueue.main)
             .sink { value in
                 currentlyPinnedItems = value
                 expectation.fulfill()

@@ -33,15 +33,21 @@ public extension RevokeCurrentSessionUseCase {
 
 public final class RevokeCurrentSession: RevokeCurrentSessionUseCase {
     private let networkRepository: any NetworkRepositoryProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(networkRepository: any NetworkRepositoryProtocol) {
+    public init(networkRepository: any NetworkRepositoryProtocol,
+                userManager: any UserManagerProtocol) {
         self.networkRepository = networkRepository
+        self.userManager = userManager
     }
 
     // Do not care if revoke is successful or not
     // because we don't want to prevent users from logging out
     // e.g when there's no internet connection
     public func execute() async {
-        _ = try? await networkRepository.revokeCurrentSession()
+        guard let userId = try? await userManager.getActiveUserId() else {
+            return
+        }
+        _ = try? await networkRepository.revokeCurrentSession(userId: userId)
     }
 }

@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -27,20 +27,20 @@ public final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, 
     public init() {}
 
     // MARK: - execute
-    public var executeVaultItemContentThrowableError1: Error?
+    public var executeUserIdVaultItemContentThrowableError1: Error?
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
-    public var invokedExecuteParameters: (vault: VaultProtobuf, itemContent: ItemContent)?
-    public var invokedExecuteParametersList = [(vault: VaultProtobuf, itemContent: ItemContent)]()
+    public var invokedExecuteParameters: (userId: String, vault: VaultProtobuf, itemContent: ItemContent)?
+    public var invokedExecuteParametersList = [(userId: String, vault: VaultProtobuf, itemContent: ItemContent)]()
     public var stubbedExecuteResult: Vault!
 
-    public func execute(vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
+    public func execute(userId: String, vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
         invokedExecutefunction = true
         invokedExecuteCount += 1
-        invokedExecuteParameters = (vault, itemContent)
-        invokedExecuteParametersList.append((vault, itemContent))
-        if let error = executeVaultItemContentThrowableError1 {
+        invokedExecuteParameters = (userId, vault, itemContent)
+        invokedExecuteParametersList.append((userId, vault, itemContent))
+        if let error = executeUserIdVaultItemContentThrowableError1 {
             throw error
         }
         closureExecute()

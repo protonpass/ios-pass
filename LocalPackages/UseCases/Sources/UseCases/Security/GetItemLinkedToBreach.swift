@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol GetItemsLinkedToBreachUseCase: Sendable {
-    func execute(email: String) async throws -> [ItemUiModel]
+    func execute(userId: String, email: String) async throws -> [ItemUiModel]
 }
 
 public extension GetItemsLinkedToBreachUseCase {
-    func callAsFunction(email: String) async throws -> [ItemUiModel] {
-        try await execute(email: email)
+    func callAsFunction(userId: String, email: String) async throws -> [ItemUiModel] {
+        try await execute(userId: userId, email: email)
     }
 }
 
@@ -43,9 +43,9 @@ public final class GetItemsLinkedToBreach: GetItemsLinkedToBreachUseCase {
         self.repository = repository
     }
 
-    public func execute(email: String) async throws -> [ItemUiModel] {
+    public func execute(userId: String, email: String) async throws -> [ItemUiModel] {
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        let encryptedItems = try await repository.getAllItems()
+        let encryptedItems = try await repository.getAllItems(userId: userId)
 
         return encryptedItems.compactMap { element in
             guard let model = try? element.getItemContent(symmetricKey: symmetricKey),

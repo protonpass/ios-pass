@@ -49,34 +49,18 @@ enum AppDataKey: String {
 extension UserData: @unchecked Sendable {}
 
 final class AppData: AppDataProtocol {
+    /// Can be removed after july 2025
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
 
+    /// Can be removed after july 2025
     @LockedKeychainStorage(key: AppDataKey.mainCredential, defaultValue: nil)
     private var mainCredential: AuthCredential?
 
     @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
     private var symmetricKey: String?
 
-    @LockedKeychainStorage(key: AppDataKey.hostAppCredential, defaultValue: nil)
-    private var hostAppCredential: AuthCredential?
-
-    @LockedKeychainStorage(key: AppDataKey.autofillExtensionCredential, defaultValue: nil)
-    private var autofillExtensionCredential: AuthCredential?
-
-    @LockedKeychainStorage(key: AppDataKey.shareExtensionCredential, defaultValue: nil)
-    private var shareExtensionCredential: AuthCredential?
-
-    private let migrationStateProvider: any CredentialsMigrationStateProvider
-
-    private let module: PassModule
-
-    init(module: PassModule, migrationStateProvider: any CredentialsMigrationStateProvider) {
-        self.module = module
-        self.migrationStateProvider = migrationStateProvider
-        migrateToSeparatedCredentialsIfNeccessary()
-        migrateCredentialsForShareExtensionIfNecessary()
-    }
+    init() {}
 
     func getSymmetricKey() throws -> SymmetricKey {
         if let symmetricKey {
@@ -91,98 +75,15 @@ final class AppData: AppDataProtocol {
         }
     }
 
-//    func removeSymmetricKey() {
-//        symmetricKey = nil
-//    }
-
-    func setUserData(_ userData: UserData?) {
-        self.userData = userData
-        // Should be removed after session forking
-        useCredentialInUserDataForBothAppAndExtension()
-    }
-
     func getUserData() -> UserData? {
         userData
     }
 
-    func getCredential() -> AuthCredential? {
-        migrateToSeparatedCredentialsIfNeccessary()
-        migrateCredentialsForShareExtensionIfNecessary()
-        switch module {
-        case .hostApp:
-            return hostAppCredential ?? mainCredential
-        case .autoFillExtension:
-            return autofillExtensionCredential ?? mainCredential
-        case .shareExtension:
-            return shareExtensionCredential ?? mainCredential
-        }
-    }
-
-    func setCredential(_ credential: AuthCredential?) {
-        switch module {
-        case .hostApp:
-            hostAppCredential = credential
-
-            // Should be removed after session forking
-            autofillExtensionCredential = credential
-            shareExtensionCredential = credential
-            mainCredential = credential
-
-        case .autoFillExtension:
-            autofillExtensionCredential = credential
-
-            // Should be removed after session forking
-            hostAppCredential = credential
-            mainCredential = credential
-            shareExtensionCredential = credential
-
-        case .shareExtension:
-            shareExtensionCredential = credential
-
-            // Should be removed after session forking
-            hostAppCredential = credential
-            mainCredential = credential
-            autofillExtensionCredential = credential
-        }
+    func getMainCredential() -> AuthCredential? {
+        mainCredential
     }
 
     func resetData() {
         userData = nil
-        mainCredential = nil
-        hostAppCredential = nil
-        autofillExtensionCredential = nil
-        shareExtensionCredential = nil
-    }
-
-    // Should be removed after session forking
-    func migrateToSeparatedCredentialsIfNeccessary() {
-        guard migrationStateProvider.shouldMigrateToSeparatedCredentials() else { return }
-        migrationStateProvider.markAsMigratedToSeparatedCredentials()
-        useCredentialInUserDataForBothAppAndExtension()
-    }
-
-    func migrateCredentialsForShareExtensionIfNecessary() {
-        guard migrationStateProvider.shouldMigrateCredentialsToShareExtension() else { return }
-        migrationStateProvider.markAsMigratedCredentialsToShareExtension()
-        shareExtensionCredential = mainCredential
-    }
-}
-
-private extension AppData {
-    // Should be removed after session forking
-    func useCredentialInUserDataForBothAppAndExtension() {
-        if let userData {
-            let credential = userData.credential
-            mainCredential = credential
-            hostAppCredential = credential
-            autofillExtensionCredential = credential
-            shareExtensionCredential = credential
-        }
-    }
-}
-
-extension AppData {
-    func getCurrentUserId() async throws -> String? {
-        userData?.user.ID
     }
 }

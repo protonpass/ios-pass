@@ -79,12 +79,6 @@ final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage(Key.createdItemsCount.rawValue, store: kSharedUserDefaults)
     var createdItemsCount = 0
 
-    @AppStorage(Key.didMigrateToSeparatedCredentials.rawValue, store: kSharedUserDefaults)
-    var didMigrateToSeparatedCredentials = false
-
-    @AppStorage(Key.didMigrateCredentialsToShareExtension.rawValue, store: kSharedUserDefaults)
-    var didMigrateCredentialsToShareExtension = false
-
     // MARK: Sensitive prefs
 
     @KeychainStorage(key: Key.failedAttemptCount, defaultValue: 0)

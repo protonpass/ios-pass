@@ -50,8 +50,8 @@ public final class DeleteLocalDataBeforeFullSync: DeleteLocalDataBeforeFullSyncU
     }
 
     public func execute() async throws {
-        try await itemRepository.deleteAllItemsLocally()
-        try await shareRepository.deleteAllSharesLocally()
-        try await shareKeyRepository.deleteAllKeysLocally()
+        try await itemRepository.deleteAllCurrentUserItemsLocally()
+        try await shareRepository.deleteAllCurrentUserSharesLocally()
+        try await shareKeyRepository.deleteAllCurrentUserShareKeysLocally()
     }
 }

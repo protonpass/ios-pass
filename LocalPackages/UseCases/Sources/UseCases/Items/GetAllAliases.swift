@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol GetAllAliasesUseCase: Sendable {
-    func execute() async throws -> [ItemContent]
+    func execute(userId: String) async throws -> [ItemContent]
 }
 
 public extension GetAllAliasesUseCase {
-    func callAsFunction() async throws -> [ItemContent] {
-        try await execute()
+    func callAsFunction(userId: String) async throws -> [ItemContent] {
+        try await execute(userId: userId)
     }
 }
 
@@ -40,8 +40,8 @@ public final class GetAllAliases: GetAllAliasesUseCase {
         self.itemRepository = itemRepository
     }
 
-    public func execute() async throws -> [ItemContent] {
-        try await itemRepository.getAllItemContents()
+    public func execute(userId: String) async throws -> [ItemContent] {
+        try await itemRepository.getAllItemContents(userId: userId)
             .filter { $0.contentData == .alias && $0.item.itemState == .active }
     }
 }

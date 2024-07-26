@@ -35,14 +35,19 @@ public extension ForkSessionUseCase {
 
 public final class ForkSession: ForkSessionUseCase {
     private let networkRepository: any NetworkRepositoryProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(networkRepository: any NetworkRepositoryProtocol) {
+    public init(networkRepository: any NetworkRepositoryProtocol,
+                userManager: any UserManagerProtocol) {
         self.networkRepository = networkRepository
+        self.userManager = userManager
     }
 
     public func execute(payload: String?, childClientId: String, independent: Int) async throws -> String {
-        try await networkRepository.forkSession(payload: payload,
-                                                childClientId: childClientId,
-                                                independent: independent)
+        let userId = try await userManager.getActiveUserId()
+        return try await networkRepository.forkSession(userId: userId,
+                                                       payload: payload,
+                                                       childClientId: childClientId,
+                                                       independent: independent)
     }
 }

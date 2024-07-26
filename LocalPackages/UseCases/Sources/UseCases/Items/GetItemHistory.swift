@@ -24,14 +24,16 @@ import Client
 import Entities
 
 public protocol GetItemHistoryUseCase: Sendable {
-    func execute(shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<ItemContent>
+    func execute(userId: String, shareId: String, itemId: String, lastToken: String?) async throws
+        -> Paginated<ItemContent>
 }
 
 public extension GetItemHistoryUseCase {
-    func callAsFunction(shareId: String,
+    func callAsFunction(userId: String,
+                        shareId: String,
                         itemId: String,
                         lastToken: String?) async throws -> Paginated<ItemContent> {
-        try await execute(shareId: shareId, itemId: itemId, lastToken: lastToken)
+        try await execute(userId: userId, shareId: shareId, itemId: itemId, lastToken: lastToken)
     }
 }
 
@@ -42,10 +44,12 @@ public final class GetItemHistory: GetItemHistoryUseCase {
         self.itemRepository = itemRepository
     }
 
-    public func execute(shareId: String,
+    public func execute(userId: String,
+                        shareId: String,
                         itemId: String,
                         lastToken: String?) async throws -> Paginated<ItemContent> {
-        try await itemRepository.getItemRevisions(shareId: shareId,
+        try await itemRepository.getItemRevisions(userId: userId,
+                                                  shareId: shareId,
                                                   itemId: itemId,
                                                   lastToken: lastToken)
     }

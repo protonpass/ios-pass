@@ -24,8 +24,13 @@ import Combine
 import Core
 import Entities
 import XCTest
+import ProtonCoreLogin
+import ProtonCoreNetworking
 
 private final class MockedRemoteDatasource: RemoteTelemetryEventDatasourceProtocol {
+    func send(userId: String, events: [Client.EventInfo]) async throws {
+    }
+    
     func send(events: [EventInfo]) async throws {}
 }
 
@@ -68,7 +73,7 @@ private final class MockedUserSettingsRepositoryProtocol: UserSettingsRepository
 }
 
 private final class MockedFreePlanRepository: AccessRepositoryProtocol {
-    let access: CurrentValueSubject<Access?, Never> = .init(nil)
+    let access: CurrentValueSubject<UserAccess?, Never> = .init(nil)
     let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     let mockedAccess = Access(plan: .init(type: "free",
@@ -84,15 +89,15 @@ private final class MockedFreePlanRepository: AccessRepositoryProtocol {
                               waitingNewUserInvites: 1,
                               minVersionUpgrade: nil)
 
-    func getAccess() async throws -> Access { mockedAccess }
+    func getAccess() async throws -> UserAccess { .init(userId: .random(), access: mockedAccess) }
     func getPlan() async throws -> Plan { mockedAccess.plan }
-    func refreshAccess() async throws -> Access { mockedAccess }
+    func refreshAccess() async throws -> UserAccess { .init(userId: .random(), access: mockedAccess)  }
     func updateProtonAddressesMonitor(_ monitored: Bool) async throws {}
     func updateAliasesMonitor(_ monitored: Bool) async throws {}
 }
 
 private final class MockedBusinessPlanRepository: AccessRepositoryProtocol {
-    let access: CurrentValueSubject<Access?, Never> = .init(nil)
+    let access: CurrentValueSubject<UserAccess?, Never> = .init(nil)
     let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     let mockedAccess = Access(plan: .init(type: "business",
@@ -108,9 +113,9 @@ private final class MockedBusinessPlanRepository: AccessRepositoryProtocol {
                               waitingNewUserInvites: 1,
                               minVersionUpgrade: nil)
 
-    func getAccess() async throws -> Access { mockedAccess }
+    func getAccess() async throws -> UserAccess { .init(userId: .random(), access: mockedAccess) }
     func getPlan() async throws -> Plan { mockedAccess.plan }
-    func refreshAccess() async throws -> Access { mockedAccess }
+    func refreshAccess() async throws -> UserAccess { .init(userId: .random(),  access: mockedAccess) }
     func updateProtonAddressesMonitor(_ monitored: Bool) async throws {}
     func updateAliasesMonitor(_ monitored: Bool) async throws {}
 }
@@ -118,7 +123,7 @@ private final class MockedBusinessPlanRepository: AccessRepositoryProtocol {
 final class TelemetryEventRepositoryTests: XCTestCase {
     var localDatasource: LocalTelemetryEventDatasourceProtocol!
     var thresholdProvider: TelemetryThresholdProviderMock!
-    var userDataProviderMock: UserDataProviderMock!
+    var userManager: UserManagerProtocolMock!
     var itemReadEventRepository: ItemReadEventRepositoryProtocolMock!
     var sut: TelemetryEventRepositoryProtocol!
 
@@ -126,15 +131,16 @@ final class TelemetryEventRepositoryTests: XCTestCase {
         super.setUp()
         localDatasource = LocalTelemetryEventDatasource(databaseService: DatabaseService(inMemory: true))
         thresholdProvider = TelemetryThresholdProviderMock()
-        userDataProviderMock = UserDataProviderMock()
-        userDataProviderMock.stubbedGetUserDataResult = .preview
+        userManager = UserManagerProtocolMock()
+        let user = UserData.preview
+        userManager.stubbedGetActiveUserIdResult = user.user.ID
         itemReadEventRepository = .init()
     }
 
     override func tearDown() {
         localDatasource = nil
         thresholdProvider = nil
-        userDataProviderMock = nil
+        userManager = nil
         sut = nil
         super.tearDown()
     }
@@ -143,7 +149,7 @@ final class TelemetryEventRepositoryTests: XCTestCase {
 extension TelemetryEventRepositoryTests {
     func testAddNewEvents() async throws {
         // Given
-        let givenUserId = try userDataProviderMock.getUserId()
+        let givenUserId = try await userManager.getActiveUserId()
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     thresholdProvider: thresholdProvider)
         sut = TelemetryEventRepository(localDatasource: localDatasource,
@@ -153,7 +159,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
 
         // When
         try await sut.addNewEvent(type: .create(.login))
@@ -181,7 +187,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
         var threshold = await sut.scheduler.getThreshold()
         XCTAssertNil(threshold)
 
@@ -212,7 +218,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
 
         // When
         let sendResult = try await sut.sendAllEventsIfApplicable()
@@ -225,7 +231,7 @@ extension TelemetryEventRepositoryTests {
 
     func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
         // Given
-        let givenUserId = try userDataProviderMock.getUserId()
+        let givenUserId = try await userManager.getActiveUserId()
         let givenCurrentDate = Date.now
         let mockedCurrentDateProvider = MockedCurrentDateProvider()
         mockedCurrentDateProvider.currentDate = givenCurrentDate
@@ -242,7 +248,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock,
+                                       userManager: userManager,
                                        batchSize: 1)
 
         // When
@@ -291,7 +297,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
 
         // When
         try await sut.addNewEvent(type: .create(.login))
@@ -340,7 +346,7 @@ extension TelemetryEventRepositoryTests {
                                        itemReadEventRepository: itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock)
+                                       userManager: userManager)
 
         // When
         let sendResult = try await sut.sendAllEventsIfApplicable()
@@ -367,7 +373,7 @@ extension TelemetryEventRepositoryTests {
                                         itemReadEventRepository,
                                        logManager: LogManager.dummyLogManager(),
                                        scheduler: telemetryScheduler,
-                                       userDataProvider: userDataProviderMock,
+                                       userManager: userManager,
                                        batchSize: 1)
 
         // When

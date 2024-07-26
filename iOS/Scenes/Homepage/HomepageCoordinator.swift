@@ -51,7 +51,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    private let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+    let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
@@ -63,19 +63,18 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
-    private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
 
     // Lazily initialised properties
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
-    @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
+    @LazyInjected(\SharedToolingContainer.apiManager) var apiManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
+    @LazyInjected(\SharedServiceContainer.userManager) var userManager
 
     // Use cases
-    private let refreshFeatureFlags = resolve(\UseCasesContainer.refreshFeatureFlags)
+    private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
-    private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
+    let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
@@ -83,10 +82,14 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
     private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
+    @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
+    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
+    var addAndSwitchToNewUserAccount
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
+    let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
     // References
@@ -95,14 +98,13 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var customCoordinator: (any CustomCoordinator)?
-
-    weak var secureLinkDetailViewController: UIViewController?
-
     private var cancellables = Set<AnyCancellable>()
+
+    lazy var logInAndSignUp = makeLoginAndSignUp()
 
     // MARK: - Navigation Router
 
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private var authenticated = false
 
@@ -142,8 +144,18 @@ private extension HomepageCoordinator {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                logger.trace("Found new plan, refreshing credential database")
                 homepageTabDelegate?.refreshTabIcons()
+            }
+            .store(in: &cancellables)
+
+        userManager.currentActiveUser
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userData in
+                guard let self else { return }
+                homepageTabDelegate?.refreshTabIcons()
+                let message = #localized("Switched to %@", userData?.user.email ?? "")
+                bannerManager.displayBottomInfoMessage(message)
             }
             .store(in: &cancellables)
 
@@ -257,7 +269,9 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await vaultsManager.asyncRefresh()
+                let userId = try await userManager.getActiveUserId()
+                try await vaultsManager.asyncRefresh(userId: userId)
+                eventLoop.forceSync()
                 eventLoop.start()
             } catch {
                 logger.error(error)
@@ -269,7 +283,8 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await refreshAccessAndMonitorState()
+                let userId = try await userManager.getActiveUserId()
+                try await refreshAccessAndMonitorState(userId: userId)
             } catch {
                 logger.error(error)
             }
@@ -293,7 +308,7 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = try userDataProvider.getUserId()
+                let userId = try await userManager.getActiveUserId()
                 try await refreshUserSettings(for: userId)
             } catch {
                 logger.error(error)
@@ -302,18 +317,22 @@ private extension HomepageCoordinator {
     }
 
     func refresh(exitEditMode: Bool = true) {
-        vaultsManager.refresh()
-        if exitEditMode {
-            itemsTabViewModel?.isEditMode = false
-        }
-        searchViewModel?.refreshResults()
-        itemDetailCoordinator?.refresh()
-        createEditItemCoordinator?.refresh()
-
-        secureLinkDetailViewController?.dismiss(animated: true)
         Task { [weak self] in
-            guard let self else { return }
-            _ = try? await secureLinkManager.updateSecureLinks()
+            guard let self else {
+                return
+            }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+                if exitEditMode {
+                    itemsTabViewModel?.isEditMode = false
+                }
+                searchViewModel?.refreshResults()
+                itemDetailCoordinator?.refresh()
+                createEditItemCoordinator?.refresh()
+            } catch {
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
     }
 
@@ -348,11 +367,6 @@ private extension HomepageCoordinator {
                 handle(error: error)
             }
         }
-    }
-
-    func handle(error: any Error) {
-        logger.error(error)
-        bannerManager.displayTopErrorMessage(error)
     }
 }
 
@@ -485,6 +499,8 @@ extension HomepageCoordinator {
                     presentSecureLinks()
                 case let .secureLinkDetail(link):
                     presentSecureLinkDetail(link: link)
+                case .addAccount:
+                    beginAddAccountFlow()
                 }
             }
             .store(in: &cancellables)
@@ -534,9 +550,20 @@ extension HomepageCoordinator {
                     copyToClipboard(text, bannerMessage: message, bannerDisplay: bannerManager)
                 case let .back(isShownAsSheet):
                     itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
+                case let .manage(userId):
+                    handleManageAccount(userId: userId)
+                case let .signOut(userId):
+                    handleSignOut(userId: userId)
+                case let .deleteAccount(userId):
+                    deleteAccount(userId: userId)
                 }
             }
             .store(in: &cancellables)
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        bannerManager.displayTopErrorMessage(error)
     }
 
     // MARK: - UI view presenting functions
@@ -853,12 +880,14 @@ extension HomepageCoordinator {
 
     func presentChangePassword(mode: PasswordChangeModule.PasswordChangeMode) {
         Task { @MainActor [weak self] in
-            guard let self, let userData = userDataProvider.getUserData() else { return }
+            guard let self else { return }
             do {
+                let userData = try await userManager.getUnwrappedActiveUserData()
                 let userInfo = try await filledUserInfo(userData: userData)
+                let apiService = try apiManager.getApiService(userId: userData.user.ID)
                 let viewController = PasswordChangeModule
                     .makePasswordChangeViewController(mode: mode,
-                                                      apiService: apiManager.apiService,
+                                                      apiService: apiService,
                                                       authCredential: userData.credential,
                                                       userInfo: userInfo,
                                                       showingDismissButton: true) { [weak self] cred, userInfo in
@@ -875,9 +904,12 @@ extension HomepageCoordinator {
 
     func presentSecurityKeys() {
         Task { [weak self] in
-            guard let self else { return }
+            guard let self,
+                  let userId = try? await userManager.getActiveUserId(),
+                  let apiService = try? apiManager.getApiService(userId: userId) else { return }
+
             let viewController = LoginUIModule
-                .makeSecurityKeysViewController(apiService: apiManager.apiService,
+                .makeSecurityKeysViewController(apiService: apiService,
                                                 clientApp: .pass)
             let navigationController = UINavigationController(rootViewController: viewController)
             present(navigationController)
@@ -885,7 +917,7 @@ extension HomepageCoordinator {
     }
 
     private func filledUserInfo(userData: UserData) async throws -> UserInfo {
-        let userId = try userDataProvider.getUserId()
+        let userId = try await userManager.getActiveUserId()
         let settings = await userSettingsRepository.getSettings(for: userId)
         let userInfo = userData.toUserInfo
         userInfo.twoFactor = settings.twoFactor.type.rawValue
@@ -894,18 +926,21 @@ extension HomepageCoordinator {
     }
 
     private func processPasswordChange(authCredential: AuthCredential, userInfo: UserInfo) {
-        guard let userData = userDataProvider.getUserData() else { return }
-        var updatedUser = userData.user
-        updatedUser.setNewKeys(userInfo.userKeys)
-        userDataProvider.setUserData(.init(credential: authCredential,
-                                           user: updatedUser,
-                                           salts: userData.salts,
-                                           passphrases: userData.passphrases,
-                                           addresses: userInfo.userAddresses,
-                                           scopes: userData.scopes))
-        dismissTopMostViewController { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomInfoMessage(#localized("Password changed successfully"))
+        Task { [weak self] in
+            guard let self, let userData = try? await userManager.getActiveUserData() else { return }
+            var updatedUser = userData.user
+            updatedUser.setNewKeys(userInfo.userKeys)
+            try? await userManager.update(userData: .init(credential: authCredential,
+                                                          user: updatedUser,
+                                                          salts: userData.salts,
+                                                          passphrases: userData.passphrases,
+                                                          addresses: userInfo.userAddresses,
+                                                          scopes: userData.scopes))
+
+            dismissTopMostViewController { [weak self] in
+                guard let self else { return }
+                bannerManager.displayBottomInfoMessage(#localized("Password changed successfully"))
+            }
         }
     }
 
@@ -1014,6 +1049,8 @@ extension HomepageCoordinator {
 // MARK: - Open webpages
 
 extension HomepageCoordinator {
+    // swiftlint:disable:next todo
+    // TODO: do we need this ?
     func beginImportExportFlow() {
         Task { [weak self] in
             guard let self else { return }
@@ -1069,7 +1106,7 @@ extension HomepageCoordinator {
         Task { [weak self] in
             guard let self,
                   await loginMethod.isManualLogIn() else { return }
-            if let access = try? await accessRepository.getAccess(),
+            if let access = try? await accessRepository.getAccess().access,
                access.waitingNewUserInvites > 0 {
                 // New user just registered after an invitation
                 presentAwaitAccessConfirmationView()
@@ -1230,14 +1267,6 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 // MARK: - ProfileTabViewModelDelegate
 
 extension HomepageCoordinator: ProfileTabViewModelDelegate {
-    func profileTabViewModelWantsToShowAccountMenu() {
-        let asSheet = shouldShowAsSheet()
-        let viewModel = AccountViewModel(isShownAsSheet: asSheet)
-        viewModel.delegate = self
-        let view = AccountView(viewModel: viewModel)
-        showView(view: view, asSheet: asSheet)
-    }
-
     func profileTabViewModelWantsToShowSettingsMenu() {
         let asSheet = shouldShowAsSheet()
         let viewModel = SettingsViewModel(isShownAsSheet: asSheet)
@@ -1300,13 +1329,13 @@ extension HomepageCoordinator: AccountViewModelDelegate {
         adaptivelyDismissCurrentDetailView()
     }
 
-    func accountViewModelWantsToSignOut() {
-        eventLoop.stop()
-        delegate?.homepageCoordinatorWantsToLogOut()
-    }
-
-    func accountViewModelWantsToDeleteAccount() {
-        let accountDeletion = AccountDeletionService(api: apiManager.apiService)
+    func deleteAccount(userId: String) {
+        guard let userId = userManager.activeUserId,
+              let apiService = try? apiManager.getApiService(userId: userId)
+        else {
+            return
+        }
+        let accountDeletion = AccountDeletionService(api: apiService)
         let view = topMostViewController.view
         showLoadingHud(view)
         accountDeletion.initiateAccountDeletionProcess(over: topMostViewController,
@@ -1322,7 +1351,7 @@ extension HomepageCoordinator: AccountViewModelDelegate {
                                                                switch result {
                                                                case .success:
                                                                    logger.trace("Account deletion successful")
-                                                                   accountViewModelWantsToSignOut()
+                                                                   loggingOutUser(userId: userId)
                                                                case .failure(AccountDeletionError.closedByUser):
                                                                    logger
                                                                        .trace("Accpunt deletion form closed by user")
@@ -1337,9 +1366,14 @@ extension HomepageCoordinator: AccountViewModelDelegate {
     }
 
     func accountViewModelWantsToShowAccountRecovery(_ completion: @escaping (AccountRecovery) -> Void) {
+        guard let userId = userManager.activeUserId,
+              let apiService = try? apiManager.getApiService(userId: userId)
+        else {
+            return
+        }
         let asSheet = shouldShowAsSheet()
         let viewModel = AccountRecoveryView
-            .ViewModel(accountRepository: AccountRecoveryRepository(apiService: apiManager.apiService))
+            .ViewModel(accountRepository: AccountRecoveryRepository(apiService: apiService))
         viewModel.externalAccountRecoverySetter = { accountRecovery in
             completion(accountRecovery)
         }
@@ -1466,33 +1500,53 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
     }
 
     func createEditItemViewModelDidCreateItem(type: ItemContentType) {
-        addNewEvent(type: .create(type))
-        dismissAllViewControllers(animated: true) { [weak self] in
-            // We have eventual crashes after creating items
-            // Looks like it's because the keyboard is not fully dismissed
-            // and in between we try to show a banner
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomInfoMessage(type.creationMessage)
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                addNewEvent(type: .create(type))
+                dismissAllViewControllers(animated: true) { [weak self] in
+                    // We have eventual crashes after creating items
+                    // Looks like it's because the keyboard is not fully dismissed
+                    // and in between we try to show a banner
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                        guard let self else { return }
+                        bannerManager.displayBottomInfoMessage(type.creationMessage)
+                    }
+                }
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+                homepageTabDelegate?.change(tab: .items)
+                increaseCreatedItemsCountAndAskForReviewIfNecessary()
+            } catch {
+                bannerManager.displayTopErrorMessage(error)
             }
         }
-        vaultsManager.refresh()
-        homepageTabDelegate?.change(tab: .items)
-        increaseCreatedItemsCountAndAskForReviewIfNecessary()
     }
 
     func createEditItemViewModelDidUpdateItem(_ type: ItemContentType, updated: Bool) {
-        guard updated else {
-            dismissTopMostViewController()
-            return
-        }
-        addNewEvent(type: .update(type))
-        vaultsManager.refresh()
-        searchViewModel?.refreshResults()
-        itemDetailCoordinator?.refresh()
-        dismissTopMostViewController { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomInfoMessage(type.updateMessage)
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                guard updated else {
+                    dismissTopMostViewController()
+                    return
+                }
+                addNewEvent(type: .update(type))
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+                searchViewModel?.refreshResults()
+                itemDetailCoordinator?.refresh()
+                dismissTopMostViewController { [weak self] in
+                    guard let self else { return }
+                    bannerManager.displayBottomInfoMessage(type.updateMessage)
+                }
+            } catch {
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
     }
 }
@@ -1598,11 +1652,21 @@ extension HomepageCoordinator: SearchViewModelDelegate {
 
 extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
     func createEditVaultViewModelDidEditVault() {
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                dismissTopMostViewController(animated: true) { [weak self] in
+                    guard let self else { return }
+                    bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
+                }
+                let userId = try await userManager.getActiveUserId()
+                vaultsManager.refresh(userId: userId)
+            } catch {
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
-        vaultsManager.refresh()
     }
 }
 
@@ -1629,8 +1693,8 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Stopped looping")
     }
 
-    nonisolated func syncEventLoopDidBeginNewLoop() {
-        logger.info("Began new sync loop")
+    nonisolated func syncEventLoopDidBeginNewLoop(userId: String) {
+        logger.info("Began new sync loop for userId \(userId)")
     }
 
     #warning("Handle no connection reason")
@@ -1638,9 +1702,9 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Skipped sync loop \(reason)")
     }
 
-    nonisolated func syncEventLoopDidFinishLoop(hasNewEvents: Bool) {
+    nonisolated func syncEventLoopDidFinishLoop(userId: String, hasNewEvents: Bool) {
         if hasNewEvents {
-            logger.info("Has new events. Refreshing items")
+            logger.info("Has new events. Refreshing items for userId \(userId)")
             Task { [weak self] in
                 guard let self else {
                     return
@@ -1648,25 +1712,25 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
                 await refresh()
             }
         } else {
-            logger.info("Has no new events. Do nothing.")
+            logger.info("Has no new events for userId \(userId). Do nothing.")
         }
     }
 
-    nonisolated func syncEventLoopDidFailLoop(error: any Error) {
+    nonisolated func syncEventLoopDidFailLoop(userId: String, error: any Error) {
         // Silently fail & not show error to users
         logger.error(error)
     }
 
-    nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(label: String) {
-        logger.trace("Began executing additional task \(label)")
+    nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(userId: String, label: String) {
+        logger.trace("Began executing additional task \(label) for userId \(userId)")
     }
 
-    nonisolated func syncEventLoopDidFinishAdditionalTask(label: String) {
-        logger.info("Finished executing additional task \(label)")
+    nonisolated func syncEventLoopDidFinishAdditionalTask(userId: String, label: String) {
+        logger.info("Finished executing additional task \(label) for userId \(userId)")
     }
 
-    nonisolated func syncEventLoopDidFailedAdditionalTask(label: String, error: any Error) {
-        logger.error(message: "Failed to execute additional task \(label)", error: error)
+    nonisolated func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error) {
+        logger.error(message: "Failed to execute additional task \(label) for userId \(userId)", error: error)
     }
 }
 

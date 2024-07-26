@@ -86,6 +86,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "keyRotation", on: sut, hasType: .integer64)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "symmetricallyEncryptedKey", on: sut, hasType: .string)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "userKeyID", on: sut, hasType: .string)
     }
 
@@ -122,6 +123,7 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "itemID", on: sut, hasType: .string)
         verifyAttribute(named: "shareID", on: sut, hasType: .string)
         verifyAttribute(named: "time", on: sut, hasType: .integer64)
+        verifyAttribute(named: "userID", on: sut, hasType: .string)
     }
 
     func testTelemetryEventEntity() {
@@ -171,11 +173,12 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "encryptedContent", on: sut, hasType: .binaryData)
     }
 
-    func testUserDataEntity() {
-        let sut = entity(byName: "UserDataEntity")
+    func testUserProfileEntity() {
+        let sut = entity(byName: "UserProfileEntity")
         verifyAttribute(named: "updateTime", on: sut, hasType: .integer64)
         verifyAttribute(named: "userID", on: sut, hasType: .string)
         verifyAttribute(named: "encryptedData", on: sut, hasType: .binaryData)
+        verifyAttribute(named: "isActive", on: sut, hasType: .boolean)
     }
 
     func testItemReadEventEntity() {

@@ -1,7 +1,7 @@
 //
-// CorruptedSessionReason.swift
-// Proton Pass - Created on 21/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Int+Typealias.swift
+// Proton Pass - Created on 26/06/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,26 +17,7 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Combine
+import Foundation
 
-public enum CorruptedSessionReason: CustomDebugStringConvertible, Equatable, Sendable {
-    public typealias SessionUID = String
-
-    case unauthSessionMakingAuthRequests(SessionUID)
-
-    public var debugDescription: String {
-        switch self {
-        case .unauthSessionMakingAuthRequests:
-            "Corrupted session - unauth session making auth requests"
-        }
-    }
-
-    public var sessionId: String {
-        switch self {
-        case let .unauthSessionMakingAuthRequests(sessionId):
-            sessionId
-        }
-    }
-}
+public typealias MigrationStatus = Int

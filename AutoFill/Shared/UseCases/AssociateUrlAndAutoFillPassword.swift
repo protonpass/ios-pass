@@ -78,7 +78,8 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
                                              itemUuid: oldContent.itemUuid,
                                              data: newLoginData,
                                              customFields: oldContent.customFields)
-        try await itemRepository.updateItem(oldItem: oldContent.item,
+        try await itemRepository.updateItem(userId: oldContent.userId,
+                                            oldItem: oldContent.item,
                                             newItemContent: newContent,
                                             shareId: oldContent.shareId)
         let credential = ASPasswordCredential(user: oldData.authIdentifier,

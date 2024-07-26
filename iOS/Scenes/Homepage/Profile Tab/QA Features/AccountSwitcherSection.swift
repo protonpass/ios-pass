@@ -30,24 +30,23 @@ struct AccountSwitcherSection: View {
     }
 }
 
-private struct AccountDetailImpl: AccountCellDetail {
-    let id = UUID().uuidString
-    let initials: String
-    let displayName: String
-    let email: String
-}
-
 private struct AccountSwitcherView: View {
     @State private var showSwitcher = false
     @Namespace private var namespace
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    private let eric = AccountDetailImpl(initials: "E",
+    private let eric = AccountCellDetail(id: UUID().uuidString,
+                                         isPremium: true,
+                                         initial: "E",
                                          displayName: "Eric Norbert",
+                                         planName: "Pass Plus",
                                          email: "eric.norbert@proton.me")
 
-    private let john = AccountDetailImpl(initials: "J",
+    private let john = AccountCellDetail(id: UUID().uuidString,
+                                         isPremium: false,
+                                         initial: "J",
                                          displayName: "John Doe",
+                                         planName: "Pass Free",
                                          email: "john.doe@proton.me")
 
     var body: some View {
@@ -86,24 +85,24 @@ private struct AccountSwitcherView: View {
                                         showSwitcher: $showSwitcher,
                                         animationNamespace: namespace,
                                         onSelect: { handleSelection($0) },
+                                        onManage: { handleManage($0) },
                                         onSignOut: { handleSignOut($0) },
-                                        onDelete: { handleDelete($0) },
                                         onAddAccount: { handleAddAccount() }))
     }
 }
 
 @MainActor
 private extension AccountSwitcherView {
-    func handleSelection(_ id: String) {
-        dismissAccountSwitcherAndDisplay(message: "Select \(id)")
+    func handleSelection(_ account: AccountCellDetail) {
+        dismissAccountSwitcherAndDisplay(message: "Select \(account.id)")
     }
 
-    func handleSignOut(_ id: String) {
-        dismissAccountSwitcherAndDisplay(message: "Sign out \(id)")
+    func handleSignOut(_ account: AccountCellDetail) {
+        dismissAccountSwitcherAndDisplay(message: "Sign out \(account)")
     }
 
-    func handleDelete(_ id: String) {
-        dismissAccountSwitcherAndDisplay(message: "Delete \(id)")
+    func handleManage(_ account: AccountCellDetail) {
+        dismissAccountSwitcherAndDisplay(message: "Manage \(account)")
     }
 
     func handleAddAccount() {

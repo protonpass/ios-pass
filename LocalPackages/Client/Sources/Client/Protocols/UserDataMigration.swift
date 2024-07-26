@@ -1,7 +1,7 @@
 //
-// UserDataProvider.swift
-// Proton Pass - Created on 03/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// UserDataMigration.swift
+// Proton Pass - Created on 28/06/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,29 +17,12 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Entities
+import Foundation
 import ProtonCoreLogin
+import ProtonCoreNetworking
 
-// sourcery: AutoMockable
-public protocol UserDataProvider: Sendable {
+public protocol UserDataMigrationProtocol {
     func getUserData() -> UserData?
-    func setUserData(_ userData: UserData?)
-}
-
-public extension UserDataProvider {
-    func getUserId() throws -> String {
-        guard let userData = getUserData() else {
-            throw PassError.noUserData
-        }
-        return userData.user.ID
-    }
-
-    func getUnwrappedUserData() throws -> UserData {
-        guard let userData = getUserData() else {
-            throw PassError.noUserData
-        }
-        return userData
-    }
+    func getMainCredential() -> AuthCredential?
 }

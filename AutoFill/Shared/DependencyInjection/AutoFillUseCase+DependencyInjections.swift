@@ -66,6 +66,10 @@ private extension AutoFillUseCaseContainer {
     var matchUrls: any MatchUrlsUseCase {
         SharedUseCasesContainer.shared.matchUrls()
     }
+
+    var userManager: any UserManagerProtocol {
+        SharedServiceContainer.shared.userManager()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -101,6 +105,7 @@ extension AutoFillUseCaseContainer {
 
     var createAndAssociatePasskey: Factory<any CreateAndAssociatePasskeyUseCase> {
         self { CreateAndAssociatePasskey(itemRepository: self.itemRepository,
+                                         userManager: self.userManager,
                                          createPasskey: self.createPasskey,
                                          updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                          completePasskeyRegistration: self.completePasskeyRegistration()) }
@@ -118,6 +123,7 @@ extension AutoFillUseCaseContainer {
 
     var checkAndAutoFill: Factory<any CheckAndAutoFillUseCase> {
         self { CheckAndAutoFill(credentialProvider: SharedDataContainer.shared.credentialProvider(),
+                                userManager: SharedServiceContainer.shared.userManager(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
                                 completeAutoFill: self.completeAutoFill()) }
@@ -146,6 +152,7 @@ extension AutoFillUseCaseContainer {
     var completeAutoFill: Factory<any CompleteAutoFillUseCase> {
         self { CompleteAutoFill(logManager: self.logManager,
                                 telemetryRepository: SharedRepositoryContainer.shared.telemetryEventRepository(),
+                                userManager: self.userManager,
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                 resetFactory: self.resetFactory()) }

@@ -17,28 +17,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Client
-import Foundation
+import Entities
 
-public final class CurrentUserIdProviderMock: @unchecked Sendable, CurrentUserIdProvider {
+public final class LocalDataMigrationDatasourceProtocolMock: @unchecked Sendable, LocalDataMigrationDatasourceProtocol {
+    private var currentMigrations = 0
+    
+    public init(currentMigrations: MigrationStatus = 0) {
+        self.currentMigrations = currentMigrations
+    }
+    
+    public func getMigrations() async -> MigrationStatus {
+        return currentMigrations
+    }
 
-    public init() {}
-
-    // MARK: - getCurrentUserId
-    public var getCurrentUserIdThrowableError1: Error?
-    public var closureGetCurrentUserId: () -> () = {}
-    public var invokedGetCurrentUserIdfunction = false
-    public var invokedGetCurrentUserIdCount = 0
-    public var stubbedGetCurrentUserIdResult: String?
-
-    public func getCurrentUserId() async throws -> String? {
-        invokedGetCurrentUserIdfunction = true
-        invokedGetCurrentUserIdCount += 1
-        if let error = getCurrentUserIdThrowableError1 {
-            throw error
-        }
-        closureGetCurrentUserId()
-        return stubbedGetCurrentUserIdResult
+    public func upsert(migrations: MigrationStatus) async {
+        currentMigrations = migrations
     }
 }

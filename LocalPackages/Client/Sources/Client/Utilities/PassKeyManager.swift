@@ -53,35 +53,40 @@ public struct DecryptedItemKey: Hashable, Sendable {
 // sourcery: AutoMockable
 public protocol PassKeyManagerProtocol: Sendable, AnyObject {
     /// Get share key of a given key rotation to decrypt share content
-    func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey
+    func getShareKey(userId: String, shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey
 
     /// Get share key with latest rotation
-    func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey
+    func getLatestShareKey(userId: String, shareId: String) async throws -> DecryptedShareKey
 
     /// Get the latest key of an item to encrypt item content
-    func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey
+    func getLatestItemKey(userId: String, shareId: String, itemId: String) async throws -> DecryptedItemKey
 }
 
 public actor PassKeyManager {
-    public let shareKeyRepository: any ShareKeyRepositoryProtocol
-    public let itemKeyDatasource: any RemoteItemKeyDatasourceProtocol
-    public let logger: Logger
-    public let symmetricKeyProvider: any SymmetricKeyProvider
     private var decryptedShareKeys = Set<DecryptedShareKey>()
+    private let userManager: any UserManagerProtocol
+    private let shareKeyRepository: any ShareKeyRepositoryProtocol
+    private let itemKeyDatasource: any RemoteItemKeyDatasourceProtocol
+    private let logger: Logger
+    private let symmetricKeyProvider: any SymmetricKeyProvider
 
     public init(shareKeyRepository: any ShareKeyRepositoryProtocol,
                 itemKeyDatasource: any RemoteItemKeyDatasourceProtocol,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider) {
         self.shareKeyRepository = shareKeyRepository
         self.itemKeyDatasource = itemKeyDatasource
+        self.userManager = userManager
         logger = .init(manager: logManager)
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 }
 
 extension PassKeyManager: PassKeyManagerProtocol {
-    public func getShareKey(shareId: String, keyRotation: Int64) async throws -> DecryptedShareKey {
+    public func getShareKey(userId: String,
+                            shareId: String,
+                            keyRotation: Int64) async throws -> DecryptedShareKey {
         // ⚠️ Do not add logs to this function because it's supposed to be called all the time
         // when decrypting items. As IO operations caused by the log system take time
         // this will slow down dramatically the decryping process
@@ -91,27 +96,33 @@ extension PassKeyManager: PassKeyManagerProtocol {
             return cachedKey
         }
 
-        let allEncryptedShareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
+        let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
         guard let encryptedShareKey = allEncryptedShareKeys.first(where: { $0.shareId == shareId }) else {
             throw PassError.keysNotFound(shareID: shareId)
         }
         return try decryptAndCache(encryptedShareKey)
     }
 
-    public func getLatestShareKey(shareId: String) async throws -> DecryptedShareKey {
-        let allEncryptedShareKeys = try await shareKeyRepository.getKeys(shareId: shareId)
+    public func getLatestShareKey(userId: String, shareId: String) async throws -> DecryptedShareKey {
+        let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
         let latestShareKey = try allEncryptedShareKeys.latestKey()
         return try decryptAndCache(latestShareKey)
     }
 
-    public func getLatestItemKey(shareId: String, itemId: String) async throws -> DecryptedItemKey {
+    public func getLatestItemKey(userId: String,
+                                 shareId: String,
+                                 itemId: String) async throws -> DecryptedItemKey {
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
-        let latestItemKey = try await itemKeyDatasource.getLatestKey(shareId: shareId, itemId: itemId)
+        let latestItemKey = try await itemKeyDatasource.getLatestKey(userId: userId,
+                                                                     shareId: shareId,
+                                                                     itemId: itemId)
 
         logger.trace("Decrypting latest item key \(keyDescription)")
 
-        let vaultKey = try await getShareKey(shareId: shareId, keyRotation: latestItemKey.keyRotation)
+        let vaultKey = try await getShareKey(userId: userId,
+                                             shareId: shareId,
+                                             keyRotation: latestItemKey.keyRotation)
 
         guard let encryptedItemKeyData = try latestItemKey.key.base64Decode() else {
             logger.trace("Failed to base 64 decode latest item key \(keyDescription)")

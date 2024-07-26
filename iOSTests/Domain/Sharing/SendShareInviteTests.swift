@@ -35,7 +35,7 @@ final class SendShareInviteTests: XCTestCase {
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
     var passKeyManager: PassKeyManagerProtocolMock!
     var shareInviteRepository: ShareInviteRepositoryProtocolMock!
-    var userDataProvider: UserDataProviderMock!
+    var userManager: UserManagerProtocolMock!
     var syncEventLoop: SyncEventLoopProtocolMock!
 
     override func setUp() {
@@ -45,20 +45,21 @@ final class SendShareInviteTests: XCTestCase {
         publicKeyRepository = PublicKeyRepositoryProtocolMock()
         passKeyManager = PassKeyManagerProtocolMock()
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
-        userDataProvider = UserDataProviderMock()
+        userManager = UserManagerProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
         sut = SendVaultShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
                                    makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
                                    shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
                                    shareInviteRepository: shareInviteRepository,
-                                   userDataProvider: userDataProvider,
+                                   userManager: userManager,
                                    syncEventLoop: syncEventLoop)
     }
 
     func testSendShareInvite_ShouldNotBeValid_BecauseOfVaultAddress() async throws {
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
         passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
+        userManager.stubbedGetActiveUserDataResult = .preview
         let infos = SharingInfos(vault: .existing(.random()),
                                  email: "Test@test.com",
                                  role: .read,
