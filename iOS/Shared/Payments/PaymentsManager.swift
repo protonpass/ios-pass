@@ -114,8 +114,7 @@ private extension PaymentsManager {
         payments.storeKitManager.delegate = self
 
         if !featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
-            payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
-                guard let self else { return }
+            payments.storeKitManager.updateAvailableProductsList { _ in
                 payments.storeKitManager.subscribeToPaymentQueue()
             }
         } else {

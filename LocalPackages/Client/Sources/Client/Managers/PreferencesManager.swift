@@ -51,10 +51,10 @@ public protocol PreferencesManagerProtocol: Sendable, TelemetryThresholdProvider
     /// Remove user preferences and some shared preferences like PIN code & biometric
     /// (e.g user is logged out because of failed local authentication)
     func reset() async throws
-    
+
     /// Remove preferences for all accounts and some shared preferences like PIN code & biometric
     func resetAll() async throws
-    
+
     // App preferences
     var appPreferences: CurrentValueSubject<AppPreferences?, Never> { get }
     var appPreferencesUpdates: PassthroughSubject<AppPreferencesUpdate, Never> { get }
