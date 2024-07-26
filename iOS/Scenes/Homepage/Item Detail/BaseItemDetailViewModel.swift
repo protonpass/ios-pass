@@ -68,6 +68,7 @@ class BaseItemDetailViewModel: ObservableObject {
     private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     var isAllowedToEdit: Bool {
         guard let vault else {
@@ -265,7 +266,8 @@ class BaseItemDetailViewModel: ObservableObject {
                 router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await getItemTask(item: itemContent).value
                 let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
-                try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.deleteItems(userId: userId, [encryptedItem], skipTrash: false)
                 router.display(element: .successMessage(item.type.deleteMessage,
                                                         config: .dismissAndRefresh(with: .delete(item.type))))
                 logger.info("Permanently deleted \(item.debugDescription)")

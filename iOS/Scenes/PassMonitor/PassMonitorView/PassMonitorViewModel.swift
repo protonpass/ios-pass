@@ -48,6 +48,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var refreshingTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
@@ -62,7 +63,8 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
 
     func refresh() async throws {
         try Task.checkCancellation()
-        try await refreshAccessAndMonitorState()
+        let userId = try await userManager.getActiveUserId()
+        try await refreshAccessAndMonitorState(userId: userId)
         addTelemetryEvent(with: .monitorDisplayHome)
     }
 

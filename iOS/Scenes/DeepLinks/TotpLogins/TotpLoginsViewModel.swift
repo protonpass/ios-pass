@@ -41,6 +41,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
     var selectedSortType = SortType.mostRecent
 
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -64,7 +65,8 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
         }
 
         do {
-            let logins = try await getActiveLoginItems()
+            let userId = try await userManager.getActiveUserId()
+            let logins = try await getActiveLoginItems(userId: userId)
             searchableItems = logins.map { SearchableItem(from: $0, allVaults: []) }
             results = searchableItems.toItemSearchResults
         } catch {
@@ -110,7 +112,9 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
             defer { loading = false }
             do {
                 loading = true
-                try await itemRepository.updateItem(oldItem: selectedItem.item,
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.updateItem(userId: userId,
+                                                    oldItem: selectedItem.item,
                                                     newItemContent: selectedItem.updateTotp(uri: totpUri).protobuf,
                                                     shareId: selectedItem.shareId)
                 if let token = totpManager.totpData?.code {

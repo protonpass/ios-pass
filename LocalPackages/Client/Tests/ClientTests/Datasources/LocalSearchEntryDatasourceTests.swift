@@ -28,11 +28,11 @@ private struct DummyItem: ItemIdentifiable, Hashable, Equatable {
 }
 
 final class LocalSearchEntryDatasourceTests: XCTestCase {
-    var sut: LocalSearchEntryDatasource!
+    var sut: LocalSearchEntryDatasourceProtocol!
 
     override func setUp() {
         super.setUp()
-        sut = .init(databaseService: DatabaseService(inMemory: true))
+        sut = LocalSearchEntryDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
     override func tearDown() {
@@ -42,12 +42,13 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
 
     func testGetAllEntriesOfAllVaults() async throws {
         // Given
-        let givenEntry1 = try await sut.givenInsertedEntry()
-        let givenEntry2 = try await sut.givenInsertedEntry()
-        let givenEntry3 = try await sut.givenInsertedEntry()
+        let userId = String.random()
+        let givenEntry1 = try await sut.givenInsertedEntry(userID: userId)
+        let givenEntry2 = try await sut.givenInsertedEntry(userID: userId)
+        let givenEntry3 = try await sut.givenInsertedEntry(userID: userId)
 
         // When
-        let entries = try await sut.getAllEntries(shareId: nil)
+        let entries = try await sut.getAllEntries(userId: userId)
 
         // Then
         XCTAssertEqual(entries.count, 3)
@@ -56,18 +57,19 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
 
     func testGetAllEntriesOfGivenVault() async throws {
         // Given
+        let userId = String.random()
         let givenShareId1 = String.random()
-        let givenEntry1 = try await sut.givenInsertedEntry(shareID: givenShareId1)
-        let givenEntry2 = try await sut.givenInsertedEntry(shareID: givenShareId1)
-        let givenEntry3 = try await sut.givenInsertedEntry(shareID: givenShareId1)
+        let givenEntry1 = try await sut.givenInsertedEntry(shareID: givenShareId1, userID: userId)
+        let givenEntry2 = try await sut.givenInsertedEntry(shareID: givenShareId1, userID: userId)
+        let givenEntry3 = try await sut.givenInsertedEntry(shareID: givenShareId1, userID: userId)
 
         let givenShareId2 = String.random()
-        let givenEntry4 = try await sut.givenInsertedEntry(shareID: givenShareId2)
-        let givenEntry5 = try await sut.givenInsertedEntry(shareID: givenShareId2)
-        let givenEntry6 = try await sut.givenInsertedEntry(shareID: givenShareId2)
+        let givenEntry4 = try await sut.givenInsertedEntry(shareID: givenShareId2, userID: userId)
+        let givenEntry5 = try await sut.givenInsertedEntry(shareID: givenShareId2, userID: userId)
+        let givenEntry6 = try await sut.givenInsertedEntry(shareID: givenShareId2, userID: userId)
 
         // When
-        let allEntries = try await sut.getAllEntries(shareId: nil)
+        let allEntries = try await sut.getAllEntries(userId: userId)
         let entriesOfShare1 = try await sut.getAllEntries(shareId: givenShareId1)
         let entriesOfShare2 = try await sut.getAllEntries(shareId: givenShareId2)
 
@@ -85,12 +87,13 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
 
     func testUpsertEntry() async throws {
         // Given
-        let givenEntry = try await sut.givenInsertedEntry()
+        let userId = String.random()
+        let givenEntry = try await sut.givenInsertedEntry(userID: userId)
         let newDate = Date.now
 
         // When
-        try await sut.upsert(item: givenEntry, date: newDate)
-        let entries = try await sut.getAllEntries(shareId: nil)
+        try await sut.upsert(item: givenEntry, userId: userId, date: newDate)
+        let entries = try await sut.getAllEntries(userId: userId)
 
         // Then
         XCTAssertEqual(entries.count, 1)
@@ -99,42 +102,65 @@ final class LocalSearchEntryDatasourceTests: XCTestCase {
         XCTAssertEqual(entries[0].time, Int64(newDate.timeIntervalSince1970))
     }
 
-    func testRemoveAllEntries() async throws {
+    func testRemoveAllEntriesOfAVault() async throws {
         // Given
-        try await sut.givenInsertedEntry()
-        try await sut.givenInsertedEntry()
-        try await sut.givenInsertedEntry()
+        let userId = String.random()
 
         // When
-        let firstEntries = try await sut.getAllEntries(shareId: nil)
+        let entry1 = try await sut.givenInsertedEntry(userID: userId)
+        let entry2 = try await sut.givenInsertedEntry(userID: userId)
+        let entry3 = try await sut.givenInsertedEntry(userID: userId)
 
         // Then
-        XCTAssertEqual(firstEntries.count, 3)
+        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry1.shareId).first, entry1)
+        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry2.shareId).first, entry2)
+        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry3.shareId).first, entry3)
 
         // When
-        try await sut.removeAllEntries()
-        let secondGetEntries = try await sut.getAllEntries(shareId: nil)
+        try await sut.removeAllEntries(shareId: entry1.shareId)
 
         // Then
-        XCTAssertTrue(secondGetEntries.isEmpty)
+        try await XCTAssertEmptyAsync(await sut.getAllEntries(shareId: entry1.shareId))
+        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry2.shareId).first, entry2)
+        try await XCTAssertEqualAsync(await sut.getAllEntries(shareId: entry3.shareId).first, entry3)
+    }
+
+    func testRemoveAllEntriesOfAUser() async throws {
+        // Given
+        let userId1 = String.random()
+        let userId2 = String.random()
+
+        try await sut.givenInsertedEntry(userID: userId1)
+        try await sut.givenInsertedEntry(userID: userId1)
+        let entry1 = try await sut.givenInsertedEntry(userID: userId2)
+        let entry2 = try await sut.givenInsertedEntry(userID: userId2)
+
+        // When
+        try await sut.removeAllEntries(userId: userId1)
+
+        // Then
+        try await XCTAssertEmptyAsync(await sut.getAllEntries(userId: userId1))
+        try await XCTAssertEqualAsync(Set(await sut.getAllEntries(userId: userId2)),
+                                      Set([entry1, entry2]))
     }
 
     func testRemoveEntry() async throws {
         // Given
-        let givenEntry1 = try await sut.givenInsertedEntry()
-        let givenEntry2 = try await sut.givenInsertedEntry()
-        let givenEntry3 = try await sut.givenInsertedEntry()
+        let userId = String.random()
+        let givenEntry1 = try await sut.givenInsertedEntry(userID: userId)
+        let givenEntry2 = try await sut.givenInsertedEntry(userID: userId)
+        let givenEntry3 = try await sut.givenInsertedEntry(userID: userId)
 
         // When
         try await sut.remove(item: givenEntry2)
-        let entries = try await sut.getAllEntries(shareId: nil)
+        let entries = try await sut.getAllEntries(userId: userId)
 
         // Then
         XCTAssertEqual(Set([givenEntry1, givenEntry3]), Set(entries))
     }
 }
 
-extension SearchEntry {
+private extension SearchEntry {
     static func random(itemID: String = .random(),
                        shareID: String = .random(),
                        time: Int64 = .random(in: 1_000_000...2_000_000)) -> SearchEntry {
@@ -142,14 +168,15 @@ extension SearchEntry {
     }
 }
 
-private extension LocalSearchEntryDatasource {
+private extension LocalSearchEntryDatasourceProtocol {
     @discardableResult
     func givenInsertedEntry(itemID: String = .random(),
                             shareID: String = .random(),
+                            userID: String = .random(),
                             time: Int64 = .random(in: 1_000_000...2_000_000)) async throws -> SearchEntry {
         let item = DummyItem(itemId: itemID, shareId: shareID)
         let date = Date(timeIntervalSince1970: TimeInterval(time))
-        try await upsert(item: item, date: date)
+        try await upsert(item: item, userId: userID, date: date)
         return .init(item: item, date: date)
     }
 }

@@ -27,13 +27,17 @@ public protocol AccountRepositoryProtocol: Sendable {
 
 public actor AccountRepository: AccountRepositoryProtocol {
     private let remoteAccountDatasource: any RemoteAccountDatasourceProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(remoteAccountDatasource: any RemoteAccountDatasourceProtocol) {
+    public init(remoteAccountDatasource: any RemoteAccountDatasourceProtocol,
+                userManager: any UserManagerProtocol) {
         self.remoteAccountDatasource = remoteAccountDatasource
+        self.userManager = userManager
     }
 
     public func accountRecovery() async throws -> AccountRecovery? {
-        try await remoteAccountDatasource.getAccountRecoveryInfo()
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteAccountDatasource.getAccountRecoveryInfo(userId: userId)
     }
 }
 

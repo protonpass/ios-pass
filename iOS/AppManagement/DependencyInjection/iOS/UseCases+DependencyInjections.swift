@@ -43,8 +43,8 @@ private extension UseCasesContainer {
         ServiceContainer.shared.shareInviteService()
     }
 
-    var userDataProvider: any UserDataProvider {
-        SharedDataContainer.shared.userDataProvider()
+    var userManager: any UserManagerProtocol {
+        SharedServiceContainer.shared.userManager()
     }
 
     var itemRepository: any ItemRepositoryProtocol {
@@ -165,7 +165,7 @@ extension UseCasesContainer {
                                     shareInviteService: self.shareInviteService,
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: self.shareInviteRepository,
-                                    userDataProvider: self.userDataProvider,
+                                    userManager: self.userManager,
                                     syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
     }
 
@@ -173,7 +173,7 @@ extension UseCasesContainer {
         self { PromoteNewUserInvite(publicKeyRepository: self.publicKeyRepository,
                                     passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                     shareInviteRepository: self.shareInviteRepository,
-                                    userDataProvider: self.userDataProvider) }
+                                    userManager: self.userManager) }
     }
 
     var getEmailPublicKey: Factory<any GetEmailPublicKeyUseCase> {
@@ -238,14 +238,14 @@ extension UseCasesContainer {
 
     var acceptInvitation: Factory<any AcceptInvitationUseCase> {
         self { AcceptInvitation(repository: self.inviteRepository,
-                                userDataProvider: self.userDataProvider,
+                                userManager: self.userManager,
                                 getEmailPublicKey: self.getEmailPublicKey(),
                                 updateUserAddresses: self.updateUserAddresses(),
                                 logManager: self.logManager) }
     }
 
     var decodeShareVaultInformation: Factory<any DecodeShareVaultInformationUseCase> {
-        self { DecodeShareVaultInformation(userDataProvider: self.userDataProvider,
+        self { DecodeShareVaultInformation(userManager: self.userManager,
                                            getEmailPublicKey: self.getEmailPublicKey(),
                                            updateUserAddresses: self.updateUserAddresses(),
                                            logManager: self.logManager) }
@@ -276,16 +276,6 @@ extension UseCasesContainer {
 
     var makeUnsignedSignatureForVaultSharing: Factory<any MakeUnsignedSignatureForVaultSharingUseCase> {
         self { MakeUnsignedSignatureForVaultSharing() }
-    }
-}
-
-// MARK: - Flags
-
-extension UseCasesContainer {
-    var refreshFeatureFlags: Factory<any RefreshFeatureFlagsUseCase> {
-        self { RefreshFeatureFlags(repository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                   userDataProvider: self.userDataProvider,
-                                   logManager: self.logManager) }
     }
 }
 
@@ -335,14 +325,14 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var getSpotlightVaults: Factory<any GetSpotlightVaultsUseCase> {
-        self { GetSpotlightVaults(userDataProvider: self.userDataProvider,
+        self { GetSpotlightVaults(userManager: self.userManager,
                                   shareRepository: self.shareRepository,
                                   localSpotlightVaultDatasource: self
                                       .localSpotlightVaultDatasource) }
     }
 
     var updateSpotlightVaults: Factory<any UpdateSpotlightVaultsUseCase> {
-        self { UpdateSpotlightVaults(userDataProvider: self.userDataProvider,
+        self { UpdateSpotlightVaults(userManager: self.userManager,
                                      datasource: self.localSpotlightVaultDatasource) }
     }
 }
@@ -375,8 +365,8 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var updateUserAddresses: Factory<any UpdateUserAddressesUseCase> {
-        self { UpdateUserAddresses(userDataProvider: self.userDataProvider,
-                                   authenticator: ServiceContainer.shared.authenticator()) }
+        self { UpdateUserAddresses(userManager: self.userManager,
+                                   apiServicing: SharedToolingContainer.shared.apiManager()) }
     }
 
     var refreshAccessAndMonitorState: Factory<any RefreshAccessAndMonitorStateUseCase> {
@@ -388,7 +378,7 @@ extension UseCasesContainer {
     }
 
     var verifyProtonPassword: Factory<any VerifyProtonPasswordUseCase> {
-        self { VerifyProtonPassword(userDataProvider: self.userDataProvider,
+        self { VerifyProtonPassword(userManager: self.userManager,
                                     doh: SharedToolingContainer.shared.doh(),
                                     appVer: SharedToolingContainer.shared.appVersion()) }
     }
@@ -403,7 +393,7 @@ extension UseCasesContainer {
     }
 
     var verifyExtraPassword: Factory<any VerifyExtraPasswordUseCase> {
-        self { VerifyExtraPassword(repository: self.extraPasswordRepository) }
+        self { VerifyExtraPassword() }
     }
 }
 
@@ -524,25 +514,30 @@ extension UseCasesContainer {
     var createSecureLink: Factory<any CreateSecureLinkUseCase> {
         self { CreateSecureLink(datasource: self.remoteSecureLinkDatasource,
                                 getSecureLinkKeys: self.getSecureLinkKeys(),
+                                userManager: self.userManager,
                                 manager: self.secureLinkManager) }
     }
 
     var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
-        self { GetSecureLinkKeys(passKeyManager: self.passKeyManager) }
+        self { GetSecureLinkKeys(passKeyManager: self.passKeyManager,
+                                 userManager: self.userManager) }
     }
 
     var deleteSecureLink: Factory<any DeleteSecureLinkUseCase> {
         self { DeleteSecureLink(datasource: self.remoteSecureLinkDatasource,
+                                userManager: self.userManager,
                                 manager: self.secureLinkManager) }
     }
 
     var recreateSecureLink: Factory<any RecreateSecureLinkUseCase> {
-        self { RecreateSecureLink(passKeyManager: self.passKeyManager) }
+        self { RecreateSecureLink(passKeyManager: self.passKeyManager,
+                                  userManager: self.userManager) }
     }
 
     var deleteAllInactiveSecureLinks: Factory<any DeleteAllInactiveSecureLinksUseCase> {
         self {
             DeleteAllInactiveSecureLinks(datasource: self.remoteSecureLinkDatasource,
+                                         userManager: self.userManager,
                                          manager: self.secureLinkManager)
         }
     }

@@ -46,6 +46,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
     private var fetchAliasBreachesTask: Task<Void, Never>?
@@ -53,7 +54,7 @@ final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
     private var fetchSuggestedEmailsTask: Task<Void, Never>?
 
     init(userBreaches: UserBreaches) {
-        access = accessRepository.access.value
+        access = accessRepository.access.value?.access
         self.userBreaches = userBreaches
         customEmailsState = .fetched(userBreaches.customEmails)
         setUp()
@@ -81,7 +82,8 @@ extension DarkWebMonitorHomeViewModel {
                 if aliasBreachesState.isError {
                     aliasBreachesState = .fetching
                 }
-                let infos = try await getAllAliasMonitorInfos()
+                let userId = try await userManager.getActiveUserId()
+                let infos = try await getAllAliasMonitorInfos(userId: userId)
                 aliasBreachesState = .fetched(infos)
             } catch {
                 aliasBreachesState = .error(error)
@@ -116,7 +118,9 @@ extension DarkWebMonitorHomeViewModel {
                     suggestedEmailsState = .fetching
                 }
                 let customEmails = customEmailsState.fetchedObject ?? []
-                let emails = try await getCustomEmailSuggestion(monitoredCustomEmails: customEmails,
+                let userId = try await userManager.getActiveUserId()
+                let emails = try await getCustomEmailSuggestion(userId: userId,
+                                                                monitoredCustomEmails: customEmails,
                                                                 protonAddresses: userBreaches.addresses)
                 suggestedEmailsState = .fetched(emails)
             } catch {
@@ -177,7 +181,7 @@ private extension DarkWebMonitorHomeViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard let self else { return }
-                access = newValue
+                access = newValue?.access
             }
             .store(in: &cancellables)
     }

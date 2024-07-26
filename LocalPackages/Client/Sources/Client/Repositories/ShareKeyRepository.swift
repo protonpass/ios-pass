@@ -30,39 +30,42 @@ typealias Encryptor = ProtonCoreCrypto.Encryptor
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol ShareKeyRepositoryProtocol: Sendable {
     /// Get share keys of a share with `shareId`. Not offline first.
-    func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
+    func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
     /// Refresh share keys of a share with `shareId`
     @discardableResult
-    func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
+    func refreshKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
-    func deleteAllKeysLocally() async throws
+    func deleteAllCurrentUserShareKeysLocally() async throws
 }
 
 public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
     private let localDatasource: any LocalShareKeyDatasourceProtocol
     private let remoteDatasource: any RemoteShareKeyDatasourceProtocol
     private let logger: Logger
-    private let userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider
+    private let symmetricKeyProvider: any SymmetricKeyProvider
+    private let userManager: any UserManagerProtocol
 
     public init(localDatasource: any LocalShareKeyDatasourceProtocol,
                 remoteDatasource: any RemoteShareKeyDatasourceProtocol,
                 logManager: any LogManagerProtocol,
-                userDataSymmetricKeyProvider: any UserDataSymmetricKeyProvider) {
+                symmetricKeyProvider: any SymmetricKeyProvider,
+                userManager: any UserManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
-        self.userDataSymmetricKeyProvider = userDataSymmetricKeyProvider
+        self.symmetricKeyProvider = symmetricKeyProvider
+        self.userManager = userManager
     }
 }
 
 public extension ShareKeyRepository {
-    func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
+    func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localDatasource.getKeys(shareId: shareId)
         if keys.isEmpty {
             logger.trace("No local keys for share \(shareId). Fetching from remote.")
-            let keys = try await refreshKeys(shareId: shareId)
+            let keys = try await refreshKeys(userId: userId, shareId: shareId)
             logger.trace("Got \(keys.count) keys for share \(shareId) after refreshing.")
             return keys
         }
@@ -71,42 +74,44 @@ public extension ShareKeyRepository {
         return keys
     }
 
-    func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
-        logger.trace("Refreshing keys for share \(shareId)")
+    func refreshKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
+        logger.trace("Refreshing keys for share \(shareId), user \(userId)")
 
-        let keys = try await remoteDatasource.getKeys(shareId: shareId)
+        let keys = try await remoteDatasource.getKeys(userId: userId, shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
 
-        let encryptedKeys = try keys.map { key in
-            let decryptedKey = try decrypt(key, shareId: shareId)
-            let dencryptedKeyBase64 = decryptedKey.encodeBase64()
-            let symmetricallyEncryptedKey = try getSymmetricKey().encrypt(dencryptedKeyBase64)
+        let encryptedKeys = try await keys.asyncCompactMap { key in
+            let decryptedKey = try await decrypt(key, shareId: shareId)
+            let encryptedKeyBase64 = decryptedKey.encodeBase64()
+            let symmetricallyEncryptedKey = try await getSymmetricKey().encrypt(encryptedKeyBase64)
             return SymmetricallyEncryptedShareKey(encryptedKey: symmetricallyEncryptedKey,
                                                   shareId: shareId,
+                                                  userId: userId,
                                                   shareKey: key)
         }
 
         try await localDatasource.upsertKeys(encryptedKeys)
-        logger.trace("Saved \(keys.count) keys to local database for share \(shareId)")
+        logger.trace("Saved \(keys.count) keys to local database for share \(shareId), user \(userId)")
 
-        logger.trace("Refreshed keys for share \(shareId)")
+        logger.trace("Refreshed keys for share \(shareId), user \(userId)")
         return encryptedKeys
     }
 
-    func deleteAllKeysLocally() async throws {
-        logger.trace("Deleting all local share keys")
-        try await localDatasource.removeAllKeys()
+    func deleteAllCurrentUserShareKeysLocally() async throws {
+        let userId = try await userManager.getActiveUserId()
+        logger.trace("Deleting all local share keys of user \(userId)")
+        try await localDatasource.removeAllKeys(userId: userId)
         logger.trace("Deleted all local share keys")
     }
 }
 
 private extension ShareKeyRepository {
     func getSymmetricKey() throws -> CryptoKit.SymmetricKey {
-        try userDataSymmetricKeyProvider.getSymmetricKey()
+        try symmetricKeyProvider.getSymmetricKey()
     }
 
-    func decrypt(_ encryptedKey: ShareKey, shareId: String) throws -> Data {
-        let userData = try userDataSymmetricKeyProvider.getUnwrappedUserData()
+    func decrypt(_ encryptedKey: ShareKey, shareId: String) async throws -> Data {
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let keyDescription = "shareId \"\(shareId)\", keyRotation: \"\(encryptedKey.keyRotation)\""
         logger.trace("Decrypting share key \(keyDescription)")
 

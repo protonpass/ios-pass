@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import Combine
 import Core
 import Entities
 import Foundation
@@ -25,36 +26,51 @@ import Foundation
 // sourcery: AutoMockable
 public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
-    func getItems(shareId: String, eventStream: VaultSyncEventStream?) async throws -> [Item]
-    func getItemRevisions(shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item>
-    func createItem(shareId: String, request: CreateItemRequest) async throws -> Item
-    func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> Item
-    func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
+    func getItems(userId: String,
+                  shareId: String,
+                  eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+        -> [Item]
+    func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws
+        -> Paginated<Item>
+    func createItem(userId: String, shareId: String, request: CreateItemRequest) async throws -> Item
+    func createAlias(userId: String, shareId: String, request: CreateCustomAliasRequest) async throws -> Item
+    func createAliasAndAnotherItem(userId: String, shareId: String, request: CreateAliasAndAnotherItemRequest)
         async throws -> CreateAliasAndAnotherItemResponse.Bundle
-    func trashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem]
-    func untrashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem]
-    func deleteItem(_ items: [Item], shareId: String, skipTrash: Bool) async throws
-    func updateItem(shareId: String, itemId: String, request: UpdateItemRequest) async throws -> Item
-    func updateLastUseTime(shareId: String, itemId: String, lastUseTime: TimeInterval) async throws -> Item
-    func move(itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> Item
-    func move(fromShareId: String, request: MoveItemsRequest) async throws -> [Item]
-    func pin(item: any ItemIdentifiable) async throws -> Item
-    func unpin(item: any ItemIdentifiable) async throws -> Item
-    func updateItemFlags(itemId: String, shareId: String, request: UpdateItemFlagsRequest) async throws -> Item
+    func trashItem(_ items: [Item], shareId: String, userId: String) async throws -> [ModifiedItem]
+    func untrashItem(_ items: [Item], shareId: String, userId: String) async throws -> [ModifiedItem]
+    func deleteItem(_ items: [Item], shareId: String, skipTrash: Bool, userId: String) async throws
+    func updateItem(userId: String,
+                    shareId: String,
+                    itemId: String,
+                    request: UpdateItemRequest) async throws
+        -> Item
+    func updateLastUseTime(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           lastUseTime: TimeInterval) async throws -> Item
+    func move(userId: String, itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> Item
+    func move(userId: String, fromShareId: String, request: MoveItemsRequest) async throws -> [Item]
+    func pin(userId: String, item: any ItemIdentifiable) async throws -> Item
+    func unpin(userId: String, item: any ItemIdentifiable) async throws -> Item
+    func updateItemFlags(userId: String,
+                         itemId: String,
+                         shareId: String,
+                         request: UpdateItemFlagsRequest) async throws -> Item
 }
 
 public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
 
 public extension RemoteItemDatasource {
-    func getItems(shareId: String,
-                  eventStream: VaultSyncEventStream?) async throws -> [Item] {
+    func getItems(userId: String,
+                  shareId: String,
+                  eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
         var itemRevisions = [Item]()
         var sinceToken: String?
         while true {
             let endpoint = GetItemsEndpoint(shareId: shareId,
                                             sinceToken: sinceToken,
                                             pageSize: Constants.Utils.defaultPageSize)
-            let response = try await exec(endpoint: endpoint)
+            let response = try await exec(userId: userId, endpoint: endpoint)
 
             itemRevisions += response.items.revisionsData
             sinceToken = response.items.lastToken
@@ -68,105 +84,113 @@ public extension RemoteItemDatasource {
         return itemRevisions
     }
 
-    func getItemRevisions(shareId: String, itemId: String, lastToken: String?) async throws -> Paginated<Item> {
+    func getItemRevisions(userId: String,
+                          shareId: String,
+                          itemId: String,
+                          lastToken: String?) async throws -> Paginated<Item> {
         let endpoint = GetItemRevisionsEndpoint(shareId: shareId, itemId: itemId, sinceToken: lastToken)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return Paginated(lastToken: response.revisions.lastToken,
                          data: response.revisions.revisionsData,
                          total: response.revisions.total)
     }
 
-    func createItem(shareId: String, request: CreateItemRequest) async throws -> Item {
+    func createItem(userId: String, shareId: String, request: CreateItemRequest) async throws -> Item {
         let endpoint = CreateItemEndpoint(shareId: shareId, request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.item
     }
 
-    func createAlias(shareId: String, request: CreateCustomAliasRequest) async throws -> Item {
+    func createAlias(userId: String, shareId: String, request: CreateCustomAliasRequest) async throws -> Item {
         let endpoint = CreateCustomAliasEndpoint(shareId: shareId, request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.item
     }
 
-    func createAliasAndAnotherItem(shareId: String, request: CreateAliasAndAnotherItemRequest)
+    func createAliasAndAnotherItem(userId: String, shareId: String, request: CreateAliasAndAnotherItemRequest)
         async throws -> CreateAliasAndAnotherItemResponse.Bundle {
         let endpoint = CreateAliasAndAnotherItemEndpoint(shareId: shareId, request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.bundle
     }
 
-    func trashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
+    func trashItem(_ items: [Item], shareId: String, userId: String) async throws -> [ModifiedItem] {
         let endpoint = TrashItemsEndpoint(shareId: shareId, items: items)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.items
     }
 
-    func untrashItem(_ items: [Item], shareId: String) async throws -> [ModifiedItem] {
+    func untrashItem(_ items: [Item], shareId: String, userId: String) async throws -> [ModifiedItem] {
         let endpoint = UntrashItemsEndpoint(shareId: shareId, items: items)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.items
     }
 
     func deleteItem(_ items: [Item],
                     shareId: String,
-                    skipTrash: Bool) async throws {
+                    skipTrash: Bool,
+                    userId: String) async throws {
         let endpoint = DeleteItemsEndpoint(shareId: shareId,
                                            items: items,
                                            skipTrash: skipTrash)
-        _ = try await exec(endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
-    func updateItem(shareId: String,
+    func updateItem(userId: String,
+                    shareId: String,
                     itemId: String,
                     request: UpdateItemRequest) async throws -> Item {
         let endpoint = UpdateItemEndpoint(shareId: shareId,
                                           itemId: itemId,
                                           request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.item
     }
 
-    func updateLastUseTime(shareId: String,
+    func updateLastUseTime(userId: String,
+                           shareId: String,
                            itemId: String,
                            lastUseTime: TimeInterval) async throws -> Item {
         let endpoint = UpdateLastUseTimeEndpoint(shareId: shareId,
                                                  itemId: itemId,
                                                  lastUseTime: lastUseTime)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.revision
     }
 
-    func move(itemId: String,
+    func move(userId: String,
+              itemId: String,
               fromShareId: String,
               request: MoveItemRequest) async throws -> Item {
         let endpoint = MoveItemEndpoint(request: request, itemId: itemId, fromShareId: fromShareId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.item
     }
 
-    func move(fromShareId: String, request: MoveItemsRequest) async throws -> [Item] {
+    func move(userId: String, fromShareId: String, request: MoveItemsRequest) async throws -> [Item] {
         let endpoint = MoveItemsEndpoint(request: request, fromShareId: fromShareId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.items
     }
 
-    func pin(item: any ItemIdentifiable) async throws -> Item {
+    func pin(userId: String, item: any ItemIdentifiable) async throws -> Item {
         let endpoint = PinItemEndpoint(shareId: item.shareId, itemId: item.itemId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.item
     }
 
-    func unpin(item: any ItemIdentifiable) async throws -> Item {
+    func unpin(userId: String, item: any ItemIdentifiable) async throws -> Item {
         let endpoint = UnpinItemEndpoint(shareId: item.shareId, itemId: item.itemId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.item
     }
 
-    func updateItemFlags(itemId: String,
+    func updateItemFlags(userId: String,
+                         itemId: String,
                          shareId: String,
                          request: UpdateItemFlagsRequest) async throws -> Item {
         let endpoint = UpdateItemFlagsEndpoint(shareId: shareId, itemId: itemId, request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.item
     }
 }

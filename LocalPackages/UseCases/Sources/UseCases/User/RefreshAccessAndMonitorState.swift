@@ -24,16 +24,16 @@ import Entities
 import Foundation
 
 public protocol RefreshAccessAndMonitorStateUseCase: Sendable {
-    func execute() async throws
+    func execute(userId: String) async throws
 }
 
 public extension RefreshAccessAndMonitorStateUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(userId: String) async throws {
+        try await execute(userId: userId)
     }
 }
 
-public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUseCase {
+public final class RefreshAccessAndMonitorState: @unchecked Sendable, RefreshAccessAndMonitorStateUseCase {
     private let accessRepository: any AccessRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let getAllAliases: any GetAllAliasesUseCase
@@ -52,17 +52,17 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
         self.stream = stream
     }
 
-    public func execute() async throws {
+    public func execute(userId: String) async throws {
         async let getAccess = accessRepository.refreshAccess()
         async let refreshUserBreaches = passMonitorRepository.refreshUserBreaches()
         async let refreshSecurityChecks: () = passMonitorRepository.refreshSecurityChecks()
-        async let getAllAliases = getAllAliases()
+        async let getAllAliases = getAllAliases(userId: userId)
         let (access, userBreaches, aliases, _) = try await (getAccess, refreshUserBreaches, getAllAliases,
                                                             refreshSecurityChecks)
         let breachedAliases = aliases.filter(\.item.isBreachedAndMonitored)
         var breachCount = userBreaches.emailsCount
 
-        if access.monitor.aliases {
+        if access.access.monitor.aliases {
             breachCount += breachedAliases.count
         }
 
@@ -79,7 +79,7 @@ public final class RefreshAccessAndMonitorState: RefreshAccessAndMonitorStateUse
             }
         }
 
-        updateState(isFreeUser: access.plan.isFreeUser,
+        updateState(isFreeUser: access.access.plan.isFreeUser,
                     breachCount: breachCount,
                     hasWeaknesses: hasWeaknesses,
                     latestBreach: latestBreach)

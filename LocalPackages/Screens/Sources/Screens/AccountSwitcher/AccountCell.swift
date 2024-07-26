@@ -23,22 +23,48 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public protocol AccountCellDetail: Sendable {
-    var id: String { get }
-    var initials: String { get }
-    var displayName: String { get }
-    var email: String { get }
+public struct AccountCellDetail: Identifiable {
+    public let id: String
+    public let isPremium: Bool
+    public let initial: String
+    public let displayName: String
+    public let planName: String?
+    public let email: String
+
+    public init(id: String,
+                isPremium: Bool,
+                initial: String,
+                displayName: String,
+                planName: String?,
+                email: String) {
+        self.id = id
+        self.isPremium = isPremium
+        self.initial = initial
+        self.displayName = displayName
+        self.planName = planName
+        self.email = email
+    }
+
+    public static var empty: Self {
+        .init(id: UUID().uuidString,
+              isPremium: false,
+              initial: "",
+              displayName: "",
+              planName: nil,
+              email: "")
+    }
 }
 
 public struct AccountCell: View {
-    let detail: any AccountCellDetail
+    let detail: AccountCellDetail
     let isActive: Bool
     let showInactiveIcon: Bool
     let animationNamespace: Namespace.ID
 
     enum EffectID: String {
-        case initials
+        case initial
         case displayName
+        case planName
         case email
         case chevron
 
@@ -47,9 +73,9 @@ public struct AccountCell: View {
         }
     }
 
-    public init(detail: any AccountCellDetail,
-                isActive: Bool,
-                showInactiveIcon: Bool,
+    public init(detail: AccountCellDetail,
+                isActive: Bool = false,
+                showInactiveIcon: Bool = true,
                 animationNamespace: Namespace.ID) {
         self.detail = detail
         self.isActive = isActive
@@ -59,13 +85,18 @@ public struct AccountCell: View {
 
     public var body: some View {
         HStack {
-            initials
-                .matchedGeometryEffect(id: EffectID.initials.fullId(itemId: detail.id),
+            initial
+                .matchedGeometryEffect(id: EffectID.initial.fullId(itemId: detail.id),
                                        in: animationNamespace)
+                .padding(.trailing)
 
             VStack(alignment: .leading) {
                 displayName
                     .matchedGeometryEffect(id: EffectID.displayName.fullId(itemId: detail.id),
+                                           in: animationNamespace)
+
+                planName
+                    .matchedGeometryEffect(id: EffectID.planName.fullId(itemId: detail.id),
                                            in: animationNamespace)
 
                 email
@@ -96,10 +127,10 @@ public struct AccountCell: View {
 }
 
 private extension AccountCell {
-    var initials: some View {
+    var initial: some View {
         ZStack {
             PassColor.interactionNormMajor2.toColor
-            Text(verbatim: detail.initials)
+            Text(verbatim: detail.initial)
                 .foregroundStyle(PassColor.textInvert.toColor)
                 .fontWeight(.medium)
         }
@@ -107,9 +138,26 @@ private extension AccountCell {
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
+    @ViewBuilder
     var displayName: some View {
-        Text(verbatim: detail.displayName)
-            .foregroundStyle(PassColor.textNorm.toColor)
+        if detail.displayName.isEmpty {
+            EmptyView()
+        } else {
+            Text(verbatim: detail.displayName)
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }
+    }
+
+    @ViewBuilder
+    var planName: some View {
+        if let planName = detail.planName {
+            Text(verbatim: planName)
+                .font(.caption)
+                .foregroundStyle((detail.isPremium ? PassColor.noteInteractionNormMajor2 : PassColor.textNorm)
+                    .toColor)
+        } else {
+            EmptyView()
+        }
     }
 
     var email: some View {

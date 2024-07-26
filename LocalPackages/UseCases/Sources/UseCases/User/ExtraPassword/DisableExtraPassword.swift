@@ -24,14 +24,16 @@ import Entities
 import Foundation
 
 public protocol DisableExtraPasswordUseCase: Sendable {
-    func execute(username: String,
+    func execute(userId: String,
+                 username: String,
                  password: String) async throws -> DisableExtraPasswordResult
 }
 
 public extension DisableExtraPasswordUseCase {
-    func callAsFunction(username: String,
+    func callAsFunction(userId: String,
+                        username: String,
                         password: String) async throws -> DisableExtraPasswordResult {
-        try await execute(username: username, password: password)
+        try await execute(userId: userId, username: username, password: password)
     }
 }
 
@@ -45,15 +47,18 @@ public final class DisableExtraPassword: Sendable, DisableExtraPasswordUseCase {
         self.verifyExtraPassword = verifyExtraPassword
     }
 
-    public func execute(username: String,
+    public func execute(userId: String,
+                        username: String,
                         password: String) async throws -> DisableExtraPasswordResult {
-        let verificationResult = try await verifyExtraPassword(username: username,
+        let verificationResult = try await verifyExtraPassword(repository: repository,
+                                                               userId: userId,
+                                                               username: username,
                                                                password: password)
         guard verificationResult.isSuccessful else {
             return verificationResult
         }
 
-        try await repository.disableExtraPassword()
+        try await repository.disableExtraPassword(userId: userId)
         return .successful
     }
 }

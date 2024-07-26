@@ -41,7 +41,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
@@ -65,6 +64,8 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     let currentVaults: CurrentValueSubject<[Vault], Never> = .init([])
 
+    let vaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>(.initialization)
+
     init() {
         setUp()
     }
@@ -79,6 +80,7 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
         vaultSelection = .all
         itemCount = .zero
         currentVaults.send([])
+        vaultSyncEventStream.value = .initialization
     }
 }
 
@@ -136,9 +138,9 @@ private extension VaultsManager {
     }
 
     @MainActor
-    func loadContents(for vaults: [Vault]) async throws {
+    func loadContents(userId: String, for vaults: [Vault]) async throws {
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        let allItems = try await itemRepository.getAllItems()
+        let allItems = try await itemRepository.getAllItems(userId: userId)
         let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
         currentVaults.send(vaults)
         var vaultContentUiModels = vaults.map { vault in
@@ -159,13 +161,14 @@ private extension VaultsManager {
         }
 
         state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
-
         let indexForAutoFillAndSplotlight: @Sendable () async -> Void = { [weak self] in
             guard let self else { return }
             // "Do catch" separately because we don't want an operation to fail the others
             do {
                 if getSharedPreferences().quickTypeBar {
-                    try await indexAllLoginItems()
+                    // swiftlint:disable:next todo
+                    // TODO: will have to index for all account
+                    try await indexAllLoginItems(userId: userId)
                 }
             } catch {
                 logger.error(error)
@@ -191,17 +194,17 @@ private extension VaultsManager {
 // MARK: - Public APIs
 
 extension VaultsManager {
-    func refresh() {
+    func refresh(userId: String) {
         guard !isRefreshing else { return }
 
         Task { @MainActor [weak self] in
             guard let self else { return }
-            try? await asyncRefresh()
+            try? await asyncRefresh(userId: userId)
         }
     }
 
     @MainActor
-    func asyncRefresh() async throws {
+    func asyncRefresh(userId: String) async throws {
         guard !isRefreshing else { return }
         defer { isRefreshing = false }
         do {
@@ -219,17 +222,17 @@ extension VaultsManager {
 
             if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
-                try await fullSync()
+                try await fullSync(userId: userId)
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
             } else if cryptoErrorOccured {
                 logger.info("Crypto error occurred. Doing full sync")
-                try await fullSync()
+                try await fullSync(userId: userId)
                 logger.info("Crypto error occurred. Done full sync")
             } else {
                 logger.info("Not manual login, getting local shares & items")
-                let vaults = try await shareRepository.getVaults()
-                try await loadContents(for: vaults)
+                let vaults = try await shareRepository.getVaults(userId: userId)
+                try await loadContents(userId: userId, for: vaults)
                 logger.info("Not manual login, done getting local shares & items")
             }
         } catch {
@@ -238,21 +241,24 @@ extension VaultsManager {
     }
 
     // Delete everything and download again
-    func fullSync() async throws {
+    func fullSync(userId: String) async throws {
         vaultSyncEventStream.send(.started)
 
         // 1. Delete all local data
         try await deleteLocalDataBeforeFullSync()
 
         // 2. Get all remote shares and their items
-        let remoteShares = try await shareRepository.getRemoteShares(updateEventStream: true)
+        let remoteShares = try await shareRepository.getRemoteShares(userId: userId,
+                                                                     eventStream: vaultSyncEventStream)
         await withThrowingTaskGroup(of: Void.self) { taskGroup in
             for share in remoteShares {
                 taskGroup.addTask { [weak self] in
                     guard let self else { return }
-                    try await shareRepository.upsertShares([share],
-                                                           updateEventStream: true)
-                    try await itemRepository.refreshItems(shareId: share.shareID,
+                    try await shareRepository.upsertShares(userId: userId,
+                                                           shares: [share],
+                                                           eventStream: vaultSyncEventStream)
+                    try await itemRepository.refreshItems(userId: userId,
+                                                          shareId: share.shareID,
                                                           eventStream: vaultSyncEventStream)
                 }
             }
@@ -264,7 +270,7 @@ extension VaultsManager {
         }
 
         // 4. Load vaults and their contents
-        var vaults = try await shareRepository.getVaults()
+        var vaults = try await shareRepository.getVaults(userId: userId)
 
         // 5. Check if in "forgot password" scenario. Create a new default vault if applicable
         let hasRemoteVaults = remoteShares.contains(where: { $0.shareType == .vault })
@@ -272,12 +278,17 @@ extension VaultsManager {
         // => "forgot password" happened
         if hasRemoteVaults, vaults.isEmpty {
             try await createDefaultVault()
-            vaults = try await shareRepository.getVaults()
+            vaults = try await shareRepository.getVaults(userId: userId)
         }
 
-        try await loadContents(for: vaults)
+        try await loadContents(userId: userId, for: vaults)
 
         vaultSyncEventStream.send(.done)
+    }
+
+    func localFullSync(userId: String) async throws {
+        let vaults = try await shareRepository.getVaults(userId: userId)
+        try await loadContents(userId: userId, for: vaults)
     }
 
     func select(_ selection: VaultSelection) {
@@ -293,10 +304,6 @@ extension VaultsManager {
 
         return vaults.first { $0.vault.id == vault.id }?.items ?? []
     }
-
-//    func getItemCount(for vault: Vault) -> Int {
-//        getItems(for: vault).count
-//    }
 
     func getItemCount(for selection: VaultSelection) -> Int {
         guard case let .loaded(vaults, trashedItems) = state else { return 0 }
@@ -319,11 +326,6 @@ extension VaultsManager {
         getAllVaultContents().filter(\.vault.canEdit)
     }
 
-//    func vaultHasTrashedItems(_ vault: Vault) -> Bool {
-//        guard case let .loaded(_, trashedItems) = state else { return false }
-//        return trashedItems.contains { $0.shareId == vault.shareId }
-//    }
-
     func delete(vault: Vault) async throws {
         let shareId = vault.shareId
         logger.trace("Deleting vault \(shareId)")
@@ -334,26 +336,26 @@ extension VaultsManager {
         logger.info("Deleted vault \(shareId)")
     }
 
-    func delete(shareId: String) async throws {
+    func delete(userId: String, shareId: String) async throws {
         logger.trace("Deleting share \(shareId)")
-        try await shareRepository.deleteShare(shareId: shareId)
-        try await shareRepository.deleteShareLocally(shareId: shareId)
+        try await shareRepository.deleteShare(userId: userId, shareId: shareId)
+        try await shareRepository.deleteShareLocally(userId: userId, shareId: shareId)
         logger.trace("Deleting local active items of share \(shareId)")
         try await itemRepository.deleteAllItemsLocally(shareId: shareId)
         logger.info("Deleted vault \(shareId)")
     }
 
-    func restoreAllTrashedItems() async throws {
+    func restoreAllTrashedItems(userId: String) async throws {
         logger.trace("Restoring all trashed items")
-        let trashedItems = try await getAllEditableTrashedItems()
+        let trashedItems = try await getAllEditableTrashedItems(userId: userId)
         try await itemRepository.untrashItems(trashedItems)
         logger.info("Restored all trashed items")
     }
 
-    func permanentlyDeleteAllTrashedItems() async throws {
+    func permanentlyDeleteAllTrashedItems(userId: String) async throws {
         logger.trace("Permanently deleting all trashed items")
-        let trashedItems = try await getAllEditableTrashedItems()
-        try await itemRepository.deleteItems(trashedItems, skipTrash: false)
+        let trashedItems = try await getAllEditableTrashedItems(userId: userId)
+        try await itemRepository.deleteItems(userId: userId, trashedItems, skipTrash: false)
         logger.info("Permanently deleted all trashed items")
     }
 
@@ -391,9 +393,9 @@ extension VaultsManager {
 }
 
 private extension VaultsManager {
-    func getAllEditableTrashedItems() async throws -> [SymmetricallyEncryptedItem] {
+    func getAllEditableTrashedItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let editableShareIds = getAllEditableVaultContents().map(\.vault.shareId)
-        let trashedItems = try await itemRepository.getItems(state: .trashed)
+        let trashedItems = try await itemRepository.getItems(userId: userId, state: .trashed)
         return trashedItems.filter { item in
             editableShareIds.contains(where: { $0 == item.shareId })
         }

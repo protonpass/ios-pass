@@ -31,6 +31,7 @@ public protocol ItemContentProtocol: Sendable {
 public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, Identifiable {
     public let shareId: String
     public let itemUuid: String
+    public let userId: String
     public let item: Item
     public let name: String
     public let note: String
@@ -45,6 +46,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
 
     public init(shareId: String,
                 itemUuid: String,
+                userId: String,
                 item: Item,
                 name: String,
                 note: String,
@@ -52,6 +54,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
                 customFields: [CustomField]) {
         self.shareId = shareId
         self.itemUuid = itemUuid
+        self.userId = userId
         self.item = item
         self.name = name
         self.note = note
@@ -59,11 +62,13 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
         self.customFields = customFields
     }
 
-    public init(shareId: String,
+    public init(userId: String,
+                shareId: String,
                 item: Item,
                 contentProtobuf: ItemContentProtobuf) {
         self.shareId = shareId
         self.item = item
+        self.userId = userId
         itemUuid = contentProtobuf.uuid
         name = contentProtobuf.name
         note = contentProtobuf.note

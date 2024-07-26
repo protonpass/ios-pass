@@ -37,10 +37,8 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
-    @LazyInjected(\ServiceContainer
-        .pushNotificationService) private var pushNotificationService: any PushNotificationServiceProtocol
-    @LazyInjected(\UseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
-    @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
+//    @LazyInjected(\ServiceContainer
+//        .pushNotificationService) private var pushNotificationService: any PushNotificationServiceProtocol
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -48,9 +46,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         setUpSentry()
         setUpDefaultValuesForSettingsBundle()
         setCoreLoggerEnvironment()
-        refreshFeatureFlags()
         configureTipKit()
-        setUpCoreTelemetry()
         return true
     }
 
@@ -68,12 +64,12 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        pushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
+//        pushNotificationService.didRegisterForRemoteNotifications(withDeviceToken: deviceToken)
     }
 
     func application(_ application: UIApplication,
                      didFailToRegisterForRemoteNotificationsWithError error: any Error) {
-        pushNotificationService.didFailToRegisterForRemoteNotifications(withError: error)
+//        pushNotificationService.didFailToRegisterForRemoteNotifications(withError: error)
     }
 }
 

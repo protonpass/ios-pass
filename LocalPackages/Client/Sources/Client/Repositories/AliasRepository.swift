@@ -29,22 +29,31 @@ public protocol AliasRepositoryProtocol: Sendable {
 
 public actor AliasRepository: AliasRepositoryProtocol {
     private let remoteDatasouce: any RemoteAliasDatasourceProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(remoteDatasouce: any RemoteAliasDatasourceProtocol) {
+    public init(remoteDatasouce: any RemoteAliasDatasourceProtocol,
+                userManager: any UserManagerProtocol) {
         self.remoteDatasouce = remoteDatasouce
+        self.userManager = userManager
     }
 }
 
 public extension AliasRepository {
     func getAliasOptions(shareId: String) async throws -> AliasOptions {
-        try await remoteDatasouce.getAliasOptions(shareId: shareId)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDatasouce.getAliasOptions(userId: userId, shareId: shareId)
     }
 
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
-        try await remoteDatasouce.getAliasDetails(shareId: shareId, itemId: itemId)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDatasouce.getAliasDetails(userId: userId, shareId: shareId, itemId: itemId)
     }
 
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
-        try await remoteDatasouce.changeMailboxes(shareId: shareId, itemId: itemId, mailboxIDs: mailboxIDs)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDatasouce.changeMailboxes(userId: userId,
+                                                         shareId: shareId,
+                                                         itemId: itemId,
+                                                         mailboxIDs: mailboxIDs)
     }
 }

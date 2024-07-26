@@ -28,7 +28,7 @@ import Macro
 final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
     @Published private(set) var isDoneSynching = false
-    private let vaultSyncEventStream = resolve(\SharedDataStreamContainer.vaultSyncEventStream)
+    private let vaultManager = resolve(\SharedServiceContainer.vaultsManager)
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
@@ -44,7 +44,7 @@ final class FullSyncProgressViewModel: ObservableObject {
     init(mode: Mode) {
         self.mode = mode
 
-        vaultSyncEventStream
+        vaultManager.vaultSyncEventStream
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }

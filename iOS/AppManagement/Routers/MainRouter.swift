@@ -108,6 +108,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case enableExtraPassword
     case secureLinks
     case secureLinkDetail(SecureLinkListUIModel)
+    case addAccount
 }
 
 enum GenericDestination {
@@ -130,6 +131,9 @@ enum AlertDestination: Sendable {
 enum ActionDestination: Sendable {
     case copyToClipboard(text: String, message: String)
     case back(isShownAsSheet: Bool)
+    case manage(userId: String)
+    case signOut(userId: String)
+    case deleteAccount(userId: String)
 }
 
 enum DeeplinkDestination: Sendable {

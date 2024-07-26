@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -47,5 +47,39 @@ public final class SyncEventLoopProtocolMock: @unchecked Sendable, SyncEventLoop
         invokedResetfunction = true
         invokedResetCount += 1
         closureReset()
+    }
+    // MARK: - start
+    public var closureStart: () -> () = {}
+    public var invokedStartfunction = false
+    public var invokedStartCount = 0
+
+    public func start() {
+        invokedStartfunction = true
+        invokedStartCount += 1
+        closureStart()
+    }
+    // MARK: - stop
+    public var closureStop: () -> () = {}
+    public var invokedStopfunction = false
+    public var invokedStopCount = 0
+
+    public func stop() {
+        invokedStopfunction = true
+        invokedStopCount += 1
+        closureStop()
+    }
+    // MARK: - addAdditionalTask
+    public var closureAddAdditionalTask: () -> () = {}
+    public var invokedAddAdditionalTaskfunction = false
+    public var invokedAddAdditionalTaskCount = 0
+    public var invokedAddAdditionalTaskParameters: (task: SyncEventLoop.AdditionalTask, Void)?
+    public var invokedAddAdditionalTaskParametersList = [(task: SyncEventLoop.AdditionalTask, Void)]()
+
+    public func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask) {
+        invokedAddAdditionalTaskfunction = true
+        invokedAddAdditionalTaskCount += 1
+        invokedAddAdditionalTaskParameters = (task, ())
+        invokedAddAdditionalTaskParametersList.append((task, ()))
+        closureAddAdditionalTask()
     }
 }

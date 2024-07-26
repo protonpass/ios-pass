@@ -51,7 +51,7 @@ public final class AddItemReadEvent: Sendable, AddItemReadEventUseCase {
         Task { [weak self] in
             guard let self else { return }
             do {
-                if accessRepository.access.value?.plan.isBusinessUser == true {
+                if accessRepository.access.value?.access.plan.isBusinessUser == true {
                     try await eventRepository.addEvent(for: item)
                 }
             } catch {

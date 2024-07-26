@@ -40,12 +40,15 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
     private let getSecureLinkKeys: any GetSecureLinkKeysUseCase
     private let datasource: any RemoteSecureLinkDatasourceProtocol
     private let manager: any SecureLinkManagerProtocol
+    private let userManager: any UserManagerProtocol
 
     public init(datasource: any RemoteSecureLinkDatasourceProtocol,
                 getSecureLinkKeys: any GetSecureLinkKeysUseCase,
+                userManager: any UserManagerProtocol,
                 manager: any SecureLinkManagerProtocol) {
         self.datasource = datasource
         self.getSecureLinkKeys = getSecureLinkKeys
+        self.userManager = userManager
         self.manager = manager
     }
 
@@ -53,6 +56,7 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
                         expirationTime: Int,
                         maxReadCount: Int?) async throws -> NewSecureLink {
         let keys = try await getSecureLinkKeys(item: item)
+        let userId = try await userManager.getActiveUserId()
         let configuration = SecureLinkCreationConfiguration(shareId: item.shareId,
                                                             itemId: item.itemId,
                                                             revision: Int(item.item.revision),
@@ -61,7 +65,7 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
                                                             maxReadCount: maxReadCount,
                                                             encryptedLinkKey: keys.linkKeyEncoded,
                                                             linkKeyShareKeyRotation: keys.shareKeyRotation)
-        let link = try await datasource.createLink(configuration: configuration)
+        let link = try await datasource.createLink(userId: userId, configuration: configuration)
         try await manager.updateSecureLinks()
         return link.update(with: keys.linkKey)
     }

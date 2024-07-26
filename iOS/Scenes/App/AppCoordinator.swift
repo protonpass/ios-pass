@@ -67,17 +67,25 @@ final class AppCoordinator {
     private var preferences = resolve(\SharedToolingContainer.preferences)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let appData = resolve(\SharedDataContainer.appData)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
-    private var corruptedSessionStream: AnyCancellable?
-    private var featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private var pushNotificationService = resolve(\ServiceContainer.pushNotificationService)
 
+    @LazyInjected(\SharedToolingContainer.keychain) private var keychain
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
-    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
+    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
+    @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
+    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+//    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let sendMessageToSentry = resolve(\SharedUseCasesContainer.sendMessageToSentry)
+
+    private var task: Task<Void, Never>?
 
     private var theme: Theme {
         preferencesManager.sharedPreferences.unwrapped().theme
@@ -95,19 +103,6 @@ final class AppCoordinator {
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             resetAllData()
         }
-
-        apiManager.sessionWasInvalidated
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] sessionUID in
-                guard let self else { return }
-                captureErrorAndLogOut(PassError.unexpectedLogout, sessionId: sessionUID)
-            }
-            .store(in: &cancellables)
-    }
-
-    deinit {
-        corruptedSessionStream?.cancel()
-        corruptedSessionStream = nil
     }
 
     // swiftlint:disable:next todo
@@ -115,8 +110,8 @@ final class AppCoordinator {
     private func clearUserDataInKeychainIfFirstRun() {
         guard preferences.isFirstRun else { return }
         preferences.isFirstRun = false
-        appData.setUserData(nil)
-        appData.setCredential(nil)
+        appData.resetData()
+        try? keychain.removeOrError(forKey: AuthManager.storageKey)
     }
 
     private func bindAppState() {
@@ -128,27 +123,29 @@ final class AppCoordinator {
                 switch appState {
                 case let .loggedOut(reason):
                     logger.info("Logged out \(reason)")
-                    if reason != .noAuthSessionButUnauthSessionAvailable {
-                        resetAllData()
-                    }
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
-                    connectToCorruptedSessionStream()
                     showHomeScene(mode: .alreadyLoggedIn)
-                    if let sessionID = appData.getCredential()?.sessionID {
-                        registerForPushNotificationsIfNeededAndAddHandlers(uid: sessionID)
+                    if let userId = userManager.activeUserId,
+                       let sessionID = authManager.getCredential(userId: userId)?.sessionID {
+                        registerForPushNotificationsIfNeededAndAddHandlers( /* uid: sessionID */ )
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
-                    logger.info("Logged in manual")
-                    appData.setUserData(userData)
-                    connectToCorruptedSessionStream()
-                    if extraPassword {
-                        showHomeScene(mode: .manualLoginWithExtraPassword)
-                    } else {
-                        showHomeScene(mode: .manualLogin)
+                    Task { [weak self] in
+                        guard let self else {
+                            return
+                        }
+                        logger.info("Logged in manual")
+                        try? await userManager.addAndMarkAsActive(userData: userData)
+
+                        if extraPassword {
+                            showHomeScene(mode: .manualLoginWithExtraPassword)
+                        } else {
+                            showHomeScene(mode: .manualLogin)
+                        }
+                        registerForPushNotificationsIfNeededAndAddHandlers(/* uid: userData.credential.sessionID */ )
                     }
-                    registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
                 }
@@ -167,25 +164,53 @@ final class AppCoordinator {
     }
 
     /// Necessary set up like initializing preferences before starting user flow
-    func setUpAndStart() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await preferencesManager.setUp()
-                window.overrideUserInterfaceStyle = theme.userInterfaceStyle
-                start()
-            } catch {
-                appStateObserver.updateAppState(.loggedOut(.failedToInitializePreferences(error)))
-            }
+    func setUpAndStart() async {
+        do {
+            try await setUpBeforeLaunching()
+            window.overrideUserInterfaceStyle = theme.userInterfaceStyle
+            start()
+            refreshFeatureFlags()
+            setUpCoreTelemetry()
+
+            authManager.sessionWasInvalidated
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] sessionInfos in
+                    guard let self, task == nil else { return }
+                    task = Task { [weak self] in
+                        guard let self, let userId = sessionInfos.userId else { return }
+                        defer { task = nil }
+                        do {
+                            let userData = try await userManager.getUserData(userId)
+                            if try await logOutUser(userId: userId) {
+                                appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
+                            } else if let email = userData?.user.email {
+                                alert(title: #localized("Session expired"),
+                                      message: #localized("You're logged out from %@", email))
+                            }
+                            sendMessageToSentry("Invalidated session",
+                                                userId: userId,
+                                                sessionId: sessionInfos.sessionId)
+                        } catch {
+                            sendErrorToSentry(error,
+                                              userId: userId,
+                                              sessionId: sessionInfos.sessionId)
+                        }
+                    }
+                }
+                .store(in: &cancellables)
+        } catch {
+            appStateObserver.updateAppState(.loggedOut(.failedToSetUpAppCoordinator(error)))
         }
     }
 }
 
 private extension AppCoordinator {
     func start() {
-        if appData.isAuthenticated {
+        if let userId = userManager.activeUserId,
+           authManager.isAuthenticated(userId: userId) {
             appStateObserver.updateAppState(.alreadyLoggedIn)
-        } else if appData.getCredential() != nil {
+        } else if let userId = userManager.activeUserId,
+                  authManager.getCredential(userId: userId) != nil {
             appStateObserver.updateAppState(.loggedOut(.noAuthSessionButUnauthSessionAvailable))
         } else {
             appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
@@ -193,7 +218,7 @@ private extension AppCoordinator {
     }
 
     func showWelcomeScene(reason: LogOutReason) {
-        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService,
+        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.getUnauthApiService(),
                                                     theme: theme)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
@@ -201,7 +226,6 @@ private extension AppCoordinator {
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
             handle(logOutReason: reason)
-            stopStream()
         }
     }
 
@@ -245,8 +269,10 @@ private extension AppCoordinator {
         }
 
         let username = userData.credential.userName
-        let view = ExtraPasswordLockView(email: userData.user.email ?? username,
+        let view = ExtraPasswordLockView(apiServicing: apiManager,
+                                         email: userData.user.email ?? username,
                                          username: username,
+                                         userId: userData.user.ID,
                                          onSuccess: onSuccess,
                                          onFailure: onFailure)
         let viewController = UIHostingController(rootView: view)
@@ -265,44 +291,20 @@ private extension AppCoordinator {
     func resetAllData() {
         Task { [weak self] in
             guard let self else { return }
-            await wipeAllData()
+            // swiftlint:disable:next todo
+            // TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()
         }
     }
 }
 
-// MARK: - Utils
-
 private extension AppCoordinator {
-    func connectToCorruptedSessionStream() {
-        guard corruptedSessionStream == nil else {
-            return
-        }
-
-        corruptedSessionStream = corruptedSessionEventStream
-            .receive(on: DispatchQueue.main)
-            .removeDuplicates()
-            .compactMap { $0 }
-            .sink { [weak self] reason in
-                guard let self else { return }
-                captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
-            }
-    }
-
-    func stopStream() {
-        corruptedSessionEventStream.send(nil)
-        corruptedSessionStream?.cancel()
-        corruptedSessionStream = nil
-    }
-}
-
-private extension AppCoordinator {
-    func registerForPushNotificationsIfNeededAndAddHandlers(uid: String) {
+    func registerForPushNotificationsIfNeededAndAddHandlers( /* uid: String */ ) {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.pushNotifications, reloadValue: true)
         else { return }
 
-        pushNotificationService.setup()
-        pushNotificationService.registerForRemoteNotifications(uid: uid)
+//        pushNotificationService.setup()
+//        pushNotificationService.registerForRemoteNotifications(uid: uid)
 
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true)
         else { return }
@@ -314,18 +316,22 @@ private extension AppCoordinator {
             return .success
         }
 
-        for accountRecoveryType in NotificationType.allAccountRecoveryTypes {
-            pushNotificationService.registerHandler(passHandler, forType: accountRecoveryType)
-        }
+//        for accountRecoveryType in NotificationType.allAccountRecoveryTypes {
+//            pushNotificationService.registerHandler(passHandler, forType: accountRecoveryType)
+//        }
     }
 }
 
 private extension AppCoordinator {
-    /// Show an alert with a single "OK" button that does nothing
+    /// Show an alert with a single "OK" button that dismisses all current sheets
     func alert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(.init(title: #localized("OK"), style: .default))
-        rootViewController?.present(alert, animated: true)
+        let okAction = UIAlertAction(title: #localized("OK"), style: .default) { [weak self] _ in
+            guard let self else { return }
+            rootViewController?.dismiss(animated: true)
+        }
+        alert.addAction(okAction)
+        rootViewController?.topMostViewController.present(alert, animated: true)
     }
 
     func handle(logOutReason: LogOutReason) {
@@ -336,7 +342,7 @@ private extension AppCoordinator {
         case .failedBiometricAuthentication:
             alert(title: #localized("Failed to authenticate"),
                   message: #localized("Please log in again"))
-        case let .failedToInitializePreferences(error):
+        case let .failedToSetUpAppCoordinator(error):
             alert(title: #localized("Error occurred"), message: error.localizedDescription)
         case .tooManyWrongExtraPasswordAttempts:
             alert(title: #localized("Failed to authenticate"),
@@ -344,11 +350,6 @@ private extension AppCoordinator {
         default:
             break
         }
-    }
-
-    func captureErrorAndLogOut(_ error: any Error, sessionId: String) {
-        sendErrorToSentry(error, sessionId: sessionId)
-        appStateObserver.updateAppState(.loggedOut(.sessionInvalidated))
     }
 }
 
@@ -372,6 +373,16 @@ extension AppCoordinator: HomepageCoordinatorDelegate {
     }
 
     func homepageCoordinatorDidFailLocallyAuthenticating() {
-        appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                try await logOutAllAccounts()
+                appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }

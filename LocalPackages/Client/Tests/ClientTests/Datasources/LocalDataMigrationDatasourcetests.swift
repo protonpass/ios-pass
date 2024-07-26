@@ -1,6 +1,6 @@
-//
-// LocalActiveUserIdDatasourceTests.swift
-// Proton Pass - Created on 16/05/2024.
+//  
+// LocalMigrationsDatasourcetests.swift
+// Proton Pass - Created on 25/06/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,19 +17,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 @testable import Client
+import Entities
 import XCTest
 
-final class LocalActiveUserIdDatasourceTests: XCTestCase {
-    var sut: LocalActiveUserIdDatasourceProtocol!
+final class LocalDataMigrationDatasourceTests: XCTestCase {
+    var sut: LocalDataMigrationDatasourceProtocol!
 
     override func setUp() {
         super.setUp()
         let userDefaults = UserDefaults.standard
         userDefaults.removeAllObjects()
-        sut = LocalActiveUserIdDatasource(userDefault: userDefaults)
+        sut = LocalDataMigrationDatasource(userDefault: userDefaults)
     }
 
     override func tearDown() {
@@ -38,19 +38,20 @@ final class LocalActiveUserIdDatasourceTests: XCTestCase {
     }
 }
 
-extension LocalActiveUserIdDatasourceTests {
-    func testGetUpdateRemoveActiveUserId() {
-        XCTAssertNil(sut.getActiveUserId())
+extension LocalDataMigrationDatasourceTests {
+    func testMigrationStatusUpdate() async throws {
+        let noMigration = await sut.getMigrations()
+        XCTAssertEqual(noMigration, 0)
 
-        let id1 = String.random()
-        sut.updateActiveUserId(id1)
-        XCTAssertEqual(sut.getActiveUserId(), id1)
+        await sut.upsert(migrations: 0)
+        let migration1 = try await XCTUnwrapAsync( await sut.getMigrations())
+        XCTAssertEqual(migration1, 0)
 
-        let id2 = String.random()
-        sut.updateActiveUserId(id2)
-        XCTAssertEqual(sut.getActiveUserId(), id2)
+         await sut.upsert(migrations: 1)
 
-        sut.removeActiveUserId()
-        XCTAssertNil(sut.getActiveUserId())
+        let migration2 = try await XCTUnwrapAsync( await sut.getMigrations())
+
+        XCTAssertEqual(migration2, 1)
     }
 }
+

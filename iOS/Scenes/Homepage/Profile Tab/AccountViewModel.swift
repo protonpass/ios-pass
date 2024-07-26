@@ -33,8 +33,6 @@ import ProtonCorePasswordChange
 @MainActor
 protocol AccountViewModelDelegate: AnyObject {
     func accountViewModelWantsToGoBack()
-    func accountViewModelWantsToSignOut()
-    func accountViewModelWantsToDeleteAccount()
     func accountViewModelWantsToShowAccountRecovery(_ completion: @escaping (AccountRecovery) -> Void)
 }
 
@@ -45,9 +43,8 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let accountRepository = resolve(\SharedRepositoryContainer.accountRepository)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private let userDataProvider = resolve(\SharedDataContainer.userDataProvider)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
@@ -66,7 +63,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any AccountViewModelDelegate)?
 
-    var username: String { userDataProvider.getUserData()?.user.email ?? "" }
+    var username: String { userManager.currentActiveUser.value?.user.email ?? "" }
 
     var extraPasswordSupported: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAccessKeyV1)
@@ -74,6 +71,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
+        plan = accessRepository.access.value?.access.plan
         extraPasswordEnabled = preferencesManager.userPreferences.unwrapped().extraPasswordEnabled
         refreshUserPlan()
         refreshAccountRecovery()
@@ -94,10 +92,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         Task { [weak self] in
             guard let self else { return }
             do {
-                // First get local plan to optimistically display it
-                // and then try to refresh the plan to have it updated
-                plan = try await accessRepository.getPlan()
-                plan = try await accessRepository.refreshAccess().plan
+                plan = try await accessRepository.refreshAccess().access.plan
             } catch {
                 logger.error(error)
             }
@@ -122,7 +117,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
-                let userId = try userDataProvider.getUserId()
+                let userId = try await userManager.getActiveUserId()
                 let settings = await userSettingsRepository.getSettings(for: userId)
                 passwordMode = settings.password.mode
             } catch {
@@ -189,7 +184,7 @@ extension AccountViewModel {
     }
 
     func disableExtraPassword() {
-        guard let username = userDataProvider.getUserData()?.credential.userName else {
+        guard let username = userManager.currentActiveUser.value?.credential.userName else {
             let errorMessage = #localized("Missing username")
             router.display(element: .errorMessage(errorMessage))
             logger.error("Failed to disable extra password. Missing username")
@@ -200,7 +195,9 @@ extension AccountViewModel {
             defer { isLoading = false }
             isLoading = true
             do {
-                let result = try await doDisableExtraPassword(username: username,
+                let userId = try await userManager.getActiveUserId()
+                let result = try await doDisableExtraPassword(userId: userId,
+                                                              username: username,
                                                               password: extraPassword)
                 extraPassword = ""
                 switch result {
@@ -213,8 +210,7 @@ extension AccountViewModel {
                     router.display(element: .errorMessage(errorMessage))
                 }
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error: error)
             }
         }
     }
@@ -222,15 +218,25 @@ extension AccountViewModel {
     func signOut() {
         Task { [weak self] in
             guard let self else { return }
-            isLoading = true
-            await revokeCurrentSession()
-            isLoading = false
-            delegate?.accountViewModelWantsToSignOut()
+            do {
+                let userId = try await userManager.getActiveUserId()
+                router.action(.signOut(userId: userId))
+            } catch {
+                handle(error: error)
+            }
         }
     }
 
     func deleteAccount() {
-        delegate?.accountViewModelWantsToDeleteAccount()
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                router.action(.deleteAccount(userId: userId))
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 
     func openAccountRecovery() {
@@ -257,5 +263,10 @@ private extension AccountViewModel {
         case let .failure(error):
             logger.error(error)
         }
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }

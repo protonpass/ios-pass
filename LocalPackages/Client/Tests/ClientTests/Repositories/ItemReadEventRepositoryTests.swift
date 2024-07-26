@@ -37,20 +37,21 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
 private final class ItemReadEventRepositoryTests: XCTestCase {
     var localDatasource: LocalItemReadEventDatasourceProtocol!
     var remoteDatasource: RemoteItemReadEventDatasourceProtocolMock!
-    var userDataProvider: UserDataProviderMock!
+    var userManager: UserManagerProtocolMock!
     var currentDateProvider: MockedCurrentDateProvider!
     var sut: ItemReadEventRepositoryProtocol!
 
     override func setUp() {
         super.setUp()
-        userDataProvider = .init()
+        userManager = .init()
+        userManager.stubbedGetActiveUserIdResult = UserData.preview.user.ID
         currentDateProvider = .init()
         localDatasource = LocalItemReadEventDatasource(databaseService: DatabaseService(inMemory: true))
         remoteDatasource = .init()
         sut = ItemReadEventRepository(localDatasource: localDatasource,
                                       remoteDatasource: remoteDatasource,
                                       currentDateProvider: currentDateProvider,
-                                      userDataProvider: userDataProvider,
+                                      userManager: userManager,
                                       logManager: LogManagerProtocolMock(),
                                       batchSize: 3)
     }
@@ -58,7 +59,7 @@ private final class ItemReadEventRepositoryTests: XCTestCase {
     override func tearDown() {
         localDatasource = nil
         remoteDatasource = nil
-        userDataProvider = nil
+        userManager = nil
         currentDateProvider = nil
         sut = nil
         super.tearDown()
@@ -68,7 +69,7 @@ private final class ItemReadEventRepositoryTests: XCTestCase {
 extension ItemReadEventRepositoryTests {
     func testAddEvents() async throws {
         let userData = UserData.test
-        userDataProvider.stubbedGetUserDataResult = userData
+        userManager.stubbedGetActiveUserIdResult = userData.user.ID
 
         let shareId1 = String.random()
         let event1 = try await givenAddedEvent(shareId: shareId1, timestamp: 5)
@@ -86,7 +87,7 @@ extension ItemReadEventRepositoryTests {
         let expectation3 = expectation(description: "Only batch for shareId2")
 
         remoteDatasource.closureSend = {
-            let (events, shareId) = self.remoteDatasource.invokedSendParameters!
+            let (userId, events, shareId) = self.remoteDatasource.invokedSendParameters!
             switch shareId {
             case shareId1:
                 if events.map(\.itemId) == [event2, event4, event1].map(\.itemId) {

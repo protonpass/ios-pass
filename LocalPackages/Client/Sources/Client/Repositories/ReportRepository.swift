@@ -39,13 +39,13 @@ public protocol ReportRepositoryProtocol: Sendable {
 }
 
 public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
-    private let apiService: any APIService
-    private let userDataProvider: any UserDataProvider
+    private let apiServicing: any APIManagerProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(apiService: any APIService,
-                userDataProvider: any UserDataProvider) {
-        self.apiService = apiService
-        self.userDataProvider = userDataProvider
+    public init(apiServicing: any APIManagerProtocol,
+                userManager: any UserManagerProtocol) {
+        self.apiServicing = apiServicing
+        self.userManager = userManager
     }
 }
 
@@ -62,17 +62,16 @@ public extension ReportRepository {
     func sendBug(with title: String,
                  and description: String,
                  optional logs: [String: URL]) async throws -> Bool {
-        guard let userData = userDataProvider.getUserData() else {
-            throw ReportRepositoryError.noUserData
-        }
+        let userData = try await userManager.getUnwrappedActiveUserData()
         let request = await BugReportRequest(with: title, and: description, userData: userData)
         let endpoint = ReportsBugEndpoint(request: request)
+        let service = try apiServicing.getApiService(userId: userData.user.ID)
         if !logs.isEmpty {
-            let result = try await apiService.exec(endpoint: endpoint, files: logs).isSuccessful
+            let result = try await service.exec(endpoint: endpoint, files: logs).isSuccessful
             cleanReportLogFiles(from: logs)
             return result
         } else {
-            return try await apiService.exec(endpoint: endpoint).isSuccessful
+            return try await service.exec(endpoint: endpoint).isSuccessful
         }
     }
 }

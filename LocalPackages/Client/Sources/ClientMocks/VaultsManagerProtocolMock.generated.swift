@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -26,6 +26,26 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
 
     public init() {}
 
+    // MARK: - vaultSyncEventStream
+    public var invokedVaultSyncEventStreamSetter = false
+    public var invokedVaultSyncEventStreamSetterCount = 0
+    public var invokedVaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?
+    public var invokedVaultSyncEventStreamList = [CurrentValueSubject<VaultSyncProgressEvent, Never>?]()
+    public var invokedVaultSyncEventStreamGetter = false
+    public var invokedVaultSyncEventStreamGetterCount = 0
+    public var stubbedVaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>!
+    public var vaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never> {
+        set {
+            invokedVaultSyncEventStreamSetter = true
+            invokedVaultSyncEventStreamSetterCount += 1
+            invokedVaultSyncEventStream = newValue
+            invokedVaultSyncEventStreamList.append(newValue)
+        } get {
+            invokedVaultSyncEventStreamGetter = true
+            invokedVaultSyncEventStreamGetterCount += 1
+            return stubbedVaultSyncEventStream
+        }
+    }
     // MARK: - currentVaults
     public var invokedCurrentVaultsSetter = false
     public var invokedCurrentVaultsSetterCount = 0
@@ -90,11 +110,51 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public var closureRefresh: () -> () = {}
     public var invokedRefreshfunction = false
     public var invokedRefreshCount = 0
+    public var invokedRefreshParameters: (userId: String, Void)?
+    public var invokedRefreshParametersList = [(userId: String, Void)]()
 
-    public func refresh() {
+    public func refresh(userId: String) {
         invokedRefreshfunction = true
         invokedRefreshCount += 1
+        invokedRefreshParameters = (userId, ())
+        invokedRefreshParametersList.append((userId, ()))
         closureRefresh()
+    }
+    // MARK: - fullSync
+    public var fullSyncUserIdThrowableError2: Error?
+    public var closureFullSync: () -> () = {}
+    public var invokedFullSyncfunction = false
+    public var invokedFullSyncCount = 0
+    public var invokedFullSyncParameters: (userId: String, Void)?
+    public var invokedFullSyncParametersList = [(userId: String, Void)]()
+
+    public func fullSync(userId: String) async throws {
+        invokedFullSyncfunction = true
+        invokedFullSyncCount += 1
+        invokedFullSyncParameters = (userId, ())
+        invokedFullSyncParametersList.append((userId, ()))
+        if let error = fullSyncUserIdThrowableError2 {
+            throw error
+        }
+        closureFullSync()
+    }
+    // MARK: - localFullSync
+    public var localFullSyncUserIdThrowableError3: Error?
+    public var closureLocalFullSync: () -> () = {}
+    public var invokedLocalFullSyncfunction = false
+    public var invokedLocalFullSyncCount = 0
+    public var invokedLocalFullSyncParameters: (userId: String, Void)?
+    public var invokedLocalFullSyncParametersList = [(userId: String, Void)]()
+
+    public func localFullSync(userId: String) async throws {
+        invokedLocalFullSyncfunction = true
+        invokedLocalFullSyncCount += 1
+        invokedLocalFullSyncParameters = (userId, ())
+        invokedLocalFullSyncParametersList.append((userId, ()))
+        if let error = localFullSyncUserIdThrowableError3 {
+            throw error
+        }
+        closureLocalFullSync()
     }
     // MARK: - getItems
     public var closureGetItems: () -> () = {}
@@ -125,19 +185,19 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         return stubbedGetAllVaultsResult
     }
     // MARK: - delete
-    public var deleteShareIdThrowableError4: Error?
+    public var deleteUserIdShareIdThrowableError6: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
-    public var invokedDeleteParameters: (shareId: String, Void)?
-    public var invokedDeleteParametersList = [(shareId: String, Void)]()
+    public var invokedDeleteParameters: (userId: String, shareId: String)?
+    public var invokedDeleteParametersList = [(userId: String, shareId: String)]()
 
-    public func delete(shareId: String) async throws {
+    public func delete(userId: String, shareId: String) async throws {
         invokedDeletefunction = true
         invokedDeleteCount += 1
-        invokedDeleteParameters = (shareId, ())
-        invokedDeleteParametersList.append((shareId, ()))
-        if let error = deleteShareIdThrowableError4 {
+        invokedDeleteParameters = (userId, shareId)
+        invokedDeleteParametersList.append((userId, shareId))
+        if let error = deleteUserIdShareIdThrowableError6 {
             throw error
         }
         closureDelete()
@@ -153,5 +213,15 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         invokedGetOldestOwnedVaultCount += 1
         closureGetOldestOwnedVault()
         return stubbedGetOldestOwnedVaultResult
+    }
+    // MARK: - reset
+    public var closureReset: () -> () = {}
+    public var invokedResetfunction = false
+    public var invokedResetCount = 0
+
+    public func reset() async {
+        invokedResetfunction = true
+        invokedResetCount += 1
+        closureReset()
     }
 }
