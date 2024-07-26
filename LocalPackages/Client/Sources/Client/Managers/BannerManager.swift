@@ -69,7 +69,7 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
     }
 
     public func displayBottomSuccessMessage(_ message: String) {
-        display(message: message, at: .bottom, style: .success)
+        display(message: message, at: .passBottom, style: .success)
     }
 
     public func displayBottomInfoMessage(_ message: String,
@@ -82,12 +82,12 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
         Task { @MainActor in
             let banner = PMBanner(message: message, style: PMBannerNewStyle.info)
             banner.addButton(text: dismissButtonTitle, handler: onDismiss)
-            banner.show(at: .bottom, on: container.topMostViewController)
+            banner.show(at: .passBottom, on: container.topMostViewController)
         }
     }
 
     public func displayBottomInfoMessage(_ message: String) {
-        display(message: message, at: .bottom, style: .info)
+        display(message: message, at: .passBottom, style: .info)
     }
 
     public func displayTopErrorMessage(_ message: String,
@@ -116,5 +116,12 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
             error.localizedDescription
         }
         displayTopErrorMessage(message)
+    }
+}
+
+private extension PMBannerPosition {
+    /// Custom bottom position for Pass
+    static var passBottom: PMBannerPosition {
+        .bottomCustom(.init(top: .infinity, left: 8, bottom: 40, right: 8))
     }
 }
