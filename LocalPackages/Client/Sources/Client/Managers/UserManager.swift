@@ -40,6 +40,7 @@ public protocol UserManagerProtocol: Sendable {
     func getAllUsers() async throws -> [UserData]
     func remove(userId: String) async throws
     func getActiveUserId() async throws -> String
+    func cleanAllUsers() async throws
     nonisolated func setUserData(_ userData: UserData)
 }
 
@@ -153,6 +154,13 @@ public extension UserManager {
             throw PassError.userManager(.activeUserDataNotFound)
         }
         await publishNewActiveUser(activeUserData)
+    }
+
+    func cleanAllUsers() async throws {
+        try await userDataDatasource.removeAll()
+        currentActiveUser.send(nil)
+        allUserAccounts.send([])
+        userProfiles = []
     }
 }
 
