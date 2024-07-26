@@ -67,6 +67,7 @@ final class EnableExtraPasswordViewModel: ObservableObject {
     private let enableExtraPassword = resolve(\UseCasesContainer.enableExtraPassword)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init() {
@@ -139,7 +140,9 @@ extension EnableExtraPasswordViewModel {
             defer { loading = false }
             do {
                 loading = true
-                try await enableExtraPassword(definedExtraPassword)
+                let userId = try await userManager.getActiveUserId()
+                try await enableExtraPassword(userId: userId,
+                                              password: definedExtraPassword)
                 try await updateUserPreferences(\.extraPasswordEnabled, value: true)
                 extraPasswordEnabled = true
             } catch {

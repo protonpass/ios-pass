@@ -34,6 +34,7 @@ extension ItemContent {
                                         passkeys: data.passkeys)
         return ItemContent(shareId: shareId,
                            itemUuid: itemUuid,
+                           userId: userId,
                            item: item,
                            name: name,
                            note: note,

@@ -25,7 +25,8 @@ public extension SymmetricallyEncryptedItem {
     /// Symmetrically decrypt and return decrypted item content
     func getItemContent(symmetricKey: SymmetricKey) throws -> ItemContent {
         let contentProtobuf = try ItemContentProtobuf(base64: encryptedContent, symmetricKey: symmetricKey)
-        return .init(shareId: shareId,
+        return .init(userId: userId,
+                     shareId: shareId,
                      item: item,
                      contentProtobuf: contentProtobuf)
     }

@@ -70,6 +70,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let passwordScorer: any PasswordScorerProtocol
     private let twofaDomainChecker: any TwofaDomainCheckerProtocol
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
+    private let userManager: any UserManagerProtocol
 
     public let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
     public let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
@@ -82,6 +83,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     public init(itemRepository: any ItemRepositoryProtocol,
                 remoteDataSource: any RemoteBreachDataSourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
+                userManager: any UserManagerProtocol,
                 passwordScorer: any PasswordScorerProtocol = PasswordScorer(),
                 twofaDomainChecker: any TwofaDomainCheckerProtocol = TwofaDomainChecker()) {
         self.itemRepository = itemRepository
@@ -89,6 +91,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         self.passwordScorer = passwordScorer
         self.twofaDomainChecker = twofaDomainChecker
         self.remoteDataSource = remoteDataSource
+        self.userManager = userManager
 
         Task { [weak self] in
             guard let self else {
@@ -99,9 +102,10 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     }
 
     public func refreshSecurityChecks() async throws {
+        let userId = try await userManager.getActiveUserId()
         var reusedPasswords = [String: Int]()
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        let loginItems = try await itemRepository.getActiveLogInItems()
+        let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
             .compactMap { encryptedItem -> InternalPassMonitorItem? in
                 guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
                       let loginItem = item.loginItem else {
@@ -162,8 +166,9 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
         guard let login = item.loginItem else {
             return []
         }
+        let userId = try await userManager.getActiveUserId()
         let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
-        let encryptedItems = try await itemRepository.getActiveLogInItems()
+        let encryptedItems = try await itemRepository.getActiveLogInItems(userId: userId)
 
         return encryptedItems.compactMap { encryptedItem in
             guard let decryptedItem = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
@@ -190,7 +195,8 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
 public extension PassMonitorRepository {
     func refreshUserBreaches() async throws -> UserBreaches {
-        let unsortedBreaches = try await remoteDataSource.getAllBreachesForUser()
+        let userId = try await userManager.getActiveUserId()
+        let unsortedBreaches = try await remoteDataSource.getAllBreachesForUser(userId: userId)
         let breaches = UserBreaches(emailsCount: unsortedBreaches.emailsCount,
                                     domainsPeek: unsortedBreaches.domainsPeek,
                                     addresses: unsortedBreaches.addresses.sorted(),
@@ -201,65 +207,82 @@ public extension PassMonitorRepository {
     }
 
     func getAllCustomEmailForUser() async throws -> [CustomEmail] {
-        let emails = try await remoteDataSource.getAllCustomEmailForUser()
+        let userId = try await userManager.getActiveUserId()
+        let emails = try await remoteDataSource.getAllCustomEmailForUser(userId: userId)
         return emails.sorted()
     }
 
     func addEmailToBreachMonitoring(email: String) async throws -> CustomEmail {
-        let email = try await remoteDataSource.addEmailToBreachMonitoring(email: email)
+        let userId = try await userManager.getActiveUserId()
+        let email = try await remoteDataSource.addEmailToBreachMonitoring(userId: userId, email: email)
         return email
     }
 
     func verifyCustomEmail(email: CustomEmail, code: String) async throws {
-        try await remoteDataSource.verifyCustomEmail(emailId: email.customEmailID, code: code)
+        let userId = try await userManager.getActiveUserId()
+        try await remoteDataSource.verifyCustomEmail(userId: userId, emailId: email.customEmailID, code: code)
     }
 
     func removeEmailFromBreachMonitoring(email: CustomEmail) async throws {
-        try await remoteDataSource.removeEmailFromBreachMonitoring(emailId: email.customEmailID)
+        let userId = try await userManager.getActiveUserId()
+        try await remoteDataSource.removeEmailFromBreachMonitoring(userId: userId, emailId: email.customEmailID)
     }
 
     func resendEmailVerification(email: CustomEmail) async throws {
-        try await remoteDataSource.resendEmailVerification(emailId: email.customEmailID)
+        let userId = try await userManager.getActiveUserId()
+        try await remoteDataSource.resendEmailVerification(userId: userId, emailId: email.customEmailID)
     }
 
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches {
         try Task.checkCancellation()
-        return try await remoteDataSource.getBreachesForAlias(sharedId: sharedId, itemId: itemId)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.getBreachesForAlias(userId: userId, sharedId: sharedId, itemId: itemId)
     }
 
     func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches {
         try Task.checkCancellation()
-        return try await remoteDataSource.getAllBreachesForEmail(email: email)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.getAllBreachesForEmail(userId: userId, email: email)
     }
 
     func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches {
         try Task.checkCancellation()
-        return try await remoteDataSource.getAllBreachesForProtonAddress(address: address)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.getAllBreachesForProtonAddress(userId: userId, address: address)
     }
 
     func markAliasAsResolved(sharedId: String, itemId: String) async throws {
         try Task.checkCancellation()
-        return try await remoteDataSource.markAliasAsResolved(sharedId: sharedId, itemId: itemId)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.markAliasAsResolved(userId: userId, sharedId: sharedId, itemId: itemId)
     }
 
     func markProtonAddressAsResolved(address: ProtonAddress) async throws {
         try Task.checkCancellation()
-        return try await remoteDataSource.markProtonAddressAsResolved(address: address)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.markProtonAddressAsResolved(userId: userId, address: address)
     }
 
     func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail {
         try Task.checkCancellation()
-        return try await remoteDataSource.markCustomEmailAsResolved(email: email)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.markCustomEmailAsResolved(userId: userId, email: email)
     }
 
     func toggleMonitoringFor(address: ProtonAddress, shouldMonitor: Bool) async throws {
         try Task.checkCancellation()
-        return try await remoteDataSource.toggleMonitoringFor(address: address, shouldMonitor: shouldMonitor)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.toggleMonitoringFor(userId: userId,
+                                                              address: address,
+                                                              shouldMonitor: shouldMonitor)
     }
 
     func toggleMonitoringFor(email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail {
         try Task.checkCancellation()
-        return try await remoteDataSource.toggleMonitoringFor(email: email, shouldMonitor: shouldMonitor)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.toggleMonitoringFor(userId: userId,
+                                                              email: email,
+                                                              shouldMonitor: shouldMonitor)
     }
 
     func toggleMonitoringForAlias(sharedId: String, itemId: String, shouldMonitor: Bool) async throws {

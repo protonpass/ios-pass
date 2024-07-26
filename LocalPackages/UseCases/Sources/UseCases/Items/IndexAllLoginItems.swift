@@ -25,12 +25,12 @@ import Foundation
 
 /// Empty credential database and index all existing login items
 public protocol IndexAllLoginItemsUseCase: Sendable {
-    func execute() async throws
+    func execute(userId: String) async throws
 }
 
 public extension IndexAllLoginItemsUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(userId: String) async throws {
+        try await execute(userId: userId)
     }
 }
 
@@ -56,7 +56,10 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         logger = .init(manager: logManager)
     }
 
-    public func execute() async throws {
+    // swiftlint:disable:next todo
+    // TODO: Will have to accept the credential of several accounts and not just one
+    // will either have to take list of ids or not remove previous credentials
+    public func execute(userId: String) async throws {
         let start = Date()
         logger.trace("Indexing all login items")
 
@@ -66,7 +69,7 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         }
 
         try await credentialManager.removeAllCredentials()
-        let items = try await filterItems()
+        let items = try await filterItems(userId: userId)
 
         let credentials = try items.flatMap { try mapLoginItem(for: $0) }
         try await credentialManager.insert(credentials: credentials)
@@ -78,14 +81,14 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
 }
 
 private extension IndexAllLoginItems {
-    func filterItems() async throws -> [SymmetricallyEncryptedItem] {
+    func filterItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let plan = try await accessRepository.getPlan()
-        let items = try await itemRepository.getActiveLogInItems()
+        let items = try await itemRepository.getActiveLogInItems(userId: userId)
         logger.trace("Found \(items.count) active login items")
         if !plan.isFreeUser {
             return items
         }
-        let vaults = try await shareRepository.getVaults()
+        let vaults = try await shareRepository.getVaults(userId: userId)
         let oldestVaults = vaults.twoOldestVaults
         return items.filter { oldestVaults.isOneOf(shareId: $0.shareId) }
     }

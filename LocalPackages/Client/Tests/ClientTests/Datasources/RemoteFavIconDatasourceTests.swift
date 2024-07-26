@@ -23,13 +23,26 @@ import Core
 import ProtonCoreServices
 import XCTest
 
+final class APIManagerProtocolMock: APIManagerProtocol {
+    func getApiService(userId: String) throws -> any APIService {
+        PMAPIService.dummyService()
+    }
+    
+    func getUnauthApiService() -> any APIService {
+        PMAPIService.dummyService()
+    }
+    
+    func reset() {
+        
+    }
+}
+
 final class RemoteFavIconDatasourceTests: XCTestCase {
     var sut: RemoteFavIconDatasource!
 
     override func setUp() {
         super.setUp()
-        sut = RemoteFavIconDatasource(apiService: PMAPIService.dummyService(), 
-                                      eventStream: .init())
+        sut = RemoteFavIconDatasource(apiServicing: APIManagerProtocolMock())
     }
 
     override func tearDown() {

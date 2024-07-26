@@ -87,7 +87,7 @@ extension ItemReadEventRepositoryTests {
         let expectation3 = expectation(description: "Only batch for shareId2")
 
         remoteDatasource.closureSend = {
-            let (events, shareId) = self.remoteDatasource.invokedSendParameters!
+            let (userId, events, shareId) = self.remoteDatasource.invokedSendParameters!
             switch shareId {
             case shareId1:
                 if events.map(\.itemId) == [event2, event4, event1].map(\.itemId) {

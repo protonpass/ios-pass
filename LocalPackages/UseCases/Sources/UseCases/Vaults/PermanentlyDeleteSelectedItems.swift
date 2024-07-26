@@ -23,12 +23,12 @@ import Client
 import Entities
 
 public protocol PermanentlyDeleteSelectedItemsUseCase: Sendable {
-    func execute(_ items: [any ItemIdentifiable]) async throws
+    func execute(userId: String, _ items: [any ItemIdentifiable]) async throws
 }
 
 public extension PermanentlyDeleteSelectedItemsUseCase {
-    func callAsFunction(_ items: [any ItemIdentifiable]) async throws {
-        try await execute(items)
+    func callAsFunction(userId: String, _ items: [any ItemIdentifiable]) async throws {
+        try await execute(userId: userId, items)
     }
 }
 
@@ -39,7 +39,7 @@ public final class PermanentlyDeleteSelectedItems: PermanentlyDeleteSelectedItem
         self.repository = repository
     }
 
-    public func execute(_ items: [any ItemIdentifiable]) async throws {
-        try await repository.delete(items: items)
+    public func execute(userId: String, _ items: [any ItemIdentifiable]) async throws {
+        try await repository.delete(userId: userId, items: items)
     }
 }

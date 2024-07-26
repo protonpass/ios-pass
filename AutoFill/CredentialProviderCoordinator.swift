@@ -66,6 +66,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
 
@@ -177,8 +178,18 @@ private extension CredentialProviderCoordinator {
         Task { [weak self] in
             guard let self, let context else { return }
             do {
+                guard let recordIdentifier = request.recordIdentifier else {
+                    throw ASExtensionError(.credentialIdentityNotFound)
+                }
+
+                let ids = try IDs.deserializeBase64(recordIdentifier)
+                guard let item = try await itemRepository.getItem(shareId: ids.shareId, itemId: ids.itemId) else {
+                    throw ASExtensionError(.credentialIdentityNotFound)
+                }
+
                 let localAuthenticationMethod = getSharedPreferences().localAuthenticationMethod
                 try await checkAndAutoFill(request,
+                                           userId: item.userId,
                                            context: context,
                                            localAuthenticationMethod: localAuthenticationMethod)
             } catch {
@@ -397,8 +408,9 @@ private extension CredentialProviderCoordinator {
     func showCreateLoginView(url: URL?, request: PasskeyCredentialRequest?) async {
         do {
             showLoadingHud()
+            let userId = try await userManager.getActiveUserId()
             if vaultsManager.getAllVaultContents().isEmpty {
-                try await vaultsManager.asyncRefresh()
+                try await vaultsManager.asyncRefresh(userId: userId)
             }
             let vaults = vaultsManager.getAllVaultContents().map(\.vault)
 
@@ -558,8 +570,10 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self, let context else { return }
                 do {
+                    // swiftlint:disable:next todo
+                    // TODO: will have to index for all accounts
                     if getSharedPreferences().quickTypeBar {
-                        try await indexAllLoginItems()
+                        try await indexAllLoginItems(userId: item.userId)
                     }
                     if let response {
                         completePasskeyRegistration(response, context: context)

@@ -38,18 +38,24 @@ public extension GetSecureLinkKeysUseCase {
 
 public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     private let passKeyManager: any PassKeyManagerProtocol
+    private let userManager: any UserManagerProtocol
 
-    public init(passKeyManager: any PassKeyManagerProtocol) {
+    public init(passKeyManager: any PassKeyManagerProtocol,
+                userManager: any UserManagerProtocol) {
         self.passKeyManager = passKeyManager
+        self.userManager = userManager
     }
 
     /// Generates link and encoded item keys
     /// - Parameter item: Item to be publicly shared
     /// - Returns: A tuple with the link and item encoded keys
     public func execute(item: ItemContent) async throws -> SecureLinkKeys {
-        let itemKeyInfo = try await passKeyManager.getLatestItemKey(shareId: item.shareId, itemId: item.itemId)
+        let userId = try await userManager.getActiveUserId()
+        let itemKeyInfo = try await passKeyManager.getLatestItemKey(userId: userId,
+                                                                    shareId: item.shareId,
+                                                                    itemId: item.itemId)
 
-        let shareKeyInfo = try await passKeyManager.getLatestShareKey(shareId: item.shareId)
+        let shareKeyInfo = try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
 
         let linkKey = try Data.random()
 

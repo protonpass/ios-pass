@@ -55,7 +55,7 @@ struct ItemsTabView: View {
 
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: viewModel.vaultsManager.refresh)
+                                   onRetry: { viewModel.refresh() })
             }
         }
         .animation(.default, value: vaultsManager.state)

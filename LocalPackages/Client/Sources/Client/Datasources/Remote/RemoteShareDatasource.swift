@@ -22,50 +22,38 @@ import Entities
 import Foundation
 
 public protocol RemoteShareDatasourceProtocol: Sendable {
-    func getShares() async throws -> [Share]
-//    func getShare(shareId: String) async throws -> Share
-    func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos]
-//    func getUserInformationForShare(shareId: String, userId: String) async throws -> UserShareInfos
+    func getShares(userId: String) async throws -> [Share]
+    func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos]
     func updateUserSharePermission(shareId: String,
                                    userId: String,
                                    request: UserSharePermissionRequest) async throws -> Bool
     func deleteUserShare(shareId: String,
                          userId: String) async throws -> Bool
 
-    func deleteShare(shareId: String) async throws -> Bool
+    func deleteShare(userId: String, shareId: String) async throws -> Bool
 
-    func createVault(request: CreateVaultRequest) async throws -> Share
-    func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share
-    func deleteVault(shareId: String) async throws
-    func transferVaultOwnership(vaultShareId: String, request: TransferOwnershipVaultRequest) async throws -> Bool
+    func createVault(userId: String, request: CreateVaultRequest) async throws -> Share
+    func updateVault(userId: String, request: UpdateVaultRequest, shareId: String) async throws -> Share
+    func deleteVault(userId: String, shareId: String) async throws
+    func transferVaultOwnership(userId: String,
+                                vaultShareId: String,
+                                request: TransferOwnershipVaultRequest) async throws -> Bool
 }
 
 public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol {}
 
 public extension RemoteShareDatasource {
-    func getShares() async throws -> [Share] {
+    func getShares(userId: String) async throws -> [Share] {
         let getSharesEndpoint = GetSharesEndpoint()
-        let getSharesResponse = try await exec(endpoint: getSharesEndpoint)
+        let getSharesResponse = try await exec(userId: userId, endpoint: getSharesEndpoint)
         return getSharesResponse.shares
     }
 
-//    func getShare(shareId: String) async throws -> Share {
-//        let endpoint = GetShareEndpoint(shareId: shareId)
-//        let response = try await exec(endpoint: endpoint)
-//        return response.share
-//    }
-
-    func getShareLinkedUsers(shareId: String) async throws -> [UserShareInfos] {
+    func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos] {
         let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.shares
     }
-
-//    func getUserInformationForShare(shareId: String, userId: String) async throws -> UserShareInfos {
-//        let endpoint = GetUserInformationForShareEndpoint(for: shareId, and: userId)
-//        let response = try await exec(endpoint: endpoint)
-//        return response.share
-//    }
 
     func updateUserSharePermission(shareId: String,
                                    userId: String,
@@ -73,43 +61,44 @@ public extension RemoteShareDatasource {
         let endpoint = UpdateUserSharePermissionsEndpoint(shareId: shareId,
                                                           userId: userId,
                                                           request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
     func deleteUserShare(shareId: String, userId: String) async throws -> Bool {
         let endpoint = DeleteUserShareEndpoint(for: shareId, and: userId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func deleteShare(shareId: String) async throws -> Bool {
+    func deleteShare(userId: String, shareId: String) async throws -> Bool {
         let endpoint = DeleteShareEndpoint(for: shareId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 
-    func createVault(request: CreateVaultRequest) async throws -> Share {
+    func createVault(userId: String, request: CreateVaultRequest) async throws -> Share {
         let endpoint = CreateVaultEndpoint(request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.share
     }
 
-    func updateVault(request: UpdateVaultRequest, shareId: String) async throws -> Share {
+    func updateVault(userId: String, request: UpdateVaultRequest, shareId: String) async throws -> Share {
         let endpoint = UpdateVaultEndpoint(shareId: shareId, request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.share
     }
 
-    func deleteVault(shareId: String) async throws {
+    func deleteVault(userId: String, shareId: String) async throws {
         let endpoint = DeleteVaultEndpoint(shareId: shareId)
-        _ = try await exec(endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
-    func transferVaultOwnership(vaultShareId: String,
+    func transferVaultOwnership(userId: String,
+                                vaultShareId: String,
                                 request: TransferOwnershipVaultRequest) async throws -> Bool {
         let endpoint = TransferOwnershipVaultEndpoint(vaultShareId: vaultShareId, request: request)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
 }

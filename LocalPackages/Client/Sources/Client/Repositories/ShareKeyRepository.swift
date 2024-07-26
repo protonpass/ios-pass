@@ -30,11 +30,11 @@ typealias Encryptor = ProtonCoreCrypto.Encryptor
 /// This repository is not offline first because without keys, the app is not functional.
 public protocol ShareKeyRepositoryProtocol: Sendable {
     /// Get share keys of a share with `shareId`. Not offline first.
-    func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
+    func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
     /// Refresh share keys of a share with `shareId`
     @discardableResult
-    func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
+    func refreshKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey]
 
     func deleteAllCurrentUserShareKeysLocally() async throws
 }
@@ -60,12 +60,12 @@ public actor ShareKeyRepository: ShareKeyRepositoryProtocol {
 }
 
 public extension ShareKeyRepository {
-    func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
+    func getKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Getting keys for share \(shareId)")
         let keys = try await localDatasource.getKeys(shareId: shareId)
         if keys.isEmpty {
             logger.trace("No local keys for share \(shareId). Fetching from remote.")
-            let keys = try await refreshKeys(shareId: shareId)
+            let keys = try await refreshKeys(userId: userId, shareId: shareId)
             logger.trace("Got \(keys.count) keys for share \(shareId) after refreshing.")
             return keys
         }
@@ -74,11 +74,10 @@ public extension ShareKeyRepository {
         return keys
     }
 
-    func refreshKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
-        let userId = try await userManager.getActiveUserId()
+    func refreshKeys(userId: String, shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
         logger.trace("Refreshing keys for share \(shareId), user \(userId)")
 
-        let keys = try await remoteDatasource.getKeys(shareId: shareId)
+        let keys = try await remoteDatasource.getKeys(userId: userId, shareId: shareId)
         logger.trace("Got \(keys.count) keys from remote for share \(shareId)")
 
         let encryptedKeys = try await keys.asyncCompactMap { key in

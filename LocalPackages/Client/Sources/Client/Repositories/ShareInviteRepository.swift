@@ -83,11 +83,14 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
 
 public actor ShareInviteRepository: ShareInviteRepositoryProtocol {
     private let remoteDataSource: any RemoteShareInviteDatasourceProtocol
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(remoteDataSource: any RemoteShareInviteDatasourceProtocol,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.remoteDataSource = remoteDataSource
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }
@@ -98,7 +101,8 @@ public extension ShareInviteRepository {
     func getAllPendingInvites(shareId: String) async throws -> ShareInvites {
         logger.trace("Getting all pending invites for share \(shareId)")
         do {
-            let invites = try await remoteDataSource.getPendingInvites(sharedId: shareId)
+            let userId = try await userManager.getActiveUserId()
+            let invites = try await remoteDataSource.getPendingInvites(userId: userId, sharedId: shareId)
             let existingCount = "\(invites.existingUserInvites.count) exising user invites"
             let newCount = "\(invites.newUserInvites.count) new user invites"
             logger.trace("Got \(existingCount), \(newCount) for \(shareId)")
@@ -137,7 +141,9 @@ public extension ShareInviteRepository {
                               keys: [ItemKey]) async throws -> Bool {
         logger.trace("Promoting new user invite \(inviteId) for share \(shareId)")
         do {
-            let promoted = try await remoteDataSource.promoteNewUserInvite(shareId: shareId,
+            let userId = try await userManager.getActiveUserId()
+            let promoted = try await remoteDataSource.promoteNewUserInvite(userId: userId,
+                                                                           shareId: shareId,
                                                                            inviteId: inviteId,
                                                                            keys: keys)
             logger.info("Promoted \(promoted) new user invite \(inviteId) for share \(shareId)")
@@ -152,7 +158,9 @@ public extension ShareInviteRepository {
     func sendInviteReminder(shareId: String, inviteId: String) async throws -> Bool {
         logger.trace("Sending reminder for share \(shareId) invite \(inviteId)")
         do {
-            let sent = try await remoteDataSource.sendInviteReminder(shareId: shareId,
+            let userId = try await userManager.getActiveUserId()
+            let sent = try await remoteDataSource.sendInviteReminder(userId: userId,
+                                                                     shareId: shareId,
                                                                      inviteId: inviteId)
             logger.info("Reminded \(sent) for \(shareId) invite \(inviteId)")
             return sent
@@ -166,7 +174,9 @@ public extension ShareInviteRepository {
     func deleteInvite(shareId: String, inviteId: String) async throws -> Bool {
         logger.trace("Deleting invite \(inviteId) for share \(shareId)")
         do {
-            let deleted = try await remoteDataSource.deleteShareInvite(shareId: shareId,
+            let userId = try await userManager.getActiveUserId()
+            let deleted = try await remoteDataSource.deleteShareInvite(userId: userId,
+                                                                       shareId: shareId,
                                                                        inviteId: inviteId)
             logger.info("Deleted \(deleted) for share \(shareId) invite \(inviteId)")
             return deleted
@@ -180,7 +190,9 @@ public extension ShareInviteRepository {
     func deleteNewUserInvite(shareId: String, inviteId: String) async throws -> Bool {
         logger.trace("Deleting new user invite \(inviteId) for share \(shareId)")
         do {
-            let deleted = try await remoteDataSource.deleteShareNewUserInvite(shareId: shareId,
+            let userId = try await userManager.getActiveUserId()
+            let deleted = try await remoteDataSource.deleteShareNewUserInvite(userId: userId,
+                                                                              shareId: shareId,
                                                                               inviteId: inviteId)
             logger.info("Deleted new user \(deleted) for share \(shareId) invite \(inviteId)")
             return deleted
@@ -194,16 +206,18 @@ public extension ShareInviteRepository {
     func getInviteRecommendations(shareId: String,
                                   query: InviteRecommendationsQuery) async throws -> InviteRecommendations {
         logger.trace("Getting invite recommendations for share \(shareId)")
-        return try await remoteDataSource.getInviteRecommendations(shareId: shareId, query: query)
+        let userId = try await userManager.getActiveUserId()
+        return try await remoteDataSource.getInviteRecommendations(userId: userId, shareId: shareId, query: query)
     }
 
     func checkAddresses(shareId: String, emails: [String]) async throws -> [String] {
+        let userId = try await userManager.getActiveUserId()
         // The endpoint accepts 10 addresses at max so we check in batch
-        try await withThrowingTaskGroup(of: [String].self, returning: [String].self) { [weak self] group in
+        return try await withThrowingTaskGroup(of: [String].self, returning: [String].self) { [weak self] group in
             guard let self else { return [] }
             for batch in emails.chunked(into: 10) {
                 group.addTask {
-                    try await self.remoteDataSource.checkAddresses(shareId: shareId, emails: batch)
+                    try await self.remoteDataSource.checkAddresses(userId: userId, shareId: shareId, emails: batch)
                 }
             }
 
@@ -222,7 +236,9 @@ private extension ShareInviteRepository {
         logger.trace("Inviting batch Proton users to share \(shareId)")
         do {
             let request = InviteMultipleUsersToShareRequest(invites: requests)
-            let inviteStatus = try await remoteDataSource.inviteMultipleProtonUsers(shareId: shareId,
+            let userId = try await userManager.getActiveUserId()
+            let inviteStatus = try await remoteDataSource.inviteMultipleProtonUsers(userId: userId,
+                                                                                    shareId: shareId,
                                                                                     request: request)
             logger.info("Invited batch Proton users to \(shareId)")
             return inviteStatus
@@ -238,7 +254,9 @@ private extension ShareInviteRepository {
         logger.trace("Inviting multiple external users to share \(shareId)")
         do {
             let request = InviteMultipleNewUsersToShareRequest(newUserInvites: requests)
-            let inviteStatus = try await remoteDataSource.inviteMultipleExternalUsers(shareId: shareId,
+            let userId = try await userManager.getActiveUserId()
+            let inviteStatus = try await remoteDataSource.inviteMultipleExternalUsers(userId: userId,
+                                                                                      shareId: shareId,
                                                                                       request: request)
             logger.info("Invited multiple external users to \(shareId)")
             return inviteStatus

@@ -19,15 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public protocol RemoteShareEventIDDatasourceProtocol: Sendable {
-    func getLastEventId(shareId: String) async throws -> String
+    func getLastEventId(userId: String, shareId: String) async throws -> String
 }
 
 public final class RemoteShareEventIDDatasource: RemoteDatasource, RemoteShareEventIDDatasourceProtocol {}
 
 public extension RemoteShareEventIDDatasource {
-    func getLastEventId(shareId: String) async throws -> String {
+    func getLastEventId(userId: String, shareId: String) async throws -> String {
         let endpoint = GetLastEventIDEndpoint(shareId: shareId)
-        let response = try await exec(endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
         return response.eventID
     }
 }

@@ -18,7 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
+import Entities
 import Factory
 import Foundation
 import ProtonCoreFeatureFlags
@@ -34,7 +36,6 @@ final class PaymentsManager {
 
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
-    private let payments: Payments
 
     // Strongly reference to make the payment page responsive during payment flow
     // periphery:ignore
@@ -42,23 +43,47 @@ final class PaymentsManager {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let inMemoryTokenStorage: any PaymentTokenStorage
+    private let storage: UserDefaults
 
-    // swiftlint:disable:next todo
-    // TODO: should we provide the actual BugAlertHandler?
-    init(storage: UserDefaults,
-         bugAlertHandler: BugAlertHandler = nil) {
+    init(storage: UserDefaults) {
         inMemoryTokenStorage = InMemoryTokenStorage()
-        let persistentDataStorage = UserDefaultsServicePlanDataStorage(storage: storage)
-        let payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
-                                apiService: apiManager.apiService,
-                                localStorage: persistentDataStorage,
-                                reportBugAlertHandler: bugAlertHandler)
-        self.payments = payments
-        payments.storeKitManager.delegate = self
-        initializePaymentsStack()
+        self.storage = storage
     }
 
-    func createPaymentsUI() -> PaymentsUI {
+    func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
+        guard !Bundle.main.isBetaBuild else { return }
+
+        do {
+            let paymentsUI = try createPaymentsUI()
+            paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
+                guard let self else { return }
+                handlePaymentsResponse(result: result, completion: completion)
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+
+    func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
+        guard !Bundle.main.isBetaBuild else { return }
+
+        do {
+            let paymentsUI = try createPaymentsUI()
+            paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
+                guard let self else { return }
+                handlePaymentsResponse(result: reason, completion: completion)
+            }
+        } catch {
+            completion(.failure(error))
+        }
+    }
+}
+
+// MARK: - Utils
+
+private extension PaymentsManager {
+    func createPaymentsUI() throws -> PaymentsUI {
+        let payments = try initializePaymentsStack()
         let ui = PaymentsUI(payments: payments,
                             clientApp: PaymentsConstants.clientApp,
                             shownPlanNames: PaymentsConstants.shownPlanNames,
@@ -67,7 +92,18 @@ final class PaymentsManager {
         return ui
     }
 
-    private func initializePaymentsStack() {
+    func initializePaymentsStack() throws -> Payments {
+        guard let userId = userManager.activeUserId,
+              let apiService = try? apiManager.getApiService(userId: userId) else {
+            throw PassError.payments(.couldNotCreatePaymentStack)
+        }
+        let persistentDataStorage = UserDefaultsServicePlanDataStorage(storage: storage)
+
+        let payments = Payments(inAppPurchaseIdentifiers: PaymentsConstants.inAppPurchaseIdentifiers,
+                                apiService: apiService,
+                                localStorage: persistentDataStorage,
+                                reportBugAlertHandler: nil)
+
         switch payments.planService {
         case let .left(service):
             service.currentSubscriptionChangeDelegate = self
@@ -78,38 +114,17 @@ final class PaymentsManager {
         payments.storeKitManager.delegate = self
 
         if !featureFlagsRepository.isEnabled(CoreFeatureFlagType.dynamicPlan) {
-            payments.storeKitManager.updateAvailableProductsList { [weak self] _ in
-                guard let self else { return }
+            payments.storeKitManager.updateAvailableProductsList { _ in
                 payments.storeKitManager.subscribeToPaymentQueue()
             }
         } else {
             payments.storeKitManager.subscribeToPaymentQueue()
         }
+        return payments
     }
 
-    func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
-        guard !Bundle.main.isBetaBuild else { return }
-
-        let paymentsUI = createPaymentsUI()
-        paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
-            guard let self else { return }
-            handlePaymentsResponse(result: result, completion: completion)
-        }
-    }
-
-    func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
-        guard !Bundle.main.isBetaBuild else { return }
-
-        let paymentsUI = createPaymentsUI()
-
-        paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
-            guard let self else { return }
-            handlePaymentsResponse(result: reason, completion: completion)
-        }
-    }
-
-    private func handlePaymentsResponse(result: PaymentsUIResultReason,
-                                        completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
+    func handlePaymentsResponse(result: PaymentsUIResultReason,
+                                completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
         switch result {
         case let .purchasedPlan(accountPlan: plan):
             logger.trace("Purchased plan: \(plan.protonName)")

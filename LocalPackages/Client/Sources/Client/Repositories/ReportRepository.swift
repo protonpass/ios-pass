@@ -39,12 +39,12 @@ public protocol ReportRepositoryProtocol: Sendable {
 }
 
 public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
-    private let apiService: any APIService
+    private let apiServicing: any APIManagerProtocol
     private let userManager: any UserManagerProtocol
 
-    public init(apiService: any APIService,
+    public init(apiServicing: any APIManagerProtocol,
                 userManager: any UserManagerProtocol) {
-        self.apiService = apiService
+        self.apiServicing = apiServicing
         self.userManager = userManager
     }
 }
@@ -65,12 +65,13 @@ public extension ReportRepository {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let request = await BugReportRequest(with: title, and: description, userData: userData)
         let endpoint = ReportsBugEndpoint(request: request)
+        let service = try apiServicing.getApiService(userId: userData.user.ID)
         if !logs.isEmpty {
-            let result = try await apiService.exec(endpoint: endpoint, files: logs).isSuccessful
+            let result = try await service.exec(endpoint: endpoint, files: logs).isSuccessful
             cleanReportLogFiles(from: logs)
             return result
         } else {
-            return try await apiService.exec(endpoint: endpoint).isSuccessful
+            return try await service.exec(endpoint: endpoint).isSuccessful
         }
     }
 }

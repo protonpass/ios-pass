@@ -27,15 +27,17 @@ import Foundation
 
 public protocol VerifyExtraPasswordUseCase: Sendable {
     func execute(repository: any ExtraPasswordRepositoryProtocol,
+                 userId: String,
                  username: String,
                  password: String) async throws -> ExtraPasswordVerificationResult
 }
 
 public extension VerifyExtraPasswordUseCase {
     func callAsFunction(repository: any ExtraPasswordRepositoryProtocol,
+                        userId: String,
                         username: String,
                         password: String) async throws -> ExtraPasswordVerificationResult {
-        try await execute(repository: repository, username: username, password: password)
+        try await execute(repository: repository, userId: userId, username: username, password: password)
     }
 }
 
@@ -43,10 +45,11 @@ public actor VerifyExtraPassword: Sendable, VerifyExtraPasswordUseCase {
     public init() {}
 
     public func execute(repository: any ExtraPasswordRepositoryProtocol,
+                        userId: String,
                         username: String,
                         password: String) async throws -> ExtraPasswordVerificationResult {
         // Step 1: initiate the process
-        let authData = try await repository.initiateSrpAuthentication()
+        let authData = try await repository.initiateSrpAuthentication(userId: userId)
 
         // Step 2: cryptographic voodoo
         guard let auth = CryptoGo.SrpAuth(authData.version,
@@ -70,7 +73,7 @@ public actor VerifyExtraPassword: Sendable, VerifyExtraPasswordUseCase {
 
         // Step 3: validation
         do {
-            try await repository.validateSrpAuthentication(validationData)
+            try await repository.validateSrpAuthentication(userId: userId, data: validationData)
             return .successful
         } catch {
             if let apiError = error.asPassApiError {

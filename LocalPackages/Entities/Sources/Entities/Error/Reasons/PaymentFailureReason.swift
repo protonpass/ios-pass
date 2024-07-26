@@ -1,7 +1,7 @@
 //
-// SharedDataStreams+DependencyInjections.swift
-// Proton Pass - Created on 22/11/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PaymentFailureReason.swift
+// Proton Pass - Created on 26/07/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,20 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
-import Factory
+import Foundation
 
-final class SharedDataStreamContainer: SharedContainer, AutoRegistering {
-    static let shared = SharedDataStreamContainer()
-    let manager = ContainerManager()
+public extension PassError {
+    enum PaymentFailureReason: CustomDebugStringConvertible, Sendable {
+        case couldNotCreatePaymentStack
 
-    func autoRegister() {
-        manager.defaultScope = .singleton
-    }
-}
-
-extension SharedDataStreamContainer {
-    var corruptedSessionEventStream: Factory<CorruptedSessionEventStream> {
-        self { CorruptedSessionEventStream() }
+        public var debugDescription: String {
+            switch self {
+            case .couldNotCreatePaymentStack:
+                "Could not create the payment stack"
+            }
+        }
     }
 }

@@ -24,12 +24,12 @@ import Entities
 import Foundation
 
 public protocol RefreshAccessAndMonitorStateUseCase: Sendable {
-    func execute() async throws
+    func execute(userId: String) async throws
 }
 
 public extension RefreshAccessAndMonitorStateUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(userId: String) async throws {
+        try await execute(userId: userId)
     }
 }
 
@@ -52,11 +52,11 @@ public final class RefreshAccessAndMonitorState: @unchecked Sendable, RefreshAcc
         self.stream = stream
     }
 
-    public func execute() async throws {
+    public func execute(userId: String) async throws {
         async let getAccess = accessRepository.refreshAccess()
         async let refreshUserBreaches = passMonitorRepository.refreshUserBreaches()
         async let refreshSecurityChecks: () = passMonitorRepository.refreshSecurityChecks()
-        async let getAllAliases = getAllAliases()
+        async let getAllAliases = getAllAliases(userId: userId)
         let (access, userBreaches, aliases, _) = try await (getAccess, refreshUserBreaches, getAllAliases,
                                                             refreshSecurityChecks)
         let breachedAliases = aliases.filter(\.item.isBreachedAndMonitored)

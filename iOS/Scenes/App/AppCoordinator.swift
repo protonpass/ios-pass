@@ -70,7 +70,6 @@ final class AppCoordinator {
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
-//    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     @LazyInjected(\SharedToolingContainer.keychain) private var keychain
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
@@ -78,14 +77,14 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
-    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
+//    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
     private var task: Task<Void, Never>?
-//    private var corruptedSessionStream: AnyCancellable?
 
     private var theme: Theme {
         preferencesManager.sharedPreferences.unwrapped().theme
@@ -104,11 +103,6 @@ final class AppCoordinator {
             resetAllData()
         }
     }
-
-//    deinit {
-//        corruptedSessionStream?.cancel()
-//        corruptedSessionStream = nil
-//    }
 
     // swiftlint:disable:next todo
     // TODO: Remove preferences and this function once session migration is done
@@ -131,16 +125,10 @@ final class AppCoordinator {
                     showWelcomeScene(reason: reason)
                 case .alreadyLoggedIn:
                     logger.info("Already logged in")
-
-                    // swiftlint:disable:next todo
-                    // TODO: This should be removed as it was made for single user having 502 and not multiusers
-                    // we could end up having some wrong calls if users switch account during a event loop so this
-                    // could end up logging out randomly
-//                    connectToCorruptedSessionStream()
                     showHomeScene(mode: .alreadyLoggedIn)
                     if let userId = userManager.activeUserId,
                        let sessionID = authManager.getCredential(userId: userId)?.sessionID {
-                        registerForPushNotificationsIfNeededAndAddHandlers(uid: sessionID)
+                        registerForPushNotificationsIfNeededAndAddHandlers( /* uid: sessionID */ )
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
                     Task { [weak self] in
@@ -150,18 +138,12 @@ final class AppCoordinator {
                         logger.info("Logged in manual")
                         try? await userManager.addAndMarkAsActive(userData: userData)
 
-                        // swiftlint:disable:next todo
-                        // TODO: This should be removed as it was made for single user having 502 and not multiusers
-                        // we could end up having some wrong calls if users switch account during a event loop so
-                        // this could end up
-
-//                        connectToCorruptedSessionStream()
                         if extraPassword {
                             showHomeScene(mode: .manualLoginWithExtraPassword)
                         } else {
                             showHomeScene(mode: .manualLogin)
                         }
-                        registerForPushNotificationsIfNeededAndAddHandlers(uid: userData.credential.sessionID)
+                        registerForPushNotificationsIfNeededAndAddHandlers(/* uid: userData.credential.sessionID */ )
                     }
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -229,7 +211,7 @@ private extension AppCoordinator {
     }
 
     func showWelcomeScene(reason: LogOutReason) {
-        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.apiService,
+        let welcomeCoordinator = WelcomeCoordinator(apiService: apiManager.getUnauthApiService(),
                                                     theme: theme)
         welcomeCoordinator.delegate = self
         self.welcomeCoordinator = welcomeCoordinator
@@ -237,7 +219,6 @@ private extension AppCoordinator {
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
             handle(logOutReason: reason)
-//            stopStream()
         }
     }
 
@@ -270,24 +251,29 @@ private extension AppCoordinator {
     }
 
     func showExtraPasswordLockScreen(_ userData: UserData) {
-        let onSuccess: () -> Void = { [weak self] in
-            guard let self else { return }
-            appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
-        }
+        do {
+            let onSuccess: () -> Void = { [weak self] in
+                guard let self else { return }
+                appStateObserver.updateAppState(.manuallyLoggedIn(userData, extraPassword: true))
+            }
 
-        let onFailure: () -> Void = { [weak self] in
-            guard let self else { return }
-            appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
-        }
+            let onFailure: () -> Void = { [weak self] in
+                guard let self else { return }
+                appStateObserver.updateAppState(.loggedOut(.tooManyWrongExtraPasswordAttempts))
+            }
 
-        let username = userData.credential.userName
-        let view = ExtraPasswordLockView(apiService: apiManager.apiService,
-                                         email: userData.user.email ?? username,
-                                         username: username,
-                                         onSuccess: onSuccess,
-                                         onFailure: onFailure)
-        let viewController = UIHostingController(rootView: view)
-        animateUpdateRootViewController(viewController)
+            let username = userData.credential.userName
+            let view = ExtraPasswordLockView(apiServicing: apiManager,
+                                             email: userData.user.email ?? username,
+                                             username: username,
+                                             userId: userData.user.ID,
+                                             onSuccess: onSuccess,
+                                             onFailure: onFailure)
+            let viewController = UIHostingController(rootView: view)
+            animateUpdateRootViewController(viewController)
+        } catch {
+            logger.error(error)
+        }
     }
 
     func animateUpdateRootViewController(_ newRootViewController: UIViewController,
@@ -309,38 +295,13 @@ private extension AppCoordinator {
     }
 }
 
-// MARK: - Utils
-
-// private extension AppCoordinator {
-//    func connectToCorruptedSessionStream() {
-//        guard corruptedSessionStream == nil else {
-//            return
-//        }
-//
-//        corruptedSessionStream = corruptedSessionEventStream
-//            .receive(on: DispatchQueue.main)
-//            .removeDuplicates()
-//            .compactMap { $0 }
-//            .sink { [weak self] reason in
-//                guard let self else { return }
-//                captureErrorAndLogOut(PassError.corruptedSession(reason), sessionId: reason.sessionId)
-//            }
-//    }
-//
-//    func stopStream() {
-//        corruptedSessionEventStream.send(nil)
-//        corruptedSessionStream?.cancel()
-//        corruptedSessionStream = nil
-//    }
-// }
-
 private extension AppCoordinator {
-    func registerForPushNotificationsIfNeededAndAddHandlers(uid: String) {
+    func registerForPushNotificationsIfNeededAndAddHandlers( /* uid: String */ ) {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.pushNotifications, reloadValue: true)
         else { return }
 
-        pushNotificationService.setup()
-        pushNotificationService.registerForRemoteNotifications(uid: uid)
+//        pushNotificationService.setup()
+//        pushNotificationService.registerForRemoteNotifications(uid: uid)
 
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true)
         else { return }
@@ -352,9 +313,9 @@ private extension AppCoordinator {
             return .success
         }
 
-        for accountRecoveryType in NotificationType.allAccountRecoveryTypes {
-            pushNotificationService.registerHandler(passHandler, forType: accountRecoveryType)
-        }
+//        for accountRecoveryType in NotificationType.allAccountRecoveryTypes {
+//            pushNotificationService.registerHandler(passHandler, forType: accountRecoveryType)
+//        }
     }
 }
 
@@ -410,6 +371,16 @@ extension AppCoordinator: HomepageCoordinatorDelegate {
     }
 
     func homepageCoordinatorDidFailLocallyAuthenticating() {
-        appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                try await logOutAllAccounts()
+                appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }

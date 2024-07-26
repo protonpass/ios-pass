@@ -86,6 +86,7 @@ extension ItemRepositoryTests {
         let pinnedItems = try await sut.getAllPinnedItems()
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
         sut.currentlyPinnedItems
+            .receive(on: DispatchQueue.main)
             .sink { value in
                 currentlyPinnedItems = value
                 expectation.fulfill()
