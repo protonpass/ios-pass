@@ -22,6 +22,7 @@ import Combine
 import Core
 import CoreMocks
 import ClientMocks
+import Entities
 import Factory
 @testable import Client
 import ProtonCoreKeymaker
@@ -200,7 +201,7 @@ final class APIManagerTests: XCTestCase {
                          doh: ProtonPassDoHMock(),
                          logManager: LogManagerProtocolMock())
         
-        let apiService = sut.createNewApiService()
+        let apiService = sut.getUnauthApiService()
         
         // Then
         XCTAssertTrue(apiService.sessionUID.isEmpty)
@@ -266,9 +267,13 @@ final class APIManagerTests: XCTestCase {
         XCTAssertThrowsError(
             try sut.getApiService(userId: userData.user.ID)
           ) { error in
-              XCTAssertEqual(
-                  error as? APIManagerError, .noApiServiceLinkedToUserId
-              )
+              if case let PassError.api(reason) = error {
+                  XCTAssertEqual(
+                    reason, .noApiServiceLinkedToUserId
+                  )
+              } else {
+                  XCTFail("Should return noApiServiceLinkedToUserId api error reason")
+              }
           }
     }
     
