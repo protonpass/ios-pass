@@ -277,7 +277,6 @@ final class APIManagerTests: XCTestCase {
           }
     }
     
-    
     func testApiManger_WithLastSessionExpire_ShouldCreateANewUnauthSession() async throws {
         // GIVEN
         try await userManager.setUp()
