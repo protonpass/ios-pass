@@ -37,14 +37,14 @@ public final class SwitchUser: SwitchUserUseCase {
     private let vaultsManager: any VaultsManagerProtocol
     private let preferencesManager: any PreferencesManagerProtocol
     private let apiManager: any APIManagerProtocol
-    private let syncEventLoop: any SyncEventLoopActionProtocol
+    private let syncEventLoop: any SyncEventLoopProtocol
     private let refreshFeatureFlags: any RefreshFeatureFlagsUseCase
 
     public init(userManager: any UserManagerProtocol,
                 vaultsManager: any VaultsManagerProtocol,
                 preferencesManager: any PreferencesManagerProtocol,
                 apiManager: any APIManagerProtocol,
-                syncEventLoop: any SyncEventLoopActionProtocol,
+                syncEventLoop: any SyncEventLoopProtocol,
                 refreshFeatureFlags: any RefreshFeatureFlagsUseCase) {
         self.userManager = userManager
         self.vaultsManager = vaultsManager
@@ -57,8 +57,7 @@ public final class SwitchUser: SwitchUserUseCase {
     public func execute(userId: String) async throws {
         syncEventLoop.stop()
         try await userManager.switchActiveUser(with: userId)
-        await apiManager.updateCurrentSession(userId: userId)
-        try await vaultsManager.localFullSync()
+        try await vaultsManager.localFullSync(userId: userId)
         try await preferencesManager.switchUserPreferences(userId: userId)
         refreshFeatureFlags()
         syncEventLoop.start()

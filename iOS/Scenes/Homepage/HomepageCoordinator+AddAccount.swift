@@ -21,6 +21,7 @@
 import Foundation
 import ProtonCoreLogin
 import ProtonCoreLoginUI
+import ProtonCoreServices
 import SwiftUI
 
 extension HomepageCoordinator {
@@ -43,7 +44,7 @@ extension HomepageCoordinator {
                                       summaryScreenVariant: .noSummaryScreen)
         return .init(appName: "Proton Pass",
                      clientApp: .pass,
-                     apiService: unauthApiService,
+                     apiService: apiManager.getUnauthApiService(),
                      minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: params))
@@ -75,9 +76,10 @@ private extension HomepageCoordinator {
                 }
 
                 let username = logInData.credential.userName
-                let view = ExtraPasswordLockView(apiService: unauthApiService,
+                let view = ExtraPasswordLockView(apiServicing: apiManager,
                                                  email: logInData.user.email ?? username,
                                                  username: username,
+                                                 userId: logInData.user.ID,
                                                  onSuccess: onSuccess,
                                                  onFailure: onFailure)
                 present(view)

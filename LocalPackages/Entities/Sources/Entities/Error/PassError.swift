@@ -31,7 +31,6 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case coreData(CoreDataFailureReason)
     case corruptedEncryptedContent
     case corruptedUserData(UserDataCorruptionReason)
-    case corruptedSession(CorruptedSessionReason)
     case crypto(CryptoFailureReason)
     case errorExpected
     case itemNotFound(any ItemIdentifiable)
@@ -54,6 +53,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case sentinelNotEligible
     case userManager(UserManagerFailureReason)
     case extraPassword(ExtraPasswordFailureReason)
+    case payments(PaymentFailureReason)
+    case api(APIFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -72,8 +73,6 @@ public enum PassError: Error, CustomDebugStringConvertible {
         case .corruptedEncryptedContent:
             "Corrupted encrypted content"
         case let .corruptedUserData(reason):
-            reason.debugDescription
-        case let .corruptedSession(reason):
             reason.debugDescription
         case let .crypto(reason):
             reason.debugDescription
@@ -118,6 +117,10 @@ public enum PassError: Error, CustomDebugStringConvertible {
         case let .userManager(reason):
             reason.debugDescription
         case let .extraPassword(reason):
+            reason.debugDescription
+        case let .payments(reason):
+            reason.debugDescription
+        case let .api(reason):
             reason.debugDescription
         }
     }

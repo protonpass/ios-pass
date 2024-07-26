@@ -30,17 +30,21 @@ public protocol SecureLinkManagerProtocol: Sendable {
 }
 
 public final class SecureLinkManager: SecureLinkManagerProtocol, @unchecked Sendable {
+    private let dataSource: any RemoteSecureLinkDatasourceProtocol
+    private let userManager: any UserManagerProtocol
+
     public let currentSecureLinks: CurrentValueSubject<[SecureLink]?, Never> = .init(nil)
 
-    private let dataSource: any RemoteSecureLinkDatasourceProtocol
-
-    public init(dataSource: any RemoteSecureLinkDatasourceProtocol) {
+    public init(dataSource: any RemoteSecureLinkDatasourceProtocol,
+                userManager: any UserManagerProtocol) {
         self.dataSource = dataSource
+        self.userManager = userManager
     }
 
     @discardableResult
     public func updateSecureLinks() async throws -> [SecureLink] {
-        let newLinks = try await dataSource.getAllLinks()
+        let currentUserId = try await userManager.getActiveUserId()
+        let newLinks = try await dataSource.getAllLinks(userId: currentUserId)
         currentSecureLinks.send(newLinks)
         return newLinks
     }

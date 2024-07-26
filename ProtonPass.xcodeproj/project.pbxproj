@@ -281,7 +281,6 @@
 		357C71B32B5FB08B00AA0BF1 /* VaultsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29A29B76BF60070830B /* VaultsManager.swift */; };
 		357C71B42B5FB09900AA0BF1 /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		357C71B52B5FB0AC00AA0BF1 /* VaultThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC36229D7226A00F03497 /* VaultThumbnail.swift */; };
-		357C71B62B5FB0BE00AA0BF1 /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
 		357C71B72B5FB0D900AA0BF1 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
 		357C71B82B5FB0DE00AA0BF1 /* ItemContextMenuHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */; };
 		357C71B92B5FB0E500AA0BF1 /* ItemDetailSectionIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */; };
@@ -324,8 +323,6 @@
 		357C71E52B600D8C00AA0BF1 /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
 		357C71E62B600D9100AA0BF1 /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
-		357E62702B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
-		357E62712B0E671300F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */; };
 		35805D0A2BD8E39300288CC0 /* MonitorExcludedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */; };
 		35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
@@ -844,7 +841,6 @@
 		357ABEB12B188A30003D05C8 /* ItemsTabTopBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabTopBarViewModel.swift; sourceTree = "<group>"; };
 		357ABEB32B18BB04003D05C8 /* DataStream+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataStream+DependencyInjections.swift"; sourceTree = "<group>"; };
 		357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListViewModel.swift; sourceTree = "<group>"; };
-		357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataStreams+DependencyInjections.swift"; sourceTree = "<group>"; };
 		357ED8C42AC1C6F20019A0E9 /* Macro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Macro; path = LocalPackages/Macro; sourceTree = "<group>"; };
 		35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorExcludedEmailView.swift; sourceTree = "<group>"; };
 		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
@@ -1973,7 +1969,6 @@
 			isa = PBXGroup;
 			children = (
 				350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */,
-				357E626F2B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift */,
 				35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */,
 				5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */,
 				5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */,
@@ -3045,7 +3040,6 @@
 				5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */,
 				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
-				357E62712B0E671300F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */,
 				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
@@ -3165,7 +3159,6 @@
 				35796D042B5EEE8100BF4E9E /* CreateEditNoteViewModel.swift in Sources */,
 				5BD6138B2C20295300968E0F /* SecureLinkListUIModel.swift in Sources */,
 				357C71BF2B5FB15000AA0BF1 /* CustomFieldTypesView.swift in Sources */,
-				357C71B62B5FB0BE00AA0BF1 /* SharedDataStreams+DependencyInjections.swift in Sources */,
 				357C71C42B5FB30100AA0BF1 /* ItemUiModel+Extensions.swift in Sources */,
 				357C71BE2B5FB14100AA0BF1 /* Pinnable+Extensions.swift in Sources */,
 				357C71C62B5FB31600AA0BF1 /* PasswordStrength+Extensions.swift in Sources */,
@@ -3370,7 +3363,6 @@
 				5B1092D32B5199F1002621A4 /* DetailHistoryView+Note.swift in Sources */,
 				356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */,
 				35C44F742BDA4A310054F7EE /* MonitorAliasesView.swift in Sources */,
-				357E62702B0E66C900F3F88D /* SharedDataStreams+DependencyInjections.swift in Sources */,
 				354F769428C8679E00EB2383 /* LogInDetailViewModel.swift in Sources */,
 				3574437A2C22E3DC000DE6F7 /* View+ItemCreateEditSetUp.swift in Sources */,
 				35476972289D7E6000581E2E /* CreateEditAliasViewModel.swift in Sources */,

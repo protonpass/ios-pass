@@ -32,9 +32,14 @@ final class PassMonitorRepositoryTests: XCTestCase {
     var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
     var itemRepository: ItemRepositoryProtocolMock!
     var sut: PassMonitorRepositoryProtocol!
+    var userManager: UserManagerProtocolMock!
+
 
     override func setUp() {
         super.setUp()
+        userManager = .init()
+        userManager.stubbedGetActiveUserIdResult = .random()
+        
         symmetricKeyProviderMockFactory = .init()
         symmetricKeyProviderMockFactory.setUp()
         itemRepository = ItemRepositoryProtocolMock()
@@ -42,7 +47,8 @@ final class PassMonitorRepositoryTests: XCTestCase {
         itemRepository.stubbedItemsWereUpdated = .init(())
         sut = PassMonitorRepository(itemRepository: itemRepository, 
                                     remoteDataSource: RemoteBreachDataSourceProtocolMock(),
-                                    symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider())
+                                    symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(), 
+                                    userManager: userManager)
     }
 
     override func tearDown() {

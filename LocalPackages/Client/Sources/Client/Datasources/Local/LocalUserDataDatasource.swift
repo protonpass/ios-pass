@@ -33,6 +33,7 @@ public protocol LocalUserDataDatasourceProtocol: Sendable {
     func upsert(_ userData: UserData) async throws
     func updateNewActiveUser(userId: String) async throws
     func getActiveUser() async throws -> UserProfile?
+    func removeAll() async throws
 }
 
 public final class LocalUserDataDatasource: LocalDatasource, LocalUserDataDatasourceProtocol {
@@ -109,5 +110,11 @@ public extension LocalUserDataDatasource {
             // Save the context to persist changes
             try context.save()
         }
+    }
+
+    func removeAll() async throws {
+        let context = newTaskContext(type: .delete)
+        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserProfileEntity")
+        try await execute(batchDeleteRequest: .init(fetchRequest: request), context: context)
     }
 }

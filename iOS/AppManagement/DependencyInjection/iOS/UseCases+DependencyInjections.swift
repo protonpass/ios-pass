@@ -366,7 +366,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var updateUserAddresses: Factory<any UpdateUserAddressesUseCase> {
         self { UpdateUserAddresses(userManager: self.userManager,
-                                   authenticator: ServiceContainer.shared.authenticator()) }
+                                   apiServicing: SharedToolingContainer.shared.apiManager()) }
     }
 
     var refreshAccessAndMonitorState: Factory<any RefreshAccessAndMonitorStateUseCase> {
@@ -414,11 +414,6 @@ extension UseCasesContainer {
 
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {
         self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
-    }
-
-    var createUnauthApiService: Factory<any CreateUnauthApiServiceUseCase> {
-        self { CreateUnauthApiService(doh: SharedToolingContainer.shared.doh(),
-                                      appVer: SharedToolingContainer.shared.appVersion()) }
     }
 }
 
@@ -519,25 +514,30 @@ extension UseCasesContainer {
     var createSecureLink: Factory<any CreateSecureLinkUseCase> {
         self { CreateSecureLink(datasource: self.remoteSecureLinkDatasource,
                                 getSecureLinkKeys: self.getSecureLinkKeys(),
+                                userManager: self.userManager,
                                 manager: self.secureLinkManager) }
     }
 
     var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
-        self { GetSecureLinkKeys(passKeyManager: self.passKeyManager) }
+        self { GetSecureLinkKeys(passKeyManager: self.passKeyManager,
+                                 userManager: self.userManager) }
     }
 
     var deleteSecureLink: Factory<any DeleteSecureLinkUseCase> {
         self { DeleteSecureLink(datasource: self.remoteSecureLinkDatasource,
+                                userManager: self.userManager,
                                 manager: self.secureLinkManager) }
     }
 
     var recreateSecureLink: Factory<any RecreateSecureLinkUseCase> {
-        self { RecreateSecureLink(passKeyManager: self.passKeyManager) }
+        self { RecreateSecureLink(passKeyManager: self.passKeyManager,
+                                  userManager: self.userManager) }
     }
 
     var deleteAllInactiveSecureLinks: Factory<any DeleteAllInactiveSecureLinksUseCase> {
         self {
             DeleteAllInactiveSecureLinks(datasource: self.remoteSecureLinkDatasource,
+                                         userManager: self.userManager,
                                          manager: self.secureLinkManager)
         }
     }

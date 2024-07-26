@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Macro
@@ -33,12 +34,13 @@ struct ExtraPasswordLockView: View {
     let onSuccess: () -> Void
     let onFailure: () -> Void
 
-    init(apiService: any APIService,
+    init(apiServicing: any APIManagerProtocol,
          email: String,
          username: String,
+         userId: String,
          onSuccess: @escaping () -> Void,
          onFailure: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(apiService: apiService))
+        _viewModel = .init(wrappedValue: .init(apiServicing: apiServicing, userId: userId))
         self.email = email
         self.username = username
         self.onSuccess = onSuccess

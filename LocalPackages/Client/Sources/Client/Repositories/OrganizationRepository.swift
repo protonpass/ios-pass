@@ -67,7 +67,7 @@ public extension OrganizationRepository {
     func refreshOrganization() async throws -> Organization? {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Refreshing organization for userId \(userId)")
-        if let organization = try await remoteDatasource.getOrganization() {
+        if let organization = try await remoteDatasource.getOrganization(userId: userId) {
             logger.trace("Refreshed organization for userId \(userId). Upserting to local database.")
             try await localDatasource.upsertOrganization(organization, userId: userId)
             logger.trace("Refreshed organization for userId \(userId). Upserted to local database.")

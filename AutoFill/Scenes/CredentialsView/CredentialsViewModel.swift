@@ -101,6 +101,7 @@ final class CredentialsViewModel: ObservableObject {
     @LazyInjected(\AutoFillUseCaseContainer
         .associateUrlAndAutoFillPassword) private var associateUrlAndAutoFillPassword
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
@@ -143,7 +144,10 @@ extension CredentialsViewModel {
 
     func sync() async {
         do {
-            let hasNewEvents = try await eventSynchronizer.sync()
+            // swiftlint:disable:next todo
+            // TODO: will need to loo on all accounts
+            let userId = try await userManager.getActiveUserId()
+            let hasNewEvents = try await eventSynchronizer.sync(userId: userId)
             if hasNewEvents {
                 fetchItems()
             }
@@ -162,9 +166,13 @@ extension CredentialsViewModel {
                 if case .error = state {
                     state = .loading
                 }
+                // swiftlint:disable:next todo
+                // TODO: will need to loop on all accounts
+                let userId = try await userManager.getActiveUserId()
                 async let plan = accessRepository.getPlan()
-                async let vaults = shareRepository.getVaults()
-                async let results = fetchCredentials(identifiers: serviceIdentifiers,
+                async let vaults = shareRepository.getVaults(userId: userId)
+                async let results = fetchCredentials(userId: userId,
+                                                     identifiers: serviceIdentifiers,
                                                      params: passkeyRequestParams)
                 planType = try await plan.planType
                 self.vaults = try await vaults

@@ -23,44 +23,17 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 public class RemoteDatasource: @unchecked Sendable {
-    private let apiService: any APIService
-    private let eventStream: CorruptedSessionEventStream
+    private let apiServicing: any APIManagerProtocol
 
-    public init(apiService: some APIService, eventStream: CorruptedSessionEventStream) {
-        self.apiService = apiService
-        self.eventStream = eventStream
+    public init(apiServicing: some APIManagerProtocol) {
+        self.apiServicing = apiServicing
     }
 
-    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
-        do {
-            return try await apiService.exec(endpoint: endpoint)
-        } catch {
-            throw streamAndReturn(error: error)
-        }
+    func exec<E: Endpoint>(userId: String, endpoint: E) async throws -> E.Response {
+        try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
     }
 
-    func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
-        do {
-            return try await apiService.execExpectingData(endpoint: endpoint)
-        } catch {
-            throw streamAndReturn(error: error)
-        }
-    }
-}
-
-private extension RemoteDatasource {
-    /// Stream the error if session is corrupted and return the error as-is to continue the throwing flow as normal
-    func streamAndReturn(error: any Error) -> any Error {
-        if let responseError = error as? ResponseError,
-           let httpCode = responseError.httpCode {
-            let sessionId = apiService.sessionUID
-            switch httpCode {
-            case 403:
-                eventStream.send(.unauthSessionMakingAuthRequests(sessionId))
-            default:
-                break
-            }
-        }
-        return error
+    func execExpectingData(userId: String, endpoint: some Endpoint) async throws -> DataResponse {
+        try await apiServicing.getApiService(userId: userId).execExpectingData(endpoint: endpoint)
     }
 }

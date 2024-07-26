@@ -20,6 +20,7 @@
 
 import Combine
 import Core
+import Entities
 import Factory
 import Foundation
 import ProtonCoreAuthentication
@@ -34,6 +35,24 @@ import ProtonCoreHumanVerification
 import ProtonCoreObservability
 import ProtonCoreServices
 
+private struct APIManagerElements {
+    let apiService: any APIService
+    let humanVerification: any HumanVerifyDelegate
+    let isAuthenticated: Bool
+
+    func copy(isAuthenticated: Bool) -> APIManagerElements {
+        APIManagerElements(apiService: apiService,
+                           humanVerification: humanVerification,
+                           isAuthenticated: isAuthenticated)
+    }
+}
+
+private extension [APIManagerElements] {
+    var unauthApiService: (any APIService)? {
+        first(where: { !$0.isAuthenticated })?.apiService
+    }
+}
+
 public final class APIManager: Sendable, APIManagerProtocol {
     private let logger: Logger
     private let doh: any DoHInterface
@@ -41,9 +60,8 @@ public final class APIManager: Sendable, APIManagerProtocol {
     private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let appVer: String
-    private let humanHelper: HumanCheckHelper
-    private var forceUpgradeHelper: ForceUpgradeHelper?
-    public private(set) var apiService: any APIService
+    private let forceUpgradeHelper: ForceUpgradeHelper
+    private var allCurrentApiServices = [APIManagerElements]()
 
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,
@@ -60,66 +78,102 @@ public final class APIManager: Sendable, APIManagerProtocol {
 
         Self.setUpCertificatePinning()
 
-        let apiService: PMAPIService
-        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
-                                                                          challenge: .init())
-        if let activeUserId = userManager.activeUserId,
-           let credential = authManager.getCredential(userId: activeUserId) {
-            apiService = PMAPIService.createAPIService(doh: doh,
-                                                       sessionUID: credential.sessionID,
-                                                       challengeParametersProvider: challengeProvider)
-        } else {
-            apiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
-                                                                     challengeParametersProvider: challengeProvider)
-        }
-        self.apiService = apiService
-
-        humanHelper = HumanCheckHelper(apiService: apiService,
-                                       inAppTheme: {
-                                           themeProvider.sharedPreferences.unwrapped().theme.inAppTheme
-                                       },
-                                       clientApp: .pass)
-
-        // This could also be tweaked as we only log 2 phrases as delegates of forceupgradeHelper
         if let appStoreUrl = URL(string: Constants.appStoreUrl) {
-            forceUpgradeHelper = .init(config: .mobile(appStoreUrl), responseDelegate: self)
+            forceUpgradeHelper = .init(config: .mobile(appStoreUrl))
         } else {
             // Should never happen
             let message = "Can not parse App Store URL"
             assertionFailure(message)
             logger.warning(message)
-            forceUpgradeHelper = .init(config: .desktop, responseDelegate: self)
+            forceUpgradeHelper = .init(config: .desktop)
         }
 
-        apiService.humanDelegate = humanHelper
+        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
+                                                                          challenge: .init())
+        for credential in authManager.getAllCurrentCredentials() {
+            let newApiService = PMAPIService.createAPIService(doh: doh,
+                                                              sessionUID: credential.UID,
+                                                              challengeParametersProvider: challengeProvider)
+            newApiService.authDelegate = authManager
+            newApiService.serviceDelegate = self
+            let humanHelper = createHumanChecker(apiService: newApiService)
+
+            newApiService.humanDelegate = humanHelper
+            newApiService.loggingDelegate = self
+            newApiService.forceUpgradeDelegate = forceUpgradeHelper
+            allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
+                                                            humanVerification: humanHelper,
+                                                            isAuthenticated: !credential
+                                                                .isForUnauthenticatedSession))
+        }
+
+        if allCurrentApiServices.isEmpty {
+            let newApiService = PMAPIService
+                .createAPIServiceWithoutSession(doh: doh, challengeParametersProvider: challengeProvider)
+            newApiService.authDelegate = authManager
+            newApiService.serviceDelegate = self
+            let humanHelper = createHumanChecker(apiService: newApiService)
+
+            newApiService.humanDelegate = humanHelper
+            newApiService.loggingDelegate = self
+            newApiService.forceUpgradeDelegate = forceUpgradeHelper
+            allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
+                                                            humanVerification: humanHelper,
+                                                            isAuthenticated: false))
+            fetchUnauthSessionIfNeeded(apiService: newApiService)
+        }
+
+        if let apiService = allCurrentApiServices.first {
+            setUpCore(apiService: apiService.apiService)
+        }
 
         authManager.setUpDelegate(self)
-        self.apiService.authDelegate = authManager
-        self.apiService.serviceDelegate = self
-        apiService.loggingDelegate = self
-        apiService.forceUpgradeDelegate = forceUpgradeHelper
-
-        setUpCore()
-        fetchUnauthSessionIfNeeded()
     }
 
-    public func updateCurrentSession(sessionId: String) {
-        apiService.setSessionUID(uid: sessionId)
-    }
-
-    public func updateCurrentSession(userId: String) async {
-        guard let session = authManager.getCredential(userId: userId),
-              session.sessionID != apiService.sessionUID else {
-            return
+    @discardableResult
+    public func getUnauthApiService() -> any APIService {
+        if let unauthApiService = allCurrentApiServices.unauthApiService {
+            return unauthApiService
         }
-        apiService.setSessionUID(uid: session.sessionID)
+        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
+                                                                          challenge: .init())
+        let newApiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
+                                                                        challengeParametersProvider: challengeProvider)
+        newApiService.authDelegate = authManager
+        newApiService.serviceDelegate = self
+
+        let humanHelper = createHumanChecker(apiService: newApiService)
+        newApiService.humanDelegate = humanHelper
+        newApiService.loggingDelegate = self
+        newApiService.forceUpgradeDelegate = forceUpgradeHelper
+        allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
+                                                        humanVerification: humanHelper,
+                                                        isAuthenticated: false))
+
+        fetchUnauthSessionIfNeeded(apiService: newApiService)
+
+        return newApiService
+    }
+
+    public func getApiService(userId: String) throws -> any APIService {
+        if let credentials = authManager.getCredential(userId: userId),
+           let service = allCurrentApiServices
+           .first(where: { $0.apiService.sessionUID == credentials.sessionID }) {
+            return service.apiService
+        } else if let unauthApiService = allCurrentApiServices.unauthApiService {
+            return unauthApiService
+        }
+
+        throw PassError.api(.noApiServiceLinkedToUserId)
     }
 
     public func reset() {
         // swiftlint:disable:next todo
-        // TODO: when multi api service is in place need to create a new apiservice instead of setting id to empty string
-        apiService.setSessionUID(uid: "")
-        fetchUnauthSessionIfNeeded()
+        // TODO: Should maybe remove all apiservices
+        getUnauthApiService()
+        if let apiService = allCurrentApiServices.first {
+            setUpCore(apiService: apiService.apiService)
+        }
     }
 }
 
@@ -134,11 +188,11 @@ private extension APIManager {
         PMAPIService.noTrustKit = trustKit == nil
     }
 
-    func setUpCore() {
+    func setUpCore(apiService: any APIService) {
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
 
-    func fetchUnauthSessionIfNeeded() {
+    func fetchUnauthSessionIfNeeded(apiService: any APIService) {
         apiService.acquireSessionIfNeeded { [weak self] result in
             guard let self else {
                 return
@@ -166,32 +220,41 @@ private extension APIManager {
 
 extension APIManager: AuthHelperDelegate {
     public func sessionWasInvalidated(for sessionUID: String, isAuthenticatedSession: Bool) {
-        // swiftlint:disable:next todo
-        // TODO: I the futur when we have multiple api services should remove the api services link to session id/ user id
-        // if no more apiservice we should recreate a new one and execute fetchUnauthSessionIfNeeded on it as
+        allCurrentApiServices.removeAll { $0.apiService.sessionUID == sessionUID }
+        if allCurrentApiServices.isEmpty {
+            getUnauthApiService()
+        }
 
-        // For now the switch of session id should be done by calling updateCurrentSession with user id through the
-        // logout user process
-
-//        apiService.setSessionUID(uid: "")
-//        fetchUnauthSessionIfNeeded()
-//        if isAuthenticatedSession {
-//            logger.info("Authenticated session is invalidated. Logging out.")
-//            // swiftlint:disable:next todo
-//            // TODO: check that this should only log out the user link to this session and not all users
-//            sessionWasInvalidated.send(sessionUID)
-//        } else {
-//            logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
-//        }
+        if isAuthenticatedSession {
+            logger.info("Authenticated session is invalidated. Logging out.")
+        } else {
+            logger.info("Unauthenticated session is invalidated. Credentials are erased, fetching new ones")
+        }
     }
 
     public func credentialsWereUpdated(authCredential: AuthCredential,
                                        credential: Credential,
                                        for sessionUID: String) {
-        logger.info("Session credentials are updated")
-        if apiService.sessionUID != sessionUID {
-            apiService.setSessionUID(uid: sessionUID)
+        allCurrentApiServices = allCurrentApiServices.map { element in
+            guard element.apiService.sessionUID == sessionUID else {
+                return element
+            }
+
+            return element.copy(isAuthenticated: !authCredential.isForUnauthenticatedSession)
         }
+
+        logger.info("Session credentials are updated")
+    }
+
+    func createHumanChecker(apiService: any APIService) -> HumanCheckHelper {
+        HumanCheckHelper(apiService: apiService,
+                         inAppTheme: { [weak self] in
+                             guard let self else {
+                                 return .matchSystem
+                             }
+                             return themeProvider.sharedPreferences.unwrapped().theme
+                                 .inAppTheme
+                         }, clientApp: .pass)
     }
 }
 
@@ -213,18 +276,6 @@ extension APIManager: APIServiceDelegate {
         // swiftlint:disable:next todo
         // TODO: Handle this
         true
-    }
-}
-
-// MARK: - ForceUpgradeResponseDelegate
-
-extension APIManager: ForceUpgradeResponseDelegate {
-    public func onQuitButtonPressed() {
-        logger.info("Quit force upgrade page")
-    }
-
-    public func onUpdateButtonPressed() {
-        logger.info("Forced upgrade")
     }
 }
 

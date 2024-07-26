@@ -28,6 +28,8 @@ import Screens
 
 final class ItemContextMenuHandler: @unchecked Sendable {
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
@@ -85,7 +87,8 @@ extension ItemContextMenuHandler {
                                                                        itemId: item.itemId) else {
                 throw PassError.itemNotFound(item)
             }
-            try await itemRepository.deleteItems([encryptedItem], skipTrash: false)
+            let userId = try await userManager.getActiveUserId()
+            try await itemRepository.deleteItems(userId: userId, [encryptedItem], skipTrash: false)
             bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
             await router.display(element: .successMessage(config: .refresh(with: .delete(item.type))))
         }

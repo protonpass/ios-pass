@@ -145,7 +145,8 @@ private extension TelemetryEventRepository {
                 break
             }
             let eventInfos = events.map { EventInfo(event: $0, userTier: plan.internalName) }
-            try await remoteDatasource.send(events: eventInfos)
+            let userId = try await userManager.getActiveUserId()
+            try await remoteDatasource.send(userId: userId, events: eventInfos)
             try await localDatasource.remove(events: events, userId: userId)
         }
     }

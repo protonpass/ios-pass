@@ -36,6 +36,7 @@ final class AuthenticatorViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
     private var items = [AuthenticatorItem]()
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     init() {
         setUp()
@@ -43,7 +44,8 @@ final class AuthenticatorViewModel: ObservableObject, Sendable {
 
     func load() async {
         do {
-            items = try await getActiveLoginItems()
+            let userId = try await userManager.getActiveUserId()
+            items = try await getActiveLoginItems(userId: userId)
                 .compactMap { item in
                     guard let totpUri = item.loginItem?.totpUri,
                           !totpUri.isEmpty, let data = try? generateTotpToken(uri: totpUri) else {

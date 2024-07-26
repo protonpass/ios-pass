@@ -1,4 +1,4 @@
-// Generated using Sourcery 2.2.4 — https://github.com/krzysztofzablocki/Sourcery
+// Generated using Sourcery 2.2.5 — https://github.com/krzysztofzablocki/Sourcery
 // DO NOT EDIT
 // Proton Pass.
 // Copyright (c) 2023 Proton Technologies AG
@@ -82,5 +82,19 @@ public final class LocalUserPreferencesDatasourceProtocolMock: @unchecked Sendab
             throw error
         }
         closureRemovePreferences()
+    }
+    // MARK: - removeAllPreferences
+    public var removeAllPreferencesThrowableError4: Error?
+    public var closureRemoveAllPreferences: () -> () = {}
+    public var invokedRemoveAllPreferencesfunction = false
+    public var invokedRemoveAllPreferencesCount = 0
+
+    public func removeAllPreferences() async throws {
+        invokedRemoveAllPreferencesfunction = true
+        invokedRemoveAllPreferencesCount += 1
+        if let error = removeAllPreferencesThrowableError4 {
+            throw error
+        }
+        closureRemoveAllPreferences()
     }
 }
