@@ -150,7 +150,6 @@ extension APIService {
             throw CancellationError()
         } catch {
             if Task.isCancelled {
-                print("woot Cancel")
                 throw CancellationError()
             } else {
                 throw error
