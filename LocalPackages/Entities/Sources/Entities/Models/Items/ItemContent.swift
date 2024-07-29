@@ -145,6 +145,17 @@ public extension ItemContent {
         }
     }
 
+    var email: String? {
+        switch contentData {
+        case let .login(data):
+            data.email
+        case let .identity(data):
+            data.email
+        default:
+            nil
+        }
+    }
+
     var spotlightDomainId: String {
         type.debugDescription
     }
