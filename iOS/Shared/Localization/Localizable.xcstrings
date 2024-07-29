@@ -71105,6 +71105,17 @@
         }
       }
     },
+    "Only one free Proton Pass account is allowed" : {
+      "comment" : "Error message shown when trying to logging into the 2nd free account",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only one free Proton Pass account is allowed"
+          }
+        }
+      }
+    },
     "Open" : {
       "localizations" : {
         "be" : {
