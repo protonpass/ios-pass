@@ -201,7 +201,11 @@ private extension APIManager {
             case let .success(value):
                 switch value {
                 case let .sessionAlreadyPresent(session), let .sessionFetchedAndAvailable(session):
-                    logger.trace("UnauthSession: \(session)")
+                    if Bundle.main.isQaBuild {
+                        logger.trace("UnauthSession: \(session)")
+                    } else {
+                        logger.trace("UnauthSession Id: \(session.sessionID)")
+                    }
                 case .sessionUnavailableAndNotFetched:
                     logger.trace("session Unavailable And Not Fetched")
                 }
