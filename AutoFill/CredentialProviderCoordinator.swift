@@ -41,7 +41,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-//    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     private weak var rootViewController: UIViewController?
     private weak var context: ASCredentialProviderExtensionContext?
@@ -69,6 +68,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -91,16 +91,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         setCoreLoggerEnvironment()
         AppearanceSettings.apply()
         setUpRouting()
-
-//        corruptedSessionEventStream
-//            .removeDuplicates()
-//            .compactMap { $0 }
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] reason in
-//                guard let self else { return }
-//                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
-//            }
-//            .store(in: &cancellables)
     }
 
     /// Necessary set up like initializing preferences and theme before starting user flow
@@ -109,6 +99,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
             guard let self else { return }
             do {
                 try await setUpBeforeLaunching()
+                refreshFeatureFlags()
                 // This need to be set after user data is loaded as we now depend on active user id to set session
                 // to the api service
                 authManager.sessionWasInvalidated
