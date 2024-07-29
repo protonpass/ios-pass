@@ -121,7 +121,7 @@ extension ItemContextMenuHandler {
     func copyEmail(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
-            await copy(itemContent.loginItem?.email, message: #localized("Email copied"))
+            await copy(itemContent.email, message: #localized("Email copied"))
         }
     }
 
