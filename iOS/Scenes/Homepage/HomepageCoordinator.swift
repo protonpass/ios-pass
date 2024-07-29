@@ -369,7 +369,7 @@ private extension HomepageCoordinator {
             }
         }
     }
-    
+
     /// Filters task cancellation errors as they should not be shown to the user
     /// - Parameter error: The current error to check
     /// - Returns: A boolean to indicate if we should display the error banner
