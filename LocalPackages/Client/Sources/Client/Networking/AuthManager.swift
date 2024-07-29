@@ -263,6 +263,11 @@ public extension AuthManager {
         }
         saveCachedCredentialsToKeychain()
     }
+
+    @available(*, deprecated, message: "For debugging purposes only")
+    func getAllCredentialsOfAllModules() -> [Credentials] {
+        Array(cachedCredentials.values)
+    }
 }
 
 // MARK: - Utils
@@ -337,10 +342,10 @@ private extension AuthManager {
 
 // MARK: - Keychain codable wrappers for credential elements & extensions
 
-private struct Credentials: Hashable, Sendable, Codable {
-    let credential: Credential
-    let authCredential: AuthCredential
-    let module: PassModule
+public struct Credentials: Hashable, Sendable, Codable {
+    public let credential: Credential
+    public let authCredential: AuthCredential
+    public let module: PassModule
 }
 
 private struct CredentialsKey: Hashable, Codable {
