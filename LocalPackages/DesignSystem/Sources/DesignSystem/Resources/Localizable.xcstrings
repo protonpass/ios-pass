@@ -555,6 +555,12 @@
             "value" : "Si è verificato un errore"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラーが発生しました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
