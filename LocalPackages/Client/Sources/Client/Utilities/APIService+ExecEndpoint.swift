@@ -107,13 +107,13 @@ extension APIService {
 
                 perform(request: endpoint,
                         onDataTaskCreated: { task in
-                    Task {
-                        do {
-                            try await sessionTask.setCancellable(task)
-                        } catch {
-                            continuation.resume(throwing: error)
-                        }
-                    }
+                            Task {
+                                do {
+                                    try await sessionTask.setCancellable(task)
+                                } catch {
+                                    continuation.resume(throwing: error)
+                                }
+                            }
                         },
                         decodableCompletion: { task, result in
                             NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
