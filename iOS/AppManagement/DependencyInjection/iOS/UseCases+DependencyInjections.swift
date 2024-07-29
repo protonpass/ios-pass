@@ -395,6 +395,12 @@ extension UseCasesContainer {
     var verifyExtraPassword: Factory<any VerifyExtraPasswordUseCase> {
         self { VerifyExtraPassword() }
     }
+
+    var canAddNewAccount: Factory<any CanAddNewAccountUseCase> {
+        self { CanAddNewAccount(localDatasource: SharedRepositoryContainer.shared.localAccessDatasource(),
+                                remoteDatasource: SharedRepositoryContainer.shared.remoteAccessDatasource(),
+                                authManager: SharedToolingContainer.shared.authManager()) }
+    }
 }
 
 // MARK: - Misc

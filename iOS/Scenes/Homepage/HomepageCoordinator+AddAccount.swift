@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import Macro
 import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreServices
@@ -91,6 +92,15 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
+                router.display(element: .globalLoading(shouldShow: true))
+                guard try await canAddNewAccount(userId: userData.user.ID) else {
+                    router.display(element: .globalLoading(shouldShow: false))
+                    let message = #localized("Only one free Proton Pass account is allowed")
+                    bannerManager.displayTopErrorMessage(message)
+                    return
+                }
+                router.display(element: .globalLoading(shouldShow: false))
+
                 router.present(for: .fullSync)
                 logger.info("Doing full sync")
                 try await addAndSwitchToNewUserAccount(userData: userData,
