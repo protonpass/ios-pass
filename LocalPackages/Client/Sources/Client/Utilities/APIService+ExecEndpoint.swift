@@ -33,7 +33,7 @@ actor SessionTask {
         state = .cancelled
     }
 
-    func setCancellable(_ task: URLSessionDataTask) throws {
+    func setTask(_ task: URLSessionDataTask) throws {
         if case .cancelled = state {
             throw CancellationError()
         }
@@ -57,7 +57,7 @@ extension APIService {
                         onDataTaskCreated: { task in
                             Task {
                                 do {
-                                    try await sessionTask.setCancellable(task)
+                                    try await sessionTask.setTask(task)
                                 } catch {
                                     continuation.resume(throwing: error)
                                 }
@@ -109,7 +109,7 @@ extension APIService {
                         onDataTaskCreated: { task in
                             Task {
                                 do {
-                                    try await sessionTask.setCancellable(task)
+                                    try await sessionTask.setTask(task)
                                 } catch {
                                     continuation.resume(throwing: error)
                                 }
