@@ -23,53 +23,52 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-private final class APIServiceTaskCanceller: @unchecked Sendable {
-    private let serialQueue = DispatchQueue(label: "me.proton.pass.apiservicetaskcanceller")
-    private var isCancelled = false
-    private weak var task: URLSessionDataTask?
+actor SessionTask {
+    var state: State = .ready
 
     func cancel() {
-        serialQueue.sync { [weak self] in
-            guard let self else {
-                return
-            }
-            isCancelled = true
-            task?.cancel()
+        if case let .executing(task) = state {
+            task.cancel()
         }
+        state = .cancelled
     }
 
-    func setCancellable(_ task: URLSessionDataTask) {
-        serialQueue.sync { [weak self, weak task] in
-            guard let self else {
-                return
-            }
-            if isCancelled {
-                task?.cancel()
-            }
-            task = task
+    func setTask(_ task: URLSessionDataTask) throws {
+        if case .cancelled = state {
+            throw CancellationError()
         }
+        state = .executing(task)
+    }
+
+    enum State {
+        case ready
+        case executing(URLSessionDataTask)
+        case cancelled
     }
 }
 
 extension APIService {
-    /// Async variant that can take an `Endpoint`
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
-        let canceller = APIServiceTaskCanceller()
-
+        let sessionTask = SessionTask()
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
                 NetworkDebugger.printDebugInfo(endpoint: endpoint)
                 perform(request: endpoint,
                         onDataTaskCreated: { task in
-                            canceller.setCancellable(task)
-                        },
-                        decodableCompletion: { task, result in
+                            Task {
+                                do {
+                                    try await sessionTask.setTask(task)
+                                } catch {
+                                    continuation.resume(throwing: error)
+                                }
+                            }
+                        }, decodableCompletion: { task, result in
                             NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
                             continuation.resume(with: result)
                         })
             }
         } onCancel: {
-            canceller.cancel()
+            Task { await sessionTask.cancel() }
         }
     }
 
@@ -100,7 +99,7 @@ extension APIService {
     /// that returns `Data`. So we make `Decodable` request and expect an error to get the actual `Data`
     /// from the error object.
     func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
-        let canceller = APIServiceTaskCanceller()
+        let sessionTask = SessionTask()
 
         return try await withTaskCancellationHandler {
             try await withCheckedThrowingContinuation { continuation in
@@ -108,7 +107,13 @@ extension APIService {
 
                 perform(request: endpoint,
                         onDataTaskCreated: { task in
-                            canceller.setCancellable(task)
+                            Task {
+                                do {
+                                    try await sessionTask.setTask(task)
+                                } catch {
+                                    continuation.resume(throwing: error)
+                                }
+                            }
                         },
                         decodableCompletion: { task, result in
                             NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
@@ -129,7 +134,7 @@ extension APIService {
                         })
             }
         } onCancel: {
-            canceller.cancel()
+            Task { await sessionTask.cancel() }
         }
     }
 }
