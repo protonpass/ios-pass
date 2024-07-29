@@ -24,7 +24,7 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 
 actor SessionTask {
-    var state: State = .ready
+    private var state: State = .ready
 
     func cancel() {
         if case let .executing(task) = state {
@@ -40,7 +40,7 @@ actor SessionTask {
         state = .executing(task)
     }
 
-    enum State {
+    private enum State {
         case ready
         case executing(URLSessionDataTask)
         case cancelled
@@ -50,25 +50,35 @@ actor SessionTask {
 extension APIService {
     func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
         let sessionTask = SessionTask()
-        return try await withTaskCancellationHandler {
-            try await withCheckedThrowingContinuation { continuation in
-                NetworkDebugger.printDebugInfo(endpoint: endpoint)
-                perform(request: endpoint,
-                        onDataTaskCreated: { task in
-                            Task {
-                                do {
-                                    try await sessionTask.setTask(task)
-                                } catch {
-                                    continuation.resume(throwing: error)
+        do {
+            return try await withTaskCancellationHandler {
+                try await withCheckedThrowingContinuation { continuation in
+                    NetworkDebugger.printDebugInfo(endpoint: endpoint)
+                    perform(request: endpoint,
+                            onDataTaskCreated: { task in
+                                Task {
+                                    do {
+                                        try await sessionTask.setTask(task)
+                                    } catch {
+                                        continuation.resume(throwing: error)
+                                    }
                                 }
-                            }
-                        }, decodableCompletion: { task, result in
-                            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-                            continuation.resume(with: result)
-                        })
+                            }, decodableCompletion: { task, result in
+                                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                                continuation.resume(with: result)
+                            })
+                }
+            } onCancel: {
+                Task { await sessionTask.cancel() }
             }
-        } onCancel: {
-            Task { await sessionTask.cancel() }
+        } catch URLError.cancelled {
+            throw CancellationError()
+        } catch {
+            if Task.isCancelled {
+                throw CancellationError()
+            } else {
+                throw error
+            }
         }
     }
 
@@ -100,41 +110,51 @@ extension APIService {
     /// from the error object.
     func execExpectingData(endpoint: some Endpoint) async throws -> DataResponse {
         let sessionTask = SessionTask()
+        do {
+            return try await withTaskCancellationHandler {
+                try await withCheckedThrowingContinuation { continuation in
+                    NetworkDebugger.printDebugInfo(endpoint: endpoint)
 
-        return try await withTaskCancellationHandler {
-            try await withCheckedThrowingContinuation { continuation in
-                NetworkDebugger.printDebugInfo(endpoint: endpoint)
-
-                perform(request: endpoint,
-                        onDataTaskCreated: { task in
-                            Task {
-                                do {
-                                    try await sessionTask.setTask(task)
-                                } catch {
-                                    continuation.resume(throwing: error)
+                    perform(request: endpoint,
+                            onDataTaskCreated: { task in
+                                Task {
+                                    do {
+                                        try await sessionTask.setTask(task)
+                                    } catch {
+                                        continuation.resume(throwing: error)
+                                    }
                                 }
-                            }
-                        },
-                        decodableCompletion: { task, result in
-                            NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
-                            switch result {
-                            case .success:
-                                continuation.resume(throwing: PassError.errorExpected)
+                            },
+                            decodableCompletion: { task, result in
+                                NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
+                                switch result {
+                                case .success:
+                                    continuation.resume(throwing: PassError.errorExpected)
 
-                            case let .failure(error):
-                                if let responseError = error.underlyingError as? SessionResponseError,
-                                   case let .responseBodyIsNotADecodableObject(body, _) = responseError {
-                                    continuation.resume(returning: .init(httpCode: error.httpCode,
-                                                                         protonCode: error.responseCode,
-                                                                         data: body))
-                                    return
+                                case let .failure(error):
+                                    if let responseError = error.underlyingError as? SessionResponseError,
+                                       case let .responseBodyIsNotADecodableObject(body, _) = responseError {
+                                        continuation.resume(returning: .init(httpCode: error.httpCode,
+                                                                             protonCode: error.responseCode,
+                                                                             data: body))
+                                        return
+                                    }
+                                    continuation.resume(throwing: PassError.unexpectedError)
                                 }
-                                continuation.resume(throwing: PassError.unexpectedError)
-                            }
-                        })
+                            })
+                }
+            } onCancel: {
+                Task { await sessionTask.cancel() }
             }
-        } onCancel: {
-            Task { await sessionTask.cancel() }
+        } catch URLError.cancelled {
+            throw CancellationError()
+        } catch {
+            if Task.isCancelled {
+                print("woot Cancel")
+                throw CancellationError()
+            } else {
+                throw error
+            }
         }
     }
 }
