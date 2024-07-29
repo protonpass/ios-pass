@@ -369,6 +369,19 @@ private extension HomepageCoordinator {
             }
         }
     }
+    
+    /// Filters task cancellation errors as they should not be shown to the user
+    /// - Parameter error: The current error to check
+    /// - Returns: A boolean to indicate if we should display the error banner
+    func shouldDisplayError(error: any Error) -> Bool {
+        if error is CancellationError { return false }
+
+        if let urlError = error as? URLError,
+           urlError.code == .cancelled {
+            return false
+        }
+        return true
+    }
 }
 
 // MARK: - Navigation & Routing & View presentation
@@ -519,6 +532,9 @@ extension HomepageCoordinator {
                         hideLoadingHud()
                     }
                 case let .displayErrorBanner(errorLocalized):
+                    guard shouldDisplayError(error: errorLocalized) else {
+                        return
+                    }
                     bannerManager.displayTopErrorMessage(errorLocalized)
                 case let .errorMessage(message):
                     bannerManager.displayTopErrorMessage(message)
