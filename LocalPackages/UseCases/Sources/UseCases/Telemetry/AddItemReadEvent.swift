@@ -37,13 +37,16 @@ public extension AddItemReadEventUseCase {
 public final class AddItemReadEvent: Sendable, AddItemReadEventUseCase {
     private let eventRepository: any ItemReadEventRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(eventRepository: any ItemReadEventRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.eventRepository = eventRepository
         self.accessRepository = accessRepository
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 
@@ -51,8 +54,9 @@ public final class AddItemReadEvent: Sendable, AddItemReadEventUseCase {
         Task { [weak self] in
             guard let self else { return }
             do {
+                let userId = try await userManager.getActiveUserId()
                 if accessRepository.access.value?.access.plan.isBusinessUser == true {
-                    try await eventRepository.addEvent(for: item)
+                    try await eventRepository.addEvent(userId: userId, item: item)
                 }
             } catch {
                 logger.error(error)
