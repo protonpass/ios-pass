@@ -102,7 +102,7 @@ public extension TelemetryEventRepository {
         logger.trace("Refreshing user access")
         let plan = try await accessRepository.refreshAccess().access.plan
 
-        try await sendAllItemReadEvents(plan: plan)
+        try await sendAllItemReadEvents(userId: userId, plan: plan)
 
         if !telemetry {
             logger.info("Telemetry disabled, removing all local events.")
@@ -123,17 +123,17 @@ public extension TelemetryEventRepository {
         logger.debug("Force sending all events")
         let userId = try await userManager.getActiveUserId()
         let plan = try await accessRepository.refreshAccess().access.plan
-        try await sendAllItemReadEvents(plan: plan)
+        try await sendAllItemReadEvents(userId: userId, plan: plan)
         try await sendAllTelemetryEvents(userId: userId, plan: plan)
         logger.info("Force sent all events")
     }
 }
 
 private extension TelemetryEventRepository {
-    func sendAllItemReadEvents(plan: Plan) async throws {
+    func sendAllItemReadEvents(userId: String, plan: Plan) async throws {
         if plan.isBusinessUser {
             logger.trace("[B2B] Ignore telemetry settings and send read events")
-            try await itemReadEventRepository.sendAllEvents()
+            try await itemReadEventRepository.sendAllEvents(userId: userId)
         }
     }
 
@@ -145,7 +145,6 @@ private extension TelemetryEventRepository {
                 break
             }
             let eventInfos = events.map { EventInfo(event: $0, userTier: plan.internalName) }
-            let userId = try await userManager.getActiveUserId()
             try await remoteDatasource.send(userId: userId, events: eventInfos)
             try await localDatasource.remove(events: events, userId: userId)
         }
