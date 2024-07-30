@@ -25,6 +25,8 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemsTabTopBar: View {
+    @Binding var searchMode: SearchMode?
+    let animationNamespace: Namespace.ID
     @StateObject private var viewModel = ItemsTabTopBarViewModel()
     @Binding var isEditMode: Bool
     let onSearch: () -> Void
@@ -78,26 +80,33 @@ private extension ItemsTabTopBar {
                     .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
             }
 
-            // Search bar
-            ZStack {
-                PassColor.backgroundStrong.toColor
-                HStack {
-                    Image(uiImage: IconProvider.magnifier)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 20, height: 20)
-                    Text(viewModel.vaultSelection.searchBarPlacehoder)
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
+            if searchMode == nil {
+                // Search bar
+                ZStack {
+                    PassColor.backgroundStrong.toColor
+                    HStack {
+                        Image(uiImage: IconProvider.magnifier)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                        Text(viewModel.vaultSelection.searchBarPlacehoder)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
+                    }
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .padding(.horizontal)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .padding(.horizontal)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                       in: animationNamespace)
+                .contentShape(.rect)
+                .frame(height: DesignConstant.searchBarHeight)
+                .onTapGesture(perform: onSearch)
+            } else {
+                Spacer()
+                    .frame(maxWidth: .infinity)
             }
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .contentShape(.rect)
-            .frame(height: DesignConstant.searchBarHeight)
-            .onTapGesture(perform: onSearch)
 
             ItemsTabOptionsButton(isEditMode: $isEditMode)
                 .accessibilityLabel(Text("Items filter Menus"))
