@@ -312,6 +312,8 @@ private extension CredentialProviderCoordinator {
                     }
                 case let .displayErrorBanner(error):
                     bannerManager.displayTopErrorMessage(error)
+                case let .errorMessage(message):
+                    bannerManager.displayTopErrorMessage(message)
                 default:
                     return
                 }
