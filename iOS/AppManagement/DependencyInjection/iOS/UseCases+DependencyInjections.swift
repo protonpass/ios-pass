@@ -102,6 +102,10 @@ private extension UseCasesContainer {
     var remoteSecureLinkDatasource: any RemoteSecureLinkDatasourceProtocol {
         SharedRepositoryContainer.shared.remoteSecureLinkDatasource()
     }
+
+    var localAccessDatasource: any LocalAccessDatasourceProtocol {
+        SharedRepositoryContainer.shared.localAccessDatasource()
+    }
 }
 
 // MARK: User report
@@ -394,6 +398,17 @@ extension UseCasesContainer {
 
     var verifyExtraPassword: Factory<any VerifyExtraPasswordUseCase> {
         self { VerifyExtraPassword() }
+    }
+
+    var canAddNewAccount: Factory<any CanAddNewAccountUseCase> {
+        self { CanAddNewAccount(localDatasource: self.localAccessDatasource,
+                                remoteDatasource: SharedRepositoryContainer.shared.remoteAccessDatasource(),
+                                authManager: SharedToolingContainer.shared.authManager()) }
+    }
+
+    var logOutExcessFreeAccounts: Factory<any LogOutExcessFreeAccountsUseCase> {
+        self { LogOutExcessFreeAccounts(datasource: self.localAccessDatasource,
+                                        logOutUser: SharedUseCasesContainer.shared.logOutUser()) }
     }
 }
 
