@@ -30,6 +30,8 @@ import TipKit
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
+    @Namespace private var animationNamespace
+    @State private var searchMode: SearchMode?
 
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
@@ -72,8 +74,14 @@ struct ItemsTabView: View {
     private func vaultContent(_ items: [ItemUiModel]) -> some View {
         GeometryReader { proxy in
             VStack(spacing: 0) {
-                ItemsTabTopBar(isEditMode: $viewModel.isEditMode,
-                               onSearch: { viewModel.search() },
+                ItemsTabTopBar(searchMode: $searchMode,
+                               animationNamespace: animationNamespace,
+                               isEditMode: $viewModel.isEditMode,
+                               onSearch: {
+                                   withAnimation {
+                                       searchMode = .all(viewModel.vaultsManager.vaultSelection)
+                                   }
+                               },
                                onShowVaultList: { viewModel.presentVaultList() },
                                onMove: { viewModel.presentVaultListToMoveSelectedItems() },
                                onTrash: { viewModel.trashSelectedItems() },
@@ -101,7 +109,11 @@ struct ItemsTabView: View {
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
                    viewModel.vaultsManager.vaultSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
-                                    onSearch: { viewModel.search(pinnedItems: true) },
+                                    onSearch: {
+                                        withAnimation {
+                                            searchMode = .pinned
+                                        }
+                                    },
                                     action: { viewModel.viewDetail(of: $0) })
                     Divider()
                 }
@@ -140,6 +152,7 @@ struct ItemsTabView: View {
                 safeAreaInsets = proxy.safeAreaInsets
             }
         }
+        .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)
     }
 
     @ViewBuilder
