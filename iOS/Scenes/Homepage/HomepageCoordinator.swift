@@ -68,6 +68,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Lazily initialised properties
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) var apiManager
+    @LazyInjected(\SharedToolingContainer.authManager) var authManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
 
@@ -82,6 +83,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
     private let copyToClipboard = resolve(\SharedUseCasesContainer.copyToClipboard)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
+    @LazyInjected(\UseCasesContainer.logOutExcessFreeAccounts) private var logOutExcessFreeAccounts
+    @LazyInjected(\UseCasesContainer.canAddNewAccount) var canAddNewAccount
     @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
     @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
@@ -123,6 +126,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshSettings()
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
+        doLogOutExcessFreeAccounts()
     }
 }
 
@@ -213,6 +217,7 @@ private extension HomepageCoordinator {
                 refreshAccessAndMonitorStateSync()
                 refreshSettings()
                 refreshFeatureFlags()
+                doLogOutExcessFreeAccounts()
             }
             .store(in: &cancellables)
     }
@@ -348,6 +353,20 @@ private extension HomepageCoordinator {
                 try await telemetryEventRepository.sendAllEventsIfApplicable()
             } catch {
                 logger.error(error)
+            }
+        }
+    }
+
+    func doLogOutExcessFreeAccounts() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if try await logOutExcessFreeAccounts() {
+                    let message = #localized("You're logged out from other free accounts")
+                    bannerManager.displayBottomInfoMessage(message)
+                }
+            } catch {
+                handle(error: error)
             }
         }
     }
