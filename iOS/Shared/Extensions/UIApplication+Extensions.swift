@@ -34,4 +34,20 @@ extension UIApplication {
         guard let url = URL(string: urlString), canOpenURL(url) else { return }
         open(url)
     }
+
+    var isSplitOrSlideOver: Bool {
+        guard let keyWindow else { return false }
+        return !(keyWindow.frame.width == keyWindow.screen.bounds.width)
+    }
+
+    var keyWindow: UIWindow? {
+        // Get connected scenes
+        connectedScenes
+            // Keep only active scenes, onscreen and visible to the user
+            .first(where: { $0.activationState == .foregroundActive && $0 is UIWindowScene })
+            // Get its associated windows
+            .flatMap { $0 as? UIWindowScene }?.windows
+            // Finally, keep only the key window
+            .first(where: \.isKeyWindow)
+    }
 }
