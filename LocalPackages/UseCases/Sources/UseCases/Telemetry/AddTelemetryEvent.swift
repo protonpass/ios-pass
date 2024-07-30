@@ -39,11 +39,14 @@ public extension AddTelemetryEventUseCase {
 
 public final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseCase {
     private let repository: any TelemetryEventRepositoryProtocol
+    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(repository: any TelemetryEventRepositoryProtocol,
+                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.repository = repository
+        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 
@@ -51,7 +54,8 @@ public final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseC
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await repository.addNewEvent(type: eventType)
+                let userId = try await userManager.getActiveUserId()
+                try await repository.addNewEvent(userId: userId, type: eventType)
             } catch {
                 logger.error(error)
             }
@@ -62,8 +66,9 @@ public final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseC
         Task { [weak self] in
             guard let self else { return }
             do {
+                let userId = try await userManager.getActiveUserId()
                 for event in eventTypes {
-                    try await repository.addNewEvent(type: event)
+                    try await repository.addNewEvent(userId: userId, type: event)
                 }
             } catch {
                 logger.error(error)
