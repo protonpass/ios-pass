@@ -355,7 +355,6 @@ extension SharedRepositoryContainer {
         self { ItemReadEventRepository(localDatasource: self.localItemReadEventDatasource(),
                                        remoteDatasource: self.remoteItemReadEventDatasource(),
                                        currentDateProvider: self.currentDateProvider,
-                                       userManager: self.userManager,
                                        logManager: self.logManager) }
     }
 }

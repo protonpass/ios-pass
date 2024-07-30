@@ -25,38 +25,34 @@ import Foundation
 
 // sourcery: AutoMockable
 public protocol ItemReadEventRepositoryProtocol: Sendable {
-    func addEvent(for item: any ItemIdentifiable) async throws
-    func getAllEvents() async throws -> [ItemReadEvent]
-    func sendAllEvents() async throws
+    func addEvent(userId: String, item: any ItemIdentifiable) async throws
+    func getAllEvents(userId: String) async throws -> [ItemReadEvent]
+    func sendAllEvents(userId: String) async throws
 }
 
 public actor ItemReadEventRepository: ItemReadEventRepositoryProtocol {
     private let localDatasource: any LocalItemReadEventDatasourceProtocol
     private let remoteDatasource: any RemoteItemReadEventDatasourceProtocol
     private let currentDateProvider: any CurrentDateProviderProtocol
-    private let userManager: any UserManagerProtocol
     private let batchSize: Int
     private let logger: Logger
 
     public init(localDatasource: any LocalItemReadEventDatasourceProtocol,
                 remoteDatasource: any RemoteItemReadEventDatasourceProtocol,
                 currentDateProvider: any CurrentDateProviderProtocol,
-                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol,
                 batchSize: Int = Constants.Utils.batchSize) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.currentDateProvider = currentDateProvider
-        self.userManager = userManager
         logger = .init(manager: logManager)
         self.batchSize = batchSize
     }
 }
 
 public extension ItemReadEventRepository {
-    func addEvent(for item: any ItemIdentifiable) async throws {
+    func addEvent(userId: String, item: any ItemIdentifiable) async throws {
         let date = currentDateProvider.getCurrentDate()
-        let userId = try await userManager.getActiveUserId()
         let event = ItemReadEvent(uuid: UUID().uuidString,
                                   shareId: item.shareId,
                                   itemId: item.itemId,
@@ -65,14 +61,12 @@ public extension ItemReadEventRepository {
         logger.trace("Added event for item \(item.debugDescription), user \(userId)")
     }
 
-    func getAllEvents() async throws -> [ItemReadEvent] {
-        let userId = try await userManager.getActiveUserId()
-        return try await localDatasource.getAllEvents(userId: userId)
+    func getAllEvents(userId: String) async throws -> [ItemReadEvent] {
+        try await localDatasource.getAllEvents(userId: userId)
     }
 
-    func sendAllEvents() async throws {
+    func sendAllEvents(userId: String) async throws {
         logger.info("Sending all item reads event")
-        let userId = try await userManager.getActiveUserId()
         while true {
             let events =
                 try await localDatasource.getOldestEvents(count: batchSize,
