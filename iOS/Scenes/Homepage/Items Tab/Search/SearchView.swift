@@ -26,7 +26,6 @@ import SwiftUI
 import TipKit
 
 struct SearchView: View {
-    @Environment(\.dismiss) private var dismiss
     @Binding var showSearch: SearchMode?
     let animationNamespace: Namespace.ID
     @FocusState private var isFocusedOnSearchBar
