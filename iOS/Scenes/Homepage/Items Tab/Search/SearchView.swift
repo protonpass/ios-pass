@@ -19,13 +19,15 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 import TipKit
 
 struct SearchView: View {
-    @Environment(\.dismiss) private var dismiss
+    @Binding var showSearch: SearchMode?
+    let animationNamespace: Namespace.ID
     @FocusState private var isFocusedOnSearchBar
     @StateObject var viewModel: SearchViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
@@ -36,10 +38,7 @@ struct SearchView: View {
                 PassColor.backgroundNorm.toColor
                     .ignoresSafeArea(edges: .all)
                 switch viewModel.state {
-                case .initializing:
-                    SearchViewSkeleton()
-
-                case .empty, .history, .noResults, .results:
+                case .empty, .history, .initializing, .noResults, .results:
                     content
 
                 case let .error(error):
@@ -61,7 +60,11 @@ struct SearchView: View {
             SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: viewModel.searchBarPlaceholder,
-                      onCancel: dismiss.callAsFunction)
+                      onCancel: { withAnimation {
+                          showSearch = nil
+                      } })
+                      .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                             in: animationNamespace)
 
             if #available(iOS 17, *) {
                 let tip = SpotlightTip()
