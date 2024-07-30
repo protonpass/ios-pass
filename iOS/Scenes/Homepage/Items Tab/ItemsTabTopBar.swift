@@ -103,6 +103,9 @@ private extension ItemsTabTopBar {
                 .contentShape(.rect)
                 .frame(height: DesignConstant.searchBarHeight)
                 .onTapGesture(perform: onSearch)
+            } else {
+                Spacer()
+                    .frame(maxWidth: .infinity)
             }
 
             ItemsTabOptionsButton(isEditMode: $isEditMode)
