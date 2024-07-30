@@ -33,9 +33,9 @@ actor SessionTask {
         state = .cancelled
     }
 
-    func setTask(_ task: URLSessionDataTask) throws {
+    func setTask(_ task: URLSessionDataTask) {
         if case .cancelled = state {
-            throw CancellationError()
+            return
         }
         state = .executing(task)
     }
@@ -57,11 +57,7 @@ extension APIService {
                     perform(request: endpoint,
                             onDataTaskCreated: { task in
                                 Task {
-                                    do {
-                                        try await sessionTask.setTask(task)
-                                    } catch {
-                                        continuation.resume(throwing: error)
-                                    }
+                                    await sessionTask.setTask(task)
                                 }
                             }, decodableCompletion: { task, result in
                                 NetworkDebugger.printDebugInfo(endpoint: endpoint, task: task, result: result)
@@ -118,11 +114,7 @@ extension APIService {
                     perform(request: endpoint,
                             onDataTaskCreated: { task in
                                 Task {
-                                    do {
-                                        try await sessionTask.setTask(task)
-                                    } catch {
-                                        continuation.resume(throwing: error)
-                                    }
+                                    await sessionTask.setTask(task)
                                 }
                             },
                             decodableCompletion: { task, result in

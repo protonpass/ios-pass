@@ -434,6 +434,8 @@ extension HomepageCoordinator {
                     createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissible)
                 case let .itemDetail(view, asSheet):
                     itemDetailCoordinatorWantsToPresent(view: view, asSheet: asSheet)
+                case let .sortTypeList(selectedSortType, delegate):
+                    presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
                 }
             }
             .store(in: &cancellables)
@@ -478,8 +480,6 @@ extension HomepageCoordinator {
                     createEditItemViewModelWantsToChangeVault()
                 case .setPINCode:
                     presentSetPINCodeView()
-                case let .search(selection):
-                    presentSearchScreen(selection)
                 case let .history(item):
                     presentItemHistory(item)
                 case .restoreHistory:
@@ -795,15 +795,6 @@ extension HomepageCoordinator {
         alert.addAction(deleteAction)
         alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
         present(alert)
-    }
-
-    func presentSearchScreen(_ searchMode: SearchMode) {
-        let viewModel = SearchViewModel(searchMode: searchMode)
-        viewModel.delegate = self
-        searchViewModel = viewModel
-        let view = SearchView(viewModel: viewModel)
-        present(view)
-        addNewEvent(type: .searchTriggered)
     }
 
     func startUpgradeFlow() {
@@ -1672,15 +1663,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
                                                    onDismiss: undoBlock)
         }
         addNewEvent(type: .update(item.type))
-    }
-}
-
-// MARK: - SearchViewModelDelegate
-
-extension HomepageCoordinator: SearchViewModelDelegate {
-    func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                   delegate: any SortTypeListViewModelDelegate) {
-        presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
     }
 }
 
