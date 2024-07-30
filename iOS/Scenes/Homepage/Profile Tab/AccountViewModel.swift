@@ -71,11 +71,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
-        plan = accessRepository.access.value?.access.plan
-        extraPasswordEnabled = preferencesManager.userPreferences.unwrapped().extraPasswordEnabled
-        refreshUserPlan()
-        refreshAccountRecovery()
-        refreshAccountPasswordMode()
+        setup()
 
         preferencesManager
             .userPreferencesUpdates
@@ -86,45 +82,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
                 extraPasswordEnabled = enabled
             }
             .store(in: &cancellables)
-    }
-
-    private func refreshUserPlan() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                plan = try await accessRepository.refreshAccess().access.plan
-            } catch {
-                logger.error(error)
-            }
-        }
-    }
-
-    private func refreshAccountRecovery() {
-        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true) else {
-            return
-        }
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                accountRecovery = try await accountRepository.accountRecovery()
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
-
-    private func refreshAccountPasswordMode() {
-        Task { @MainActor [weak self] in
-            guard let self else { return }
-            do {
-                let userId = try await userManager.getActiveUserId()
-                let settings = await userSettingsRepository.getSettings(for: userId)
-                passwordMode = settings.password.mode
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
     }
 }
 
@@ -247,6 +204,53 @@ extension AccountViewModel {
 }
 
 private extension AccountViewModel {
+    func setup() {
+        plan = accessRepository.access.value?.access.plan
+        extraPasswordEnabled = preferencesManager.userPreferences.unwrapped().extraPasswordEnabled
+        refreshUserPlan()
+        refreshAccountRecovery()
+        refreshAccountPasswordMode()
+    }
+
+    func refreshUserPlan() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                plan = try await accessRepository.refreshAccess().access.plan
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func refreshAccountRecovery() {
+        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.accountRecovery, reloadValue: true) else {
+            return
+        }
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                accountRecovery = try await accountRepository.accountRecovery()
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func refreshAccountPasswordMode() {
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let settings = await userSettingsRepository.getSettings(for: userId)
+                passwordMode = settings.password.mode
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
     func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
         switch result {
         case let .success(inAppPurchasePlan):
