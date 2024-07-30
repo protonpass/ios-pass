@@ -276,7 +276,7 @@ extension ProfileTabViewModel {
             do {
                 try await switchUser(userId: account.id)
 
-                if UIDevice.current.isIpad {
+                if UIDevice.current.isIpad, !UIApplication.shared.isSplitOrSlideOver {
                     router.action(.manage(userId: account.id))
                 }
             } catch {
