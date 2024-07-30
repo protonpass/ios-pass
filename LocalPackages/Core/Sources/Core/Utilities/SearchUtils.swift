@@ -35,13 +35,6 @@ public struct SearchResult: Sendable {
 }
 
 public enum SearchUtils {
-    public static func fuzzySearch(query: String, in text: String) -> SearchResult? {
-        if let result = search(query: query, in: text) {
-            return result
-        }
-        return nil
-    }
-
     public static func search(query: String, in text: String) -> SearchResult? {
         // Remove new lines because search results are for preview purpose
         // we don't want to have new lines in such case

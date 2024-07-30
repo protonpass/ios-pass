@@ -222,7 +222,6 @@
 		3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
 		3571B59F29BF7204008D4350 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59E29BF7204008D4350 /* SearchView.swift */; };
 		3571B5A129BF7225008D4350 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B5A029BF7225008D4350 /* SearchViewModel.swift */; };
-		3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B5A229BF73C0008D4350 /* SearchViewSkeleton.swift */; };
 		3572E5232993D68800775FAC /* ItemContentType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5222993D68800775FAC /* ItemContentType+Extensions.swift */; };
 		3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */; };
 		3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */; };
@@ -823,7 +822,6 @@
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3571B5A029BF7225008D4350 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
-		3571B5A229BF73C0008D4350 /* SearchViewSkeleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewSkeleton.swift; sourceTree = "<group>"; };
 		3572E5222993D68800775FAC /* ItemContentType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContentType+Extensions.swift"; sourceTree = "<group>"; };
 		3572E5242993D7BF00775FAC /* ItemDetailToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailToolbar.swift; sourceTree = "<group>"; };
 		3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditItemToolbar.swift; sourceTree = "<group>"; };
@@ -1307,7 +1305,6 @@
 				3547A0192A83DC5600C9DAF1 /* SearchResultsViewModel.swift */,
 				3571B59E29BF7204008D4350 /* SearchView.swift */,
 				3571B5A029BF7225008D4350 /* SearchViewModel.swift */,
-				3571B5A229BF73C0008D4350 /* SearchViewSkeleton.swift */,
 				5BDDEABC2C5916590068B9DF /* SearchViewModifier.swift */,
 			);
 			path = Search;
@@ -3366,7 +3363,6 @@
 				35AF16C92C108AF500277E79 /* ExtraPasswordSheet.swift in Sources */,
 				35EDB30A2C13101600FE441C /* EnableExtraPasswordView.swift in Sources */,
 				355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
-				3571B5A329BF73C0008D4350 /* SearchViewSkeleton.swift in Sources */,
 				5B1092D32B5199F1002621A4 /* DetailHistoryView+Note.swift in Sources */,
 				356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */,
 				35C44F742BDA4A310054F7EE /* MonitorAliasesView.swift in Sources */,
