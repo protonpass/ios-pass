@@ -276,14 +276,6 @@ extension ItemsTabViewModel {
         }
     }
 
-    func search(pinnedItems: Bool = false) {
-        if pinnedItems {
-            router.present(for: .search(.pinned))
-        } else {
-            router.present(for: .search(.all(vaultsManager.vaultSelection)))
-        }
-    }
-
     func isSelected(_ item: any ItemIdentifiable) -> Bool {
         currentSelectedItems.value.contains(item)
     }

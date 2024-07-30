@@ -77,7 +77,6 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case customizeNewVault(VaultProtobuf, ItemContent)
     case vaultSelection
     case setPINCode
-    case search(SearchMode)
     case history(ItemContent)
     case restoreHistory
     case importExport
@@ -114,6 +113,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
 enum GenericDestination {
     case presentView(view: any View, dismissible: Bool)
     case itemDetail(view: any View, asSheet: Bool)
+    case sortTypeList(selectedSortType: SortType, delegate: any SortTypeListViewModelDelegate)
 }
 
 enum UIElementDisplay: Sendable {
