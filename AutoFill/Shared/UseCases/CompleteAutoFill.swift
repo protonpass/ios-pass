@@ -85,10 +85,13 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             resetFactory()
         }
         do {
+            let userId = try await userManager.getActiveUserId()
             if quickTypeBar {
-                try await telemetryRepository.addNewEvent(type: .autofillTriggeredFromSource)
+                try await telemetryRepository.addNewEvent(userId: userId,
+                                                          type: .autofillTriggeredFromSource)
             } else {
-                try await telemetryRepository.addNewEvent(type: .autofillTriggeredFromApp)
+                try await telemetryRepository.addNewEvent(userId: userId,
+                                                          type: .autofillTriggeredFromApp)
             }
             logger
                 .info("Autofilled from QuickType bar \(quickTypeBar) \(itemContent.debugDescription)")
@@ -107,7 +110,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                                         completionHandler: completion)
             } else if #available(iOS 17, *),
                       let passkeyCredential = credential as? ASPasskeyAssertionCredential {
-                try await telemetryRepository.addNewEvent(type: .passkeyAuth)
+                try await telemetryRepository.addNewEvent(userId: userId, type: .passkeyAuth)
                 context.completeAssertionRequest(using: passkeyCredential,
                                                  completionHandler: completion)
             } else {
