@@ -97,6 +97,7 @@ private extension HomepageCoordinator {
                     router.display(element: .globalLoading(shouldShow: false))
                     let message = #localized("Only one free Proton Pass account is allowed")
                     bannerManager.displayTopErrorMessage(message)
+                    authManager.removeCredentials(userId: userData.user.ID)
                     return
                 }
                 router.display(element: .globalLoading(shouldShow: false))
