@@ -39,11 +39,6 @@ public enum SearchUtils {
         if let result = search(query: query, in: text) {
             return result
         }
-        for word in query.components(separatedBy: " ") {
-            if let result = search(query: word, in: text) {
-                return result
-            }
-        }
         return nil
     }
 
