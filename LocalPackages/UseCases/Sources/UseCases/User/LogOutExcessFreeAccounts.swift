@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 
 /// Log out all excess free accounts. Return `true` if some accounts were logged out, `false` otherwise.
 public protocol LogOutExcessFreeAccountsUseCase: Sendable {
@@ -45,10 +46,10 @@ public final class LogOutExcessFreeAccounts: LogOutExcessFreeAccountsUseCase {
     public func execute() async throws -> Bool {
         let accesses = try await datasource.getAllAccesses()
         let freeAccesses = accesses.filter(\.access.plan.isFreeUser)
-        guard freeAccesses.count > 1 else { return false }
+        guard freeAccesses.count > Constants.freeAccountsLimit else { return false }
 
-        // Do not remove all free accounts but leave out the first one
-        for access in freeAccesses.dropFirst() {
+        // Do not remove all free accounts but leave out the first ones
+        for access in freeAccesses.dropFirst(Constants.freeAccountsLimit) {
             try await logOutUser(userId: access.userId)
         }
 

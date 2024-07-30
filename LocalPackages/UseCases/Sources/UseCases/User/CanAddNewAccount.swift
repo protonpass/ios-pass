@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 
 public protocol CanAddNewAccountUseCase: Sendable {
     func execute(userId: String) async throws -> Bool
@@ -46,12 +47,11 @@ public final class CanAddNewAccount: CanAddNewAccountUseCase {
 
     public func execute(userId: String) async throws -> Bool {
         let access = try await remoteDatasource.getAccess(userId: userId)
-        let accesses = try await localDatasource.getAllAccesses()
-        if accesses.contains(where: \.access.plan.isFreeUser),
-           access.plan.isFreeUser {
-            authManager.removeCredentials(userId: userId)
-            return false
-        }
-        return true
+
+        let existingAccesses = try await localDatasource.getAllAccesses()
+        let existingFreeCount = existingAccesses.filter(\.access.plan.isFreeUser).count
+
+        let totalFreeCount = access.plan.isFreeUser ? existingFreeCount + 1 : existingFreeCount
+        return totalFreeCount <= Constants.freeAccountsLimit
     }
 }
