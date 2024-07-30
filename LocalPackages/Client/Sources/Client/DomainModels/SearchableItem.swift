@@ -142,7 +142,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
 
 extension SearchableItem {
     func result(for term: String) -> ItemSearchResult? {
-        let title: SearchResultEither = if let result = SearchUtils.fuzzySearch(query: term, in: name) {
+        let title: SearchResultEither = if let result = SearchUtils.search(query: term, in: name) {
             .matched(result)
         } else {
             .notMatched(name)
@@ -151,19 +151,19 @@ extension SearchableItem {
         var detail = [SearchResultEither]()
 
         if let aliasEmail {
-            if let result = SearchUtils.fuzzySearch(query: term, in: aliasEmail) {
+            if let result = SearchUtils.search(query: term, in: aliasEmail) {
                 detail.append(.matched(result))
             }
         }
 
-        if let result = SearchUtils.fuzzySearch(query: term, in: note) {
+        if let result = SearchUtils.search(query: term, in: note) {
             detail.append(.matched(result))
         } else {
             detail.append(.notMatched(note))
         }
 
         for extra in requiredExtras {
-            if let result = SearchUtils.fuzzySearch(query: term, in: extra) {
+            if let result = SearchUtils.search(query: term, in: extra) {
                 detail.append(.matched(result))
             } else {
                 detail.append(.notMatched(extra))
@@ -171,7 +171,7 @@ extension SearchableItem {
         }
 
         for extra in optionalExtras {
-            if let result = SearchUtils.fuzzySearch(query: term, in: extra) {
+            if let result = SearchUtils.search(query: term, in: extra) {
                 detail.append(.matched(result))
             }
         }

@@ -44,12 +44,6 @@ enum SearchViewState {
 }
 
 @MainActor
-protocol SearchViewModelDelegate: AnyObject {
-    func searchViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                   delegate: any SortTypeListViewModelDelegate)
-}
-
-@MainActor
 final class SearchViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
 
@@ -66,9 +60,9 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getSearchableItems = resolve(\UseCasesContainer.getSearchableItems)
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
 
     private(set) var searchMode: SearchMode
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -80,8 +74,6 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var history = [SearchEntryUiModel]()
     private var results = [ItemSearchResult]()
     private var cancellables = Set<AnyCancellable>()
-
-    weak var delegate: (any SearchViewModelDelegate)?
 
     var searchBarPlaceholder: String {
         searchMode.searchBarPlacehoder
@@ -250,7 +242,7 @@ extension SearchViewModel {
                     try await searchEntryDatasource.upsert(item: item, userId: userId, date: .now)
                     try await refreshSearchHistory()
                     addTelemetryEvent(with: .searchClick)
-                    router.present(for: .itemDetail(itemContent, automaticDisplay: false))
+                    router.present(for: .itemDetail(itemContent, automaticDisplay: true))
                     if #available(iOS 17, *) {
                         await SpotlightTip.didPerformSearch.donate()
                     }
@@ -292,8 +284,7 @@ extension SearchViewModel {
     }
 
     func presentSortTypeList() {
-        delegate?.searchViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
-                                                            delegate: self)
+        router.navigate(to: .sortTypeList(selectedSortType: selectedSortType, delegate: self))
     }
 
     func searchInAllVaults() {
@@ -337,6 +328,8 @@ private extension SearchViewModel {
         if #available(iOS 17, *) {
             SpotlightTip.spotlightEnabled = getUserPreferences().spotlightEnabled
         }
+
+        addTelemetryEvent(with: .searchTriggered)
     }
 }
 
