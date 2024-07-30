@@ -275,6 +275,10 @@ extension ProfileTabViewModel {
             }
             do {
                 try await switchUser(userId: account.id)
+
+                if UIDevice.current.isIpad {
+                    router.action(.manage(userId: account.id))
+                }
             } catch {
                 handle(error: error)
             }
