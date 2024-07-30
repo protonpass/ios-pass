@@ -71105,6 +71105,17 @@
         }
       }
     },
+    "Only one free Proton Pass account is allowed" : {
+      "comment" : "Error message shown when trying to logging into the 2nd free account",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only one free Proton Pass account is allowed"
+          }
+        }
+      }
+    },
     "Open" : {
       "localizations" : {
         "be" : {
@@ -121537,6 +121548,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du är utloggad från %@"
+          }
+        }
+      }
+    },
+    "You're logged out from other free accounts" : {
+      "comment" : "Message shown when user is being logged out from all other free accounts because only 1 free account is allowed",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You're logged out from other free accounts"
           }
         }
       }
