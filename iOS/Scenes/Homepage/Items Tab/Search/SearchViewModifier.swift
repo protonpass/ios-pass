@@ -36,17 +36,17 @@ extension View {
     }
 }
 
-public struct SearchViewModifier: ViewModifier {
+struct SearchViewModifier: ViewModifier {
     @Binding private var searchMode: SearchMode?
     private let animationNamespace: Namespace.ID
 
-    public init(searchMode: Binding<SearchMode?>,
-                animationNamespace: Namespace.ID) {
+    init(searchMode: Binding<SearchMode?>,
+         animationNamespace: Namespace.ID) {
         _searchMode = searchMode
         self.animationNamespace = animationNamespace
     }
 
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
             .overlay {
                 overlayContent
