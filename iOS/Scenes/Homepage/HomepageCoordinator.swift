@@ -68,6 +68,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     // Lazily initialised properties
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) var apiManager
+    @LazyInjected(\SharedToolingContainer.authManager) var authManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
 
