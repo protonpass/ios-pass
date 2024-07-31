@@ -77,9 +77,7 @@ struct ItemsTabView: View {
                 ItemsTabTopBar(searchMode: $searchMode,
                                animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
-                               onSearch: {
-                                   searchMode = .all(viewModel.vaultsManager.vaultSelection)
-                               },
+                               onSearch: { searchMode = .all(viewModel.vaultsManager.vaultSelection) },
                                onShowVaultList: { viewModel.presentVaultList() },
                                onMove: { viewModel.presentVaultListToMoveSelectedItems() },
                                onTrash: { viewModel.trashSelectedItems() },
@@ -107,9 +105,7 @@ struct ItemsTabView: View {
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
                    viewModel.vaultsManager.vaultSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
-                                    onSearch: {
-                                        searchMode = .pinned
-                                    },
+                                    onSearch: { searchMode = .pinned },
                                     action: { viewModel.viewDetail(of: $0) })
                     Divider()
                 }
@@ -141,7 +137,6 @@ struct ItemsTabView: View {
             .animation(.default, value: viewModel.pinnedItems)
             .animation(.default, value: viewModel.isEditMode)
             .animation(.default, value: viewModel.showingUpgradeAppBanner)
-            .animation(.default, value: searchMode)
             .task {
                 await viewModel.loadPinnedItems()
             }
