@@ -47,6 +47,7 @@ extension ItemEntity {
     @NSManaged var shareID: String? // Custom field
     @NSManaged var state: Int64
     @NSManaged var pinned: Bool
+    @NSManaged var pinTime: Int64
     @NSManaged var symmetricallyEncryptedContent: String? // Custom field
     @NSManaged var flags: Int64
     @NSManaged var userID: String
@@ -79,6 +80,7 @@ extension ItemEntity {
                         itemKey: itemKey,
                         state: state,
                         pinned: pinned,
+                        pinTime: pinTime == 0 ? nil : Int(pinTime),
                         aliasEmail: aliasEmail,
                         createTime: createTime,
                         modifyTime: modifyTime,

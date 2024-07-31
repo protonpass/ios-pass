@@ -326,4 +326,24 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         closureUpdateItemFlags()
         return stubbedUpdateItemFlagsResult
     }
+    // MARK: - createPendingAliasesItem
+    public var createPendingAliasesItemUserIdShareIdRequestThrowableError16: Error?
+    public var closureCreatePendingAliasesItem: () -> () = {}
+    public var invokedCreatePendingAliasesItemfunction = false
+    public var invokedCreatePendingAliasesItemCount = 0
+    public var invokedCreatePendingAliasesItemParameters: (userId: String, shareId: String, request: CreateAliasesFromPendingRequest)?
+    public var invokedCreatePendingAliasesItemParametersList = [(userId: String, shareId: String, request: CreateAliasesFromPendingRequest)]()
+    public var stubbedCreatePendingAliasesItemResult: [Item]!
+
+    public func createPendingAliasesItem(userId: String, shareId: String, request: CreateAliasesFromPendingRequest) async throws -> [Item] {
+        invokedCreatePendingAliasesItemfunction = true
+        invokedCreatePendingAliasesItemCount += 1
+        invokedCreatePendingAliasesItemParameters = (userId, shareId, request)
+        invokedCreatePendingAliasesItemParametersList.append((userId, shareId, request))
+        if let error = createPendingAliasesItemUserIdShareIdRequestThrowableError16 {
+            throw error
+        }
+        closureCreatePendingAliasesItem()
+        return stubbedCreatePendingAliasesItemResult
+    }
 }
