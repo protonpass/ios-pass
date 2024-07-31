@@ -519,6 +519,7 @@ extension UseCasesContainer {
     var addItemReadEvent: Factory<any AddItemReadEventUseCase> {
         self { AddItemReadEvent(eventRepository: SharedRepositoryContainer.shared.itemReadEventRepository(),
                                 accessRepository: self.accessRepository,
+                                userManager: self.userManager,
                                 logManager: self.logManager) }
     }
 }
