@@ -39,6 +39,8 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
 
     public let pinned: Bool
 
+    public let pinTime: Int?
+
     /// In case this item contains an alias, this is the email address for the alias
     public let aliasEmail: String?
 
@@ -70,6 +72,7 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
                 itemKey: String?,
                 state: Int64,
                 pinned: Bool,
+                pinTime: Int?,
                 aliasEmail: String?,
                 createTime: Int64,
                 modifyTime: Int64,
@@ -84,6 +87,7 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
         self.itemKey = itemKey
         self.state = state
         self.pinned = pinned
+        self.pinTime = pinTime
         self.aliasEmail = aliasEmail
         self.createTime = createTime
         self.modifyTime = modifyTime
