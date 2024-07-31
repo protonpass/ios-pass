@@ -39,7 +39,7 @@ struct EnableSLAliasSyncEndpoint: Endpoint {
     var body: EnableSLAliasSyncRequest?
 
     init(request: EnableSLAliasSyncRequest) {
-        debugDescription = "Get alias sync status"
+        debugDescription = "Enable synchronisation between Pass and SimpleLogin aliases"
         path = "/pass/v1/alias_sync/sync"
         method = .post
         body = request
