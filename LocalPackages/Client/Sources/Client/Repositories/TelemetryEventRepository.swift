@@ -24,7 +24,7 @@ import Foundation
 
 public enum TelemetryEventSendResult: Sendable, Equatable {
     case thresholdNotReached
-    case allEventsSent(userIds: [String])
+    case allEventsSent(userIds: Set<String>)
 }
 
 // MARK: - TelemetryEventRepositoryProtocol
@@ -91,7 +91,7 @@ public extension TelemetryEventRepository {
             return .thresholdNotReached
         }
 
-        var sentUserIds = [String]()
+        var sentUserIds = Set<String>()
         for userData in try await userManager.getAllUsers() {
             let userId = userData.user.ID
 
@@ -113,7 +113,7 @@ public extension TelemetryEventRepository {
             }
 
             try await sendAllTelemetryEvents(userId: userId, plan: plan)
-            sentUserIds.append(userId)
+            sentUserIds.insert(userId)
         }
 
         logger.info("Sent all events")
