@@ -21,6 +21,7 @@
 import CoreData
 import Entities
 
+// sourcery: AutoMockable
 public protocol LocalAccessDatasourceProtocol: Sendable {
     func getAccess(userId: String) async throws -> UserAccess?
     func getAllAccesses() async throws -> [UserAccess]

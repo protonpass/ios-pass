@@ -24,6 +24,7 @@ import ClientMocks
 import Core
 import CoreMocks
 import Entities
+import ProtonCoreLogin
 import XCTest
 
 final class ItemRepositoryTests: XCTestCase {
@@ -65,24 +66,24 @@ final class ItemRepositoryTests: XCTestCase {
 // MARK: - Pinned tests
 
 extension ItemRepositoryTests {
-    
+
     func testGetAllPinnedItem() async throws {
-    let currentUserId = "test"
+        let user = UserData.preview
 
-        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(userId: currentUserId,
+        localDatasource.stubbedGetAllPinnedItemsResult = [SymmetricallyEncryptedItem].random(count: 10, randomElement: .random(userId: user.user.ID,
                                                                                                                                item:.random(pinned: true)))
-        userManager.stubbedGetActiveUserIdResult = currentUserId
+        userManager.stubbedGetActiveUserDataResult = user
 
-        sut = ItemRepository(symmetricKeyProvider: symmetricKeyProvider, 
+        sut = ItemRepository(symmetricKeyProvider: symmetricKeyProvider,
                              userManager: userManager,
                              localDatasource: localDatasource,
                              remoteDatasource: remoteDatasource,
                              shareEventIDRepository: shareEventIDRepository,
                              passKeyManager: passKeyManager,
                              logManager: logManager)
-        
+
         let expectation = expectation(description: "Init of ItemRepository")
-        
+
         let pinnedItems = try await sut.getAllPinnedItems()
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
         sut.currentlyPinnedItems
@@ -92,7 +93,7 @@ extension ItemRepositoryTests {
                 expectation.fulfill()
             }
             .store(in: &cancellables)
-        
+
         await fulfillment(of: [expectation], timeout: 1, enforceOrder: true)
 
         XCTAssertFalse(pinnedItems.isEmpty)
