@@ -175,6 +175,7 @@ public extension LocalItemDatasource {
                                         itemKey: item.item.itemKey,
                                         state: modifiedItem.state,
                                         pinned: item.item.pinned,
+                                        pinTime: item.item.pinTime,
                                         aliasEmail: item.item.aliasEmail,
                                         createTime: item.item.createTime,
                                         modifyTime: modifiedItem.modifyTime,
