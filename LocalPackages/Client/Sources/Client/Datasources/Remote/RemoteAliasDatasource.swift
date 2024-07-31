@@ -27,12 +27,13 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func getAliasDetails(userId: String, shareId: String, itemId: String) async throws -> Alias
     func changeMailboxes(userId: String, shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 
-    // MARK: - Simple login alias Sync
+    // MARK: - SimpleLogin alias Sync
 
     func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws
-    func getPendingAliasesToSync(userId: String, since: String?, pageSize: Int) async throws
-        -> PaginatedPendingAliases
+    func getPendingAliasesToSync(userId: String,
+                                 since: String?,
+                                 pageSize: Int) async throws -> PaginatedPendingAliases
 }
 
 public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
