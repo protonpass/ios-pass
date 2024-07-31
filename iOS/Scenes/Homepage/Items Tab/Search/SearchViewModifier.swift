@@ -51,7 +51,7 @@ struct SearchViewModifier: ViewModifier {
             .overlay {
                 overlayContent
             }
-            .animation(.default, value: searchMode)
+            .animation(.easeInOut(duration: 0.2), value: searchMode)
     }
 
     @MainActor @ViewBuilder
