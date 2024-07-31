@@ -56,9 +56,9 @@ public final class SwitchUser: SwitchUserUseCase {
 
     public func execute(userId: String) async throws {
         syncEventLoop.stop()
+        try await preferencesManager.switchUserPreferences(userId: userId)
         try await userManager.switchActiveUser(with: userId)
         try await vaultsManager.localFullSync(userId: userId)
-        try await preferencesManager.switchUserPreferences(userId: userId)
         refreshFeatureFlags()
         syncEventLoop.start()
     }
