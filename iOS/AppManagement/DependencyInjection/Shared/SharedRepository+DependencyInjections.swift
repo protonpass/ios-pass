@@ -306,7 +306,7 @@ extension SharedRepositoryContainer {
             TelemetryEventRepository(localDatasource: self.localTelemetryEventDatasource(),
                                      remoteDatasource: self.remoteTelemetryEventDatasource(),
                                      userSettingsRepository: self.userSettingsRepository(),
-                                     localAccessRepository: self.localAccessDatasource(),
+                                     localAccessDatasource: self.localAccessDatasource(),
                                      itemReadEventRepository: self.itemReadEventRepository(),
                                      logManager: self.logManager,
                                      scheduler: self.telemetryScheduler(),

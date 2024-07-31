@@ -22,7 +22,7 @@ import Core
 import Entities
 import Foundation
 
-public enum TelemetryEventSendResult: Sendable {
+public enum TelemetryEventSendResult: Sendable, Equatable {
     case thresholdNotReached
     case allEventsSent(userIds: [String])
 }
@@ -44,7 +44,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     private let localDatasource: any LocalTelemetryEventDatasourceProtocol
     private let remoteDatasource: any RemoteTelemetryEventDatasourceProtocol
     private let userSettingsRepository: any UserSettingsRepositoryProtocol
-    private let localAccessRepository: any LocalAccessDatasourceProtocol
+    private let localAccessDatasource: any LocalAccessDatasourceProtocol
     private let itemReadEventRepository: any ItemReadEventRepositoryProtocol
     private let batchSize: Int
     private let logger: Logger
@@ -54,7 +54,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public init(localDatasource: any LocalTelemetryEventDatasourceProtocol,
                 remoteDatasource: any RemoteTelemetryEventDatasourceProtocol,
                 userSettingsRepository: any UserSettingsRepositoryProtocol,
-                localAccessRepository: any LocalAccessDatasourceProtocol,
+                localAccessDatasource: any LocalAccessDatasourceProtocol,
                 itemReadEventRepository: any ItemReadEventRepositoryProtocol,
                 logManager: any LogManagerProtocol,
                 scheduler: any TelemetrySchedulerProtocol,
@@ -63,7 +63,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.userSettingsRepository = userSettingsRepository
-        self.localAccessRepository = localAccessRepository
+        self.localAccessDatasource = localAccessDatasource
         self.itemReadEventRepository = itemReadEventRepository
         self.batchSize = batchSize
         logger = .init(manager: logManager)
@@ -99,7 +99,7 @@ public extension TelemetryEventRepository {
 
             let telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
 
-            guard let access = try await localAccessRepository.getAccess(userId: userId) else {
+            guard let access = try await localAccessDatasource.getAccess(userId: userId) else {
                 continue
             }
 
@@ -126,7 +126,7 @@ public extension TelemetryEventRepository {
         logger.debug("Force sending all events")
         for userData in try await userManager.getAllUsers() {
             let userId = userData.user.ID
-            guard let access = try await localAccessRepository.getAccess(userId: userId) else {
+            guard let access = try await localAccessDatasource.getAccess(userId: userId) else {
                 continue
             }
             let plan = access.access.plan
