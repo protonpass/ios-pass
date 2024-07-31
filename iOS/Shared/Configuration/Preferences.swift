@@ -172,7 +172,8 @@ extension Preferences: PreferencesMigrator {
                                    spotlightSearchableContent: spotlightSearchableContent,
                                    spotlightSearchableVaults: spotlightSearchableVaults,
                                    extraPasswordEnabled: false,
-                                   protonPasswordFailedVerificationCount: 0)
+                                   protonPasswordFailedVerificationCount: 0,
+                                   lastSelectedShareId: nil)
         return (app, shared, user)
     }
 }
