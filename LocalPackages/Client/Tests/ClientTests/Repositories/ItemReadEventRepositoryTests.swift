@@ -44,14 +44,13 @@ private final class ItemReadEventRepositoryTests: XCTestCase {
     override func setUp() {
         super.setUp()
         userManager = .init()
-        userManager.stubbedGetActiveUserIdResult = UserData.preview.user.ID
+        userManager.stubbedGetActiveUserDataResult = UserData.preview
         currentDateProvider = .init()
         localDatasource = LocalItemReadEventDatasource(databaseService: DatabaseService(inMemory: true))
         remoteDatasource = .init()
         sut = ItemReadEventRepository(localDatasource: localDatasource,
                                       remoteDatasource: remoteDatasource,
                                       currentDateProvider: currentDateProvider,
-                                      userManager: userManager,
                                       logManager: LogManagerProtocolMock(),
                                       batchSize: 3)
     }
@@ -69,20 +68,21 @@ private final class ItemReadEventRepositoryTests: XCTestCase {
 extension ItemReadEventRepositoryTests {
     func testAddEvents() async throws {
         let userData = UserData.test
-        userManager.stubbedGetActiveUserIdResult = userData.user.ID
+        userManager.stubbedGetActiveUserDataResult = userData
+        let userId = userData.user.ID
 
         let shareId1 = String.random()
-        let event1 = try await givenAddedEvent(shareId: shareId1, timestamp: 5)
-        let event2 = try await givenAddedEvent(shareId: shareId1, timestamp: 1)
-        let event3 = try await givenAddedEvent(shareId: shareId1, timestamp: 6)
-        let event4 = try await givenAddedEvent(shareId: shareId1, timestamp: 2)
+        let event1 = try await givenAddedEvent(shareId: shareId1, userId: userId, timestamp: 5)
+        let event2 = try await givenAddedEvent(shareId: shareId1, userId: userId, timestamp: 1)
+        let event3 = try await givenAddedEvent(shareId: shareId1, userId: userId, timestamp: 6)
+        let event4 = try await givenAddedEvent(shareId: shareId1, userId: userId, timestamp: 2)
 
         let expectation1 = expectation(description: "First batch for shareId1")
         let expectation2 = expectation(description: "Second batch for shareId1")
 
         let shareId2 = String.random()
-        let event5 = try await givenAddedEvent(shareId: shareId2, timestamp: 10)
-        let event6 = try await givenAddedEvent(shareId: shareId2, timestamp: 8)
+        let event5 = try await givenAddedEvent(shareId: shareId2, userId: userId, timestamp: 10)
+        let event6 = try await givenAddedEvent(shareId: shareId2, userId: userId, timestamp: 8)
 
         let expectation3 = expectation(description: "Only batch for shareId2")
 
@@ -108,11 +108,10 @@ extension ItemReadEventRepositoryTests {
             }
         }
 
-        try await sut.sendAllEvents()
-
+        try await sut.sendAllEvents(userId: userId)
         XCTAssertEqual(remoteDatasource.invokedSendCount, 3)
 
-        let allEvents = try await localDatasource.getAllEvents(userId: userData.user.ID)
+        let allEvents = try await localDatasource.getAllEvents(userId: userId)
         XCTAssertTrue(allEvents.isEmpty)
 
         await fulfillment(of: [expectation1, expectation2, expectation3], timeout: 1)
@@ -121,10 +120,11 @@ extension ItemReadEventRepositoryTests {
 
 private extension ItemReadEventRepositoryTests {
     func givenAddedEvent(shareId: String,
+                         userId: String,
                          timestamp: TimeInterval) async throws -> ItemReadEvent {
         currentDateProvider.currentDate = Date(timeIntervalSince1970: timestamp)
         let item = ItemMock(shareId: shareId, itemId: .random())
-        try await sut.addEvent(for: item)
+        try await sut.addEvent(userId: userId, item: item)
         return .init(uuid: .random(),
                      shareId: shareId,
                      itemId: item.itemId,
