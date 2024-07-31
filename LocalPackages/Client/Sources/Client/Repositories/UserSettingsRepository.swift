@@ -20,6 +20,7 @@
 
 import Foundation
 
+// sourcery: AutoMockable
 public protocol UserSettingsRepositoryProtocol: Sendable {
     func getSettings(for id: String) async -> UserSettings
     func refreshSettings(for id: String) async throws

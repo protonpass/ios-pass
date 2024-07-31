@@ -27,7 +27,7 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
-// sourcery:AutoMockable
+// sourcery: AutoMockable
 public protocol UserManagerProtocol: Sendable {
     var currentActiveUser: CurrentValueSubject<UserData?, Never> { get }
     var allUserAccounts: CurrentValueSubject<[UserData], Never> { get }
