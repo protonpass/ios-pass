@@ -56,6 +56,10 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
                          itemId: String,
                          shareId: String,
                          request: UpdateItemFlagsRequest) async throws -> Item
+
+    func createPendingAliasesItem(userId: String,
+                                  shareId: String,
+                                  request: CreateAliasesFromPendingRequest) async throws -> [Item]
 }
 
 public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
@@ -192,5 +196,13 @@ public extension RemoteItemDatasource {
         let endpoint = UpdateItemFlagsEndpoint(shareId: shareId, itemId: itemId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.item
+    }
+
+    func createPendingAliasesItem(userId: String,
+                                  shareId: String,
+                                  request: CreateAliasesFromPendingRequest) async throws -> [Item] {
+        let endpoint = CreateAliasesFromPendingEndpoint(shareId: shareId, request: request)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.revisions.revisionsData
     }
 }
