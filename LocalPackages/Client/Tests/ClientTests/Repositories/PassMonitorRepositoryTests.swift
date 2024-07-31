@@ -38,8 +38,7 @@ final class PassMonitorRepositoryTests: XCTestCase {
     override func setUp() {
         super.setUp()
         userManager = .init()
-        userManager.stubbedGetActiveUserIdResult = .random()
-        
+        userManager.stubbedGetActiveUserDataResult = .preview
         symmetricKeyProviderMockFactory = .init()
         symmetricKeyProviderMockFactory.setUp()
         itemRepository = ItemRepositoryProtocolMock()

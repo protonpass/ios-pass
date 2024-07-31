@@ -28,49 +28,57 @@ public final class ItemReadEventRepositoryProtocolMock: @unchecked Sendable, Ite
     public init() {}
 
     // MARK: - addEvent
-    public var addEventForThrowableError1: Error?
+    public var addEventUserIdItemThrowableError1: Error?
     public var closureAddEvent: () -> () = {}
     public var invokedAddEventfunction = false
     public var invokedAddEventCount = 0
-    public var invokedAddEventParameters: (item: any ItemIdentifiable, Void)?
-    public var invokedAddEventParametersList = [(item: any ItemIdentifiable, Void)]()
+    public var invokedAddEventParameters: (userId: String, item: any ItemIdentifiable)?
+    public var invokedAddEventParametersList = [(userId: String, item: any ItemIdentifiable)]()
 
-    public func addEvent(for item: any ItemIdentifiable) async throws {
+    public func addEvent(userId: String, item: any ItemIdentifiable) async throws {
         invokedAddEventfunction = true
         invokedAddEventCount += 1
-        invokedAddEventParameters = (item, ())
-        invokedAddEventParametersList.append((item, ()))
-        if let error = addEventForThrowableError1 {
+        invokedAddEventParameters = (userId, item)
+        invokedAddEventParametersList.append((userId, item))
+        if let error = addEventUserIdItemThrowableError1 {
             throw error
         }
         closureAddEvent()
     }
     // MARK: - getAllEvents
-    public var getAllEventsThrowableError2: Error?
+    public var getAllEventsUserIdThrowableError2: Error?
     public var closureGetAllEvents: () -> () = {}
     public var invokedGetAllEventsfunction = false
     public var invokedGetAllEventsCount = 0
+    public var invokedGetAllEventsParameters: (userId: String, Void)?
+    public var invokedGetAllEventsParametersList = [(userId: String, Void)]()
     public var stubbedGetAllEventsResult: [ItemReadEvent]!
 
-    public func getAllEvents() async throws -> [ItemReadEvent] {
+    public func getAllEvents(userId: String) async throws -> [ItemReadEvent] {
         invokedGetAllEventsfunction = true
         invokedGetAllEventsCount += 1
-        if let error = getAllEventsThrowableError2 {
+        invokedGetAllEventsParameters = (userId, ())
+        invokedGetAllEventsParametersList.append((userId, ()))
+        if let error = getAllEventsUserIdThrowableError2 {
             throw error
         }
         closureGetAllEvents()
         return stubbedGetAllEventsResult
     }
     // MARK: - sendAllEvents
-    public var sendAllEventsThrowableError3: Error?
+    public var sendAllEventsUserIdThrowableError3: Error?
     public var closureSendAllEvents: () -> () = {}
     public var invokedSendAllEventsfunction = false
     public var invokedSendAllEventsCount = 0
+    public var invokedSendAllEventsParameters: (userId: String, Void)?
+    public var invokedSendAllEventsParametersList = [(userId: String, Void)]()
 
-    public func sendAllEvents() async throws {
+    public func sendAllEvents(userId: String) async throws {
         invokedSendAllEventsfunction = true
         invokedSendAllEventsCount += 1
-        if let error = sendAllEventsThrowableError3 {
+        invokedSendAllEventsParameters = (userId, ())
+        invokedSendAllEventsParametersList.append((userId, ()))
+        if let error = sendAllEventsUserIdThrowableError3 {
             throw error
         }
         closureSendAllEvents()

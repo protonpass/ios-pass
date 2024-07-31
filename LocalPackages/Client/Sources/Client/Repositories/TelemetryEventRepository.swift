@@ -22,10 +22,9 @@ import Core
 import Entities
 import Foundation
 
-public enum TelemetryEventSendResult: Sendable {
+public enum TelemetryEventSendResult: Sendable, Equatable {
     case thresholdNotReached
-    case thresholdReachedButTelemetryOff
-    case allEventsSent
+    case allEventsSent(userIds: Set<String>)
 }
 
 // MARK: - TelemetryEventRepositoryProtocol
@@ -35,7 +34,7 @@ public protocol TelemetryEventRepositoryProtocol: Sendable {
 
     func getAllEvents(userId: String) async throws -> [TelemetryEvent]
 
-    func addNewEvent(type: TelemetryEventType) async throws
+    func addNewEvent(userId: String, type: TelemetryEventType) async throws
 
     @discardableResult
     func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult
@@ -45,7 +44,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     private let localDatasource: any LocalTelemetryEventDatasourceProtocol
     private let remoteDatasource: any RemoteTelemetryEventDatasourceProtocol
     private let userSettingsRepository: any UserSettingsRepositoryProtocol
-    private let accessRepository: any AccessRepositoryProtocol
+    private let localAccessDatasource: any LocalAccessDatasourceProtocol
     private let itemReadEventRepository: any ItemReadEventRepositoryProtocol
     private let batchSize: Int
     private let logger: Logger
@@ -55,7 +54,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
     public init(localDatasource: any LocalTelemetryEventDatasourceProtocol,
                 remoteDatasource: any RemoteTelemetryEventDatasourceProtocol,
                 userSettingsRepository: any UserSettingsRepositoryProtocol,
-                accessRepository: any AccessRepositoryProtocol,
+                localAccessDatasource: any LocalAccessDatasourceProtocol,
                 itemReadEventRepository: any ItemReadEventRepositoryProtocol,
                 logManager: any LogManagerProtocol,
                 scheduler: any TelemetrySchedulerProtocol,
@@ -64,7 +63,7 @@ public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.userSettingsRepository = userSettingsRepository
-        self.accessRepository = accessRepository
+        self.localAccessDatasource = localAccessDatasource
         self.itemReadEventRepository = itemReadEventRepository
         self.batchSize = batchSize
         logger = .init(manager: logManager)
@@ -78,8 +77,7 @@ public extension TelemetryEventRepository {
         try await localDatasource.getAllEvents(userId: userId)
     }
 
-    func addNewEvent(type: TelemetryEventType) async throws {
-        let userId = try await userManager.getActiveUserId()
+    func addNewEvent(userId: String, type: TelemetryEventType) async throws {
         try await localDatasource.insert(event: .init(uuid: UUID().uuidString,
                                                       time: Date.now.timeIntervalSince1970,
                                                       type: type),
@@ -93,47 +91,57 @@ public extension TelemetryEventRepository {
             return .thresholdNotReached
         }
 
-        let userId = try await userManager.getActiveUserId()
+        var sentUserIds = Set<String>()
+        for userData in try await userManager.getAllUsers() {
+            let userId = userData.user.ID
 
-        logger.debug("Threshold is reached. Checking telemetry settings before sending events.")
+            logger.debug("Threshold is reached. Sending events for \(userId)")
 
-        let telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
+            let telemetry = await userSettingsRepository.getSettings(for: userId).telemetry
 
-        logger.trace("Refreshing user access")
-        let plan = try await accessRepository.refreshAccess().access.plan
+            guard let access = try await localAccessDatasource.getAccess(userId: userId) else {
+                continue
+            }
 
-        try await sendAllItemReadEvents(plan: plan)
+            let plan = access.access.plan
+            try await sendAllItemReadEvents(userId: userId, plan: plan)
 
-        if !telemetry {
-            logger.info("Telemetry disabled, removing all local events.")
-            try await localDatasource.removeAllEvents(userId: userId)
-            try await scheduler.randomNextThreshold()
-            return .thresholdReachedButTelemetryOff
+            if !telemetry {
+                logger.info("Telemetry disabled, removing all local events for \(userId)")
+                try await localDatasource.removeAllEvents(userId: userId)
+                continue
+            }
+
+            try await sendAllTelemetryEvents(userId: userId, plan: plan)
+            sentUserIds.insert(userId)
         }
-
-        try await sendAllTelemetryEvents(userId: userId, plan: plan)
 
         logger.info("Sent all events")
         try await scheduler.randomNextThreshold()
-        return .allEventsSent
+        return .allEventsSent(userIds: sentUserIds)
     }
 
-    /// For testing purpose only. Not available at protocol level.
+    @available(*, deprecated, message: "For testing purposes only")
     func forceSendAllEvents() async throws {
         logger.debug("Force sending all events")
-        let userId = try await userManager.getActiveUserId()
-        let plan = try await accessRepository.refreshAccess().access.plan
-        try await sendAllItemReadEvents(plan: plan)
-        try await sendAllTelemetryEvents(userId: userId, plan: plan)
+        for userData in try await userManager.getAllUsers() {
+            let userId = userData.user.ID
+            guard let access = try await localAccessDatasource.getAccess(userId: userId) else {
+                continue
+            }
+            let plan = access.access.plan
+            try await sendAllItemReadEvents(userId: userId, plan: plan)
+            try await sendAllTelemetryEvents(userId: userId, plan: plan)
+        }
         logger.info("Force sent all events")
     }
 }
 
 private extension TelemetryEventRepository {
-    func sendAllItemReadEvents(plan: Plan) async throws {
+    func sendAllItemReadEvents(userId: String, plan: Plan) async throws {
         if plan.isBusinessUser {
             logger.trace("[B2B] Ignore telemetry settings and send read events")
-            try await itemReadEventRepository.sendAllEvents()
+            try await itemReadEventRepository.sendAllEvents(userId: userId)
         }
     }
 
@@ -145,7 +153,6 @@ private extension TelemetryEventRepository {
                 break
             }
             let eventInfos = events.map { EventInfo(event: $0, userTier: plan.internalName) }
-            let userId = try await userManager.getActiveUserId()
             try await remoteDatasource.send(userId: userId, events: eventInfos)
             try await localDatasource.remove(events: events, userId: userId)
         }

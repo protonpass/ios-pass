@@ -118,7 +118,6 @@ final class APIManagerTests: XCTestCase {
 
         userManager = .init()
         stubbedCurrentActiveUser = .init(nil)
-        userManager.stubbedGetActiveUserIdResult = ""
         userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
         mock.stubbedGetSymmetricKeyResult = key
 
@@ -215,7 +214,7 @@ final class APIManagerTests: XCTestCase {
             authManager.onSessionObtaining(credential: Credential(userData.credential))
             try await userManager.addAndMarkAsActive(userData: userData)
             stubbedCurrentActiveUser = .init(userData)
-            userManager.stubbedGetActiveUserIdResult = userData.user.ID
+            userManager.stubbedGetActiveUserDataResult = userData
             userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
     
             // WHEN
@@ -246,7 +245,7 @@ final class APIManagerTests: XCTestCase {
 
         try await userManager.addAndMarkAsActive(userData: userData)
         stubbedCurrentActiveUser = .init(userData)
-        userManager.stubbedGetActiveUserIdResult = userData.user.ID
+        userManager.stubbedGetActiveUserDataResult = userData
         userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
 
         // WHEN
@@ -283,7 +282,7 @@ final class APIManagerTests: XCTestCase {
         authManager.onSessionObtaining(credential: Credential(userData.credential))
         try await userManager.addAndMarkAsActive(userData: userData)
         stubbedCurrentActiveUser = .init(userData)
-        userManager.stubbedGetActiveUserIdResult = userData.user.ID
+        userManager.stubbedGetActiveUserDataResult = userData
         userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
 
         // WHEN
