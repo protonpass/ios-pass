@@ -27,7 +27,7 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
-// sourcery:AutoMockable
+// sourcery: AutoMockable
 public protocol UserManagerProtocol: Sendable {
     var currentActiveUser: CurrentValueSubject<UserData?, Never> { get }
     var allUserAccounts: CurrentValueSubject<[UserData], Never> { get }
@@ -39,7 +39,6 @@ public protocol UserManagerProtocol: Sendable {
     func switchActiveUser(with userId: String) async throws
     func getAllUsers() async throws -> [UserData]
     func remove(userId: String) async throws
-    func getActiveUserId() async throws -> String
     func cleanAllUsers() async throws
     nonisolated func setUserData(_ userData: UserData)
 }
@@ -58,6 +57,13 @@ public extension UserManagerProtocol {
 
     func getUserData(_ userId: String) async throws -> UserData? {
         try await getAllUsers().first(where: { $0.user.ID == userId })
+    }
+
+    func getActiveUserId() async throws -> String {
+        guard let id = try await getActiveUserData()?.user.ID else {
+            throw PassError.userManager(.activeUserDataNotFound)
+        }
+        return id
     }
 }
 
@@ -86,7 +92,7 @@ public extension UserManager {
     }
 
     func getActiveUserData() async throws -> UserData? {
-        await assertDidSetUp()
+        assertDidSetUp()
 
         if userProfiles.isEmpty {
             return nil
@@ -95,28 +101,17 @@ public extension UserManager {
         guard let activeUserData = userProfiles.activeUser?.userdata else {
             throw PassError.userManager(.userDatasAvailableButNoActiveUserId)
         }
-        if currentActiveUser.value?.user.ID != activeUserData.user.ID {
-            await publishNewActiveUser(activeUserData)
-        }
         return activeUserData
     }
 
     func getAllUsers() async -> [UserData] {
-        await assertDidSetUp()
+        assertDidSetUp()
 
         return userProfiles.userDatas
     }
 
-    func getActiveUserId() async throws -> String {
-        await assertDidSetUp()
-        guard let id = try await getActiveUserData()?.user.ID else {
-            throw PassError.userManager(.activeUserDataNotFound)
-        }
-        return id
-    }
-
     func addAndMarkAsActive(userData: UserData) async throws {
-        await assertDidSetUp()
+        assertDidSetUp()
 
         try await userDataDatasource.upsert(userData)
         try await switchActiveUser(with: userData.user.ID)
@@ -136,7 +131,7 @@ public extension UserManager {
     /// a new active user
     /// - Parameter userId: The id of the user to remove
     func remove(userId: String) async throws {
-        await assertDidSetUp()
+        assertDidSetUp()
 
         try await userDataDatasource.remove(userId: userId)
 
@@ -148,7 +143,7 @@ public extension UserManager {
     }
 
     func switchActiveUser(with newActiveUserId: String) async throws {
-        await assertDidSetUp()
+        assertDidSetUp()
 
         try await userDataDatasource.updateNewActiveUser(userId: newActiveUserId)
 
@@ -199,7 +194,7 @@ public extension UserManager {
 }
 
 private extension UserManager {
-    func assertDidSetUp() async {
+    func assertDidSetUp() {
         assert(didSetUp, "UserManager not set up. Call setUp() function as soon as possible.")
     }
 }

@@ -187,24 +187,8 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         }
         closureRemove()
     }
-    // MARK: - getActiveUserId
-    public var getActiveUserIdThrowableError8: Error?
-    public var closureGetActiveUserId: () -> () = {}
-    public var invokedGetActiveUserIdfunction = false
-    public var invokedGetActiveUserIdCount = 0
-    public var stubbedGetActiveUserIdResult: String!
-
-    public func getActiveUserId() async throws -> String {
-        invokedGetActiveUserIdfunction = true
-        invokedGetActiveUserIdCount += 1
-        if let error = getActiveUserIdThrowableError8 {
-            throw error
-        }
-        closureGetActiveUserId()
-        return stubbedGetActiveUserIdResult
-    }
     // MARK: - cleanAllUsers
-    public var cleanAllUsersThrowableError9: Error?
+    public var cleanAllUsersThrowableError8: Error?
     public var closureCleanAllUsers: () -> () = {}
     public var invokedCleanAllUsersfunction = false
     public var invokedCleanAllUsersCount = 0
@@ -212,7 +196,7 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public func cleanAllUsers() async throws {
         invokedCleanAllUsersfunction = true
         invokedCleanAllUsersCount += 1
-        if let error = cleanAllUsersThrowableError9 {
+        if let error = cleanAllUsersThrowableError8 {
             throw error
         }
         closureCleanAllUsers()

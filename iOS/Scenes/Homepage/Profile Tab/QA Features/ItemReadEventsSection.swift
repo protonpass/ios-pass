@@ -119,12 +119,14 @@ private final class ItemReadEventsViewModel: ObservableObject {
 
     private let repository = resolve(\SharedRepositoryContainer.itemReadEventRepository)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let userManager = resolve(\SharedServiceContainer.userManager)
 
     init() {}
 
     func loadEvents() async {
         do {
-            let events = try await repository.getAllEvents().reversed()
+            let userId = try await userManager.getActiveUserId()
+            let events = try await repository.getAllEvents(userId: userId).reversed()
             let formatter = RelativeDateTimeFormatter()
             let itemUiModels = vaultsManager.getAllVaultContents().flatMap(\.items)
             uiModels = events.compactMap { event -> ItemReadEventsUiModel? in
