@@ -75,6 +75,12 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
                      shareId: String) async throws -> SymmetricallyEncryptedItem
 
     @discardableResult
+    func createPendingAliasesItem(userId: String,
+                                  shareId: String,
+                                  itemsContent: [String: any ProtobufableItemContentProtocol]) async throws
+        -> [SymmetricallyEncryptedItem]
+
+    @discardableResult
     func createAliasAndOtherItem(userId: String,
                                  info: AliasCreationInfo,
                                  aliasItemContent: any ProtobufableItemContentProtocol,
@@ -328,6 +334,35 @@ public extension ItemRepository {
                                                            userId: userId)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved alias \(createdItemRevision.itemID) to local database")
+        return encryptedItem
+    }
+
+    func createPendingAliasesItem(userId: String,
+                                  shareId: String,
+                                  itemsContent: [String: any ProtobufableItemContentProtocol]) async throws
+        -> [SymmetricallyEncryptedItem] {
+        logger.trace("Creating pending alias item for user \(userId)")
+
+        let individualItemRequest = try await itemsContent.asyncCompactMap { pendingAliasId, value in
+            let request = try await createItemRequest(itemContent: value,
+                                                      userId: userId,
+                                                      shareId: shareId)
+            return AliasesItemPendingInfo(pendingAliasID: pendingAliasId, item: request)
+        }
+
+        let createPendingAliasRequest = CreateAliasesFromPendingRequest(items: individualItemRequest)
+        let createdItemsRevision =
+            try await remoteDatasource.createPendingAliasesItem(userId: userId,
+                                                                shareId: shareId,
+                                                                request: createPendingAliasRequest)
+        logger.trace("Saving newly created aliases  to local database")
+        let encryptedItem = try await createdItemsRevision.asyncCompactMap {
+            try await symmetricallyEncrypt(itemRevision: $0,
+                                           shareId: shareId,
+                                           userId: userId)
+        }
+        try await localDatasource.upsertItems(encryptedItem)
+        logger.trace("Saved aliased to local database")
         return encryptedItem
     }
 

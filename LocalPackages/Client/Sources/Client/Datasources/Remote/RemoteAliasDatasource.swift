@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import Foundation
 
@@ -25,6 +26,14 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func getAliasOptions(userId: String, shareId: String) async throws -> AliasOptions
     func getAliasDetails(userId: String, shareId: String, itemId: String) async throws -> Alias
     func changeMailboxes(userId: String, shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
+
+    // MARK: - SimpleLogin alias Sync
+
+    func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus
+    func enableSlAliasSync(userId: String, defaultShareID: String?) async throws
+    func getPendingAliasesToSync(userId: String,
+                                 since: String?,
+                                 pageSize: Int) async throws -> PaginatedPendingAliases
 }
 
 public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
@@ -51,5 +60,26 @@ public extension RemoteAliasDatasource {
                                                mailboxIDs: mailboxIDs)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.alias
+    }
+}
+
+public extension RemoteAliasDatasource {
+    func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus {
+        let endpoint = GetAliasSyncStatusEndpoint()
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.syncStatus
+    }
+
+    func enableSlAliasSync(userId: String, defaultShareID: String?) async throws {
+        let endpoint = EnableSLAliasSyncEndpoint(request: EnableSLAliasSyncRequest(defaultShareID: defaultShareID))
+        _ = try await exec(userId: userId, endpoint: endpoint)
+    }
+
+    func getPendingAliasesToSync(userId: String,
+                                 since: String?,
+                                 pageSize: Int) async throws -> PaginatedPendingAliases {
+        let endpoint = GetAliasesPendingToSyncEndpoint(since: since, pageSize: pageSize)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.pendingAliases
     }
 }

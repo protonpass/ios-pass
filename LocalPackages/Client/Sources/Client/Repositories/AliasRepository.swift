@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 
 public protocol AliasRepositoryProtocol: Sendable {
@@ -25,6 +26,21 @@ public protocol AliasRepositoryProtocol: Sendable {
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
     @discardableResult
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
+
+    // MARK: - Simple login alias Sync
+
+    func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus
+    func enableSlAliasSync(userId: String, defaultShareID: String?) async throws
+    func getPendingAliasesToSync(userId: String,
+                                 since: String?,
+                                 pageSize: Int) async throws -> PaginatedPendingAliases
+}
+
+public extension AliasRepositoryProtocol {
+    func getPendingAliasesToSync(userId: String,
+                                 since: String?) async throws -> PaginatedPendingAliases {
+        try await getPendingAliasesToSync(userId: userId, since: since, pageSize: Constants.Utils.defaultPageSize)
+    }
 }
 
 public actor AliasRepository: AliasRepositoryProtocol {
@@ -55,5 +71,24 @@ public extension AliasRepository {
                                                          shareId: shareId,
                                                          itemId: itemId,
                                                          mailboxIDs: mailboxIDs)
+    }
+}
+
+// MARK: - Simple login alias Sync
+
+public extension AliasRepository {
+    func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus {
+        try await remoteDatasouce.getAliasSyncStatus(userId: userId)
+    }
+
+    func enableSlAliasSync(userId: String, defaultShareID: String?) async throws {
+        try await remoteDatasouce.enableSlAliasSync(userId: userId, defaultShareID: defaultShareID)
+    }
+
+    func getPendingAliasesToSync(userId: String,
+                                 since: String?,
+                                 pageSize: Int = Constants.Utils
+                                     .defaultPageSize) async throws -> PaginatedPendingAliases {
+        try await remoteDatasouce.getPendingAliasesToSync(userId: userId, since: since, pageSize: pageSize)
     }
 }
