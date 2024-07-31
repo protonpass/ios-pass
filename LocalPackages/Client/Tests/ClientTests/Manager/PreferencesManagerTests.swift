@@ -42,7 +42,7 @@ final class PreferencesManagerTest: XCTestCase {
     override func setUp() {
         super.setUp()
         userManager = .init()
-        userManager.stubbedGetActiveUserIdResult = .random()
+        userManager.stubbedGetActiveUserDataResult = .random()
 
         keychainMockProvider = .init()
         keychainMockProvider.setUp()
