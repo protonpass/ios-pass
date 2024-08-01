@@ -36,6 +36,11 @@ struct PinAuthenticationView: View {
 
     var body: some View {
         VStack(alignment: .center) {
+            if UIDevice.current.isIpad {
+                Spacer()
+                Spacer()
+            }
+
             Image(uiImage: PassIcon.passIcon)
                 .resizable()
                 .scaledToFit()
@@ -83,9 +88,21 @@ struct PinAuthenticationView: View {
                                         disabled: pinCode.count < Constants.PINCode.minLength,
                                         height: 60,
                                         action: { viewModel.checkPinCode(pinCode) })
+
+            if UIDevice.current.isIpad {
+                Spacer()
+                Spacer()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
+        .if(module == .hostApp) { view in
+            // Only applicable to host app because local authentication process is wrapped inside a view modifier
+            // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
+            // and somehow automatic keyboard avoidance is broken so we manually avoid keyboard here
+            view
+                .keyboardAwarePadding()
+        }
         .accentColor(PassColor.interactionNorm.toColor)
         .tint(PassColor.interactionNorm.toColor)
         .animation(.default, value: viewModel.state)
