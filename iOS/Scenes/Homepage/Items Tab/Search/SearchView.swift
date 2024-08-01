@@ -26,7 +26,7 @@ import SwiftUI
 import TipKit
 
 struct SearchView: View {
-    @Binding var showSearch: SearchMode?
+    @Binding var searchMode: SearchMode?
     let animationNamespace: Namespace.ID
     @FocusState private var isFocusedOnSearchBar
     @StateObject var viewModel: SearchViewModel
@@ -60,11 +60,10 @@ struct SearchView: View {
             SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: viewModel.searchBarPlaceholder,
-                      onCancel: { withAnimation {
-                          showSearch = nil
-                      } })
-                      .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
-                                             in: animationNamespace)
+                      onCancel: { searchMode = nil })
+                .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                       in: animationNamespace)
+                .disabled(viewModel.state == .initializing)
 
             if #available(iOS 17, *) {
                 let tip = SpotlightTip()
@@ -79,6 +78,10 @@ struct SearchView: View {
             }
 
             switch viewModel.state {
+            case .initializing:
+                ProgressView()
+                    .padding()
+
             case .empty:
                 EmptySearchView()
                     .frame(maxHeight: .infinity)
@@ -126,6 +129,10 @@ struct SearchView: View {
             Spacer()
         }
         .ignoresSafeArea(edges: .bottom)
-        .onFirstAppear { isFocusedOnSearchBar = true }
+        .onChange(of: viewModel.state) { state in
+            if state != .initializing {
+                isFocusedOnSearchBar = true
+            }
+        }
     }
 }
