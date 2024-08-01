@@ -57,7 +57,7 @@ struct SearchViewModifier: ViewModifier {
     @MainActor @ViewBuilder
     var overlayContent: some View {
         if let searchMode {
-            SearchView(showSearch: $searchMode,
+            SearchView(searchMode: $searchMode,
                        animationNamespace: animationNamespace,
                        viewModel: SearchViewModel(searchMode: searchMode))
         }
