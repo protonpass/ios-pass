@@ -130,6 +130,7 @@
 		3559BAA22A5B32600020E172 /* Browser+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */; };
 		3559BAA52A5B32600020E172 /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
 		3559BAA62A5B32600020E172 /* AppLockTime+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */; };
+		355A2E732C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355A2E722C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift */; };
 		355AA32929E9E3C500C20F5F /* ItemSquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */; };
 		355BDED4299E64F7009FDBB1 /* CreateAliasLiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */; };
 		355BDED6299E6515009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */; };
@@ -752,6 +753,7 @@
 		355895AE29D76E67001E2207 /* LogsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsView.swift; sourceTree = "<group>"; };
 		355895B029D76E9F001E2207 /* LogsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogsViewModel.swift; sourceTree = "<group>"; };
 		355895B229D79565001E2207 /* FeedbackChannelsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackChannelsView.swift; sourceTree = "<group>"; };
+		355A2E722C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+AppCover.swift"; sourceTree = "<group>"; };
 		355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSquircleThumbnail.swift; sourceTree = "<group>"; };
 		355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasLiteView.swift; sourceTree = "<group>"; };
 		355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAliasLiteViewModel.swift; sourceTree = "<group>"; };
@@ -1803,6 +1805,7 @@
 			children = (
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
 				351225A62C502602007D266E /* HomepageCoordinator+AddAccount.swift */,
+				355A2E722C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift */,
 				5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */,
 				5B5DBF122B68009D00F72F6C /* HomepageCoordinator+DeepLinks.swift */,
 				35AF16CA2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift */,
@@ -3389,6 +3392,7 @@
 				3560843A29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				351E31A82B271E6E00750504 /* OpenAutoFillSettings.swift in Sources */,
 				35702C942A1E41C90089B539 /* VaultSelectorViewModel.swift in Sources */,
+				355A2E732C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift in Sources */,
 				5BDDEABD2C5916590068B9DF /* SearchViewModifier.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */,
