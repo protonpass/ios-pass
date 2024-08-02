@@ -18,21 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import SwiftUI
-
-struct ItemDetailSectionIcon: View {
-    let icon: UIImage
-    var color: UIColor = PassColor.textWeak
-    var width: CGFloat = 20
-
-    var body: some View {
-        Image(uiImage: icon)
-            .resizable()
-            .renderingMode(.template)
-            .scaledToFit()
-            .foregroundStyle(color.toColor)
-            .frame(width: width)
-            .fixedSize(horizontal: false, vertical: true)
-    }
-}
+// import DesignSystem
+// import SwiftUI
+//
+// struct ItemDetailSectionIcon: View {
+//    let icon: UIImage
+//    var color: UIColor = PassColor.textWeak
+//    var width: CGFloat = 20
+//
+//    var body: some View {
+//        Image(uiImage: icon)
+//            .resizable()
+//            .renderingMode(.template)
+//            .scaledToFit()
+//            .foregroundStyle(color.toColor)
+//            .frame(width: width)
+//            .fixedSize(horizontal: false, vertical: true)
+//    }
+// }

@@ -18,104 +18,91 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import Entities
-import Factory
-import ProtonCoreUIFoundations
-import SwiftUI
-
-struct MailboxSelectionView: View {
-    @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: MailboxSelectionViewModel
-
-    init(viewModel: MailboxSelectionViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
-    }
-
-    private var selection: MailboxSelection { viewModel.mailboxSelection }
-
-    var body: some View {
-        NavigationStack {
-            // ZStack instead of VStack because of SwiftUI bug.
-            // See more in "CreateAliasLiteView.swift"
-            ZStack(alignment: .bottom) {
-                ScrollView {
-                    LazyVStack(spacing: 0) {
-                        ForEach(selection.mailboxes, id: \.ID) { mailbox in
-                            HStack {
-                                Text(mailbox.email)
-                                    .foregroundStyle(isSelected(mailbox) ?
-                                        viewModel.mode.tintColor : PassColor.textNorm.toColor)
-                                Spacer()
-
-                                if isSelected(mailbox) {
-                                    Image(uiImage: IconProvider.checkmark)
-                                        .foregroundStyle(viewModel.mode.tintColor)
-                                }
-                            }
-                            .contentShape(.rect)
-                            .background(Color.clear)
-                            .padding(.horizontal)
-                            .frame(height: OptionRowHeight.compact.value)
-                            .onTapGesture {
-                                selection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
-                            }
-
-                            PassDivider()
-                                .padding(.horizontal)
-                        }
-
-                        if viewModel.shouldUpgrade {
-                            upgradeButton
-                            PassDivider()
-                                .padding(.horizontal)
-                        }
-
-                        // Gimmick view to take up space
-                        closeButton
-                            .opacity(0)
-                            .padding()
-                            .disabled(true)
-                    }
-                }
-
-                closeButton
-                    .padding()
-            }
-            .background(PassColor.backgroundWeak.toColor)
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(viewModel.titleMode.title)
-                        .navigationTitleText()
-                }
-            }
-        }
-    }
-
-    private func isSelected(_ mailbox: Mailbox) -> Bool {
-        selection.selectedMailboxes.contains(mailbox)
-    }
-
-    private var upgradeButton: some View {
-        Button(action: viewModel.upgrade) {
-            HStack {
-                Text("Upgrade for more mailboxes")
-                Image(uiImage: IconProvider.arrowOutSquare)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 20)
-            }
-            .contentShape(.rect)
-            .foregroundStyle(viewModel.mode.tintColor)
-        }
-        .frame(height: OptionRowHeight.compact.value)
-    }
-
-    private var closeButton: some View {
-        Button(action: dismiss.callAsFunction) {
-            Text("Close")
-                .foregroundStyle(PassColor.textNorm.toColor)
-        }
-    }
-}
+// import DesignSystem
+// import Entities
+// import Factory
+// import ProtonCoreUIFoundations
+// import SwiftUI
+//
+//// enum MailboxSelectionMode {
+////    case createEditAlias
+////    case createAliasLite
+////
+////    var tintColor: Color {
+////        switch self {
+////        case .createEditAlias:
+////            ItemContentType.alias.normMajor2Color.toColor
+////        case .createAliasLite:
+////            ItemContentType.login.normMajor2Color.toColor
+////        }
+////    }
+//// }
+//
+// struct MailboxSelectionView: View {
+//    @Environment(\.dismiss) private var dismiss
+//    @Binding var mailboxSelection: MailboxSelection
+////    let mode: MailboxSelectionMode
+//    let title: String
+//
+//    var body: some View {
+//        NavigationStack {
+//            // ZStack instead of VStack because of SwiftUI bug.
+//            // See more in "CreateAliasLiteView.swift"
+//            ZStack(alignment: .bottom) {
+//                ScrollView {
+//                    LazyVStack(spacing: 0) {
+//                        ForEach(mailboxSelection.allUserMailboxes) { mailbox in
+//                            let isSelected = mailboxSelection.selectedMailboxes.contains(mailbox)
+//                            HStack {
+//                                Text(mailbox.email)
+//                                    .foregroundStyle(isSelected ?
+//                                        ItemContentType.login.normMajor2Color.toColor : PassColor
+//                                        .textNorm.toColor)
+//                                Spacer()
+//
+//                                if isSelected {
+//                                    Image(uiImage: IconProvider.checkmark)
+//                                        .foregroundStyle(ItemContentType.login.normMajor2Color.toColor)
+//                                }
+//                            }
+//                            .contentShape(.rect)
+//                            .background(Color.clear)
+//                            .padding(.horizontal)
+//                            .frame(height: OptionRowHeight.compact.value)
+//                            .onTapGesture {
+//                                mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+//                            }
+//
+//                            PassDivider()
+//                                .padding(.horizontal)
+//                        }
+//
+//                        // Gimmick view to take up space
+//                        closeButton
+//                            .opacity(0)
+//                            .padding()
+//                            .disabled(true)
+//                    }
+//                }
+//
+//                closeButton
+//                    .padding()
+//            }
+//            .background(PassColor.backgroundWeak.toColor)
+//            .navigationBarTitleDisplayMode(.inline)
+//            .toolbar {
+//                ToolbarItem(placement: .principal) {
+//                    Text(title)
+//                        .navigationTitleText()
+//                }
+//            }
+//        }
+//    }
+//
+//    private var closeButton: some View {
+//        Button(action: dismiss.callAsFunction) {
+//            Text("Close")
+//                .foregroundStyle(PassColor.textNorm.toColor)
+//        }
+//    }
+// }

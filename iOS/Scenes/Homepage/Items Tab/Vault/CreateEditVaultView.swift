@@ -20,6 +20,7 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct CreateEditVaultView: View {
