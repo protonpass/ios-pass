@@ -163,7 +163,7 @@ extension SharedToolingContainer {
     var authManager: Factory<any AuthManagerProtocol> {
         self {
             AuthManager(keychain: SharedToolingContainer.shared.keychain(),
-                        symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
+                        symmetricKeyProvider: SharedDataContainer.shared.nonSendableSymmetricKeyProvider(),
                         module: self.module(),
                         logManager: self.logManager())
         }

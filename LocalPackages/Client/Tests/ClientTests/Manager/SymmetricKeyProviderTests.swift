@@ -50,10 +50,10 @@ final class SymmetricKeyProviderTests: XCTestCase {
 }
 
 extension SymmetricKeyProviderTests {
-    func testKeyGeneration() throws {
-        let key1 = try sut.getSymmetricKey()
-        let key2 = try sut.getSymmetricKey()
-        let key3 = try sut.getSymmetricKey()
+    func testKeyGeneration() async throws {
+        let key1 = try await sut.getSymmetricKey()
+        let key2 = try await sut.getSymmetricKey()
+        let key3 = try await sut.getSymmetricKey()
         XCTAssertEqual(key1, key2)
         XCTAssertEqual(key1, key3)
         XCTAssertEqual(key2, key3)

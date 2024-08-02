@@ -49,14 +49,14 @@ public extension LocalUserPreferencesDatasource {
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         assert(entities.count <= 1, "Can not have more than 1 preferences per userId")
-        let key = try symmetricKeyProvider.getSymmetricKey()
+        let key = try await symmetricKeyProvider.getSymmetricKey()
         return try entities.first?.toUserPreferences(key)
     }
 
     func upsertPreferences(_ preferences: UserPreferences, for userId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 
-        let key = try symmetricKeyProvider.getSymmetricKey()
+        let key = try await symmetricKeyProvider.getSymmetricKey()
         var hydrationError: (any Error)?
         let batchInsertRequest =
             newBatchInsertRequest(entity: UserPreferencesEntity.entity(context: taskContext),

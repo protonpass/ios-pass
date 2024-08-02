@@ -52,7 +52,7 @@ final class AuthHelperDelegateMock: AuthHelperDelegate {
 
 final class AuthManagerTests: XCTestCase {
     let key = SymmetricKey.random()
-    let symmetricKeyProvider = SymmetricKeyProviderMock()
+    let symmetricKeyProvider = NonSendableSymmetricKeyProviderMock()
     var sut: AuthManager!
     let userDefaultsKeychainMock =  UserDefaultsKeychainMock()
 

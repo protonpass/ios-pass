@@ -22,6 +22,6 @@
 import Combine
 import Entities
 
-public typealias AppDataProtocol = Resettable & SymmetricKeyProvider & UserDataMigrationProtocol
+public typealias AppDataProtocol = Resettable & UserDataMigrationProtocol
 public typealias MonitorStateStream = CurrentValueSubject<MonitorState, Never>
 public typealias ShareID = String
