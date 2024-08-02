@@ -34,7 +34,7 @@ public final class LocalSharedPreferencesDatasourceProtocolMock: @unchecked Send
     public var invokedGetPreferencesCount = 0
     public var stubbedGetPreferencesResult: SharedPreferences?
 
-    public func getPreferences() throws -> SharedPreferences? {
+    public func getPreferences() async throws -> SharedPreferences? {
         invokedGetPreferencesfunction = true
         invokedGetPreferencesCount += 1
         if let error = getPreferencesThrowableError1 {
@@ -51,7 +51,7 @@ public final class LocalSharedPreferencesDatasourceProtocolMock: @unchecked Send
     public var invokedUpsertPreferencesParameters: (preferences: SharedPreferences, Void)?
     public var invokedUpsertPreferencesParametersList = [(preferences: SharedPreferences, Void)]()
 
-    public func upsertPreferences(_ preferences: SharedPreferences) throws {
+    public func upsertPreferences(_ preferences: SharedPreferences) async throws {
         invokedUpsertPreferencesfunction = true
         invokedUpsertPreferencesCount += 1
         invokedUpsertPreferencesParameters = (preferences, ())

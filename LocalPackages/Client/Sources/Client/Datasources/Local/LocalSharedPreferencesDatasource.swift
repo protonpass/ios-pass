@@ -28,8 +28,8 @@ private let kSharedPreferencesKey = "SharedPreferences"
 // sourcery: AutoMockable
 /// Store symmetrically encrypted `SharedPreferences` in keychain
 public protocol LocalSharedPreferencesDatasourceProtocol: Sendable {
-    func getPreferences() throws -> SharedPreferences?
-    func upsertPreferences(_ preferences: SharedPreferences) throws
+    func getPreferences() async throws -> SharedPreferences?
+    func upsertPreferences(_ preferences: SharedPreferences) async throws
     func removePreferences() throws
 }
 
@@ -45,18 +45,18 @@ public final class LocalSharedPreferencesDatasource: LocalSharedPreferencesDatas
 }
 
 public extension LocalSharedPreferencesDatasource {
-    func getPreferences() throws -> SharedPreferences? {
+    func getPreferences() async throws -> SharedPreferences? {
         guard let encryptedData = try keychain.dataOrError(forKey: kSharedPreferencesKey) else {
             return nil
         }
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let decryptedData = try symmetricKey.decrypt(encryptedData)
         return try JSONDecoder().decode(SharedPreferences.self, from: decryptedData)
     }
 
-    func upsertPreferences(_ preferences: SharedPreferences) throws {
+    func upsertPreferences(_ preferences: SharedPreferences) async throws {
         let data = try JSONEncoder().encode(preferences)
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let encryptedData = try symmetricKey.encrypt(data)
         try keychain.setOrError(encryptedData, forKey: kSharedPreferencesKey)
     }
