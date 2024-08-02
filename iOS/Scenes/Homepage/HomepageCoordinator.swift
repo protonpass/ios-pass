@@ -462,10 +462,6 @@ extension HomepageCoordinator {
                     presentLogsView(for: module)
                 case let .suffixView(suffixSelection):
                     presentSuffixSelectionView(selection: suffixSelection)
-                case let .mailboxView(mailboxSelection, mode):
-                    presentMailboxSelectionView(selection: mailboxSelection,
-                                                mode: .createAliasLite,
-                                                titleMode: mode)
                 case .autoFillInstructions:
                     present(AutoFillInstructionsView())
                 case let .moveItemsBetweenVaults(context):
@@ -717,23 +713,6 @@ extension HomepageCoordinator {
                 handle(error: error)
             }
         }
-    }
-
-    func presentMailboxSelectionView(selection: MailboxSelection,
-                                     mode: MailboxSelectionViewModel.Mode,
-                                     titleMode: MailboxSection.Mode) {
-        let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
-                                                  mode: mode,
-                                                  titleMode: titleMode)
-        let view = MailboxSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * selection.mailboxes.count + 150
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 
     func presentSuffixSelectionView(selection: SuffixSelection) {

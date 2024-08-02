@@ -160,8 +160,6 @@ private extension ShareCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case let .mailboxView(selection, _):
-                    presentMailboxSelection(selection)
                 case let .suffixView(selection):
                     presentSuffixSelection(selection)
                 case .vaultSelection:
@@ -355,22 +353,6 @@ private extension ShareCoordinator {
 // MARK: Create alias
 
 extension ShareCoordinator {
-    func presentMailboxSelection(_ mailboxSelection: MailboxSelection) {
-        guard let rootViewController else { return }
-        let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
-                                                  mode: .createAliasLite,
-                                                  titleMode: .create)
-        let view = MailboxSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 150
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        topMostViewController?.present(viewController, animated: true)
-    }
-
     func presentSuffixSelection(_ suffixSelection: SuffixSelection) {
         guard let rootViewController else { return }
         let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)

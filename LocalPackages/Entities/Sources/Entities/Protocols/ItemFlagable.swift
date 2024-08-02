@@ -43,7 +43,7 @@ public extension ItemFlagable {
     var isBreachedAndMonitored: Bool {
         isBreached && !monitoringDisabled
     }
-    
+
     var isAliasSyncEnabled: Bool {
         itemFlags.contains(.aliasSyncEnabled)
     }

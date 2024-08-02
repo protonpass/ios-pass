@@ -18,45 +18,46 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import Macro
-import ProtonCoreUIFoundations
-import SwiftUI
-
-struct MailboxSection: View {
-    @ObservedObject var mailboxSelection: MailboxSelection
-    let mode: Mode
-
-    enum Mode {
-        case create, edit
-
-        var title: String {
-            switch self {
-            case .create:
-                #localized("Forward to")
-            case .edit:
-                #localized("Forwarding to")
-            }
-        }
-    }
-
-    var body: some View {
-        HStack {
-            ItemDetailSectionIcon(icon: IconProvider.forward)
-
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(mode.title)
-                    .sectionTitleText()
-                Text(mailboxSelection.selectedMailboxesString)
-                    .sectionContentText()
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            ItemDetailSectionIcon(icon: IconProvider.chevronDown)
-        }
-        .animation(.default, value: mailboxSelection.selectedMailboxes)
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
-        .contentShape(.rect)
-    }
-}
+// import DesignSystem
+// import Entities
+// import Macro
+// import ProtonCoreUIFoundations
+// import SwiftUI
+//
+// struct MailboxSection: View {
+//    let mailboxSelection: MailboxSelection
+//    let mode: Mode
+//
+//    enum Mode: Sendable {
+//        case create, edit
+//
+//        var title: String {
+//            switch self {
+//            case .create:
+//                #localized("Forward to")
+//            case .edit:
+//                #localized("Forwarding to")
+//            }
+//        }
+//    }
+//
+//    var body: some View {
+//        HStack {
+//            ItemDetailSectionIcon(icon: IconProvider.forward)
+//
+//            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+//                Text(mode.title)
+//                    .sectionTitleText()
+//                Text(mailboxSelection.selectedMailboxesString)
+//                    .sectionContentText()
+//            }
+//            .frame(maxWidth: .infinity, alignment: .leading)
+//
+//            ItemDetailSectionIcon(icon: IconProvider.chevronDown)
+//        }
+//        .animation(.default, value: mailboxSelection)
+//        .padding(DesignConstant.sectionPadding)
+//        .roundedEditableSection()
+//        .contentShape(.rect)
+//    }
+// }

@@ -23,6 +23,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct CreateAliasLiteView: View {
@@ -30,6 +31,7 @@ struct CreateAliasLiteView: View {
     @StateObject private var viewModel: CreateAliasLiteViewModel
     @FocusState private var focusedField: Field?
     @State private var isShowingAdvancedOptions = false
+    @State private var sheetState: AliasOptionsSheetState?
 
     init(viewModel: CreateAliasLiteViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -62,8 +64,14 @@ struct CreateAliasLiteView: View {
                                                 onSelectSuffix: { viewModel.showSuffixSelection() })
                         }
 
-                        MailboxSection(mailboxSelection: viewModel.mailboxSelection, mode: .create)
-                            .onTapGesture { viewModel.showMailboxSelection() }
+                        if !viewModel.mailboxSelection.selectedMailboxes.isEmpty {
+                            MailboxSection(mailboxSelection: viewModel.mailboxSelection,
+                                           mode: .create)
+                                .onTapGesture {
+                                    sheetState = .mailbox($viewModel.mailboxSelection,
+                                                          MailboxSection.Mode.create.title)
+                                }
+                        }
 
                         if !isShowingAdvancedOptions {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
@@ -98,6 +106,11 @@ struct CreateAliasLiteView: View {
                     Text("You are about to create")
                         .navigationTitleText()
                 }
+            }
+            .optionalSheet(binding: $sheetState) { state in
+                aliasOptionsSheetContent(for: state)
+                    .presentationDetents([.height(state.height)])
+                    .presentationDragIndicator(.visible)
             }
         }
     }
