@@ -76,9 +76,11 @@ struct LocalAuthenticationModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         let authenticationRequired = preferences.localAuthenticationMethod != .none && !authenticated
-        ZStack {
+        GeometryReader { proxy in
             content
-
+                .frame(width: proxy.size.width, height: proxy.size.height)
+        }
+        .overlay {
             if authenticationRequired {
                 let handleSuccess: () -> Void = {
                     authenticated = true
@@ -86,17 +88,14 @@ struct LocalAuthenticationModifier: ViewModifier {
                     onSuccess?()
                 }
 
-                LocalAuthenticationView(mode: preferences.localAuthenticationMethod == .pin ? .pin : .biometric,
-                                        delayed: delayed,
-                                        onAuth: { onAuth?() },
-                                        onSuccess: handleSuccess,
-                                        onFailure: onFailure)
-                    // Set zIndex otherwise animation won't occur
-                    // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
-                    .zIndex(1)
+                LocalAuthenticationView(mode: preferences
+                    .localAuthenticationMethod == .pin ? .pin : .biometric,
+                    delayed: delayed,
+                    onAuth: { onAuth?() },
+                    onSuccess: handleSuccess,
+                    onFailure: onFailure)
             }
         }
-        .animation(.default, value: authenticated)
         .onAppear {
             if !authenticationRequired {
                 onAuthSkipped?()
