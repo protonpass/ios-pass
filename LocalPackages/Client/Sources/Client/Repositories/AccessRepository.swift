@@ -24,7 +24,12 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
+    /// `Access` of current user
     var access: CurrentValueSubject<UserAccess?, Never> { get }
+
+    /// `Access` of all users
+    var accesses: CurrentValueSubject<[UserAccess], Never> { get }
+
     var didUpdateToNewPlan: PassthroughSubject<Void, Never> { get }
 
     /// Get from local, refresh if not exist
@@ -33,8 +38,12 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     /// Conveniently get the plan of current access
     func getPlan() async throws -> Plan
 
+    /// Refresh the access of current users
     @discardableResult
     func refreshAccess() async throws -> UserAccess
+
+    /// Load local accesses onto memory for quick access
+    func loadAccesses() async throws
 
     func updateProtonAddressesMonitor(_ monitored: Bool) async throws
     func updateAliasesMonitor(_ monitored: Bool) async throws
@@ -47,6 +56,8 @@ public actor AccessRepository: AccessRepositoryProtocol {
     private let logger: Logger
 
     public nonisolated let access: CurrentValueSubject<UserAccess?, Never> = .init(nil)
+    public nonisolated let accesses: CurrentValueSubject<[UserAccess], Never> = .init([])
+
     public nonisolated let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     public init(localDatasource: any LocalAccessDatasourceProtocol,
@@ -98,7 +109,13 @@ public extension AccessRepository {
         try await localDatasource.upsert(access: userAccess)
 
         logger.info("Refreshed access for user \(userId)")
+        try await loadAccesses()
         return userAccess
+    }
+
+    func loadAccesses() async throws {
+        let accesses = try await localDatasource.getAllAccesses()
+        self.accesses.send(accesses)
     }
 
     func updateProtonAddressesMonitor(_ monitored: Bool) async throws {
