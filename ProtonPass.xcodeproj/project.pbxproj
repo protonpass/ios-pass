@@ -92,12 +92,6 @@
 		354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
 		354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
-		354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
-		354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
-		354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
-		354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
-		354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
-		354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
 		3550F5702B8A72410027BA2A /* CheckAndAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */; };
 		3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
 		3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */; };
@@ -283,7 +277,6 @@
 		357C71B72B5FB0D900AA0BF1 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
 		357C71B82B5FB0DE00AA0BF1 /* ItemContextMenuHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */; };
 		357C71B92B5FB0E500AA0BF1 /* ItemDetailSectionIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3565FD4E298D319500E2A0EE /* ItemDetailSectionIcon.swift */; };
-		357C71BA2B5FB0FD00AA0BF1 /* MailboxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992154299F910500FEFA32 /* MailboxSection.swift */; };
 		357C71BB2B5FB10B00AA0BF1 /* CreateEditItemToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */; };
 		357C71BC2B5FB11800AA0BF1 /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
 		357C71BD2B5FB13100AA0BF1 /* UpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF602A02961D00A0B27D /* UpgradeButton.swift */; };
@@ -317,10 +310,6 @@
 		357C71E02B6003AF00AA0BF1 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		357C71E12B60089F00AA0BF1 /* CreateAliasLiteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDED3299E64F7009FDBB1 /* CreateAliasLiteView.swift */; };
 		357C71E22B6008D800AA0BF1 /* AliasLimitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF5E2A02939600A0B27D /* AliasLimitView.swift */; };
-		357C71E32B600D7800AA0BF1 /* MailboxSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */; };
-		357C71E42B600D7D00AA0BF1 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
-		357C71E52B600D8C00AA0BF1 /* SuffixSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */; };
-		357C71E62B600D9100AA0BF1 /* SuffixSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */; };
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
 		35805D0A2BD8E39300288CC0 /* MonitorExcludedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */; };
 		358152032C57C3EB0054F755 /* CredentialsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358152022C57C3EB0054F755 /* CredentialsSection.swift */; };
@@ -338,10 +327,6 @@
 		35983C982C3691A000A82080 /* HomepageCoordinator+SignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35983C972C3691A000A82080 /* HomepageCoordinator+SignOut.swift */; };
 		35983C9A2C36CBE300A82080 /* HomepageCoordinator+ManageAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35983C992C36CBE300A82080 /* HomepageCoordinator+ManageAccount.swift */; };
 		35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
-		35992155299F910500FEFA32 /* MailboxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992154299F910500FEFA32 /* MailboxSection.swift */; };
-		35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
-		35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992154299F910500FEFA32 /* MailboxSection.swift */; };
-		35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */; };
 		3599215A299FA90C00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
 		359A229B2BA3702D0005C750 /* CoreMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 359A229A2BA3702D0005C750 /* CoreMocks */; };
 		359A902A2B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359A90292B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift */; };
@@ -725,9 +710,6 @@
 		354F769D28C90E0100EB2383 /* BaseItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemDetailViewModel.swift; sourceTree = "<group>"; };
 		354FBF5E2A02939600A0B27D /* AliasLimitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasLimitView.swift; sourceTree = "<group>"; };
 		354FBF602A02961D00A0B27D /* UpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpgradeButton.swift; sourceTree = "<group>"; };
-		354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionView.swift; sourceTree = "<group>"; };
-		354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionViewModel.swift; sourceTree = "<group>"; };
-		354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuffixSelectionViewModel.swift; sourceTree = "<group>"; };
 		3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckAndAutoFill.swift; sourceTree = "<group>"; };
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFavIconsSection.swift; sourceTree = "<group>"; };
@@ -855,8 +837,6 @@
 		35983C972C3691A000A82080 /* HomepageCoordinator+SignOut.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+SignOut.swift"; sourceTree = "<group>"; };
 		35983C992C36CBE300A82080 /* HomepageCoordinator+ManageAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+ManageAccount.swift"; sourceTree = "<group>"; };
 		35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefixSuffixSection.swift; sourceTree = "<group>"; };
-		35992154299F910500FEFA32 /* MailboxSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSection.swift; sourceTree = "<group>"; };
-		35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailboxSelectionView.swift; sourceTree = "<group>"; };
 		359A90292B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssociateUrlAndAutoFillPassword.swift; sourceTree = "<group>"; };
 		359A902B2B90AFFC00A50138 /* AutoFillPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillPassword.swift; sourceTree = "<group>"; };
 		359A902F2B90C58300A50138 /* AutoFillPasskey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillPasskey.swift; sourceTree = "<group>"; };
@@ -1558,14 +1538,9 @@
 				354FBF5E2A02939600A0B27D /* AliasLimitView.swift */,
 				3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */,
 				3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */,
-				35992154299F910500FEFA32 /* MailboxSection.swift */,
-				35992156299FA46D00FEFA32 /* MailboxSelectionView.swift */,
-				354FBF672A02EC6500A0B27D /* MailboxSelectionViewModel.swift */,
 				3567E46529B0E6F900511D62 /* NoCameraPermissionView.swift */,
 				350AF86D299683940045B7B6 /* NoteEditSection.swift */,
 				35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */,
-				354FBF642A02E17400A0B27D /* SuffixSelectionView.swift */,
-				354FBF6A2A02F6C900A0B27D /* SuffixSelectionViewModel.swift */,
 				357443792C22E3DC000DE6F7 /* View+ItemCreateEditSetUp.swift */,
 			);
 			path = "Supporting Views";
@@ -2964,7 +2939,6 @@
 				3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
-				354FBF6C2A02F76500A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
 				5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */,
 				5BD4A8FC2B10C1B900C44C08 /* ResetFactory.swift in Sources */,
@@ -2998,7 +2972,6 @@
 				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,
 				355792DA29E7FB85001198DA /* VaultLabel.swift in Sources */,
 				5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */,
-				354FBF692A02EF7900A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				354E9AAC2A44699E00AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
 				35B9321D2A6ABE3D004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
 				3574437C2C22FE59000DE6F7 /* View+ItemCreateEditSetUp.swift in Sources */,
@@ -3031,7 +3004,6 @@
 				5BD4A8FA2B10C1B200C44C08 /* CancelAutoFill.swift in Sources */,
 				355CA07E2A6FEF1900866024 /* ItemContextMenuHandler.swift in Sources */,
 				354B247F2A77F2280060EDF7 /* CompleteAutoFill.swift in Sources */,
-				35992158299FA8C700FEFA32 /* MailboxSection.swift in Sources */,
 				3559BAA62A5B32600020E172 /* AppLockTime+Extensions.swift in Sources */,
 				354E9AA92A4459C700AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				5BD4A9082B10E6E300C44C08 /* CredentialsFetchResult.swift in Sources */,
@@ -3041,7 +3013,6 @@
 				3570E04E2B8E06F5005B8186 /* PasskeyCredentialsView.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */,
-				354FBF662A02E8CF00A0B27D /* SuffixSelectionView.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
@@ -3061,7 +3032,6 @@
 				359A902C2B90AFFC00A50138 /* AutoFillPassword.swift in Sources */,
 				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
 				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
-				35992159299FA8D100FEFA32 /* MailboxSelectionView.swift in Sources */,
 				3570E05C2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift in Sources */,
 				354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */,
 				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,
@@ -3108,7 +3078,6 @@
 				357C71A22B5FAE5F00AA0BF1 /* SharedRepository+DependencyInjections.swift in Sources */,
 				35796D012B5EEE7400BF4E9E /* CreateEditLoginView.swift in Sources */,
 				357C71AE2B5FB05300AA0BF1 /* PrefixSuffixSection.swift in Sources */,
-				357C71E62B600D9100AA0BF1 /* SuffixSelectionViewModel.swift in Sources */,
 				357C71B32B5FB08B00AA0BF1 /* VaultsManager.swift in Sources */,
 				357C71B42B5FB09900AA0BF1 /* GeneratePasswordCoordinator.swift in Sources */,
 				357C71CB2B5FB35700AA0BF1 /* NoCameraPermissionView.swift in Sources */,
@@ -3124,20 +3093,17 @@
 				351B420D2B6419F5003FA3E3 /* LocalAuthenticationView.swift in Sources */,
 				35796CED2B5EE68B00BF4E9E /* View+Extensions.swift in Sources */,
 				357C71BB2B5FB10B00AA0BF1 /* CreateEditItemToolbar.swift in Sources */,
-				357C71E42B600D7D00AA0BF1 /* MailboxSelectionView.swift in Sources */,
 				357C71A32B5FAE6500AA0BF1 /* CustomFieldEditionCoordinator.swift in Sources */,
 				357C71C32B5FB23500AA0BF1 /* URL+Extensions.swift in Sources */,
 				357C71E02B6003AF00AA0BF1 /* AppearanceSettings.swift in Sources */,
 				357C71A12B5FAE5700AA0BF1 /* CreateAliasLiteViewModel.swift in Sources */,
 				35796CEE2B5EE69E00BF4E9E /* Browser+Extensions.swift in Sources */,
 				35796D022B5EEE7700BF4E9E /* CreateEditLoginViewModel.swift in Sources */,
-				357C71E32B600D7800AA0BF1 /* MailboxSelectionViewModel.swift in Sources */,
 				357C71A72B5FAECA00AA0BF1 /* CustomFieldAdditionCoordinator.swift in Sources */,
 				357C71DD2B5FF46900AA0BF1 /* VaultSelectorView.swift in Sources */,
 				357C71A42B5FAEA200AA0BF1 /* CreateEditAliasViewModel.swift in Sources */,
 				3574437B2C22FE00000DE6F7 /* View+ItemCreateEditSetUp.swift in Sources */,
 				35796CF02B5EE6C600BF4E9E /* Factory+Extensions.swift in Sources */,
-				357C71E52B600D8C00AA0BF1 /* SuffixSelectionView.swift in Sources */,
 				357C71AC2B5FB04100AA0BF1 /* CreateEditItemTitleSection.swift in Sources */,
 				357C71CA2B5FB35300AA0BF1 /* PasswordStrengthIcon.swift in Sources */,
 				357C71B52B5FB0AC00AA0BF1 /* VaultThumbnail.swift in Sources */,
@@ -3148,7 +3114,6 @@
 				357C71CF2B5FB41400AA0BF1 /* EditCustomFieldView.swift in Sources */,
 				357C71DE2B5FF49700AA0BF1 /* VaultRow.swift in Sources */,
 				351B420E2B6419FA003FA3E3 /* LocalAuthenticationViewModel.swift in Sources */,
-				357C71BA2B5FB0FD00AA0BF1 /* MailboxSection.swift in Sources */,
 				357C71E12B60089F00AA0BF1 /* CreateAliasLiteView.swift in Sources */,
 				357C71AF2B5FB06200AA0BF1 /* GeneratePasswordViewModel.swift in Sources */,
 				357C71C22B5FB1F200AA0BF1 /* VaultColor.swift in Sources */,
@@ -3251,7 +3216,6 @@
 				352352B62B91DEB400603B91 /* ItemSearchResultView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
 				5B6639612B4D9A4F0029F8DA /* ItemDetailHistorySection.swift in Sources */,
-				354FBF682A02EC6500A0B27D /* MailboxSelectionViewModel.swift in Sources */,
 				358FB6DD2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift in Sources */,
 				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
@@ -3322,7 +3286,6 @@
 				5BB403792BF64B18005BF271 /* CreateSecureLinkView.swift in Sources */,
 				5BB4037A2BF64B18005BF271 /* CreateSecureLinkViewModel.swift in Sources */,
 				3561C9F629E6CDFA00D6E518 /* VaultSelectorView.swift in Sources */,
-				35992157299FA46D00FEFA32 /* MailboxSelectionView.swift in Sources */,
 				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
 				5B4E53DE2BD7B8B600E8D54A /* DetailMonitoredItemView.swift in Sources */,
 				3552A28A29EC29BF00ABDB6E /* CachedFavIconsSection.swift in Sources */,
@@ -3344,7 +3307,6 @@
 				357919B12B70E7630085B532 /* HomepageCoordinator+Spotlight.swift in Sources */,
 				5B0C75002A2F61D000272CE8 /* SharedServices+DependencyInjections.swift in Sources */,
 				357ABEB22B188A30003D05C8 /* ItemsTabTopBarViewModel.swift in Sources */,
-				35992155299F910500FEFA32 /* MailboxSection.swift in Sources */,
 				357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */,
 				3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */,
 				5B39DF7F2B501C020009D53E /* DetailHistoryView.swift in Sources */,
@@ -3416,7 +3378,6 @@
 				357ABEB02B188A08003D05C8 /* ItemsTabTopBar.swift in Sources */,
 				5B1453B12A69816C0048B022 /* SharingSummaryView.swift in Sources */,
 				5BAE71112BD1128400F579E4 /* AddCustomEmailViewModel.swift in Sources */,
-				354FBF6B2A02F6C900A0B27D /* SuffixSelectionViewModel.swift in Sources */,
 				3569B29B29B76BF60070830B /* VaultsManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
 				5BECDE492B90EC900040FCA7 /* PassMonitorView.swift in Sources */,
@@ -3424,7 +3385,6 @@
 				354E9A9C2A443D9700AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */,
 				3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */,
-				354FBF652A02E17400A0B27D /* SuffixSelectionView.swift in Sources */,
 				3569B2A929B7D22E0070830B /* ProfileTabView.swift in Sources */,
 				356BC36329D7226A00F03497 /* VaultThumbnail.swift in Sources */,
 				5BECDE4F2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift in Sources */,
