@@ -398,7 +398,10 @@ private extension ProfileTabViewModel {
 
         accessRepository.accesses
             .receive(on: DispatchQueue.main)
-            .assign(to: \.accesses, on: self)
+            .sink { [weak self] accesses in
+                guard let self else { return }
+                self.accesses = accesses
+            }
             .store(in: &cancellables)
     }
 

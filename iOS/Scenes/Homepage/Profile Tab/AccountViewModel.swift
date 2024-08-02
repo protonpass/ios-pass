@@ -88,7 +88,10 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
         userManager
             .currentActiveUser
             .compactMap(\.?.user.canManageSubscription)
-            .assign(to: \.canManageSubscription, on: self)
+            .sink { [weak self] canManageSubscription in
+                guard let self else { return }
+                self.canManageSubscription = canManageSubscription
+            }
             .store(in: &cancellables)
     }
 }
