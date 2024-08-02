@@ -28,6 +28,7 @@ import Macro
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
 import ProtonCoreFeatureFlags
+import ProtonCoreLogin
 import ProtonCorePasswordChange
 
 @MainActor
@@ -55,6 +56,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     let isShownAsSheet: Bool
     @Published private(set) var plan: Plan?
     @Published private(set) var isLoading = false
+    @Published private(set) var canManageSubscription = false
     @Published private(set) var passwordMode: UserSettings.Password.PasswordMode = .singlePassword
     @Published private(set) var extraPasswordEnabled = false
     @Published var extraPassword = ""
@@ -81,6 +83,12 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
                 guard let self else { return }
                 extraPasswordEnabled = enabled
             }
+            .store(in: &cancellables)
+
+        userManager
+            .currentActiveUser
+            .compactMap(\.?.user.canManageSubscription)
+            .assign(to: \.canManageSubscription, on: self)
             .store(in: &cancellables)
     }
 }
@@ -207,6 +215,7 @@ private extension AccountViewModel {
     func setup() {
         plan = accessRepository.access.value?.access.plan
         extraPasswordEnabled = preferencesManager.userPreferences.unwrapped().extraPasswordEnabled
+        canManageSubscription = userManager.currentActiveUser.value?.user.canManageSubscription ?? false
         refreshUserPlan()
         refreshAccountRecovery()
         refreshAccountPasswordMode()
@@ -272,5 +281,11 @@ private extension AccountViewModel {
     func handle(error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
+    }
+}
+
+private extension User {
+    var canManageSubscription: Bool {
+        role != 1
     }
 }
