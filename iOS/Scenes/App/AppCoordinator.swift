@@ -164,7 +164,7 @@ final class AppCoordinator {
     }
 
     /// Necessary set up like initializing preferences before starting user flow
-    func setUpAndStart() async {
+    func setUpAndStart() async -> Bool {
         do {
             try await setUpBeforeLaunching()
             window.overrideUserInterfaceStyle = theme.userInterfaceStyle
@@ -198,8 +198,10 @@ final class AppCoordinator {
                     }
                 }
                 .store(in: &cancellables)
+            return true
         } catch {
             appStateObserver.updateAppState(.loggedOut(.failedToSetUpAppCoordinator(error)))
+            return false
         }
     }
 }
