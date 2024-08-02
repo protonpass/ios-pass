@@ -460,8 +460,6 @@ extension HomepageCoordinator {
                     createEditVaultView(vault: vault)
                 case let .logView(module: module):
                     presentLogsView(for: module)
-                case let .suffixView(suffixSelection):
-                    presentSuffixSelectionView(selection: suffixSelection)
                 case .autoFillInstructions:
                     present(AutoFillInstructionsView())
                 case let .moveItemsBetweenVaults(context):
@@ -713,19 +711,6 @@ extension HomepageCoordinator {
                 handle(error: error)
             }
         }
-    }
-
-    func presentSuffixSelectionView(selection: SuffixSelection) {
-        let viewModel = SuffixSelectionViewModel(suffixSelection: selection)
-        let view = SuffixSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 
     func presentSortTypeList(selectedSortType: SortType,

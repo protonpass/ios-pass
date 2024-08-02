@@ -1,7 +1,7 @@
 //
-// AliasOptions.swift
-// Proton Pass - Created on 14/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// SuffixSelection.swift
+// Proton Pass - Created on 02/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,11 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import Foundation
-
-public struct AliasOptions: Decodable, Sendable {
+public struct SuffixSelection: Equatable, Hashable, Sendable {
+    public var selectedSuffix: Suffix?
     public let suffixes: [Suffix]
-    public let mailboxes: [Mailbox]
-    public let canCreateAlias: Bool
+
+    public var selectedSuffixString: String { selectedSuffix?.suffix ?? "" }
+
+    public init(suffixes: [Suffix], selectedSuffix: Suffix? = nil) {
+        self.suffixes = suffixes
+        self.selectedSuffix = selectedSuffix ?? suffixes.first
+    }
+
+    public static var defaultEmpty: SuffixSelection {
+        SuffixSelection(suffixes: [])
+    }
 }
