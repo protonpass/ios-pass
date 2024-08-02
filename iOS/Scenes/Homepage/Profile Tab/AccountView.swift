@@ -116,19 +116,21 @@ struct AccountView: View {
                                                backgroundColor: PassColor.interactionNormMinor1)
                               })
 
-                    PassSectionDivider()
+                    if viewModel.canManageSubscription {
+                        PassSectionDivider()
 
-                    OptionRow(action: { viewModel.manageSubscription() },
-                              height: .tall,
-                              content: {
-                                  Text("Manage subscription")
-                                      .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                              },
-                              trailing: {
-                                  CircleButton(icon: IconProvider.arrowOutSquare,
-                                               iconColor: PassColor.interactionNormMajor2,
-                                               backgroundColor: PassColor.interactionNormMinor1)
-                              })
+                        OptionRow(action: { viewModel.manageSubscription() },
+                                  height: .tall,
+                                  content: {
+                                      Text("Manage subscription")
+                                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                  },
+                                  trailing: {
+                                      CircleButton(icon: IconProvider.arrowOutSquare,
+                                                   iconColor: PassColor.interactionNormMajor2,
+                                                   backgroundColor: PassColor.interactionNormMinor1)
+                                  })
+                    }
                 }
                 .roundedEditableSection()
                 .padding(.top)
@@ -202,6 +204,7 @@ struct AccountView: View {
             .padding()
             .animation(.default, value: viewModel.plan)
             .animation(.default, value: viewModel.extraPasswordEnabled)
+            .animation(.default, value: viewModel.canManageSubscription)
         }
         .navigationTitle("Account")
         .navigationBarBackButtonHidden()
