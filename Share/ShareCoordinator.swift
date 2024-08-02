@@ -74,11 +74,9 @@ final class ShareCoordinator {
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
-//    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
-//    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
     @LazyInjected(\SharedUseCasesContainer.logOutUser) private var logOutUser
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
@@ -115,16 +113,6 @@ final class ShareCoordinator {
                        sessionId: sessionInfos.sessionId)
             }
             .store(in: &cancellables)
-
-//        corruptedSessionEventStream
-//            .removeDuplicates()
-//            .compactMap { $0 }
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] reason in
-//                guard let self else { return }
-//                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
-//            }
-//            .store(in: &cancellables)
     }
 }
 
@@ -160,8 +148,6 @@ private extension ShareCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case let .suffixView(selection):
-                    presentSuffixSelection(selection)
                 case .vaultSelection:
                     presentVaultSelector()
                 case let .createItem(_, type, _):
@@ -347,24 +333,6 @@ private extension ShareCoordinator {
         } else {
             showNotLoggedInView()
         }
-    }
-}
-
-// MARK: Create alias
-
-extension ShareCoordinator {
-    func presentSuffixSelection(_ suffixSelection: SuffixSelection) {
-        guard let rootViewController else { return }
-        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
-        let view = SuffixSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        topMostViewController?.present(viewController, animated: true)
     }
 }
 

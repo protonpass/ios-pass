@@ -27,27 +27,6 @@ import Factory
 import ProtonCoreLogin
 import SwiftUI
 
-final class SuffixSelection: ObservableObject, Equatable, Hashable {
-    @Published var selectedSuffix: Suffix?
-    let suffixes: [Suffix]
-
-    var selectedSuffixString: String { selectedSuffix?.suffix ?? "" }
-
-    init(suffixes: [Suffix]) {
-        self.suffixes = suffixes
-        selectedSuffix = suffixes.first
-    }
-
-    static func == (lhs: SuffixSelection, rhs: SuffixSelection) -> Bool {
-        lhs.selectedSuffix == rhs.selectedSuffix && lhs.suffixes == rhs.suffixes
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(selectedSuffix)
-        hasher.combine(suffixes)
-    }
-}
-
 @MainActor
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -57,7 +36,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var prefixManuallyEdited = false
     @Published var note = ""
 
-    var suffix: String { suffixSelection?.selectedSuffixString ?? "" }
+    var suffix: String { suffixSelection.selectedSuffixString }
     var mailboxes: String { mailboxSelection.selectedMailboxesString }
 
     @Published private(set) var aliasEmail = ""
@@ -65,6 +44,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var prefixError: AliasPrefixError?
     @Published private(set) var canCreateAlias = true
     @Published var mailboxSelection: MailboxSelection = .defaultEmpty
+    @Published var suffixSelection: SuffixSelection = .defaultEmpty
 
     override var shouldUpgrade: Bool {
         if case .create = mode {
@@ -89,7 +69,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     private(set) var alias: Alias?
-    private(set) var suffixSelection: SuffixSelection?
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -160,7 +139,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
-        guard let selectedSuffix = suffixSelection?.selectedSuffix else { return nil }
+        guard let selectedSuffix = suffixSelection.selectedSuffix else { return nil }
         return .init(prefix: prefix,
                      suffix: selectedSuffix,
                      mailboxIds: mailboxSelection.selectedMailboxes.map(\.ID))
@@ -200,7 +179,6 @@ extension CreateEditAliasViewModel {
                 let aliasOptions = try await getAliasOptions(shareId: shareId)
 
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                suffixSelection?.attach(to: self, storeIn: &cancellables)
                 // TODO: remove test
                 mailboxSelection = .init(allUserMailboxes: Mailbox.test /* aliasOptions.mailboxes */ )
                 canCreateAlias = aliasOptions.canCreateAlias
@@ -222,11 +200,6 @@ extension CreateEditAliasViewModel {
                 state = .error(error)
             }
         }
-    }
-
-    func showSuffixSelection() {
-        guard let suffixSelection else { return }
-        router.present(for: .suffixView(suffixSelection))
     }
 }
 

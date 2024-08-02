@@ -25,7 +25,7 @@ import SwiftUI
 
 public enum AliasOptionsSheetState {
     case mailbox(Binding<MailboxSelection>, String)
-    case suffix
+    case suffix(Binding<SuffixSelection>)
 
     public var height: CGFloat {
         switch self {
@@ -44,8 +44,8 @@ public extension View {
         case let .mailbox(mailboxSelection, title):
             MailboxSelectionView(mailboxSelection: mailboxSelection,
                                  title: title)
-        case .suffix:
-            EmptyView()
+        case let .suffix(suffixSelection):
+            SuffixSelectionView(selection: suffixSelection)
         }
     }
 }

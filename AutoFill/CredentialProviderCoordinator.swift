@@ -284,8 +284,6 @@ private extension CredentialProviderCoordinator {
                 switch destination {
                 case .upgradeFlow:
                     startUpgradeFlow()
-                case let .suffixView(suffixSelection):
-                    createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
                 case .vaultSelection:
                     createEditItemViewModelWantsToChangeVault()
                 case let .createItem(item, type, response):
@@ -599,24 +597,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
-    }
-}
-
-// MARK: - CreateAliasLiteViewModelDelegate
-
-extension CredentialProviderCoordinator {
-    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        guard let rootViewController else { return }
-        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
-        let view = SuffixSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 }
 

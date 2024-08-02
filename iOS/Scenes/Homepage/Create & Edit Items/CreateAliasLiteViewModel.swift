@@ -44,10 +44,10 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @Published private(set) var canCreateAlias: Bool
     @Published private(set) var prefixError: AliasPrefixError?
     @Published var mailboxSelection: MailboxSelection
+    @Published var suffixSelection: SuffixSelection
 
     private var cancellables = Set<AnyCancellable>()
 
-    let suffixSelection: SuffixSelection
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
 
@@ -55,15 +55,12 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
         canCreateAlias = options.canCreateAlias
-        suffixSelection = .init(suffixes: options.suffixes)
+        suffixSelection = .init(suffixes: options.suffixes, selectedSuffix: creationInfo.suffix)
         // TODO: remove test
         mailboxSelection = .init(allUserMailboxes: Mailbox
             .test) /* .init(allUserMailboxes: options.mailboxes, selectedMailboxes: creationInfo.mailboxes) */
 
         prefix = creationInfo.prefix
-        suffixSelection.selectedSuffix = creationInfo.suffix
-        suffixSelection.attach(to: self, storeIn: &cancellables)
-        suffixSelection.attach(to: self, storeIn: &cancellables)
 
         _prefix
             .projectedValue
@@ -98,10 +95,6 @@ extension CreateAliasLiteViewModel {
                                          suffix: suffix,
                                          mailboxes: mailboxSelection.selectedMailboxes)
         aliasCreationDelegate?.aliasLiteCreationInfo(info)
-    }
-
-    func showSuffixSelection() {
-        router.present(for: .suffixView(suffixSelection))
     }
 
     func upgrade() {
