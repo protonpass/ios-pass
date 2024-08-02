@@ -61,7 +61,9 @@ struct CreateAliasLiteView: View {
                                                 tintColor: ItemContentType.login.normMajor1Color,
                                                 suffixSelection: viewModel.suffixSelection,
                                                 prefixError: viewModel.prefixError,
-                                                onSelectSuffix: { viewModel.showSuffixSelection() })
+                                                onSelectSuffix: {
+                                                    sheetState = .suffix($viewModel.suffixSelection)
+                                                })
                         }
 
                         if !viewModel.mailboxSelection.selectedMailboxes.isEmpty {

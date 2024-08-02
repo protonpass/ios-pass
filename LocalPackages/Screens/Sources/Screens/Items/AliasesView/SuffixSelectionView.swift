@@ -1,7 +1,7 @@
 //
 // SuffixSelectionView.swift
-// Proton Pass - Created on 03/05/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 02/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,22 +21,20 @@
 import Client
 import DesignSystem
 import Entities
-import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct SuffixSelectionView: View {
+public struct SuffixSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: SuffixSelectionViewModel
+    @Binding var selection: SuffixSelection
 
-    init(viewModel: SuffixSelectionViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
+    public init(selection: Binding<SuffixSelection>) {
+        _selection = selection
     }
 
-    private var selection: SuffixSelection { viewModel.suffixSelection }
-    private var tintColor: UIColor { ItemContentType.alias.normMajor2Color }
+    private var tintColor: UIColor { PassColor.aliasInteractionNormMajor2 }
 
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             // ZStack instead of VStack because of SwiftUI bug.
             // See more in "CreateAliasLiteView.swift"
@@ -67,10 +65,6 @@ struct SuffixSelectionView: View {
                             PassDivider()
                                 .padding(.horizontal)
                         }
-
-                        if viewModel.shouldUpgrade {
-                            upgradeButton
-                        }
                     }
                 }
             }
@@ -87,20 +81,5 @@ struct SuffixSelectionView: View {
 
     private func isSelected(_ suffix: Suffix) -> Bool {
         suffix == selection.selectedSuffix
-    }
-
-    private var upgradeButton: some View {
-        Button(action: viewModel.upgrade) {
-            HStack {
-                Text("Upgrade for custom domains")
-                Image(uiImage: IconProvider.arrowOutSquare)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 20)
-            }
-            .contentShape(.rect)
-            .foregroundStyle(tintColor.toColor)
-        }
-        .frame(height: OptionRowHeight.compact.value)
     }
 }

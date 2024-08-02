@@ -97,17 +97,19 @@ struct CreateEditAliasView: View {
                         aliasReadonlySection
                     } else {
                         aliasPreviewSection
-                        if isShowingAdvancedOptions, let suffixSelection = viewModel.suffixSelection {
+                        if isShowingAdvancedOptions {
                             PrefixSuffixSection(prefix: $viewModel.prefix,
                                                 prefixManuallyEdited: $viewModel.prefixManuallyEdited,
                                                 focusedField: $focusedField,
                                                 field: .prefix,
                                                 isLoading: viewModel.state.isLoading,
                                                 tintColor: tintColor,
-                                                suffixSelection: suffixSelection,
+                                                suffixSelection: viewModel.suffixSelection,
                                                 prefixError: viewModel.prefixError,
                                                 onSubmitPrefix: { focusedField = .note },
-                                                onSelectSuffix: { viewModel.showSuffixSelection() })
+                                                onSelectSuffix: {
+                                                    sheetState = .suffix($viewModel.suffixSelection)
+                                                })
                         } else {
                             AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
                                 .padding(.vertical)
@@ -234,17 +236,4 @@ private extension CreateEditAliasView {
     var mailboxSelectionTitle: String {
         (viewModel.mode.isEditMode ? MailboxSection.Mode.edit : MailboxSection.Mode.create).title
     }
-
-//    func presentSuffixSelectionView(selection: SuffixSelection) {
-//        let viewModel = SuffixSelectionViewModel(suffixSelection: selection)
-//        let view = SuffixSelectionView(viewModel: viewModel)
-//        let viewController = UIHostingController(rootView: view)
-//
-//        let customHeight = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
-//        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-//                                     parentViewController: rootViewController)
-//
-//        viewController.sheetPresentationController?.prefersGrabberVisible = true
-//        present(viewController)
-//    }
 }
