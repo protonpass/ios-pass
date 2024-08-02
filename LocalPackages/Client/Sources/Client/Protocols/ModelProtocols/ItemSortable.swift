@@ -233,11 +233,14 @@ public extension Array where Element: AlphabeticalSortable {
 private extension Array where Element: AlphabeticalSortable {
     func sorted(by direction: SortDirection) -> [Element] {
         sorted { lhs, rhs in
-            switch direction {
+            let lString = lhs.alphabeticalSortableString
+            let rString = rhs.alphabeticalSortableString
+            let result = lString.caseInsensitiveCompare(rString)
+            return switch direction {
             case .ascending:
-                lhs.alphabeticalSortableString < rhs.alphabeticalSortableString
+                result == .orderedAscending
             case .descending:
-                lhs.alphabeticalSortableString > rhs.alphabeticalSortableString
+                result == .orderedDescending
             }
         }
     }
