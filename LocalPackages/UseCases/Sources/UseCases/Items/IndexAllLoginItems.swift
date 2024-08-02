@@ -40,6 +40,7 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
     private let accessRepository: any AccessRepositoryProtocol
     private let credentialManager: any CredentialManagerProtocol
     private let mapLoginItem: any MapLoginItemUseCase
+    private let symmetricKeyProvider: any SymmetricKeyProvider
     private let logger: Logger
 
     public init(itemRepository: any ItemRepositoryProtocol,
@@ -47,12 +48,14 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
                 accessRepository: any AccessRepositoryProtocol,
                 credentialManager: any CredentialManagerProtocol,
                 mapLoginItem: any MapLoginItemUseCase,
+                symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol) {
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
         self.accessRepository = accessRepository
         self.credentialManager = credentialManager
         self.mapLoginItem = mapLoginItem
+        self.symmetricKeyProvider = symmetricKeyProvider
         logger = .init(manager: logManager)
     }
 
@@ -71,9 +74,8 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         try await credentialManager.removeAllCredentials()
         let items = try await filterItems(userId: userId)
 
-        let credentials = try await items
-            .asyncCompactMap { try await mapLoginItem(for: $0) }
-            .flatMap { $0 }
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
+        let credentials = try items.flatMap { try mapLoginItem(item: $0, symmetricKey: symmetricKey) }
         try await credentialManager.insert(credentials: credentials)
 
         let time = Date().timeIntervalSince1970 - start.timeIntervalSince1970
