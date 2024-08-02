@@ -45,7 +45,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let localAccessDatasource = resolve(\SharedRepositoryContainer.localAccessDatasource)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
