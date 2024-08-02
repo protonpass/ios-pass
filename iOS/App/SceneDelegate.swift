@@ -26,7 +26,6 @@ import SwiftUI
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
-    private var appCoverView: UIView?
     private lazy var appCoordinator = AppCoordinator(window: window ?? .init())
     private let saveAllLogs = resolve(\SharedUseCasesContainer.saveAllLogs)
     @LazyInjected(\RouterContainer.deepLinkRoutingService) var deepLinkRoutingService
@@ -38,6 +37,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let window = UIWindow(windowScene: windowScene)
             self.window = window
             window.makeKeyAndVisible()
+            RouterContainer.shared.window.register { window }
         }
         AppearanceSettings.apply()
         Task { [weak self] in
@@ -50,12 +50,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
-        coverApp()
         saveAllLogs()
-    }
-
-    func sceneDidBecomeActive(_ scene: UIScene) {
-        uncoverApp()
     }
 
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
@@ -64,55 +59,5 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
         deepLinkRoutingService.handle(userActivities: [userActivity])
-    }
-}
-
-// MARK: - App cover
-
-private extension SceneDelegate {
-    struct AppCoverView: View {
-        let windowSize: CGSize
-
-        var body: some View {
-            ZStack {
-                Image(uiImage: PassIcon.coverScreenBackground)
-                    .resizable()
-                    .scaledToFill()
-                    .ignoresSafeArea()
-                Image(uiImage: PassIcon.coverScreenLogo)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: min(windowSize.width, windowSize.height) * 2 / 3)
-                    .frame(maxWidth: 245)
-            }
-        }
-    }
-
-    func makeAppCoverView(windowSize: CGSize) -> UIView {
-        UIHostingController(rootView: AppCoverView(windowSize: windowSize)).view
-    }
-
-    func coverApp() {
-        let appCoverView = makeAppCoverView(windowSize: window?.frame.size ?? .zero)
-        appCoverView.frame = window?.frame ?? .zero
-        appCoverView.alpha = 0
-        window?.addSubview(appCoverView)
-        UIView.animate(withDuration: 0.35) {
-            appCoverView.alpha = 1
-        }
-        self.appCoverView = appCoverView
-    }
-
-    func uncoverApp() {
-        UIView.animate(withDuration: 0.35,
-                       animations: { [weak self] in
-                           guard let self else { return }
-                           appCoverView?.alpha = 0
-                       },
-                       completion: { [weak self] _ in
-                           guard let self else { return }
-                           appCoverView?.removeFromSuperview()
-                           appCoverView = nil
-                       })
     }
 }
