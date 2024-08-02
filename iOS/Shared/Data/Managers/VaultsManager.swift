@@ -53,6 +53,9 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
+    @LazyInjected(\SharedUseCasesContainer.updateUserPreferences)
+    private var updateUserPreferences
+
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var state = VaultManagerState.loading
@@ -188,6 +191,11 @@ private extension VaultsManager {
                 await indexForAutoFillAndSplotlight()
             }
         }
+
+        if let lastSelectedShareId = getUserPreferences().lastSelectedShareId,
+           let vault = vaults.first(where: { $0.shareId == lastSelectedShareId }) {
+            vaultSelection = .precise(vault)
+        }
     }
 }
 
@@ -293,6 +301,20 @@ extension VaultsManager {
 
     func select(_ selection: VaultSelection) {
         vaultSelection = selection
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                switch selection {
+                case .all, .trash:
+                    try await updateUserPreferences(\.lastSelectedShareId, value: nil)
+                case let .precise(vault):
+                    try await updateUserPreferences(\.lastSelectedShareId, value: vault.shareId)
+                }
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 
     func isSelected(_ selection: VaultSelection) -> Bool {
