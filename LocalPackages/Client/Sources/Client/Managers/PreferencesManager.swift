@@ -144,11 +144,11 @@ public extension PreferencesManager {
         }
 
         // Shared preferences
-        if let preferences = try sharedPreferencesDatasource.getPreferences() {
+        if let preferences = try await sharedPreferencesDatasource.getPreferences() {
             sharedPreferences.send(preferences)
         } else {
             let preferences = SharedPreferences.default
-            try sharedPreferencesDatasource.upsertPreferences(preferences)
+            try await sharedPreferencesDatasource.upsertPreferences(preferences)
             sharedPreferences.send(preferences)
         }
 
@@ -165,7 +165,7 @@ public extension PreferencesManager {
             try appPreferencesDatasource.upsertPreferences(app)
             appPreferences.send(app)
 
-            try sharedPreferencesDatasource.upsertPreferences(shared)
+            try await sharedPreferencesDatasource.upsertPreferences(shared)
             sharedPreferences.send(shared)
 
             if let userId = try? await userManager.getActiveUserId() {
@@ -243,7 +243,7 @@ public extension PreferencesManager {
             throw PassError.preferences(.sharedPreferencesNotInitialized)
         }
         preferences[keyPath: keyPath] = value
-        try sharedPreferencesDatasource.upsertPreferences(preferences)
+        try await sharedPreferencesDatasource.upsertPreferences(preferences)
         sharedPreferences.send(preferences)
         sharedPreferencesUpdates.send(.init(keyPath: keyPath, value: value))
         logger.info("Updated shared preferences \(keyPath)")

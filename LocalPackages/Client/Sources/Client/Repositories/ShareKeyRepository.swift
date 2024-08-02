@@ -106,8 +106,8 @@ public extension ShareKeyRepository {
 }
 
 private extension ShareKeyRepository {
-    func getSymmetricKey() throws -> CryptoKit.SymmetricKey {
-        try symmetricKeyProvider.getSymmetricKey()
+    func getSymmetricKey() async throws -> CryptoKit.SymmetricKey {
+        try await symmetricKeyProvider.getSymmetricKey()
     }
 
     func decrypt(_ encryptedKey: ShareKey, shareId: String) async throws -> Data {
