@@ -22,7 +22,6 @@
 
 import Client
 import Entities
-import Foundation
 
 public protocol GetSearchableItemsUseCase: Sendable {
     func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem]
