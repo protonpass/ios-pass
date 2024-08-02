@@ -27,6 +27,7 @@ import CryptoKit
 import Entities
 import Foundation
 import XCTest
+import TestingToolkit
 
 final class LocalSharedPreferencesDatasourceTests: XCTestCase {
     var keychainMockProvider: KeychainProtocolMockProvider!
@@ -52,21 +53,21 @@ final class LocalSharedPreferencesDatasourceTests: XCTestCase {
 }
 
 extension LocalSharedPreferencesDatasourceTests {
-    func testGetAndUpsertPreferences() throws {
-        try XCTAssertNil(sut.getPreferences())
+    func testGetAndUpsertPreferences() async throws {
+        try await XCTAssertNilAsync(await sut.getPreferences())
 
         let givenPrefs = SharedPreferences.random()
-        try sut.upsertPreferences(givenPrefs)
+        try await sut.upsertPreferences(givenPrefs)
 
-        let result1 = try XCTUnwrap(sut.getPreferences())
+        let result1 = try await XCTUnwrapAsync(await sut.getPreferences())
         XCTAssertEqual(result1, givenPrefs)
 
         let updatedPrefs = SharedPreferences.random()
-        try sut.upsertPreferences(updatedPrefs)
-        let result2 = try XCTUnwrap(sut.getPreferences())
+        try await sut.upsertPreferences(updatedPrefs)
+        let result2 = try await XCTUnwrapAsync(await sut.getPreferences())
         XCTAssertEqual(result2, updatedPrefs)
 
         try sut.removePreferences()
-        try XCTAssertNil(sut.getPreferences())
+        try await XCTAssertNilAsync(await sut.getPreferences())
     }
 }
