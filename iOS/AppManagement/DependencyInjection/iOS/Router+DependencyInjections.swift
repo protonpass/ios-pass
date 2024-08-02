@@ -20,6 +20,7 @@
 
 import Factory
 import Foundation
+import UIKit
 
 final class RouterContainer: SharedContainer, AutoRegistering, Sendable {
     static let shared = RouterContainer()
@@ -47,5 +48,11 @@ extension RouterContainer {
     var sharingRouter: Factory<PathRouter> {
         self { PathRouter() }
             .unique
+    }
+}
+
+extension RouterContainer {
+    var window: Factory<UIWindow?> {
+        self { nil }
     }
 }

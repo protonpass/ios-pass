@@ -60,12 +60,14 @@ struct PinAuthenticationView: View {
             switch viewModel.state {
             case .noAttempts:
                 EmptyView()
+
             case let .remainingAttempts(count):
                 Text("Incorrect PIN code.")
                     .adaptiveForegroundStyle(PassColor.signalDanger.toColor) +
                     Text(verbatim: " ") +
                     Text("\(count) remaining attempt(s)")
                     .adaptiveForegroundStyle(PassColor.signalDanger.toColor)
+
             case .lastAttempt:
                 Text("This is your last attempt. You will be logged out after failing to authenticate again.")
                     .foregroundStyle(PassColor.signalDanger.toColor)
@@ -86,6 +88,13 @@ struct PinAuthenticationView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
+        .if(module == .hostApp) { view in
+            // Only applicable to host app because local authentication process is wrapped inside a view modifier
+            // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
+            // and somehow automatic keyboard avoidance is broken so we manually avoid keyboard here
+            view
+                .keyboardAwarePadding()
+        }
         .accentColor(PassColor.interactionNorm.toColor)
         .tint(PassColor.interactionNorm.toColor)
         .animation(.default, value: viewModel.state)
