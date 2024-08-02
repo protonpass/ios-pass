@@ -71,7 +71,9 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         try await credentialManager.removeAllCredentials()
         let items = try await filterItems(userId: userId)
 
-        let credentials = try items.flatMap { try mapLoginItem(for: $0) }
+        let credentials = try await items
+            .asyncCompactMap { try await mapLoginItem(for: $0) }
+            .flatMap { $0 }
         try await credentialManager.insert(credentials: credentials)
 
         let time = Date().timeIntervalSince1970 - start.timeIntervalSince1970

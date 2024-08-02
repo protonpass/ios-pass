@@ -224,7 +224,8 @@ class BaseItemDetailViewModel: ObservableObject {
                 logger.trace("Trashing \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await getItemTask(item: itemContent).value
-                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
+                let symmetricKey = try await getSymmetricKey()
+                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await itemRepository.trashItems([encryptedItem])
                 delegate?.itemDetailViewModelDidMoveToTrash(item: item)
                 logger.info("Trashed \(item.debugDescription)")
@@ -244,7 +245,8 @@ class BaseItemDetailViewModel: ObservableObject {
                 logger.trace("Restoring \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await getItemTask(item: itemContent).value
-                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
+                let symmetricKey = try await getSymmetricKey()
+                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 try await itemRepository.untrashItems([encryptedItem])
                 router.display(element: .successMessage(item.type.restoreMessage,
                                                         config: .dismissAndRefresh(with: .update(item.type))))
@@ -265,7 +267,8 @@ class BaseItemDetailViewModel: ObservableObject {
                 logger.trace("Permanently deleting \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
                 let encryptedItem = try await getItemTask(item: itemContent).value
-                let item = try encryptedItem.getItemContent(symmetricKey: getSymmetricKey())
+                let symmetricKey = try await getSymmetricKey()
+                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
                 let userId = try await userManager.getActiveUserId()
                 try await itemRepository.deleteItems(userId: userId, [encryptedItem], skipTrash: false)
                 router.display(element: .successMessage(item.type.deleteMessage,
@@ -283,8 +286,8 @@ class BaseItemDetailViewModel: ObservableObject {
         router.present(for: .upgradeFlow)
     }
 
-    func getSymmetricKey() throws -> SymmetricKey {
-        try symmetricKeyProvider.getSymmetricKey()
+    func getSymmetricKey() async throws -> SymmetricKey {
+        try await symmetricKeyProvider.getSymmetricKey()
     }
 
     func showItemHistory() {

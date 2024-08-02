@@ -78,10 +78,6 @@ struct SearchView: View {
             }
 
             switch viewModel.state {
-            case .initializing:
-                ProgressView()
-                    .padding()
-
             case .empty:
                 EmptySearchView()
                     .frame(maxHeight: .infinity)
