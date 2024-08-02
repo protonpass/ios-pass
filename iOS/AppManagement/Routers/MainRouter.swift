@@ -69,7 +69,6 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case upselling(UpsellingViewConfiguration)
     case logView(module: PassModule)
     case suffixView(SuffixSelection)
-    case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
     case moveItemsBetweenVaults(MovingContext)
     case fullSync

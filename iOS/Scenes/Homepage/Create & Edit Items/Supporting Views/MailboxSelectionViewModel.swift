@@ -24,44 +24,80 @@ import Entities
 import Factory
 import SwiftUI
 
-@MainActor
-final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
-    deinit { print(deinitMessage) }
+// @MainActor
+// final class MailboxSelectionViewModel: ObservableObject, DeinitPrintable {
+//    deinit { print(deinitMessage) }
+//
+//    @Published private(set) var shouldUpgrade = false
+////    @Binding private var selectedMailboxes: [Mailbox]
+//
+//    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+//    let allMailBoxes: [Mailbox]
+//    let mode: Mode
+//    let title: String
+//
+//    private var cancellables = Set<AnyCancellable>()
+//
+//    enum Mode {
+//        case createEditAlias
+//        case createAliasLite
+//
+//        var tintColor: Color {
+//            switch self {
+//            case .createEditAlias:
+//                ItemContentType.alias.normMajor2Color.toColor
+//            case .createAliasLite:
+//                ItemContentType.login.normMajor2Color.toColor
+//            }
+//        }
+//    }
+//
+//    init(allMailBoxes: [Mailbox],
+////         selectedMailboxes: Binding<[Mailbox]>,
+//         mode: MailboxSelectionViewModel.Mode,
+//         title: String) {
+//        self.allMailBoxes = allMailBoxes
+//        self.mode = mode
+//        self.title = title
+////        _selectedMailboxes = selectedMailboxes
+////
+////        mailboxSelection.attach(to: self, storeIn: &cancellables)
+//    }
+//
+////    func isMailboxSelected(_ mailbox: Mailbox) -> Bool {
+//    ////        print("woot: *************")
+//    ////        print("woot mailbox \(mailbox)")
+//    ////        print("woot selectedMailboxes \(selectedMailboxes)")
+//    ////        print("woot: \n ************* \n")
+////
+//    ////        return selectedMailboxes.contains(mailbox)
+////    }
+//
+//    func insertOrRemove(mailbox: Mailbox) {
+////        selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+////        selectedMailboxes = []
+////        selectedMailboxes.objectWillChange.send()
+//    }
+//
+//    func upgrade() {
+//        router.present(for: .upgradeFlow)
+//    }
+// }
 
-    @Published private(set) var shouldUpgrade = false
-
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    let mailboxSelection: MailboxSelection
-    let mode: Mode
-    let titleMode: MailboxSection.Mode
-
-    private var cancellables = Set<AnyCancellable>()
-
-    enum Mode {
-        case createEditAlias
-        case createAliasLite
-
-        var tintColor: Color {
-            switch self {
-            case .createEditAlias:
-                ItemContentType.alias.normMajor2Color.toColor
-            case .createAliasLite:
-                ItemContentType.login.normMajor2Color.toColor
-            }
-        }
-    }
-
-    init(mailboxSelection: MailboxSelection,
-         mode: MailboxSelectionViewModel.Mode,
-         titleMode: MailboxSection.Mode) {
-        self.mailboxSelection = mailboxSelection
-        self.mode = mode
-        self.titleMode = titleMode
-
-        mailboxSelection.attach(to: self, storeIn: &cancellables)
-    }
-
-    func upgrade() {
-        router.present(for: .upgradeFlow)
-    }
-}
+// public extension Array where Element: Equatable {
+//    /// Insert if not exist, remove if exist. This method is designed for arrays with unique elements only.
+//    /// So be careful when using on an array of repeated elements, it will result in undefined behaviors.
+//    /// - Parameters:
+//    ///  - element: New element to insert or remove.
+//    ///  - minItemCount: Minimum number of item that the array must have after removing an element.
+//    ///  Use to make sure array always  has at least a certain number of items.
+//    mutating func insertOrRemove(_ element: Element, minItemCount: UInt = 0) {
+//        if contains(element) {
+//            if count - 1 >= minItemCount {
+//                removeAll { $0 == element }
+//            }
+//        } else {
+//            append(element)
+//        }
+//    }
+// }

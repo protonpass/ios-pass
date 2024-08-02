@@ -18,8 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct Mailbox: Decodable, Hashable, Equatable, Sendable {
+public struct Mailbox: Decodable, Hashable, Equatable, Sendable, Identifiable {
     // Should not rename to "id" otherwise decode process breaks
     public let ID: Int
     public let email: String
+
+    public init(ID: Int, email: String) {
+        self.ID = ID
+        self.email = email
+    }
+
+    public var id: Int {
+        // swiftformat:disable:next redundantSelf
+        self.ID
+    }
 }
