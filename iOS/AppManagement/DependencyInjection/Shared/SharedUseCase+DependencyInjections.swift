@@ -164,7 +164,7 @@ extension SharedUseCasesContainer {
 
 extension SharedUseCasesContainer {
     var mapLoginItem: Factory<any MapLoginItemUseCase> {
-        self { MapLoginItem(symmetricKeyProvider: self.symmetricKeyProvider) }
+        self { MapLoginItem() }
     }
 
     var indexAllLoginItems: Factory<any IndexAllLoginItemsUseCase> {
@@ -173,6 +173,7 @@ extension SharedUseCasesContainer {
                                   accessRepository: self.accessRepository,
                                   credentialManager: self.credentialManager,
                                   mapLoginItem: self.mapLoginItem(),
+                                  symmetricKeyProvider: self.symmetricKeyProvider,
                                   logManager: self.logManager) }
     }
 

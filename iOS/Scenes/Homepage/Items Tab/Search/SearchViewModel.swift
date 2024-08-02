@@ -105,7 +105,6 @@ private extension SearchViewModel {
         }
     }
 
-    @MainActor
     func refreshSearchHistory() async throws {
         guard let vaultSelection = searchMode.vaultSelection else {
             return
