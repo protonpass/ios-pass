@@ -192,6 +192,7 @@ private extension IdentityDetailView {
                                    fields: viewModel.nonEmptyAddressElement)
 
                     if !viewModel.county.isEmpty {
+                        PassSectionDivider()
                         row(title: IdentityFields.county.title, value: viewModel.county) {
                             viewModel.copyValueToClipboard(value: viewModel.county,
                                                            message: IdentityFields.county.title)
