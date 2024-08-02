@@ -43,21 +43,31 @@ struct LocalAuthenticationModifier: ViewModifier {
     // NSLocalizedDescription=User interaction required.}
     private let delayed: Bool
 
-    private let onAuth: () -> Void
-    private let onSuccess: () -> Void
+    /// Authentication is started and awaiting for user's response (enterring PIN or biometrically authenticate)
+    private let onAuth: (() -> Void)?
+
+    /// Authentication is skipped because threshold is not reached
+    private let onAuthSkipped: (() -> Void)?
+
+    /// Authentication succeeded
+    private let onSuccess: (() -> Void)?
+
+    /// Authentication failed
     private let onFailure: () -> Void
 
     private var preferences: SharedPreferences { preferencesManager.sharedPreferences.unwrapped() }
 
     init(delayed: Bool,
-         onAuth: @escaping () -> Void,
-         onSuccess: @escaping () -> Void,
+         onAuth: (() -> Void)?,
+         onAuthSkipped: (() -> Void)?,
+         onSuccess: (() -> Void)?,
          onFailure: @escaping () -> Void) {
         let preferences = preferencesManager.sharedPreferences.unwrapped()
         _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
         self.onAuth = onAuth
+        self.onAuthSkipped = onAuthSkipped
         self.onSuccess = onSuccess
         self.onFailure = onFailure
 
@@ -65,30 +75,32 @@ struct LocalAuthenticationModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        ZStack {
-            let authenticationRequired = preferences.localAuthenticationMethod != .none && !authenticated
+        let authenticationRequired = preferences.localAuthenticationMethod != .none && !authenticated
+        GeometryReader { proxy in
             content
-                .opacity(authenticationRequired ? 0 : 1)
-                .disabled(authenticationRequired)
-                .accessibilityHidden(authenticationRequired)
+                .frame(width: proxy.size.width, height: proxy.size.height)
+        }
+        .overlay {
             if authenticationRequired {
                 let handleSuccess: () -> Void = {
                     authenticated = true
                     autolocker.releaseCountdown()
-                    onSuccess()
+                    onSuccess?()
                 }
 
-                LocalAuthenticationView(mode: preferences.localAuthenticationMethod == .pin ? .pin : .biometric,
-                                        delayed: delayed,
-                                        onAuth: onAuth,
-                                        onSuccess: handleSuccess,
-                                        onFailure: onFailure)
-                    // Set zIndex otherwise animation won't occur
-                    // https://sarunw.com/posts/how-to-fix-zstack-transition-animation-in-swiftui/
-                    .zIndex(1)
+                LocalAuthenticationView(mode: preferences
+                    .localAuthenticationMethod == .pin ? .pin : .biometric,
+                    delayed: delayed,
+                    onAuth: { onAuth?() },
+                    onSuccess: handleSuccess,
+                    onFailure: onFailure)
             }
         }
-        .animation(.default, value: authenticated)
+        .onAppear {
+            if !authenticationRequired {
+                onAuthSkipped?()
+            }
+        }
         .onReceive(preferencesManager
             .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
@@ -97,29 +109,15 @@ struct LocalAuthenticationModifier: ViewModifier {
                 autolocker = .init(appLockTime: newValue)
                 autolocker.startCountdown()
         }
+        // Start the timer whenever app is backgrounded
         .onReceive(UIApplication.willResignActiveNotification,
                    perform: autolocker.startCountdown)
-        // Check if we should lock the app base on 2 notifications
-        // willEnterForegroundNotification & didBecomeActiveNotification
-        //
-        // "Fully backgrounded" means the user quickly swipes up and is back to iOS's home screen
-        // "Not fully backgrounded" means the user is slowly wipe up & see the stack of running apps
-        //
-        // If we only check on willEnterForegroundNotification
-        // the app would not be locked when it's not fully backgrounded
-        //
-        // If we only check on didBecomeActiveNotification
-        // the app would be locked a bit late when it's fully backgrounded
-        // which makes the content of the app visible for a fraction of second
-        // that's not what we want
-        .onReceive(UIApplication.willEnterForegroundNotification) {
-            if autolocker.shouldAutolockNow() {
-                authenticated = false
-            }
-        }
+        // When app is foregrounded, check if authentication is needed or could be skipped
         .onReceive(UIApplication.didBecomeActiveNotification) {
-            if autolocker.shouldAutolockNow() {
+            if autolocker.shouldAutolockNow(), preferences.localAuthenticationMethod != .none {
                 authenticated = false
+            } else {
+                onAuthSkipped?()
             }
         }
     }
@@ -128,11 +126,13 @@ struct LocalAuthenticationModifier: ViewModifier {
 extension View {
     @MainActor
     func localAuthentication(delayed: Bool,
-                             onAuth: @escaping () -> Void,
-                             onSuccess: @escaping () -> Void,
+                             onAuth: (() -> Void)? = nil,
+                             onAuthSkipped: (() -> Void)? = nil,
+                             onSuccess: (() -> Void)? = nil,
                              onFailure: @escaping () -> Void) -> some View {
         modifier(LocalAuthenticationModifier(delayed: delayed,
                                              onAuth: onAuth,
+                                             onAuthSkipped: onAuthSkipped,
                                              onSuccess: onSuccess,
                                              onFailure: onFailure))
     }

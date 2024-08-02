@@ -194,18 +194,6 @@ open class Coordinator: CoordinatorProtocol {
         }
     }
 
-    public func hideSecondaryView() {
-        guard case let .split(splitViewController) = type else { return }
-        splitViewController.viewController(for: .secondary)?.view.alpha = 0
-    }
-
-    public func showSecondaryView() {
-        guard case let .split(splitViewController) = type else { return }
-        UIView.animate(withDuration: 0.35) {
-            splitViewController.viewController(for: .secondary)?.view.alpha = 1
-        }
-    }
-
     /// Only applicable for iPad
     /// `true` when the app is not in full screen (only show 1 page at a time, not in split mode)
     public func isCollapsed() -> Bool {
