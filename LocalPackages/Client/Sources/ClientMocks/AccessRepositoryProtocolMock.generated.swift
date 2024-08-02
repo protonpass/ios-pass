@@ -47,6 +47,26 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
             return stubbedAccess
         }
     }
+    // MARK: - accesses
+    public var invokedAccessesSetter = false
+    public var invokedAccessesSetterCount = 0
+    public var invokedAccesses: CurrentValueSubject<[UserAccess], Never>?
+    public var invokedAccessesList = [CurrentValueSubject<[UserAccess], Never>?]()
+    public var invokedAccessesGetter = false
+    public var invokedAccessesGetterCount = 0
+    public var stubbedAccesses: CurrentValueSubject<[UserAccess], Never>!
+    public var accesses: CurrentValueSubject<[UserAccess], Never> {
+        set {
+            invokedAccessesSetter = true
+            invokedAccessesSetterCount += 1
+            invokedAccesses = newValue
+            invokedAccessesList.append(newValue)
+        } get {
+            invokedAccessesGetter = true
+            invokedAccessesGetterCount += 1
+            return stubbedAccesses
+        }
+    }
     // MARK: - didUpdateToNewPlan
     public var invokedDidUpdateToNewPlanSetter = false
     public var invokedDidUpdateToNewPlanSetterCount = 0
@@ -115,8 +135,22 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         closureRefreshAccess()
         return stubbedRefreshAccessResult
     }
+    // MARK: - loadAccesses
+    public var loadAccessesThrowableError4: Error?
+    public var closureLoadAccesses: () -> () = {}
+    public var invokedLoadAccessesfunction = false
+    public var invokedLoadAccessesCount = 0
+
+    public func loadAccesses() async throws {
+        invokedLoadAccessesfunction = true
+        invokedLoadAccessesCount += 1
+        if let error = loadAccessesThrowableError4 {
+            throw error
+        }
+        closureLoadAccesses()
+    }
     // MARK: - updateProtonAddressesMonitor
-    public var updateProtonAddressesMonitorThrowableError4: Error?
+    public var updateProtonAddressesMonitorThrowableError5: Error?
     public var closureUpdateProtonAddressesMonitor: () -> () = {}
     public var invokedUpdateProtonAddressesMonitorfunction = false
     public var invokedUpdateProtonAddressesMonitorCount = 0
@@ -128,13 +162,13 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         invokedUpdateProtonAddressesMonitorCount += 1
         invokedUpdateProtonAddressesMonitorParameters = (monitored, ())
         invokedUpdateProtonAddressesMonitorParametersList.append((monitored, ()))
-        if let error = updateProtonAddressesMonitorThrowableError4 {
+        if let error = updateProtonAddressesMonitorThrowableError5 {
             throw error
         }
         closureUpdateProtonAddressesMonitor()
     }
     // MARK: - updateAliasesMonitor
-    public var updateAliasesMonitorThrowableError5: Error?
+    public var updateAliasesMonitorThrowableError6: Error?
     public var closureUpdateAliasesMonitor: () -> () = {}
     public var invokedUpdateAliasesMonitorfunction = false
     public var invokedUpdateAliasesMonitorCount = 0
@@ -146,7 +180,7 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         invokedUpdateAliasesMonitorCount += 1
         invokedUpdateAliasesMonitorParameters = (monitored, ())
         invokedUpdateAliasesMonitorParametersList.append((monitored, ()))
-        if let error = updateAliasesMonitorThrowableError5 {
+        if let error = updateAliasesMonitorThrowableError6 {
             throw error
         }
         closureUpdateAliasesMonitor()
