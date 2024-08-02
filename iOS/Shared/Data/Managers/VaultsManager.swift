@@ -142,7 +142,7 @@ private extension VaultsManager {
 
     @MainActor
     func loadContents(userId: String, for vaults: [Vault]) async throws {
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
         let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
         currentVaults.send(vaults)

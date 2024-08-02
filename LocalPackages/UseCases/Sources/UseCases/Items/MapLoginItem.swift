@@ -25,12 +25,12 @@ import Entities
 /// so we need to make a separate entry for each URL in the credential database.
 /// This use case map a login item into multiple `CredentialIdentity`
 public protocol MapLoginItemUseCase: Sendable {
-    func execute(for item: SymmetricallyEncryptedItem) throws -> [CredentialIdentity]
+    func execute(for item: SymmetricallyEncryptedItem) async throws -> [CredentialIdentity]
 }
 
 public extension MapLoginItemUseCase {
-    func callAsFunction(for item: SymmetricallyEncryptedItem) throws -> [CredentialIdentity] {
-        try execute(for: item)
+    func callAsFunction(for item: SymmetricallyEncryptedItem) async throws -> [CredentialIdentity] {
+        try await execute(for: item)
     }
 }
 
@@ -41,8 +41,9 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
         self.symmetricKeyProvider = symmetricKeyProvider
     }
 
-    public func execute(for item: SymmetricallyEncryptedItem) throws -> [CredentialIdentity] {
-        let itemContent = try item.getItemContent(symmetricKey: symmetricKeyProvider.getSymmetricKey())
+    public func execute(for item: SymmetricallyEncryptedItem) async throws -> [CredentialIdentity] {
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
+        let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
         guard let data = itemContent.loginItem else {
             throw PassError.credentialProvider(.notLogInItem)
         }

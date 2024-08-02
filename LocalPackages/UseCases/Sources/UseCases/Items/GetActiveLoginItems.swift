@@ -44,7 +44,7 @@ public final class GetActiveLoginItems: GetActiveLoginItemsUseCase {
     }
 
     public func execute(userId: String) async throws -> [ItemContent] {
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let encryptedItems = try await repository.getActiveLogInItems(userId: userId)
         return try encryptedItems.map { try $0.getItemContent(symmetricKey: symmetricKey) }
     }

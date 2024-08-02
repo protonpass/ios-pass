@@ -42,7 +42,9 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         AppearanceSettings.apply()
         Task { [weak self] in
             guard let self else { return }
-            await appCoordinator.setUpAndStart()
+            guard await appCoordinator.setUpAndStart() else {
+                return
+            }
 
             deepLinkRoutingService.parseAndDispatch(context: connectionOptions.urlContexts)
             deepLinkRoutingService.handle(userActivities: connectionOptions.userActivities)

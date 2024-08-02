@@ -48,7 +48,7 @@ public final class GetItemContentFromBase64IDs: GetItemContentFromBase64IDsUseCa
         guard let item = try await itemRepository.getItem(shareId: ids.shareId, itemId: ids.itemId) else {
             throw PassError.itemNotFound(ids)
         }
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         return try item.getItemContent(symmetricKey: symmetricKey)
     }
 }

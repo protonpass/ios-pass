@@ -448,7 +448,8 @@ extension UseCasesContainer {
     var getAllSecurityAffectedLogins: Factory<any GetAllSecurityAffectedLoginsUseCase> {
         self {
             GetAllSecurityAffectedLogins(passMonitorRepository: self.passMonitorRepository,
-                                         symmetricKeyProvider: self.symmetricKeyProvider,
+                                         symmetricKeyProvider: SharedDataContainer.shared
+                                             .nonSendableSymmetricKeyProvider(),
                                          getPasswordStrength: SharedUseCasesContainer.shared.getPasswordStrength())
         }
     }
