@@ -39,11 +39,7 @@ public extension LockedKeychainStorage {
 
 enum AppDataKey: String {
     case userData
-    case symmetricKey
     case mainCredential
-    case hostAppCredential
-    case autofillExtensionCredential
-    case shareExtensionCredential
 }
 
 extension UserData: @unchecked Sendable {}
@@ -57,23 +53,7 @@ final class AppData: AppDataProtocol {
     @LockedKeychainStorage(key: AppDataKey.mainCredential, defaultValue: nil)
     private var mainCredential: AuthCredential?
 
-    @LockedKeychainStorage(key: AppDataKey.symmetricKey, defaultValue: nil)
-    private var symmetricKey: String?
-
     init() {}
-
-    func getSymmetricKey() throws -> SymmetricKey {
-        if let symmetricKey {
-            guard let symmetricKeyData = try symmetricKey.base64Decode() else {
-                throw PassError.failedToGetOrCreateSymmetricKey
-            }
-            return .init(data: symmetricKeyData)
-        } else {
-            let randomData = try Data.random()
-            symmetricKey = randomData.encodeBase64()
-            return .init(data: randomData)
-        }
-    }
 
     func getUserData() -> UserData? {
         userData

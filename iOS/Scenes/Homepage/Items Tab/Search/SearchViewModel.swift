@@ -97,6 +97,11 @@ private extension SearchViewModel {
             if case .error = state {
                 state = .initializing
             }
+            if Thread.isMainThread {
+                print("\(#function) AAA Main")
+            } else {
+                print("\(#function)AAA Not main")
+            }
             let userId = try await userManager.getActiveUserId()
             searchableItems = try await getSearchableItems(userId: userId, for: searchMode)
             try await refreshSearchHistory()
@@ -105,7 +110,6 @@ private extension SearchViewModel {
         }
     }
 
-    @MainActor
     func refreshSearchHistory() async throws {
         guard let vaultSelection = searchMode.vaultSelection else {
             return

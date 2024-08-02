@@ -44,7 +44,7 @@ public final class GetItemsLinkedToBreach: GetItemsLinkedToBreachUseCase {
     }
 
     public func execute(userId: String, email: String) async throws -> [ItemUiModel] {
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let encryptedItems = try await repository.getAllItems(userId: userId)
 
         return encryptedItems.compactMap { element in

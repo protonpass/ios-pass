@@ -139,7 +139,7 @@ public extension FavIconRepository {
 private extension FavIconRepository {
     func fetchAndCacheIcon(for domain: String) async throws -> FavIcon? {
         do {
-            let symmetricKey = try getSymmetricKey()
+            let symmetricKey = try await getSymmetricKey()
 
             let domain = URL(string: domain)?.host ?? domain
 
@@ -181,8 +181,8 @@ private extension FavIconRepository {
         }
     }
 
-    func getSymmetricKey() throws -> SymmetricKey {
-        try symmetricKeyProvider.getSymmetricKey()
+    func getSymmetricKey() async throws -> SymmetricKey {
+        try await symmetricKeyProvider.getSymmetricKey()
     }
 
     func getDataOrRemoveIfObsolete(url: URL) throws -> Data? {

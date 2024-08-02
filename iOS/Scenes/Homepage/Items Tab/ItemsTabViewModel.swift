@@ -94,7 +94,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     func loadPinnedItems() async {
-        guard let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
+        guard let symmetricKey = try? await symmetricKeyProvider.getSymmetricKey(),
               let newPinnedItems = try? await getAllPinnedItems()
               .compactMap({ try? $0.toItemUiModel(symmetricKey) })
         else { return }
@@ -123,6 +123,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
+    // swiftlint:disable:next cyclomatic_complexity
     func setUp() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
 
@@ -183,14 +184,19 @@ private extension ItemsTabViewModel {
         getAllPinnedItems()
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
             .sink { [weak self] pinnedItems in
-                guard let self,
-                      let symmetricKey = try? symmetricKeyProvider.getSymmetricKey(),
-                      let pinnedItems else {
-                    return
+                guard let self else { return }
+                Task { [weak self] in
+                    guard let self else { return }
+                    do {
+                        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
+                        let firstPinnedItems = Array(pinnedItems.prefix(5))
+                        self.pinnedItems = firstPinnedItems.compactMap { try? $0.toItemUiModel(symmetricKey) }
+                    } catch {
+                        handle(error: error)
+                    }
                 }
-                let firstPinnedItems = Array(pinnedItems.prefix(5))
-                self.pinnedItems = firstPinnedItems.compactMap { try? $0.toItemUiModel(symmetricKey) }
             }
             .store(in: &cancellables)
     }

@@ -104,7 +104,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     public func refreshSecurityChecks() async throws {
         let userId = try await userManager.getActiveUserId()
         var reusedPasswords = [String: Int]()
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
             .compactMap { encryptedItem -> InternalPassMonitorItem? in
                 guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
@@ -167,7 +167,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
             return []
         }
         let userId = try await userManager.getActiveUserId()
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let encryptedItems = try await itemRepository.getActiveLogInItems(userId: userId)
 
         return encryptedItems.compactMap { encryptedItem in
