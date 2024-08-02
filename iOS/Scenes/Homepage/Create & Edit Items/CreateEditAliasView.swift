@@ -21,6 +21,7 @@
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct CreateEditAliasView: View {
@@ -29,6 +30,7 @@ struct CreateEditAliasView: View {
     @FocusState private var focusedField: Field?
     @Namespace private var noteID
     @State private var isShowingAdvancedOptions = false
+    @State private var sheetState: AliasOptionsSheetState?
 
     private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
 
@@ -112,10 +114,12 @@ struct CreateEditAliasView: View {
                         }
                     }
 
-                    if let mailboxSelection = viewModel.mailboxSelection {
-                        MailboxSection(mailboxSelection: mailboxSelection,
+                    if !viewModel.mailboxSelection.selectedMailboxes.isEmpty {
+                        MailboxSection(mailboxSelection: viewModel.mailboxSelection,
                                        mode: viewModel.mode.isEditMode ? .edit : .create)
-                            .onTapGesture { viewModel.showMailboxSelection() }
+                            .onTapGesture {
+                                sheetState = .mailbox($viewModel.mailboxSelection, mailboxSelectionTitle)
+                            }
                     }
 
                     NoteEditSection(note: $viewModel.note,
@@ -126,7 +130,7 @@ struct CreateEditAliasView: View {
                 .padding()
                 .animation(.default, value: viewModel.shouldUpgrade)
                 .animation(.default, value: isShowingAdvancedOptions)
-                .animation(.default, value: viewModel.mailboxSelection != nil)
+                .animation(.default, value: viewModel.mailboxSelection)
             }
             .onChange(of: focusedField) { focusedField in
                 if case .note = focusedField {
@@ -152,6 +156,11 @@ struct CreateEditAliasView: View {
             }
         }
         .itemCreateEditSetUp(viewModel)
+        .optionalSheet(binding: $sheetState) { state in
+            aliasOptionsSheetContent(for: state)
+                .presentationDetents([.height(state.height)])
+                .presentationDragIndicator(.visible)
+        }
     }
 
     private var aliasReadonlySection: some View {
@@ -219,4 +228,23 @@ struct CreateEditAliasView: View {
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
+}
+
+private extension CreateEditAliasView {
+    var mailboxSelectionTitle: String {
+        (viewModel.mode.isEditMode ? MailboxSection.Mode.edit : MailboxSection.Mode.create).title
+    }
+
+//    func presentSuffixSelectionView(selection: SuffixSelection) {
+//        let viewModel = SuffixSelectionViewModel(suffixSelection: selection)
+//        let view = SuffixSelectionView(viewModel: viewModel)
+//        let viewController = UIHostingController(rootView: view)
+//
+//        let customHeight = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
+//        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
+//                                     parentViewController: rootViewController)
+//
+//        viewController.sheetPresentationController?.prefersGrabberVisible = true
+//        present(viewController)
+//    }
 }

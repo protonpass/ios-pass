@@ -1,6 +1,6 @@
 //
-// PasskeyDetailRow.swift
-// Proton Pass - Created on 23/02/2024.
+// MailboxSection.swift
+// Proton Pass - Created on 02/08/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,41 +20,49 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
-import Screens
 import SwiftUI
 
-struct PasskeyDetailRow: View {
-    let passkey: Passkey
-    var borderColor: UIColor = PassColor.inputBorderNorm
-    let onTap: () -> Void
+public struct MailboxSection: View {
+    let mailboxSelection: MailboxSelection
+    let mode: Mode
 
-    var body: some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: PassIcon.passkey,
-                                  color: ItemContentType.login.normColor)
+    public init(mailboxSelection: MailboxSelection, mode: Mode) {
+        self.mailboxSelection = mailboxSelection
+        self.mode = mode
+    }
+
+    public enum Mode: Sendable {
+        case create, edit
+
+        public var title: String {
+            switch self {
+            case .create:
+                #localized("Forward to")
+            case .edit:
+                #localized("Forwarding to")
+            }
+        }
+    }
+
+    public var body: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.forward)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Passkey")
-                    .sectionTitleText() +
-                    Text(verbatim: " • ")
-                    .sectionTitleText() +
-                    Text(verbatim: passkey.domain)
+                Text(mode.title)
                     .sectionTitleText()
-
-                Text(passkey.userName)
+                Text(mailboxSelection.selectedMailboxesString)
                     .sectionContentText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Spacer()
-
-            ItemDetailSectionIcon(icon: IconProvider.chevronRight, width: 12)
+            ItemDetailSectionIcon(icon: IconProvider.chevronDown)
         }
+        .animation(.default, value: mailboxSelection)
         .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection(backgroundColor: ItemContentType.login.normMinor2Color,
-                              borderColor: borderColor)
+        .roundedEditableSection()
         .contentShape(.rect)
-        .onTapGesture(perform: onTap)
     }
 }
