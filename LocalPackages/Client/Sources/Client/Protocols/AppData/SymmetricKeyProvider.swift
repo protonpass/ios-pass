@@ -100,10 +100,11 @@ private enum SymmetricKeyGetter {
             try keychain.setOrError(lockedData.encryptedValue, forKey: kSymmetricKey)
         }
 
-        // If legacy key is found => migrate to new keychain key
+        // If legacy key is found => migrate to new key & remove legacy key
         if let legacyKey = try Self.getLegacyKey(keychain: keychain,
                                                  mainKeyProvider: mainKeyProvider) {
             try lockAndSaveToKeychain(legacyKey)
+            try keychain.removeOrError(forKey: kLegacySymmetricKey)
         }
 
         // At this point either migration is done or no key is generated (first installation)
