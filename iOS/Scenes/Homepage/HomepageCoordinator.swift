@@ -125,6 +125,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         finalizeInitialization()
         start()
         synchroniseData()
+        loadAccesses()
         refreshOrganizationAndOverrideSecuritySettings()
         refreshAccessAndMonitorStateSync()
         refreshSettings()
@@ -290,6 +291,17 @@ private extension HomepageCoordinator {
             do {
                 let userId = try await userManager.getActiveUserId()
                 try await refreshAccessAndMonitorState(userId: userId)
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func loadAccesses() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await accessRepository.loadAccesses()
             } catch {
                 logger.error(error)
             }

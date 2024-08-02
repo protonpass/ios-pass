@@ -130,6 +130,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
+        accesses = accessRepository.accesses.value
         refresh()
         setUp()
     }
@@ -145,9 +146,8 @@ extension ProfileTabViewModel {
     func refreshPlan() async {
         do {
             plan = try await accessRepository.refreshAccess().access.plan
-            accesses = try await localAccessDatasource.getAllAccesses()
         } catch {
-            handle(error: error)
+            logger.error(error)
         }
     }
 
@@ -395,6 +395,11 @@ private extension ProfileTabViewModel {
                     fetchSecureLinks()
                 }
             }
+            .store(in: &cancellables)
+
+        accessRepository.accesses
+            .receive(on: DispatchQueue.main)
+            .assign(to: \.accesses, on: self)
             .store(in: &cancellables)
     }
 

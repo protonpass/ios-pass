@@ -23,7 +23,7 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct AccountCellDetail: Identifiable {
+public struct AccountCellDetail: Identifiable, Hashable {
     public let id: String
     public let isPremium: Bool
     public let initial: String
