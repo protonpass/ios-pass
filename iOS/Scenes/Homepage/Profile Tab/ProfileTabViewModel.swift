@@ -437,7 +437,8 @@ private extension ProfileTabViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                if let organization = try await organizationRepository.getOrganization() {
+                let userId = try await userManager.getActiveUserId()
+                if let organization = try await organizationRepository.getOrganization(userId: userId) {
                     canUpdateAppLockTime = organization.settings?.appLockTime == nil
                 }
             } catch {
