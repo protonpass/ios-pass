@@ -2,12 +2,15 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="aliasSyncEnabled" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="defaultShareID" optional="YES" attributeType="String"/>
         <attribute name="displayName" attributeType="String"/>
         <attribute name="hideUpgrade" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="internalName" attributeType="String"/>
         <attribute name="minVersionUpgrade" optional="YES" attributeType="String"/>
         <attribute name="monitorAliases" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="monitorProtonAddress" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="pendingAliasToSync" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="pendingInvites" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="totpLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="trialEnd" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
