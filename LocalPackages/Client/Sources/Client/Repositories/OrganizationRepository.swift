@@ -26,34 +26,30 @@ import Foundation
 public protocol OrganizationRepositoryProtocol: Sendable {
     /// Get from local, refresh if not exist
     /// Could be nil if the user is not in business plan
-    func getOrganization() async throws -> Organization?
+    func getOrganization(userId: String) async throws -> Organization?
 
     /// Refresh and save to local database
     /// Could be nil if the user is not in business plan
     @discardableResult
-    func refreshOrganization() async throws -> Organization?
+    func refreshOrganization(userId: String) async throws -> Organization?
 }
 
 public actor OrganizationRepository: OrganizationRepositoryProtocol {
     private let localDatasource: any LocalOrganizationDatasourceProtocol
     private let remoteDatasource: any RemoteOrganizationDatasourceProtocol
-    private let userManager: any UserManagerProtocol
     private let logger: Logger
 
     public init(localDatasource: any LocalOrganizationDatasourceProtocol,
                 remoteDatasource: any RemoteOrganizationDatasourceProtocol,
-                userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
-        self.userManager = userManager
         logger = .init(manager: logManager)
     }
 }
 
 public extension OrganizationRepository {
-    func getOrganization() async throws -> Organization? {
-        let userId = try await userManager.getActiveUserId()
+    func getOrganization(userId: String) async throws -> Organization? {
         logger.trace("Getting organization for userId \(userId)")
         if let organization = try await localDatasource.getOrganization(userId: userId) {
             logger.info("Found local organization for userId \(userId)")
@@ -61,11 +57,10 @@ public extension OrganizationRepository {
         }
 
         logger.trace("Found no local organization for userId \(userId)")
-        return try await refreshOrganization()
+        return try await refreshOrganization(userId: userId)
     }
 
-    func refreshOrganization() async throws -> Organization? {
-        let userId = try await userManager.getActiveUserId()
+    func refreshOrganization(userId: String) async throws -> Organization? {
         logger.trace("Refreshing organization for userId \(userId)")
         if let organization = try await remoteDatasource.getOrganization(userId: userId) {
             logger.trace("Refreshed organization for userId \(userId). Upserting to local database.")

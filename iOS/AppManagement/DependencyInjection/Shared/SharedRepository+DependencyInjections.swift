@@ -343,7 +343,6 @@ extension SharedRepositoryContainer {
     var organizationRepository: Factory<any OrganizationRepositoryProtocol> {
         self { OrganizationRepository(localDatasource: self.localOrganizationDatasource(),
                                       remoteDatasource: self.remoteOrganizationDatasource(),
-                                      userManager: self.userManager,
                                       logManager: self.logManager) }
     }
 
