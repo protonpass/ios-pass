@@ -55,6 +55,7 @@ struct ProfileTabView: View {
             .navigationStackEmbeded()
             .task {
                 await viewModel.refreshPlan()
+                await viewModel.updateSupportedLocalAuthenticationMethods()
             }
             .onAppear {
                 viewModel.fetchSecureLinks()
