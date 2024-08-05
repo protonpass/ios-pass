@@ -67,21 +67,6 @@ public extension Array {
 }
 
 public extension Array where Element: Equatable {
-    func isLastNonEmptyElement(_ element: Element, isEmpty: (Element) -> Bool) -> Bool {
-        guard let lastIndex = lastIndex(where: { !isEmpty($0) }) else {
-            return false
-        }
-        return self[lastIndex] == element
-    }
-}
-
-public extension [any Collection] {
-    func hasNonEmptyElement() -> Bool {
-        contains { !$0.isEmpty }
-    }
-}
-
-public extension Array where Element: Equatable {
     /// Insert if not exist, remove if exist. This method is designed for arrays with unique elements only.
     /// So be careful when using on an array of repeated elements, it will result in undefined behaviors.
     /// - Parameters:
