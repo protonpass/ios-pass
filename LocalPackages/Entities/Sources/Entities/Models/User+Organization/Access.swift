@@ -27,17 +27,20 @@ public struct Access: Decodable, Equatable, Sendable {
     public let pendingInvites: Int
     public let waitingNewUserInvites: Int
     public let minVersionUpgrade: String?
+    public let userData: UserAliasSyncData
 
     public init(plan: Plan,
                 monitor: Monitor,
                 pendingInvites: Int,
                 waitingNewUserInvites: Int,
-                minVersionUpgrade: String?) {
+                minVersionUpgrade: String?,
+                userData: UserAliasSyncData) {
         self.plan = plan
         self.monitor = monitor
         self.pendingInvites = pendingInvites
         self.waitingNewUserInvites = waitingNewUserInvites
         self.minVersionUpgrade = minVersionUpgrade
+        self.userData = userData
     }
 }
 
@@ -60,5 +63,21 @@ public struct UserAccess: Equatable, Sendable {
     public init(userId: String, access: Access) {
         self.userId = userId
         self.access = access
+    }
+}
+
+public struct UserAliasSyncData: Decodable, Equatable, Sendable {
+    public let defaultShareID: String?
+    public let aliasSyncEnabled: Bool
+    public let pendingAliasToSync: Int
+
+    public init(defaultShareID: String?, aliasSyncEnabled: Bool, pendingAliasToSync: Int) {
+        self.defaultShareID = defaultShareID
+        self.aliasSyncEnabled = aliasSyncEnabled
+        self.pendingAliasToSync = pendingAliasToSync
+    }
+
+    public static var `default`: UserAliasSyncData {
+        UserAliasSyncData(defaultShareID: nil, aliasSyncEnabled: false, pendingAliasToSync: 0)
     }
 }
