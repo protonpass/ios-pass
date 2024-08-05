@@ -234,7 +234,7 @@ private extension CredentialsView {
 
     var mainVaultsOnlyMessage: some View {
         ZStack {
-            Text("Your plan only allows to use items from your first vaults for autofill purposes.")
+            Text("Your plan only allows to use items from your first 2 vaults for autofill purposes.")
                 .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                 Text(verbatim: " ") +
                 Text("Upgrade now")
