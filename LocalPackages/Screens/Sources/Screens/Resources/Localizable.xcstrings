@@ -1340,6 +1340,9 @@
         }
       }
     },
+    "Enable SimpleLogin sync" : {
+
+    },
     "Enable Spotlight search" : {
       "localizations" : {
         "be" : {
@@ -5083,6 +5086,9 @@
         }
       }
     },
+    "Sync aliases" : {
+
+    },
     "Tap here to add a field for a username." : {
       "localizations" : {
         "be" : {
@@ -5402,6 +5408,9 @@
           }
         }
       }
+    },
+    "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?" : {
+
     }
   },
   "version" : "1.0"
