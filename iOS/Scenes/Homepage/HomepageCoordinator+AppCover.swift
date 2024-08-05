@@ -28,7 +28,10 @@ extension HomepageCoordinator {
             return
         }
         if appCoverView == nil {
-            let appCoverView = makeAppCoverView(windowSize: window.frame.size)
+            let appCoverViewController = makeAppCoverViewController(windowSize: window.frame.size)
+            guard let appCoverView = appCoverViewController.view else {
+                fatalError("App cover view should not be nil")
+            }
             appCoverView.translatesAutoresizingMaskIntoConstraints = false
             appCoverView.alpha = 0
             window.addSubview(appCoverView)
@@ -39,6 +42,7 @@ extension HomepageCoordinator {
                 appCoverView.trailingAnchor.constraint(equalTo: window.trailingAnchor)
             ])
             self.appCoverView = appCoverView
+            appCoverViewController.didMove(toParent: rootViewController)
         }
 
         if let appCoverView {
@@ -51,7 +55,7 @@ extension HomepageCoordinator {
 }
 
 private extension HomepageCoordinator {
-    func makeAppCoverView(windowSize: CGSize) -> UIView {
+    func makeAppCoverViewController(windowSize: CGSize) -> UIViewController {
         let view = AppCoverView(windowSize: windowSize,
                                 onAuth: { [weak self] in
                                     guard let self else { return }
@@ -70,7 +74,7 @@ private extension HomepageCoordinator {
                                     guard let self else { return }
                                     handleFailedLocalAuthentication()
                                 })
-        return UIHostingController(rootView: view).view
+        return UIHostingController(rootView: view)
     }
 
     func uncoverApp() {

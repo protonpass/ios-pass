@@ -36,6 +36,8 @@ struct PinAuthenticationView: View {
 
     var body: some View {
         VStack(alignment: .center) {
+            Spacer()
+
             Image(uiImage: PassIcon.passIcon)
                 .resizable()
                 .scaledToFit()
@@ -106,14 +108,8 @@ struct PinAuthenticationView: View {
                 viewModel.onAuth()
                 isFocused = true
             }
-            // Delay keyboard appearance when in extension context because
-            // it takes longer for the view to be rendered
-            if module == .hostApp {
+            DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
                 notifyAuthProcessAndFocus()
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                    notifyAuthProcessAndFocus()
-                }
             }
         }
     }
