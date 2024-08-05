@@ -528,6 +528,10 @@ extension HomepageCoordinator {
                     presentSecureLinkDetail(link: link)
                 case .addAccount:
                     beginAddAccountFlow()
+                case .simpleLoginSyncActivation:
+                    presentSimpleLoginAliasActivation()
+                case .aliasesSyncConfiguration:
+                    presentAliasSyncConfiguration()
                 }
             }
             .store(in: &cancellables)

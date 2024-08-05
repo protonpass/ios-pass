@@ -68,6 +68,12 @@ struct ProfileTabView: View {
 
                 itemCountSection
 
+                if !viewModel.dismissedAliasesSyncExplanation,
+                   let userSyncData = viewModel.userAliasSyncData,
+                   !userSyncData.aliasSyncEnabled {
+                    aliasSyncExplanation(userSyncData.pendingAliasToSync)
+                }
+
                 securitySection
                     .padding(.vertical)
 
@@ -76,6 +82,9 @@ struct ProfileTabView: View {
                 } else {
                     autoFillDisabledSection
                 }
+
+                aliasesSection
+                    .padding(.vertical)
 
                 if viewModel.isSecureLinkActive {
                     secureLinkSection
@@ -352,6 +361,13 @@ struct ProfileTabView: View {
         .padding(.horizontal)
     }
 
+    private var aliasesSection: some View {
+        TextOptionRow(title: #localized("Aliases"), action: { viewModel.showAliasSyncConfiguration() })
+            .frame(height: 75)
+            .roundedEditableSection()
+            .padding(.horizontal)
+    }
+
     private var helpCenterSection: some View {
         VStack(spacing: 0) {
             Text("Help center")
@@ -390,6 +406,13 @@ struct ProfileTabView: View {
         }
         .roundedEditableSection()
         .padding(.horizontal)
+    }
+
+    private func aliasSyncExplanation(_ missingAliases: Int) -> some View {
+        AliasSyncExplanationView(missingAliases: missingAliases,
+                                 closeAction: viewModel.dismissAliasesSyncExplanation) {
+            viewModel.showSimpleLoginAliasesActivation()
+        }
     }
 }
 
