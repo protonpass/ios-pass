@@ -148,7 +148,6 @@ private extension SecuritySettingsCoordinator {
             }
         } else {
             let view = LocalAuthenticationView(mode: .biometric,
-                                               delayed: false,
                                                onAuth: {},
                                                onSuccess: succesHandler,
                                                onFailure: failureHandler)
@@ -206,7 +205,6 @@ private extension SecuritySettingsCoordinator {
         }
 
         let view = LocalAuthenticationView(mode: .pin,
-                                           delayed: false,
                                            onAuth: {},
                                            onSuccess: successHandler,
                                            onFailure: failureHandler)
@@ -227,7 +225,6 @@ private extension SecuritySettingsCoordinator {
         }
 
         let view = LocalAuthenticationView(mode: .pin,
-                                           delayed: false,
                                            onAuth: {},
                                            onSuccess: successHandler,
                                            onFailure: failureHandler)
