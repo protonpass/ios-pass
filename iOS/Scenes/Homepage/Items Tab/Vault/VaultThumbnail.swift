@@ -18,17 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
-import Entities
-import SwiftUI
-
-struct VaultThumbnail: View {
-    let vault: Vault
-
-    var body: some View {
-        CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-                     iconColor: vault.displayPreferences.color.color.color,
-                     backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16))
-            .animation(.default, value: vault)
-    }
-}
+// import DesignSystem
+// import Entities
+// import SwiftUI
+//
+// struct VaultThumbnail: View {
+//    let vault: Vault
+//
+//    var body: some View {
+//        CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
+//                     iconColor: vault.displayPreferences.color.color.color,
+//                     backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16))
+//            .animation(.default, value: vault)
+//    }
+// }

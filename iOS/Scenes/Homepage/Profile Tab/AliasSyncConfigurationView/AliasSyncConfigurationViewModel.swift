@@ -20,15 +20,166 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
+import Client
+import Combine
+import Core
+import Entities
+import Factory
+import Macro
+import ProtonCoreLogin
+import ProtonCoreServices
+import Screens
+import SwiftUI
+import UseCases
 
 @MainActor
 final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
+    @Published var selectedVault: VaultListUiModel?
+    @Published private(set) var vaults: [VaultListUiModel] = []
+
+    @Published var defaultDomain: Domain?
+    @Published private(set) var domains: [Domain] = []
+
+    @Published var defaultMailbox: Mailbox?
+    @Published private(set) var mailboxes: [Mailbox] = []
+
+    @Published private(set) var userAliasSyncData: UserAliasSyncData?
+    private var aliasSettings: AliasSettings?
+
+    @Published private(set) var loading = false
+
+    @LazyInjected(\SharedRepositoryContainer
+        .accessRepository) private var accessRepository: any AccessRepositoryProtocol
+    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
+
+    private var selectedVaultTask: Task<Void, Never>?
+    private var selectedDomainTask: Task<Void, Never>?
+
+    private var cancellables = Set<AnyCancellable>()
+
     init() {
         setUp()
+    }
+
+    func showSimpleLoginAliasesActivation() {
+        router.present(for: .simpleLoginSyncActivation)
     }
 }
 
 private extension AliasSyncConfigurationViewModel {
-    func setUp() {}
+    func setUp() {
+        Task {
+            do {
+                let userId = try await userManager.getActiveUserId()
+                userAliasSyncData = try? await accessRepository.getAccess().access.userData
+                vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
+                if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {
+                    guard let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) else {
+                        let mainVault = await getMainVault()
+                        self.selectedVault = vaults.first(where: { $0.vault.shareId == mainVault?.shareId })
+                        return
+                    }
+                    self.selectedVault = selectedVault
+                }
+
+                aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
+                domains = try await aliasRepository.getAllAliasDomains(userId: userId)
+                defaultDomain = domains.first { $0.id == aliasSettings?.defaultAliasDomain } ?? domains.first
+            } catch {
+                handle(error: error)
+            }
+        }
+
+        $selectedVault
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] vault in
+                guard let self,
+                      let userSyncData = userAliasSyncData,
+                      userSyncData.aliasSyncEnabled,
+                      userSyncData.defaultShareID != vault.vault.shareId else {
+                    return
+                }
+                selectedVaultTask?.cancel()
+                selectedVaultTask = Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await updateVaultSync()
+                }
+            }
+            .store(in: &cancellables)
+
+        $defaultDomain
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+//            .compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] domain in
+                guard let self,
+                      aliasSettings?.defaultAliasDomain != domain?.domain else {
+                    return
+                }
+                selectedDomainTask?.cancel()
+                selectedDomainTask = Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await updateDomainSync()
+                }
+            }
+            .store(in: &cancellables)
+
+//        accessRepository.access
+//            .receive(on: DispatchQueue.main)
+//            .compactMap { $0 }
+//            .removeDuplicates()
+//            .sink { [weak self] userAccess in
+//                guard let self,
+//                      let currentActiveUser,
+//                      currentActiveUser.userId == userAccess.userId else { return }
+//                userAliasSyncData = userAccess.access.userData
+//            }
+//            .store(in: &cancellables)
+    }
+
+    func updateVaultSync() async {
+        defer { loading = false }
+        do {
+            loading = true
+            let userId = try await userManager.getActiveUserId()
+            try await aliasRepository.enableSlAliasSync(userId: userId,
+                                                        defaultShareID: selectedVault?.vault.shareId)
+            userAliasSyncData = try await accessRepository.getAccess().access.userData
+        } catch {
+            handle(error: error)
+        }
+    }
+
+    func updateDomainSync() async {
+        defer { loading = false }
+        do {
+            loading = true
+            let userId = try await userManager.getActiveUserId()
+            try await aliasRepository.updateAliasSettings(userId: userId,
+                                                          request: UpdateAliasSettingsRequest(defaultAliasDomain:
+                                                              defaultDomain?
+                                                                  .domain))
+            aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
+        } catch {
+            handle(error: error)
+        }
+    }
+
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
 }

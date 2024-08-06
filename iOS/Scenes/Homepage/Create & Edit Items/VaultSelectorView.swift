@@ -21,6 +21,7 @@
 import DesignSystem
 import Entities
 import Factory
+import Screens
 import SwiftUI
 
 struct VaultSelectorView: View {

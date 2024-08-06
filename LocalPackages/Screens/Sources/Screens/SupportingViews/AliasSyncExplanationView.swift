@@ -25,10 +25,10 @@ import SwiftUI
 
 public struct AliasSyncExplanationView: View {
     let missingAliases: Int
-    let closeAction: () -> Void
+    let closeAction: (() -> Void)?
     let action: () -> Void
 
-    public init(missingAliases: Int, closeAction: @escaping () -> Void, action: @escaping () -> Void) {
+    public init(missingAliases: Int, closeAction: (() -> Void)?, action: @escaping () -> Void) {
         self.missingAliases = missingAliases
         self.closeAction = closeAction
         self.action = action
@@ -54,18 +54,20 @@ public struct AliasSyncExplanationView: View {
             }
             .padding(24)
 
-            Button(action: closeAction) {
-                Image(uiImage: IconProvider.cross)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .frame(width: 16, height: 16)
-                    .padding(16)
-                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+            if let closeAction {
+                Button(action: closeAction) {
+                    Image(uiImage: IconProvider.cross)
+                        .resizable()
+                        .renderingMode(.template)
+                        .scaledToFit()
+                        .frame(width: 16, height: 16)
+                        .padding(16)
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                }
             }
         }
 
         .roundedEditableSection()
-        .padding(.horizontal)
+//        .padding(.horizontal)
     }
 }

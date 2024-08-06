@@ -413,7 +413,7 @@ struct ProfileTabView: View {
         AliasSyncExplanationView(missingAliases: missingAliases,
                                  closeAction: viewModel.dismissAliasesSyncExplanation) {
             viewModel.showSimpleLoginAliasesActivation()
-        }
+        }.padding(.horizontal)
     }
 }
 

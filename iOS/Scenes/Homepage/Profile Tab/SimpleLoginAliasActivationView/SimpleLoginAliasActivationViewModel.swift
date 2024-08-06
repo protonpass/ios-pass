@@ -37,6 +37,8 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
     @Published var selectedVault: VaultListUiModel?
     @Published private(set) var vaults: [VaultListUiModel] = []
 
+    @Published private(set) var loading = false
+
     @LazyInjected(\SharedRepositoryContainer
         .accessRepository) private var accessRepository: any AccessRepositoryProtocol
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
@@ -57,21 +59,18 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
     }
 
     func activateSync() async throws {
+        defer { loading = false }
         do {
+            loading = true
             let userId = try await userManager.getActiveUserId()
             try await aliasRepository.enableSlAliasSync(userId: userId,
                                                         defaultShareID: selectedVault?.vault.shareId)
+            try await accessRepository.refreshAccess()
         } catch {
             logger.error(error)
             router.display(element: .displayErrorBanner(error))
             throw error
         }
-//        Task { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//
-//        }
     }
 }
 
@@ -91,21 +90,3 @@ private extension SimpleLoginAliasActivationViewModel {
         }
     }
 }
-
-//    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-//    private let logger = resolve(\SharedToolingContainer.logger)
-//    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-//    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
-//    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-//
-//    let allVaults: [VaultListUiModel]
-//
-//    @Published private(set) var selectedVault: Vault?
-//    @Published private(set) var isFreeUser = false
-//
-//    init() {
-//        allVaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
-//        selectedVault = vaultsManager.vaultSelection.preciseVault
-//
-//        setup()
-//    }

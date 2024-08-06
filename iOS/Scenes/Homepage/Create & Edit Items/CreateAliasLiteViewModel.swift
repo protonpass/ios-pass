@@ -56,9 +56,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
         canCreateAlias = options.canCreateAlias
         suffixSelection = .init(suffixes: options.suffixes, selectedSuffix: creationInfo.suffix)
-        // TODO: remove test
-        mailboxSelection = .init(allUserMailboxes: Mailbox
-            .test) /* .init(allUserMailboxes: options.mailboxes, selectedMailboxes: creationInfo.mailboxes) */
+        mailboxSelection = .init(allUserMailboxes: options.mailboxes, selectedMailboxes: creationInfo.mailboxes)
 
         prefix = creationInfo.prefix
 

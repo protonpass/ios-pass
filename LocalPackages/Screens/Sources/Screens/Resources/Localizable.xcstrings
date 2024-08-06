@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld item(s)" : {
+
+    },
     "Add account" : {
       "localizations" : {
         "be" : {
@@ -1411,6 +1414,12 @@
           }
         }
       }
+    },
+    "Default SimpleLogin vault" : {
+
+    },
+    "Empty" : {
+
     },
     "Enable SimpleLogin sync" : {
 
@@ -4137,6 +4146,9 @@
           }
         }
       }
+    },
+    "Select a default vault for aliases sync" : {
+
     },
     "Select an existing login or create a new one." : {
       "localizations" : {
