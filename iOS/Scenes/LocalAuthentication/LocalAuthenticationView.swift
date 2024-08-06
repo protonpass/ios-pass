@@ -28,8 +28,8 @@ struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
 
     init(mode: LocalAuthenticationViewModel.Mode,
-         delayed: Bool,
-         manuallyAvoidKeyboard: Bool,
+         delayed: Bool = false,
+         manuallyAvoidKeyboard: Bool = false,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {

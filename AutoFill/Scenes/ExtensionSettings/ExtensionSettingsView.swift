@@ -82,8 +82,6 @@ struct ExtensionSettingsView: View {
                 }
             }
         }
-        .localAuthentication(delayed: false,
-                             manuallyAvoidKeyboard: false,
-                             onFailure: onLogOut)
+        .localAuthentication(onFailure: onLogOut)
     }
 }
