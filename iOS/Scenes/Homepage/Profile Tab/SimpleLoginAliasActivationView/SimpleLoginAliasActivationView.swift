@@ -34,22 +34,26 @@ struct SimpleLoginAliasActivationView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
-            Button(action: {
+            SelectedSyncVaultRow(vault: viewModel.selectedVault?.vault) {
                 showVaultSelectionSheet.toggle()
-            }, label: {
-                selectedVault(vault: viewModel.selectedVault?.vault)
-                    .padding(.horizontal)
-            })
-            .buttonStyle(.plain)
-            .roundedEditableSection()
-            .padding(.bottom, 10)
+            }
+//            .padding(.horizontal)
+//            Button(action: {
+//                showVaultSelectionSheet.toggle()
+//            }, label: {
+//                SelectedSyncVaultRow(vault: viewModel.selectedVault?.vault)
+//                    .padding(.horizontal)
+//            })
+//            .buttonStyle(.plain)
+//            .roundedEditableSection()
+//            .padding(.bottom, 10)
 
             Text("SimpleLogin aliases will be imported into this vault.")
                 .font(.footnote)
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(maxWidth: .infinity, alignment: .center)
         }
-        .animation(.default, value: viewModel.selectedVault)
+//        .animation(.default, value: viewModel.selectedVault)
         .padding(.horizontal, DesignConstant.sectionPadding)
         .navigationTitle("Sync Aliases")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -59,104 +63,40 @@ struct SimpleLoginAliasActivationView: View {
         .sheet(isPresented: $showVaultSelectionSheet) {
             VaultSelectionView(selectedVault: $viewModel.selectedVault,
                                vaults: viewModel.vaults)
+                .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
-//        .showSpinner(viewModel.loading)
+        .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
     }
 
-    func selectedVault(vault: Vault?) -> some View {
-        HStack(spacing: 16) {
-            if let vault {
-                VaultThumbnail(vault: vault)
-            }
-
-            VStack(alignment: .leading) {
-                Text("Default SimpleLogin vault")
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-
-                Text(vault?.name ?? "None")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-            }
-            Spacer()
-
-            Image(uiImage: IconProvider.chevronRight)
-                .resizable()
-                .scaledToFit()
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxHeight: 20)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 70)
-        .contentShape(.rect)
-    }
-}
-
-// struct VaultRow<Thumbnail: View>: View {
-//    let thumbnail: () -> Thumbnail
-//    let title: String
-//    let itemCount: Int
-//    let isShared: Bool
-//    let isSelected: Bool
-//    var showBadge = false
-//    var maxWidth: CGFloat? = .infinity
-//    var height: CGFloat = 70
-//
-//    var body: some View {
+//    func selectedVault(vault: Vault?) -> some View {
 //        HStack(spacing: 16) {
-//            thumbnail()
+//            if let vault {
+//                VaultThumbnail(vault: vault)
+//            }
 //
 //            VStack(alignment: .leading) {
-//                Text(title)
+//                Text("Default SimpleLogin vault")
+//                    .font(.callout)
+//                    .foregroundStyle(PassColor.textWeak.toColor)
+//
+//                Text(vault?.name ?? "None")
 //                    .foregroundStyle(PassColor.textNorm.toColor)
-//
-//                if itemCount == 0 {
-//                    Text("Empty")
-//                        .placeholderText()
-//                } else {
-//                    Text("\(itemCount) item(s)")
-//                        .font(.callout)
-//                        .foregroundStyle(PassColor.textWeak.toColor)
-//                }
 //            }
+//            Spacer()
 //
-//            if maxWidth != nil {
-//                Spacer()
-//            }
-//
-//            if isShared {
-//                HStack(spacing: 0) {
-//                    Image(uiImage: IconProvider.users)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .foregroundStyle(PassColor.textWeak.toColor)
-//                        .frame(maxHeight: 20)
-//                    if showBadge {
-//                        Image(uiImage: IconProvider.exclamationCircleFilled)
-//                            .resizable()
-//                            .scaledToFit()
-//                            .foregroundStyle(PassColor.signalDanger.toColor)
-//                            .frame(maxHeight: 16)
-//                            .offset(y: -10)
-//                    }
-//                }
-//            }
-//
-//            if isSelected {
-//                Image(uiImage: IconProvider.checkmark)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .foregroundStyle(PassColor.interactionNorm.toColor)
-//                    .frame(maxHeight: 20)
-//            }
+//            Image(uiImage: IconProvider.chevronRight)
+//                .resizable()
+//                .scaledToFit()
+//                .foregroundStyle(PassColor.textWeak.toColor)
+//                .frame(maxHeight: 20)
 //        }
-//        .frame(maxWidth: maxWidth)
-//        .frame(height: height)
+//        .frame(maxWidth: .infinity)
+//        .frame(height: 70)
 //        .contentShape(.rect)
-//        .animation(.default, value: isSelected)
 //    }
-// }
+}
 
 private extension SimpleLoginAliasActivationView {
     @ToolbarContentBuilder
@@ -186,12 +126,6 @@ private extension SimpleLoginAliasActivationView {
                     }
                 }
             }
-//            CircleButton(icon: IconProvider.cross,
-//                         iconColor: viewModel.item.contentData.type.normMajor2Color,
-//                         backgroundColor: viewModel.item.contentData.type.normMinor1Color,
-//                         accessibilityLabel: "Close") {
-//                dismiss()
-//            }
         }
     }
 }
@@ -202,105 +136,105 @@ struct SimpleLoginAliasActivationView_Previews: PreviewProvider {
     }
 }
 
-import DesignSystem
-import Entities
-import Factory
-import ProtonCoreUIFoundations
-import SwiftUI
+// import DesignSystem
+// import Entities
+// import Factory
+// import ProtonCoreUIFoundations
+// import SwiftUI
 
 // MailboxSelectionView(mailboxSelection: mailboxSelection,
 //                     title: title)
 
-public struct VaultSelectionView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Binding var selectedVault: VaultListUiModel?
-    public let vaults: [VaultListUiModel]
-
-    public init(selectedVault: Binding<VaultListUiModel?>, vaults: [VaultListUiModel]) {
-        _selectedVault = selectedVault
-        self.vaults = vaults
-    }
-
-    public var body: some View {
-        NavigationStack {
-            // ZStack instead of VStack because of SwiftUI bug.
-            // See more in "CreateAliasLiteView.swift"
-//            ZStack(alignment: .bottom) {
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(vaults, id: \.vault.id) { vault in
-                        let isSelected = vault == selectedVault
-                        Button(action: {
-                            selectedVault = vault
-                            dismiss()
-                        }, label: {
-                            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
-                                     title: vault.vault.name,
-                                     itemCount: vault.itemCount,
-                                     isShared: vault.vault.shared,
-                                     isSelected: isSelected,
-                                     height: 74)
-                                .padding(.horizontal)
-                        })
-                        .buttonStyle(.plain)
-
-//                            let isSelected = mailboxSelection.selectedMailboxes.contains(mailbox)
-//                            HStack {
-//                                Text(mailbox.email)
-//                                    .foregroundStyle(isSelected ?
-//                                        PassColor.loginInteractionNormMajor2.toColor : PassColor
-//                                        .textNorm.toColor)
-//                                Spacer()
+// public struct VaultSelectionView: View {
+//    @Environment(\.dismiss) private var dismiss
+//    @Binding var selectedVault: VaultListUiModel?
+//    public let vaults: [VaultListUiModel]
 //
-//                                if isSelected {
-//                                    Image(uiImage: IconProvider.checkmark)
-//                                        .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
-//                                }
-//                            }
-//                            .contentShape(.rect)
-//                            .background(Color.clear)
-//                            .padding(.horizontal)
-//                            .frame(height: OptionRowHeight.compact.value)
-//                            .onTapGesture {
-//                                mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
-//                            }
+//    public init(selectedVault: Binding<VaultListUiModel?>, vaults: [VaultListUiModel]) {
+//        _selectedVault = selectedVault
+//        self.vaults = vaults
+//    }
 //
-//                            PassDivider()
+//    public var body: some View {
+//        NavigationStack {
+//            // ZStack instead of VStack because of SwiftUI bug.
+//            // See more in "CreateAliasLiteView.swift"
+////            ZStack(alignment: .bottom) {
+//            ScrollView {
+//                LazyVStack(spacing: 0) {
+//                    ForEach(vaults, id: \.vault.id) { vault in
+//                        let isSelected = vault == selectedVault
+//                        Button(action: {
+//                            selectedVault = vault
+//                            dismiss()
+//                        }, label: {
+//                            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
+//                                     title: vault.vault.name,
+//                                     itemCount: vault.itemCount,
+//                                     isShared: vault.vault.shared,
+//                                     isSelected: isSelected,
+//                                     height: 74)
 //                                .padding(.horizontal)
-                    }
-
-                    // Gimmick view to take up space
-                    closeButton
-                        .opacity(0)
-                        .padding()
-                        .disabled(true)
-                }
-            }
-
-//                closeButton
-//                    .padding()
+//                        })
+//                        .buttonStyle(.plain)
+//
+////                            let isSelected = mailboxSelection.selectedMailboxes.contains(mailbox)
+////                            HStack {
+////                                Text(mailbox.email)
+////                                    .foregroundStyle(isSelected ?
+////                                        PassColor.loginInteractionNormMajor2.toColor : PassColor
+////                                        .textNorm.toColor)
+////                                Spacer()
+////
+////                                if isSelected {
+////                                    Image(uiImage: IconProvider.checkmark)
+////                                        .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
+////                                }
+////                            }
+////                            .contentShape(.rect)
+////                            .background(Color.clear)
+////                            .padding(.horizontal)
+////                            .frame(height: OptionRowHeight.compact.value)
+////                            .onTapGesture {
+////                                mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+////                            }
+////
+////                            PassDivider()
+////                                .padding(.horizontal)
+//                    }
+//
+//                    // Gimmick view to take up space
+//                    closeButton
+//                        .opacity(0)
+//                        .padding()
+//                        .disabled(true)
+//                }
 //            }
-            .background(PassColor.backgroundWeak.toColor)
-            .navigationBarTitleDisplayMode(.inline)
-            .animation(.default, value: selectedVault)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Select a default vault for aliases sync")
-                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
-
-//                        .navigationTitleText()
-                }
-            }
-        }
-    }
-
-    private var closeButton: some View {
-        Button(action: dismiss.callAsFunction) {
-            Text("Close")
-                .foregroundStyle(PassColor.textNorm.toColor)
-        }
-    }
-}
+//
+////                closeButton
+////                    .padding()
+////            }
+//            .background(PassColor.backgroundWeak.toColor)
+//            .navigationBarTitleDisplayMode(.inline)
+//            .animation(.default, value: selectedVault)
+//            .toolbar {
+//                ToolbarItem(placement: .principal) {
+//                    Text("Select a default vault for aliases sync")
+//                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
+//
+////                        .navigationTitleText()
+//                }
+//            }
+//        }
+//    }
+//
+//    private var closeButton: some View {
+//        Button(action: dismiss.callAsFunction) {
+//            Text("Close")
+//                .foregroundStyle(PassColor.textNorm.toColor)
+//        }
+//    }
+// }
 
 //
 //
