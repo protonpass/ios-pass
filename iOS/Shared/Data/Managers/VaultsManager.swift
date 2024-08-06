@@ -65,6 +65,9 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
     private(set) var filterOption = ItemTypeFilterOption.all
 
+    @AppStorage(Constants.incompleteFullSyncUserId, store: kSharedUserDefaults)
+    private(set) var incompleteFullSyncUserId: String?
+
     let currentVaults: CurrentValueSubject<[Vault], Never> = .init([])
 
     let vaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>(.initialization)
@@ -225,12 +228,12 @@ extension VaultsManager {
 
             if await loginMethod.isManualLogIn() {
                 logger.info("Manual login, doing full sync")
-                try await fullSync(userId: userId)
+                await fullSync(userId: userId)
                 await loginMethod.setLogInFlow(newState: false)
                 logger.info("Manual login, done full sync")
             } else if cryptoErrorOccured {
                 logger.info("Crypto error occurred. Doing full sync")
-                try await fullSync(userId: userId)
+                await fullSync(userId: userId)
                 logger.info("Crypto error occurred. Done full sync")
             } else {
                 logger.info("Not manual login, getting local shares & items")
@@ -244,48 +247,55 @@ extension VaultsManager {
     }
 
     // Delete everything and download again
-    func fullSync(userId: String) async throws {
+    func fullSync(userId: String) async {
         vaultSyncEventStream.send(.started)
+        incompleteFullSyncUserId = userId
 
-        // 1. Delete all local data
-        try await deleteLocalDataBeforeFullSync()
+        do {
+            // 1. Delete all local data
+            try await deleteLocalDataBeforeFullSync()
 
-        // 2. Get all remote shares and their items
-        let remoteShares = try await shareRepository.getRemoteShares(userId: userId,
-                                                                     eventStream: vaultSyncEventStream)
-        await withThrowingTaskGroup(of: Void.self) { taskGroup in
-            for share in remoteShares {
-                taskGroup.addTask { [weak self] in
-                    guard let self else { return }
-                    try await shareRepository.upsertShares(userId: userId,
-                                                           shares: [share],
-                                                           eventStream: vaultSyncEventStream)
-                    try await itemRepository.refreshItems(userId: userId,
-                                                          shareId: share.shareID,
-                                                          eventStream: vaultSyncEventStream)
+            // 2. Get all remote shares and their items
+            let remoteShares = try await shareRepository.getRemoteShares(userId: userId,
+                                                                         eventStream: vaultSyncEventStream)
+            await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for share in remoteShares {
+                    taskGroup.addTask { [weak self] in
+                        guard let self else { return }
+                        try await shareRepository.upsertShares(userId: userId,
+                                                               shares: [share],
+                                                               eventStream: vaultSyncEventStream)
+                        try await itemRepository.refreshItems(userId: userId,
+                                                              shareId: share.shareID,
+                                                              eventStream: vaultSyncEventStream)
+                    }
                 }
             }
+
+            // 3. Create default vault if no vaults
+            if remoteShares.isEmpty {
+                try await createDefaultVault()
+            }
+
+            // 4. Load vaults and their contents
+            var vaults = try await shareRepository.getVaults(userId: userId)
+
+            // 5. Check if in "forgot password" scenario. Create a new default vault if applicable
+            let hasRemoteVaults = remoteShares.contains(where: { $0.shareType == .vault })
+            // We see that there are remote vaults but we can't decrypt any of them
+            // => "forgot password" happened
+            if hasRemoteVaults, vaults.isEmpty {
+                try await createDefaultVault()
+                vaults = try await shareRepository.getVaults(userId: userId)
+            }
+
+            try await loadContents(userId: userId, for: vaults)
+        } catch {
+            vaultSyncEventStream.send(.error(userId: userId, error: error))
+            return
         }
 
-        // 3. Create default vault if no vaults
-        if remoteShares.isEmpty {
-            try await createDefaultVault()
-        }
-
-        // 4. Load vaults and their contents
-        var vaults = try await shareRepository.getVaults(userId: userId)
-
-        // 5. Check if in "forgot password" scenario. Create a new default vault if applicable
-        let hasRemoteVaults = remoteShares.contains(where: { $0.shareType == .vault })
-        // We see that there are remote vaults but we can't decrypt any of them
-        // => "forgot password" happened
-        if hasRemoteVaults, vaults.isEmpty {
-            try await createDefaultVault()
-            vaults = try await shareRepository.getVaults(userId: userId)
-        }
-
-        try await loadContents(userId: userId, for: vaults)
-
+        incompleteFullSyncUserId = nil
         vaultSyncEventStream.send(.done)
     }
 
