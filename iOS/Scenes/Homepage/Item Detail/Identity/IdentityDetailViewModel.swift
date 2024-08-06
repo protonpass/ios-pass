@@ -145,9 +145,13 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         extraWorkDetails = data.extraWorkDetails.map(\.toCustomFieldUiModel)
         extraSections = data.extraSections
     }
+
+    var sections: [Section] {
+        [personalDetailsSection, addressDetailsSection, contactDetailsSection, workDetailsSection]
+    }
 }
 
-extension IdentityDetailViewModel {
+private extension IdentityDetailViewModel {
     var personalDetailsSection: Section {
         .init(title: #localized("Personal details"),
               rows: [
