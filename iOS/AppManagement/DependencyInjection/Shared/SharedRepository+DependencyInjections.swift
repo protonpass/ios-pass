@@ -217,7 +217,7 @@ extension SharedRepositoryContainer {
     }
 
     var aliasRepository: Factory<any AliasRepositoryProtocol> {
-        self { AliasRepository(remoteDatasouce: self.remoteAliasDatasource(),
+        self { AliasRepository(remoteDatasource: self.remoteAliasDatasource(),
                                userManager: self.userManager) }
     }
 

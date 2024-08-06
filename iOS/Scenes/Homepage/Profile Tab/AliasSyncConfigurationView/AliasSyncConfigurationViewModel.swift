@@ -40,9 +40,8 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     @Published var defaultDomain: Domain?
     @Published private(set) var domains: [Domain] = []
 
-    @Published var defaultMailbox: Mailbox?
-    @Published private(set) var mailboxes: [Mailbox] = []
-
+    @Published var defaultMailbox: MailboxSettings?
+    @Published private(set) var mailboxes: [MailboxSettings] = []
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
     private var aliasSettings: AliasSettings?
 
@@ -59,6 +58,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 
     private var selectedVaultTask: Task<Void, Never>?
     private var selectedDomainTask: Task<Void, Never>?
+    private var selectedMailboxTask: Task<Void, Never>?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -74,8 +74,9 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 private extension AliasSyncConfigurationViewModel {
     func setUp() {
         Task {
+            defer { loading = false }
+            loading = true
             do {
-                let userId = try await userManager.getActiveUserId()
                 userAliasSyncData = try? await accessRepository.getAccess().access.userData
                 vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
                 if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {
@@ -87,9 +88,16 @@ private extension AliasSyncConfigurationViewModel {
                     self.selectedVault = selectedVault
                 }
 
+                let userId = try await userManager.getActiveUserId()
                 aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
-                domains = try await aliasRepository.getAllAliasDomains(userId: userId)
+                async let fetchDomains = try aliasRepository.getAllAliasDomains(userId: userId)
+                async let fetchedMailboxes = try aliasRepository.getAllAliasMailboxes(userId: userId)
+                let result = try await (fetchDomains, fetchedMailboxes)
+
+                domains = result.0
+                mailboxes = result.1
                 defaultDomain = domains.first { $0.id == aliasSettings?.defaultAliasDomain } ?? domains.first
+                defaultMailbox = mailboxes.first { $0.id == aliasSettings?.defaultMailboxID } ?? mailboxes.first
             } catch {
                 handle(error: error)
             }
@@ -120,7 +128,6 @@ private extension AliasSyncConfigurationViewModel {
         $defaultDomain
             .receive(on: DispatchQueue.main)
             .dropFirst()
-//            .compactMap { $0 }
             .removeDuplicates()
             .sink { [weak self] domain in
                 guard let self,
@@ -137,17 +144,25 @@ private extension AliasSyncConfigurationViewModel {
             }
             .store(in: &cancellables)
 
-//        accessRepository.access
-//            .receive(on: DispatchQueue.main)
-//            .compactMap { $0 }
-//            .removeDuplicates()
-//            .sink { [weak self] userAccess in
-//                guard let self,
-//                      let currentActiveUser,
-//                      currentActiveUser.userId == userAccess.userId else { return }
-//                userAliasSyncData = userAccess.access.userData
-//            }
-//            .store(in: &cancellables)
+        $defaultMailbox
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] mailbox in
+                guard let self,
+                      aliasSettings?.defaultMailboxID != mailbox?.mailboxID else {
+                    return
+                }
+                selectedMailboxTask?.cancel()
+                selectedMailboxTask = Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await updateMailboxSync()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func updateVaultSync() async {
@@ -168,11 +183,23 @@ private extension AliasSyncConfigurationViewModel {
         do {
             loading = true
             let userId = try await userManager.getActiveUserId()
-            try await aliasRepository.updateAliasSettings(userId: userId,
-                                                          request: UpdateAliasSettingsRequest(defaultAliasDomain:
-                                                              defaultDomain?
-                                                                  .domain))
-            aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
+            aliasSettings = try await aliasRepository
+                .updateAliasDefaultDomain(userId: userId,request: UpdateAliasDomainRequest(defaultAliasDomain: defaultDomain?.domain))
+        } catch {
+            handle(error: error)
+        }
+    }
+
+    func updateMailboxSync() async {
+        guard let defaultMailbox else {
+            return
+        }
+        defer { loading = false }
+        do {
+            loading = true
+            let userId = try await userManager.getActiveUserId()
+            aliasSettings = try await aliasRepository
+                .updateAliasDefaultMailbox(userId: userId, request: UpdateAliasMailboxRequest(defaultMailboxID: defaultMailbox.mailboxID))
         } catch {
             handle(error: error)
         }
