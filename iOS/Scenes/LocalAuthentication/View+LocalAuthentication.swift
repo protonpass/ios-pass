@@ -137,8 +137,8 @@ struct LocalAuthenticationModifier: ViewModifier {
 
 extension View {
     @MainActor
-    func localAuthentication(delayed: Bool,
-                             manuallyAvoidKeyboard: Bool,
+    func localAuthentication(delayed: Bool = false,
+                             manuallyAvoidKeyboard: Bool = false,
                              onAuth: (() -> Void)? = nil,
                              onAuthSkipped: (() -> Void)? = nil,
                              onSuccess: (() -> Void)? = nil,
