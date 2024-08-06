@@ -49,12 +49,16 @@ public final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsU
     public func execute(policy: LAPolicy) async throws -> [LocalAuthenticationMethodUiModel] {
         var supportedTypes = [LocalAuthenticationMethodUiModel]()
 
-        if accessRepository.access.value?.access.plan.isBusinessUser == true {
-            if let organization = try await organizationRepository.getOrganization(),
-               organization.settings?.appLockTime == nil {
-                supportedTypes.append(.none)
+        var enforcedAppLockTime = false
+        for access in accessRepository.accesses.value where access.access.plan.isBusinessUser {
+            if let organization = try await organizationRepository.getOrganization(userId: access.userId),
+               organization.settings?.appLockTime != nil,
+               !enforcedAppLockTime {
+                enforcedAppLockTime = true
             }
-        } else {
+        }
+
+        if !enforcedAppLockTime {
             supportedTypes.append(.none)
         }
 
