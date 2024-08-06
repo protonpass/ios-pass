@@ -290,6 +290,7 @@ extension SharedUseCasesContainer {
                        removeUserLocalData: self.removeUserLocalData(),
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                       accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                        vaultsManager: self.vaultsManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
