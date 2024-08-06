@@ -179,8 +179,7 @@ extension CreateEditAliasViewModel {
                 let aliasOptions = try await getAliasOptions(shareId: shareId)
 
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                // TODO: remove test
-                mailboxSelection = .init(allUserMailboxes: Mailbox.test /* aliasOptions.mailboxes */ )
+                mailboxSelection = .init(allUserMailboxes: aliasOptions.mailboxes)
                 canCreateAlias = aliasOptions.canCreateAlias
 
                 if case let .edit(itemContent) = mode {

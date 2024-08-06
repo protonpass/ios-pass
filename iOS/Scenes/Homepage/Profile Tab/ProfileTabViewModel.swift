@@ -153,7 +153,6 @@ extension ProfileTabViewModel {
             let access = try await accessRepository.refreshAccess().access
             plan = access.plan
             userAliasSyncData = access.userData
-            accesses = try await localAccessDatasource.getAllAccesses()
         } catch {
             logger.error(error)
         }
@@ -433,10 +432,11 @@ private extension ProfileTabViewModel {
                 self.accesses = accesses
             }
             .store(in: &cancellables)
-        
+
         accessRepository.access
             .receive(on: DispatchQueue.main)
             .compactMap { $0 }
+            .removeDuplicates()
             .sink { [weak self] userAccess in
                 guard let self,
                       let currentActiveUser,

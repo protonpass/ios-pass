@@ -1,7 +1,7 @@
-//
-// VaultThumbnail.swift
-// Proton Pass - Created on 31/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+//  
+// MailboxSettings.swift
+// Proton Pass - Created on 06/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,17 +18,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// import DesignSystem
-// import Entities
-// import SwiftUI
-//
-// struct VaultThumbnail: View {
-//    let vault: Vault
-//
-//    var body: some View {
-//        CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-//                     iconColor: vault.displayPreferences.color.color.color,
-//                     backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16))
-//            .animation(.default, value: vault)
-//    }
-// }
+public struct MailboxSettings: Decodable, Hashable, Equatable, Sendable, Identifiable {
+    public let mailboxID: String
+    public let email: String
+    public let verified: Bool
+    public let isDefault: Bool
+
+   public init(mailboxID: String, email: String, verified: Bool) {
+        self.mailboxID = mailboxID
+        self.email = email
+        self.verified = verified
+    }
+    
+    public var id: String {
+        self.mailboxID
+    }
+}
