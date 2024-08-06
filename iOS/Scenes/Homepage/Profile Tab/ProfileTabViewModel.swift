@@ -319,7 +319,6 @@ extension ProfileTabViewModel {
                 secureLinks = try await secureLinkManager.updateSecureLinks()
             } catch {
                 logger.error(error)
-                router.display(element: .displayErrorBanner(error))
             }
         }
     }
