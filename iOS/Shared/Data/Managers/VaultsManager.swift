@@ -53,6 +53,9 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
 
+    @LazyInjected(\SharedUseCasesContainer.updateUserPreferences)
+    private var updateUserPreferences
+
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var state = VaultManagerState.loading
@@ -139,10 +142,9 @@ private extension VaultsManager {
 
     @MainActor
     func loadContents(userId: String, for vaults: [Vault]) async throws {
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
         let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
-        currentVaults.send(vaults)
         var vaultContentUiModels = vaults.map { vault in
             let items = allItemUiModels
                 .filter { $0.shareId == vault.shareId }
@@ -153,14 +155,6 @@ private extension VaultsManager {
 
         let trashedItems = allItemUiModels.filter { $0.state == .trashed }
 
-        // Reset to `all` when last selected vault is deleted
-        if case let .precise(selectedVault) = vaultSelection {
-            if !vaults.contains(where: { $0 == selectedVault }) {
-                vaultSelection = .all
-            }
-        }
-
-        state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
         let indexForAutoFillAndSplotlight: @Sendable () async -> Void = { [weak self] in
             guard let self else { return }
             // "Do catch" separately because we don't want an operation to fail the others
@@ -179,6 +173,15 @@ private extension VaultsManager {
             } catch {
                 logger.error(error)
             }
+        }
+
+        currentVaults.send(vaults)
+        state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
+        if let lastSelectedShareId = getUserPreferences().lastSelectedShareId,
+           let vault = vaults.first(where: { $0.shareId == lastSelectedShareId }) {
+            vaultSelection = .precise(vault)
+        } else {
+            vaultSelection = .all
         }
 
         if await loginMethod.isManualLogIn() {
@@ -293,6 +296,20 @@ extension VaultsManager {
 
     func select(_ selection: VaultSelection) {
         vaultSelection = selection
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                switch selection {
+                case .all, .trash:
+                    try await updateUserPreferences(\.lastSelectedShareId, value: nil)
+                case let .precise(vault):
+                    try await updateUserPreferences(\.lastSelectedShareId, value: vault.shareId)
+                }
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 
     func isSelected(_ selection: VaultSelection) -> Bool {

@@ -65,6 +65,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
 
+    // App cover/local authentication
+    @LazyInjected(\RouterContainer.window) var window
+    weak var appCoverView: UIView?
+
     // Lazily initialised properties
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) var apiManager
@@ -109,7 +113,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
-    private var authenticated = false
+    var authenticated = false
 
     weak var delegate: (any HomepageCoordinatorDelegate)?
     weak var homepageTabDelegate: (any HomepageTabDelegate)?
@@ -121,6 +125,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         finalizeInitialization()
         start()
         synchroniseData()
+        loadAccesses()
         refreshOrganizationAndOverrideSecuritySettings()
         refreshAccessAndMonitorStateSync()
         refreshSettings()
@@ -198,6 +203,14 @@ private extension HomepageCoordinator {
             .store(in: &cancellables)
 
         NotificationCenter.default
+            .publisher(for: UIApplication.willResignActiveNotification)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                coverApp()
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
@@ -250,23 +263,10 @@ private extension HomepageCoordinator {
                                           homepageCoordinator: self,
                                           delegate: self)
             .ignoresSafeArea(edges: [.top, .bottom])
-            .localAuthentication(delayed: false,
-                                 onAuth: { [weak self] in
-                                     guard let self else { return }
-                                     authenticated = false
-                                     dismissAllViewControllers(animated: false)
-                                     hideSecondaryView()
-                                 },
-                                 onSuccess: { [weak self] in
-                                     guard let self else { return }
-                                     authenticated = true
-                                     showSecondaryView()
-                                     logger.info("Local authentication succesful")
-                                 },
-                                 onFailure: { [weak self] in
-                                     guard let self else { return }
-                                     handleFailedLocalAuthentication()
-                                 })
+            .onFirstAppear { [weak self] in
+                guard let self else { return }
+                coverApp()
+            }
 
         start(with: homeView, secondaryView: placeholderView)
     }
@@ -291,6 +291,17 @@ private extension HomepageCoordinator {
             do {
                 let userId = try await userManager.getActiveUserId()
                 try await refreshAccessAndMonitorState(userId: userId)
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func loadAccesses() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await accessRepository.loadAccesses()
             } catch {
                 logger.error(error)
             }
