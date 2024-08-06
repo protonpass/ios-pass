@@ -142,6 +142,7 @@ struct ItemsTabView: View {
             }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
+                viewModel.continueFullSyncIfNeeded()
             }
         }
         .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)

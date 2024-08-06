@@ -121,21 +121,17 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
         closureRefresh()
     }
     // MARK: - fullSync
-    public var fullSyncUserIdThrowableError2: Error?
     public var closureFullSync: () -> () = {}
     public var invokedFullSyncfunction = false
     public var invokedFullSyncCount = 0
     public var invokedFullSyncParameters: (userId: String, Void)?
     public var invokedFullSyncParametersList = [(userId: String, Void)]()
 
-    public func fullSync(userId: String) async throws {
+    public func fullSync(userId: String) async {
         invokedFullSyncfunction = true
         invokedFullSyncCount += 1
         invokedFullSyncParameters = (userId, ())
         invokedFullSyncParametersList.append((userId, ()))
-        if let error = fullSyncUserIdThrowableError2 {
-            throw error
-        }
         closureFullSync()
     }
     // MARK: - localFullSync
