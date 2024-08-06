@@ -45,11 +45,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
 
     private let policy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private let getAuthMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -66,8 +66,12 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
+    @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
+    var canUpdateAppLockTime: Bool {
+        supportedLocalAuthenticationMethods.contains(where: { $0 == .none })
+    }
+
     @Published private(set) var appLockTime: AppLockTime
-    @Published private(set) var canUpdateAppLockTime = true
     @Published private(set) var fallbackToPasscode: Bool
     /// Whether user has picked Proton Pass as AutoFill provider in Settings
     @Published private(set) var autoFillEnabled = false
@@ -150,12 +154,24 @@ extension ProfileTabViewModel {
         }
     }
 
+    func updateSupportedLocalAuthenticationMethods() async {
+        do {
+            supportedLocalAuthenticationMethods = try await getAuthMethods(policy: policy)
+        } catch {
+            logger.error(error)
+        }
+    }
+
     func editLocalAuthenticationMethod() {
         Task { [weak self] in
             guard let self else {
                 return
             }
-            securitySettingsCoordinator.editMethod()
+            guard !supportedLocalAuthenticationMethods.isEmpty else {
+                assertionFailure("No local authentication methods supported")
+                return
+            }
+            securitySettingsCoordinator.editMethod(supportedLocalAuthenticationMethods)
         }
     }
 
@@ -350,18 +366,6 @@ private extension ProfileTabViewModel {
             }
             .store(in: &cancellables)
 
-        $plan
-            .receive(on: DispatchQueue.main)
-            .compactMap { $0 }
-            .removeDuplicates()
-            .sink { [weak self] plan in
-                guard let self else { return }
-                if plan.isBusinessUser {
-                    applyOrganizationSettings()
-                }
-            }
-            .store(in: &cancellables)
-
         secureLinkManager.currentSecureLinks
             .removeDuplicates()
             .receive(on: DispatchQueue.main)
@@ -401,6 +405,12 @@ private extension ProfileTabViewModel {
             .sink { [weak self] accesses in
                 guard let self else { return }
                 self.accesses = accesses
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await updateSupportedLocalAuthenticationMethods()
+                }
             }
             .store(in: &cancellables)
     }
@@ -430,19 +440,6 @@ private extension ProfileTabViewModel {
             }
         case .pin:
             localAuthenticationMethod = .pin
-        }
-    }
-
-    func applyOrganizationSettings() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                if let organization = try await organizationRepository.getOrganization() {
-                    canUpdateAppLockTime = organization.settings?.appLockTime == nil
-                }
-            } catch {
-                handle(error: error)
-            }
         }
     }
 
