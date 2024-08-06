@@ -25,16 +25,17 @@ import SwiftUI
 
 /// Not to be used directly but via `localAuthentication` view modifier
 struct LocalAuthenticationView: View {
-    private let module = resolve(\SharedToolingContainer.module)
     @StateObject private var viewModel: LocalAuthenticationViewModel
 
     init(mode: LocalAuthenticationViewModel.Mode,
-         delayed: Bool,
+         delayed: Bool = false,
+         manuallyAvoidKeyboard: Bool = false,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(mode: mode,
                                                delayed: delayed,
+                                               manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                                onAuth: onAuth,
                                                onSuccess: onSuccess,
                                                onFailure: onFailure))
@@ -45,16 +46,11 @@ struct LocalAuthenticationView: View {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
 
-            Group {
-                switch viewModel.mode {
-                case .biometric:
-                    BiometricAuthenticationView(viewModel: viewModel)
-                case .pin:
-                    PinAuthenticationView(viewModel: viewModel)
-                }
-            }
-            .if(module == .hostApp) { view in
-                view.padding()
+            switch viewModel.mode {
+            case .biometric:
+                BiometricAuthenticationView(viewModel: viewModel)
+            case .pin:
+                PinAuthenticationView(viewModel: viewModel)
             }
 
             Button { viewModel.logOut() } label: {
