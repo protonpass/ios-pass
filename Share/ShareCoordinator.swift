@@ -244,6 +244,7 @@ private extension ShareCoordinator {
                                              dismissExtension()
                                          })
                                          .localAuthentication(delayed: false,
+                                                              manuallyAvoidKeyboard: false,
                                                               onFailure: { [weak self] in
                                                                   guard let self else { return }
                                                                   logOut(userId: userId)
