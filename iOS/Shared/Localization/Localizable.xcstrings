@@ -15891,9 +15891,6 @@
         }
       }
     },
-    "alias config" : {
-
-    },
     "Alias copied" : {
       "localizations" : {
         "be" : {
@@ -35865,6 +35862,9 @@
         }
       }
     },
+    "Default %@ for aliases" : {
+
+    },
     "Default browser" : {
       "comment" : "Settings page",
       "localizations" : {
@@ -36026,7 +36026,10 @@
         }
       }
     },
-    "Default SimpleLogin vault" : {
+    "Default domain for aliases" : {
+
+    },
+    "Default mailbox for aliases" : {
 
     },
     "Delete" : {
@@ -63616,6 +63619,12 @@
         }
       }
     },
+    "mailbox" : {
+
+    },
+    "Mailboxes" : {
+
+    },
     "Manage access" : {
       "localizations" : {
         "be" : {
@@ -69248,9 +69257,6 @@
           }
         }
       }
-    },
-    "None" : {
-
     },
     "None of your email addresses or aliases appear in a data breach" : {
       "localizations" : {
@@ -91053,9 +91059,6 @@
         }
       }
     },
-    "Select a default vault for aliases sync" : {
-
-    },
     "Select a vault" : {
       "localizations" : {
         "be" : {
@@ -97490,6 +97493,9 @@
       }
     },
     "SimpleLogin aliases will be imported into this vault." : {
+
+    },
+    "SimpleLogin sync" : {
 
     },
     "Social security number" : {

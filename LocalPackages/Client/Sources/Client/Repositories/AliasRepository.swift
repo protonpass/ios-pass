@@ -34,6 +34,11 @@ public protocol AliasRepositoryProtocol: Sendable {
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
+
+    func getAliasSettings(userId: String) async throws -> AliasSettings
+    @discardableResult
+    func updateAliasSettings(userId: String, request: UpdateAliasSettingsRequest) async throws -> AliasSettings
+    func getAllAliasDomains(userId: String) async throws -> [Domain]
 }
 
 public extension AliasRepositoryProtocol {
@@ -90,5 +95,17 @@ public extension AliasRepository {
                                  pageSize: Int = Constants.Utils
                                      .defaultPageSize) async throws -> PaginatedPendingAliases {
         try await remoteDatasouce.getPendingAliasesToSync(userId: userId, since: since, pageSize: pageSize)
+    }
+
+    func getAliasSettings(userId: String) async throws -> AliasSettings {
+        try await remoteDatasouce.getAliasSettings(userId: userId)
+    }
+
+    func updateAliasSettings(userId: String, request: UpdateAliasSettingsRequest) async throws -> AliasSettings {
+        try await remoteDatasouce.updateAliasSettings(userId: userId, request: request)
+    }
+
+    func getAllAliasDomains(userId: String) async throws -> [Domain] {
+        try await remoteDatasouce.getAllAliasDomains(userId: userId)
     }
 }

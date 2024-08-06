@@ -1,7 +1,7 @@
 //
-// VaultThumbnail.swift
-// Proton Pass - Created on 31/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// AliasSettings.swift
+// Proton Pass - Created on 06/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,17 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// import DesignSystem
-// import Entities
-// import SwiftUI
-//
-// struct VaultThumbnail: View {
-//    let vault: Vault
-//
-//    var body: some View {
-//        CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-//                     iconColor: vault.displayPreferences.color.color.color,
-//                     backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16))
-//            .animation(.default, value: vault)
-//    }
-// }
+import Foundation
+
+public struct AliasSettings: Decodable, Sendable {
+    public let defaultAliasDomain: String
+    public let defaultMailboxID: String
+
+    public init(defaultAliasDomain: String,
+                defaultMailboxID: String) {
+        self.defaultAliasDomain = defaultAliasDomain
+        self.defaultMailboxID = defaultMailboxID
+    }
+}
