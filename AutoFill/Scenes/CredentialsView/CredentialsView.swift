@@ -46,6 +46,7 @@ struct CredentialsView: View {
             await viewModel.sync()
         }
         .localAuthentication(delayed: false,
+                             manuallyAvoidKeyboard: false,
                              onSuccess: viewModel.handleAuthenticationSuccess,
                              onFailure: viewModel.handleAuthenticationFailure)
         .alert("Associate URL?",

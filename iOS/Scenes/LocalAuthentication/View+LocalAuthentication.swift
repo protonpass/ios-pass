@@ -44,6 +44,8 @@ struct LocalAuthenticationModifier: ViewModifier {
     // NSLocalizedDescription=User interaction required.}
     private let delayed: Bool
 
+    private let manuallyAvoidKeyboard: Bool
+
     /// Authentication is started and awaiting for user's response (enterring PIN or biometrically authenticate)
     private let onAuth: (() -> Void)?
 
@@ -57,6 +59,7 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let onFailure: () -> Void
 
     init(delayed: Bool,
+         manuallyAvoidKeyboard: Bool,
          onAuth: (() -> Void)?,
          onAuthSkipped: (() -> Void)?,
          onSuccess: (() -> Void)?,
@@ -66,6 +69,7 @@ struct LocalAuthenticationModifier: ViewModifier {
         _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
+        self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
         self.onAuth = onAuth
         self.onAuthSkipped = onAuthSkipped
         self.onSuccess = onSuccess
@@ -90,6 +94,7 @@ struct LocalAuthenticationModifier: ViewModifier {
 
                 LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
                                         delayed: delayed,
+                                        manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                         onAuth: { onAuth?() },
                                         onSuccess: handleSuccess,
                                         onFailure: onFailure)
@@ -133,11 +138,13 @@ struct LocalAuthenticationModifier: ViewModifier {
 extension View {
     @MainActor
     func localAuthentication(delayed: Bool,
+                             manuallyAvoidKeyboard: Bool,
                              onAuth: (() -> Void)? = nil,
                              onAuthSkipped: (() -> Void)? = nil,
                              onSuccess: (() -> Void)? = nil,
                              onFailure: @escaping () -> Void) -> some View {
         modifier(LocalAuthenticationModifier(delayed: delayed,
+                                             manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                              onAuth: onAuth,
                                              onAuthSkipped: onAuthSkipped,
                                              onSuccess: onSuccess,

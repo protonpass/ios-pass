@@ -28,7 +28,6 @@ struct PinAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
     @FocusState private var isFocused
     @State private var pinCode = ""
-    private let module = resolve(\SharedToolingContainer.module)
 
     init(viewModel: LocalAuthenticationViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -90,10 +89,7 @@ struct PinAuthenticationView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-        .if(module == .hostApp) { view in
-            // Only applicable to host app because local authentication process is wrapped inside a view modifier
-            // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
-            // and somehow automatic keyboard avoidance is broken so we manually avoid keyboard here
+        .if(viewModel.manuallyAvoidKeyboard) { view in
             view
                 .keyboardAwarePadding()
         }
