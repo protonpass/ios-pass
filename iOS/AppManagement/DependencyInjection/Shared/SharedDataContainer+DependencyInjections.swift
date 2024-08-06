@@ -19,12 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import CoreData
+import Core
 import CryptoKit
 import Entities
 import Factory
 import Foundation
-import ProtonCoreLogin
 
 final class SharedDataContainer: SharedContainer, AutoRegistering {
     static let shared = SharedDataContainer()
@@ -36,6 +35,16 @@ final class SharedDataContainer: SharedContainer, AutoRegistering {
 
     func autoRegister() {
         manager.defaultScope = .singleton
+    }
+}
+
+private extension SharedDataContainer {
+    var keychain: any KeychainProtocol {
+        SharedToolingContainer.shared.keychain()
+    }
+
+    var mainKeyProvider: any MainKeyProvider {
+        SharedToolingContainer.shared.mainKeyProvider()
     }
 }
 
@@ -53,6 +62,12 @@ extension SharedDataContainer {
     }
 
     var symmetricKeyProvider: Factory<any SymmetricKeyProvider> {
-        self { self.appData() }
+        self { SymmetricKeyProviderImpl(keychain: self.keychain,
+                                        mainKeyProvider: self.mainKeyProvider) }
+    }
+
+    var nonSendableSymmetricKeyProvider: Factory<any NonSendableSymmetricKeyProvider> {
+        self { NonSendableSymmetricKeyProviderImpl(keychain: self.keychain,
+                                                   mainKeyProvider: self.mainKeyProvider) }
     }
 }

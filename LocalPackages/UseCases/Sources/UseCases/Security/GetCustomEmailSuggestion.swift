@@ -56,7 +56,7 @@ public final class GetCustomEmailSuggestion: GetCustomEmailSuggestionUseCase {
         guard monitoredCustomEmails.count < 10 else {
             return []
         }
-        let symmetricKey = try symmetricKeyProvider.getSymmetricKey()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
 
         let items = try await itemRepository.getAllItems(userId: userId)
         let activeLoginItems = items.filter { $0.isLogInItem && $0.item.itemState == .active }

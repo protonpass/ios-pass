@@ -100,13 +100,13 @@ extension PassKeyManager: PassKeyManagerProtocol {
         guard let encryptedShareKey = allEncryptedShareKeys.first(where: { $0.shareId == shareId }) else {
             throw PassError.keysNotFound(shareID: shareId)
         }
-        return try decryptAndCache(encryptedShareKey)
+        return try await decryptAndCache(encryptedShareKey)
     }
 
     public func getLatestShareKey(userId: String, shareId: String) async throws -> DecryptedShareKey {
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
         let latestShareKey = try allEncryptedShareKeys.latestKey()
-        return try decryptAndCache(latestShareKey)
+        return try await decryptAndCache(latestShareKey)
     }
 
     public func getLatestItemKey(userId: String,
@@ -142,13 +142,13 @@ extension PassKeyManager: PassKeyManagerProtocol {
 }
 
 private extension PassKeyManager {
-    func decryptAndCache(_ encryptedShareKey: SymmetricallyEncryptedShareKey) throws -> DecryptedShareKey {
+    func decryptAndCache(_ encryptedShareKey: SymmetricallyEncryptedShareKey) async throws -> DecryptedShareKey {
         let shareId = encryptedShareKey.shareId
         let keyRotation = encryptedShareKey.shareKey.keyRotation
         let keyDescription = "share id \(shareId), keyRotation: \(keyRotation)"
         logger.trace("Decrypting share key \(keyDescription)")
 
-        let decryptedKey = try symmetricKeyProvider.getSymmetricKey().decrypt(encryptedShareKey.encryptedKey)
+        let decryptedKey = try await symmetricKeyProvider.getSymmetricKey().decrypt(encryptedShareKey.encryptedKey)
         guard let decryptedKeyData = try decryptedKey.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }

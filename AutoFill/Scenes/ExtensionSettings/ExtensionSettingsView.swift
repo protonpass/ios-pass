@@ -82,9 +82,6 @@ struct ExtensionSettingsView: View {
                 }
             }
         }
-        .localAuthentication(delayed: false,
-                             onAuth: {},
-                             onSuccess: {},
-                             onFailure: onLogOut)
+        .localAuthentication(delayed: false, onFailure: onLogOut)
     }
 }

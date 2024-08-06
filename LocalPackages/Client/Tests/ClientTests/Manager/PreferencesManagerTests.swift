@@ -177,7 +177,7 @@ extension PreferencesManagerTest {
     func testRemoveSharedPreferences() async throws {
         try await sut.setUp()
         try await sut.removeSharedPreferences()
-        let preferences = try sharedPreferencesDatasource.getPreferences()
+        let preferences = try await sharedPreferencesDatasource.getPreferences()
         XCTAssertNil(preferences)
     }
 }

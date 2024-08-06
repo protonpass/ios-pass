@@ -111,6 +111,7 @@ struct ProfileTabView: View {
             .padding(.top)
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
             .animation(.default, value: viewModel.localAuthenticationMethod)
+            .animation(.default, value: viewModel.accountDetails)
         }
     }
 
