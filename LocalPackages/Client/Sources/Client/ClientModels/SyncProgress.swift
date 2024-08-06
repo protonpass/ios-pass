@@ -66,6 +66,8 @@ public enum VaultSyncProgressEvent: Sendable {
     case decryptItems(DecryptItemsProgress)
     /// The sync progress is done
     case done
+    /// Error occurred
+    case error(userId: String, error: any Error)
 }
 
 /// The sync progress of a given vault
