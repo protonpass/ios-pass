@@ -627,6 +627,12 @@
             "value" : "Sorun çıktı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виникла помилка"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
