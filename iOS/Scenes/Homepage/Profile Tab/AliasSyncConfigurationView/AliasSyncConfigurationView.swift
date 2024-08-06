@@ -20,28 +20,22 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
+import Entities
+import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
+import Macro
 
-public enum AliasSyncConfigurationSheetState {
+enum AliasSyncConfigurationSheetState {
     case domain
     case mailbox
     case vault
-
-//    public var height: CGFloat {
-//        switch self {
-//        case let .mailbox(mailboxSelection, _):
-//            OptionRowHeight.compact.value * CGFloat(mailboxSelection.wrappedValue.allUserMailboxes.count) + 150
-//        case .suffix:
-//            280
-//        }
-//    }
 }
 
 struct AliasSyncConfigurationView: View {
     @StateObject private var viewModel = AliasSyncConfigurationViewModel()
     @Environment(\.dismiss) private var dismiss
-//    @State private var showVaultSelectionSheet = false
 
     @State private var sheetState: AliasSyncConfigurationSheetState?
 
@@ -63,7 +57,6 @@ struct AliasSyncConfigurationView: View {
                                   subtitle: "mailbox") {
                     sheetState = .mailbox
                 }
-
             } header: {
                 Text("Mailboxes")
                     .foregroundStyle(PassColor.textNorm.toColor)
@@ -80,7 +73,6 @@ struct AliasSyncConfigurationView: View {
                 } else {
                     SelectedSyncVaultRow(vault: viewModel.selectedVault?.vault) {
                         sheetState = .vault
-//                        showVaultSelectionSheet.toggle()
                     }
                 }
             } header: {
@@ -88,20 +80,6 @@ struct AliasSyncConfigurationView: View {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .fontWeight(.bold)
             }
-//            Button(action: {
-//                showVaultSelectionSheet.toggle()
-//            }, label: {
-//                selectedVault(vault: viewModel.selectedVault?.vault)
-//                    .padding(.horizontal)
-//            })
-//            .buttonStyle(.plain)
-//            .roundedEditableSection()
-//            .padding(.bottom, 10)
-//
-//            Text("SimpleLogin aliases will be imported into this vault.")
-//                .font(.footnote)
-//                .foregroundStyle(PassColor.textWeak.toColor)
-//                .frame(maxWidth: .infinity, alignment: .center)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .navigationTitle("Aliases")
@@ -109,12 +87,6 @@ struct AliasSyncConfigurationView: View {
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
-//        .sheet(isPresented: $showVaultSelectionSheet) {
-        ////            VaultSelectionView(selectedVault: $viewModel.selectedVault,
-        ////                               vaults: viewModel.vaults)
-//                .presentationDetents([.medium, .large])
-//                .presentationDragIndicator(.visible)
-//        }
         .optionalSheet(binding: $sheetState) { state in
             sheetContent(for: state)
                 .presentationDetents([.medium, .large])
@@ -129,9 +101,9 @@ struct AliasSyncConfigurationView: View {
     func sheetContent(for state: AliasSyncConfigurationSheetState) -> some View {
         switch state {
         case .domain:
-            DomainSelectionView(selectedDomain: $viewModel.defaultDomain, domains: viewModel.domains)
+            GenericSelectionView(title: "domain", selected: $viewModel.defaultDomain, selections: viewModel.domains)
         case .mailbox:
-            Text("mailbox")
+            GenericSelectionView(title: "mailbox", selected: $viewModel.defaultMailbox, selections: viewModel.mailboxes)
         case .vault:
             VaultSelectionView(selectedVault: $viewModel.selectedVault,
                                vaults: viewModel.vaults)
@@ -139,10 +111,6 @@ struct AliasSyncConfigurationView: View {
     }
 }
 
-import DesignSystem
-import Entities
-import ProtonCoreUIFoundations
-import SwiftUI
 
 public struct SynchroElementRow: View {
     private let title: String
@@ -204,24 +172,6 @@ private extension AliasSyncConfigurationView {
                 dismiss()
             }
         }
-//        ToolbarItem(placement: .navigationBarTrailing) {
-//            DisablableCapsuleTextButton(title: #localized("Confirm"),
-//                                        titleColor: PassColor.textInvert,
-//                                        disableTitleColor: PassColor.textHint,
-//                                        backgroundColor: PassColor.interactionNormMajor1,
-//                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-//                                        disabled: !viewModel.canActiveSync,
-//                                        height: 44) {
-//                Task {
-//                    do {
-//                        try await viewModel.activateSync()
-//                        dismiss()
-//                    } catch {
-//                        return
-//                    }
-//                }
-//            }
-//        }
     }
 }
 
@@ -231,36 +181,170 @@ struct AliasesView_Previews: PreviewProvider {
     }
 }
 
-import DesignSystem
-import Entities
-import Macro
-import ProtonCoreUIFoundations
-import Screens
-import SwiftUI
 
-public struct DomainSelectionView: View {
+
+
+//public struct DomainSelectionView: View {
+//    @Environment(\.dismiss) private var dismiss
+//    @Binding var selectedDomain: Domain?
+//    public let domains: [Domain]
+//
+//    public init(selectedDomain: Binding<Domain?>, domains: [Domain]) {
+//        _selectedDomain = selectedDomain
+//        self.domains = domains
+//    }
+//
+//    public var body: some View {
+//        NavigationStack {
+//            ScrollView {
+//                LazyVStack(spacing: 0) {
+//                    ForEach(domains, id: \.domain) { domain in
+//                        let isSelected = domain == selectedDomain
+//                        Button(action: {
+//                            selectedDomain = domain
+//                            dismiss()
+//                        }, label: {
+//                            HStack(spacing: 16) {
+//                                VStack(alignment: .leading) {
+//                                    Text(domain.domain)
+//                                        .foregroundStyle(PassColor.textNorm.toColor)
+//                                }
+//
+//                                Spacer()
+//
+//                                if isSelected {
+//                                    Image(uiImage: IconProvider.checkmark)
+//                                        .resizable()
+//                                        .scaledToFit()
+//                                        .foregroundStyle(PassColor.interactionNorm.toColor)
+//                                        .frame(maxHeight: 20)
+//                                }
+//                            }
+//                            .frame(maxWidth: .infinity)
+//                            .frame(height: 70)
+//                            .contentShape(.rect)
+//                            .animation(.default, value: isSelected)
+//                        })
+//                        .buttonStyle(.plain)
+//                        .padding(.horizontal)
+//                    }
+//                }
+//            }
+//            .background(PassColor.backgroundWeak.toColor)
+//            .navigationBarTitleDisplayMode(.inline)
+//            .animation(.default, value: selectedDomain)
+//            .toolbar {
+//                ToolbarItem(placement: .principal) {
+//                    Text("Default domain for aliases")
+//                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//// TODO: faire une version generic
+//public struct MailboxSelectionView: View {
+//    @Environment(\.dismiss) private var dismiss
+//    @Binding var selectedMailbox: MailboxSettings?
+//    public let mailboxes: [MailboxSettings]
+//    
+//
+//    public init(selectedMailbox: Binding<MailboxSettings?>, mailboxes: [MailboxSettings]) {
+//        _selectedMailbox = selectedMailbox
+//        self.mailboxes = mailboxes
+//    }
+//
+//    public var body: some View {
+//        NavigationStack {
+//            ScrollView {
+//                LazyVStack(spacing: 0) {
+//                    ForEach(mailboxes) { mailbox in
+//                        let isSelected = mailbox == selectedMailbox
+//                        Button(action: {
+//                            selectedMailbox = mailbox
+//                            dismiss()
+//                        }, label: {
+//                            HStack(spacing: 16) {
+//                                VStack(alignment: .leading) {
+//                                    Text(mailbox.email)
+//                                        .foregroundStyle(PassColor.textNorm.toColor)
+//                                }
+//
+//                                Spacer()
+//
+//                                if isSelected {
+//                                    Image(uiImage: IconProvider.checkmark)
+//                                        .resizable()
+//                                        .scaledToFit()
+//                                        .foregroundStyle(PassColor.interactionNorm.toColor)
+//                                        .frame(maxHeight: 20)
+//                                }
+//                            }
+//                            .frame(maxWidth: .infinity)
+//                            .frame(height: 70)
+//                            .contentShape(.rect)
+//                            .animation(.default, value: isSelected)
+//                        })
+//                        .buttonStyle(.plain)
+//                        .padding(.horizontal)
+//                    }
+//                }
+//            }
+//            .background(PassColor.backgroundWeak.toColor)
+//            .navigationBarTitleDisplayMode(.inline)
+//            .animation(.default, value: selectedMailbox)
+//            .toolbar {
+//                ToolbarItem(placement: .principal) {
+//                    Text("Default mailbox for aliases")
+//                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
+//                }
+//            }
+//        }
+//    }
+//}
+
+protocol TitleRepresentable {
+    var title: String { get }
+}
+
+extension MailboxSettings: TitleRepresentable {
+    var title: String {
+        email
+    }
+}
+
+extension Domain: TitleRepresentable {
+    var title: String {
+        domain
+    }
+}
+
+struct GenericSelectionView<Selection: Identifiable & Equatable & TitleRepresentable>: View {
     @Environment(\.dismiss) private var dismiss
-    @Binding var selectedDomain: Domain?
-    public let domains: [Domain]
-
-    public init(selectedDomain: Binding<Domain?>, domains: [Domain]) {
-        _selectedDomain = selectedDomain
-        self.domains = domains
+    @Binding var selected: Selection?
+    let selections: [Selection]
+    let title: String
+    
+    init(title: String, selected: Binding<Selection?>, selections: [Selection]) {
+        _selected = selected
+        self.selections = selections
+        self.title = title
     }
 
-    public var body: some View {
+    var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 0) {
-                    ForEach(domains, id: \.domain) { domain in
-                        let isSelected = domain == selectedDomain
+                    ForEach(selections) { element in
+                        let isSelected = element == selected
                         Button(action: {
-                            selectedDomain = domain
+                            selected = element
                             dismiss()
                         }, label: {
                             HStack(spacing: 16) {
                                 VStack(alignment: .leading) {
-                                    Text(domain.domain)
+                                    Text(element.title)
                                         .foregroundStyle(PassColor.textNorm.toColor)
                                 }
 
@@ -286,177 +370,13 @@ public struct DomainSelectionView: View {
             }
             .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
-            .animation(.default, value: selectedDomain)
+            .animation(.default, value: selected)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Default domain for aliases")
+                    Text("Default \(title) for aliases")
                         .adaptiveForegroundStyle(PassColor.textNorm.toColor)
                 }
             }
         }
     }
 }
-
-// TODO: faire une version generic
-public struct MailboxSelectionView: View {
-    @Environment(\.dismiss) private var dismiss
-    @Binding var selectedMailbox: Mailbox?
-    public let mailboxes: [Mailbox]
-
-    public init(selectedMailbox: Binding<Mailbox?>, mailboxes: [Mailbox]) {
-        _selectedMailbox = selectedMailbox
-        self.mailboxes = mailboxes
-    }
-
-    public var body: some View {
-        NavigationStack {
-            ScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(mailboxes) { mailbox in
-                        let isSelected = mailbox == selectedMailbox
-                        Button(action: {
-                            selectedMailbox = mailbox
-                            dismiss()
-                        }, label: {
-                            HStack(spacing: 16) {
-                                VStack(alignment: .leading) {
-                                    Text(mailbox.email)
-                                        .foregroundStyle(PassColor.textNorm.toColor)
-                                }
-
-                                Spacer()
-
-                                if isSelected {
-                                    Image(uiImage: IconProvider.checkmark)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .foregroundStyle(PassColor.interactionNorm.toColor)
-                                        .frame(maxHeight: 20)
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 70)
-                            .contentShape(.rect)
-                            .animation(.default, value: isSelected)
-                        })
-                        .buttonStyle(.plain)
-                    }
-                }
-            }
-            .background(PassColor.backgroundWeak.toColor)
-            .navigationBarTitleDisplayMode(.inline)
-            .animation(.default, value: selectedMailbox)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Default mailbox for aliases")
-                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
-                }
-            }
-        }
-    }
-}
-
-//
-// struct SimpleLoginAliasActivationView: View {
-//    @StateObject private var viewModel = SimpleLoginAliasActivationViewModel()
-//    @Environment(\.dismiss) private var dismiss
-//    @State private var showVaultSelectionSheet = false
-//
-//    var body: some View {
-//        VStack(alignment: .leading) {
-//            Button(action: {
-//                showVaultSelectionSheet.toggle()
-//            }, label: {
-//                SelectedSyncVaultRow(vault: viewModel.selectedVault?.vault)
-//                    .padding(.horizontal)
-//            })
-//            .buttonStyle(.plain)
-//            .roundedEditableSection()
-//            .padding(.bottom, 10)
-//
-//            Text("SimpleLogin aliases will be imported into this vault.")
-//                .font(.footnote)
-//                .foregroundStyle(PassColor.textWeak.toColor)
-//                .frame(maxWidth: .infinity, alignment: .center)
-//        }
-//        .animation(.default, value: viewModel.selectedVault)
-//        .padding(.horizontal, DesignConstant.sectionPadding)
-//        .navigationTitle("Sync Aliases")
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .toolbar { toolbarContent }
-//        .scrollViewEmbeded(maxWidth: .infinity)
-//        .background(PassColor.backgroundNorm.toColor)
-//        .sheet(isPresented: $showVaultSelectionSheet) {
-//            VaultSelectionView(selectedVault: $viewModel.selectedVault,
-//                               vaults: viewModel.vaults)
-//                .presentationDragIndicator(.visible)
-//        }
-//        .showSpinner(viewModel.loading)
-//        .navigationStackEmbeded()
-//    }
-//
-////    func selectedVault(vault: Vault?) -> some View {
-////        HStack(spacing: 16) {
-////            if let vault {
-////                VaultThumbnail(vault: vault)
-////            }
-////
-////            VStack(alignment: .leading) {
-////                Text("Default SimpleLogin vault")
-////                    .font(.callout)
-////                    .foregroundStyle(PassColor.textWeak.toColor)
-////
-////                Text(vault?.name ?? "None")
-////                    .foregroundStyle(PassColor.textNorm.toColor)
-////            }
-////            Spacer()
-////
-////            Image(uiImage: IconProvider.chevronRight)
-////                .resizable()
-////                .scaledToFit()
-////                .foregroundStyle(PassColor.textWeak.toColor)
-////                .frame(maxHeight: 20)
-////        }
-////        .frame(maxWidth: .infinity)
-////        .frame(height: 70)
-////        .contentShape(.rect)
-////    }
-// }
-//
-// private extension SimpleLoginAliasActivationView {
-//    @ToolbarContentBuilder
-//    var toolbarContent: some ToolbarContent {
-//        ToolbarItem(placement: .navigationBarLeading) {
-//            CircleButton(icon: IconProvider.cross,
-//                         iconColor: PassColor.interactionNormMajor1,
-//                         backgroundColor: PassColor.interactionNormMinor1,
-//                         accessibilityLabel: "Close") {
-//                dismiss()
-//            }
-//        }
-//        ToolbarItem(placement: .navigationBarTrailing) {
-//            DisablableCapsuleTextButton(title: #localized("Confirm"),
-//                                        titleColor: PassColor.textInvert,
-//                                        disableTitleColor: PassColor.textHint,
-//                                        backgroundColor: PassColor.interactionNormMajor1,
-//                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-//                                        disabled: !viewModel.canActiveSync,
-//                                        height: 44) {
-//                Task {
-//                    do {
-//                        try await viewModel.activateSync()
-//                        dismiss()
-//                    } catch {
-//                        return
-//                    }
-//                }
-//            }
-//        }
-//    }
-// }
-//
-// struct SimpleLoginAliasActivationView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        SimpleLoginAliasActivationView()
-//    }
-// }

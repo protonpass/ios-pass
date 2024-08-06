@@ -36,7 +36,8 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
                                  pageSize: Int) async throws -> PaginatedPendingAliases
     func getAliasSettings(userId: String) async throws -> AliasSettings
     func updateAliasDefaultDomain(userId: String, request: UpdateAliasDomainRequest) async throws -> AliasSettings
-    func updateAliasDefaultMailbox(userId: String, request: UpdateAliasMailboxRequest) async throws -> AliasSettings
+    func updateAliasDefaultMailbox(userId: String, request: UpdateAliasMailboxRequest) async throws
+        -> AliasSettings
     func getAllAliasDomains(userId: String) async throws -> [Domain]
     func getAllAliasMailboxes(userId: String) async throws -> [MailboxSettings]
 }
@@ -94,13 +95,15 @@ public extension RemoteAliasDatasource {
         return response.settings
     }
 
-    func updateAliasDefaultDomain(userId: String, request: UpdateAliasDomainRequest) async throws -> AliasSettings {
+    func updateAliasDefaultDomain(userId: String,
+                                  request: UpdateAliasDomainRequest) async throws -> AliasSettings {
         let endpoint = UpdateAliasDomainEndpoint(request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.settings
     }
-    
-    func updateAliasDefaultMailbox(userId: String, request: UpdateAliasMailboxRequest) async throws -> AliasSettings {
+
+    func updateAliasDefaultMailbox(userId: String,
+                                   request: UpdateAliasMailboxRequest) async throws -> AliasSettings {
         let endpoint = UpdateAliasMailboxEndpoint(request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.settings
@@ -111,7 +114,7 @@ public extension RemoteAliasDatasource {
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.domains
     }
-    
+
     func getAllAliasMailboxes(userId: String) async throws -> [MailboxSettings] {
         let endpoint = GetAllMailboxesEndpoint()
         let response = try await exec(userId: userId, endpoint: endpoint)

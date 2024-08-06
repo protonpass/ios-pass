@@ -1,4 +1,4 @@
-//  
+//
 // MailboxSettings.swift
 // Proton Pass - Created on 06/08/2024.
 // Copyright (c) 2024 Proton Technologies AG
@@ -24,13 +24,14 @@ public struct MailboxSettings: Decodable, Hashable, Equatable, Sendable, Identif
     public let verified: Bool
     public let isDefault: Bool
 
-   public init(mailboxID: String, email: String, verified: Bool) {
+    public init(mailboxID: String, email: String, verified: Bool, isDefault: Bool) {
         self.mailboxID = mailboxID
         self.email = email
         self.verified = verified
+        self.isDefault = isDefault
     }
-    
+
     public var id: String {
-        self.mailboxID
+        mailboxID
     }
 }
