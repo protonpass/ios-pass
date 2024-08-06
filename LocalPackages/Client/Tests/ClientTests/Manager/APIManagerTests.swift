@@ -105,7 +105,7 @@ public final class ProtonPassDoHMock: DoH, ServerConfig {
 final class APIManagerTests: XCTestCase {
     private var sessionPublisher: AnyCancellable?
     let key = SymmetricKey.random()
-    let mock = SymmetricKeyProviderMock()
+    let mock = NonSendableSymmetricKeyProviderMock()
     var userManager: UserManagerProtocolMock!
     var sut: APIManager!
     var authManager: AuthManagerProtocol!

@@ -45,7 +45,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
-    private let localAccessDatasource = resolve(\SharedRepositoryContainer.localAccessDatasource)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     private let notificationService = resolve(\SharedServiceContainer.notificationService)
     private let securitySettingsCoordinator: SecuritySettingsCoordinator
@@ -136,6 +135,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         quickTypeBar = preferences.quickTypeBar
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
+        accesses = accessRepository.accesses.value
         refresh()
         setUp()
     }
@@ -155,7 +155,7 @@ extension ProfileTabViewModel {
             userAliasSyncData = access.userData
             accesses = try await localAccessDatasource.getAllAccesses()
         } catch {
-            handle(error: error)
+            logger.error(error)
         }
     }
 
@@ -359,18 +359,6 @@ private extension ProfileTabViewModel {
             }
             .store(in: &cancellables)
 
-        accessRepository.access
-            .receive(on: DispatchQueue.main)
-            .compactMap { $0 }
-            .sink { [weak self] userAccess in
-                guard let self,
-                      let currentActiveUser,
-                      currentActiveUser.userId == userAccess.userId else { return }
-                plan = userAccess.access.plan
-                userAliasSyncData = userAccess.access.userData
-            }
-            .store(in: &cancellables)
-
         preferencesManager
             .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
@@ -435,6 +423,26 @@ private extension ProfileTabViewModel {
                     await refreshPlan()
                     fetchSecureLinks()
                 }
+            }
+            .store(in: &cancellables)
+
+        accessRepository.accesses
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] accesses in
+                guard let self else { return }
+                self.accesses = accesses
+            }
+            .store(in: &cancellables)
+        
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .sink { [weak self] userAccess in
+                guard let self,
+                      let currentActiveUser,
+                      currentActiveUser.userId == userAccess.userId else { return }
+                plan = userAccess.access.plan
+                userAliasSyncData = userAccess.access.userData
             }
             .store(in: &cancellables)
     }

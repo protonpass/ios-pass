@@ -50,25 +50,30 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
     }
 
     public func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem] {
-        let vaults = try await shareRepository.getVaults(userId: userId)
+        async let getVaults = shareRepository.getVaults(userId: userId)
+        async let getItems = getEncryptedItems(userId: userId, searchMode: searchMode)
+        async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
+        let (vaults, items, symmetricKey) = try await (getVaults, getItems, getSymmetricKey)
+        return try items.map { try SearchableItem(from: $0,
+                                                  symmetricKey: symmetricKey,
+                                                  allVaults: vaults) }
+    }
+}
 
-        var items: [SymmetricallyEncryptedItem] = []
-
+private extension GetSearchableItems {
+    func getEncryptedItems(userId: String, searchMode: SearchMode) async throws -> [SymmetricallyEncryptedItem] {
         switch searchMode {
         case .pinned:
-            items = try await getAllPinnedItems()
+            try await getAllPinnedItems()
         case let .all(vaultSelection):
             switch vaultSelection {
             case .all:
-                items = try await itemRepository.getItems(userId: userId, state: .active)
+                try await itemRepository.getItems(userId: userId, state: .active)
             case let .precise(vault):
-                items = try await itemRepository.getItems(shareId: vault.shareId, state: .active)
+                try await itemRepository.getItems(shareId: vault.shareId, state: .active)
             case .trash:
-                items = try await itemRepository.getItems(userId: userId, state: .trashed)
+                try await itemRepository.getItems(userId: userId, state: .trashed)
             }
         }
-        return try items.map { try SearchableItem(from: $0,
-                                                  symmetricKey: symmetricKeyProvider.getSymmetricKey(),
-                                                  allVaults: vaults) }
     }
 }

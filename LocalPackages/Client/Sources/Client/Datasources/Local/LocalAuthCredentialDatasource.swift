@@ -53,7 +53,7 @@ public extension LocalAuthCredentialDatasource {
         ])
         let credentials = try await execute(fetchRequest: request, context: context)
         assert(credentials.count <= 1, "Max 1 credential per user id and per type")
-        let key = try symmetricKeyProvider.getSymmetricKey()
+        let key = try await symmetricKeyProvider.getSymmetricKey()
         return try credentials.first.map { try $0.toAuthCredential(key) }
     }
 
@@ -61,7 +61,7 @@ public extension LocalAuthCredentialDatasource {
                           credential: AuthCredential,
                           module: PassModule) async throws {
         let context = newTaskContext(type: .insert)
-        let key = try symmetricKeyProvider.getSymmetricKey()
+        let key = try await symmetricKeyProvider.getSymmetricKey()
         var hydrationError: (any Error)?
         let request =
             newBatchInsertRequest(entity: AuthCredentialEntity.entity(context: context),

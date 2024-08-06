@@ -2,161 +2,474 @@
   "sourceLanguage" : "en",
   "strings" : {
     "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds." : {
+      "comment" : "First placeholder is the 6-digit code. The 2nd one is the number of second remaining.",
       "localizations" : {
         "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld сек."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld сек."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld сек."
+                }
+              }
+            }
           }
         },
         "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" je zkopírován do schránky. Vyprší za %2$lld sekund."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" je zkopírován do schránky. Vyprší za %2$lld sekund."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" je zkopírován do schránky. Vyprší za %2$lld sekund."
+                }
+              }
+            }
           }
         },
         "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" kopieres til udklipsholder. Udløber om %2$lld sekunder."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" kopieres til udklipsholder. Udløber om %2$lld sekunder."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" kopieres til udklipsholder. Udløber om %2$lld sekunder."
+                }
+              }
+            }
           }
         },
         "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" wurde in die Zwischenablage kopiert. Läuft in %2$lld Sekunden ab."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" wurde in die Zwischenablage kopiert. Läuft in %2$lld Sekunden ab."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" wurde in die Zwischenablage kopiert. Läuft in %2$lld Sekunden ab."
+                }
+              }
+            }
           }
         },
         "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Το \"%1$@\" αντιγράφεται στο πρόχειρο. Λήγει σε %2$lld δευτερόλεπτα."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Το \"%1$@\" αντιγράφεται στο πρόχειρο. Λήγει σε %2$lld δευτερόλεπτα."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Το \"%1$@\" αντιγράφεται στο πρόχειρο. Λήγει σε %2$lld δευτερόλεπτα."
+                }
+              }
+            }
           }
         },
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" is copied to clipboard. Expiring in %2$lld second."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds."
+                }
+              }
+            }
           }
         },
         "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "«%1$@» se copia al portapapeles. Expira en %2$lld segundos."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "«%1$@» se copia al portapapeles. Expira en %2$lld segundos."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "«%1$@» se copia al portapapeles. Expira en %2$lld segundos."
+                }
+              }
+            }
           }
         },
         "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "«%1$@» se copia al portapapeles. Expira en %2$lld segundos."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "«%1$@» se copia al portapapeles. Expira en %2$lld segundos."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "«%1$@» se copia al portapapeles. Expira en %2$lld segundos."
+                }
+              }
+            }
           }
         },
         "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" on kopioitu leikepöydälle. Erääntyy %2$lld sekunnin kuluttua."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" on kopioitu leikepöydälle. Erääntyy %2$lld sekunnin kuluttua."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" on kopioitu leikepöydälle. Erääntyy %2$lld sekunnin kuluttua."
+                }
+              }
+            }
           }
         },
         "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "« %1$@ » est copié dans le presse-papiers. Il expire dans %2$lld secondes."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "« %1$@ » est copié dans le presse-papiers. Il expire dans %2$lld secondes."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "« %1$@ » est copié dans le presse-papiers. Il expire dans %2$lld secondes."
+                }
+              }
+            }
           }
         },
         "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" disalin ke papan klip. Kode ini akan kedaluwarsa dalam %2$lld detik."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" disalin ke papan klip. Kode ini akan kedaluwarsa dalam %2$lld detik."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" disalin ke papan klip. Kode ini akan kedaluwarsa dalam %2$lld detik."
+                }
+              }
+            }
           }
         },
         "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" copiato negli appunti. La scadenza è tra %2$lld secondi."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" copiato negli appunti. La scadenza è tra %2$lld secondi."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" copiato negli appunti. La scadenza è tra %2$lld secondi."
+                }
+              }
+            }
           }
         },
         "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "「%1$@」をクリップボードにコピーしました。 %2$lld 秒後に期限切れになります。"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "「%1$@」をクリップボードにコピーしました。 %2$lld 秒後に期限切れになります。"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "「%1$@」をクリップボードにコピーしました。 %2$lld 秒後に期限切れになります。"
+                }
+              }
+            }
           }
         },
         "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" დაკოპირდა ბუფერში. ვადა იწურება %2$lld წაში."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" დაკოპირდა ბუფერში. ვადა იწურება %2$lld წაში."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" დაკოპირდა ბუფერში. ვადა იწურება %2$lld წაში."
+                }
+              }
+            }
           }
         },
         "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\"이(가) 클립보드에 복사되었습니다. %2$lld초 후에 만료됩니다."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\"이(가) 클립보드에 복사되었습니다. %2$lld초 후에 만료됩니다."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\"이(가) 클립보드에 복사되었습니다. %2$lld초 후에 만료됩니다."
+                }
+              }
+            }
           }
         },
         "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" er kopiert til utklippstavlen. Utløper om %2$lld sekunder."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" er kopiert til utklippstavlen. Utløper om %2$lld sekunder."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" er kopiert til utklippstavlen. Utløper om %2$lld sekunder."
+                }
+              }
+            }
           }
         },
         "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" is gekopieerd naar het klembord. Verloopt in %2$lld seconden."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" is gekopieerd naar het klembord. Verloopt in %2$lld seconden."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" is gekopieerd naar het klembord. Verloopt in %2$lld seconden."
+                }
+              }
+            }
           }
         },
         "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kod \"%1$@\" został skopiowany do schowka. Kod wygaśnie za %2$lld sek."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Kod \"%1$@\" został skopiowany do schowka. Kod wygaśnie za %2$lld sek."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kod \"%1$@\" został skopiowany do schowka. Kod wygaśnie za %2$lld sek."
+                }
+              }
+            }
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" foi copiado para a área de transferência. Expira em %2$lld segundos."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" foi copiado para a área de transferência. Expira em %2$lld segundos."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" foi copiado para a área de transferência. Expira em %2$lld segundos."
+                }
+              }
+            }
           }
         },
         "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" s-a copiat în memorie. Expiră peste %2$lld secunde."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" s-a copiat în memorie. Expiră peste %2$lld secunde."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" s-a copiat în memorie. Expiră peste %2$lld secunde."
+                }
+              }
+            }
           }
         },
         "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
+                }
+              }
+            }
           }
         },
         "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekund."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekund."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekund."
+                }
+              }
+            }
           }
         },
         "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "“%1$@“ har kopierats till urklipp. Löper ut om %2$lld sekunder."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "“%1$@“ har kopierats till urklipp. Löper ut om %2$lld sekunder."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "“%1$@“ har kopierats till urklipp. Löper ut om %2$lld sekunder."
+                }
+              }
+            }
           }
         },
         "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "“%1$@” panoya kopyalandı. %2$lld saniye sonra geçersiz olacak."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "“%1$@” panoya kopyalandı. %2$lld saniye sonra geçersiz olacak."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "“%1$@” panoya kopyalandı. %2$lld saniye sonra geçersiz olacak."
+                }
+              }
+            }
           }
         },
         "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "«%1$@» скопійовано до буфера обміну. Термін дії — %2$lld секунд."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "«%1$@» скопійовано до буфера обміну. Термін дії — %2$lld секунд."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "«%1$@» скопійовано до буфера обміну. Термін дії — %2$lld секунд."
+                }
+              }
+            }
           }
         },
         "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%1$@\" đã được sao chép vào bộ nhớ đệm. Hết hạn sau %2$lld giây."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "\"%1$@\" đã được sao chép vào bộ nhớ đệm. Hết hạn sau %2$lld giây."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" đã được sao chép vào bộ nhớ đệm. Hết hạn sau %2$lld giây."
+                }
+              }
+            }
           }
         }
       }
@@ -202,7 +515,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ copiado"
+            "value" : "Se ha copiado %@."
           }
         },
         "es-419" : {
@@ -293,6 +606,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kopyalandı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ скопійовано"
           }
         },
         "vi" : {
@@ -2683,6 +3002,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld запрошення"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld запрошень"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld запрошення"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Залишилось %lld запрошень"
+                }
+              }
+            }
+          }
+        },
         "vi" : {
           "variations" : {
             "plural" : {
@@ -3861,6 +4210,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементи переміщено до смітника"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів переміщено до смітника"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елемент переміщено до смітника"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів переміщено до смітника"
+                }
+              }
+            }
+          }
+        },
         "vi" : {
           "variations" : {
             "plural" : {
@@ -4352,6 +4731,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%1$lld öge « %2$@ » kasasına taşındı"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld елементи переміщено до сховища «%2$@»"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld елементів переміщено до сховища «%2$@»"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld елемент переміщено до сховища «%2$@»"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$lld елементів переміщено до сховища «%2$@»"
                 }
               }
             }
@@ -5379,6 +5788,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записи входу використовують цей пароль"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записів входу використовують цей пароль"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запис входу використовує цей пароль"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записів входу використовують цей пароль"
+                }
+              }
+            }
+          }
+        },
         "vi" : {
           "variations" : {
             "plural" : {
@@ -6396,6 +6835,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld sonuç"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld результати"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld результатів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld результат"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld результатів"
                 }
               }
             }
@@ -7423,6 +7892,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "У вас залишилося %lld дні, щоб спробувати преміальні функції"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "У вас залишилося %lld днів, щоб спробувати преміальні функції"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "У вас залишився %lld день, щоб спробувати преміальні функції"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "У вас залишилося %lld днів, щоб спробувати преміальні функції"
+                }
+              }
+            }
+          }
+        },
         "vi" : {
           "variations" : {
             "plural" : {
@@ -7854,6 +8353,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld görüntülenme"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перегляди"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld переглядів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld перегляд"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld переглядів"
                 }
               }
             }
@@ -11791,7 +12320,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir contraseña"
+            "value" : "Añadir una contraseña"
           }
         },
         "es-419" : {
@@ -15406,7 +15935,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El alias ha sido copiado."
+            "value" : "Se ha copiado el alias."
           }
         },
         "es-419" : {
@@ -15566,7 +16095,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El alias ha sido creado."
+            "value" : "Se ha creado el alias."
           }
         },
         "es-419" : {
@@ -16206,7 +16735,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El alias ha sido actualizado."
+            "value" : "Se ha actualizado el alias."
           }
         },
         "es-419" : {
@@ -17486,7 +18015,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los elementos han sido restaurados."
+            "value" : "Se han restaurado todos los elementos."
           }
         },
         "es-419" : {
@@ -17646,7 +18175,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los registros han sido borrados."
+            "value" : "Se han borrado todos los registros."
           }
         },
         "es-419" : {
@@ -18700,6 +19229,12 @@
             "value" : "\"%@\" bölümünü kaldırmak istediğinize emin misiniz?"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви дійсно хочете видалити наступний розділ «%@»?"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18711,10 +19246,34 @@
     "Are you sure you want to sign out %@?" : {
       "comment" : "Placeholder is an email address",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы сапраўды хочаце выйсці з %@?"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opravdu se chcete odhlásit %@?"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er du sikker på, at du vil logge ud %@?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du „%@“ wirklich abmelden?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε από %@;"
           }
         },
         "en" : {
@@ -18723,10 +19282,22 @@
             "value" : "Are you sure you want to sign out %@?"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Estás seguro de que quieres cerrar la sesión %@?"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "¿En verdad desea cerrar la sesión %@?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haluatko varmasti kirjata tilin %@ ulos?"
           }
         },
         "fr" : {
@@ -18741,10 +19312,70 @@
             "value" : "Apakah Anda yakin ingin keluar %@?"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei sicuro di volerti disconnettere da %@?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დარწმუნებული ბრძანდებით, რომ გნებავთ, გახვიდეთ %@-დან?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정말 %@(에)서 로그아웃합니까?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er du sikker på at du vil logge av %@?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czy na pewno chcesz się wylogować z konta %@?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você tem certeza que deseja encerrar a sessão%@?"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sigur doriți să vă deconectați din %@?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naozaj sa chcete odhlásiť? %@?"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Är du säker på att du vill logga ut %@?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви дійсно хочете вийти з %@?"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có chắc muốn đăng xuất khỏi %@?"
           }
         }
       }
@@ -21463,7 +22094,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tietomurrot ratkaistu"
+            "value" : "Tietomurrot on ratkaistu"
           }
         },
         "fr" : {
@@ -21772,7 +22403,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puede ser visto:"
+            "value" : "Ver:"
           }
         },
         "es-419" : {
@@ -23362,7 +23993,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El número de la tarjeta ha sido copiado."
+            "value" : "Se ha copiado el número de la tarjeta."
           }
         },
         "es-419" : {
@@ -23940,6 +24571,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dikkat: Bu parolayı kaybederseniz Pass hesabınıza erişemezsiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увага: Ви не зможете отримати доступ до свого облікового запису Pass, якщо втратите цей пароль."
           }
         },
         "vi" : {
@@ -27127,6 +27764,12 @@
             "value" : "Ek parola onayı"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підтвердити додатковий пароль"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27423,6 +28066,12 @@
             "value" : "Proton parolanızı onaylayın"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підтвердити ваш пароль Proton"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27633,7 +28282,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Detalles de contacto"
+            "value" : "Detalles del contacto"
           }
         },
         "es-419" : {
@@ -29486,6 +30135,12 @@
             "value" : "Tam adı kopyala"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копіювати повне ім'я"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30965,7 +31620,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crear una tarjeta de crédito"
+            "value" : "Crear una tarjeta"
           }
         },
         "es-419" : {
@@ -31856,6 +32511,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir kimlik oluştur"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити ідентичність"
           }
         },
         "vi" : {
@@ -34710,6 +35371,12 @@
             "value" : "Özel bölüm"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Власний розділ"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37262,7 +37929,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "T.ex. ”Användar-ID, kontonummer”"
+            "value" : "T.ex. Användar-ID, kontonummer"
           }
         },
         "tr" : {
@@ -37648,7 +38315,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Editar título"
+            "value" : "Editar el nombre del campo"
           }
         },
         "es-419" : {
@@ -38059,6 +38726,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bölüm başlığını düzenle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змінити назву розділу"
           }
         },
         "vi" : {
@@ -38752,7 +39425,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El correo electrónico ha sido copiado."
+            "value" : "Se ha copiado el correo electrónico."
           }
         },
         "es-419" : {
@@ -39324,6 +39997,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Boş bölüm"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пустий розділ"
           }
         },
         "vi" : {
@@ -41229,6 +41908,12 @@
             "value" : "Yeni bölümün başlığını yazın"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введіть нову назву розділу"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41377,6 +42062,12 @@
             "value" : "Bir bölüm başlığı yazın"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введіть назву розділу"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41386,6 +42077,7 @@
       }
     },
     "Enter new name for « %@ »" : {
+      "comment" : "Message shown when editing custom field's title. Placeholder is the old title.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -42157,6 +42849,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sorun çıktı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виникла помилка"
           }
         },
         "vi" : {
@@ -43261,6 +43959,12 @@
             "state" : "translated",
             "value" : "Geçerlilik süresi dolmuş %@"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã hết hạn %@"
+          }
         }
       }
     },
@@ -43397,6 +44101,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geçerlilik süresi sonu %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hết hạn %@"
           }
         }
       }
@@ -43990,135 +44700,417 @@
     "Extra password must have at least %lld characters" : {
       "localizations" : {
         "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Дадатковы пароль павінен мець прынамсі %lld сімвалаў"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Дадатковы пароль павінен мець прынамсі %lld сімвалаў"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Дадатковы пароль павінен мець прынамсі %lld сімвалаў"
+                }
+              }
+            }
           }
         },
         "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dodatečné heslo musí mít délku alespoň %lld znaků"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Dodatečné heslo musí mít délku alespoň %lld znaků"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Dodatečné heslo musí mít délku alespoň %lld znaků"
+                }
+              }
+            }
           }
         },
         "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ekstra adgangskode skal indeholde mindst %lld tegn"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Ekstra adgangskode skal indeholde mindst %lld tegn"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ekstra adgangskode skal indeholde mindst %lld tegn"
+                }
+              }
+            }
           }
         },
         "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zusätzliches Passwort muss mindestens %lld Zeichen enthalten"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Zusätzliches Passwort muss mindestens %lld Zeichen enthalten"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zusätzliches Passwort muss mindestens %lld Zeichen enthalten"
+                }
+              }
+            }
           }
         },
         "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ο επιπλέον κωδικός πρόσβασης πρέπει να έχει τουλάχιστον %lld χαρακτήρες"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Ο επιπλέον κωδικός πρόσβασης πρέπει να έχει τουλάχιστον %lld χαρακτήρες"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ο επιπλέον κωδικός πρόσβασης πρέπει να έχει τουλάχιστον %lld χαρακτήρες"
+                }
+              }
+            }
           }
         },
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Extra password must have at least %lld characters"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Extra password must have at least %lld character"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Extra password must have at least %lld characters"
+                }
+              }
+            }
           }
         },
         "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La contraseña adicional debe tener al menos %lld caracteres."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "La contraseña adicional debe tener al menos %lld caracteres."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "La contraseña adicional debe tener al menos %lld caracteres."
+                }
+              }
+            }
           }
         },
         "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La contraseña adicional debe tener al menos %lld caracteres"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "La contraseña adicional debe tener al menos %lld caracteres"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "La contraseña adicional debe tener al menos %lld caracteres"
+                }
+              }
+            }
           }
         },
         "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lisäsalasanan täytyy sisältää vähintään %lld merkkiä"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Lisäsalasanan täytyy sisältää vähintään %lld merkkiä"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Lisäsalasanan täytyy sisältää vähintään %lld merkkiä"
+                }
+              }
+            }
           }
         },
         "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le mot de passe supplémentaire doit comporter au moins %lld caractères."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Le mot de passe supplémentaire doit comporter au moins %lld caractères."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Le mot de passe supplémentaire doit comporter au moins %lld caractères."
+                }
+              }
+            }
           }
         },
         "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kata sandi tambahan harus mengandung setidaknya %lld karakter"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Kata sandi tambahan harus mengandung setidaknya %lld karakter"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kata sandi tambahan harus mengandung setidaknya %lld karakter"
+                }
+              }
+            }
           }
         },
         "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "La password aggiuntiva deve essere composta da almeno %lld caratteri"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "La password aggiuntiva deve essere composta da almeno %lld caratteri"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "La password aggiuntiva deve essere composta da almeno %lld caratteri"
+                }
+              }
+            }
           }
         },
         "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "დამატებით პაროლს, სულ ცოტა, %lld სიმბოლო უნდა ჰქონდეს"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "დამატებით პაროლს, სულ ცოტა, %lld სიმბოლო უნდა ჰქონდეს"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "დამატებით პაროლს, სულ ცოტა, %lld სიმბოლო უნდა ჰქონდეს"
+                }
+              }
+            }
           }
         },
         "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "추가 비밀번호는 최소 %lld자여야 합니다."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "추가 비밀번호는 최소 %lld자여야 합니다."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "추가 비밀번호는 최소 %lld자여야 합니다."
+                }
+              }
+            }
           }
         },
         "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ekstra passord må inneholde minst %lld tegn"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Ekstra passord må inneholde minst %lld tegn"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ekstra passord må inneholde minst %lld tegn"
+                }
+              }
+            }
           }
         },
         "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dodatkowe hasło musi składać się z co najmniej %lld znaków"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Dodatkowe hasło musi składać się z co najmniej %lld znaków"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Dodatkowe hasło musi składać się z co najmniej %lld znaków"
+                }
+              }
+            }
           }
         },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Senha adicional deve ter pelo menos %lld caracteres"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Senha adicional deve ter pelo menos %lld caracteres"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Senha adicional deve ter pelo menos %lld caracteres"
+                }
+              }
+            }
           }
         },
         "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Parola suplimentară trebuie să aibă cel puțin %lld caractere."
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Parola suplimentară trebuie să aibă cel puțin %lld caractere."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Parola suplimentară trebuie să aibă cel puțin %lld caractere."
+                }
+              }
+            }
           }
         },
         "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dodatočné heslo musí mať aspoň %lld znakov"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Dodatočné heslo musí mať aspoň %lld znakov"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Dodatočné heslo musí mať aspoň %lld znakov"
+                }
+              }
+            }
           }
         },
         "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Extra lösenord måste ha minst %lld tecken"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Extra lösenord måste ha minst %lld tecken"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Extra lösenord måste ha minst %lld tecken"
+                }
+              }
+            }
           }
         },
         "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ek parola en az %lld karakter uzunluğunda olmalıdır"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Ek parola en az %lld karakter uzunluğunda olmalıdır"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ek parola en az %lld karakter uzunluğunda olmalıdır"
+                }
+              }
+            }
           }
         },
         "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Додатковий пароль має містити принаймні %lld символів"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Додатковий пароль має містити принаймні %lld символів"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Додатковий пароль має містити принаймні %lld символів"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "needs_review",
+                  "value" : "Mật khẩu phụ phải có ít nhất %lld ký tự"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Mật khẩu phụ phải có ít nhất %lld ký tự"
+                }
+              }
+            }
           }
         }
       }
@@ -44347,7 +45339,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Face ID ha sido activado."
+            "value" : "Se ha activado Face ID."
           }
         },
         "es-419" : {
@@ -47804,6 +48796,12 @@
             "state" : "translated",
             "value" : "Güvenli bağlantı oluştur"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tạo liên kết an toàn"
+          }
         }
       }
     },
@@ -48648,7 +49646,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obtener Pass Plus"
+            "value" : "Consigues Pass Plus"
           }
         },
         "es-419" : {
@@ -49930,7 +50928,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El texto oculto ha sido copiado."
+            "value" : "Se ha copiado el texto oculto."
           }
         },
         "es-419" : {
@@ -50090,7 +51088,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar el número de tarjeta"
+            "value" : "Ocultar el número de la tarjeta"
           }
         },
         "es-419" : {
@@ -52651,7 +53649,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La identidad ha sido creada."
+            "value" : "Se ha creado la identidad."
           }
         },
         "es-419" : {
@@ -53095,7 +54093,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La identidad ha sido restaurada."
+            "value" : "Se ha restaurado la identidad."
           }
         },
         "es-419" : {
@@ -53237,7 +54235,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La identidad ha sido actualizada."
+            "value" : "Se ha actualizado la identidad."
           }
         },
         "es-419" : {
@@ -53784,6 +54782,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etkin olmayan bağlantılar"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Các liên kết không hoạt động"
           }
         }
       }
@@ -54985,7 +55989,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La invitación ha sido enviada."
+            "value" : "Se ha enviado la invitación."
           }
         },
         "es-419" : {
@@ -55781,7 +56785,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El ID del elemento ha sido copiado."
+            "value" : "Se ha copiado el ID del elemento."
           }
         },
         "es-419" : {
@@ -58149,7 +59153,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sólo rellenado automático"
+            "value" : "Solo relleno automático"
           }
         },
         "es-419" : {
@@ -58950,7 +59954,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Último autorellenado"
+            "value" : "Último relleno automático"
           }
         },
         "es-419" : {
@@ -61207,7 +62211,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El inicio de sesión ha sido creado."
+            "value" : "Se ha creado el inicio de sesión."
           }
         },
         "es-419" : {
@@ -61327,6 +62331,7 @@
       }
     },
     "Login for %@" : {
+      "comment" : "[Share extension] The default title for login when creating a login from an URL. Placeholder is an URL.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -62172,7 +63177,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El inicio de sesión ha sido actualizado."
+            "value" : "Se ha actualizado el inicio de sesión."
           }
         },
         "es-419" : {
@@ -63292,13 +64297,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vistas máximas:"
+            "value" : "Número máximo de vistas:"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vistas máximas:"
+            "value" : "Número máximo de vistas:"
           }
         },
         "fi" : {
@@ -64970,7 +65975,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El monitoreo ha sido pausado."
+            "value" : "Se ha pausado el monitoreo."
           }
         },
         "es-419" : {
@@ -64982,7 +65987,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Monitorointi on keskeytetty"
+            "value" : "Valvonta on keskeytetty"
           }
         },
         "fr" : {
@@ -67936,6 +68941,7 @@
       }
     },
     "No vaults" : {
+      "comment" : "Related to vaults selected for Spotlight search. This message is show when no vaults is selected.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -68927,7 +69933,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L anota ha sido creada."
+            "value" : "Se ha creado la nota."
           }
         },
         "es-419" : {
@@ -69047,6 +70053,7 @@
       }
     },
     "Note for %@" : {
+      "comment" : "[Share extension] The default title for note when creating a note from an URL. Placeholder is an URL.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -69561,7 +70568,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La nota ha sido restaurada."
+            "value" : "Se ha restaurado la nota."
           }
         },
         "es-419" : {
@@ -69721,7 +70728,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La nota ha sido actualizada."
+            "value" : "Se ha actualizado la nota."
           }
         },
         "es-419" : {
@@ -70957,10 +71964,124 @@
     "Only one free Proton Pass account is allowed" : {
       "comment" : "Error message shown when trying to logging into the 2nd free account",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дазволены толькі адзін бясплатны ўліковы запіс Proton Pass"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je povolen pouze jeden bezplatný účet Proton Pass"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der tillades kun én gratis Proton-konto"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es ist nur ein kostenloses Proton Pass-Konto erlaubt."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επιτρέπεται μόνο ένας δωρεάν λογαριασμός Proton Pass"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Only one free Proton Pass account is allowed"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo se permite una cuenta gratuita de Proton Pass."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo se permite una cuenta gratuita de Proton Pass"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vain yksi ilmainen Proton-tili sallitaan"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un seul compte Proton Pass gratuit est autorisé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "È consentito un solo account Proton Pass gratuito"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაშვებულია Proton Pass-ის, მხოლოდ, ერთი ანგარიში"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "무료 Proton Pass 계정만 허용됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kun en gratis Proton Pass-konto er tillatt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Możesz dodać tylko jedno darmowe konto Proton Pass"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apenas uma conta do Proton Pass gratuita é permitida"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este permis doar un cont gratuit de Proton Pass."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je povolený iba jeden bezplatný účet Proton Pass"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endast ett gratis Proton Pass-konto är tillåtet"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chỉ một tài khoản Proton Pass miễn phí được phép đăng nhập"
           }
         }
       }
@@ -73846,7 +74967,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La contraseña ha sido copiada."
+            "value" : "Se ha copiado la contraseña."
           }
         },
         "es-419" : {
@@ -76549,7 +77670,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El código PIN ha sido establecido."
+            "value" : "Se ha establecido el código PIN."
           }
         },
         "es-419" : {
@@ -80055,6 +81176,12 @@
             "value" : "Proton はあなたの情報を第三者と共有しません。すべてのデータは、ダークウェブ上に出現する Proton ドメインを捜索することで取得しています。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton არასდროს უზიარებს თქვენს ინფორმაციას მესამე პირებს. მონაცემები ბნელ ვებზე Proton-ის ელფოსტების ძებნიდან მოდის."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81913,6 +83040,12 @@
             "state" : "translated",
             "value" : "Tüm etkin olmayan bağlantıları kaldır"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa tất cả liên kết không hoạt động"
+          }
         }
       }
     },
@@ -82486,6 +83619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etkin olmayan bağlantıyı kaldır"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa liên kết không hoạt động"
           }
         }
       }
@@ -88993,7 +90132,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Número de verificación"
+            "value" : "Código de seguridad"
           }
         },
         "es-419" : {
@@ -89368,6 +90507,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sikkerhetsnøkler"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beveiligingssleutels"
           }
         },
         "pl" : {
@@ -91185,10 +92330,34 @@
     },
     "Session expired" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сеанс завяршыўся"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relace vypršela"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Session udløbet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sitzung abgelaufen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η συνεδρία έληξε"
           }
         },
         "en" : {
@@ -91209,6 +92378,12 @@
             "value" : "Sesión expirada"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Istunto on erääntynyt"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91221,10 +92396,34 @@
             "value" : "Sesi kedaluwarsa"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sessione scaduta"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სესიას ვადა გაუვიდა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "세션이 만료되었습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Økt utløpt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesja wygasła"
           }
         },
         "pt-BR" : {
@@ -91233,10 +92432,28 @@
             "value" : "Sessão expirada"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sesiune expirată"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relácia skončila"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Session löpt ut"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Phiên làm việc hết hạn"
           }
         }
       }
@@ -97757,7 +98974,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deja de compartir tu dirección de correo real. En su lugar, ocúltala utilizando alias de correo electrónico, una exclusividad de Proton Pass."
+            "value" : "Deja de compartir tu dirección de correo real. En su lugar, ocúltala usando alias de correo electrónico, una exclusividad de Proton Pass."
           }
         },
         "es-419" : {
@@ -98835,10 +100052,34 @@
     "Switch and manage" : {
       "comment" : "Confirm button to switch to another account and go to manage account page",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пераключыць і кіраваць"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přepnout a spravovat"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skift og håndter"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wechseln und verwalten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εναλλαγή και διαχείριση"
           }
         },
         "en" : {
@@ -98859,6 +100100,12 @@
             "value" : "Cambiar y gestionar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaihda ja hallitse tiliä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -98871,10 +100118,52 @@
             "value" : "Alihkan dan kelola"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passa e gestisci"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადართვა და მართვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전환 및 관리"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bytt og administrer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przełącz i zarządzaj"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alterar e gerenciar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comutare și gestionare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prepnúť a spravovať"
           }
         },
         "sv" : {
@@ -98882,16 +100171,46 @@
             "state" : "translated",
             "value" : "Byt och hantera"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chuyển và quản lý"
+          }
         }
       }
     },
     "Switched to %@" : {
       "comment" : "Placeholder is an email address. Message shown after switching to another account.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пераключана на %@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přepnuto na %@"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skiftet til %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewechselt zu %@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αλλαγή σε %@"
           }
         },
         "en" : {
@@ -98900,10 +100219,22 @@
             "value" : "Switched to %@"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha cambiado a %@."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se cambió a %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaihdettu tiliin %@"
           }
         },
         "fr" : {
@@ -98918,16 +100249,64 @@
             "value" : "Beralih ke %@"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei passato a %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადაერთეთ %@-ზე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@(으)로 전환되었습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Byttet til %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przełączono na konto %@"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alterar para %@"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comutat la %@"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prepnuté na %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bytte till %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chuyển qua %@"
           }
         }
       }
@@ -100259,13 +101638,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Campo personalizado de texto"
+            "value" : "Campo de texto personalizado"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Campo personalizado de texto"
+            "value" : "Campo de texto personalizado"
           }
         },
         "fi" : {
@@ -101307,6 +102686,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Ögenin bulunduğu kasa %lld kullanıcı ile paylaşılıyor"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kho lưu trữ hiện được chia sẻ với %lld người dùng"
                 }
               }
             }
@@ -103932,7 +105323,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Touch ID ha sido activado."
+            "value" : "Se ha activado Touch ID."
           }
         },
         "es-419" : {
@@ -110658,7 +112049,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El nombre de usuario ha sido copiado."
+            "value" : "Se ha copiado el nombre de usuario."
           }
         },
         "es-419" : {
@@ -111138,7 +112529,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La caja fuerte ha sido creada."
+            "value" : "Se ha creado la caja fuerte."
           }
         },
         "es-419" : {
@@ -111618,7 +113009,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El ID de la caja fuerte ha sido copiado."
+            "value" : "Se ha copiado el ID de la caja fuerte."
           }
         },
         "es-419" : {
@@ -112259,7 +113650,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La caja fuerte ha sido actualizada."
+            "value" : "Se ha actualizado la caja fuerte."
           }
         },
         "es-419" : {
@@ -115576,13 +116967,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contraseñas débiles"
+            "value" : "Contraseñas poco seguras"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contraseñas débiles"
+            "value" : "Contraseñas poco seguras"
           }
         },
         "fi" : {
@@ -115736,13 +117127,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contraseñas débiles"
+            "value" : "Contraseñas poco seguras"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contraseñas débiles"
+            "value" : "Contraseñas poco seguras"
           }
         },
         "fi" : {
@@ -116216,7 +117607,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El sitio web ha sido copiado."
+            "value" : "Se ha copiado el sitio web."
           }
         },
         "es-419" : {
@@ -116714,7 +118105,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quand des éléments sont déplacés d'un coffre-fort à l'autre, nous conservons jusqu'aux 50 dernières modifications apportées à chaque élément."
+            "value" : "Quand des éléments sont déplacés d'un coffre-fort à l'autre, nous conservons jusqu'aux 50 dernières modifications apportées à chaque élément."
           }
         },
         "id" : {
@@ -120459,6 +121850,12 @@
             "value" : "Det maksimale antal bokse, du kan oprette, er nået. Opgrader til et betalt produkt og opret flere bokse."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast die Höchstzahl an Tresoren erreicht, die du erstellen kannst. Upgrade auf ein kostenpflichtiges Abonnement, um mehrere Tresore zu erstellen."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -120572,10 +121969,34 @@
     "You need to switch to %@ in order to manage it" : {
       "comment" : "Placeholder is an email address",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пераключыцеся на %@, каб кіраваць гэтым уліковым запісам"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro správu přepněte na %@"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du skal skifte til %@ for at kunne håndtere det."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du musst zu %@ wechseln, um es zu verwalten."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πρέπει να μεταβείτε στη %@ για να τη διαχειριστείτε"
           }
         },
         "en" : {
@@ -120584,10 +122005,22 @@
             "value" : "You need to switch to %@ in order to manage it"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesitas cambiar a %@ para gestionarla."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Necesita cambiar a %@ para gestionarla"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinun on vaihdettava tiliin %@ hallitaksesi sitä"
           }
         },
         "fr" : {
@@ -120600,6 +122033,66 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anda perlu untuk beralih ke %@ untuk mengelola hal ini"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Devi passare a %@ per poterlo gestire"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სამართავად %@-ზე უნდა გადახვიდეთ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "관리하려면 %@(으)로 계정을 전환해야합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du må bytte til %@ for å administrere det"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przełącz na konto %@, aby tym zarządzać"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você precisa mudar para %@ para gerenciá-lo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trebuie să comutați la %@ pentru a-l gestiona"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aby ste to mohli spravovať, musíte prepnúť na %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du måste byta till %@ för att hantera det"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn cần phải chuyển qua tài khoản %@ để có thể quản lý nó"
           }
         }
       }
@@ -120663,7 +122156,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ce mot de passe vous sera demandé lorsque vous vous connectez et passer d'une autre application Proton à Proton Pass sur le web."
+            "value" : "Ce mot de passe vous sera demandé lorsque vous vous connectez et passez d'une autre application Proton à Proton Pass sur le web."
           }
         },
         "id" : {
@@ -121052,10 +122545,34 @@
     "You're logged out from %@" : {
       "comment" : "Placeholder is an email address",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы выйшлі з %@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odhlásili jste %@"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du er logget ud fra %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du wurdest von %@ abgemeldet."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Έχετε αποσυνδεθεί από τη %@"
           }
         },
         "en" : {
@@ -121064,10 +122581,22 @@
             "value" : "You're logged out from %@"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estás desconectado de %@."
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerró la sesión de %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinut on kirjattu ulos tililtä %@"
           }
         },
         "fr" : {
@@ -121082,10 +122611,64 @@
             "value" : "Anda telah keluar dari %@"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei stato disconnesso da %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ გახვედით %@-დან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@(에)서 로그아웃됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er logget av fra %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wylogowano z konta %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você está desconectado de %@."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V-ați deconectat din %@"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ste odhlásený z %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du är utloggad från %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn đã đăng xuất khỏi %@"
           }
         }
       }
@@ -121093,10 +122676,118 @@
     "You're logged out from other free accounts" : {
       "comment" : "Message shown when user is being logged out from all other free accounts because only 1 free account is allowed",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адбыўся выхад з сістэмы іншых бясплатных уліковых запісаў"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jste odhlášeni z ostatních bezplatných účtů"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er logget ud af andre gratis konti"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du wurdest von anderen kostenlosen Konten abgemeldet."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Έχετε αποσυνδεθεί από άλλους δωρεάν λογαριασμούς"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You're logged out from other free accounts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se te ha desconectado de otras cuentas gratuitas."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se le desconectó de otras cuentas gratuitas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinut on kirjattu ulos muilta ilmaisilta tileiltä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous êtes déconnecté des autres comptes gratuits."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei disconnesso dagli altri account gratuiti"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ გახვედით სხვა უფასო ანგარიშებიდან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 무료 계정에서 로그아웃되었습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er logget ut fra andre gratiskontoer"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você está desconectado de outras contas gratuitas"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V-ați deconectat de la alte conturi gratuite."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Z ostatných bezplatných účtov ste odhlásený"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du är utloggad från andra gratiskonton"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn đã đăng xuất khỏi các tài khoản miễn phí khác"
           }
         }
       }
@@ -122557,163 +124248,25 @@
         }
       }
     },
-    "Your plan only allows to use items from your first vaults for autofill purposes." : {
-      "comment" : "Message displayed for free user at the launch of autofill extension when displaying items  ",
+    "Your plan only allows to use items from your first 2 vaults for autofill purposes." : {
+      "comment" : "Message displayed for free user at the launch of autofill extension when displaying items",
       "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ваш тарыфны план дазваляе выкарыстоўваць элементы з вашага першага сховішча ў якасці аўтазапаўнення."
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Váš tarif umožňuje pro automatické vyplňování použít pouze položky z prvních trezorů."
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dit abonnement tillader kun, at du bruger elementer fra dine første bokse til autofyld."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dein Abonnement erlaubt nur die Verwendung von Einträgen in deinem ältesten Tresor für das automatische Ausfüllen."
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Το πλάνο σας επιτρέπει μόνο τη χρήση στοιχείων από την πρώτη κρύπτη σας για σκοπούς αυτόματης συμπλήρωσης."
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Your plan only allows to use items from your first vaults for autofill purposes."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tu plan solo permite utilizar los elementos de tus primeras cajas fuertes para la función de rellenado automático."
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "El plan solo permite usar los elementos de sus primeras bóvedas para propósitos de completado automático."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Palvelutasosi sallii vain ensimmäisten säilöjesi tietojen käyttämisen automaattista täyttöä varten."
+            "value" : "Your plan only allows to use items from your first 2 vaults for autofill purposes."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Votre abonnement vous permet uniquement d'utiliser les éléments de vos premiers coffres-forts pour la fonction de remplissage automatique."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paket Anda hanya mengizinkan penggunaan item dari brankas pertama Anda untuk kebutuhan pengisian otomatis."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Il tuo piano consente di usare la compilazione automatica solamente con gli elementi nelle prime casseforti."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "あなたのプランでは、最初の保管庫のアイテムを自動入力目的でのみ使用できます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "თქვენი სატარიფო გეგმა საშუალებას გაძლევთ ავტომატური შევსებისთვის ელემენტები, მხოლოდ, პირველი საცავებიდან გამოიყენოთ."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "사용자의 플랜이 첫 금고에 한하여 자동 완성 기능을 지원합니다."
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Planen din tillater bare å bruke elementer fra de første hvelvene dine for autofyllformål."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uw abonnement staat alleen toe om items uit uw eerste kluis te gebruiken voor autofill doeleinden."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Twój plan pozwala na autouzupełnianie elementów tylko z pierwszego sejfu."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seu plano só permite usar itens dos seus primeiros cofres para fins de preenchimento automático."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Planul actual vă permite să folosiți articole pentru autocompletări doar din primele seifuri ."
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Váš plán umožňuje používať na účely automatického vypĺňania iba položky z vašich prvých trezorov."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vaš paket dovoljuje samo uporabo predmetov iz vaših prvih trezorjev za namene samodejnega izpolnjevanja.\n​"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ditt paket tillåter endast att använda objekt från dina första valv för autofyllsändamål."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tarifeniz otomatik doldurma için yalnızca ilk kasanızdaki ögelerin kullanılmasına izin veriyor."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ваш тариф дозволяє використовувати лише ваші дані з першого сховища для автозаповнення."
+            "value" : "Votre abonnement vous permet uniquement d'utiliser les éléments de vos 2 premiers coffres-forts pour la fonction de remplissage automatique"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gói của bạn chỉ cho phép sử dụng các nội dung trong kho lưu trữ đầu tiên để tự động điền."
+            "value" : "Gói của bạn chỉ cho phép sử dụng các nội dung trong 2 kho lưu trữ đầu tiên để tự động điền."
           }
         }
       }

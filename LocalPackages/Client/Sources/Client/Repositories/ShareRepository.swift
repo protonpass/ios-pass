@@ -168,8 +168,9 @@ public extension ShareRepository {
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
 
         if eventStream != nil {
+            let symmetricKey = try await getSymmetricKey()
             for share in encryptedShares {
-                if let vault = try share.toVault(symmetricKey: getSymmetricKey()) {
+                if let vault = try share.toVault(symmetricKey: symmetricKey) {
                     eventStream?.send(.decryptedVault(vault))
                 }
             }
@@ -234,7 +235,8 @@ public extension ShareRepository {
         logger.trace("Getting local vaults for user \(userId)")
 
         let shares = try await getShares(userId: userId)
-        let vaults = try shares.compactMap { try $0.toVault(symmetricKey: getSymmetricKey()) }
+        let symmetricKey = try await getSymmetricKey()
+        let vaults = try shares.compactMap { try $0.toVault(symmetricKey: symmetricKey) }
         logger.trace("Got \(vaults.count) local vaults for user \(userId)")
         return vaults
     }
@@ -247,7 +249,7 @@ public extension ShareRepository {
             return nil
         }
         logger.trace("Got local vault with shareID \(shareId) for user \(userId)")
-        return try share.toVault(symmetricKey: getSymmetricKey())
+        return try await share.toVault(symmetricKey: getSymmetricKey())
     }
 
     func createVault(_ vault: VaultProtobuf) async throws -> Share {
@@ -307,8 +309,8 @@ public extension ShareRepository {
 }
 
 private extension ShareRepository {
-    func getSymmetricKey() throws -> SymmetricKey {
-        try symmetricKeyProvider.getSymmetricKey()
+    func getSymmetricKey() async throws -> SymmetricKey {
+        try await symmetricKeyProvider.getSymmetricKey()
     }
 
     func symmetricallyEncrypt(userId: String, _ share: Share) async throws -> SymmetricallyEncryptedShare {
@@ -331,7 +333,7 @@ private extension ShareRepository {
         let decryptedContent = try AES.GCM.open(contentData,
                                                 key: key.keyData,
                                                 associatedData: .vaultContent)
-        let reencryptedContent = try getSymmetricKey().encrypt(decryptedContent.encodeBase64())
+        let reencryptedContent = try await getSymmetricKey().encrypt(decryptedContent.encodeBase64())
         return .init(encryptedContent: reencryptedContent, share: share)
     }
 

@@ -223,7 +223,7 @@ public extension ItemRepository {
 
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent? {
         let encryptedItem = try await getItem(shareId: shareId, itemId: itemId)
-        return try encryptedItem?.getItemContent(symmetricKey: getSymmetricKey())
+        return try await encryptedItem?.getItemContent(symmetricKey: getSymmetricKey())
     }
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent] {
@@ -270,10 +270,12 @@ public extension ItemRepository {
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()
 
+        let symmetricKey = try await getSymmetricKey()
         for (index, itemRevision) in itemRevisions.enumerated() {
             let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
                                                               shareId: shareId,
-                                                              userId: userId)
+                                                              userId: userId,
+                                                              symmetricKey: symmetricKey)
             eventStream?.send(.decryptItems(.init(shareId: shareId,
                                                   total: itemRevisions.count,
                                                   decrypted: index + 1)))
@@ -305,9 +307,11 @@ public extension ItemRepository {
                                                                         shareId: shareId,
                                                                         request: request)
         logger.trace("Saving newly created item \(createdItemRevision.itemID) to local database")
+        let symmetricKey = try await getSymmetricKey()
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision,
                                                            shareId: shareId,
-                                                           userId: userId)
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(createdItemRevision.itemID) to local database")
 
@@ -329,9 +333,11 @@ public extension ItemRepository {
                                                    shareId: shareId,
                                                    request: createAliasRequest)
         logger.trace("Saving newly created alias \(createdItemRevision.itemID) to local database")
+        let symmetricKey = try await getSymmetricKey()
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: createdItemRevision,
                                                            shareId: shareId,
-                                                           userId: userId)
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved alias \(createdItemRevision.itemID) to local database")
         return encryptedItem
@@ -356,10 +362,12 @@ public extension ItemRepository {
                                                                 shareId: shareId,
                                                                 request: createPendingAliasRequest)
         logger.trace("Saving newly created aliases  to local database")
+        let symmetricKey = try await getSymmetricKey()
         let encryptedItem = try await createdItemsRevision.asyncCompactMap {
             try await symmetricallyEncrypt(itemRevision: $0,
                                            shareId: shareId,
-                                           userId: userId)
+                                           userId: userId,
+                                           symmetricKey: symmetricKey)
         }
         try await localDatasource.upsertItems(encryptedItem)
         logger.trace("Saved aliased to local database")
@@ -387,12 +395,15 @@ public extension ItemRepository {
                                                                           shareId: shareId,
                                                                           request: request)
         logger.trace("Saving newly created alias & other item to local database")
+        let symmetricKey = try await getSymmetricKey()
         let encryptedAlias = try await symmetricallyEncrypt(itemRevision: bundle.alias,
                                                             shareId: shareId,
-                                                            userId: userId)
+                                                            userId: userId,
+                                                            symmetricKey: symmetricKey)
         let encryptedOtherItem = try await symmetricallyEncrypt(itemRevision: bundle.item,
                                                                 shareId: shareId,
-                                                                userId: userId)
+                                                                userId: userId,
+                                                                symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedAlias, encryptedOtherItem])
         logger.trace("Saved alias & other item to local database")
         return (encryptedAlias, encryptedOtherItem)
@@ -546,9 +557,11 @@ public extension ItemRepository {
                                                   itemId: itemId,
                                                   request: request)
         logger.trace("Finished updating remotely item \(itemId) for share \(shareId)")
+        let symmetricKey = try await getSymmetricKey()
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedItemRevision,
                                                            shareId: shareId,
-                                                           userId: userId)
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
@@ -556,8 +569,12 @@ public extension ItemRepository {
     }
 
     func upsertItems(userId: String, items: [Item], shareId: String) async throws {
+        let symmetricKey = try await getSymmetricKey()
         let encryptedItems = try await items.parallelMap { [weak self] in
-            try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: shareId, userId: userId)
+            try await self?.symmetricallyEncrypt(itemRevision: $0,
+                                                 shareId: shareId,
+                                                 userId: userId,
+                                                 symmetricKey: symmetricKey)
         }.compactMap { $0 }
 
         try await localDatasource.upsertItems(encryptedItems)
@@ -590,9 +607,10 @@ public extension ItemRepository {
             throw PassError.itemNotFound(item)
         }
         let userId = try await userManager.getActiveUserId()
+        let symmetricKey = try await getSymmetricKey()
 
         let itemHistory = try await getItemHistory(itemIDs: item)
-        let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: getSymmetricKey())
+        let oldItemContent = try oldEncryptedItem.getItemContent(symmetricKey: symmetricKey)
         let destinationShareKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: toShareId)
         let request = try MoveItemRequest(itemContent: oldItemContent.protobuf,
                                           destinationShareId: toShareId,
@@ -605,7 +623,8 @@ public extension ItemRepository {
                                                       request: request)
         let newEncryptedItem = try await symmetricallyEncrypt(itemRevision: newItem,
                                                               shareId: toShareId,
-                                                              userId: userId)
+                                                              userId: userId,
+                                                              symmetricKey: symmetricKey)
         try await localDatasource.deleteItems([oldEncryptedItem])
         try await localDatasource.upsertItems([newEncryptedItem])
         try await refreshPinnedItemDataStream()
@@ -651,10 +670,12 @@ public extension ItemRepository {
         logger.trace("Pin item \(item.itemId) for share \(item.shareId)")
         let userId = try await userManager.getActiveUserId()
         let pinItemRevision = try await remoteDatasource.pin(userId: userId, item: item)
+        let symmetricKey = try await getSymmetricKey()
         logger.trace("Updating item \(pinItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision,
                                                            shareId: item.shareId,
-                                                           userId: userId)
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(pinItemRevision.itemID) to local database")
         try await refreshPinnedItemDataStream()
@@ -665,10 +686,12 @@ public extension ItemRepository {
         logger.trace("Unpiin item \(item.itemId) for share \(item.shareId)")
         let userId = try await userManager.getActiveUserId()
         let unpinItemRevision = try await remoteDatasource.unpin(userId: userId, item: item)
+        let symmetricKey = try await getSymmetricKey()
         logger.trace("Updating item \(unpinItemRevision.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision,
                                                            shareId: item.shareId,
-                                                           userId: userId)
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(unpinItemRevision.itemID) to local database")
         try await refreshPinnedItemDataStream()
@@ -683,6 +706,7 @@ public extension ItemRepository {
         logger.trace("Update flags for item \(itemId) of share \(shareId)")
         let request = UpdateItemFlagsRequest(flags: flags)
         let userId = try await userManager.getActiveUserId()
+        let symmetricKey = try await getSymmetricKey()
         let itemWithUpdatedFlags = try await remoteDatasource.updateItemFlags(userId: userId,
                                                                               itemId: itemId,
                                                                               shareId: shareId,
@@ -690,7 +714,8 @@ public extension ItemRepository {
         logger.trace("Updating item \(itemWithUpdatedFlags.itemID) to local database")
         let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemWithUpdatedFlags,
                                                            shareId: shareId,
-                                                           userId: userId)
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
         logger.trace("Saved item \(itemWithUpdatedFlags.itemID) to local database")
         itemsWereUpdated.send()
@@ -710,18 +735,19 @@ private extension ItemRepository {
 // MARK: - Private util functions
 
 private extension ItemRepository {
-    func getSymmetricKey() throws -> SymmetricKey {
-        try symmetricKeyProvider.getSymmetricKey()
+    func getSymmetricKey() async throws -> SymmetricKey {
+        try await symmetricKeyProvider.getSymmetricKey()
     }
 
     func symmetricallyEncrypt(itemRevision: Item,
                               shareId: String,
-                              userId: String) async throws -> SymmetricallyEncryptedItem {
+                              userId: String,
+                              symmetricKey: SymmetricKey) async throws -> SymmetricallyEncryptedItem {
         let vaultKey = try await passKeyManager.getShareKey(userId: userId,
                                                             shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
         let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey)
-        let encryptedContent = try contentProtobuf.encrypt(symmetricKey: getSymmetricKey())
+        let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
 
         let isLogInItem = if case .login = contentProtobuf.contentData {
             true
@@ -751,11 +777,12 @@ public extension ItemRepository {
         let userId = try await userManager.getActiveUserId()
 
         let items = try await localDatasource.getAllItems(userId: userId)
+        let symmetricKey = try await getSymmetricKey()
 
         let loginItemsWithTotp =
             try items
                 .filter(\.isLogInItem)
-                .map { try $0.getItemContent(symmetricKey: getSymmetricKey()) }
+                .map { try $0.getItemContent(symmetricKey: symmetricKey) }
                 .compactMap { itemContent -> Item? in
                     guard case let .login(loginData) = itemContent.contentData,
                           !loginData.totpUri.isEmpty
@@ -813,9 +840,10 @@ private extension ItemRepository {
             throw PassError.unexpectedError
         }
         let userId = try await userManager.getActiveUserId()
+        let symmetricKey = try await getSymmetricKey()
 
         let oldItemsContent = try oldEncryptedItems
-            .map { try $0.getItemContent(symmetricKey: getSymmetricKey()) }
+            .map { try $0.getItemContent(symmetricKey: symmetricKey) }
         let destinationShareKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: toShareId)
 
         let request = try MoveItemsRequest(itemsContent: oldItemsContent,
@@ -828,7 +856,10 @@ private extension ItemRepository {
 
         let newEncryptedItems = try await newItems
             .parallelMap { [weak self] in
-                try await self?.symmetricallyEncrypt(itemRevision: $0, shareId: toShareId, userId: userId)
+                try await self?.symmetricallyEncrypt(itemRevision: $0,
+                                                     shareId: toShareId,
+                                                     userId: userId,
+                                                     symmetricKey: symmetricKey)
             }.compactMap { $0 }
         try await localDatasource.deleteItems(itemIds: oldEncryptedItems.map(\.itemId),
                                               shareId: fromSharedId)

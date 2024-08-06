@@ -189,13 +189,17 @@ extension LogInDetailViewModel {
 
     func showAliasDetail() {
         guard let aliasItem else { return }
-        do {
-            let itemContent = try aliasItem.getItemContent(symmetricKey: getSymmetricKey())
-            router.present(for: .itemDetail(itemContent,
-                                            automaticDisplay: true,
-                                            showSecurityIssues: false))
-        } catch {
-            handle(error)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let symmetricKey = try await getSymmetricKey()
+                let itemContent = try aliasItem.getItemContent(symmetricKey: symmetricKey)
+                router.present(for: .itemDetail(itemContent,
+                                                automaticDisplay: true,
+                                                showSecurityIssues: false))
+            } catch {
+                handle(error)
+            }
         }
     }
 

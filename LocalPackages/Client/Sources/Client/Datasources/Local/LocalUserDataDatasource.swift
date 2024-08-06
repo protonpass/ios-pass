@@ -52,7 +52,7 @@ public extension LocalUserDataDatasource {
         let request = UserProfileEntity.fetchRequest()
         request.sortDescriptors = [.init(key: "updateTime", ascending: true)]
         let entities = try await execute(fetchRequest: request, context: context)
-        let key = try symmetricKeyProvider.getSymmetricKey()
+        let key = try await symmetricKeyProvider.getSymmetricKey()
         return try entities.map { try $0.toUserProfile(key) }
     }
 
@@ -66,7 +66,7 @@ public extension LocalUserDataDatasource {
     func upsert(_ userData: UserData) async throws {
         try await remove(userId: userData.user.ID)
         let context = newTaskContext(type: .insert)
-        let key = try symmetricKeyProvider.getSymmetricKey()
+        let key = try await symmetricKeyProvider.getSymmetricKey()
         var hydrationError: (any Error)?
         let request = newBatchInsertRequest(entity: UserProfileEntity.entity(context: context),
                                             sourceItems: [userData]) { object, userData in
@@ -87,7 +87,7 @@ public extension LocalUserDataDatasource {
         let fetchRequest = UserProfileEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "isActive = %d", true)
         let userDataEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
-        let key = try symmetricKeyProvider.getSymmetricKey()
+        let key = try await symmetricKeyProvider.getSymmetricKey()
         assert(userDataEntities.count <= 1, "Should not have more than 1 active profile")
         return try userDataEntities.map { try $0.toUserProfile(key) }.first
     }
