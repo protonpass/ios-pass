@@ -52,12 +52,7 @@ private extension IdentityDetailView {
                                         shouldShowVault: viewModel.shouldShowVault)
                         .padding(.bottom, 25)
 
-                    ForEach([
-                        viewModel.personalDetailsSection,
-                        viewModel.addressDetailsSection,
-                        viewModel.contactDetailsSection,
-                        viewModel.workDetailsSection
-                    ]) { section in
+                    ForEach(viewModel.sections) { section in
                         if !section.isEmpty {
                             view(for: section)
                         }
