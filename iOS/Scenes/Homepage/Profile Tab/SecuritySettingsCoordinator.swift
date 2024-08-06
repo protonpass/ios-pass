@@ -149,6 +149,7 @@ private extension SecuritySettingsCoordinator {
         } else {
             let view = LocalAuthenticationView(mode: .biometric,
                                                delayed: false,
+                                               manuallyAvoidKeyboard: false,
                                                onAuth: {},
                                                onSuccess: succesHandler,
                                                onFailure: failureHandler)
@@ -207,6 +208,7 @@ private extension SecuritySettingsCoordinator {
 
         let view = LocalAuthenticationView(mode: .pin,
                                            delayed: false,
+                                           manuallyAvoidKeyboard: false,
                                            onAuth: {},
                                            onSuccess: successHandler,
                                            onFailure: failureHandler)
@@ -228,6 +230,7 @@ private extension SecuritySettingsCoordinator {
 
         let view = LocalAuthenticationView(mode: .pin,
                                            delayed: false,
+                                           manuallyAvoidKeyboard: false,
                                            onAuth: {},
                                            onSuccess: successHandler,
                                            onFailure: failureHandler)
