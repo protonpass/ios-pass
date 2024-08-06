@@ -1,4 +1,4 @@
-//  
+//
 // GetAllMailboxesEndpoint.swift
 // Proton Pass - Created on 06/08/2024.
 // Copyright (c) 2024 Proton Technologies AG
