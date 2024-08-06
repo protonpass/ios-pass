@@ -18,14 +18,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
+import Factory
 import SwiftUI
 
 struct EmptyVaultView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
     private let canCreateItems: Bool
     private let onCreate: (ItemContentType) -> Void
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     init(canCreateItems: Bool,
          onCreate: @escaping (ItemContentType) -> Void) {
@@ -49,8 +52,10 @@ struct EmptyVaultView: View {
 
                 LazyVGrid(columns: columns) {
                     ForEach(ItemContentType.allCases, id: \.self) { type in
-                        CreateItemButton(type: type) {
-                            onCreate(type)
+                        if isSupported(type) {
+                            CreateItemButton(type: type) {
+                                onCreate(type)
+                            }
                         }
                     }
                 }
@@ -58,6 +63,17 @@ struct EmptyVaultView: View {
         }
         .padding()
         .opacityReduced(!canCreateItems)
+    }
+}
+
+private extension EmptyVaultView {
+    func isSupported(_ type: ItemContentType) -> Bool {
+        switch type {
+        case .alias, .creditCard, .login, .note:
+            true
+        case .identity:
+            getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1)
+        }
     }
 }
 
