@@ -243,12 +243,10 @@ private extension ShareCoordinator {
                                              guard let self else { return }
                                              dismissExtension()
                                          })
-                                         .localAuthentication(delayed: false,
-                                                              manuallyAvoidKeyboard: false,
-                                                              onFailure: { [weak self] in
-                                                                  guard let self else { return }
-                                                                  logOut(userId: userId)
-                                                              })
+                                         .localAuthentication(onFailure: { [weak self] in
+                                             guard let self else { return }
+                                             logOut(userId: userId)
+                                         })
             showView(view)
         } catch {
             alert(error: error) { [weak self] in

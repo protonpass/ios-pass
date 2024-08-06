@@ -105,8 +105,7 @@ private struct AppCoverView: View {
                 .frame(width: min(windowSize.width, windowSize.height) * 2 / 3)
                 .frame(maxWidth: 245)
         }
-        .localAuthentication(delayed: false,
-                             manuallyAvoidKeyboard: true,
+        .localAuthentication(manuallyAvoidKeyboard: true,
                              onAuth: onAuth,
                              onAuthSkipped: onAuthSkipped,
                              onSuccess: onSuccess,
