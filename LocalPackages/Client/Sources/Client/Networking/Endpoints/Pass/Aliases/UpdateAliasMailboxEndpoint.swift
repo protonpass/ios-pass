@@ -44,7 +44,7 @@ struct UpdateAliasMailboxEndpoint: Endpoint {
 
     init(request: UpdateAliasMailboxRequest) {
         debugDescription = "Update user alias default mailbox"
-        path = "/pass/v1/user/alias/settings"
+        path = "/pass/v1/user/alias/settings/default_mailbox_id"
         method = .put
         body = request
     }
