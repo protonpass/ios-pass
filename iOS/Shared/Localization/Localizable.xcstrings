@@ -35863,7 +35863,14 @@
       }
     },
     "Default %@ for aliases" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default %@ for aliases"
+          }
+        }
+      }
     },
     "Default browser" : {
       "comment" : "Settings page",
@@ -63614,7 +63621,14 @@
       }
     },
     "Mailboxes" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailboxes"
+          }
+        }
+      }
     },
     "Manage access" : {
       "localizations" : {
@@ -97484,10 +97498,24 @@
       }
     },
     "SimpleLogin aliases will be imported into this vault." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin aliases will be imported into this vault."
+          }
+        }
+      }
     },
     "SimpleLogin sync" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin sync"
+          }
+        }
+      }
     },
     "Social security number" : {
       "localizations" : {
@@ -100309,7 +100337,14 @@
       }
     },
     "Sync Aliases" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sync Aliases"
+          }
+        }
+      }
     },
     "Sync complete" : {
       "localizations" : {
