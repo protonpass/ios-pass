@@ -33,7 +33,7 @@ protocol AliasCreationLiteInfoDelegate: AnyObject {
 struct AliasCreationLiteInfo: Sendable {
     let prefix: String
     let suffix: Suffix
-    let mailboxes: [Mailbox]
+    let mailboxes: [AliasLinkedMailbox]
 
     var aliasAddress: String { prefix + suffix.suffix }
 }
@@ -43,7 +43,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @Published var prefix = ""
     @Published private(set) var canCreateAlias: Bool
     @Published private(set) var prefixError: AliasPrefixError?
-    @Published var mailboxSelection: MailboxSelection
+    @Published var mailboxSelection: AliasLinkedMailboxSelection
     @Published var suffixSelection: SuffixSelection
 
     private var cancellables = Set<AnyCancellable>()

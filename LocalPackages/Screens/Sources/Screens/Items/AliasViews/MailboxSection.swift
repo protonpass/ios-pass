@@ -25,10 +25,10 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct MailboxSection: View {
-    let mailboxSelection: MailboxSelection
+    let mailboxSelection: AliasLinkedMailboxSelection
     let mode: Mode
 
-    public init(mailboxSelection: MailboxSelection, mode: Mode) {
+    public init(mailboxSelection: AliasLinkedMailboxSelection, mode: Mode) {
         self.mailboxSelection = mailboxSelection
         self.mode = mode
     }

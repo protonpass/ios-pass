@@ -45,7 +45,12 @@ final class CheckAccessResponseTests: XCTestCase {
          "Aliases": false
       },
       "PendingInvites":3,
-      "WaitingNewUserInvites":0
+      "WaitingNewUserInvites":0,
+      "UserData": {
+            "DefaultShareID": null,
+            "AliasSyncEnabled": false,
+            "PendingAliasToSync": 0
+       }
    }
 }
 """
@@ -61,7 +66,8 @@ final class CheckAccessResponseTests: XCTestCase {
                                            monitor: .init(protonAddress: true, aliases: false),
                                            pendingInvites: 3,
                                            waitingNewUserInvites: 0,
-                                           minVersionUpgrade: nil))
+                                           minVersionUpgrade: nil,
+                                           userData: UserAliasSyncData.default))
 
         // When
         let sut = try CheckAccessResponse.decode(from: string)

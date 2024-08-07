@@ -1,7 +1,7 @@
 //
-// MailboxSettings.swift
-// Proton Pass - Created on 06/08/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// AliasLinkedMailbox.swift
+// Proton Pass - Created on 15/09/2022.
+// Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,20 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct MailboxSettings: Decodable, Hashable, Equatable, Sendable, Identifiable {
-    public let mailboxID: String
+public struct AliasLinkedMailbox: Decodable, Hashable, Equatable, Sendable, Identifiable {
+    // Should not rename to "id" otherwise decode process breaks
+    public let ID: Int
     public let email: String
-    public let verified: Bool
-    public let isDefault: Bool
 
-    public init(mailboxID: String, email: String, verified: Bool, isDefault: Bool) {
-        self.mailboxID = mailboxID
+    public init(ID: Int, email: String) {
+        self.ID = ID
         self.email = email
-        self.verified = verified
-        self.isDefault = isDefault
     }
 
-    public var id: String {
-        mailboxID
+    public var id: Int {
+        // swiftformat:disable:next redundantSelf
+        self.ID
     }
 }

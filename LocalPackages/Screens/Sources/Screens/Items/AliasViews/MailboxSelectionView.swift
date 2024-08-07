@@ -26,10 +26,10 @@ import SwiftUI
 
 public struct MailboxSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @Binding var mailboxSelection: MailboxSelection
+    @Binding var mailboxSelection: AliasLinkedMailboxSelection
     public let title: String
 
-    public init(mailboxSelection: Binding<MailboxSelection>, title: String) {
+    public init(mailboxSelection: Binding<AliasLinkedMailboxSelection>, title: String) {
         _mailboxSelection = mailboxSelection
         self.title = title
     }

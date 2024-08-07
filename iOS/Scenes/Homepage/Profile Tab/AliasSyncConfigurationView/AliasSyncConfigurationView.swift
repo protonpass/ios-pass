@@ -22,10 +22,10 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
-import Macro
 
 enum AliasSyncConfigurationSheetState {
     case domain
@@ -101,16 +101,17 @@ struct AliasSyncConfigurationView: View {
     func sheetContent(for state: AliasSyncConfigurationSheetState) -> some View {
         switch state {
         case .domain:
-            GenericSelectionView(title: "domain", selected: $viewModel.defaultDomain, selections: viewModel.domains)
+            GenericSelectionView(title: "domain", selected: $viewModel.defaultDomain,
+                                 selections: viewModel.domains)
         case .mailbox:
-            GenericSelectionView(title: "mailbox", selected: $viewModel.defaultMailbox, selections: viewModel.mailboxes)
+            GenericSelectionView(title: "mailbox", selected: $viewModel.defaultMailbox,
+                                 selections: viewModel.mailboxes)
         case .vault:
             VaultSelectionView(selectedVault: $viewModel.selectedVault,
                                vaults: viewModel.vaults)
         }
     }
 }
-
 
 public struct SynchroElementRow: View {
     private let title: String
@@ -181,10 +182,7 @@ struct AliasesView_Previews: PreviewProvider {
     }
 }
 
-
-
-
-//public struct DomainSelectionView: View {
+// public struct DomainSelectionView: View {
 //    @Environment(\.dismiss) private var dismiss
 //    @Binding var selectedDomain: Domain?
 //    public let domains: [Domain]
@@ -241,14 +239,14 @@ struct AliasesView_Previews: PreviewProvider {
 //            }
 //        }
 //    }
-//}
+// }
 //
 //// TODO: faire une version generic
-//public struct MailboxSelectionView: View {
+// public struct MailboxSelectionView: View {
 //    @Environment(\.dismiss) private var dismiss
 //    @Binding var selectedMailbox: MailboxSettings?
 //    public let mailboxes: [MailboxSettings]
-//    
+//
 //
 //    public init(selectedMailbox: Binding<MailboxSettings?>, mailboxes: [MailboxSettings]) {
 //        _selectedMailbox = selectedMailbox
@@ -302,13 +300,13 @@ struct AliasesView_Previews: PreviewProvider {
 //            }
 //        }
 //    }
-//}
+// }
 
 protocol TitleRepresentable {
     var title: String { get }
 }
 
-extension MailboxSettings: TitleRepresentable {
+extension Mailbox: TitleRepresentable {
     var title: String {
         email
     }
@@ -325,7 +323,7 @@ struct GenericSelectionView<Selection: Identifiable & Equatable & TitleRepresent
     @Binding var selected: Selection?
     let selections: [Selection]
     let title: String
-    
+
     init(title: String, selected: Binding<Selection?>, selections: [Selection]) {
         _selected = selected
         self.selections = selections
