@@ -101,10 +101,12 @@ struct AliasSyncConfigurationView: View {
     func sheetContent(for state: AliasSyncConfigurationSheetState) -> some View {
         switch state {
         case .domain:
-            GenericSelectionView(title: "domain", selected: $viewModel.defaultDomain,
+            GenericSelectionView(title: "domain",
+                                 selected: $viewModel.defaultDomain,
                                  selections: viewModel.domains)
         case .mailbox:
-            GenericSelectionView(title: "mailbox", selected: $viewModel.defaultMailbox,
+            GenericSelectionView(title: "mailbox",
+                                 selected: $viewModel.defaultMailbox,
                                  selections: viewModel.mailboxes)
         case .vault:
             VaultSelectionView(selectedVault: $viewModel.selectedVault,
@@ -127,15 +129,13 @@ public struct SynchroElementRow: View {
     }
 
     public var body: some View {
-        Button(action:
-            action,
-            label: {
-                selectedElement
-                    .padding(.horizontal)
-            })
-            .buttonStyle(.plain)
-            .roundedEditableSection()
-            .padding(.bottom, 10)
+        Button(action: action) {
+            selectedElement
+                .padding(.horizontal)
+        }
+        .buttonStyle(.plain)
+        .roundedEditableSection()
+        .padding(.bottom, 10)
     }
 
     private var selectedElement: some View {
@@ -175,132 +175,6 @@ private extension AliasSyncConfigurationView {
         }
     }
 }
-
-struct AliasesView_Previews: PreviewProvider {
-    static var previews: some View {
-        AliasSyncConfigurationView()
-    }
-}
-
-// public struct DomainSelectionView: View {
-//    @Environment(\.dismiss) private var dismiss
-//    @Binding var selectedDomain: Domain?
-//    public let domains: [Domain]
-//
-//    public init(selectedDomain: Binding<Domain?>, domains: [Domain]) {
-//        _selectedDomain = selectedDomain
-//        self.domains = domains
-//    }
-//
-//    public var body: some View {
-//        NavigationStack {
-//            ScrollView {
-//                LazyVStack(spacing: 0) {
-//                    ForEach(domains, id: \.domain) { domain in
-//                        let isSelected = domain == selectedDomain
-//                        Button(action: {
-//                            selectedDomain = domain
-//                            dismiss()
-//                        }, label: {
-//                            HStack(spacing: 16) {
-//                                VStack(alignment: .leading) {
-//                                    Text(domain.domain)
-//                                        .foregroundStyle(PassColor.textNorm.toColor)
-//                                }
-//
-//                                Spacer()
-//
-//                                if isSelected {
-//                                    Image(uiImage: IconProvider.checkmark)
-//                                        .resizable()
-//                                        .scaledToFit()
-//                                        .foregroundStyle(PassColor.interactionNorm.toColor)
-//                                        .frame(maxHeight: 20)
-//                                }
-//                            }
-//                            .frame(maxWidth: .infinity)
-//                            .frame(height: 70)
-//                            .contentShape(.rect)
-//                            .animation(.default, value: isSelected)
-//                        })
-//                        .buttonStyle(.plain)
-//                        .padding(.horizontal)
-//                    }
-//                }
-//            }
-//            .background(PassColor.backgroundWeak.toColor)
-//            .navigationBarTitleDisplayMode(.inline)
-//            .animation(.default, value: selectedDomain)
-//            .toolbar {
-//                ToolbarItem(placement: .principal) {
-//                    Text("Default domain for aliases")
-//                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
-//                }
-//            }
-//        }
-//    }
-// }
-//
-//// TODO: faire une version generic
-// public struct MailboxSelectionView: View {
-//    @Environment(\.dismiss) private var dismiss
-//    @Binding var selectedMailbox: MailboxSettings?
-//    public let mailboxes: [MailboxSettings]
-//
-//
-//    public init(selectedMailbox: Binding<MailboxSettings?>, mailboxes: [MailboxSettings]) {
-//        _selectedMailbox = selectedMailbox
-//        self.mailboxes = mailboxes
-//    }
-//
-//    public var body: some View {
-//        NavigationStack {
-//            ScrollView {
-//                LazyVStack(spacing: 0) {
-//                    ForEach(mailboxes) { mailbox in
-//                        let isSelected = mailbox == selectedMailbox
-//                        Button(action: {
-//                            selectedMailbox = mailbox
-//                            dismiss()
-//                        }, label: {
-//                            HStack(spacing: 16) {
-//                                VStack(alignment: .leading) {
-//                                    Text(mailbox.email)
-//                                        .foregroundStyle(PassColor.textNorm.toColor)
-//                                }
-//
-//                                Spacer()
-//
-//                                if isSelected {
-//                                    Image(uiImage: IconProvider.checkmark)
-//                                        .resizable()
-//                                        .scaledToFit()
-//                                        .foregroundStyle(PassColor.interactionNorm.toColor)
-//                                        .frame(maxHeight: 20)
-//                                }
-//                            }
-//                            .frame(maxWidth: .infinity)
-//                            .frame(height: 70)
-//                            .contentShape(.rect)
-//                            .animation(.default, value: isSelected)
-//                        })
-//                        .buttonStyle(.plain)
-//                        .padding(.horizontal)
-//                    }
-//                }
-//            }
-//            .background(PassColor.backgroundWeak.toColor)
-//            .navigationBarTitleDisplayMode(.inline)
-//            .animation(.default, value: selectedMailbox)
-//            .toolbar {
-//                ToolbarItem(placement: .principal) {
-//                    Text("Default mailbox for aliases")
-//                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
-//                }
-//            }
-//        }
-//    }
-// }
 
 protocol TitleRepresentable {
     var title: String { get }

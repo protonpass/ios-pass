@@ -349,6 +349,7 @@ extension ProfileTabViewModel {
 // MARK: - Private APIs
 
 private extension ProfileTabViewModel {
+    // swiftlint:disable:next cyclomatic_complexity
     func setUp() {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)

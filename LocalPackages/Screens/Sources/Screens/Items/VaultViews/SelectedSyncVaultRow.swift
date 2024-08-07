@@ -34,15 +34,13 @@ public struct SelectedSyncVaultRow: View {
     }
 
     public var body: some View {
-        Button(action:
-            action,
-            label: {
-                selectedVault
-                    .padding(.horizontal)
-            })
-            .buttonStyle(.plain)
-            .roundedEditableSection()
-            .padding(.bottom, 10)
+        Button(action: action) {
+            selectedVault
+                .padding(.horizontal)
+        }
+        .buttonStyle(.plain)
+        .roundedEditableSection()
+        .padding(.bottom, 10)
     }
 
     private var selectedVault: some View {
