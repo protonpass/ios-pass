@@ -1,9 +1,688 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%lld item(s)" : {
-
-    },
+      "%lld item(s)" : {
+        "localizations" : {
+          "be" : {
+            "variations" : {
+              "plural" : {
+                "few" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld элементы"
+                  }
+                },
+                "many" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld элементаў"
+                  }
+                },
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld элемент"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld элементаў"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld элемент"
+                  }
+                }
+              }
+            }
+          },
+          "cs" : {
+            "variations" : {
+              "plural" : {
+                "few" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položky"
+                  }
+                },
+                "many" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položek"
+                  }
+                },
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položka"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položek"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položka"
+                  }
+                }
+              }
+            }
+          },
+          "da" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld element"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elementer"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld element"
+                  }
+                }
+              }
+            }
+          },
+          "de" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld Eintrag"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld Einträge"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld Eintrag"
+                  }
+                }
+              }
+            }
+          },
+          "el" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld στοιχείο"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld στοιχεία"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld στοιχείο"
+                  }
+                }
+              }
+            }
+          },
+          "en" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld item"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld items"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld item"
+                  }
+                }
+              }
+            }
+          },
+          "es" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elemento"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elementos"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elemento"
+                  }
+                }
+              }
+            }
+          },
+          "es-419" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elemento"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elementos"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elemento"
+                  }
+                }
+              }
+            }
+          },
+          "fi" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld kohde"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld kohdetta"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld kohdetta"
+                  }
+                }
+              }
+            }
+          },
+          "fr" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld élément"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld éléments"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld élément"
+                  }
+                }
+              }
+            }
+          },
+          "id" : {
+            "variations" : {
+              "plural" : {
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld item"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld item"
+                  }
+                }
+              }
+            }
+          },
+          "it" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elemento"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elementi"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elemento"
+                  }
+                }
+              }
+            }
+          },
+          "ja" : {
+            "variations" : {
+              "plural" : {
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld 項目"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld 件のアイテム"
+                  }
+                }
+              }
+            }
+          },
+          "ka" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld ელემენტი"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld ელემენტი"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld ელემენტი"
+                  }
+                }
+              }
+            }
+          },
+          "ko" : {
+            "variations" : {
+              "plural" : {
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld개 항목"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld개 항목"
+                  }
+                }
+              }
+            }
+          },
+          "nb" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld element"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elementer"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld element"
+                  }
+                }
+              }
+            }
+          },
+          "nl" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld item"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld items"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld item"
+                  }
+                }
+              }
+            }
+          },
+          "pl" : {
+            "variations" : {
+              "plural" : {
+                "few" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elementy"
+                  }
+                },
+                "many" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elementów"
+                  }
+                },
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld element"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld elementów"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld element"
+                  }
+                }
+              }
+            }
+          },
+          "pt-BR" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld item"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld itens"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld item"
+                  }
+                }
+              }
+            }
+          },
+          "ro" : {
+            "variations" : {
+              "plural" : {
+                "few" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld articole"
+                  }
+                },
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld articol"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld de articole"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld articol"
+                  }
+                }
+              }
+            }
+          },
+          "sk" : {
+            "variations" : {
+              "plural" : {
+                "few" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položky"
+                  }
+                },
+                "many" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položiek"
+                  }
+                },
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položka"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položiek"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld položka"
+                  }
+                }
+              }
+            }
+          },
+          "sl" : {
+            "variations" : {
+              "plural" : {
+                "few" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld predmeta"
+                  }
+                },
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld predmet"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld predmeta"
+                  }
+                },
+                "two" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld predmeti"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld predmet"
+                  }
+                }
+              }
+            }
+          },
+          "sv" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld objekt"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld objekt"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld objekt"
+                  }
+                }
+              }
+            }
+          },
+          "tr" : {
+            "variations" : {
+              "plural" : {
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld öge"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld öge"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld öge"
+                  }
+                }
+              }
+            }
+          },
+          "uk" : {
+            "variations" : {
+              "plural" : {
+                "few" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld елементи"
+                  }
+                },
+                "many" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld елементів"
+                  }
+                },
+                "one" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld елемент"
+                  }
+                },
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld елементів"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld елемент"
+                  }
+                }
+              }
+            }
+          },
+          "vi" : {
+            "variations" : {
+              "plural" : {
+                "other" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld nội dung"
+                  }
+                },
+                "zero" : {
+                  "stringUnit" : {
+                    "state" : "translated",
+                    "value" : "%lld nội dung"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
     "Add account" : {
       "localizations" : {
         "be" : {
@@ -1416,13 +2095,184 @@
       }
     },
     "Default SimpleLogin vault" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default SimpleLogin vault"
+          }
+        }
+      }
     },
     "Empty" : {
-
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ачысціць"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prázdný"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tom"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leer"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Άδειο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Empty"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vacío"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vacío"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tyhjä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vide"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kosong"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vuota"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაცარიელება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비어 있음"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tom"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leeg"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sejf jest pusty"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vazio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gol"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prázdny"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prazno"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tom"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Boş"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Порожньо"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trống"
+          }
+        }
+      }
     },
     "Enable SimpleLogin sync" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable SimpleLogin sync"
+          }
+        }
+      }
     },
     "Enable Spotlight search" : {
       "localizations" : {
@@ -4148,7 +4998,14 @@
       }
     },
     "Select a default vault for aliases sync" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select a default vault for aliases sync"
+          }
+        }
+      }
     },
     "Select an existing login or create a new one." : {
       "localizations" : {
@@ -5243,7 +6100,14 @@
       }
     },
     "Sync aliases" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sync aliases"
+          }
+        }
+      }
     },
     "Tap here to add a field for a username." : {
       "localizations" : {
@@ -5566,7 +6430,14 @@
       }
     },
     "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
