@@ -43,7 +43,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var state: State = .loading
     @Published private(set) var prefixError: AliasPrefixError?
     @Published private(set) var canCreateAlias = true
-    @Published var mailboxSelection: MailboxSelection = .defaultEmpty
+    @Published var mailboxSelection: AliasLinkedMailboxSelection = .defaultEmpty
     @Published var suffixSelection: SuffixSelection = .defaultEmpty
 
     override var shouldUpgrade: Bool {
@@ -215,12 +215,5 @@ private extension CreateEditAliasViewModel {
         try await aliasRepository.changeMailboxes(shareId: shareId,
                                                   itemId: itemId,
                                                   mailboxIDs: mailboxIDs)
-    }
-}
-
-// TODO: remove
-extension Mailbox {
-    static var test: [Mailbox] {
-        [Mailbox(ID: 1, email: "martino@proton.black"), Mailbox(ID: 2, email: "martin@proton.black")]
     }
 }

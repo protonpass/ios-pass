@@ -24,7 +24,7 @@ import Foundation
 import SwiftUI
 
 public enum AliasOptionsSheetState {
-    case mailbox(Binding<MailboxSelection>, String)
+    case mailbox(Binding<AliasLinkedMailboxSelection>, String)
     case suffix(Binding<SuffixSelection>)
 
     public var height: CGFloat {
