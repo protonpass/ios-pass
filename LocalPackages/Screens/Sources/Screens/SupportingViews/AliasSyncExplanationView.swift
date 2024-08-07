@@ -41,7 +41,7 @@ public struct AliasSyncExplanationView: View {
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .padding(.bottom, 8)
-
+                // swiftlint:disable:next line_length
                 Text("We detected that you have \(missingAliases) aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?")
                     .font(.callout)
                     .multilineTextAlignment(.center)
