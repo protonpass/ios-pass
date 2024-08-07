@@ -119,6 +119,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
     }
 
+    var isSimpleLoginAliasSyncActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
         let access = accessRepository.access.value?.access
         plan = access?.plan
