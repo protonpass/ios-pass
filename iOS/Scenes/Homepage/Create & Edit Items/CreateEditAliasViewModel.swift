@@ -71,7 +71,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private(set) var alias: Alias?
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     override var isSaveable: Bool {
         switch mode {
