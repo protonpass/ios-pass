@@ -68,6 +68,5 @@ public struct AliasSyncExplanationView: View {
         }
 
         .roundedEditableSection()
-//        .padding(.horizontal)
     }
 }

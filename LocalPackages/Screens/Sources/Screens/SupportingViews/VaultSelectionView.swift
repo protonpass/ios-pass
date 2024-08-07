@@ -53,18 +53,8 @@ public struct VaultSelectionView: View {
                         })
                         .buttonStyle(.plain)
                     }
-
-//                    // Gimmick view to take up space
-//                    closeButton
-//                        .opacity(0)
-//                        .padding()
-//                        .disabled(true)
                 }
             }
-
-//                closeButton
-//                    .padding()
-//            }
             .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: selectedVault)
@@ -74,13 +64,6 @@ public struct VaultSelectionView: View {
                         .adaptiveForegroundStyle(PassColor.textNorm.toColor)
                 }
             }
-        }
-    }
-
-    private var closeButton: some View {
-        Button(action: dismiss.callAsFunction) {
-            Text("Close")
-                .foregroundStyle(PassColor.textNorm.toColor)
         }
     }
 }
