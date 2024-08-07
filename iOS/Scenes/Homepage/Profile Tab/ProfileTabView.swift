@@ -68,7 +68,8 @@ struct ProfileTabView: View {
 
                 itemCountSection
 
-                if !viewModel.dismissedAliasesSyncExplanation,
+                if viewModel.isSimpleLoginAliasSyncActive,
+                   !viewModel.dismissedAliasesSyncExplanation,
                    let userSyncData = viewModel.userAliasSyncData,
                    !userSyncData.aliasSyncEnabled {
                     aliasSyncExplanation(userSyncData.pendingAliasToSync)
@@ -82,9 +83,10 @@ struct ProfileTabView: View {
                 } else {
                     autoFillDisabledSection
                 }
-
-                aliasesSection
-                    .padding(.vertical)
+                if viewModel.isSimpleLoginAliasSyncActive {
+                    aliasesSection
+                        .padding(.vertical)
+                }
 
                 if viewModel.isSecureLinkActive {
                     secureLinkSection
