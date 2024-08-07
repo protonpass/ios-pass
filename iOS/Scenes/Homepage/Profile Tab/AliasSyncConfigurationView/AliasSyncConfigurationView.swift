@@ -115,14 +115,14 @@ struct AliasSyncConfigurationView: View {
     }
 }
 
-public struct SynchroElementRow: View {
+struct SynchroElementRow: View {
     private let title: String
     private let subtitle: String
     let action: () -> Void
 
-    public init(title: String,
-                subtitle: String,
-                action: @escaping () -> Void) {
+    init(title: String,
+         subtitle: String,
+         action: @escaping () -> Void) {
         self.title = title
         self.subtitle = subtitle
         self.action = action

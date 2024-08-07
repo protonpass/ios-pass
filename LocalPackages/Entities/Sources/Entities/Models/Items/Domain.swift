@@ -24,18 +24,15 @@ public struct Domain: Decodable, Hashable, Equatable, Sendable, Identifiable {
     public let domain: String
     public let isCustom: Bool
     public let isPremium: Bool
-//    public let mxVerified: Bool
     public let isDefault: Bool
 
     public init(domain: String,
                 isCustom: Bool,
                 isPremium: Bool,
-//                mxVerified: Bool,
                 isDefault: Bool) {
         self.domain = domain
         self.isCustom = isCustom
         self.isPremium = isPremium
-//        self.mxVerified = mxVerified
         self.isDefault = isDefault
     }
 
