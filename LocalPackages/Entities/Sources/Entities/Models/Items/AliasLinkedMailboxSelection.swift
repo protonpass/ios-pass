@@ -1,5 +1,5 @@
 //
-// MailboxSelection.swift
+// AliasLinkedMailboxSelection.swift
 // Proton Pass - Created on 01/08/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -18,11 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct MailboxSelection: Equatable, Hashable, Sendable {
-    public var selectedMailboxes: [Mailbox]
-    public let allUserMailboxes: [Mailbox]
+public struct AliasLinkedMailboxSelection: Equatable, Hashable, Sendable {
+    public var selectedMailboxes: [AliasLinkedMailbox]
+    public let allUserMailboxes: [AliasLinkedMailbox]
 
-    public init(allUserMailboxes: [Mailbox], selectedMailboxes: [Mailbox]? = nil) {
+    public init(allUserMailboxes: [AliasLinkedMailbox], selectedMailboxes: [AliasLinkedMailbox]? = nil) {
         self.allUserMailboxes = allUserMailboxes
         self.selectedMailboxes = if let selectedMailboxes {
             selectedMailboxes
@@ -33,8 +33,8 @@ public struct MailboxSelection: Equatable, Hashable, Sendable {
         }
     }
 
-    public static var defaultEmpty: MailboxSelection {
-        MailboxSelection(allUserMailboxes: [])
+    public static var defaultEmpty: AliasLinkedMailboxSelection {
+        AliasLinkedMailboxSelection(allUserMailboxes: [])
     }
 
     public var selectedMailboxesString: String {

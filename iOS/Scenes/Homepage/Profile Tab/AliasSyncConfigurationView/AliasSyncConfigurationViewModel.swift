@@ -40,8 +40,8 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     @Published var defaultDomain: Domain?
     @Published private(set) var domains: [Domain] = []
 
-    @Published var defaultMailbox: MailboxSettings?
-    @Published private(set) var mailboxes: [MailboxSettings] = []
+    @Published var defaultMailbox: Mailbox?
+    @Published private(set) var mailboxes: [Mailbox] = []
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
     private var aliasSettings: AliasSettings?
 
@@ -184,7 +184,9 @@ private extension AliasSyncConfigurationViewModel {
             loading = true
             let userId = try await userManager.getActiveUserId()
             aliasSettings = try await aliasRepository
-                .updateAliasDefaultDomain(userId: userId,request: UpdateAliasDomainRequest(defaultAliasDomain: defaultDomain?.domain))
+                .updateAliasDefaultDomain(userId: userId,
+                                          request: UpdateAliasDomainRequest(defaultAliasDomain: defaultDomain?
+                                              .domain))
         } catch {
             handle(error: error)
         }
@@ -199,7 +201,9 @@ private extension AliasSyncConfigurationViewModel {
             loading = true
             let userId = try await userManager.getActiveUserId()
             aliasSettings = try await aliasRepository
-                .updateAliasDefaultMailbox(userId: userId, request: UpdateAliasMailboxRequest(defaultMailboxID: defaultMailbox.mailboxID))
+                .updateAliasDefaultMailbox(userId: userId,
+                                           request: UpdateAliasMailboxRequest(defaultMailboxID: defaultMailbox
+                                               .mailboxID))
         } catch {
             handle(error: error)
         }

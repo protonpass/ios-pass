@@ -23,6 +23,6 @@ import Foundation
 
 public struct AliasOptions: Decodable, Sendable {
     public let suffixes: [Suffix]
-    public let mailboxes: [Mailbox]
+    public let mailboxes: [AliasLinkedMailbox]
     public let canCreateAlias: Bool
 }

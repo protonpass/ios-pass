@@ -42,7 +42,7 @@ public protocol AliasRepositoryProtocol: Sendable {
     func updateAliasDefaultMailbox(userId: String, request: UpdateAliasMailboxRequest) async throws
         -> AliasSettings
     func getAllAliasDomains(userId: String) async throws -> [Domain]
-    func getAllAliasMailboxes(userId: String) async throws -> [MailboxSettings]
+    func getAllAliasMailboxes(userId: String) async throws -> [Mailbox]
 }
 
 public extension AliasRepositoryProtocol {
@@ -119,7 +119,7 @@ public extension AliasRepository {
         try await remoteDatasource.getAllAliasDomains(userId: userId)
     }
 
-    func getAllAliasMailboxes(userId: String) async throws -> [MailboxSettings] {
+    func getAllAliasMailboxes(userId: String) async throws -> [Mailbox] {
         try await remoteDatasource.getAllAliasMailboxes(userId: userId)
     }
 }
