@@ -23,6 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
+import Foundation
 import Macro
 
 @MainActor
@@ -34,9 +35,13 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var note = ""
     @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?
-    @Published var aliasIsSync = false
+    @Published private(set) var aliasIsSync = false
+    @Published var togglingAliasStatus = false
 
-    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+
+    private var cancellables = Set<AnyCancellable>()
 
     override func bindValues() {
         super.bindValues()
@@ -59,7 +64,51 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                                                               itemId: itemContent.item.itemID)
                 aliasEmail = alias.email
                 mailboxes = alias.mailboxes
+                aliasIsSync = itemContent.item.isAliasSyncEnabled
                 logger.info("Get alias detail successfully \(itemContent.debugDescription)")
+            } catch {
+                logger.error(error)
+                self.error = error
+            }
+        }
+    }
+
+    func toggleAliasState() {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { togglingAliasStatus = false }
+            do {
+                let newStatus = !aliasIsSync
+                togglingAliasStatus = true
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.changeAliasStatus(userId: userId,
+                                                           item: itemContent,
+                                                           enable: !aliasIsSync)
+                router.display(element: .successMessage("The sync status has been successfully updated",
+                                                        config: .refresh))
+                logger.trace("Successfully updated the alias sync status of \(newStatus)")
+                aliasIsSync = newStatus
+            } catch {
+                logger.error(error)
+                self.error = error
+            }
+        }
+    }
+
+    func disableAlias() {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { togglingAliasStatus = false }
+            do {
+                togglingAliasStatus = true
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.changeAliasStatus(userId: userId,
+                                                           item: itemContent,
+                                                           enable: false)
+                router.display(element: .successMessage("The sync status has been successfully updated",
+                                                        config: .refresh))
+                logger.trace("Successfully updated the alias sync status of \(false)")
+                aliasIsSync = false
             } catch {
                 logger.error(error)
                 self.error = error
@@ -70,8 +119,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     override func refresh() {
         mailboxes = nil
         error = nil
-        getAlias()
         super.refresh()
+        getAlias()
     }
 
     func copyAliasEmail() {

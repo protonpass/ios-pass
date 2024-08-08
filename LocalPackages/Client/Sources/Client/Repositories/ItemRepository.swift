@@ -52,6 +52,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
 
+    func changeAliasStatus(userId: String, item: ItemContent, enable: Bool) async throws
+
     /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
@@ -660,6 +662,31 @@ public extension ItemRepository {
         let logInItems = try await localDatasource.getActiveLogInItems(userId: userId)
         logger.trace("Got \(logInItems.count) active log in items for all shares")
         return logInItems
+    }
+
+    func changeAliasStatus(userId: String, item: ItemContent, enable: Bool) async throws {
+        let shareId = item.shareId
+        let itemId = item.itemId
+        logger
+            .trace("Change the alias sync status for item \(itemId) and share \(shareId) with new status \(enable)")
+        try await remoteDatasource.toggleAliasStatus(userId: userId,
+                                                     shareId: shareId,
+                                                     itemId: itemId,
+                                                     enable: enable)
+        var newItem = item.item
+        print("woot item flags \(newItem.flags) et isAliasSync: \(newItem.isAliasSyncEnabled)")
+        newItem.updateFlag(.aliasSyncEnabled, enabled: enable)
+
+        print("woot after flags modification item flags \(newItem.flags) et isAliasSync: \(newItem.isAliasSyncEnabled)")
+
+        let symmetricKey = try await getSymmetricKey()
+        logger.trace("Updating item \(newItem.itemID) to local database")
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: newItem,
+                                                           shareId: shareId,
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
+        try await localDatasource.upsertItems([encryptedItem])
+        logger.trace("Saved item \(newItem.itemID) to local database")
     }
 }
 
