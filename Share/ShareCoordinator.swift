@@ -74,18 +74,18 @@ final class ShareCoordinator {
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
-//    private let corruptedSessionEventStream = resolve(\SharedDataStreamContainer.corruptedSessionEventStream)
 
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
-//    @LazyInjected(\SharedUseCasesContainer.wipeAllData) private var wipeAllData
-    @LazyInjected(\SharedUseCasesContainer.logOutUser) private var logOutUser
+    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -115,16 +115,6 @@ final class ShareCoordinator {
                        sessionId: sessionInfos.sessionId)
             }
             .store(in: &cancellables)
-
-//        corruptedSessionEventStream
-//            .removeDuplicates()
-//            .compactMap { $0 }
-//            .receive(on: DispatchQueue.main)
-//            .sink { [weak self] reason in
-//                guard let self else { return }
-//                logOut(error: PassError.corruptedSession(reason), sessionId: reason.sessionId)
-//            }
-//            .store(in: &cancellables)
     }
 }
 
@@ -133,14 +123,8 @@ final class ShareCoordinator {
 extension ShareCoordinator {
     func start() async {
         do {
-            try await setUpBeforeLaunching()
+            try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
             try await beginFlow()
-//            let userId = try await userManager.getActiveUserId()
-//            if credentialProvider.isAuthenticated(userId: userId) {
-//                await parseSharedContentAndBeginShareFlow(userId: userId)
-//            } else {
-//                showNotLoggedInView()
-//            }
         } catch {
             alert(error: error) { [weak self] in
                 guard let self else { return }
@@ -294,7 +278,7 @@ private extension ShareCoordinator {
                     let view = CreateEditLoginView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
                 }
-                rootViewController?.present(viewController, animated: true)
+                present(viewController)
             } catch {
                 alert(error: error) { [weak self] in
                     guard let self else { return }
@@ -314,7 +298,7 @@ private extension ShareCoordinator {
                                      parentViewController: topMostViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        topMostViewController.present(viewController, animated: true)
+        present(viewController)
     }
 
     func dismissExtension() {
@@ -330,11 +314,11 @@ private extension ShareCoordinator {
                 sendErrorToSentry(error, userId: userId, sessionId: sessionId)
             }
 
-            // Show logged out screen if no more account linked to user else reload new content
-            if try await logOutUser(userId: userId) {
+            do {
+                try await logOutAllAccounts()
                 showNotLoggedInView()
-            } else {
-                try? await beginFlow()
+            } catch {
+                logger.error(error)
             }
         }
     }
@@ -346,6 +330,12 @@ private extension ShareCoordinator {
         } else {
             showNotLoggedInView()
         }
+    }
+
+    func present(_ viewController: UIViewController, animated: Bool = true) {
+        let theme = preferencesManager.sharedPreferences.unwrapped().theme
+        viewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
+        topMostViewController?.present(viewController, animated: true)
     }
 }
 
@@ -365,7 +355,7 @@ extension ShareCoordinator {
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        topMostViewController?.present(viewController, animated: true)
+        present(viewController)
     }
 
     func presentSuffixSelection(_ suffixSelection: SuffixSelection) {
@@ -379,7 +369,7 @@ extension ShareCoordinator {
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        topMostViewController?.present(viewController, animated: true)
+        present(viewController)
     }
 }
 
@@ -426,7 +416,7 @@ extension ShareCoordinator: CreateEditItemViewModelDelegate {
             dismissExtension()
         }
         alert.addAction(closeAction)
-        topMostViewController?.present(alert, animated: true)
+        present(alert)
     }
 }
 
@@ -442,7 +432,7 @@ extension ShareCoordinator: CreateEditLoginViewModelDelegate {
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium()]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        topMostViewController?.present(viewController, animated: true)
+        present(viewController)
     }
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
@@ -458,6 +448,6 @@ extension ShareCoordinator: CreateEditLoginViewModelDelegate {
 
 extension ShareCoordinator: GeneratePasswordCoordinatorDelegate {
     func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
-        topMostViewController?.present(viewController, animated: true)
+        present(viewController)
     }
 }
