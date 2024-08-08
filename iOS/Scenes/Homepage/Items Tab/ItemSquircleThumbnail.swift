@@ -148,8 +148,7 @@ private extension ItemSquircleThumbnail {
         }
     }
 
-    
-    //TODO: Remane function
+    // TODO: Remane function
     @ViewBuilder
     func test(type: ItemContentType, height: CGFloat) -> some View {
         if !isSync {

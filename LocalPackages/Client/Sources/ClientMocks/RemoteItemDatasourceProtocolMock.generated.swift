@@ -346,4 +346,22 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         closureCreatePendingAliasesItem()
         return stubbedCreatePendingAliasesItemResult
     }
+    // MARK: - toggleAliasStatus
+    public var toggleAliasStatusUserIdShareIdItemIdEnableThrowableError17: Error?
+    public var closureToggleAliasStatus: () -> () = {}
+    public var invokedToggleAliasStatusfunction = false
+    public var invokedToggleAliasStatusCount = 0
+    public var invokedToggleAliasStatusParameters: (userId: String, shareId: String, itemId: String, enable: Bool)?
+    public var invokedToggleAliasStatusParametersList = [(userId: String, shareId: String, itemId: String, enable: Bool)]()
+
+    public func toggleAliasStatus(userId: String, shareId: String, itemId: String, enable: Bool) async throws {
+        invokedToggleAliasStatusfunction = true
+        invokedToggleAliasStatusCount += 1
+        invokedToggleAliasStatusParameters = (userId, shareId, itemId, enable)
+        invokedToggleAliasStatusParametersList.append((userId, shareId, itemId, enable))
+        if let error = toggleAliasStatusUserIdShareIdItemIdEnableThrowableError17 {
+            throw error
+        }
+        closureToggleAliasStatus()
+    }
 }

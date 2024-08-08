@@ -2396,6 +2396,7 @@
 			children = (
 				5B503FF42A4E018500E6681C /* LogingManagerMock.swift */,
 				5B1453CE2A7114530048B022 /* UserDataMock.swift */,
+				84E10EABA5BC087B06289733 /* Generated */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -2467,6 +2468,14 @@
 				75283BF32946E21D006658A6 /* HomeRobot.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		84E10EABA5BC087B06289733 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Generated;
+			path = Generated;
 			sourceTree = "<group>";
 		};
 		FAEC58C22A8521630022E223 /* Subscription */ = {
