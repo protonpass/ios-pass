@@ -175,8 +175,7 @@ final class AppCoordinator {
     /// Necessary set up like initializing preferences before starting user flow
     func setUpAndStart() async -> Bool {
         do {
-            try await setUpBeforeLaunching()
-            window.overrideUserInterfaceStyle = theme.userInterfaceStyle
+            try await setUpBeforeLaunching(rootContainer: .window(window))
             start()
             refreshFeatureFlags()
             setUpCoreTelemetry()
