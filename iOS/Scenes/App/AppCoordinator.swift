@@ -81,6 +81,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
+    @LazyInjected(\SharedRepositoryContainer.localUserDataDatasource) var localUserDataDatasource
 
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
     private let sendMessageToSentry = resolve(\SharedUseCasesContainer.sendMessageToSentry)
@@ -159,6 +160,14 @@ final class AppCoordinator {
             .sink { [weak self] theme in
                 guard let self else { return }
                 window.overrideUserInterfaceStyle = theme.userInterfaceStyle
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                logOutIfNoUserDataFound()
             }
             .store(in: &cancellables)
     }
@@ -296,6 +305,23 @@ private extension AppCoordinator {
             // swiftlint:disable:next todo
             // TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()
+        }
+    }
+
+    // Check if user is logged out from extensions
+    func logOutIfNoUserDataFound() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let users = try await localUserDataDatasource.getAll()
+                if users.isEmpty {
+                    // Refresh all on-memory data and stop the event loop
+                    try await logOutAllAccounts()
+                    appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
+                }
+            } catch {
+                logger.error(error)
+            }
         }
     }
 }
