@@ -34,12 +34,14 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var note = ""
     @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?
+    @Published var aliasIsSync = false
 
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
 
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
+        aliasIsSync = itemContent.item.isAliasSyncEnabled
         if case .alias = itemContent.contentData {
             name = itemContent.name
             note = itemContent.note
