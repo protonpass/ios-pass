@@ -85,6 +85,13 @@ struct AliasDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .onFirstAppear(perform: viewModel.getAlias)
+        .alert("Move To Trash", isPresented: $viewModel.showingGenericAlert) {
+            Button("Disable instead") { viewModel.disableAlias() }
+            Button("Move to trash") { viewModel.moveToTrash() }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
+        }
     }
 
     private var aliasMailboxesSection: some View {
@@ -114,10 +121,13 @@ struct AliasDetailView: View {
             .contentShape(.rect)
             .onTapGesture { viewModel.copyAliasEmail() }
 
-                //TODO: make a progressview when trying to toggle state
-            Toggle(isOn: $viewModel.aliasIsSync) {}
-                .toggleStyle(SwitchToggleStyle(tint: iconTintColor.toColor))
-                .labelsHidden()
+            if viewModel.togglingAliasStatus {
+                ProgressView()
+            } else {
+                StaticToggle(isOn: viewModel.aliasIsSync,
+                             tintColor: iconTintColor,
+                             action: { viewModel.toggleAliasState() })
+            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
@@ -141,6 +151,7 @@ struct AliasDetailView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Forwarding to")
                     .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                 if let mailboxes = viewModel.mailboxes {
                     ForEach(mailboxes, id: \.ID) { mailbox in
@@ -165,14 +176,15 @@ struct AliasDetailView: View {
                 } else {
                     Group {
                         SkeletonBlock(tintColor: iconTintColor)
-                        SkeletonBlock(tintColor: iconTintColor)
-                        SkeletonBlock(tintColor: iconTintColor)
+
+                        //                        SkeletonBlock(tintColor: iconTintColor)
+                        //                        SkeletonBlock(tintColor: iconTintColor)
                     }
                     .clipShape(Capsule())
-                    .shimmering()
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .redacted(reason: viewModel.mailboxes == nil ? .placeholder : .init())
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
 //        .animation(.default, value: viewModel.mailboxes)
