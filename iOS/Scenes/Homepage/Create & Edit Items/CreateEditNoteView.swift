@@ -118,7 +118,7 @@ private final class CreateEditNoteContentUIView: UIView {
         tv.textColor = PassColor.textNorm
         tv.backgroundColor = .clear
         tv.delegate = self
-        tv.contentInset = .init(top: 0, left: padding, bottom: 0, right: -padding)
+        tv.contentInset = .init(top: 0, left: padding, bottom: 0, right: padding)
         return tv
     }()
 
