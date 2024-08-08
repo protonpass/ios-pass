@@ -57,9 +57,7 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ view: CreateEditNoteContentUIView, context: Context) {
-        view.bind(title: title, content: content)
-    }
+    func updateUIView(_ view: CreateEditNoteContentUIView, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
