@@ -95,7 +95,7 @@ struct AliasDetailView: View {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
-        .animation(.default, value: viewModel.mailboxes)
+//        .animation(.default, value: viewModel.mailboxes)
     }
 
     private var aliasRow: some View {
@@ -108,10 +108,16 @@ struct AliasDetailView: View {
 
                 Text(viewModel.aliasEmail)
                     .sectionContentText()
+                    .lineLimit(1)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
             .onTapGesture { viewModel.copyAliasEmail() }
+
+                //TODO: make a progressview when trying to toggle state
+            Toggle(isOn: $viewModel.aliasIsSync) {}
+                .toggleStyle(SwitchToggleStyle(tint: iconTintColor.toColor))
+                .labelsHidden()
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .contextMenu {
@@ -169,6 +175,6 @@ struct AliasDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.mailboxes)
+//        .animation(.default, value: viewModel.mailboxes)
     }
 }
