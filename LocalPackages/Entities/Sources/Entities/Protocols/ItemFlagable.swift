@@ -22,12 +22,26 @@
 import Foundation
 
 public protocol ItemFlagable: Sendable {
-    var flags: Int { get }
+    var flags: Int { get set }
 }
 
-private extension ItemFlagable {
+extension ItemFlagable {
+//    var itemFlags: ItemFlags {
+//        .init(rawValue: flags)
+//    }
+//    var itemFlags: ItemFlags {
+//        get { .init(rawValue: flags) }
+//        set { flags = newValue.rawValue }
+//    }
+//
     var itemFlags: ItemFlags {
-        .init(rawValue: flags)
+        get {
+            ItemFlags(rawValue: flags)
+//            let currentItemFlags = ItemFlags(rawValue: flags)
+//            print("woot Getting itemFlags: \(currentItemFlags)")
+//            return currentItemFlags
+        }
+        set { flags = newValue.rawValue }
     }
 }
 
@@ -45,13 +59,37 @@ public extension ItemFlagable {
     }
 
     var isAliasSyncEnabled: Bool {
-        itemFlags.contains(.aliasSyncEnabled)
+        !itemFlags.contains(.aliasSyncEnabled)
+    }
+
+//    mutating func updateFlag(_ flag: ItemFlags, enabled: Bool) {
+//        if enabled {
+//            itemFlags.insert(flag)
+//        } else {
+//            itemFlags.remove(flag)
+//        }
+//    }
+    mutating func updateFlag(_ flag: ItemFlags, enabled: Bool) {
+        var currentFlags = itemFlags
+        print("woot before change currentFlags: \(currentFlags)")
+        if enabled {
+            currentFlags.insert(flag)
+        } else {
+            currentFlags.remove(flag)
+        }
+        print("woot before change currentFlags: \(currentFlags)")
+
+        itemFlags = currentFlags // Update the underlying flags property
     }
 }
 
-private struct ItemFlags: Sendable, OptionSet {
-    let rawValue: Int
-    static let monitoringDisabled = ItemFlags(rawValue: 1 << 0)
-    static let isBreached = ItemFlags(rawValue: 1 << 1)
-    static let aliasSyncEnabled = ItemFlags(rawValue: 1 << 2)
+public struct ItemFlags: Sendable, OptionSet {
+    public var rawValue: Int
+    public static let monitoringDisabled = ItemFlags(rawValue: 1 << 0)
+    public static let isBreached = ItemFlags(rawValue: 1 << 1)
+    public static let aliasSyncEnabled = ItemFlags(rawValue: 1 << 2)
+
+    public init(rawValue: Int) {
+        self.rawValue = rawValue
+    }
 }
