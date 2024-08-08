@@ -126,7 +126,11 @@ struct LocalAuthenticationModifier: ViewModifier {
                    perform: autolocker.startCountdown)
         // When app is foregrounded, check if authentication is needed or could be skipped
         .onReceive(UIApplication.didBecomeActiveNotification) {
-            if autolocker.shouldAutolockNow() {
+            // This if-else statement seems redundant with 2 branches result in auth skipped
+            // but we should do thing in order this way.
+            if method == .none {
+                onAuthSkipped?()
+            } else if autolocker.shouldAutolockNow() {
                 authenticated = false
             } else if authenticated {
                 onAuthSkipped?()
@@ -156,13 +160,7 @@ private extension Autolocker {
     convenience init(appLockTime: AppLockTime) {
         struct AutolockerSettingsProvider: SettingsProvider {
             let appLockTime: AppLockTime
-            var lockTime: AutolockTimeout {
-                if let intervalInMinutes = appLockTime.intervalInMinutes {
-                    .minutes(intervalInMinutes)
-                } else {
-                    .never
-                }
-            }
+            var lockTime: AutolockTimeout { .minutes(appLockTime.intervalInMinutes) }
         }
         self.init(lockTimeProvider: AutolockerSettingsProvider(appLockTime: appLockTime))
     }
