@@ -39,8 +39,6 @@ extension AppLockTime: CustomStringConvertible {
             #localized("After %lld hour(s)", 1)
         case .fourHours:
             #localized("After %lld hour(s)", 4)
-        case .never:
-            #localized("Never")
         }
     }
 }
