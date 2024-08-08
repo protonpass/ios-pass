@@ -1,3 +1,25 @@
+# Version 1.12.3
+Features:
+- Support for multiple accounts (behind feature flags)
+
+Fixes:
+- Resolved issue preventing PIN lock setup on devices without a passcode
+- Fixed cursor jumping during note edits
+- Fixed context loss after switching apps with "Immediately" lock time
+
+Improvements:
+- Enhanced search functionality
+- Social security numbers now handled as sensitive data
+- Case-insensitive alphabetical sorting
+- Last selected vault is now remembered
+- Redesigned bug report page
+
+Others:
+- Bump core library from 25.2.0 to 25.3.4
+- Full sync restarts if the app is terminated mid-process
+- "Manage subscription" hidden for non-admin B2B users
+- Fixed issue with adding username when creating login from AutoFill extension
+
 # Version 1.12.2
 Improvements:
 - Fixed secure link list not refreshing after moving items
