@@ -26,6 +26,7 @@ import SwiftUI
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
+    @State private var animate = false
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
 
@@ -92,6 +93,11 @@ struct AliasDetailView: View {
         } message: {
             Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
         }
+        .onFirstAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                animate = true
+            }
+        }
     }
 
     private var aliasMailboxesSection: some View {
@@ -102,7 +108,7 @@ struct AliasDetailView: View {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
-//        .animation(.default, value: viewModel.mailboxes)
+        .animation(.default, value: viewModel.mailboxes)
     }
 
     private var aliasRow: some View {
@@ -176,17 +182,16 @@ struct AliasDetailView: View {
                 } else {
                     Group {
                         SkeletonBlock(tintColor: iconTintColor)
-
-                        //                        SkeletonBlock(tintColor: iconTintColor)
-                        //                        SkeletonBlock(tintColor: iconTintColor)
+                        SkeletonBlock(tintColor: iconTintColor)
+                        SkeletonBlock(tintColor: iconTintColor)
                     }
                     .clipShape(Capsule())
+                    .shimmering(active: animate)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .redacted(reason: viewModel.mailboxes == nil ? .placeholder : .init())
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-//        .animation(.default, value: viewModel.mailboxes)
+        .animation(.default, value: viewModel.mailboxes)
     }
 }
