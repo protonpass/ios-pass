@@ -18,7 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import DesignSystem
+import DocScanner
 import Factory
 import Macro
 import ProtonCoreUIFoundations
@@ -34,7 +36,8 @@ struct CreateEditNoteView: View {
     var body: some View {
         NavigationStack {
             CreateEditNoteContentView(title: $viewModel.title,
-                                      content: $viewModel.note)
+                                      content: $viewModel.note,
+                                      scanResponsePublisher: viewModel.scanResponsePublisher)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .itemCreateEditSetUp(viewModel)
         }
@@ -49,11 +52,13 @@ struct CreateEditNoteView: View {
 private struct CreateEditNoteContentView: UIViewRepresentable {
     @Binding var title: String
     @Binding var content: String
+    weak var scanResponsePublisher: ScanResponsePublisher?
 
     func makeUIView(context: Context) -> CreateEditNoteContentUIView {
         let view = CreateEditNoteContentUIView()
         view.delegate = context.coordinator
         view.bind(title: title, content: content)
+        view.scanResponsePublisher = scanResponsePublisher
         return view
     }
 
@@ -121,6 +126,23 @@ private final class CreateEditNoteContentUIView: UIView {
     }()
 
     weak var delegate: (any CreateEditNoteContentUIViewDelegate)?
+
+    private var cancellables = Set<AnyCancellable>()
+    weak var scanResponsePublisher: ScanResponsePublisher? {
+        didSet {
+            scanResponsePublisher?
+                .receive(on: DispatchQueue.main)
+                .sink { _ in } receiveValue: { [weak self] result in
+                    guard let self, let result else { return }
+                    if let document = result as? ScannedDocument {
+                        transformIntoNote(document: document)
+                    } else {
+                        assertionFailure("Expecting ScannedDocument as result")
+                    }
+                }
+                .store(in: &cancellables)
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -203,6 +225,21 @@ private extension CreateEditNoteContentUIView {
 
     func updatePlaceholderVisibility() {
         contentPlaceholderLabel.alpha = contentTextView.text.isEmpty ? 1 : 0
+    }
+
+    func transformIntoNote(document: ScannedDocument) {
+        var note = contentTextView.text ?? ""
+        defer { contentTextView.text = note }
+        for (index, page) in document.scannedPages.enumerated() {
+            note += page.text.reduce(into: "") { partialResult, next in
+                partialResult = partialResult + "\n" + next
+            }
+
+            if index != document.scannedPages.count - 1 {
+                // Add an empty line between pages
+                note += "\n\n"
+            }
+        }
     }
 }
 
