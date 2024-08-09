@@ -150,6 +150,9 @@ final class CoreDataEntityStructureTests: XCTestCase {
         verifyAttribute(named: "pendingInvites", on: sut, hasType: .integer64)
         verifyAttribute(named: "waitingNewUserInvites", on: sut, hasType: .integer64)
         verifyAttribute(named: "minVersionUpgrade", on: sut, hasType: .string)
+        verifyAttribute(named: "defaultShareID", on: sut, hasType: .string)
+        verifyAttribute(named: "aliasSyncEnabled", on: sut, hasType: .boolean)
+        verifyAttribute(named: "pendingAliasToSync", on: sut, hasType: .integer64)
     }
 
     func testSpotlightVaultEntity() {

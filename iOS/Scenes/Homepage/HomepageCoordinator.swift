@@ -540,9 +540,9 @@ extension HomepageCoordinator {
                 case .addAccount:
                     beginAddAccountFlow()
                 case .simpleLoginSyncActivation:
-                    presentSimpleLoginAliasActivation()
+                    present(SimpleLoginAliasActivationView())
                 case .aliasesSyncConfiguration:
-                    presentAliasSyncConfiguration()
+                    present(AliasSyncConfigurationView())
                 }
             }
             .store(in: &cancellables)

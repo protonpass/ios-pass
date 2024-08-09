@@ -70,7 +70,6 @@ extension AccessEntity {
                                                   aliasSyncEnabled: aliasSyncEnabled,
                                                   pendingAliasToSync: Int(pendingAliasToSync))
         let access = Access(plan: plan,
-
                             monitor: .init(protonAddress: monitorProtonAddress, aliases: monitorAliases),
                             pendingInvites: Int(pendingInvites),
                             waitingNewUserInvites: Int(waitingNewUserInvites),
