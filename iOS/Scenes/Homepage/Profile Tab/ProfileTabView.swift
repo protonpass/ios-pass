@@ -413,7 +413,7 @@ struct ProfileTabView: View {
 
     private func aliasSyncExplanation(_ missingAliases: Int) -> some View {
         AliasSyncExplanationView(missingAliases: missingAliases,
-                                 closeAction: viewModel.dismissAliasesSyncExplanation) {
+                                 dimissAction: viewModel.dismissAliasesSyncExplanation) {
             viewModel.showSimpleLoginAliasesActivation()
         }.padding(.horizontal)
     }

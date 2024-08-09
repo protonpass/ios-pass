@@ -24,12 +24,3 @@ public struct Suffix: Decodable, Hashable, Sendable {
     public let signedSuffix: String
     public let isCustom: Bool
 }
-
-extension Suffix: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.suffix == rhs.suffix &&
-            lhs.domain == rhs.domain &&
-            lhs.signedSuffix == rhs.signedSuffix &&
-            lhs.isCustom == rhs.isCustom
-    }
-}
