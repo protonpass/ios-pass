@@ -353,8 +353,9 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var invokedToggleAliasStatusCount = 0
     public var invokedToggleAliasStatusParameters: (userId: String, shareId: String, itemId: String, enable: Bool)?
     public var invokedToggleAliasStatusParametersList = [(userId: String, shareId: String, itemId: String, enable: Bool)]()
+    public var stubbedToggleAliasStatusResult: Item!
 
-    public func toggleAliasStatus(userId: String, shareId: String, itemId: String, enable: Bool) async throws {
+    public func toggleAliasStatus(userId: String, shareId: String, itemId: String, enable: Bool) async throws -> Item {
         invokedToggleAliasStatusfunction = true
         invokedToggleAliasStatusCount += 1
         invokedToggleAliasStatusParameters = (userId, shareId, itemId, enable)
@@ -363,5 +364,6 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
             throw error
         }
         closureToggleAliasStatus()
+        return stubbedToggleAliasStatusResult
     }
 }

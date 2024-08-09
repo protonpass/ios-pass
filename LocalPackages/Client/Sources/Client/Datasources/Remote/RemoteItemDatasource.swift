@@ -60,7 +60,7 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
     func createPendingAliasesItem(userId: String,
                                   shareId: String,
                                   request: CreateAliasesFromPendingRequest) async throws -> [Item]
-    func toggleAliasStatus(userId: String, shareId: String, itemId: String, enable: Bool) async throws
+    func toggleAliasStatus(userId: String, shareId: String, itemId: String, enable: Bool) async throws -> Item
 }
 
 public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
@@ -210,8 +210,9 @@ public extension RemoteItemDatasource {
     func toggleAliasStatus(userId: String,
                            shareId: String,
                            itemId: String,
-                           enable: Bool) async throws {
+                           enable: Bool) async throws -> Item {
         let endpoint = ChangeAliasStatusEndpoint(shareId: shareId, itemId: itemId, enable: enable)
-        _ = try await exec(userId: userId, endpoint: endpoint)
+        let result = try await exec(userId: userId, endpoint: endpoint)
+        return result.item
     }
 }
