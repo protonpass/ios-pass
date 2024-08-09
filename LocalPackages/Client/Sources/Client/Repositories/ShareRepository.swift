@@ -51,7 +51,7 @@ public protocol ShareRepositoryProtocol: Sendable {
 //    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
 
     @discardableResult
-    func updateUserPermission(userId: String,
+    func updateUserPermission(userShareId: String,
                               shareId: String,
                               shareRole: ShareRole?,
                               expireTime: Int?) async throws -> Bool
@@ -187,16 +187,18 @@ public extension ShareRepository {
         return users
     }
 
-    func updateUserPermission(userId: String,
+    func updateUserPermission(userShareId: String,
                               shareId: String,
                               shareRole: ShareRole?,
                               expireTime: Int?) async throws -> Bool {
+        let userId = try await userManager.getActiveUserId()
         let logInfo = "permission \(shareRole?.rawValue ?? ""), user \(userId), share \(shareId)"
         logger.trace("Updating \(logInfo)")
         do {
             let request = UserSharePermissionRequest(shareRole: shareRole, expireTime: expireTime)
-            let updated = try await remoteDatasouce.updateUserSharePermission(shareId: shareId,
-                                                                              userId: userId,
+            let updated = try await remoteDatasouce.updateUserSharePermission(userId: userId,
+                                                                              shareId: shareId,
+                                                                              userShareId: userShareId,
                                                                               request: request)
             logger.trace("Updated \(logInfo)")
             return updated
