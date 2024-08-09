@@ -56,7 +56,7 @@ public protocol ShareRepositoryProtocol: Sendable {
                               shareRole: ShareRole?,
                               expireTime: Int?) async throws -> Bool
     @discardableResult
-    func deleteUserShare(userId: String, shareId: String) async throws -> Bool
+    func deleteUserShare(userShareId: String, shareId: String) async throws -> Bool
 
     @discardableResult
     func deleteShare(userId: String, shareId: String) async throws -> Bool
@@ -208,11 +208,14 @@ public extension ShareRepository {
         }
     }
 
-    func deleteUserShare(userId: String, shareId: String) async throws -> Bool {
+    func deleteUserShare(userShareId: String, shareId: String) async throws -> Bool {
+        let userId = try await userManager.getActiveUserId()
         let logInfo = "user \(userId), share \(shareId)"
         logger.trace("Deleting user share \(logInfo)")
         do {
-            let deleted = try await remoteDatasouce.deleteUserShare(shareId: shareId, userId: userId)
+            let deleted = try await remoteDatasouce.deleteUserShare(userId: userId,
+                                                                    shareId: shareId,
+                                                                    userShareId: userShareId)
             logger.trace("Deleted \(deleted) user share \(logInfo)")
             return deleted
         } catch {
