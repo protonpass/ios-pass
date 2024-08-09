@@ -66,8 +66,7 @@ struct AliasSyncConfigurationView: View {
             Section {
                 if let userSyncData = viewModel.userAliasSyncData,
                    !userSyncData.aliasSyncEnabled {
-                    AliasSyncExplanationView(missingAliases: userSyncData.pendingAliasToSync,
-                                             closeAction: nil) {
+                    AliasSyncExplanationView(missingAliases: userSyncData.pendingAliasToSync) {
                         viewModel.showSimpleLoginAliasesActivation()
                     }
                 } else {

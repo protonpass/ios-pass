@@ -55,6 +55,11 @@ public struct SelectedSyncVaultRow: View {
                     .foregroundStyle(PassColor.textWeak.toColor)
 
                 Text(vault?.name ?? "None")
+                    .if(vault?.name == nil) { view in
+                        view
+                            .italic()
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                    }
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
             Spacer()
@@ -68,6 +73,5 @@ public struct SelectedSyncVaultRow: View {
         .frame(maxWidth: .infinity)
         .frame(height: 70)
         .contentShape(.rect)
-//        .animation(.default, value: vault)
     }
 }

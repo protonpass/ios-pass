@@ -1,688 +1,688 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-      "%lld item(s)" : {
-        "localizations" : {
-          "be" : {
-            "variations" : {
-              "plural" : {
-                "few" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld элементы"
-                  }
-                },
-                "many" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld элементаў"
-                  }
-                },
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld элемент"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld элементаў"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld элемент"
-                  }
+    "%lld item(s)" : {
+      "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элементаў"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld элемент"
                 }
               }
             }
-          },
-          "cs" : {
-            "variations" : {
-              "plural" : {
-                "few" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položky"
-                  }
-                },
-                "many" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položek"
-                  }
-                },
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položka"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položek"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položka"
-                  }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položky"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položek"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položka"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položek"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položka"
                 }
               }
             }
-          },
-          "da" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld element"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elementer"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld element"
-                  }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementer"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
                 }
               }
             }
-          },
-          "de" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld Eintrag"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld Einträge"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld Eintrag"
-                  }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Eintrag"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Einträge"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Eintrag"
                 }
               }
             }
-          },
-          "el" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld στοιχείο"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld στοιχεία"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld στοιχείο"
-                  }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld στοιχείο"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld στοιχεία"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld στοιχείο"
                 }
               }
             }
-          },
-          "en" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld item"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld items"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld item"
-                  }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
                 }
               }
             }
-          },
-          "es" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elemento"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elementos"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elemento"
-                  }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementos"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
                 }
               }
             }
-          },
-          "es-419" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elemento"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elementos"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elemento"
-                  }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementos"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
                 }
               }
             }
-          },
-          "fi" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld kohde"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld kohdetta"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld kohdetta"
-                  }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kohde"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kohdetta"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kohdetta"
                 }
               }
             }
-          },
-          "fr" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld élément"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld éléments"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld élément"
-                  }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld élément"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld éléments"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld élément"
                 }
               }
             }
-          },
-          "id" : {
-            "variations" : {
-              "plural" : {
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld item"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld item"
-                  }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
                 }
               }
             }
-          },
-          "it" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elemento"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elementi"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elemento"
-                  }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementi"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elemento"
                 }
               }
             }
-          },
-          "ja" : {
-            "variations" : {
-              "plural" : {
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld 項目"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld 件のアイテム"
-                  }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 項目"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 件のアイテム"
                 }
               }
             }
-          },
-          "ka" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld ელემენტი"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld ელემენტი"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld ელემენტი"
-                  }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ელემენტი"
                 }
               }
             }
-          },
-          "ko" : {
-            "variations" : {
-              "plural" : {
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld개 항목"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld개 항목"
-                  }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 항목"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 항목"
                 }
               }
             }
-          },
-          "nb" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld element"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elementer"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld element"
-                  }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementer"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
                 }
               }
             }
-          },
-          "nl" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld item"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld items"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld item"
-                  }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
                 }
               }
             }
-          },
-          "pl" : {
-            "variations" : {
-              "plural" : {
-                "few" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elementy"
-                  }
-                },
-                "many" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elementów"
-                  }
-                },
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld element"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld elementów"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld element"
-                  }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementów"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementów"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
                 }
               }
             }
-          },
-          "pt-BR" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld item"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld itens"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld item"
-                  }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld itens"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item"
                 }
               }
             }
-          },
-          "ro" : {
-            "variations" : {
-              "plural" : {
-                "few" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld articole"
-                  }
-                },
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld articol"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld de articole"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld articol"
-                  }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld articole"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld articol"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld de articole"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld articol"
                 }
               }
             }
-          },
-          "sk" : {
-            "variations" : {
-              "plural" : {
-                "few" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položky"
-                  }
-                },
-                "many" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položiek"
-                  }
-                },
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položka"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položiek"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld položka"
-                  }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položky"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položiek"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položka"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položiek"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld položka"
                 }
               }
             }
-          },
-          "sl" : {
-            "variations" : {
-              "plural" : {
-                "few" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld predmeta"
-                  }
-                },
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld predmet"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld predmeta"
-                  }
-                },
-                "two" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld predmeti"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld predmet"
-                  }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeta"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeta"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmeti"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld predmet"
                 }
               }
             }
-          },
-          "sv" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld objekt"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld objekt"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld objekt"
-                  }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt"
                 }
               }
             }
-          },
-          "tr" : {
-            "variations" : {
-              "plural" : {
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld öge"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld öge"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld öge"
-                  }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld öge"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld öge"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld öge"
                 }
               }
             }
-          },
-          "uk" : {
-            "variations" : {
-              "plural" : {
-                "few" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld елементи"
-                  }
-                },
-                "many" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld елементів"
-                  }
-                },
-                "one" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld елемент"
-                  }
-                },
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld елементів"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld елемент"
-                  }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементи"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елементів"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld елемент"
                 }
               }
             }
-          },
-          "vi" : {
-            "variations" : {
-              "plural" : {
-                "other" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld nội dung"
-                  }
-                },
-                "zero" : {
-                  "stringUnit" : {
-                    "state" : "translated",
-                    "value" : "%lld nội dung"
-                  }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld nội dung"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld nội dung"
                 }
               }
             }
           }
         }
-      },
+      }
+    },
     "Add account" : {
       "localizations" : {
         "be" : {
@@ -4998,6 +4998,7 @@
       }
     },
     "Select a default vault for aliases sync" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
