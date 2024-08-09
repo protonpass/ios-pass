@@ -671,24 +671,18 @@ public extension ItemRepository {
         let itemId = item.itemId
         logger
             .trace("Change the alias sync status for item \(itemId) and share \(shareId) with new status \(enable)")
-        try await remoteDatasource.toggleAliasStatus(userId: userId,
-                                                     shareId: shareId,
-                                                     itemId: itemId,
-                                                     enable: enable)
-        var newItem = item.item
-        print("woot item flags \(newItem.flags) et isAliasSync: \(newItem.isAliasSyncEnabled)")
-        newItem.updateFlag(.aliasSyncEnabled, enabled: enable)
-
-        print("woot after flags modification item flags \(newItem.flags) et isAliasSync: \(newItem.isAliasSyncEnabled)")
-
+        let itemWithNewAliasStatus = try await remoteDatasource.toggleAliasStatus(userId: userId,
+                                                                                  shareId: shareId,
+                                                                                  itemId: itemId,
+                                                                                  enable: enable)
         let symmetricKey = try await getSymmetricKey()
-        logger.trace("Updating item \(newItem.itemID) to local database")
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: newItem,
+        logger.trace("Updating item \(itemWithNewAliasStatus.itemID) to local database")
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemWithNewAliasStatus,
                                                            shareId: shareId,
                                                            userId: userId,
                                                            symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
-        logger.trace("Saved item \(newItem.itemID) to local database")
+        logger.trace("Saved item \(itemWithNewAliasStatus.itemID) to local database")
     }
 }
 

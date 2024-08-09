@@ -30,7 +30,7 @@ struct ChangeAliasStatusRequest: Encodable, Sendable {
 
 struct ChangeAliasStatusEndpoint: Endpoint {
     typealias Body = ChangeAliasStatusRequest
-    typealias Response = CodeOnlyResponse
+    typealias Response = UpdateItemResponse
 
     var debugDescription: String
     var path: String
