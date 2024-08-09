@@ -229,7 +229,10 @@ private extension CreateEditNoteContentUIView {
 
     func transformIntoNote(document: ScannedDocument) {
         var note = contentTextView.text ?? ""
-        defer { contentTextView.text = note }
+        defer {
+            contentTextView.text = note
+            delegate?.contentUpdated(note)
+        }
         for (index, page) in document.scannedPages.enumerated() {
             note += page.text.reduce(into: "") { partialResult, next in
                 partialResult = partialResult + "\n" + next
