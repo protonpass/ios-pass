@@ -58,12 +58,7 @@ public struct VaultSelectionView: View {
             .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: selectedVault)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text("Select a default vault for aliases sync")
-                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
-                }
-            }
+            .navigationTitle("Default SimpleLogin vault")
         }
     }
 }

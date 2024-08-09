@@ -39,11 +39,12 @@ public enum AliasOptionsSheetState {
 
 public extension View {
     @ViewBuilder
-    func aliasOptionsSheetContent(for state: AliasOptionsSheetState) -> some View {
+    func aliasOptionsSheetContent(for state: AliasOptionsSheetState, tint: Color) -> some View {
         switch state {
         case let .mailbox(mailboxSelection, title):
             MailboxSelectionView(mailboxSelection: mailboxSelection,
-                                 title: title)
+                                 title: title,
+                                 tint: tint)
         case let .suffix(suffixSelection):
             SuffixSelectionView(selection: suffixSelection)
         }

@@ -100336,12 +100336,12 @@
         }
       }
     },
-    "Sync Aliases" : {
+    "Sync aliases" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sync Aliases"
+            "value" : "Sync aliases"
           }
         }
       }

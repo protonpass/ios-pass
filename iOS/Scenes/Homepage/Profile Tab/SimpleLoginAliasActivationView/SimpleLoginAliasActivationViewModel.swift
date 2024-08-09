@@ -39,8 +39,8 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
 
     @Published private(set) var loading = false
 
-    @LazyInjected(\SharedRepositoryContainer
-        .accessRepository) private var accessRepository: any AccessRepositoryProtocol
+    @LazyInjected(\SharedRepositoryContainer.accessRepository)
+    private var accessRepository: any AccessRepositoryProtocol
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
@@ -58,7 +58,7 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    func activateSync() async throws {
+    func activateSync() async -> Bool {
         defer { loading = false }
         do {
             loading = true
@@ -66,10 +66,11 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
             try await aliasRepository.enableSlAliasSync(userId: userId,
                                                         defaultShareID: selectedVault?.vault.shareId)
             try await accessRepository.refreshAccess()
+            return true
         } catch {
             logger.error(error)
             router.display(element: .displayErrorBanner(error))
-            throw error
+            return false
         }
     }
 }
