@@ -50,9 +50,6 @@ public extension LocalAccessDatasource {
     }
 
     func upsert(access: UserAccess) async throws {
-        // Work-around core data bug that doesn't update boolean values
-        try await removeAccess(userId: access.userId)
-
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =

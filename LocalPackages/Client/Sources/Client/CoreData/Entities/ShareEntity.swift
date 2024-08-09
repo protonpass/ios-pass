@@ -84,7 +84,7 @@ extension ShareEntity {
         contentKeyRotation = share.contentKeyRotation ?? -1
         createTime = share.createTime
         expireTime = share.expireTime ?? -1
-        owner = share.owner
+        set(share.owner, for: \ShareEntity.owner)
         permission = share.permission
         shareID = share.shareID
         symmetricallyEncryptedContent = symmetricallyEncryptedShare.encryptedContent
@@ -98,6 +98,6 @@ extension ShareEntity {
         targetMaxMembers = share.targetMaxMembers
         pendingInvites = share.pendingInvites
         newUserInvitesReady = share.newUserInvitesReady
-        shared = share.shared
+        set(share.shared, for: \ShareEntity.shared)
     }
 }
