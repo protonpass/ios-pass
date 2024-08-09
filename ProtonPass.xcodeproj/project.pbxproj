@@ -869,10 +869,7 @@
 		35C9B8162B5E8AA90062D787 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		35C9B8192B5E8AA90062D787 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		35C9B81B2B5E8AA90062D787 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		35C9B8242B5E8AF20062D787 /* ShareRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareRelease.entitlements; sourceTree = "<group>"; };
-		35C9B8252B5E8B210062D787 /* ShareRelease-Beta.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ShareRelease-Beta.entitlements"; sourceTree = "<group>"; };
-		35C9B8262B5E8B2C0062D787 /* ShareRelease-QA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ShareRelease-QA.entitlements"; sourceTree = "<group>"; };
-		35C9B8272B5E8B560062D787 /* ShareDebug-QA.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ShareDebug-QA.entitlements"; sourceTree = "<group>"; };
+		35C9B8242B5E8AF20062D787 /* Share.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Share.entitlements; sourceTree = "<group>"; };
 		35C9B8282B5E940A0062D787 /* ShareCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareCoordinator.swift; sourceTree = "<group>"; };
 		35C9B8322B5EA8890062D787 /* SharedContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedContentView.swift; sourceTree = "<group>"; };
 		35CEA8D42A60666400343A4E /* LocalAuthenticationMethodsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalAuthenticationMethodsView.swift; sourceTree = "<group>"; };
@@ -1609,10 +1606,7 @@
 		35C9B8152B5E8AA90062D787 /* Share */ = {
 			isa = PBXGroup;
 			children = (
-				35C9B8272B5E8B560062D787 /* ShareDebug-QA.entitlements */,
-				35C9B8262B5E8B2C0062D787 /* ShareRelease-QA.entitlements */,
-				35C9B8252B5E8B210062D787 /* ShareRelease-Beta.entitlements */,
-				35C9B8242B5E8AF20062D787 /* ShareRelease.entitlements */,
+				35C9B8242B5E8AF20062D787 /* Share.entitlements */,
 				35C9B8282B5E940A0062D787 /* ShareCoordinator.swift */,
 				35C9B8162B5E8AA90062D787 /* ShareViewController.swift */,
 				35C9B8322B5EA8890062D787 /* SharedContentView.swift */,
@@ -3556,7 +3550,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "AutoFill/AutoFillDebug-Black.entitlements";
+				CODE_SIGN_ENTITLEMENTS = AutoFill/AutoFill.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -4593,7 +4587,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_ENTITLEMENTS = "Share/ShareDebug-QA.entitlements";
+				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
@@ -4651,7 +4645,7 @@
 				APP_VERSION_IDENTIFIER =
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "Share/ShareRelease-QA.entitlements";
+				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -4691,7 +4685,7 @@
 				APP_VERSION_IDENTIFIER =
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = Share/ShareRelease.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
@@ -4731,7 +4725,7 @@
 				APP_VERSION_IDENTIFIER =
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
-				CODE_SIGN_ENTITLEMENTS = "Share/ShareRelease-Beta.entitlements";
+				CODE_SIGN_ENTITLEMENTS = Share/Share.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;

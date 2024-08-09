@@ -45,6 +45,7 @@ public final class LogOutUser: LogOutUserUseCase {
     private let removeUserLocalData: any RemoveUserLocalDataUseCase
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
+    private let accessRepository: any AccessRepositoryProtocol
     private let vaultsManager: any VaultsManagerProtocol
     private let apiManager: any APIManagerProtocol
     private let authManager: any AuthManagerProtocol
@@ -57,6 +58,7 @@ public final class LogOutUser: LogOutUserUseCase {
                 removeUserLocalData: any RemoveUserLocalDataUseCase,
                 featureFlagsRepository: any FeatureFlagsRepositoryProtocol,
                 passMonitorRepository: any PassMonitorRepositoryProtocol,
+                accessRepository: any AccessRepositoryProtocol,
                 vaultsManager: any VaultsManagerProtocol,
                 apiManager: any APIManagerProtocol,
                 authManager: any AuthManagerProtocol,
@@ -68,6 +70,7 @@ public final class LogOutUser: LogOutUserUseCase {
         self.removeUserLocalData = removeUserLocalData
         self.featureFlagsRepository = featureFlagsRepository
         self.passMonitorRepository = passMonitorRepository
+        self.accessRepository = accessRepository
         self.vaultsManager = vaultsManager
         self.apiManager = apiManager
         self.authManager = authManager
@@ -158,6 +161,7 @@ private extension LogOutUser {
         // Removes all flags linked to user account
         featureFlagsRepository.resetFlags(for: userId)
         authManager.removeCredentials(userId: userId)
+        try await accessRepository.loadAccesses()
         DispatchQueue.main.async {
             UIPasteboard.general.items = []
         }
