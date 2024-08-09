@@ -69,7 +69,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
             try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
                                                                value: true)
         }
-        try await fullVaultsSync(userId: userData.user.ID)
+        await fullVaultsSync(userId: userData.user.ID)
         syncEventLoop.start()
     }
 }

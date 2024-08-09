@@ -28,6 +28,7 @@ import SwiftUI
 struct LocalAuthenticationModifier: ViewModifier {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
+    @State private var method: LocalAuthenticationMethod
     @State private var authenticated: Bool
 
     // autolocker as @State because it needs to be updated
@@ -43,6 +44,8 @@ struct LocalAuthenticationModifier: ViewModifier {
     // NSLocalizedDescription=User interaction required.}
     private let delayed: Bool
 
+    private let manuallyAvoidKeyboard: Bool
+
     /// Authentication is started and awaiting for user's response (enterring PIN or biometrically authenticate)
     private let onAuth: (() -> Void)?
 
@@ -55,17 +58,18 @@ struct LocalAuthenticationModifier: ViewModifier {
     /// Authentication failed
     private let onFailure: () -> Void
 
-    private var preferences: SharedPreferences { preferencesManager.sharedPreferences.unwrapped() }
-
     init(delayed: Bool,
+         manuallyAvoidKeyboard: Bool,
          onAuth: (() -> Void)?,
          onAuthSkipped: (() -> Void)?,
          onSuccess: (() -> Void)?,
          onFailure: @escaping () -> Void) {
         let preferences = preferencesManager.sharedPreferences.unwrapped()
+        _method = .init(initialValue: preferences.localAuthenticationMethod)
         _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
+        self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
         self.onAuth = onAuth
         self.onAuthSkipped = onAuthSkipped
         self.onSuccess = onSuccess
@@ -75,7 +79,7 @@ struct LocalAuthenticationModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let authenticationRequired = preferences.localAuthenticationMethod != .none && !authenticated
+        let authenticationRequired = method != .none && !authenticated
         GeometryReader { proxy in
             content
                 .frame(width: proxy.size.width, height: proxy.size.height)
@@ -88,35 +92,47 @@ struct LocalAuthenticationModifier: ViewModifier {
                     onSuccess?()
                 }
 
-                LocalAuthenticationView(mode: preferences
-                    .localAuthenticationMethod == .pin ? .pin : .biometric,
-                    delayed: delayed,
-                    onAuth: { onAuth?() },
-                    onSuccess: handleSuccess,
-                    onFailure: onFailure)
+                LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
+                                        delayed: delayed,
+                                        manuallyAvoidKeyboard: manuallyAvoidKeyboard,
+                                        onAuth: { onAuth?() },
+                                        onSuccess: handleSuccess,
+                                        onFailure: onFailure)
             }
         }
+        .animation(.default, value: authenticationRequired)
         .onAppear {
             if !authenticationRequired {
                 onAuthSkipped?()
             }
         }
+        // Take into account right away appLockTime when user updates it
         .onReceive(preferencesManager
             .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
             .filter(\.appLockTime)) { newValue in
-                // Take into account right away appLockTime when user updates it
                 autolocker = .init(appLockTime: newValue)
                 autolocker.startCountdown()
+        }
+        // Take into account right away method when user updates it
+        .onReceive(preferencesManager
+            .sharedPreferencesUpdates
+            .receive(on: DispatchQueue.main)
+            .filter(\.localAuthenticationMethod)) { newValue in
+                method = newValue
         }
         // Start the timer whenever app is backgrounded
         .onReceive(UIApplication.willResignActiveNotification,
                    perform: autolocker.startCountdown)
         // When app is foregrounded, check if authentication is needed or could be skipped
         .onReceive(UIApplication.didBecomeActiveNotification) {
-            if autolocker.shouldAutolockNow(), preferences.localAuthenticationMethod != .none {
+            // This if-else statement seems redundant with 2 branches result in auth skipped
+            // but we should do thing in order this way.
+            if method == .none {
+                onAuthSkipped?()
+            } else if autolocker.shouldAutolockNow() {
                 authenticated = false
-            } else {
+            } else if authenticated {
                 onAuthSkipped?()
             }
         }
@@ -125,12 +141,14 @@ struct LocalAuthenticationModifier: ViewModifier {
 
 extension View {
     @MainActor
-    func localAuthentication(delayed: Bool,
+    func localAuthentication(delayed: Bool = false,
+                             manuallyAvoidKeyboard: Bool = false,
                              onAuth: (() -> Void)? = nil,
                              onAuthSkipped: (() -> Void)? = nil,
                              onSuccess: (() -> Void)? = nil,
                              onFailure: @escaping () -> Void) -> some View {
         modifier(LocalAuthenticationModifier(delayed: delayed,
+                                             manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                              onAuth: onAuth,
                                              onAuthSkipped: onAuthSkipped,
                                              onSuccess: onSuccess,
@@ -142,13 +160,7 @@ private extension Autolocker {
     convenience init(appLockTime: AppLockTime) {
         struct AutolockerSettingsProvider: SettingsProvider {
             let appLockTime: AppLockTime
-            var lockTime: AutolockTimeout {
-                if let intervalInMinutes = appLockTime.intervalInMinutes {
-                    .minutes(intervalInMinutes)
-                } else {
-                    .never
-                }
-            }
+            var lockTime: AutolockTimeout { .minutes(appLockTime.intervalInMinutes) }
         }
         self.init(lockTimeProvider: AutolockerSettingsProvider(appLockTime: appLockTime))
     }

@@ -29,7 +29,7 @@ public protocol VaultsManagerProtocol: Sendable {
     var hasOnlyOneOwnedVault: Bool { get }
 
     func refresh(userId: String)
-    func fullSync(userId: String) async throws
+    func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
     func getItems(for vault: Vault) -> [ItemUiModel]
     func getAllVaults() -> [Vault]

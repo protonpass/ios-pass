@@ -29,7 +29,6 @@ import Macro
 final class SecuritySettingsCoordinator {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-    private let getMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let enablingPolicy = resolve(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -46,11 +45,26 @@ final class SecuritySettingsCoordinator {
 // MARK: - Public APIs
 
 extension SecuritySettingsCoordinator {
-    func editMethod() {
-        Task { [weak self] in
+    func editMethod(_ supportedMethods: [LocalAuthenticationMethodUiModel]) {
+        let update: (LocalAuthenticationMethod) -> Void = { [weak self] newMethod in
             guard let self else { return }
-            await showListOfAvailableMethods()
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    try await updateMethod(newMethod)
+                } catch {
+                    handle(error: error)
+                }
+            }
         }
+        let view = LocalAuthenticationMethodsView(selectedMethod: preferences.localAuthenticationMethod,
+                                                  supportedMethods: supportedMethods,
+                                                  onSelect: { update($0.method) })
+        let height = OptionRowHeight.compact.value * CGFloat(supportedMethods.count) + 60
+
+        delegate?.childCoordinatorWantsToPresent(view: view,
+                                                 viewOption: .customSheetWithGrabber(CGFloat(height)),
+                                                 presentationOption: .none)
     }
 
     func editAppLockTime() {
@@ -65,33 +79,6 @@ extension SecuritySettingsCoordinator {
 // MARK: - Private APIs
 
 private extension SecuritySettingsCoordinator {
-    func showListOfAvailableMethods() async {
-        do {
-            let update: (LocalAuthenticationMethod) -> Void = { [weak self] newMethod in
-                guard let self else { return }
-                Task { [weak self] in
-                    guard let self else { return }
-                    do {
-                        try await updateMethod(newMethod)
-                    } catch {
-                        handle(error: error)
-                    }
-                }
-            }
-            let methods = try await getMethods(policy: enablingPolicy)
-            let view = LocalAuthenticationMethodsView(selectedMethod: preferences.localAuthenticationMethod,
-                                                      supportedMethods: methods,
-                                                      onSelect: { update($0.method) })
-            let height = OptionRowHeight.compact.value * CGFloat(methods.count) + 60
-
-            delegate?.childCoordinatorWantsToPresent(view: view,
-                                                     viewOption: .customSheetWithGrabber(CGFloat(height)),
-                                                     presentationOption: .none)
-        } catch {
-            handle(error: error)
-        }
-    }
-
     func updateMethod(_ newMethod: LocalAuthenticationMethod) async throws {
         let currentMethod = preferences.localAuthenticationMethod
         let authenticatingPolicy = preferences.localAuthenticationPolicy
@@ -161,7 +148,6 @@ private extension SecuritySettingsCoordinator {
             }
         } else {
             let view = LocalAuthenticationView(mode: .biometric,
-                                               delayed: false,
                                                onAuth: {},
                                                onSuccess: succesHandler,
                                                onFailure: failureHandler)
@@ -219,7 +205,6 @@ private extension SecuritySettingsCoordinator {
         }
 
         let view = LocalAuthenticationView(mode: .pin,
-                                           delayed: false,
                                            onAuth: {},
                                            onSuccess: successHandler,
                                            onFailure: failureHandler)
@@ -240,7 +225,6 @@ private extension SecuritySettingsCoordinator {
         }
 
         let view = LocalAuthenticationView(mode: .pin,
-                                           delayed: false,
                                            onAuth: {},
                                            onSuccess: successHandler,
                                            onFailure: failureHandler)
