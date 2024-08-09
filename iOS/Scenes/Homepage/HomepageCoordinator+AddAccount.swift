@@ -83,7 +83,7 @@ private extension HomepageCoordinator {
                                                  userId: logInData.user.ID,
                                                  onSuccess: onSuccess,
                                                  onFailure: onFailure)
-                present(view)
+                present(view, dismissible: false)
             }
         }
     }

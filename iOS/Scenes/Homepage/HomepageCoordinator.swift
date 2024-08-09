@@ -312,7 +312,8 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                if let organization = try await organizationRepository.refreshOrganization() {
+                let userId = try await userManager.getActiveUserId()
+                if let organization = try await organizationRepository.refreshOrganization(userId: userId) {
                     try await overrideSecuritySettings(with: organization)
                 }
             } catch {

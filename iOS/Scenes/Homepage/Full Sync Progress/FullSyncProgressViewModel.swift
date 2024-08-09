@@ -28,11 +28,13 @@ import Macro
 final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
     @Published private(set) var isDoneSynching = false
+    @Published private(set) var error: (any Error)?
     private let vaultManager = resolve(\SharedServiceContainer.vaultsManager)
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
+    private var userId: String?
     let mode: Mode
 
     enum Mode {
@@ -48,9 +50,14 @@ final class FullSyncProgressViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
-                progresses = processVaultSyncEvent(event, with: progresses)
-                if case .done = event {
+                switch event {
+                case .done:
                     handleDoneEvent()
+                case let .error(userId, error):
+                    self.userId = userId
+                    self.error = error
+                default:
+                    progresses = processVaultSyncEvent(event, with: progresses)
                 }
             }
             .store(in: &cancellables)
@@ -60,6 +67,17 @@ final class FullSyncProgressViewModel: ObservableObject {
 extension FullSyncProgressViewModel {
     func numberOfSyncedVaults() -> Int {
         progresses.filter(\.isDone).count
+    }
+
+    func retry() async {
+        guard let userId else {
+            assertionFailure("Failed to full sync. No userID found")
+            return
+        }
+        self.userId = nil
+        error = nil
+        progresses.removeAll()
+        await vaultManager.fullSync(userId: userId)
     }
 }
 

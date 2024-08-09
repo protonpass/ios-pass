@@ -4997,17 +4997,6 @@
         }
       }
     },
-    "Select a default vault for aliases sync" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select a default vault for aliases sync"
-          }
-        }
-      }
-    },
     "Select an existing login or create a new one." : {
       "localizations" : {
         "be" : {

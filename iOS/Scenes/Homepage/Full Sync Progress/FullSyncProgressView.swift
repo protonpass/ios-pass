@@ -45,20 +45,35 @@ struct FullSyncProgressView: View {
 }
 
 private extension FullSyncProgressView {
+    @ViewBuilder
     var realBody: some View {
-        VStack {
-            Spacer()
-            overallProgressView
-            if isShowingDetail {
-                allProgressesView
+        ZStack {
+            if let error = viewModel.error {
+                RetryableErrorView(errorMessage: error.localizedDescription, onRetry: retry)
+                    .padding()
             } else {
-                Spacer()
-                Spacer()
-                moreInfoButton
-                    .padding(.bottom)
+                VStack {
+                    Spacer()
+                    overallProgressView
+                    if isShowingDetail {
+                        allProgressesView
+                    } else {
+                        Spacer()
+                        Spacer()
+                        moreInfoButton
+                            .padding(.bottom)
+                    }
+                }
+                .animation(.default, value: isShowingDetail)
             }
         }
-        .animation(.default, value: isShowingDetail)
+        .animation(.default, value: viewModel.error == nil)
+    }
+
+    func retry() {
+        Task {
+            await viewModel.retry()
+        }
     }
 }
 
