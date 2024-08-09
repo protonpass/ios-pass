@@ -28,8 +28,9 @@ public protocol RemoteShareDatasourceProtocol: Sendable {
                                    shareId: String,
                                    userShareId: String,
                                    request: UserSharePermissionRequest) async throws -> Bool
-    func deleteUserShare(shareId: String,
-                         userId: String) async throws -> Bool
+    func deleteUserShare(userId: String,
+                         shareId: String,
+                         userShareId: String) async throws -> Bool
 
     func deleteShare(userId: String, shareId: String) async throws -> Bool
 
@@ -67,8 +68,10 @@ public extension RemoteShareDatasource {
         return response.isSuccessful
     }
 
-    func deleteUserShare(shareId: String, userId: String) async throws -> Bool {
-        let endpoint = DeleteUserShareEndpoint(for: shareId, and: userId)
+    func deleteUserShare(userId: String,
+                         shareId: String,
+                         userShareId: String) async throws -> Bool {
+        let endpoint = DeleteUserShareEndpoint(shareId: shareId, userShareId: userShareId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
     }
