@@ -160,20 +160,20 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         return stubbedUpdateUserPermissionResult
     }
     // MARK: - deleteUserShare
-    public var deleteUserShareUserIdShareIdThrowableError8: Error?
+    public var deleteUserShareUserShareIdShareIdThrowableError8: Error?
     public var closureDeleteUserShare: () -> () = {}
     public var invokedDeleteUserSharefunction = false
     public var invokedDeleteUserShareCount = 0
-    public var invokedDeleteUserShareParameters: (userId: String, shareId: String)?
-    public var invokedDeleteUserShareParametersList = [(userId: String, shareId: String)]()
+    public var invokedDeleteUserShareParameters: (userShareId: String, shareId: String)?
+    public var invokedDeleteUserShareParametersList = [(userShareId: String, shareId: String)]()
     public var stubbedDeleteUserShareResult: Bool!
 
-    public func deleteUserShare(userId: String, shareId: String) async throws -> Bool {
+    public func deleteUserShare(userShareId: String, shareId: String) async throws -> Bool {
         invokedDeleteUserSharefunction = true
         invokedDeleteUserShareCount += 1
-        invokedDeleteUserShareParameters = (userId, shareId)
-        invokedDeleteUserShareParametersList.append((userId, shareId))
-        if let error = deleteUserShareUserIdShareIdThrowableError8 {
+        invokedDeleteUserShareParameters = (userShareId, shareId)
+        invokedDeleteUserShareParametersList.append((userShareId, shareId))
+        if let error = deleteUserShareUserShareIdShareIdThrowableError8 {
             throw error
         }
         closureDeleteUserShare()
