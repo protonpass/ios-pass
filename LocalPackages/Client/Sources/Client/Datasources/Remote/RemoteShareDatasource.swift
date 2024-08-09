@@ -24,8 +24,9 @@ import Foundation
 public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares(userId: String) async throws -> [Share]
     func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos]
-    func updateUserSharePermission(shareId: String,
-                                   userId: String,
+    func updateUserSharePermission(userId: String,
+                                   shareId: String,
+                                   userShareId: String,
                                    request: UserSharePermissionRequest) async throws -> Bool
     func deleteUserShare(shareId: String,
                          userId: String) async throws -> Bool
@@ -55,11 +56,12 @@ public extension RemoteShareDatasource {
         return response.shares
     }
 
-    func updateUserSharePermission(shareId: String,
-                                   userId: String,
+    func updateUserSharePermission(userId: String,
+                                   shareId: String,
+                                   userShareId: String,
                                    request: UserSharePermissionRequest) async throws -> Bool {
         let endpoint = UpdateUserSharePermissionsEndpoint(shareId: shareId,
-                                                          userId: userId,
+                                                          userShareId: userShareId,
                                                           request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.isSuccessful
