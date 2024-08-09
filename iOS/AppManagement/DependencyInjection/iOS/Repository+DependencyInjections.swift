@@ -41,10 +41,6 @@ private extension RepositoryContainer {
         SharedToolingContainer.shared.apiManager()
     }
 
-    var logManager: any LogManagerProtocol {
-        SharedToolingContainer.shared.logManager()
-    }
-
     var userManager: any UserManagerProtocol {
         SharedServiceContainer.shared.userManager()
     }
