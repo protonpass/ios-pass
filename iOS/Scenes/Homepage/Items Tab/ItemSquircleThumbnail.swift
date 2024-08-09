@@ -95,7 +95,7 @@ private extension ItemSquircleThumbnail {
                               backgroundColor: !isSync ? .clear : alternativeBackground ? type
                                   .normMinor2Color : type.normMinor1Color,
                               height: size.height)
-                .overlay(test(type: type, height: size.height))
+                .overlay(aliasSyncOverlay(type: type, height: size.height))
 
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),
@@ -148,9 +148,8 @@ private extension ItemSquircleThumbnail {
         }
     }
 
-    // TODO: Remane function
     @ViewBuilder
-    func test(type: ItemContentType, height: CGFloat) -> some View {
+    func aliasSyncOverlay(type: ItemContentType, height: CGFloat) -> some View {
         if !isSync {
             RoundedRectangle(cornerRadius: height / 2.5, style: .continuous)
                 .stroke((alternativeBackground ? type.normMinor2Color : type.normMinor1Color).toColor,
