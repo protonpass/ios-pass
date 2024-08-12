@@ -86,7 +86,7 @@ struct AliasDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .onFirstAppear(perform: viewModel.getAlias)
-        .alert("Move To Trash", isPresented: $viewModel.showingGenericAlert) {
+        .alert("Move to trash", isPresented: $viewModel.showingGenericAlert) {
             Button("Disable instead") { viewModel.disableAlias() }
             Button("Move to trash") { viewModel.moveToTrash() }
             Button("Cancel", role: .cancel) {}
