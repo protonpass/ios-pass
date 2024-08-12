@@ -351,14 +351,14 @@ public extension ItemRepository {
         -> [SymmetricallyEncryptedItem] {
         logger.trace("Creating pending alias item for user \(userId)")
 
-        let individualItemRequest = try await itemsContent.asyncCompactMap { pendingAliasId, value in
+        let aliasesItemInfos = try await itemsContent.asyncCompactMap { pendingAliasId, value in
             let request = try await createItemRequest(itemContent: value,
                                                       userId: userId,
                                                       shareId: shareId)
             return AliasesItemPendingInfo(pendingAliasID: pendingAliasId, item: request)
         }
 
-        let createPendingAliasRequest = CreateAliasesFromPendingRequest(items: individualItemRequest)
+        let createPendingAliasRequest = CreateAliasesFromPendingRequest(items: aliasesItemInfos)
         let createdItemsRevision =
             try await remoteDatasource.createPendingAliasesItem(userId: userId,
                                                                 shareId: shareId,
