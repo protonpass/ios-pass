@@ -101,13 +101,13 @@ extension ItemEntity {
         content = item.content
         contentFormatVersion = item.contentFormatVersion
         createTime = item.createTime
-        set(symmetricallyEncryptedItem.isLogInItem, for: \ItemEntity.isLogInItem)
+        isLogInItem = symmetricallyEncryptedItem.isLogInItem
         itemID = item.itemID
         itemKey = item.itemKey
         keyRotation = item.keyRotation
         lastUseTime = item.lastUseTime ?? 0
         modifyTime = item.modifyTime
-        set(item.pinned, for: \ItemEntity.pinned)
+        pinned = item.pinned
         revision = item.revision
         revisionTime = item.revisionTime
         shareID = symmetricallyEncryptedItem.shareId

@@ -57,7 +57,7 @@ extension OrganizationEntity {
 
     func hydrate(from org: Organization, userId: String) {
         userID = userId
-        set(org.canUpdate, for: \OrganizationEntity.canUpdate)
+        canUpdate = org.canUpdate
         exportMode = Int64(org.settings?.exportMode.rawValue ?? -1)
         forceLockSeconds = Int64(org.settings?.forceLockSeconds ?? -1)
         shareMode = Int64(org.settings?.shareMode.rawValue ?? -1)
