@@ -41,8 +41,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
-    private var cancellables = Set<AnyCancellable>()
-
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
@@ -74,46 +72,12 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func toggleAliasState() {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { togglingAliasStatus = false }
-            do {
-                let newStatus = !aliasIsSync
-                togglingAliasStatus = true
-                let userId = try await userManager.getActiveUserId()
-                try await itemRepository.changeAliasStatus(userId: userId,
-                                                           item: itemContent,
-                                                           enable: !aliasIsSync)
-                router.display(element: .successMessage("The sync status has been successfully updated",
-                                                        config: .refresh))
-                logger.trace("Successfully updated the alias sync status of \(newStatus)")
-                aliasIsSync = newStatus
-            } catch {
-                logger.error(error)
-                self.error = error
-            }
-        }
+        let newStatus = !aliasIsSync
+        setAliasStatus(newSyncStatus: newStatus)
     }
 
     func disableAlias() {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { togglingAliasStatus = false }
-            do {
-                togglingAliasStatus = true
-                let userId = try await userManager.getActiveUserId()
-                try await itemRepository.changeAliasStatus(userId: userId,
-                                                           item: itemContent,
-                                                           enable: false)
-                router.display(element: .successMessage("The sync status has been successfully updated",
-                                                        config: .refresh))
-                logger.trace("Successfully updated the alias sync status of \(false)")
-                aliasIsSync = false
-            } catch {
-                logger.error(error)
-                self.error = error
-            }
-        }
+        setAliasStatus(newSyncStatus: false)
     }
 
     override func refresh() {
@@ -129,5 +93,28 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     func copyMailboxEmail(_ email: String) {
         copyToClipboard(text: email, message: #localized("Email address copied"))
+    }
+}
+
+private extension AliasDetailViewModel {
+    func setAliasStatus(newSyncStatus: Bool) {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { togglingAliasStatus = false }
+            do {
+                togglingAliasStatus = true
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.changeAliasStatus(userId: userId,
+                                                           item: itemContent,
+                                                           enable: newSyncStatus)
+                router.display(element: .successMessage("The sync status has been successfully updated",
+                                                        config: .refresh))
+                logger.trace("Successfully updated the alias sync status of \(newSyncStatus)")
+                aliasIsSync = newSyncStatus
+            } catch {
+                logger.error(error)
+                self.error = error
+            }
+        }
     }
 }
