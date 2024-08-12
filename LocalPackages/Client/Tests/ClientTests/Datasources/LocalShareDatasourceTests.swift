@@ -33,27 +33,6 @@ final class LocalShareDatasourceTests: XCTestCase {
         sut = nil
         super.tearDown()
     }
-
-    func assertEqual(_ lhs: SymmetricallyEncryptedShare, _ rhs: SymmetricallyEncryptedShare) {
-        let lhsShare = lhs.share
-        let rhsShare = rhs.share
-        // Skip Int16 assertions because they make the tests very flaky
-        // Sometime the value is not updated and is always 0
-        // Not sure if this only happens to in-memory containers or not
-        // If it's the case nothing to worry, otherwise further investigation is needed
-        XCTAssertEqual(lhs.encryptedContent, rhs.encryptedContent)
-        XCTAssertEqual(lhsShare.shareID, rhsShare.shareID)
-        XCTAssertEqual(lhsShare.vaultID, rhsShare.vaultID)
-        XCTAssertEqual(lhsShare.addressID, rhsShare.addressID)
-//        XCTAssertEqual(lhsShare.targetType, rhsShare.targetType)
-        XCTAssertEqual(lhsShare.targetID, rhsShare.targetID)
-//        XCTAssertEqual(lhsShare.permission, rhsShare.permission)
-        XCTAssertEqual(lhsShare.content, rhsShare.content)
-        XCTAssertEqual(lhsShare.contentKeyRotation, rhsShare.contentKeyRotation)
-        XCTAssertEqual(lhsShare.contentFormatVersion, rhsShare.contentFormatVersion)
-        XCTAssertEqual(lhsShare.expireTime, rhsShare.expireTime)
-        XCTAssertEqual(lhsShare.createTime, rhsShare.createTime)
-    }
 }
 
 extension LocalShareDatasourceTests {
@@ -90,7 +69,7 @@ extension LocalShareDatasourceTests {
         let optionalShares = try await sut.getShare(userId: givenUserId,
                                                     shareId: givenInsertedShare.share.shareID)
         let share = try await XCTUnwrapAsync(optionalShares)
-        assertEqual(share, givenInsertedShare)
+        XCTAssertEqual(share, givenInsertedShare)
     }
 
     func testInsertShares() async throws {
@@ -131,7 +110,7 @@ extension LocalShareDatasourceTests {
         XCTAssertEqual(shares.count, 1)
 
         let share = try XCTUnwrap(shares.first)
-        assertEqual(share, updatedShare)
+        XCTAssertEqual(share, updatedShare)
     }
 
     func testRemoveShare() async throws {

@@ -75,7 +75,7 @@ extension AccessEntity {
         let monitor = userAccess.access.monitor
         displayName = plan.displayName
         internalName = plan.internalName
-        set(plan.hideUpgrade, for: \AccessEntity.hideUpgrade)
+        hideUpgrade = plan.hideUpgrade
         type = plan.type
         userID = userAccess.userId
         aliasLimit = Int64(plan.aliasLimit ?? -1)
@@ -83,7 +83,7 @@ extension AccessEntity {
         trialEnd = Int64(plan.trialEnd ?? -1)
         vaultLimit = Int64(plan.vaultLimit ?? -1)
         monitorProtonAddress = monitor.protonAddress
-        set(monitor.aliases, for: \AccessEntity.monitorAliases)
+        monitorAliases = monitor.aliases
         pendingInvites = Int64(access.pendingInvites)
         waitingNewUserInvites = Int64(access.waitingNewUserInvites)
         minVersionUpgrade = access.minVersionUpgrade ?? ""
