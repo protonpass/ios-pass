@@ -137,9 +137,10 @@ private extension PassMonitorViewModel {
             }
             .store(in: &cancellables)
 
-        accessRepository.didUpdateToNewPlan
+        Publishers.Merge(userManager.currentActiveUser.map { _ in () },
+                         accessRepository.didUpdateToNewPlan.map { _ in () })
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
+            .sink { [weak self] _ in
                 guard let self else {
                     return
                 }
