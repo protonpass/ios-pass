@@ -54,6 +54,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
     private let shareKeyRepository: any ShareKeyRepositoryProtocol
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let remoteSyncEventsDatasource: any RemoteSyncEventsDatasourceProtocol
+    private let aliasRepository: any AliasRepositoryProtocol
+    private let accessRepository: any AccessRepositoryProtocol
     private let userManager: any UserManagerProtocol
     private let logger: Logger
 
@@ -62,6 +64,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
                 shareKeyRepository: any ShareKeyRepositoryProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 remoteSyncEventsDatasource: any RemoteSyncEventsDatasourceProtocol,
+                aliasRepository: any AliasRepositoryProtocol,
+                accessRepository: any AccessRepositoryProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.shareRepository = shareRepository
@@ -69,6 +73,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         self.shareKeyRepository = shareKeyRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
+        self.aliasRepository = aliasRepository
+        self.accessRepository = accessRepository
         self.userManager = userManager
         logger = .init(manager: logManager)
     }
@@ -81,6 +87,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         // 2. Delete sync
         async let fetchLocalShares = shareRepository.getShares(userId: userId)
         async let fetchRemoteShares = shareRepository.getRemoteShares(userId: userId)
+        async let aliasSync: Void = aliasSync(userId: userId)
 
         if Task.isCancelled {
             return false
@@ -346,5 +353,78 @@ private extension EventSynchronizer {
         logger.trace("Found \(count) \(description) for share \(shareId)")
         try await operation()
         return true
+    }
+}
+
+// MARK: - Simplelogin alias sync
+
+private extension EventSynchronizer {
+    func aliasSync(userId: String) async throws {
+        let userAliasSyncSettings = try await accessRepository.getAccess().access.userData
+        guard userAliasSyncSettings.aliasSyncEnabled,
+              let shareId = userAliasSyncSettings.defaultShareID else {
+            return
+        }
+        var sinceLastToken: String?
+
+        while true {
+            let paginatedAlias = try await aliasRepository.getPendingAliasesToSync(userId: userId,
+                                                                                   since: sinceLastToken)
+
+            if paginatedAlias.aliases.isEmpty {
+                break
+            }
+
+            // Split the fetched items into batches of 100
+            let batches = paginatedAlias.aliases.chunked(into: 100)
+
+            // Transform and send each batch in parallel
+            try await withThrowingTaskGroup(of: Void.self) { group in
+                for batch in batches {
+                    let newItems = transform(batch)
+                    group.addTask {
+                        _ = try await self.itemRepository.createPendingAliasesItem(userId: userId,
+                                                                                   shareId: shareId,
+                                                                                   itemsContent: newItems)
+                    }
+                }
+
+                // Wait for all tasks in the group to complete
+//                try await group.waitForAll()
+                while !group.isEmpty {
+                    do {
+                        try await group.next()
+                    } catch is CancellationError {
+                        // we decide that cancellation errors thrown by children,
+                        // should not cause cancellation of the entire group.
+                        continue
+                    } catch {
+                        // other errors though we print and cancel the group,
+                        // and all of the remaining child tasks within it.
+                        group.cancelAll()
+                        throw error
+                    }
+                }
+            }
+
+            // Move to the next page
+            sinceLastToken = paginatedAlias.lastToken
+        }
+    }
+
+    func transform(_ pendingAliases: [PendingAlias]) -> [String: any ProtobufableItemContentProtocol] {
+        var transFormAliases = [String: any ProtobufableItemContentProtocol]()
+        for pendingAlias in pendingAliases {
+            transFormAliases[pendingAlias.pendingAliasID] = generateItemContent(pendinAlias: pendingAlias)
+        }
+        return transFormAliases
+    }
+
+    func generateItemContent(pendinAlias: PendingAlias) -> ItemContentProtobuf {
+        ItemContentProtobuf(name: pendinAlias.aliasEmail,
+                            note: pendinAlias.aliasNote,
+                            itemUuid: pendinAlias.pendingAliasID,
+                            data: .alias,
+                            customFields: [])
     }
 }
