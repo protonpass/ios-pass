@@ -62,7 +62,7 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
     /// - AliasEnable: 1<<2 = 1, if third bit of Int is 0 then the alias item is active if 1 it means it's disabled
     /// This is being implemented in the `ItemFlagable` protocol
     /// Monitor`
-    public var flags: Int = 0
+    public let flags: Int
 
     /// Enum representation of `state`
     public var itemState: ItemState { .init(rawValue: state) ?? .active }
