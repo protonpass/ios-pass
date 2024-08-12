@@ -22,26 +22,12 @@
 import Foundation
 
 public protocol ItemFlagable: Sendable {
-    var flags: Int { get set }
+    var flags: Int { get }
 }
 
 extension ItemFlagable {
-//    var itemFlags: ItemFlags {
-//        .init(rawValue: flags)
-//    }
-//    var itemFlags: ItemFlags {
-//        get { .init(rawValue: flags) }
-//        set { flags = newValue.rawValue }
-//    }
-//
     var itemFlags: ItemFlags {
-        get {
-            ItemFlags(rawValue: flags)
-//            let currentItemFlags = ItemFlags(rawValue: flags)
-//            print("woot Getting itemFlags: \(currentItemFlags)")
-//            return currentItemFlags
-        }
-        set { flags = newValue.rawValue }
+        .init(rawValue: flags)
     }
 }
 
@@ -60,26 +46,6 @@ public extension ItemFlagable {
 
     var isAliasSyncEnabled: Bool {
         !itemFlags.contains(.aliasSyncEnabled)
-    }
-
-//    mutating func updateFlag(_ flag: ItemFlags, enabled: Bool) {
-//        if enabled {
-//            itemFlags.insert(flag)
-//        } else {
-//            itemFlags.remove(flag)
-//        }
-//    }
-    mutating func updateFlag(_ flag: ItemFlags, enabled: Bool) {
-        var currentFlags = itemFlags
-        print("woot before change currentFlags: \(currentFlags)")
-        if enabled {
-            currentFlags.insert(flag)
-        } else {
-            currentFlags.remove(flag)
-        }
-        print("woot before change currentFlags: \(currentFlags)")
-
-        itemFlags = currentFlags // Update the underlying flags property
     }
 }
 
