@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="displayName" attributeType="String"/>
-        <attribute name="hideUpgrade" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="hideUpgrade" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="internalName" attributeType="String"/>
         <attribute name="minVersionUpgrade" optional="YES" attributeType="String"/>
-        <attribute name="monitorAliases" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="monitorProtonAddress" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="monitorAliases" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="monitorProtonAddress" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="pendingInvites" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="totpLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="trialEnd" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -38,13 +38,13 @@
         <attribute name="contentFormatVersion" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="flags" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="isLogInItem" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isLogInItem" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="itemID" attributeType="String" defaultValueString=""/>
         <attribute name="itemKey" optional="YES" attributeType="String"/>
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="lastUseTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="modifyTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="pinned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="pinned" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="pinTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="revision" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="revisionTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
@@ -72,7 +72,7 @@
         </uniquenessConstraints>
     </entity>
     <entity name="OrganizationEntity" representedClassName="OrganizationEntity" syncable="YES">
-        <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="canUpdate" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="forceLockSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="shareMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
@@ -107,18 +107,18 @@
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="expireTime" optional="YES" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="newUserInvitesReady" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="owner" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="owner" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="pendingInvites" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="permission" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="primary" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="shared" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="shared" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="shareID" attributeType="String" defaultValueString=""/>
         <attribute name="shareRoleID" optional="YES" attributeType="String"/>
         <attribute name="symmetricallyEncryptedContent" optional="YES" attributeType="String"/>
         <attribute name="targetID" attributeType="String" defaultValueString=""/>
         <attribute name="targetMaxMembers" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="targetMembers" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="targetType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="targetType" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <attribute name="vaultID" attributeType="String"/>
         <uniquenessConstraints>
