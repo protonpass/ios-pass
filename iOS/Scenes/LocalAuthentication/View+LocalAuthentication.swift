@@ -124,21 +124,16 @@ struct LocalAuthenticationModifier: ViewModifier {
         // Start the timer whenever app is backgrounded
         .onReceive(UIApplication.willResignActiveNotification,
                    perform: autolocker.startCountdown)
-        .onReceive(UIApplication.didEnterBackgroundNotification) {
-            if preferencesManager.sharedPreferences.unwrapped().appLockTime == .immediately {
-                authenticated = false
-            }
+        // Lock the UI when about to enter foreground regarless of circumstances
+        .onReceive(UIApplication.willEnterForegroundNotification) {
+            authenticated = false
         }
         // When app is foregrounded, check if authentication is needed or could be skipped
         .onReceive(UIApplication.didBecomeActiveNotification) {
-            // This if-else statement seems redundant with 2 branches result in auth skipped
-            // but we should do thing in order this way.
             if method == .none {
                 onAuthSkipped?()
-            } else if autolocker.shouldAutolockNow() {
-                authenticated = false
-            } else if authenticated {
-                onAuthSkipped?()
+            } else if !autolocker.shouldAutolockNow() {
+                authenticated = true
             }
         }
     }
