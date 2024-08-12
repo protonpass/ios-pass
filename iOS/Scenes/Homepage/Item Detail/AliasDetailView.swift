@@ -91,6 +91,7 @@ struct AliasDetailView: View {
             Button("Move to trash") { viewModel.moveToTrash() }
             Button("Cancel", role: .cancel) {}
         } message: {
+            // swiftlint:disable:next line_length
             Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
         }
         .onFirstAppear {
