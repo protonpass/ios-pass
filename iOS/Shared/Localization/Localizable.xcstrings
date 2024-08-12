@@ -17012,7 +17012,14 @@
       }
     },
     "Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead."
+          }
+        }
+      }
     },
     "Aliases with custom domains are not monitored, please add them as a custom email for monitoring." : {
       "localizations" : {
@@ -37157,7 +37164,14 @@
       }
     },
     "Disable instead" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable instead"
+          }
+        }
+      }
     },
     "Disable Proton Sentinel" : {
       "localizations" : {
@@ -67216,9 +67230,6 @@
           }
         }
       }
-    },
-    "Move To Trash" : {
-
     },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
