@@ -56,7 +56,10 @@ public final class RefreshFeatureFlags: @unchecked Sendable, RefreshFeatureFlags
 
                 let apiservice = try apiServicing.getApiService(userId: userId)
                 featureFlagsRepository.setApiService(apiservice)
-                featureFlagsRepository.setUserId(userId)
+
+                if !userId.isEmpty {
+                    featureFlagsRepository.setUserId(userId)
+                }
 
                 logger.trace("Refreshing feature flags for user \(userId)")
                 try await featureFlagsRepository.fetchFlags()
