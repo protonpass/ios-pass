@@ -55,7 +55,7 @@ protocol ItemTypeListViewModelDelegate: AnyObject {
 }
 
 @MainActor
-final class ItemTypeListViewModel: ObservableObject {
+final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
     @Published private(set) var showMoreButton = true
 
@@ -64,16 +64,19 @@ final class ItemTypeListViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
-    private var cancellables = Set<AnyCancellable>()
     var isIdentityActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1)
     }
 
-    weak var delegate: (any ItemTypeListViewModelDelegate)?
-    private(set) var sheetDetentInspector: SheetDetentInspector
+    var shouldShowMoreButton: Bool {
+        !UIDevice.current.isIpad
+    }
 
-    init(sheetDetentInspector: SheetDetentInspector) {
-        self.sheetDetentInspector = sheetDetentInspector
+    weak var delegate: (any ItemTypeListViewModelDelegate)?
+    weak var uiSheetPresentationController: UISheetPresentationController?
+
+    override init() {
+        super.init()
         showMoreButton = !UIDevice.current.isIpad
         Task { [weak self] in
             guard let self else { return }
@@ -84,16 +87,6 @@ final class ItemTypeListViewModel: ObservableObject {
                 router.display(element: .displayErrorBanner(error))
             }
         }
-
-        sheetDetentInspector.currentSizeOFSheet
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] size in
-                guard let self else {
-                    return
-                }
-                showMoreButton = size == .medium
-            }
-            .store(in: &cancellables)
     }
 
     func select(type: ItemType) {
@@ -104,10 +97,17 @@ final class ItemTypeListViewModel: ObservableObject {
         guard showMoreButton else {
             return
         }
-        sheetDetentInspector.uiSheetPresentationController?.animateChanges {
-            sheetDetentInspector.uiSheetPresentationController?.selectedDetentIdentifier = .large
+        uiSheetPresentationController?.animateChanges {
+            uiSheetPresentationController?.selectedDetentIdentifier = .large
             showMoreButton = false
         }
+    }
+}
+
+extension ItemTypeListViewModel: UISheetPresentationControllerDelegate {
+    // swiftlint:disable:next line_length
+    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+        showMoreButton = sheetPresentationController.selectedDetentIdentifier == .medium
     }
 }
 

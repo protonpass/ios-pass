@@ -46,13 +46,13 @@ struct ItemTypeListView: View {
                         }
                     }
                 }
-                if viewModel.showMoreButton {
+                if viewModel.shouldShowMoreButton, viewModel.showMoreButton {
                     Button { viewModel.showMore() } label: {
                         HStack {
                             Image(uiImage: IconProvider.chevronDown)
                                 .resizable()
                                 .frame(width: 16, height: 16)
-                            Text("Show more")
+                            Text("Scroll for more")
                         }
                         .padding(10)
                         .foregroundStyle(PassColor.interactionNormMajor2.toColor)

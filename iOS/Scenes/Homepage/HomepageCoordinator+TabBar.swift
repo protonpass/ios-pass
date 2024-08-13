@@ -62,15 +62,14 @@ private extension HomepageCoordinator {
     }
 
     func createNewItem() {
-        let sheetDetentInspector = SheetDetentInspector()
-        let viewModel = ItemTypeListViewModel(sheetDetentInspector: sheetDetentInspector)
+        let viewModel = ItemTypeListViewModel()
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        viewController.sheetPresentationController?.delegate = viewModel.sheetDetentInspector
-        viewModel.sheetDetentInspector.uiSheetPresentationController = viewController.sheetPresentationController
+        viewController.sheetPresentationController?.delegate = viewModel
+        viewModel.uiSheetPresentationController = viewController.sheetPresentationController
         present(viewController)
     }
 
@@ -89,15 +88,5 @@ private extension HomepageCoordinator {
         if !isCollapsed() {
             showAccountMenu()
         }
-    }
-}
-
-final class SheetDetentInspector: NSObject, UISheetPresentationControllerDelegate {
-    let currentSizeOFSheet: PassthroughSubject<UISheetPresentationController.Detent.Identifier?, Never> = .init()
-    weak var uiSheetPresentationController: UISheetPresentationController?
-
-    // swiftlint:disable:next line_length
-    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
-        currentSizeOFSheet.send(sheetPresentationController.selectedDetentIdentifier)
     }
 }
