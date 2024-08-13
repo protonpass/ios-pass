@@ -69,11 +69,8 @@ struct ProfileTabView: View {
 
                 itemCountSection
 
-                if viewModel.isSimpleLoginAliasSyncActive,
-                   !viewModel.dismissedAliasesSyncExplanation,
-                   let userSyncData = viewModel.userAliasSyncData,
-                   !userSyncData.aliasSyncEnabled {
-                    aliasSyncExplanation(userSyncData.pendingAliasToSync)
+                if let pendingAliasToSync = viewModel.showAliasSyncExplanation {
+                    aliasSyncExplanation(pendingAliasToSync)
                 }
 
                 securitySection
@@ -115,6 +112,7 @@ struct ProfileTabView: View {
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
             .animation(.default, value: viewModel.localAuthenticationMethod)
             .animation(.default, value: viewModel.accountDetails)
+            .animation(.default, value: viewModel.showAliasSyncExplanation)
         }
     }
 
@@ -414,9 +412,10 @@ struct ProfileTabView: View {
 
     private func aliasSyncExplanation(_ missingAliases: Int) -> some View {
         AliasSyncExplanationView(missingAliases: missingAliases,
-                                 dimissAction: viewModel.dismissAliasesSyncExplanation) {
-            viewModel.showSimpleLoginAliasesActivation()
-        }.padding(.horizontal)
+                                 dimissAction: { viewModel.dismissAliasesSyncExplanation() },
+                                 enableAliasSyncAction: {
+                                     viewModel.showSimpleLoginAliasesActivation()
+                                 }).padding(.horizontal)
     }
 }
 
