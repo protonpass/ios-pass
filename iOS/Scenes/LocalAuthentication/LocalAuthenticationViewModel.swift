@@ -44,7 +44,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
-    let mode: Mode
+    @Published private(set) var method: LocalAuthenticationMethod
 
     // Only applicable to app cover flow because local authentication process is wrapped inside a view modifier
     // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
@@ -58,23 +58,19 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
         delayed ? .milliseconds(200) : .milliseconds(0)
     }
 
-    enum Mode: String {
-        case biometric, pin
-    }
-
     private let maxAttemptCount = 3
 
     private var failedAttemptCount: Int {
         preferencesManager.sharedPreferences.value?.failedAttemptCount ?? maxAttemptCount
     }
 
-    init(mode: Mode,
+    init(method: LocalAuthenticationMethod,
          delayed: Bool,
          manuallyAvoidKeyboard: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
-        self.mode = mode
+        self.method = method
         self.delayed = delayed
         self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
         self.onAuth = onAuth
@@ -89,6 +85,16 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
             .sink { [weak self] _ in
                 guard let self else { return }
                 updateStateBasedOnFailedAttemptCount()
+            }
+            .store(in: &cancellables)
+
+        preferencesManager
+            .sharedPreferencesUpdates
+            .receive(on: DispatchQueue.main)
+            .filter(\.localAuthenticationMethod)
+            .sink { [weak self] method in
+                guard let self else { return }
+                self.method = method
             }
             .store(in: &cancellables)
     }
@@ -159,7 +165,7 @@ private extension LocalAuthenticationViewModel {
             do {
                 try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
 
-                let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
+                let logMessage = "\(method) authentication failed. Increased failed attempt count."
                 if let error {
                     logger.error(logMessage + " Reason \(error)")
                 } else {
