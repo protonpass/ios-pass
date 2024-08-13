@@ -35,8 +35,8 @@ final class ItemRepositoryTests: XCTestCase {
     var shareEventIDRepository: ShareEventIDRepositoryProtocol!
     var passKeyManager: PassKeyManagerProtocol!
     var logManager: LogManagerProtocol!
-    var sut: ItemRepositoryProtocol!
-    private var cancellables: Set<AnyCancellable>!
+    var sut: ItemRepositoryProtocol!    
+    var cancellable: AnyCancellable?
 
     override func setUp() {
         super.setUp()
@@ -48,7 +48,6 @@ final class ItemRepositoryTests: XCTestCase {
          shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
          passKeyManager = PassKeyManagerProtocolMock()
          logManager = LogManagerProtocolMock()
-        cancellables = []
     }
 
     override func tearDown() {
@@ -59,6 +58,7 @@ final class ItemRepositoryTests: XCTestCase {
         passKeyManager = nil
         logManager = nil
         sut = nil
+        cancellable?.cancel()
         super.tearDown()
     }
 }
@@ -86,13 +86,12 @@ extension ItemRepositoryTests {
 
         let pinnedItems = try await sut.getAllPinnedItems()
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
-        sut.currentlyPinnedItems
+        cancellable = sut.currentlyPinnedItems
             .receive(on: DispatchQueue.main)
             .sink { value in
                 currentlyPinnedItems = value
                 expectation.fulfill()
             }
-            .store(in: &cancellables)
 
         await fulfillment(of: [expectation], timeout: 1, enforceOrder: true)
 
