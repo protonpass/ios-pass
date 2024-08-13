@@ -96677,6 +96677,16 @@
         }
       }
     },
+    "Show more" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show more"
+          }
+        }
+      }
+    },
     "Show password" : {
       "localizations" : {
         "be" : {
