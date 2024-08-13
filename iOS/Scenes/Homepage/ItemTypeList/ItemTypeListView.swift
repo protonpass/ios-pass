@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemTypeListView: View {
@@ -30,18 +31,34 @@ struct ItemTypeListView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ForEach(ItemType.allCases, id: \.self) { type in
-                        if type != .identity || viewModel.isIdentityActive {
-                            if type != ItemType.allCases.first {
-                                PassDivider()
+            ZStack(alignment: .bottom) {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        ForEach(ItemType.allCases, id: \.self) { type in
+                            if type != .identity || viewModel.isIdentityActive {
+                                if type != ItemType.allCases.first {
+                                    PassDivider()
+                                        .padding(.horizontal)
+                                }
+                                itemRow(for: type)
                                     .padding(.horizontal)
                             }
-                            itemRow(for: type)
-                                .padding(.horizontal)
                         }
                     }
+                }
+                if viewModel.showMoreButton {
+                    Button { viewModel.showMore() } label: {
+                        HStack {
+                            Image(uiImage: IconProvider.chevronDown)
+                                .resizable()
+                                .frame(width: 16, height: 16)
+                            Text("Show more")
+                        }
+                        .padding(10)
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    }
+                    .background(PassColor.interactionNormMinor1.toColor)
+                    .clipShape(Capsule())
                 }
             }
             .background(PassColor.backgroundWeak.toColor)
