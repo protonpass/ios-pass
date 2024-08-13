@@ -77,7 +77,10 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
 
 private extension SimpleLoginAliasActivationViewModel {
     func setUp() {
-        Task {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
             userAliasSyncData = try? await accessRepository.getAccess().access.userData
             vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
             if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {

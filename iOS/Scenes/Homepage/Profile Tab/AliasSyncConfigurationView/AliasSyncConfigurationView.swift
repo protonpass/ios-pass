@@ -114,7 +114,7 @@ struct AliasSyncConfigurationView: View {
     }
 }
 
-struct SynchroElementRow: View {
+private struct SynchroElementRow: View {
     private let title: String
     private let subtitle: String
     let action: () -> Void
@@ -175,7 +175,7 @@ private extension AliasSyncConfigurationView {
     }
 }
 
-protocol TitleRepresentable {
+private protocol TitleRepresentable {
     var title: String { get }
 }
 
@@ -191,7 +191,7 @@ extension Domain: TitleRepresentable {
     }
 }
 
-struct GenericSelectionView<Selection: Identifiable & Equatable & TitleRepresentable>: View {
+private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleRepresentable>: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var selected: Selection?
     let selections: [Selection]
