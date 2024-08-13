@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
@@ -41,7 +42,6 @@ public extension AuthenticateBiometricallyUseCase {
  */
 public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     private let keychainService: any KeychainProtocol
-    // periphery:ignore
     private let biometricKey = "BiometricsPolicyState"
 
     public init(keychainService: any KeychainProtocol) {
@@ -51,25 +51,42 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     public func execute(policy: LAPolicy, reason: String) async throws -> Bool {
         let context = LAContext()
         do {
-            let result = try await context.evaluatePolicy(policy, localizedReason: reason)
+            if policy == .deviceOwnerAuthenticationWithBiometrics {
+                try biometricsChanged(context: context)
+            }
 
-            #warning("commented out check until core keychain is updated")
-//            let currentBiometricData = keychainService.data(forKey: biometricKey)
-//            let newBiometricData = context.evaluatedPolicyDomainState
-//
-//            guard currentBiometricData == nil || currentBiometricData == newBiometricData else {
-//                // todo logout and clean current saved biometrics
-//                keychainService.remove(forKey: biometricKey)
-//                throw PassError.biometricChange
-//            }
-//
-//            if currentBiometricData == nil, let newBiometricData {
-//                keychainService.set(newBiometricData, forKey: biometricKey)
-//            }
+            let result = try await context.evaluatePolicy(policy, localizedReason: reason)
 
             return result
         } catch {
             throw error
         }
+    }
+
+    func biometricsChanged(context: LAContext) throws {
+        // If there is no saved policy state yet, save it
+        var error: NSError?
+        context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
+
+        if error == nil, try getBiometricsPolicyState() == nil,
+           let domainState = context.evaluatedPolicyDomainState {
+            try savedBiometricsPolicyState(newBiometricData: domainState)
+            return
+        }
+
+        if let domainState = context.evaluatedPolicyDomainState,
+           let savedDomainState = try? getBiometricsPolicyState(),
+           domainState != savedDomainState {
+            try? keychainService.removeOrError(forKey: biometricKey)
+            throw PassError.biometricChange
+        }
+    }
+
+    func savedBiometricsPolicyState(newBiometricData: Data) throws {
+        try keychainService.setOrError(newBiometricData, forKey: biometricKey)
+    }
+
+    func getBiometricsPolicyState() throws -> Data? {
+        try keychainService.dataOrError(forKey: biometricKey)
     }
 }
