@@ -30,6 +30,7 @@ struct LocalAuthenticationModifier: ViewModifier {
     @Environment(\.locallyAuthenticated) private var locallyAuthenticated
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
+    @State private var didAppear = false
     @State private var method: LocalAuthenticationMethod
     @State private var authenticated = true
 
@@ -91,14 +92,14 @@ struct LocalAuthenticationModifier: ViewModifier {
                 onSuccess?()
             }
 
-            LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
+            LocalAuthenticationView(method: method,
                                     delayed: delayed,
                                     manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                     onAuth: { onAuth?() },
                                     onSuccess: handleSuccess,
                                     onFailure: onFailure)
-                .animation(.default, value: authenticated)
                 .opacity(authenticated ? 0 : 1)
+                .animation(.default, value: authenticated)
                 .environment(\.locallyAuthenticated, authenticated)
         }
         .onAppear {
@@ -107,6 +108,7 @@ struct LocalAuthenticationModifier: ViewModifier {
             } else {
                 authenticated = false
             }
+            didAppear = true
         }
         // Take into account right away appLockTime when user updates it
         .onReceive(preferencesManager
@@ -135,6 +137,7 @@ struct LocalAuthenticationModifier: ViewModifier {
 
 private extension LocalAuthenticationModifier {
     func authenticateOrSkip() {
+        guard didAppear else { return }
         if method == .none {
             onAuthSkipped?()
             authenticated = true

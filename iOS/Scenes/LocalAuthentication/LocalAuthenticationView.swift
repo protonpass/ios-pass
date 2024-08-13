@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -27,13 +28,13 @@ import SwiftUI
 struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
 
-    init(mode: LocalAuthenticationViewModel.Mode,
+    init(method: LocalAuthenticationMethod,
          delayed: Bool = false,
          manuallyAvoidKeyboard: Bool = false,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(mode: mode,
+        _viewModel = .init(wrappedValue: .init(method: method,
                                                delayed: delayed,
                                                manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                                onAuth: onAuth,
@@ -46,11 +47,13 @@ struct LocalAuthenticationView: View {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
 
-            switch viewModel.mode {
+            switch viewModel.method {
             case .biometric:
                 BiometricAuthenticationView(viewModel: viewModel)
             case .pin:
                 PinAuthenticationView(viewModel: viewModel)
+            case .none:
+                EmptyView()
             }
 
             Button { viewModel.logOut() } label: {
