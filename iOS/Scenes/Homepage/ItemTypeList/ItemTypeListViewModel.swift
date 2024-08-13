@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
 import DesignSystem
 import Entities
@@ -56,18 +57,24 @@ protocol ItemTypeListViewModelDelegate: AnyObject {
 @MainActor
 final class ItemTypeListViewModel: ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
+    @Published private(set) var showMoreButton = true
+
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
+    private var cancellables = Set<AnyCancellable>()
     var isIdentityActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1)
     }
 
     weak var delegate: (any ItemTypeListViewModelDelegate)?
+    private(set) var sheetDetentInspector: SheetDetentInspector
 
-    init() {
+    init(sheetDetentInspector: SheetDetentInspector) {
+        self.sheetDetentInspector = sheetDetentInspector
+        showMoreButton = !UIDevice.current.isIpad
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -77,10 +84,30 @@ final class ItemTypeListViewModel: ObservableObject {
                 router.display(element: .displayErrorBanner(error))
             }
         }
+
+        sheetDetentInspector.currentSizeOFSheet
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] size in
+                guard let self else {
+                    return
+                }
+                showMoreButton = size == .medium
+            }
+            .store(in: &cancellables)
     }
 
     func select(type: ItemType) {
         delegate?.itemTypeListViewModelDidSelect(type: type)
+    }
+
+    func showMore() {
+        guard showMoreButton else {
+            return
+        }
+        sheetDetentInspector.uiSheetPresentationController?.animateChanges {
+            sheetDetentInspector.uiSheetPresentationController?.selectedDetentIdentifier = .large
+            showMoreButton = false
+        }
     }
 }
 

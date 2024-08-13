@@ -20,6 +20,7 @@
 
 // MARK: - HomepageTabBarControllerDelegate
 
+import Combine
 import SwiftUI
 
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
@@ -61,12 +62,15 @@ private extension HomepageCoordinator {
     }
 
     func createNewItem() {
-        let viewModel = ItemTypeListViewModel()
+        let sheetDetentInspector = SheetDetentInspector()
+        let viewModel = ItemTypeListViewModel(sheetDetentInspector: sheetDetentInspector)
         viewModel.delegate = self
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
+        viewController.sheetPresentationController?.delegate = viewModel.sheetDetentInspector
+        viewModel.sheetDetentInspector.uiSheetPresentationController = viewController.sheetPresentationController
         present(viewController)
     }
 
@@ -85,5 +89,15 @@ private extension HomepageCoordinator {
         if !isCollapsed() {
             showAccountMenu()
         }
+    }
+}
+
+final class SheetDetentInspector: NSObject, UISheetPresentationControllerDelegate {
+    let currentSizeOFSheet: PassthroughSubject<UISheetPresentationController.Detent.Identifier?, Never> = .init()
+    weak var uiSheetPresentationController: UISheetPresentationController?
+
+    // swiftlint:disable:next line_length
+    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+        currentSizeOFSheet.send(sheetPresentationController.selectedDetentIdentifier)
     }
 }
