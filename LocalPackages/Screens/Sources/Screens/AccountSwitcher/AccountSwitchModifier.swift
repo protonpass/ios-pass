@@ -65,18 +65,19 @@ public struct AccountSwitchModifier: ViewModifier {
                 Color.black.opacity(0.5)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        toggleSwitcher()
+                        withAnimation {
+                            showSwitcher.toggle()
+                        }
                     }
 
                 VStack {
                     AccountList(details: details,
                                 activeId: activeId,
                                 animationNamespace: animationNamespace,
-                                onSelect: { account in toggleSwitcher { onSelect(account) } },
-                                onManage: { account in toggleSwitcher { onManage(account) } },
-                                onSignOut: { account in toggleSwitcher { onSignOut(account) } },
-                                onAddAccount: { toggleSwitcher(onAddAccount) },
-                                onDismiss: { toggleSwitcher() })
+                                onSelect: { account in toggleSwitcher(onSelect(account)) },
+                                onManage: { account in toggleSwitcher(onManage(account)) },
+                                onSignOut: { account in toggleSwitcher(onSignOut(account)) },
+                                onAddAccount: { toggleSwitcher(onAddAccount()) })
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -87,12 +88,12 @@ public struct AccountSwitchModifier: ViewModifier {
 }
 
 private extension AccountSwitchModifier {
-    func toggleSwitcher(_ completion: (() -> Void)? = nil) {
+    func toggleSwitcher(_ completion: @autoclosure @escaping () -> Void) {
         if #available(iOS 17.0, *) {
             withAnimation {
                 showSwitcher.toggle()
             } completion: {
-                completion?()
+                completion()
             }
         } else {
             let duration = DesignConstant.animationDuration
@@ -100,7 +101,7 @@ private extension AccountSwitchModifier {
                 showSwitcher.toggle()
             }
             DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-                completion?()
+                completion()
             }
         }
     }
