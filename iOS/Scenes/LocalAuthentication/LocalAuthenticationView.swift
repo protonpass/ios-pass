@@ -62,3 +62,14 @@ struct LocalAuthenticationView: View {
         }
     }
 }
+
+private struct LocallyAuthenticated: EnvironmentKey {
+    static let defaultValue = false
+}
+
+extension EnvironmentValues {
+    var locallyAuthenticated: Bool {
+        get { self[LocallyAuthenticated.self] }
+        set { self[LocallyAuthenticated.self] = newValue }
+    }
+}
