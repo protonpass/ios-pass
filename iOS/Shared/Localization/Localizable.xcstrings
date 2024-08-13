@@ -88391,6 +88391,16 @@
         }
       }
     },
+    "Scroll for more" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scroll for more"
+          }
+        }
+      }
+    },
     "Search" : {
       "localizations" : {
         "be" : {
@@ -96673,16 +96683,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hãy chỉ cho tôi"
-          }
-        }
-      }
-    },
-    "Show more" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Show more"
           }
         }
       }
