@@ -128,16 +128,13 @@ private extension SecuritySettingsCoordinator {
             }
         }
 
-        let failureHandler: () -> Void = { [weak self] in
-            guard let self else { return }
-            delegate?.childCoordinatorDidFailLocalAuthentication()
-        }
-
         delegate?.childCoordinatorWantsToDismissTopViewController()
         let authenticate = try await authenticate(policy: policy,
                                                   reason: #localized("Please authenticate"))
         if authenticate {
             try await succesHandler()
+        } else {
+            delegate?.childCoordinatorDidFailLocalAuthentication()
         }
     }
 
