@@ -26,10 +26,12 @@ import ProtonCoreKeymaker
 import SwiftUI
 
 struct LocalAuthenticationModifier: ViewModifier {
+    // periphery:ignore
+    @Environment(\.locallyAuthenticated) private var locallyAuthenticated
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
     @State private var method: LocalAuthenticationMethod
-    @State private var authenticated: Bool
+    @State private var authenticated = true
 
     // autolocker as @State because it needs to be updated
     // when user changes appLockTime in setting
@@ -66,7 +68,6 @@ struct LocalAuthenticationModifier: ViewModifier {
          onFailure: @escaping () -> Void) {
         let preferences = preferencesManager.sharedPreferences.unwrapped()
         _method = .init(initialValue: preferences.localAuthenticationMethod)
-        _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
         self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
@@ -79,31 +80,32 @@ struct LocalAuthenticationModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let authenticationRequired = method != .none && !authenticated
         GeometryReader { proxy in
             content
                 .frame(width: proxy.size.width, height: proxy.size.height)
         }
         .overlay {
-            if authenticationRequired {
-                let handleSuccess: () -> Void = {
-                    authenticated = true
-                    autolocker.releaseCountdown()
-                    onSuccess?()
-                }
-
-                LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
-                                        delayed: delayed,
-                                        manuallyAvoidKeyboard: manuallyAvoidKeyboard,
-                                        onAuth: { onAuth?() },
-                                        onSuccess: handleSuccess,
-                                        onFailure: onFailure)
+            let handleSuccess: () -> Void = {
+                authenticated = true
+                autolocker.releaseCountdown()
+                onSuccess?()
             }
+
+            LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
+                                    delayed: delayed,
+                                    manuallyAvoidKeyboard: manuallyAvoidKeyboard,
+                                    onAuth: { onAuth?() },
+                                    onSuccess: handleSuccess,
+                                    onFailure: onFailure)
+                .animation(.default, value: authenticated)
+                .opacity(authenticated ? 0 : 1)
+                .environment(\.locallyAuthenticated, authenticated)
         }
-        .animation(.default, value: authenticationRequired)
         .onAppear {
-            if !authenticationRequired {
+            if method == .none {
                 onAuthSkipped?()
+            } else {
+                authenticated = false
             }
         }
         // Take into account right away appLockTime when user updates it
@@ -122,19 +124,25 @@ struct LocalAuthenticationModifier: ViewModifier {
                 method = newValue
         }
         // Start the timer whenever app is backgrounded
-        .onReceive(UIApplication.willResignActiveNotification,
-                   perform: autolocker.startCountdown)
-        // Lock the UI when about to enter foreground regarless of circumstances
-        .onReceive(UIApplication.willEnterForegroundNotification) {
+        .onReceive(UIApplication.willResignActiveNotification, perform: autolocker.startCountdown)
+        // Different events could be triggered when app is foregrounded
+        // depending on context (app is fully backgrounded or just moved to app switch menu)
+        // so we listen to all of them
+        .onReceive(UIApplication.willEnterForegroundNotification, perform: authenticateOrSkip)
+        .onReceive(UIApplication.didBecomeActiveNotification, perform: authenticateOrSkip)
+    }
+}
+
+private extension LocalAuthenticationModifier {
+    func authenticateOrSkip() {
+        if method == .none {
+            onAuthSkipped?()
+            authenticated = true
+        } else if !autolocker.shouldAutolockNow() {
+            onAuthSkipped?()
+            authenticated = true
+        } else {
             authenticated = false
-        }
-        // When app is foregrounded, check if authentication is needed or could be skipped
-        .onReceive(UIApplication.didBecomeActiveNotification) {
-            if method == .none {
-                onAuthSkipped?()
-            } else if !autolocker.shouldAutolockNow() {
-                authenticated = true
-            }
         }
     }
 }
