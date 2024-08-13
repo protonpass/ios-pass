@@ -170,13 +170,7 @@ private extension SecuritySettingsCoordinator {
         let successHandler: () async throws -> Void = { [weak self] in
             guard let self else { return }
             delegate?.childCoordinatorWantsToDismissTopViewController()
-
-            if newMethod == .biometric {
-                try await biometricallyAuthenticateAndUpdateMethod(.biometric,
-                                                                   policy: enablingPolicy)
-            } else {
-                try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
-            }
+            try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
         }
 
         let failureHandler: () -> Void = { [weak self] in

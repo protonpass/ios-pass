@@ -33,6 +33,7 @@ struct AccountList: View {
     let onManage: (AccountCellDetail) -> Void
     let onSignOut: (AccountCellDetail) -> Void
     let onAddAccount: () -> Void
+    let onDismiss: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 2) {
@@ -68,6 +69,8 @@ struct AccountList: View {
         .background(PassColor.backgroundNorm.toColor)
         .roundedEditableSection()
         .animation(.default, value: animated)
+        .scrollViewEmbeded(showsIndicators: false)
+        .onTapGesture(perform: onDismiss)
         .onFirstAppear {
             animated.toggle()
         }
