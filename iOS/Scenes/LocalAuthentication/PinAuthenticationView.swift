@@ -86,7 +86,11 @@ struct PinAuthenticationView: View {
                                             .withAlphaComponent(0.3),
                                         disabled: pinCode.count < Constants.PINCode.minLength,
                                         height: 60,
-                                        action: { viewModel.checkPinCode(pinCode) })
+                                        action: {
+                                            viewModel.checkPinCode(pinCode)
+                                            isFocused = false
+                                            pinCode = ""
+                                        })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
@@ -97,9 +101,6 @@ struct PinAuthenticationView: View {
         .accentColor(PassColor.interactionNorm.toColor)
         .tint(PassColor.interactionNorm.toColor)
         .animation(.default, value: viewModel.state)
-        .onChange(of: viewModel.state) { _ in
-            pinCode = ""
-        }
         .onChange(of: locallyAuthenticated) { locallyAuthenticated in
             guard !locallyAuthenticated else { return }
             let notifyAuthProcessAndFocus: () -> Void = {
