@@ -52,7 +52,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
 
-    func changeAliasStatus(userId: String, item: ItemContent, enable: Bool) async throws
+    func changeAliasStatus(userId: String, item: ItemContent, enabled: Bool) async throws
 
     /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
@@ -666,23 +666,23 @@ public extension ItemRepository {
         return logInItems
     }
 
-    func changeAliasStatus(userId: String, item: ItemContent, enable: Bool) async throws {
+    func changeAliasStatus(userId: String, item: ItemContent, enabled: Bool) async throws {
         let shareId = item.shareId
         let itemId = item.itemId
         logger
-            .trace("Change the alias sync status for item \(itemId) and share \(shareId) with new status \(enable)")
-        let itemWithNewAliasStatus = try await remoteDatasource.toggleAliasStatus(userId: userId,
-                                                                                  shareId: shareId,
-                                                                                  itemId: itemId,
-                                                                                  enable: enable)
+            .trace("Change the alias status for item \(itemId) and share \(shareId) with new status \(enabled)")
+        let updatedAlias = try await remoteDatasource.toggleAliasStatus(userId: userId,
+                                                                        shareId: shareId,
+                                                                        itemId: itemId,
+                                                                        enabled: enabled)
         let symmetricKey = try await getSymmetricKey()
-        logger.trace("Updating item \(itemWithNewAliasStatus.itemID) to local database")
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemWithNewAliasStatus,
+        logger.trace("Updating item \(updatedAlias.itemID) to local database")
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedAlias,
                                                            shareId: shareId,
                                                            userId: userId,
                                                            symmetricKey: symmetricKey)
         try await localDatasource.upsertItems([encryptedItem])
-        logger.trace("Saved item \(itemWithNewAliasStatus.itemID) to local database")
+        logger.trace("Saved item \(updatedAlias.itemID) to local database")
     }
 }
 
