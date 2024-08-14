@@ -118492,6 +118492,16 @@
         }
       }
     },
+    "When passcode is enabled, you won't be signed out when your biometric settings change." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When passcode is enabled, you won't be signed out when your biometric settings change."
+          }
+        }
+      }
+    },
     "Word separator" : {
       "localizations" : {
         "be" : {

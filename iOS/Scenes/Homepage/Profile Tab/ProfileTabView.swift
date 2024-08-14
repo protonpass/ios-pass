@@ -237,6 +237,13 @@ struct ProfileTabView: View {
                 }
             }
             .roundedEditableSection()
+
+            if case .biometric = viewModel.localAuthenticationMethod {
+                Text("When passcode is enabled, you won't be signed out when your biometric settings change")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, DesignConstant.sectionPadding / 2)
+            }
         }
         .padding(.horizontal)
     }
