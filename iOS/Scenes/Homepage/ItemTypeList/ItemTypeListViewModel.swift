@@ -54,8 +54,10 @@ protocol ItemTypeListViewModelDelegate: AnyObject {
 }
 
 @MainActor
-final class ItemTypeListViewModel: ObservableObject {
+final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
+    @Published private(set) var showMoreButton = true
+
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -65,9 +67,16 @@ final class ItemTypeListViewModel: ObservableObject {
         getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1)
     }
 
-    weak var delegate: (any ItemTypeListViewModelDelegate)?
+    var shouldShowMoreButton: Bool {
+        !UIDevice.current.isIpad
+    }
 
-    init() {
+    weak var delegate: (any ItemTypeListViewModelDelegate)?
+    weak var uiSheetPresentationController: UISheetPresentationController?
+
+    override init() {
+        super.init()
+        showMoreButton = !UIDevice.current.isIpad
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -81,6 +90,23 @@ final class ItemTypeListViewModel: ObservableObject {
 
     func select(type: ItemType) {
         delegate?.itemTypeListViewModelDidSelect(type: type)
+    }
+
+    func showMore() {
+        guard showMoreButton else {
+            return
+        }
+        uiSheetPresentationController?.animateChanges {
+            uiSheetPresentationController?.selectedDetentIdentifier = .large
+            showMoreButton = false
+        }
+    }
+}
+
+extension ItemTypeListViewModel: UISheetPresentationControllerDelegate {
+    // swiftlint:disable:next line_length
+    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
+        showMoreButton = sheetPresentationController.selectedDetentIdentifier == .medium
     }
 }
 
