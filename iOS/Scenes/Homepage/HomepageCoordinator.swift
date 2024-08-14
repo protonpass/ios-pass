@@ -214,6 +214,7 @@ private extension HomepageCoordinator {
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
+                coverApp()
                 eventLoop.stop()
             }
             .store(in: &cancellables)
