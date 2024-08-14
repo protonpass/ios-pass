@@ -43,10 +43,15 @@ public extension ItemFlagable {
     var isBreachedAndMonitored: Bool {
         isBreached && !monitoringDisabled
     }
+
+    var isAliasSyncEnabled: Bool {
+        itemFlags.contains(.aliasSyncEnabled)
+    }
 }
 
 private struct ItemFlags: Sendable, OptionSet {
     let rawValue: Int
     static let monitoringDisabled = ItemFlags(rawValue: 1 << 0)
     static let isBreached = ItemFlags(rawValue: 1 << 1)
+    static let aliasSyncEnabled = ItemFlags(rawValue: 1 << 2)
 }

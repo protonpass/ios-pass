@@ -41,7 +41,8 @@ let package = Package(
                 .product(name: "UseCases", package: "UseCases"),
                 .product(name: "DesignSystem", package: "DesignSystem"),
                 .product(name: "Macro", package: "Macro"),
-                .product(name: "ProtonCoreLoginUI", package: "protoncore_ios")
+                .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
+                .product(name: "ProtonCoreUIFoundations", package: "protoncore_ios")
             ])
     ]
 )

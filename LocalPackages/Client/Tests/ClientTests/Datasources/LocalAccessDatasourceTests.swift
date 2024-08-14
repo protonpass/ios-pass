@@ -51,7 +51,8 @@ extension LocalAccessDatasourceTests {
                                  monitor: .init(protonAddress: .random(), aliases: .random()),
                                  pendingInvites: 1,
                                  waitingNewUserInvites: 2,
-                                 minVersionUpgrade: nil)
+                                 minVersionUpgrade: nil, 
+                                 userData: UserAliasSyncData.default)
         let givenUserAccess = UserAccess(userId: givenUserId, access: givenAccess)
         // When
         try await sut.upsert(access: givenUserAccess)
@@ -71,7 +72,7 @@ extension LocalAccessDatasourceTests {
                                    monitor: .init(protonAddress: .random(), aliases: .random()),
                                    pendingInvites: 3,
                                    waitingNewUserInvites: 4,
-                                   minVersionUpgrade: nil)
+                                   minVersionUpgrade: nil, userData: UserAliasSyncData.default)
         let updatedUserAccess = UserAccess(userId: givenUserId, access: updatedAccess)
 
         // When
@@ -118,6 +119,6 @@ private extension UserAccess {
                             monitor: .init(protonAddress: .random(), aliases: .random()),
                             pendingInvites: .random(in: 1...100),
                             waitingNewUserInvites: .random(in: 1...100),
-                            minVersionUpgrade: .random()))
+                            minVersionUpgrade: .random(), userData: UserAliasSyncData.default))
     }
 }

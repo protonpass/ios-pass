@@ -1,7 +1,7 @@
 //
 // VaultColor.swift
-// Proton Pass - Created on 23/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 06/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -22,10 +22,10 @@ import DesignSystem
 import Entities
 import UIKit
 
-enum VaultColor: CaseIterable {
+public enum VaultColor: CaseIterable {
     case color1, color2, color3, color4, color5, color6, color7, color8, color9, color10
 
-    var color: UIColor {
+    public var color: UIColor {
         switch self {
         case .color1:
             PassColor.vaultHeliotrope
@@ -51,7 +51,7 @@ enum VaultColor: CaseIterable {
     }
 }
 
-extension ProtonPassVaultV1_VaultColor {
+public extension ProtonPassVaultV1_VaultColor {
     var color: VaultColor {
         switch self {
         case .color1:

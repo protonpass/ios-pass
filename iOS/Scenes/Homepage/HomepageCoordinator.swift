@@ -472,12 +472,6 @@ extension HomepageCoordinator {
                     createEditVaultView(vault: vault)
                 case let .logView(module: module):
                     presentLogsView(for: module)
-                case let .suffixView(suffixSelection):
-                    presentSuffixSelectionView(selection: suffixSelection)
-                case let .mailboxView(mailboxSelection, mode):
-                    presentMailboxSelectionView(selection: mailboxSelection,
-                                                mode: .createAliasLite,
-                                                titleMode: mode)
                 case .autoFillInstructions:
                     present(AutoFillInstructionsView())
                 case let .moveItemsBetweenVaults(context):
@@ -546,6 +540,10 @@ extension HomepageCoordinator {
                     presentSecureLinkDetail(link: link)
                 case .addAccount:
                     beginAddAccountFlow()
+                case .simpleLoginSyncActivation:
+                    present(SimpleLoginAliasActivationView())
+                case .aliasesSyncConfiguration:
+                    present(AliasSyncConfigurationView())
                 }
             }
             .store(in: &cancellables)
@@ -729,36 +727,6 @@ extension HomepageCoordinator {
                 handle(error: error)
             }
         }
-    }
-
-    func presentMailboxSelectionView(selection: MailboxSelection,
-                                     mode: MailboxSelectionViewModel.Mode,
-                                     titleMode: MailboxSection.Mode) {
-        let viewModel = MailboxSelectionViewModel(mailboxSelection: selection,
-                                                  mode: mode,
-                                                  titleMode: titleMode)
-        let view = MailboxSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * selection.mailboxes.count + 150
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func presentSuffixSelectionView(selection: SuffixSelection) {
-        let viewModel = SuffixSelectionViewModel(suffixSelection: selection)
-        let view = SuffixSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * selection.suffixes.count + 100
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 
     func presentSortTypeList(selectedSortType: SortType,

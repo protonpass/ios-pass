@@ -34,6 +34,15 @@ public protocol AliasRepositoryProtocol: Sendable {
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
+
+    func getAliasSettings(userId: String) async throws -> AliasSettings
+    @discardableResult
+    func updateAliasDefaultDomain(userId: String, request: UpdateAliasDomainRequest) async throws -> AliasSettings
+    @discardableResult
+    func updateAliasDefaultMailbox(userId: String, request: UpdateAliasMailboxRequest) async throws
+        -> AliasSettings
+    func getAllAliasDomains(userId: String) async throws -> [Domain]
+    func getAllAliasMailboxes(userId: String) async throws -> [Mailbox]
 }
 
 public extension AliasRepositoryProtocol {
@@ -44,12 +53,12 @@ public extension AliasRepositoryProtocol {
 }
 
 public actor AliasRepository: AliasRepositoryProtocol {
-    private let remoteDatasouce: any RemoteAliasDatasourceProtocol
+    private let remoteDatasource: any RemoteAliasDatasourceProtocol
     private let userManager: any UserManagerProtocol
 
-    public init(remoteDatasouce: any RemoteAliasDatasourceProtocol,
+    public init(remoteDatasource: any RemoteAliasDatasourceProtocol,
                 userManager: any UserManagerProtocol) {
-        self.remoteDatasouce = remoteDatasouce
+        self.remoteDatasource = remoteDatasource
         self.userManager = userManager
     }
 }
@@ -57,20 +66,20 @@ public actor AliasRepository: AliasRepositoryProtocol {
 public extension AliasRepository {
     func getAliasOptions(shareId: String) async throws -> AliasOptions {
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDatasouce.getAliasOptions(userId: userId, shareId: shareId)
+        return try await remoteDatasource.getAliasOptions(userId: userId, shareId: shareId)
     }
 
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDatasouce.getAliasDetails(userId: userId, shareId: shareId, itemId: itemId)
+        return try await remoteDatasource.getAliasDetails(userId: userId, shareId: shareId, itemId: itemId)
     }
 
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias {
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDatasouce.changeMailboxes(userId: userId,
-                                                         shareId: shareId,
-                                                         itemId: itemId,
-                                                         mailboxIDs: mailboxIDs)
+        return try await remoteDatasource.changeMailboxes(userId: userId,
+                                                          shareId: shareId,
+                                                          itemId: itemId,
+                                                          mailboxIDs: mailboxIDs)
     }
 }
 
@@ -78,17 +87,39 @@ public extension AliasRepository {
 
 public extension AliasRepository {
     func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus {
-        try await remoteDatasouce.getAliasSyncStatus(userId: userId)
+        try await remoteDatasource.getAliasSyncStatus(userId: userId)
     }
 
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws {
-        try await remoteDatasouce.enableSlAliasSync(userId: userId, defaultShareID: defaultShareID)
+        try await remoteDatasource.enableSlAliasSync(userId: userId, defaultShareID: defaultShareID)
     }
 
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int = Constants.Utils
                                      .defaultPageSize) async throws -> PaginatedPendingAliases {
-        try await remoteDatasouce.getPendingAliasesToSync(userId: userId, since: since, pageSize: pageSize)
+        try await remoteDatasource.getPendingAliasesToSync(userId: userId, since: since, pageSize: pageSize)
+    }
+
+    func getAliasSettings(userId: String) async throws -> AliasSettings {
+        try await remoteDatasource.getAliasSettings(userId: userId)
+    }
+
+    func updateAliasDefaultDomain(userId: String,
+                                  request: UpdateAliasDomainRequest) async throws -> AliasSettings {
+        try await remoteDatasource.updateAliasDefaultDomain(userId: userId, request: request)
+    }
+
+    func updateAliasDefaultMailbox(userId: String,
+                                   request: UpdateAliasMailboxRequest) async throws -> AliasSettings {
+        try await remoteDatasource.updateAliasDefaultMailbox(userId: userId, request: request)
+    }
+
+    func getAllAliasDomains(userId: String) async throws -> [Domain] {
+        try await remoteDatasource.getAllAliasDomains(userId: userId)
+    }
+
+    func getAllAliasMailboxes(userId: String) async throws -> [Mailbox] {
+        try await remoteDatasource.getAllAliasMailboxes(userId: userId)
     }
 }

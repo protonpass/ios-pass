@@ -155,7 +155,8 @@ extension Preferences: PreferencesMigrator {
                                  createdItemsCount: createdItemsCount,
                                  dismissedBannerIds: dismissedBannerIds,
                                  dismissedCustomDomainExplanation: false,
-                                 didMigratePreferences: true)
+                                 didMigratePreferences: true,
+                                 dismissedAliasesSyncExplanation: false)
         let shared = SharedPreferences(quickTypeBar: quickTypeBar,
                                        automaticallyCopyTotpCode: automaticallyCopyTotpCode,
                                        theme: theme,
