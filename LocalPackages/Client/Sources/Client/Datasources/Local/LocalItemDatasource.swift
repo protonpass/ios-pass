@@ -151,9 +151,6 @@ public extension LocalItemDatasource {
     }
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        // We are removing the items before insert due to the bug of non updating boolean variables
-        // on coredata entities causing us issues when following value like pinned status
-        try await deleteItems(items)
         let taskContext = newTaskContext(type: .insert)
         let entity = ItemEntity.entity(context: taskContext)
         let batchInsertRequest = newBatchInsertRequest(entity: entity,

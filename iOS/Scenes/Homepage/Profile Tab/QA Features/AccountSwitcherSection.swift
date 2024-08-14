@@ -32,8 +32,22 @@ struct AccountSwitcherSection: View {
 
 private struct AccountSwitcherView: View {
     @State private var showSwitcher = false
+    @State private var johnCount = 1
     @Namespace private var namespace
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
+    private var details: [AccountCellDetail] {
+        var details = [eric]
+        for index in 0..<johnCount {
+            details.append(.init(id: UUID().uuidString,
+                                 isPremium: .random(),
+                                 initial: "J\(index)",
+                                 displayName: "John Doe \(index)",
+                                 planName: "Pass Free",
+                                 email: "john.doe\(index)@proton.me"))
+        }
+        return details
+    }
 
     private let eric = AccountCellDetail(id: UUID().uuidString,
                                          isPremium: true,
@@ -41,13 +55,6 @@ private struct AccountSwitcherView: View {
                                          displayName: "Eric Norbert",
                                          planName: "Pass Plus",
                                          email: "eric.norbert@proton.me")
-
-    private let john = AccountCellDetail(id: UUID().uuidString,
-                                         isPremium: false,
-                                         initial: "J",
-                                         displayName: "John Doe",
-                                         planName: "Pass Free",
-                                         email: "john.doe@proton.me")
 
     var body: some View {
         ScrollView {
@@ -80,7 +87,7 @@ private struct AccountSwitcherView: View {
         }
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarTitleDisplayMode(.inline)
-        .modifier(AccountSwitchModifier(details: [eric, john],
+        .modifier(AccountSwitchModifier(details: details,
                                         activeId: eric.id,
                                         showSwitcher: $showSwitcher,
                                         animationNamespace: namespace,
@@ -88,6 +95,16 @@ private struct AccountSwitcherView: View {
                                         onManage: { handleManage($0) },
                                         onSignOut: { handleSignOut($0) },
                                         onAddAccount: { handleAddAccount() }))
+        .animation(.default, value: johnCount)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    johnCount += 1
+                }, label: {
+                    Image(systemName: "plus")
+                })
+            }
+        }
     }
 }
 
