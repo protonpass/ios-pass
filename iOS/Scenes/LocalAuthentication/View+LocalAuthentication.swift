@@ -56,14 +56,14 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let onSuccess: (() -> Void)?
 
     /// Authentication failed
-    private let onFailure: () -> Void
+    private let onFailure: (String?) -> Void
 
     init(delayed: Bool,
          manuallyAvoidKeyboard: Bool,
          onAuth: (() -> Void)?,
          onAuthSkipped: (() -> Void)?,
          onSuccess: (() -> Void)?,
-         onFailure: @escaping () -> Void) {
+         onFailure: @escaping (String?) -> Void) {
         let preferences = preferencesManager.sharedPreferences.unwrapped()
         _method = .init(initialValue: preferences.localAuthenticationMethod)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
@@ -150,7 +150,7 @@ extension View {
                              onAuth: (() -> Void)? = nil,
                              onAuthSkipped: (() -> Void)? = nil,
                              onSuccess: (() -> Void)? = nil,
-                             onFailure: @escaping () -> Void) -> some View {
+                             onFailure: @escaping (String?) -> Void) -> some View {
         modifier(LocalAuthenticationModifier(delayed: delayed,
                                              manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                              onAuth: onAuth,

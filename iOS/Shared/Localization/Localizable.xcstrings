@@ -116891,6 +116891,16 @@
         }
       }
     },
+    "We have detected a change in your biometric authentication settings. For security reasons, you have been logged out." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We have detected a change in your biometric authentication settings. For security reasons, you have been logged out."
+          }
+        }
+      }
+    },
     "We sent a verification code to %@. Enter it below:" : {
       "localizations" : {
         "be" : {
@@ -118488,16 +118498,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Khi di chuyển nội dung giữa các kho lưu trữ, chúng tôi chỉ giữ lại 50 phiên bản gần nhất của từng nội dung."
-          }
-        }
-      }
-    },
-    "When passcode is enabled, you won't be signed out when your biometric settings change." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "When passcode is enabled, you won't be signed out when your biometric settings change."
           }
         }
       }

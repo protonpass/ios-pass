@@ -70,9 +70,9 @@ private extension HomepageCoordinator {
                                     authenticated = true
                                     uncoverApp()
                                 },
-                                onFailure: { [weak self] in
+                                onFailure: { [weak self] message in
                                     guard let self else { return }
-                                    handleFailedLocalAuthentication()
+                                    handleFailedLocalAuthentication(message)
                                 })
         return UIHostingController(rootView: view)
     }
@@ -91,7 +91,7 @@ private struct AppCoverView: View {
     let onAuth: () -> Void
     let onAuthSkipped: () -> Void
     let onSuccess: () -> Void
-    let onFailure: () -> Void
+    let onFailure: (String?) -> Void
 
     var body: some View {
         ZStack {

@@ -32,7 +32,7 @@ struct LocalAuthenticationView: View {
          manuallyAvoidKeyboard: Bool = false,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
-         onFailure: @escaping () -> Void) {
+         onFailure: @escaping (String?) -> Void) {
         _viewModel = .init(wrappedValue: .init(mode: mode,
                                                delayed: delayed,
                                                manuallyAvoidKeyboard: manuallyAvoidKeyboard,

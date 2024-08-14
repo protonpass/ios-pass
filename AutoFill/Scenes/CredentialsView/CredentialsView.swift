@@ -46,7 +46,7 @@ struct CredentialsView: View {
             await viewModel.sync()
         }
         .localAuthentication(onSuccess: viewModel.handleAuthenticationSuccess,
-                             onFailure: viewModel.handleAuthenticationFailure)
+                             onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .alert("Associate URL?",
                isPresented: $viewModel.isShowingConfirmationAlert,
                actions: {
