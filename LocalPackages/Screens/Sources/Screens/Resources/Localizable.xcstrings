@@ -123,6 +123,12 @@
             "value" : "Lägg till konto"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesap ekle"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1145,7 +1151,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Luo suojausavain"
+            "value" : "Luo todentamisavain"
           }
         },
         "fr" : {
@@ -2587,7 +2593,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Käytä Proton Passin jakamisen laajennusta kirjautumalla sisään"
+            "value" : "Käytä Proton Passin jakamislaajennusta kirjautumalla sisään"
           }
         },
         "fr" : {
@@ -4577,6 +4583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Byt till"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şuna geç"
           }
         },
         "vi" : {
