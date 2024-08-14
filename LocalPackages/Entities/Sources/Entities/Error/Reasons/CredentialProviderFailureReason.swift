@@ -23,7 +23,7 @@ import Foundation
 
 public extension PassError {
     enum CredentialProviderFailureReason: Error, CustomDebugStringConvertible {
-        case failedToAuthenticate
+        case failedToAuthenticate(String?)
         case invalidURL(URL?)
         case missingRecordIdentifier
         case notLogInItem
