@@ -25,7 +25,6 @@ import Macro
 import SwiftUI
 
 struct PinAuthenticationView: View {
-    @Environment(\.locallyAuthenticated) private var locallyAuthenticated
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
     @FocusState private var isFocused
     @State private var pinCode = ""
@@ -101,8 +100,7 @@ struct PinAuthenticationView: View {
         .accentColor(PassColor.interactionNorm.toColor)
         .tint(PassColor.interactionNorm.toColor)
         .animation(.default, value: viewModel.state)
-        .onChange(of: locallyAuthenticated) { locallyAuthenticated in
-            guard !locallyAuthenticated else { return }
+        .onAppear {
             let notifyAuthProcessAndFocus: () -> Void = {
                 viewModel.onAuth()
                 isFocused = true

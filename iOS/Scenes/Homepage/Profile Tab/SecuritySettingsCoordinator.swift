@@ -178,7 +178,7 @@ private extension SecuritySettingsCoordinator {
             delegate?.childCoordinatorDidFailLocalAuthentication()
         }
 
-        let view = LocalAuthenticationView(method: .pin,
+        let view = LocalAuthenticationView(mode: .pin,
                                            onAuth: {},
                                            onSuccess: successHandler,
                                            onFailure: failureHandler)
@@ -198,7 +198,7 @@ private extension SecuritySettingsCoordinator {
             delegate?.childCoordinatorDidFailLocalAuthentication()
         }
 
-        let view = LocalAuthenticationView(method: .pin,
+        let view = LocalAuthenticationView(mode: .pin,
                                            onAuth: {},
                                            onSuccess: successHandler,
                                            onFailure: failureHandler)
