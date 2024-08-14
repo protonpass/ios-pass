@@ -140,40 +140,40 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         return stubbedGetUsersLinkedResult
     }
     // MARK: - updateUserPermission
-    public var updateUserPermissionUserIdShareIdShareRoleExpireTimeThrowableError7: Error?
+    public var updateUserPermissionUserShareIdShareIdShareRoleExpireTimeThrowableError7: Error?
     public var closureUpdateUserPermission: () -> () = {}
     public var invokedUpdateUserPermissionfunction = false
     public var invokedUpdateUserPermissionCount = 0
-    public var invokedUpdateUserPermissionParameters: (userId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?)?
-    public var invokedUpdateUserPermissionParametersList = [(userId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?)]()
+    public var invokedUpdateUserPermissionParameters: (userShareId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?)?
+    public var invokedUpdateUserPermissionParametersList = [(userShareId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?)]()
     public var stubbedUpdateUserPermissionResult: Bool!
 
-    public func updateUserPermission(userId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?) async throws -> Bool {
+    public func updateUserPermission(userShareId: String, shareId: String, shareRole: ShareRole?, expireTime: Int?) async throws -> Bool {
         invokedUpdateUserPermissionfunction = true
         invokedUpdateUserPermissionCount += 1
-        invokedUpdateUserPermissionParameters = (userId, shareId, shareRole, expireTime)
-        invokedUpdateUserPermissionParametersList.append((userId, shareId, shareRole, expireTime))
-        if let error = updateUserPermissionUserIdShareIdShareRoleExpireTimeThrowableError7 {
+        invokedUpdateUserPermissionParameters = (userShareId, shareId, shareRole, expireTime)
+        invokedUpdateUserPermissionParametersList.append((userShareId, shareId, shareRole, expireTime))
+        if let error = updateUserPermissionUserShareIdShareIdShareRoleExpireTimeThrowableError7 {
             throw error
         }
         closureUpdateUserPermission()
         return stubbedUpdateUserPermissionResult
     }
     // MARK: - deleteUserShare
-    public var deleteUserShareUserIdShareIdThrowableError8: Error?
+    public var deleteUserShareUserShareIdShareIdThrowableError8: Error?
     public var closureDeleteUserShare: () -> () = {}
     public var invokedDeleteUserSharefunction = false
     public var invokedDeleteUserShareCount = 0
-    public var invokedDeleteUserShareParameters: (userId: String, shareId: String)?
-    public var invokedDeleteUserShareParametersList = [(userId: String, shareId: String)]()
+    public var invokedDeleteUserShareParameters: (userShareId: String, shareId: String)?
+    public var invokedDeleteUserShareParametersList = [(userShareId: String, shareId: String)]()
     public var stubbedDeleteUserShareResult: Bool!
 
-    public func deleteUserShare(userId: String, shareId: String) async throws -> Bool {
+    public func deleteUserShare(userShareId: String, shareId: String) async throws -> Bool {
         invokedDeleteUserSharefunction = true
         invokedDeleteUserShareCount += 1
-        invokedDeleteUserShareParameters = (userId, shareId)
-        invokedDeleteUserShareParametersList.append((userId, shareId))
-        if let error = deleteUserShareUserIdShareIdThrowableError8 {
+        invokedDeleteUserShareParameters = (userShareId, shareId)
+        invokedDeleteUserShareParametersList.append((userShareId, shareId))
+        if let error = deleteUserShareUserShareIdShareIdThrowableError8 {
             throw error
         }
         closureDeleteUserShare()
