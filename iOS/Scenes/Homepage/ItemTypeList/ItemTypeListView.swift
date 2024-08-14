@@ -64,6 +64,7 @@ struct ItemTypeListView: View {
             }
             .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
+            .animation(.default, value: viewModel.showMoreButton)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Create")
