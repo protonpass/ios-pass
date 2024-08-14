@@ -280,10 +280,6 @@ private extension CredentialProviderCoordinator {
                 switch destination {
                 case .upgradeFlow:
                     startUpgradeFlow()
-                case let .suffixView(suffixSelection):
-                    createAliasLiteViewModelWantsToSelectSuffix(suffixSelection)
-                case let .mailboxView(mailboxSelection, _):
-                    createAliasLiteViewModelWantsToSelectMailboxes(mailboxSelection)
                 case .vaultSelection:
                     createEditItemViewModelWantsToChangeVault()
                 case let .createItem(item, type, response):
@@ -596,40 +592,6 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
-    }
-}
-
-// MARK: - CreateAliasLiteViewModelDelegate
-
-extension CredentialProviderCoordinator {
-    func createAliasLiteViewModelWantsToSelectMailboxes(_ mailboxSelection: MailboxSelection) {
-        guard let rootViewController else { return }
-        let viewModel = MailboxSelectionViewModel(mailboxSelection: mailboxSelection,
-                                                  mode: .createAliasLite,
-                                                  titleMode: .create)
-        let view = MailboxSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * mailboxSelection.mailboxes.count + 150
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
-    func createAliasLiteViewModelWantsToSelectSuffix(_ suffixSelection: SuffixSelection) {
-        guard let rootViewController else { return }
-        let viewModel = SuffixSelectionViewModel(suffixSelection: suffixSelection)
-        let view = SuffixSelectionView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * suffixSelection.suffixes.count + 100
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 }
 

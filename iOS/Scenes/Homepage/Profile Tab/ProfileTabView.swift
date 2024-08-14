@@ -69,6 +69,10 @@ struct ProfileTabView: View {
 
                 itemCountSection
 
+                if let pendingAliasToSync = viewModel.showAliasSyncExplanation {
+                    aliasSyncExplanation(pendingAliasToSync)
+                }
+
                 securitySection
                     .padding(.vertical)
 
@@ -76,6 +80,10 @@ struct ProfileTabView: View {
                     autoFillEnabledSection
                 } else {
                     autoFillDisabledSection
+                }
+                if viewModel.isSimpleLoginAliasSyncActive {
+                    aliasesSection
+                        .padding(.vertical)
                 }
 
                 if viewModel.isSecureLinkActive {
@@ -104,6 +112,7 @@ struct ProfileTabView: View {
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
             .animation(.default, value: viewModel.localAuthenticationMethod)
             .animation(.default, value: viewModel.accountDetails)
+            .animation(.default, value: viewModel.showAliasSyncExplanation)
         }
     }
 
@@ -354,6 +363,13 @@ struct ProfileTabView: View {
         .padding(.horizontal)
     }
 
+    private var aliasesSection: some View {
+        TextOptionRow(title: #localized("Aliases"), action: { viewModel.showAliasSyncConfiguration() })
+            .frame(height: 75)
+            .roundedEditableSection()
+            .padding(.horizontal)
+    }
+
     private var helpCenterSection: some View {
         VStack(spacing: 0) {
             Text("Help center")
@@ -392,6 +408,14 @@ struct ProfileTabView: View {
         }
         .roundedEditableSection()
         .padding(.horizontal)
+    }
+
+    private func aliasSyncExplanation(_ missingAliases: Int) -> some View {
+        AliasSyncExplanationView(missingAliases: missingAliases,
+                                 dimissAction: { viewModel.dismissAliasesSyncExplanation() },
+                                 enableAliasSyncAction: {
+                                     viewModel.showSimpleLoginAliasesActivation()
+                                 }).padding(.horizontal)
     }
 }
 

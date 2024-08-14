@@ -22,6 +22,7 @@ import DesignSystem
 import Entities
 import Factory
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 /// Note section of item detail pages

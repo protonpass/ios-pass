@@ -1,7 +1,7 @@
 //
 // Mailbox.swift
-// Proton Pass - Created on 15/09/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// Proton Pass - Created on 06/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,8 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct Mailbox: Decodable, Hashable, Equatable, Sendable {
-    // Should not rename to "id" otherwise decode process breaks
-    public let ID: Int
+public struct Mailbox: Decodable, Hashable, Equatable, Sendable, Identifiable {
+    public let mailboxID: String
     public let email: String
+    public let verified: Bool
+    public let isDefault: Bool
+
+    public init(mailboxID: String, email: String, verified: Bool, isDefault: Bool) {
+        self.mailboxID = mailboxID
+        self.email = email
+        self.verified = verified
+        self.isDefault = isDefault
+    }
+
+    public var id: String {
+        mailboxID
+    }
 }
