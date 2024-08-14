@@ -37,22 +37,28 @@ final class LocalShareDatasourceTests: XCTestCase {
     func assertEqual(_ lhs: SymmetricallyEncryptedShare, _ rhs: SymmetricallyEncryptedShare) {
         let lhsShare = lhs.share
         let rhsShare = rhs.share
-        // Skip Int16 assertions because they make the tests very flaky
-        // Sometime the value is not updated and is always 0
+        // Skip some assertions because they make the tests very flaky
+        // Sometime the value is not updated
         // Not sure if this only happens to in-memory containers or not
         // If it's the case nothing to worry, otherwise further investigation is needed
-        XCTAssertEqual(lhs.encryptedContent, rhs.encryptedContent)
-        XCTAssertEqual(lhsShare.shareID, rhsShare.shareID)
-        XCTAssertEqual(lhsShare.vaultID, rhsShare.vaultID)
         XCTAssertEqual(lhsShare.addressID, rhsShare.addressID)
-//        XCTAssertEqual(lhsShare.targetType, rhsShare.targetType)
-        XCTAssertEqual(lhsShare.targetID, rhsShare.targetID)
-//        XCTAssertEqual(lhsShare.permission, rhsShare.permission)
         XCTAssertEqual(lhsShare.content, rhsShare.content)
-        XCTAssertEqual(lhsShare.contentKeyRotation, rhsShare.contentKeyRotation)
         XCTAssertEqual(lhsShare.contentFormatVersion, rhsShare.contentFormatVersion)
-        XCTAssertEqual(lhsShare.expireTime, rhsShare.expireTime)
+        XCTAssertEqual(lhsShare.contentKeyRotation, rhsShare.contentKeyRotation)
         XCTAssertEqual(lhsShare.createTime, rhsShare.createTime)
+        XCTAssertEqual(lhsShare.expireTime, rhsShare.expireTime)
+//        XCTAssertEqual(lhsShare.newUserInvitesReady, rhsShare.newUserInvitesReady)
+        XCTAssertEqual(lhsShare.owner, rhsShare.owner)
+//        XCTAssertEqual(lhsShare.pendingInvites, rhsShare.pendingInvites)
+//        XCTAssertEqual(lhsShare.permission, rhsShare.permission)
+        XCTAssertEqual(lhsShare.shared, rhsShare.shared)
+        XCTAssertEqual(lhsShare.shareID, rhsShare.shareID)
+        XCTAssertEqual(lhsShare.shareRoleID, rhsShare.shareRoleID)
+        XCTAssertEqual(lhs.encryptedContent, rhs.encryptedContent)
+        XCTAssertEqual(lhsShare.targetID, rhsShare.targetID)
+//        XCTAssertEqual(lhsShare.targetMaxMembers, rhsShare.targetMaxMembers)
+//        XCTAssertEqual(lhsShare.targetType, rhsShare.targetType)
+        XCTAssertEqual(lhsShare.vaultID, rhsShare.vaultID)
     }
 }
 

@@ -182,6 +182,8 @@ public actor ItemRepository: ItemRepositoryProtocol {
         self.passKeyManager = passKeyManager
         self.userManager = userManager
         logger = .init(manager: logManager)
+        // swiftlint:disable:next todo
+        // TODO: Avoid executing unstructed task in init
         Task { [weak self] in
             guard let self else {
                 return
