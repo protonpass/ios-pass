@@ -32,7 +32,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var aliasEmail = ""
     @Published private(set) var name = ""
     @Published private(set) var note = ""
-    @Published private(set) var mailboxes: [Mailbox]?
+    @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?
 
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)

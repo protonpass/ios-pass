@@ -68,8 +68,6 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case upgradeFlow
     case upselling(UpsellingViewConfiguration)
     case logView(module: PassModule)
-    case suffixView(SuffixSelection)
-    case mailboxView(MailboxSelection, MailboxSection.Mode)
     case autoFillInstructions
     case moveItemsBetweenVaults(MovingContext)
     case fullSync
@@ -108,6 +106,8 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case secureLinks
     case secureLinkDetail(SecureLinkListUIModel)
     case addAccount
+    case simpleLoginSyncActivation
+    case aliasesSyncConfiguration
 }
 
 enum GenericDestination {
