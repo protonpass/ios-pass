@@ -88391,6 +88391,16 @@
         }
       }
     },
+    "Scroll for more" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scroll for more"
+          }
+        }
+      }
+    },
     "Search" : {
       "localizations" : {
         "be" : {
