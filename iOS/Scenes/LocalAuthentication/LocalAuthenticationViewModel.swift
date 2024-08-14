@@ -106,7 +106,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
                     recordFailure(nil)
                 }
             } catch PassError.biometricChange {
-                /// We need to logout the user as we detected that the biometric settings have changed
+                // swiftlint:disable:next line_length
                 onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out."))
             } catch {
                 recordFailure(error)
