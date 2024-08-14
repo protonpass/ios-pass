@@ -88,9 +88,6 @@ extension ItemRepositoryTests {
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
         cancellable?.cancel()
         cancellable = sut.currentlyPinnedItems
-//            .receive(on: DispatchQueue.main)
-//            .compactMap { $0 }
-//            .removeDuplicates()
             .sink { value in
                 currentlyPinnedItems = value
                 expectation.fulfill()
