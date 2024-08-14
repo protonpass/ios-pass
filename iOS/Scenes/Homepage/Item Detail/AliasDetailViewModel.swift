@@ -106,7 +106,7 @@ private extension AliasDetailViewModel {
                 let userId = try await userManager.getActiveUserId()
                 try await itemRepository.changeAliasStatus(userId: userId,
                                                            item: itemContent,
-                                                           enable: newSyncStatus)
+                                                           enabled: newSyncStatus)
                 router.display(element: .successMessage("The sync status has been successfully updated",
                                                         config: .refresh))
                 logger.trace("Successfully updated the alias sync status of \(newSyncStatus)")

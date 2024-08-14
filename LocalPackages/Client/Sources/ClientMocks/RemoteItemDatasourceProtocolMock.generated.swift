@@ -347,20 +347,20 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         return stubbedCreatePendingAliasesItemResult
     }
     // MARK: - toggleAliasStatus
-    public var toggleAliasStatusUserIdShareIdItemIdEnableThrowableError17: Error?
+    public var toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError17: Error?
     public var closureToggleAliasStatus: () -> () = {}
     public var invokedToggleAliasStatusfunction = false
     public var invokedToggleAliasStatusCount = 0
-    public var invokedToggleAliasStatusParameters: (userId: String, shareId: String, itemId: String, enable: Bool)?
-    public var invokedToggleAliasStatusParametersList = [(userId: String, shareId: String, itemId: String, enable: Bool)]()
+    public var invokedToggleAliasStatusParameters: (userId: String, shareId: String, itemId: String, enabled: Bool)?
+    public var invokedToggleAliasStatusParametersList = [(userId: String, shareId: String, itemId: String, enabled: Bool)]()
     public var stubbedToggleAliasStatusResult: Item!
 
-    public func toggleAliasStatus(userId: String, shareId: String, itemId: String, enable: Bool) async throws -> Item {
+    public func toggleAliasStatus(userId: String, shareId: String, itemId: String, enabled: Bool) async throws -> Item {
         invokedToggleAliasStatusfunction = true
         invokedToggleAliasStatusCount += 1
-        invokedToggleAliasStatusParameters = (userId, shareId, itemId, enable)
-        invokedToggleAliasStatusParametersList.append((userId, shareId, itemId, enable))
-        if let error = toggleAliasStatusUserIdShareIdItemIdEnableThrowableError17 {
+        invokedToggleAliasStatusParameters = (userId, shareId, itemId, enabled)
+        invokedToggleAliasStatusParametersList.append((userId, shareId, itemId, enabled))
+        if let error = toggleAliasStatusUserIdShareIdItemIdEnabledThrowableError17 {
             throw error
         }
         closureToggleAliasStatus()
