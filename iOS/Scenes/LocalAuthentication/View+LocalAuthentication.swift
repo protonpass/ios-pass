@@ -29,7 +29,7 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
     @State private var method: LocalAuthenticationMethod
-    @State private var authenticated: Bool
+    @State private var authenticated = false
 
     // autolocker as @State because it needs to be updated
     // when user changes appLockTime in setting
@@ -66,7 +66,6 @@ struct LocalAuthenticationModifier: ViewModifier {
          onFailure: @escaping () -> Void) {
         let preferences = preferencesManager.sharedPreferences.unwrapped()
         _method = .init(initialValue: preferences.localAuthenticationMethod)
-        _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
         self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
@@ -79,13 +78,12 @@ struct LocalAuthenticationModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let authenticationRequired = method != .none && !authenticated
         GeometryReader { proxy in
             content
                 .frame(width: proxy.size.width, height: proxy.size.height)
         }
         .overlay {
-            if authenticationRequired {
+            if !authenticated, method != .none {
                 let handleSuccess: () -> Void = {
                     authenticated = true
                     autolocker.releaseCountdown()
@@ -100,12 +98,7 @@ struct LocalAuthenticationModifier: ViewModifier {
                                         onFailure: onFailure)
             }
         }
-        .animation(.default, value: authenticationRequired)
-        .onAppear {
-            if !authenticationRequired {
-                onAuthSkipped?()
-            }
-        }
+        .animation(.default, value: authenticated)
         // Take into account right away appLockTime when user updates it
         .onReceive(preferencesManager
             .sharedPreferencesUpdates
@@ -122,12 +115,8 @@ struct LocalAuthenticationModifier: ViewModifier {
                 method = newValue
         }
         // Start the timer whenever app is backgrounded
-        .onReceive(UIApplication.willResignActiveNotification,
-                   perform: autolocker.startCountdown)
-        // When app is foregrounded, check if authentication is needed or could be skipped
-        .onReceive(UIApplication.didBecomeActiveNotification) {
-            // This if-else statement seems redundant with 2 branches result in auth skipped
-            // but we should do thing in order this way.
+        .onReceive(UIApplication.willResignActiveNotification, perform: autolocker.startCountdown)
+        .onReceive(foregroundEventsPublisher()) {
             if method == .none {
                 onAuthSkipped?()
             } else if autolocker.shouldAutolockNow() {
@@ -136,6 +125,21 @@ struct LocalAuthenticationModifier: ViewModifier {
                 onAuthSkipped?()
             }
         }
+    }
+}
+
+private extension LocalAuthenticationModifier {
+    // Different events could be triggered when app is foregrounded
+    // depending on context (app is fully backgrounded or just moved to app switch menu)
+    // so we listen to all of them
+    @MainActor
+    func foregroundEventsPublisher() -> AnyPublisher<Void, Never> {
+        let center = NotificationCenter.default
+        let willEnterForeground = center.publisher(for: UIApplication.willEnterForegroundNotification)
+        let didBecomeActive = center.publisher(for: UIApplication.didBecomeActiveNotification)
+        return Publishers.Merge(willEnterForeground, didBecomeActive)
+            .map { _ in () }
+            .eraseToAnyPublisher()
     }
 }
 

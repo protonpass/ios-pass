@@ -35,7 +35,7 @@ final class ItemRepositoryTests: XCTestCase {
     var shareEventIDRepository: ShareEventIDRepositoryProtocol!
     var passKeyManager: PassKeyManagerProtocol!
     var logManager: LogManagerProtocol!
-    var sut: ItemRepositoryProtocol!    
+    var sut: ItemRepositoryProtocol!
     var cancellable: AnyCancellable?
 
     override func setUp() {
