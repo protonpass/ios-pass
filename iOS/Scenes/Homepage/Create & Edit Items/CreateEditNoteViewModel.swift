@@ -34,26 +34,6 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 
     override var isSaveable: Bool { !title.isEmpty }
 
-    override init(mode: ItemMode,
-                  upgradeChecker: any UpgradeCheckerProtocol,
-                  vaults: [Vault]) throws {
-        try super.init(mode: mode,
-                       upgradeChecker: upgradeChecker,
-                       vaults: vaults)
-
-        scanResponsePublisher
-            .receive(on: DispatchQueue.main)
-            .sink { _ in } receiveValue: { [weak self] result in
-                guard let self, let result else { return }
-                if let document = result as? ScannedDocument {
-                    transformIntoNote(document: document)
-                } else {
-                    assertionFailure("Expecting ScannedDocument as result")
-                }
-            }
-            .store(in: &cancellables)
-    }
-
     override func bindValues() {
         switch mode {
         case let .create(_, type):
@@ -80,20 +60,5 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.note,
                             customFields: [])
-    }
-}
-
-private extension CreateEditNoteViewModel {
-    func transformIntoNote(document: ScannedDocument) {
-        for (index, page) in document.scannedPages.enumerated() {
-            note += page.text.reduce(into: "") { partialResult, next in
-                partialResult = partialResult + "\n" + next
-            }
-
-            if index != document.scannedPages.count - 1 {
-                // Add an empty line between pages
-                note += "\n\n"
-            }
-        }
     }
 }

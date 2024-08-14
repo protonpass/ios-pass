@@ -41,6 +41,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
     private let apiManager: any APIManagerProtocol
     private let fullVaultsSync: any FullVaultsSyncUseCase
     private let refreshFeatureFlags: any RefreshFeatureFlagsUseCase
+    private let inviteRepository: any InviteRepositoryProtocol
 
     public init(syncEventLoop: any SyncEventLoopProtocol,
                 userManager: any UserManagerProtocol,
@@ -48,7 +49,8 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
                 preferencesManager: any PreferencesManagerProtocol,
                 apiManager: any APIManagerProtocol,
                 fullVaultsSync: any FullVaultsSyncUseCase,
-                refreshFeatureFlags: any RefreshFeatureFlagsUseCase) {
+                refreshFeatureFlags: any RefreshFeatureFlagsUseCase,
+                inviteRepository: any InviteRepositoryProtocol) {
         self.syncEventLoop = syncEventLoop
         self.userManager = userManager
         self.authManager = authManager
@@ -56,6 +58,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
         self.apiManager = apiManager
         self.fullVaultsSync = fullVaultsSync
         self.refreshFeatureFlags = refreshFeatureFlags
+        self.inviteRepository = inviteRepository
     }
 
     public func execute(userData: UserData, hasExtraPassword: Bool) async throws {
@@ -70,6 +73,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
                                                                value: true)
         }
         await fullVaultsSync(userId: userData.user.ID)
+        await inviteRepository.refreshInvites()
         syncEventLoop.start()
     }
 }

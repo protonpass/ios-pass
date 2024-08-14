@@ -47,7 +47,7 @@ public final class UpdateUserShareRole: UpdateUserShareRoleUseCase {
                         shareId: String,
                         shareRole: ShareRole,
                         expireTime: Int?) async throws {
-        try await repository.updateUserPermission(userId: userShareId,
+        try await repository.updateUserPermission(userShareId: userShareId,
                                                   shareId: shareId,
                                                   shareRole: shareRole,
                                                   expireTime: expireTime)
