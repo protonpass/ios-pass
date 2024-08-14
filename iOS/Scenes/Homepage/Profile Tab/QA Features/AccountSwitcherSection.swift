@@ -32,8 +32,22 @@ struct AccountSwitcherSection: View {
 
 private struct AccountSwitcherView: View {
     @State private var showSwitcher = false
+    @State private var johnCount = 1
     @Namespace private var namespace
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+
+    private var details: [AccountCellDetail] {
+        var details = [eric]
+        for index in 0..<johnCount {
+            details.append(.init(id: UUID().uuidString,
+                                 isPremium: .random(),
+                                 initial: "J\(index)",
+                                 displayName: "John Doe \(index)",
+                                 planName: "Pass Free",
+                                 email: "john.doe\(index)@proton.me"))
+        }
+        return details
+    }
 
     private let eric = AccountCellDetail(id: UUID().uuidString,
                                          isPremium: true,
@@ -41,83 +55,6 @@ private struct AccountSwitcherView: View {
                                          displayName: "Eric Norbert",
                                          planName: "Pass Plus",
                                          email: "eric.norbert@proton.me")
-
-    private let john = AccountCellDetail(id: UUID().uuidString,
-                                         isPremium: false,
-                                         initial: "J",
-                                         displayName: "John Doe",
-                                         planName: "Pass Free",
-                                         email: "john.doe@proton.me")
-
-    private let john1 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J1",
-                                          displayName: "John Doe 1",
-                                          planName: "Pass Free",
-                                          email: "john.doe1@proton.me")
-
-    private let john2 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J2",
-                                          displayName: "John Doe 2",
-                                          planName: "Pass Free",
-                                          email: "john.doe2@proton.me")
-
-    private let john3 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J3",
-                                          displayName: "John Doe 3",
-                                          planName: "Pass Free",
-                                          email: "john.doe3@proton.me")
-
-    private let john4 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J4",
-                                          displayName: "John Doe 4",
-                                          planName: "Pass Free",
-                                          email: "john.doe4@proton.me")
-
-    private let john5 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J5",
-                                          displayName: "John Doe 5",
-                                          planName: "Pass Free",
-                                          email: "john.doe5@proton.me")
-
-    private let john6 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J6",
-                                          displayName: "John Doe 6",
-                                          planName: "Pass Free",
-                                          email: "john.doe6@proton.me")
-
-    private let john7 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J7",
-                                          displayName: "John Doe 7",
-                                          planName: "Pass Free",
-                                          email: "john.doe7@proton.me")
-
-    private let john8 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J8",
-                                          displayName: "John Doe 8",
-                                          planName: "Pass Free",
-                                          email: "john.doe8@proton.me")
-
-    private let john9 = AccountCellDetail(id: UUID().uuidString,
-                                          isPremium: false,
-                                          initial: "J9",
-                                          displayName: "John Doe 9",
-                                          planName: "Pass Free",
-                                          email: "john.doe9@proton.me")
-
-    private let john10 = AccountCellDetail(id: UUID().uuidString,
-                                           isPremium: false,
-                                           initial: "J10",
-                                           displayName: "John Doe 10",
-                                           planName: "Pass Free",
-                                           email: "john.doe10@proton.me")
 
     var body: some View {
         ScrollView {
@@ -150,27 +87,24 @@ private struct AccountSwitcherView: View {
         }
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarTitleDisplayMode(.inline)
-        .modifier(AccountSwitchModifier(details: [
-                eric,
-                john,
-                john1,
-                john2,
-                john3,
-                john4,
-                john5,
-                john6,
-                john7,
-                john8,
-                john9,
-                john10
-            ], // swiftlint:disable:this literal_expression_end_indentation
-            activeId: eric.id,
-            showSwitcher: $showSwitcher,
-            animationNamespace: namespace,
-            onSelect: { handleSelection($0) },
-            onManage: { handleManage($0) },
-            onSignOut: { handleSignOut($0) },
-            onAddAccount: { handleAddAccount() }))
+        .modifier(AccountSwitchModifier(details: details,
+                                        activeId: eric.id,
+                                        showSwitcher: $showSwitcher,
+                                        animationNamespace: namespace,
+                                        onSelect: { handleSelection($0) },
+                                        onManage: { handleManage($0) },
+                                        onSignOut: { handleSignOut($0) },
+                                        onAddAccount: { handleAddAccount() }))
+        .animation(.default, value: johnCount)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    johnCount += 1
+                }, label: {
+                    Image(systemName: "plus")
+                })
+            }
+        }
     }
 }
 

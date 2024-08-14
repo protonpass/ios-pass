@@ -35,7 +35,7 @@ final class ItemRepositoryTests: XCTestCase {
     var shareEventIDRepository: ShareEventIDRepositoryProtocol!
     var passKeyManager: PassKeyManagerProtocol!
     var logManager: LogManagerProtocol!
-    var sut: ItemRepositoryProtocol!    
+    var sut: ItemRepositoryProtocol!
     var cancellable: AnyCancellable?
 
     override func setUp() {
@@ -82,6 +82,8 @@ extension ItemRepositoryTests {
                              passKeyManager: passKeyManager,
                              logManager: logManager)
 
+        let expectation = expectation(description: "Init of ItemRepository")
+
         let pinnedItems = try await sut.getAllPinnedItems()
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
         cancellable?.cancel()
@@ -91,13 +93,12 @@ extension ItemRepositoryTests {
                 expectation.fulfill()
             }
 
-        XCTAssertEqual(pinnedItems.count, 10)
-        XCTAssertTrue(localDatasource.invokedGetAllPinnedItemsfunction)
+        await fulfillment(of: [expectation], timeout: 1, enforceOrder: true)
 
-        // Wait a bit because pinned items publisher is init in a detached Task
-        // in the init function of the repository
-        try await Task.sleep(seconds: 0.1)
-        XCTAssertEqual(sut.currentlyPinnedItems.value, pinnedItems)
+        XCTAssertFalse(pinnedItems.isEmpty)
+        XCTAssertEqual(pinnedItems.count, 10)
+        XCTAssertEqual(currentlyPinnedItems?.count, 10)
+        XCTAssertTrue(localDatasource.invokedGetAllPinnedItemsfunction)
         XCTAssertEqual(localDatasource.invokedGetAllPinnedItemsCount, 2)
     }
 }

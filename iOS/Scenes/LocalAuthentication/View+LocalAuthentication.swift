@@ -26,13 +26,10 @@ import ProtonCoreKeymaker
 import SwiftUI
 
 struct LocalAuthenticationModifier: ViewModifier {
-    // periphery:ignore
-    @Environment(\.locallyAuthenticated) private var locallyAuthenticated
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
-    @State private var didAppear = false
     @State private var method: LocalAuthenticationMethod
-    @State private var authenticated = true
+    @State private var authenticated = false
 
     // autolocker as @State because it needs to be updated
     // when user changes appLockTime in setting
@@ -86,30 +83,22 @@ struct LocalAuthenticationModifier: ViewModifier {
                 .frame(width: proxy.size.width, height: proxy.size.height)
         }
         .overlay {
-            let handleSuccess: () -> Void = {
-                authenticated = true
-                autolocker.releaseCountdown()
-                onSuccess?()
-            }
+            if !authenticated, method != .none {
+                let handleSuccess: () -> Void = {
+                    authenticated = true
+                    autolocker.releaseCountdown()
+                    onSuccess?()
+                }
 
-            LocalAuthenticationView(method: method,
-                                    delayed: delayed,
-                                    manuallyAvoidKeyboard: manuallyAvoidKeyboard,
-                                    onAuth: { onAuth?() },
-                                    onSuccess: handleSuccess,
-                                    onFailure: onFailure)
-                .opacity(authenticated ? 0 : 1)
-                .animation(.default, value: authenticated)
-                .environment(\.locallyAuthenticated, authenticated)
-        }
-        .onAppear {
-            if method == .none {
-                onAuthSkipped?()
-            } else {
-                authenticated = false
+                LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
+                                        delayed: delayed,
+                                        manuallyAvoidKeyboard: manuallyAvoidKeyboard,
+                                        onAuth: { onAuth?() },
+                                        onSuccess: handleSuccess,
+                                        onFailure: onFailure)
             }
-            didAppear = true
         }
+        .animation(.default, value: authenticated)
         // Take into account right away appLockTime when user updates it
         .onReceive(preferencesManager
             .sharedPreferencesUpdates
@@ -127,26 +116,30 @@ struct LocalAuthenticationModifier: ViewModifier {
         }
         // Start the timer whenever app is backgrounded
         .onReceive(UIApplication.willResignActiveNotification, perform: autolocker.startCountdown)
-        // Different events could be triggered when app is foregrounded
-        // depending on context (app is fully backgrounded or just moved to app switch menu)
-        // so we listen to all of them
-        .onReceive(UIApplication.willEnterForegroundNotification, perform: authenticateOrSkip)
-        .onReceive(UIApplication.didBecomeActiveNotification, perform: authenticateOrSkip)
+        .onReceive(foregroundEventsPublisher()) {
+            if method == .none {
+                onAuthSkipped?()
+            } else if autolocker.shouldAutolockNow() {
+                authenticated = false
+            } else if authenticated {
+                onAuthSkipped?()
+            }
+        }
     }
 }
 
 private extension LocalAuthenticationModifier {
-    func authenticateOrSkip() {
-        guard didAppear else { return }
-        if method == .none {
-            onAuthSkipped?()
-            authenticated = true
-        } else if !autolocker.shouldAutolockNow() {
-            onAuthSkipped?()
-            authenticated = true
-        } else {
-            authenticated = false
-        }
+    // Different events could be triggered when app is foregrounded
+    // depending on context (app is fully backgrounded or just moved to app switch menu)
+    // so we listen to all of them
+    @MainActor
+    func foregroundEventsPublisher() -> AnyPublisher<Void, Never> {
+        let center = NotificationCenter.default
+        let willEnterForeground = center.publisher(for: UIApplication.willEnterForegroundNotification)
+        let didBecomeActive = center.publisher(for: UIApplication.didBecomeActiveNotification)
+        return Publishers.Merge(willEnterForeground, didBecomeActive)
+            .map { _ in () }
+            .eraseToAnyPublisher()
     }
 }
 
