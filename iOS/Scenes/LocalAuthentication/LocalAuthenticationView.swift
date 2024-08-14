@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import Entities
 import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -28,13 +27,13 @@ import SwiftUI
 struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
 
-    init(method: LocalAuthenticationMethod,
+    init(mode: LocalAuthenticationViewModel.Mode,
          delayed: Bool = false,
          manuallyAvoidKeyboard: Bool = false,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(method: method,
+        _viewModel = .init(wrappedValue: .init(mode: mode,
                                                delayed: delayed,
                                                manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                                onAuth: onAuth,
@@ -47,13 +46,11 @@ struct LocalAuthenticationView: View {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
 
-            switch viewModel.method {
+            switch viewModel.mode {
             case .biometric:
                 BiometricAuthenticationView(viewModel: viewModel)
             case .pin:
                 PinAuthenticationView(viewModel: viewModel)
-            case .none:
-                EmptyView()
             }
 
             Button { viewModel.logOut() } label: {
@@ -63,16 +60,5 @@ struct LocalAuthenticationView: View {
             }
             .padding()
         }
-    }
-}
-
-private struct LocallyAuthenticated: EnvironmentKey {
-    static let defaultValue = false
-}
-
-extension EnvironmentValues {
-    var locallyAuthenticated: Bool {
-        get { self[LocallyAuthenticated.self] }
-        set { self[LocallyAuthenticated.self] = newValue }
     }
 }

@@ -24,7 +24,6 @@ import Macro
 import SwiftUI
 
 struct BiometricAuthenticationView: View {
-    @Environment(\.locallyAuthenticated) private var locallyAuthenticated
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
 
     init(viewModel: LocalAuthenticationViewModel) {
@@ -61,8 +60,8 @@ struct BiometricAuthenticationView: View {
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onChange(of: locallyAuthenticated) { authenticated in
-                if !authenticated, case .noAttempts = viewModel.state {
+            .onAppear {
+                if case .noAttempts = viewModel.state {
                     // Only automatically prompt for biometric authentication when no attempts were made
                     // Otherwise let the users know how many attempts are remaining
                     // and let them retry explicitly
