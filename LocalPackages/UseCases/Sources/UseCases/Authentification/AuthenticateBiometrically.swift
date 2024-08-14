@@ -52,41 +52,31 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
         let context = LAContext()
         do {
             if policy == .deviceOwnerAuthenticationWithBiometrics {
-                try biometricsChanged(context: context)
+                try checkIfUserBiometricsSettingsChanged(context: context)
             }
 
-            let result = try await context.evaluatePolicy(policy, localizedReason: reason)
-
-            return result
+            return try await context.evaluatePolicy(policy, localizedReason: reason)
         } catch {
             throw error
         }
     }
 
-    func biometricsChanged(context: LAContext) throws {
+    private func checkIfUserBiometricsSettingsChanged(context: LAContext) throws {
         // If there is no saved policy state yet, save it
         var error: NSError?
         context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
 
-        let previousState = try getBiometricsPolicyState()
+        let previousState = try keychainService.dataOrError(forKey: biometricKey)
         if error == nil, previousState == nil,
            let domainState = context.evaluatedPolicyDomainState {
-            try savedBiometricsPolicyState(newBiometricData: domainState)
+            try keychainService.setOrError(domainState, forKey: biometricKey)
             return
         }
 
         if let domainState = context.evaluatedPolicyDomainState,
            domainState != previousState {
-            try? keychainService.removeOrError(forKey: biometricKey)
+            try keychainService.removeOrError(forKey: biometricKey)
             throw PassError.biometricChange
         }
-    }
-
-    func savedBiometricsPolicyState(newBiometricData: Data) throws {
-        try keychainService.setOrError(newBiometricData, forKey: biometricKey)
-    }
-
-    func getBiometricsPolicyState() throws -> Data? {
-        try keychainService.dataOrError(forKey: biometricKey)
     }
 }

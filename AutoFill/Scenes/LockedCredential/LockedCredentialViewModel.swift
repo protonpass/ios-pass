@@ -54,9 +54,9 @@ final class LockedCredentialViewModel: ObservableObject {
         }
     }
 
-    func handleAuthenticationFailure() {
+    func handleAuthenticationFailure(_ errorMessage: String?) {
         logger.info("Failed to locally authenticate. Logging out.")
-        onResult(.failure(PassError.credentialProvider(.failedToAuthenticate)))
+        onResult(.failure(PassError.credentialProvider(.failedToAuthenticate(errorMessage))))
     }
 
     func handleCancellation() {
