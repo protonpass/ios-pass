@@ -53,6 +53,7 @@ struct ItemTypeListView: View {
                                 .resizable()
                                 .frame(width: 16, height: 16)
                             Text("Scroll for more")
+                                .font(.callout)
                         }
                         .padding(10)
                         .foregroundStyle(PassColor.interactionNormMajor2.toColor)

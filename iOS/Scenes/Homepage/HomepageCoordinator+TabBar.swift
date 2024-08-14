@@ -20,7 +20,6 @@
 
 // MARK: - HomepageTabBarControllerDelegate
 
-import Combine
 import SwiftUI
 
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
