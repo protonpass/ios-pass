@@ -94,7 +94,6 @@ extension AccessEntity {
         vaultLimit = Int64(plan.vaultLimit ?? -1)
         monitorProtonAddress = monitor.protonAddress
         monitorAliases = monitor.aliases
-
         pendingInvites = Int64(access.pendingInvites)
         waitingNewUserInvites = Int64(access.waitingNewUserInvites)
         minVersionUpgrade = access.minVersionUpgrade ?? ""

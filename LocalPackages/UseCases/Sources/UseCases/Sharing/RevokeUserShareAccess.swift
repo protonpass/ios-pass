@@ -40,6 +40,6 @@ public final class RevokeUserShareAccess: RevokeUserShareAccessUseCase {
     }
 
     public func execute(with userShareId: String, and shareId: String) async throws {
-        try await repository.deleteUserShare(userId: userShareId, shareId: shareId)
+        try await repository.deleteUserShare(userShareId: userShareId, shareId: shareId)
     }
 }

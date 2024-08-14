@@ -28,10 +28,10 @@ struct DeleteUserShareEndpoint: Endpoint {
     var path: String
     var method: HTTPMethod
 
-    init(for shareId: String,
-         and userId: String) {
+    init(shareId: String,
+         userShareId: String) {
         debugDescription = "Delete a user share"
-        path = "/pass/v1/share/\(shareId)/user/\(userId)"
+        path = "/pass/v1/share/\(shareId)/user/\(userShareId)"
         method = .delete
     }
 }
