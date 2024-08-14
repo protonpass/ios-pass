@@ -51,8 +51,9 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     public func execute(policy: LAPolicy, reason: String) async throws -> Bool {
         let context = LAContext()
         do {
-            if policy == .deviceOwnerAuthenticationWithBiometrics {
-                try checkIfUserBiometricsSettingsChanged(context: context)
+            if policy == .deviceOwnerAuthenticationWithBiometrics,
+               try checkIfUserBiometricsSettingsChanged(context: context) {
+                throw PassError.biometricChange
             }
 
             return try await context.evaluatePolicy(policy, localizedReason: reason)
@@ -61,7 +62,7 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
         }
     }
 
-    private func checkIfUserBiometricsSettingsChanged(context: LAContext) throws {
+    private func checkIfUserBiometricsSettingsChanged(context: LAContext) throws -> Bool {
         // If there is no saved policy state yet, save it
         var error: NSError?
         context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
@@ -70,13 +71,14 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
         if error == nil, previousState == nil,
            let domainState = context.evaluatedPolicyDomainState {
             try keychainService.setOrError(domainState, forKey: biometricKey)
-            return
+            return false
         }
 
         if let domainState = context.evaluatedPolicyDomainState,
            domainState != previousState {
             try keychainService.removeOrError(forKey: biometricKey)
-            throw PassError.biometricChange
+            return true
         }
+         return false
     }
 }
