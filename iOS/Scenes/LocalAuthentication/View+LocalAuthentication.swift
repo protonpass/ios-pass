@@ -99,6 +99,7 @@ struct LocalAuthenticationModifier: ViewModifier {
             }
         }
         .animation(.default, value: authenticated)
+        .onAppear(perform: checkForAuthentication)
         // Take into account right away appLockTime when user updates it
         .onReceive(preferencesManager
             .sharedPreferencesUpdates
@@ -116,15 +117,7 @@ struct LocalAuthenticationModifier: ViewModifier {
         }
         // Start the timer whenever app is backgrounded
         .onReceive(UIApplication.willResignActiveNotification, perform: autolocker.startCountdown)
-        .onReceive(foregroundEventsPublisher()) {
-            if method == .none {
-                onAuthSkipped?()
-            } else if autolocker.shouldAutolockNow() {
-                authenticated = false
-            } else if authenticated {
-                onAuthSkipped?()
-            }
-        }
+        .onReceive(foregroundEventsPublisher, perform: checkForAuthentication)
     }
 }
 
@@ -133,13 +126,23 @@ private extension LocalAuthenticationModifier {
     // depending on context (app is fully backgrounded or just moved to app switch menu)
     // so we listen to all of them
     @MainActor
-    func foregroundEventsPublisher() -> AnyPublisher<Void, Never> {
+    var foregroundEventsPublisher: AnyPublisher<Void, Never> {
         let center = NotificationCenter.default
         let willEnterForeground = center.publisher(for: UIApplication.willEnterForegroundNotification)
         let didBecomeActive = center.publisher(for: UIApplication.didBecomeActiveNotification)
         return Publishers.Merge(willEnterForeground, didBecomeActive)
             .map { _ in () }
             .eraseToAnyPublisher()
+    }
+
+    func checkForAuthentication() {
+        if method == .none {
+            onAuthSkipped?()
+        } else if autolocker.shouldAutolockNow() {
+            authenticated = false
+        } else if authenticated {
+            onAuthSkipped?()
+        }
     }
 }
 
