@@ -42,7 +42,7 @@ final class ItemRepositoryTests: XCTestCase {
         super.setUp()
         symmetricKeyProvider = SymmetricKeyProviderMock()
          localDatasource = LocalItemDatasourceProtocolMock()
-            userManager = UserManagerProtocolMock()
+        userManager = UserManagerProtocolMock()
          localDatasource.stubbedGetAllPinnedItemsResult = []
          remoteDatasource = RemoteItemDatasourceProtocolMock()
          shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
@@ -86,8 +86,11 @@ extension ItemRepositoryTests {
 
         let pinnedItems = try await sut.getAllPinnedItems()
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
+        cancellable?.cancel()
         cancellable = sut.currentlyPinnedItems
-            .receive(on: DispatchQueue.main)
+//            .receive(on: DispatchQueue.main)
+//            .compactMap { $0 }
+//            .removeDuplicates()
             .sink { value in
                 currentlyPinnedItems = value
                 expectation.fulfill()
