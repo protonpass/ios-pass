@@ -38,7 +38,7 @@ private extension HomepageCoordinator {
     func presentEnableExtraPasswordView() {
         let onFailure: () -> Void = { [weak self] in
             guard let self else { return }
-            handleFailedLocalAuthentication()
+            handleFailedLocalAuthentication(nil)
         }
         let onSuccess: () -> Void = { [weak self] in
             guard let self else { return }

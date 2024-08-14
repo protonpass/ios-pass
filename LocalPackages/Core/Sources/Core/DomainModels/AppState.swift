@@ -25,7 +25,7 @@ public enum LogOutReason: Equatable {
     case noSessionDataAtAll
     case noAuthSessionButUnauthSessionAvailable
     case expiredRefreshToken
-    case failedBiometricAuthentication
+    case failedBiometricAuthentication(String?)
     case sessionInvalidated
     case userInitiated
     case failedToSetUpAppCoordinator(any Error)
