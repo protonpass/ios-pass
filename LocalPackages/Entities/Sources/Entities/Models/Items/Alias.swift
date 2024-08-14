@@ -20,5 +20,5 @@
 
 public struct Alias: Decodable, Sendable {
     public let email: String
-    public let mailboxes: [Mailbox]
+    public let mailboxes: [AliasLinkedMailbox]
 }

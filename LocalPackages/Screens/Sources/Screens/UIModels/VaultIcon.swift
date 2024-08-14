@@ -1,7 +1,7 @@
 //
 // VaultIcon.swift
-// Proton Pass - Created on 23/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 06/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -22,12 +22,12 @@ import DesignSystem
 import Entities
 import UIKit
 
-enum VaultIcon: CaseIterable {
+public enum VaultIcon: CaseIterable {
     case icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10
     case icon11, icon12, icon13, icon14, icon15, icon16, icon17, icon18, icon19, icon20
     case icon21, icon22, icon23, icon24, icon25, icon26, icon27, icon28, icon29, icon30
 
-    var bigImage: UIImage {
+    public var bigImage: UIImage {
         switch self {
         case .icon1: PassIcon.vaultIcon1Big
         case .icon2: PassIcon.vaultIcon2Big
@@ -62,7 +62,7 @@ enum VaultIcon: CaseIterable {
         }
     }
 
-    var smallImage: UIImage {
+    public var smallImage: UIImage {
         switch self {
         case .icon1: PassIcon.vaultIcon1Small
         case .icon2: PassIcon.vaultIcon2Small
@@ -98,7 +98,7 @@ enum VaultIcon: CaseIterable {
     }
 }
 
-extension ProtonPassVaultV1_VaultIcon {
+public extension ProtonPassVaultV1_VaultIcon {
     var icon: VaultIcon {
         switch self {
         case .icon1: .icon1

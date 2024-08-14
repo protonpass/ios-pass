@@ -22,6 +22,7 @@ import Core
 import DesignSystem
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct CreditCardDetailView: View {

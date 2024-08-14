@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
+
 public struct AliasCreationInfo: Sendable {
     let prefix: String
     let suffix: Suffix

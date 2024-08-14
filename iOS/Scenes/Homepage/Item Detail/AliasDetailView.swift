@@ -20,6 +20,7 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct AliasDetailView: View {

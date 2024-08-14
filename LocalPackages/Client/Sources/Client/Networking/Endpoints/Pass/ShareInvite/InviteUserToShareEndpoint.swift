@@ -22,23 +22,6 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-// struct InviteUserToShareEndpoint: Endpoint {
-//    typealias Body = InviteUserToShareRequest
-//    typealias Response = CodeOnlyResponse
-//
-//    var debugDescription: String
-//    var path: String
-//    var method: HTTPMethod
-//    var body: InviteUserToShareRequest?
-//
-//    init(shareId: String, request: InviteUserToShareRequest) {
-//        debugDescription = "Invite a user to share"
-//        path = "/pass/v1/share/\(shareId)/invite"
-//        method = .post
-//        body = request
-//    }
-// }
-
 public struct InviteUserToShareRequest: Sendable {
     /// List of keys encrypted for the other user's address key and signed with your address key
     let keys: [ItemKey]

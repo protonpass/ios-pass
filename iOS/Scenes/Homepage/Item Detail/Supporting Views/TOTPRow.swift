@@ -24,6 +24,7 @@ import DesignSystem
 import Entities
 import Factory
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 @MainActor
