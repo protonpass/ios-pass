@@ -72,7 +72,7 @@ private extension UseCasesContainer {
     }
 
     var inviteRepository: any InviteRepositoryProtocol {
-        RepositoryContainer.shared.inviteRepository()
+        SharedRepositoryContainer.shared.inviteRepository()
     }
 
     var publicKeyRepository: any PublicKeyRepositoryProtocol {
