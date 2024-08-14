@@ -44,7 +44,7 @@ private let kRefreshInvitationsTaskLabel = "RefreshInvitationsTask"
 @MainActor
 protocol HomepageCoordinatorDelegate: AnyObject {
     func homepageCoordinatorWantsToLogOut()
-    func homepageCoordinatorDidFailLocallyAuthenticating()
+    func homepageCoordinatorDidFailLocallyAuthenticating(_ errorMessage: String?)
 }
 
 final class HomepageCoordinator: Coordinator, DeinitPrintable {
@@ -907,14 +907,14 @@ extension HomepageCoordinator {
         dismissTopMostViewController(completion: presentCreateSecureLinkView)
     }
 
-    func handleFailedLocalAuthentication() {
+    func handleFailedLocalAuthentication(_ errorMessage: String?) {
         Task { [weak self] in
             guard let self else { return }
             logger.error("Failed to locally authenticate. Logging out.")
             showLoadingHud()
             await revokeCurrentSession()
             hideLoadingHud()
-            delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+            delegate?.homepageCoordinatorDidFailLocallyAuthenticating(errorMessage)
         }
     }
 
@@ -1237,7 +1237,7 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
     }
 
     func childCoordinatorDidFailLocalAuthentication() {
-        delegate?.homepageCoordinatorDidFailLocallyAuthenticating()
+        delegate?.homepageCoordinatorDidFailLocallyAuthenticating(nil)
     }
 }
 

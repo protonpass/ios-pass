@@ -366,8 +366,8 @@ private extension AppCoordinator {
         case .expiredRefreshToken, .sessionInvalidated:
             alert(title: #localized("Your session is expired"),
                   message: #localized("Please log in again"))
-        case .failedBiometricAuthentication:
-            alert(title: #localized("Failed to authenticate"),
+        case let .failedBiometricAuthentication(reason):
+            alert(title: reason ?? #localized("Failed to authenticate"),
                   message: #localized("Please log in again"))
         case let .failedToSetUpAppCoordinator(error):
             alert(title: #localized("Error occurred"), message: error.localizedDescription)
@@ -399,14 +399,14 @@ extension AppCoordinator: HomepageCoordinatorDelegate {
         appStateObserver.updateAppState(.loggedOut(.userInitiated))
     }
 
-    func homepageCoordinatorDidFailLocallyAuthenticating() {
+    func homepageCoordinatorDidFailLocallyAuthenticating(_ errorMessage: String?) {
         Task { [weak self] in
             guard let self else {
                 return
             }
             do {
                 try await logOutAllAccounts()
-                appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication))
+                appStateObserver.updateAppState(.loggedOut(.failedBiometricAuthentication(errorMessage)))
             } catch {
                 logger.error(error)
             }

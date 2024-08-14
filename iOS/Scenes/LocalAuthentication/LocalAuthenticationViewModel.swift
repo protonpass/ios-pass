@@ -39,7 +39,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let onSuccess: () async throws -> Void
-    private let onFailure: () -> Void
+    private let onFailure: (String?) -> Void
     private var cancellables = Set<AnyCancellable>()
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
@@ -73,7 +73,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
          manuallyAvoidKeyboard: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
-         onFailure: @escaping () -> Void) {
+         onFailure: @escaping (String?) -> Void) {
         self.mode = mode
         self.delayed = delayed
         self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
@@ -106,8 +106,8 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
                     recordFailure(nil)
                 }
             } catch PassError.biometricChange {
-                /// We need to logout the user as we detected that the biometric settings have changed
-                onFailure()
+                // swiftlint:disable:next line_length
+                onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out."))
             } catch {
                 recordFailure(error)
             }
@@ -120,7 +120,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
             let message = "Can not check PIN code. No PIN code set."
             assertionFailure(message)
             logger.error(message)
-            onFailure()
+            onFailure(nil)
             return
         }
         if currentPIN == enteredPinCode {
@@ -132,7 +132,7 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
 
     func logOut() {
         logger.debug("Manual log out")
-        onFailure()
+        onFailure(nil)
     }
 }
 
@@ -148,7 +148,7 @@ private extension LocalAuthenticationViewModel {
             if remainingAttempts >= 1 {
                 state = .remainingAttempts(remainingAttempts)
             } else {
-                onFailure()
+                onFailure(nil)
             }
         }
     }
@@ -167,7 +167,7 @@ private extension LocalAuthenticationViewModel {
                 }
             } catch {
                 // Failed to even record error, something's very wrong. Just log out.
-                onFailure()
+                onFailure(nil)
             }
         }
     }

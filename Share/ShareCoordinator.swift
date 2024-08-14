@@ -227,7 +227,7 @@ private extension ShareCoordinator {
                                              guard let self else { return }
                                              dismissExtension()
                                          })
-                                         .localAuthentication(onFailure: { [weak self] in
+                                         .localAuthentication(onFailure: { [weak self] _ in
                                              guard let self else { return }
                                              logOut(userId: userId)
                                          })
