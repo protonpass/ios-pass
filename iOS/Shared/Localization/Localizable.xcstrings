@@ -116891,6 +116891,16 @@
         }
       }
     },
+    "We have detected a change in your biometric authentication settings. For security reasons, you have been logged out." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We have detected a change in your biometric authentication settings. For security reasons, you have been logged out."
+          }
+        }
+      }
+    },
     "We sent a verification code to %@. Enter it below:" : {
       "localizations" : {
         "be" : {

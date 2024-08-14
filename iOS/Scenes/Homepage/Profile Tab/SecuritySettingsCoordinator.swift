@@ -173,7 +173,7 @@ private extension SecuritySettingsCoordinator {
             try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
         }
 
-        let failureHandler: () -> Void = { [weak self] in
+        let failureHandler: (String?) -> Void = { [weak self] _ in
             guard let self else { return }
             delegate?.childCoordinatorDidFailLocalAuthentication()
         }
@@ -193,7 +193,7 @@ private extension SecuritySettingsCoordinator {
             definePINCodeAndChangeToPINMethod()
         }
 
-        let failureHandler: () -> Void = { [weak self] in
+        let failureHandler: (String?) -> Void = { [weak self] _ in
             guard let self else { return }
             delegate?.childCoordinatorDidFailLocalAuthentication()
         }

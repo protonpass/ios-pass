@@ -242,7 +242,7 @@ private extension CredentialProviderCoordinator {
         let view = ExtensionSettingsView(onDismiss: { [weak self] in
             guard let self else { return }
             completeConfiguration(context: context)
-        }, onLogOut: { [weak self] in
+        }, onLogOut: { [weak self] _ in
             guard let self else { return }
             logOut(userId: activeUserId) { [weak self] in
                 guard let self else { return }
