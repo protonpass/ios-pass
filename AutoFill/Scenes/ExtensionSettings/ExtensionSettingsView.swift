@@ -27,10 +27,10 @@ struct ExtensionSettingsView: View {
     @StateObject private var viewModel = ExtensionSettingsViewModel()
 
     private let onDismiss: () -> Void
-    private let onLogOut: () -> Void
+    private let onLogOut: (String?) -> Void
 
     init(onDismiss: @escaping () -> Void,
-         onLogOut: @escaping () -> Void) {
+         onLogOut: @escaping (String?) -> Void) {
         self.onDismiss = onDismiss
         self.onLogOut = onLogOut
     }

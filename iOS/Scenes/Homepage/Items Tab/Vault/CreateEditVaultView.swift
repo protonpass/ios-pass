@@ -125,6 +125,7 @@ struct CreateEditVaultView: View {
                     TextField("Untitled", text: $viewModel.title)
                         .font(.title.weight(.bold))
                         .tint(PassColor.interactionNorm.toColor)
+                        .keyboardType(.asciiCapable)
                         .submitLabel(.done)
                         .focused($isFocusedOnTitle)
                         .onSubmit { isFocusedOnTitle = false }
