@@ -79,6 +79,6 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
             try keychainService.removeOrError(forKey: biometricKey)
             return true
         }
-         return false
+        return false
     }
 }
