@@ -313,7 +313,7 @@ private extension AppCoordinator {
             guard let self else { return }
             do {
                 let users = try await localUserDataDatasource.getAll()
-                if users.isEmpty {
+                if users.isEmpty, try await !userManager.getAllUsers().isEmpty {
                     // Refresh all on-memory data and stop the event loop
                     try await logOutAllAccounts()
                     appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))

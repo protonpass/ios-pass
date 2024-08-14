@@ -91,19 +91,14 @@ private extension SecuritySettingsCoordinator {
 
         case (.none, .biometric):
             // Enable biometric authentication
-            // Failure is allowed because biometric authentication is not yet turned on
             try await biometricallyAuthenticateAndUpdateMethod(newMethod,
-                                                               policy: enablingPolicy,
-                                                               allowFailure: true)
+                                                               policy: enablingPolicy)
 
         case (.biometric, .none),
              (.biometric, .pin):
             // Disable biometric authentication or change from biometric to PIN
-            // Failure is not allowed because biometric authentication is already turned on
-            // Log out if too many failures
             try await biometricallyAuthenticateAndUpdateMethod(newMethod,
-                                                               policy: authenticatingPolicy,
-                                                               allowFailure: false)
+                                                               policy: authenticatingPolicy)
 
         case (.none, .pin):
             // Enable PIN authentication
@@ -117,8 +112,7 @@ private extension SecuritySettingsCoordinator {
     }
 
     func biometricallyAuthenticateAndUpdateMethod(_ newMethod: LocalAuthenticationMethod,
-                                                  policy: LAPolicy,
-                                                  allowFailure: Bool) async throws {
+                                                  policy: LAPolicy) async throws {
         let succesHandler: () async throws -> Void = { [weak self] in
             guard let self else { return }
             delegate?.childCoordinatorWantsToDismissTopViewController()
@@ -134,26 +128,13 @@ private extension SecuritySettingsCoordinator {
             }
         }
 
-        let failureHandler: () -> Void = { [weak self] in
-            guard let self else { return }
-            delegate?.childCoordinatorDidFailLocalAuthentication()
-        }
-
-        if allowFailure {
-            delegate?.childCoordinatorWantsToDismissTopViewController()
-            let authenticate = try await authenticate(policy: policy,
-                                                      reason: #localized("Please authenticate"))
-            if authenticate {
-                try await succesHandler()
-            }
+        delegate?.childCoordinatorWantsToDismissTopViewController()
+        let authenticate = try await authenticate(policy: policy,
+                                                  reason: #localized("Please authenticate"))
+        if authenticate {
+            try await succesHandler()
         } else {
-            let view = LocalAuthenticationView(mode: .biometric,
-                                               onAuth: {},
-                                               onSuccess: succesHandler,
-                                               onFailure: failureHandler)
-            delegate?.childCoordinatorWantsToPresent(view: view,
-                                                     viewOption: .fullScreen,
-                                                     presentationOption: .dismissTopViewController)
+            delegate?.childCoordinatorDidFailLocalAuthentication()
         }
     }
 
@@ -189,14 +170,7 @@ private extension SecuritySettingsCoordinator {
         let successHandler: () async throws -> Void = { [weak self] in
             guard let self else { return }
             delegate?.childCoordinatorWantsToDismissTopViewController()
-
-            if newMethod == .biometric {
-                try await biometricallyAuthenticateAndUpdateMethod(.biometric,
-                                                                   policy: enablingPolicy,
-                                                                   allowFailure: true)
-            } else {
-                try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
-            }
+            try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
         }
 
         let failureHandler: () -> Void = { [weak self] in
