@@ -68,15 +68,15 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
         var error: NSError?
         context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
 
-        if error == nil, try getBiometricsPolicyState() == nil,
+        let previousState = try getBiometricsPolicyState()
+        if error == nil, previousState == nil,
            let domainState = context.evaluatedPolicyDomainState {
             try savedBiometricsPolicyState(newBiometricData: domainState)
             return
         }
 
         if let domainState = context.evaluatedPolicyDomainState,
-           let savedDomainState = try? getBiometricsPolicyState(),
-           domainState != savedDomainState {
+           domainState != previousState {
             try? keychainService.removeOrError(forKey: biometricKey)
             throw PassError.biometricChange
         }
