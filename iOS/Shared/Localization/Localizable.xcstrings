@@ -16211,6 +16211,26 @@
         }
       }
     },
+    "Alias disabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias disabled"
+          }
+        }
+      }
+    },
+    "Alias enabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias enabled"
+          }
+        }
+      }
+    },
     "Alias of login item \"%@\"" : {
       "localizations" : {
         "be" : {
@@ -67071,7 +67091,7 @@
         }
       }
     },
-    "Move to trash" : {
+    "Move to Trash" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -67106,7 +67126,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Move to trash"
+            "value" : "Move to Trash"
           }
         },
         "es" : {

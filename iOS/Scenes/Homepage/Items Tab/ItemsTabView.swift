@@ -243,7 +243,7 @@ struct ItemsTabView: View {
                                    SquircleCheckbox()
                                } else {
                                    ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                         isSync: item.isAlias ? item.isAliasEnabled : true,
+                                                         isEnabled: item.isAlias ? item.isAliasEnabled : true,
                                                          pinned: item.pinned)
                                        .onTapGesture {
                                            viewModel.handleThumbnailSelection(item)
