@@ -28,6 +28,7 @@ import SwiftUI
 
 struct IdentityDetailView: View {
     @StateObject private var viewModel: IdentityDetailViewModel
+    @State private var showSocialSecurityNumber = false
     @Namespace private var bottomID
 
     init(viewModel: IdentityDetailViewModel) {
@@ -88,18 +89,25 @@ private extension IdentityDetailView {
         Section {
             VStack(spacing: DesignConstant.sectionPadding) {
                 ForEach(section.rows) { row in
-                    if !row.value.isEmpty {
+                    if let value = row.value, !value.isEmpty {
                         HStack(spacing: DesignConstant.sectionPadding) {
                             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                                 Text(row.title)
                                     .sectionTitleText()
-                                Text(row.value)
+
+                                let showPlainText = !row.isSocialSecurityNumber ||
+                                    (row.isSocialSecurityNumber && showSocialSecurityNumber)
+                                Text(showPlainText ? value : String(repeating: "•", count: 12))
                                     .sectionContentText()
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .contentShape(.rect)
                             .onTapGesture {
                                 viewModel.copyToClipboard(row)
+                            }
+
+                            if row.isSocialSecurityNumber {
+                                toggleSSNVisibilityButton
                             }
                         }
                         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -165,5 +173,16 @@ private extension IdentityDetailView {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, DesignConstant.sectionPadding)
             .padding(.vertical, DesignConstant.sectionPadding)
+    }
+
+    var toggleSSNVisibilityButton: some View {
+        CircleButton(icon: showSocialSecurityNumber ? IconProvider.eyeSlash : IconProvider.eye,
+                     iconColor: viewModel.itemContent.type.normMajor2Color,
+                     backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                     accessibilityLabel: showSocialSecurityNumber ?
+                         "Hide social security number" : "Show social security number",
+                     action: { showSocialSecurityNumber.toggle() })
+            .fixedSize(horizontal: true, vertical: true)
+            .animationsDisabled()
     }
 }
