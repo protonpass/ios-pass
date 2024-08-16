@@ -25,6 +25,7 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
     public let shareId: String
     public let type: ItemContentType
     public let aliasEmail: String?
+    public let aliasEnabled: Bool
     public let title: String
     public let description: String
     public let url: String?
@@ -40,6 +41,7 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
                 shareId: String,
                 type: ItemContentType,
                 aliasEmail: String? = nil,
+                aliasEnabled: Bool,
                 title: String,
                 description: String,
                 url: String? = nil,
@@ -54,6 +56,7 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
         self.shareId = shareId
         self.type = type
         self.aliasEmail = aliasEmail
+        self.aliasEnabled = aliasEnabled
         self.title = title
         self.description = description
         self.url = url

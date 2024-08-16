@@ -30,11 +30,11 @@ final class ItemContextMenuHandler: @unchecked Sendable {
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
-    private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\SharedUseCasesContainer.pinItem) private var pinItem
+    @LazyInjected(\SharedUseCasesContainer.unpinItem) private var unpinItem
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     init() {}
 }
@@ -143,6 +143,22 @@ extension ItemContextMenuHandler {
         performAction(on: item, showSpinner: false) { [weak self] itemContent in
             guard let self else { return }
             await copy(itemContent.aliasEmail, message: #localized("Alias address copied"))
+        }
+    }
+
+    func toggleAliasStatus(_ item: any ItemTypeIdentifiable, enabled: Bool) {
+        performAction(on: item, showSpinner: true) { [weak self] itemContent in
+            guard let self else { return }
+            let userId = try await userManager.getActiveUserId()
+            try await itemRepository.changeAliasStatus(userId: userId,
+                                                       item: itemContent,
+                                                       enabled: enabled)
+            let message = if enabled {
+                #localized("Alias enabled")
+            } else {
+                #localized("Alias disabled")
+            }
+            await router.display(element: .infosMessage(message, config: .refresh))
         }
     }
 
