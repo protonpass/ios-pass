@@ -138,7 +138,7 @@ final class AppCoordinator {
                             return
                         }
                         logger.info("Logged in manual")
-                        try? await userManager.addAndMarkAsActive(userData: userData)
+                        try? await userManager.upsertAndMarkAsActive(userData: userData)
 
                         if extraPassword {
                             showHomeScene(mode: .manualLoginWithExtraPassword)

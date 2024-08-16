@@ -212,7 +212,7 @@ final class APIManagerTests: XCTestCase {
             // GIVEN
             try await userManager.setUp()
             authManager.onSessionObtaining(credential: Credential(userData.credential))
-            try await userManager.addAndMarkAsActive(userData: userData)
+            try await userManager.upsertAndMarkAsActive(userData: userData)
             stubbedCurrentActiveUser = .init(userData)
             userManager.stubbedGetActiveUserDataResult = userData
             userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
@@ -243,7 +243,7 @@ final class APIManagerTests: XCTestCase {
                                                               scopes: [],
                                                               mailboxPassword: ""))
 
-        try await userManager.addAndMarkAsActive(userData: userData)
+        try await userManager.upsertAndMarkAsActive(userData: userData)
         stubbedCurrentActiveUser = .init(userData)
         userManager.stubbedGetActiveUserDataResult = userData
         userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
@@ -280,7 +280,7 @@ final class APIManagerTests: XCTestCase {
         // GIVEN
         try await userManager.setUp()
         authManager.onSessionObtaining(credential: Credential(userData.credential))
-        try await userManager.addAndMarkAsActive(userData: userData)
+        try await userManager.upsertAndMarkAsActive(userData: userData)
         stubbedCurrentActiveUser = .init(userData)
         userManager.stubbedGetActiveUserDataResult = userData
         userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser

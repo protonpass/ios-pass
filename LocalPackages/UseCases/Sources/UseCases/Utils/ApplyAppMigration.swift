@@ -71,7 +71,7 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
         if let userData = appData.getUserData(), missingMigrations.contains(.userAppData) {
             logger
                 .trace("Starting user data migration for app data to user manager for user id : \(userData.user.ID)")
-            try await userManager.addAndMarkAsActive(userData: userData)
+            try await userManager.upsertAndMarkAsActive(userData: userData)
             if let credential = appData.getMainCredential() {
                 (authManager as? AuthManager)?.migrate(credential)
             }
