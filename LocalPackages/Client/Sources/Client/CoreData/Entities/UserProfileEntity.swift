@@ -61,13 +61,6 @@ extension UserProfileEntity {
         userID = userData.user.ID
         updateTime = Int64(Date.now.timeIntervalSince1970)
         encryptedData = try key.encrypt(data)
-        isActive = isActive
-    }
-
-    func hydrate(isActive: Bool) throws {
-        encryptedData = encryptedData
-        userID = userID
-        updateTime = Int64(Date.now.timeIntervalSince1970)
-        self.isActive = isActive
+        isActive = false
     }
 }

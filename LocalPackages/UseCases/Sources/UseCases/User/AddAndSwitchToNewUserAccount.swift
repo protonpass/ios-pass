@@ -65,7 +65,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
         syncEventLoop.stop()
         // We add the new user and credential to the user manager and the main authManager
         // We also update the main apiservice with the new session id through apiManager
-        try await userManager.addAndMarkAsActive(userData: userData)
+        try await userManager.upsertAndMarkAsActive(userData: userData)
         try await preferencesManager.switchUserPreferences(userId: userData.user.ID)
         refreshFeatureFlags()
         if hasExtraPassword {
