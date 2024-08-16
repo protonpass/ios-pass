@@ -95,7 +95,13 @@ private extension ItemSquircleThumbnail {
                               backgroundColor: !isEnabled ? .clear : alternativeBackground ? type
                                   .normMinor2Color : type.normMinor1Color,
                               height: size.height)
-                .overlay(aliasSyncOverlay(type: type, height: size.height))
+                .if(!isEnabled) { view in
+                    view.overlay {
+                        RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
+                            .stroke((alternativeBackground ? type.normMinor2Color : type.normMinor1Color).toColor,
+                                    lineWidth: 1)
+                    }
+                }
 
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),
@@ -145,17 +151,6 @@ private extension ItemSquircleThumbnail {
                     print(error)
                 }
             }
-        }
-    }
-
-    @ViewBuilder
-    func aliasSyncOverlay(type: ItemContentType, height: CGFloat) -> some View {
-        if !isEnabled {
-            RoundedRectangle(cornerRadius: height / 2.5, style: .continuous)
-                .stroke((alternativeBackground ? type.normMinor2Color : type.normMinor1Color).toColor,
-                        lineWidth: 1)
-        } else {
-            EmptyView()
         }
     }
 }

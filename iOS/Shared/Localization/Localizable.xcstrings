@@ -37183,6 +37183,16 @@
         }
       }
     },
+    "Disable alias" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable alias"
+          }
+        }
+      }
+    },
     "Disable instead" : {
       "localizations" : {
         "en" : {
@@ -40373,6 +40383,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bật"
+          }
+        }
+      }
+    },
+    "Enable alias" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable alias"
           }
         }
       }
