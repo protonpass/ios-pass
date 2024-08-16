@@ -53,6 +53,7 @@ public extension ItemContent {
                      shareId: shareId,
                      type: contentData.type,
                      aliasEmail: item.aliasEmail,
+                     aliasEnabled: aliasEnabled,
                      title: name,
                      description: note,
                      url: url,

@@ -38,6 +38,7 @@ enum ItemContextMenu {
     case alias(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
                onCopyAlias: () -> Void,
+               onToggleAliasStatus: (Bool) -> Void,
                onEdit: () -> Void,
                onPinToggle: () -> Void,
                onViewHistory: () -> Void,
@@ -112,16 +113,29 @@ enum ItemContextMenu {
         case let .alias(item,
                         isEditable,
                         onCopyAlias,
+                        onToggleAliasStatus,
                         onEdit,
                         onPinToggle,
                         onViewHistory,
                         onTrash):
+            var firstOptions = [ItemContextMenuOption]()
+
+            firstOptions.append(.init(title: "Copy alias address",
+                                      icon: IconProvider.squares,
+                                      action: onCopyAlias))
+
+            if item.aliasEnabled {
+                firstOptions.append(.init(title: "Disable alias",
+                                          icon: IconProvider.circleSlash,
+                                          action: { onToggleAliasStatus(false) }))
+            } else {
+                firstOptions.append(.init(title: "Enable alias",
+                                          icon: IconProvider.alias,
+                                          action: { onToggleAliasStatus(true) }))
+            }
+
             var sections: [ItemContextMenuOptionSection] = []
-
-            sections.append(.init(options: [.init(title: "Copy alias address",
-                                                  icon: IconProvider.alias,
-                                                  action: onCopyAlias)]))
-
+            sections.append(.init(options: firstOptions))
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
@@ -357,6 +371,9 @@ extension View {
                 itemContextMenu(.alias(item: item,
                                        isEditable: isEditable,
                                        onCopyAlias: { handler.copyAlias(item) },
+                                       onToggleAliasStatus: { enabled in
+                                           handler.toggleAliasStatus(item, enabled: enabled)
+                                       },
                                        onEdit: { handler.edit(item) },
                                        onPinToggle: { handler.toggleItemPinning(item) },
                                        onViewHistory: { handler.viewHistory(item) },
