@@ -286,7 +286,7 @@ struct ItemContextMenuOption: Identifiable {
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Move to trash",
+        .init(title: "Move to Trash",
               icon: IconProvider.trash,
               action: action,
               isDestructive: true)

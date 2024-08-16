@@ -62,7 +62,7 @@ public extension ItemContent {
                      modifyTime: item.modifyTime,
                      state: item.itemState,
                      pinned: item.pinned,
-                     isAliasEnabled: item.isAliasSyncEnabled)
+                     isAliasEnabled: item.isAliasEnabled)
     }
 
     func toAuthenticatorItem(totpData: TOTPData) -> AuthenticatorItem? {
