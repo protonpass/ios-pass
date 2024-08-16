@@ -113,7 +113,7 @@ extension UserManagerTests {
         XCTAssertEqual(activeUserData?.user.ID, mockedUserDatas.last?.userdata.user.ID)
     }
     
-    func testAddAndMarkAsActive() async throws {
+    func testUpsertAndMarkAsActive() async throws {
         // Given
         var allUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
         
@@ -141,7 +141,7 @@ extension UserManagerTests {
         try await sut.setUp()
         
         // When
-        try await sut.addAndMarkAsActive(userData: userData)
+        try await sut.upsertAndMarkAsActive(userData: userData)
         let activeUserData = try await XCTUnwrapAsync(await sut.getActiveUserData())
         let unwrappedUserData = try await sut.getUnwrappedActiveUserData()
         
@@ -252,22 +252,16 @@ extension UserManagerTests {
         }
         
         try await sut.setUp()
-        
-        try await sut.addAndMarkAsActive(userData: user1)
-        
-        
+
+        try await sut.upsertAndMarkAsActive(userData: user1)
         XCTAssertEqual(sut.activeUserId, user1.user.ID)
-        
-        try await sut.addAndMarkAsActive(userData: user2)
-        
-        
+
+        try await sut.upsertAndMarkAsActive(userData: user2)
         XCTAssertEqual(sut.activeUserId, user2.user.ID)
-        
-        try await sut.addAndMarkAsActive(userData: user3)
-        
-        
+
+        try await sut.upsertAndMarkAsActive(userData: user3)
         XCTAssertEqual(sut.activeUserId, user3.user.ID)
-        
+
         try await sut.switchActiveUser(with: user1.user.ID)
         XCTAssertEqual(sut.activeUserId, user1.user.ID)
     }
