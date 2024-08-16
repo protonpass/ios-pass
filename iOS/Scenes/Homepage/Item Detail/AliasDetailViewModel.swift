@@ -35,8 +35,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var note = ""
     @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?
-    @Published private(set) var aliasIsSync = false
-    @Published var togglingAliasStatus = false
+    @Published private(set) var aliasEnabled = false
+    @Published private(set) var togglingAliasStatus = false
 
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
@@ -44,7 +44,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
-        aliasIsSync = itemContent.item.isAliasSyncEnabled
+        aliasEnabled = itemContent.item.isAliasEnabled
         if case .alias = itemContent.contentData {
             name = itemContent.name
             note = itemContent.note
@@ -62,7 +62,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                                                               itemId: itemContent.item.itemID)
                 aliasEmail = alias.email
                 mailboxes = alias.mailboxes
-                aliasIsSync = itemContent.item.isAliasSyncEnabled
+                aliasEnabled = itemContent.item.isAliasEnabled
                 logger.info("Get alias detail successfully \(itemContent.debugDescription)")
             } catch {
                 logger.error(error)
@@ -72,12 +72,11 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func toggleAliasState() {
-        let newStatus = !aliasIsSync
-        setAliasStatus(newSyncStatus: newStatus)
+        setAliasStatus(enabled: !aliasEnabled)
     }
 
     func disableAlias() {
-        setAliasStatus(newSyncStatus: false)
+        setAliasStatus(enabled: false)
     }
 
     override func refresh() {
@@ -97,7 +96,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 }
 
 private extension AliasDetailViewModel {
-    func setAliasStatus(newSyncStatus: Bool) {
+    func setAliasStatus(enabled: Bool) {
         Task { [weak self] in
             guard let self else { return }
             defer { togglingAliasStatus = false }
@@ -106,11 +105,15 @@ private extension AliasDetailViewModel {
                 let userId = try await userManager.getActiveUserId()
                 try await itemRepository.changeAliasStatus(userId: userId,
                                                            item: itemContent,
-                                                           enabled: newSyncStatus)
-                router.display(element: .successMessage("The sync status has been successfully updated",
-                                                        config: .refresh))
-                logger.trace("Successfully updated the alias sync status of \(newSyncStatus)")
-                aliasIsSync = newSyncStatus
+                                                           enabled: enabled)
+                let message = if enabled {
+                    #localized("Alias enabled")
+                } else {
+                    #localized("Alias disabled")
+                }
+                router.display(element: .infosMessage(message, config: .refresh))
+                logger.trace("Successfully updated the alias status of \(enabled)")
+                aliasEnabled = enabled
             } catch {
                 logger.error(error)
                 self.error = error

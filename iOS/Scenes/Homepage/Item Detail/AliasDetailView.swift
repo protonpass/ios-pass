@@ -86,9 +86,9 @@ struct AliasDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .onFirstAppear(perform: viewModel.getAlias)
-        .alert("Move to trash", isPresented: $viewModel.showingGenericAlert) {
+        .alert("Move to Trash", isPresented: $viewModel.showingTrashAliasAlert) {
             Button("Disable instead") { viewModel.disableAlias() }
-            Button("Move to trash") { viewModel.moveToTrash() }
+            Button("Move to Trash") { viewModel.moveToTrash() }
             Button("Cancel", role: .cancel) {}
         } message: {
             // swiftlint:disable:next line_length
@@ -122,7 +122,6 @@ struct AliasDetailView: View {
 
                 Text(viewModel.aliasEmail)
                     .sectionContentText()
-                    .lineLimit(1)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
@@ -131,12 +130,13 @@ struct AliasDetailView: View {
             if viewModel.togglingAliasStatus {
                 ProgressView()
             } else {
-                StaticToggle(isOn: viewModel.aliasIsSync,
+                StaticToggle(isOn: viewModel.aliasEnabled,
                              tintColor: iconTintColor,
                              action: { viewModel.toggleAliasState() })
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.togglingAliasStatus)
         .contextMenu {
             Button { viewModel.copyAliasEmail() } label: {
                 Text("Copy")
