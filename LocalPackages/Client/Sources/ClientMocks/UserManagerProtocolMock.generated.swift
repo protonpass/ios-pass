@@ -99,44 +99,26 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         closureGetActiveUserData()
         return stubbedGetActiveUserDataResult
     }
-    // MARK: - addAndMarkAsActive
-    public var addAndMarkAsActiveUserDataThrowableError3: Error?
-    public var closureAddAndMarkAsActive: () -> () = {}
-    public var invokedAddAndMarkAsActivefunction = false
-    public var invokedAddAndMarkAsActiveCount = 0
-    public var invokedAddAndMarkAsActiveParameters: (userData: UserData, Void)?
-    public var invokedAddAndMarkAsActiveParametersList = [(userData: UserData, Void)]()
+    // MARK: - upsertAndMarkAsActive
+    public var upsertAndMarkAsActiveUserDataThrowableError3: Error?
+    public var closureUpsertAndMarkAsActive: () -> () = {}
+    public var invokedUpsertAndMarkAsActivefunction = false
+    public var invokedUpsertAndMarkAsActiveCount = 0
+    public var invokedUpsertAndMarkAsActiveParameters: (userData: UserData, Void)?
+    public var invokedUpsertAndMarkAsActiveParametersList = [(userData: UserData, Void)]()
 
-    public func addAndMarkAsActive(userData: UserData) async throws {
-        invokedAddAndMarkAsActivefunction = true
-        invokedAddAndMarkAsActiveCount += 1
-        invokedAddAndMarkAsActiveParameters = (userData, ())
-        invokedAddAndMarkAsActiveParametersList.append((userData, ()))
-        if let error = addAndMarkAsActiveUserDataThrowableError3 {
+    public func upsertAndMarkAsActive(userData: UserData) async throws {
+        invokedUpsertAndMarkAsActivefunction = true
+        invokedUpsertAndMarkAsActiveCount += 1
+        invokedUpsertAndMarkAsActiveParameters = (userData, ())
+        invokedUpsertAndMarkAsActiveParametersList.append((userData, ()))
+        if let error = upsertAndMarkAsActiveUserDataThrowableError3 {
             throw error
         }
-        closureAddAndMarkAsActive()
-    }
-    // MARK: - update
-    public var updateUserDataThrowableError4: Error?
-    public var closureUpdate: () -> () = {}
-    public var invokedUpdatefunction = false
-    public var invokedUpdateCount = 0
-    public var invokedUpdateParameters: (userData: UserData, Void)?
-    public var invokedUpdateParametersList = [(userData: UserData, Void)]()
-
-    public func update(userData: UserData) async throws {
-        invokedUpdatefunction = true
-        invokedUpdateCount += 1
-        invokedUpdateParameters = (userData, ())
-        invokedUpdateParametersList.append((userData, ()))
-        if let error = updateUserDataThrowableError4 {
-            throw error
-        }
-        closureUpdate()
+        closureUpsertAndMarkAsActive()
     }
     // MARK: - switchActiveUser
-    public var switchActiveUserWithThrowableError5: Error?
+    public var switchActiveUserWithThrowableError4: Error?
     public var closureSwitchActiveUser: () -> () = {}
     public var invokedSwitchActiveUserfunction = false
     public var invokedSwitchActiveUserCount = 0
@@ -148,13 +130,13 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedSwitchActiveUserCount += 1
         invokedSwitchActiveUserParameters = (userId, ())
         invokedSwitchActiveUserParametersList.append((userId, ()))
-        if let error = switchActiveUserWithThrowableError5 {
+        if let error = switchActiveUserWithThrowableError4 {
             throw error
         }
         closureSwitchActiveUser()
     }
     // MARK: - getAllUsers
-    public var getAllUsersThrowableError6: Error?
+    public var getAllUsersThrowableError5: Error?
     public var closureGetAllUsers: () -> () = {}
     public var invokedGetAllUsersfunction = false
     public var invokedGetAllUsersCount = 0
@@ -163,14 +145,14 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public func getAllUsers() async throws -> [UserData] {
         invokedGetAllUsersfunction = true
         invokedGetAllUsersCount += 1
-        if let error = getAllUsersThrowableError6 {
+        if let error = getAllUsersThrowableError5 {
             throw error
         }
         closureGetAllUsers()
         return stubbedGetAllUsersResult
     }
     // MARK: - remove
-    public var removeUserIdThrowableError7: Error?
+    public var removeUserIdThrowableError6: Error?
     public var closureRemove: () -> () = {}
     public var invokedRemovefunction = false
     public var invokedRemoveCount = 0
@@ -182,13 +164,13 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         invokedRemoveCount += 1
         invokedRemoveParameters = (userId, ())
         invokedRemoveParametersList.append((userId, ()))
-        if let error = removeUserIdThrowableError7 {
+        if let error = removeUserIdThrowableError6 {
             throw error
         }
         closureRemove()
     }
     // MARK: - cleanAllUsers
-    public var cleanAllUsersThrowableError8: Error?
+    public var cleanAllUsersThrowableError7: Error?
     public var closureCleanAllUsers: () -> () = {}
     public var invokedCleanAllUsersfunction = false
     public var invokedCleanAllUsersCount = 0
@@ -196,7 +178,7 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
     public func cleanAllUsers() async throws {
         invokedCleanAllUsersfunction = true
         invokedCleanAllUsersCount += 1
-        if let error = cleanAllUsersThrowableError8 {
+        if let error = cleanAllUsersThrowableError7 {
             throw error
         }
         closureCleanAllUsers()
