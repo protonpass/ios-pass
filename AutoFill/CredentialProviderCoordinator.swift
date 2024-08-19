@@ -36,7 +36,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 
     /// Self-initialized properties
     private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -61,13 +60,12 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
-//    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
-    @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
 
     /// Derived properties
@@ -98,7 +96,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await setUpBeforeLaunching()
+                try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
                 refreshFeatureFlags()
                 // This need to be set after user data is loaded as we now depend on active user id to set session
                 // to the api service
@@ -111,8 +109,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
                                sessionId: sessionInfos.sessionId)
                     }
                     .store(in: &cancellables)
-                let theme = preferencesManager.sharedPreferences.unwrapped().theme
-                rootViewController?.overrideUserInterfaceStyle = theme.userInterfaceStyle
                 start(mode: mode)
             } catch {
                 handle(error: error)
@@ -370,12 +366,11 @@ private extension CredentialProviderCoordinator {
                 sendErrorToSentry(error, userId: userId, sessionId: sessionId)
             }
 
-            // swiftlint:disable:next todo
-            // TODO: why do we revoke session as this seems to be linked to import export of data never really implemented in main app ?
-            // await revokeCurrentSession()
-
-            if let wasLastAccount = try? await logOutUser(userId: userId), wasLastAccount {
+            do {
+                try await logOutAllAccounts()
                 showNotLoggedInView()
+            } catch {
+                logger.error(error)
             }
             completion?()
         }

@@ -38,7 +38,7 @@ public struct AppPreferences: Codable, Equatable, Sendable {
     /// Whether to show or not custom domain explanation when viewing monitored aliases
     public var dismissedCustomDomainExplanation: Bool
 
-    /// Whether to show or not custom domain explanation when viewing monitored aliases
+    /// Whether to show or not SimpleLogin alias sync explanation when in profile tab
     public var dismissedAliasesSyncExplanation: Bool
 
     // swiftlint:disable:next todo

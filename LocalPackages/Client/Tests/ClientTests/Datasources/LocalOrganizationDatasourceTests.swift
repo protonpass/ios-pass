@@ -69,26 +69,24 @@ extension LocalOrganizationDatasourceTests {
         XCTAssertEqual(result2, org2)
     }
 
-//    func testRemoveOrganizations() async throws {
-//        // Given
-//        let userId = String.random()
-//        let org1 = Organization(canUpdate: true,
-//                                settings: .init(shareMode: .restricted,
-//                                                forceLockSeconds: 100,
-//                                                exportMode: .admins))
-//
-//        // When
-//        try await sut.upsertOrganization(org1, userId: userId)
-//        let result1 = try await XCTUnwrapAsync(await sut.getOrganization(userId: userId))
-//
-//        // Then
-//        XCTAssertEqual(result1, org1)
-//
-//        // When
-//        try await sut.removeOrganization(userId: userId)
-//        let result2 = try await sut.getOrganization(userId: userId)
-//
-//        // Then
-//        XCTAssertNil(result2)
-//    }
+    func testRemoveOrganizations() async throws {
+        // Given
+        let userId = String.random()
+        let org1 = Organization(canUpdate: true,
+                                settings: .init(shareMode: .restricted,
+                                                forceLockSeconds: 100,
+                                                exportMode: .admins))
+
+        // When
+        try await sut.upsertOrganization(org1, userId: userId)
+
+        // Then
+        try await XCTAssertEqualAsync(await sut.getOrganization(userId: userId), org1)
+
+        // When
+        try await sut.removeOrganization(userId: userId)
+
+        // Then
+        try await XCTAssertNilAsync(await sut.getOrganization(userId: userId))
+    }
 }

@@ -67,6 +67,8 @@ private extension HomepageCoordinator {
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
+        viewController.sheetPresentationController?.delegate = viewModel
+        viewModel.uiSheetPresentationController = viewController.sheetPresentationController
         present(viewController)
     }
 

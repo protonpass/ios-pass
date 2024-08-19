@@ -202,9 +202,6 @@ private extension EventSynchronizer {
 
     /// Handle existing share processing
     func handleExistingShare(userId: String, remoteShare: Share) async throws -> Bool {
-        // We are deleting the share from local storage because of a bug in Core data
-        // not taking into account any boolean value changes.
-        try await shareRepository.deleteShareLocally(userId: userId, shareId: remoteShare.shareID)
         try await shareRepository.upsertShares(userId: userId, shares: [remoteShare])
         try Task.checkCancellation()
         return try await sync(userId: userId, share: remoteShare)

@@ -41,10 +41,10 @@ struct SimpleLoginAliasActivationView: View {
             Text("SimpleLogin aliases will be imported into this vault.")
                 .font(.footnote)
                 .foregroundStyle(PassColor.textWeak.toColor)
-                .frame(maxWidth: .infinity, alignment: .center)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .navigationTitle("Sync Aliases")
+        .navigationTitle("Sync aliases")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
@@ -80,11 +80,8 @@ private extension SimpleLoginAliasActivationView {
                                         disabled: !viewModel.canActiveSync,
                                         height: 44) {
                 Task {
-                    do {
-                        try await viewModel.activateSync()
+                    if await viewModel.activateSync() {
                         dismiss()
-                    } catch {
-                        return
                     }
                 }
             }

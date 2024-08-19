@@ -28,6 +28,37 @@ import Macro
 import SwiftUI
 import UIKit
 
+extension IdentityDetailViewModel {
+    struct Section: Identifiable {
+        let title: String
+        let rows: [Row]
+        let customFields: [CustomFieldUiModel]
+
+        var id: String {
+            title
+        }
+
+        init(title: String, rows: [Row], customFields: [CustomFieldUiModel]) {
+            self.title = title
+            self.rows = rows.filter { !$0.value.isEmpty }
+            self.customFields = customFields
+        }
+
+        var isEmpty: Bool {
+            rows.isEmpty && customFields.isEmpty
+        }
+    }
+
+    struct Row: Identifiable, Equatable {
+        let title: String
+        let value: String
+
+        var id: String {
+            title + value
+        }
+    }
+}
+
 @MainActor
 final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var title = ""
@@ -68,94 +99,6 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var workEmail = ""
     @Published private(set) var extraWorkDetails: [CustomFieldUiModel] = []
     @Published private(set) var extraSections: [CustomSection] = []
-
-    var showPersonalSection: Bool {
-        [
-            fullName,
-            email,
-            phoneNumber,
-            firstName,
-            middleName,
-            lastName,
-            birthdate,
-            gender,
-            extraPersonalDetails
-        ].hasNonEmptyElement()
-    }
-
-    var showAddressSection: Bool {
-        [
-            organization,
-            streetAddress,
-            zipOrPostalCode,
-            city,
-            stateOrProvince,
-            countryOrRegion,
-            floor,
-            county,
-            extraAddressDetails
-        ].hasNonEmptyElement()
-    }
-
-    var showContactSection: Bool {
-        [
-            socialSecurityNumber,
-            passportNumber,
-            licenseNumber,
-            website,
-            xHandle,
-            secondPhoneNumber,
-            linkedIn,
-            reddit,
-            facebook,
-            yahoo,
-            instagram,
-            extraContactDetails
-        ].hasNonEmptyElement()
-    }
-
-    var showWorkSection: Bool {
-        [
-            company,
-            jobTitle,
-            personalWebsite,
-            workPhoneNumber,
-            workEmail,
-            extraWorkDetails
-        ].hasNonEmptyElement()
-    }
-
-    var nonEmptyPersonalElement: [String] {
-        [firstName, middleName, lastName, fullName, email, phoneNumber, birthdate, gender]
-            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    }
-
-    var nonEmptyAddressElement: [String] {
-        [organization, streetAddress, zipOrPostalCode, city, stateOrProvince, countryOrRegion, floor, county]
-            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    }
-
-    var nonEmptyContactElement: [String] {
-        [
-            socialSecurityNumber,
-            passportNumber,
-            licenseNumber,
-            website,
-            xHandle,
-            secondPhoneNumber,
-            linkedIn,
-            reddit,
-            facebook,
-            yahoo,
-            instagram
-        ]
-        .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    }
-
-    var nonEmptyWorkElement: [String] {
-        [company, jobTitle, personalWebsite, workPhoneNumber, workEmail]
-            .filter { !$0.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
-    }
 
     override func bindValues() {
         super.bindValues()
@@ -202,11 +145,77 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         extraWorkDetails = data.extraWorkDetails.map(\.toCustomFieldUiModel)
         extraSections = data.extraSections
     }
+
+    var sections: [Section] {
+        [personalDetailsSection, addressDetailsSection, contactDetailsSection, workDetailsSection]
+    }
+}
+
+private extension IdentityDetailViewModel {
+    var personalDetailsSection: Section {
+        .init(title: #localized("Personal details"),
+              rows: [
+                  .init(title: IdentityFields.firstName.title, value: firstName),
+                  .init(title: IdentityFields.middleName.title, value: middleName),
+                  .init(title: IdentityFields.lastName.title, value: lastName),
+                  .init(title: IdentityFields.fullName.title, value: fullName),
+                  .init(title: IdentityFields.email.title, value: email),
+                  .init(title: IdentityFields.phoneNumber.title, value: phoneNumber),
+                  .init(title: IdentityFields.birthdate.title, value: birthdate),
+                  .init(title: IdentityFields.gender.title, value: gender)
+              ],
+              customFields: extraPersonalDetails)
+    }
+
+    var addressDetailsSection: Section {
+        .init(title: #localized("Address details"),
+              rows: [
+                  .init(title: IdentityFields.organization.title, value: organization),
+                  .init(title: IdentityFields.streetAddress.title, value: streetAddress),
+                  .init(title: IdentityFields.zipOrPostalCode.title, value: zipOrPostalCode),
+                  .init(title: IdentityFields.city.title, value: city),
+                  .init(title: IdentityFields.stateOrProvince.title, value: stateOrProvince),
+                  .init(title: IdentityFields.countryOrRegion.title, value: countryOrRegion),
+                  .init(title: IdentityFields.floor.title, value: floor),
+                  .init(title: IdentityFields.county.title, value: county)
+              ],
+              customFields: extraAddressDetails)
+    }
+
+    var contactDetailsSection: Section {
+        .init(title: #localized("Contact details"),
+              rows: [
+                  .init(title: IdentityFields.socialSecurityNumber.title, value: socialSecurityNumber),
+                  .init(title: IdentityFields.passportNumber.title, value: passportNumber),
+                  .init(title: IdentityFields.licenseNumber.title, value: licenseNumber),
+                  .init(title: IdentityFields.website.title, value: website),
+                  .init(title: IdentityFields.xHandle.title, value: xHandle),
+                  .init(title: IdentityFields.secondPhoneNumber.title, value: secondPhoneNumber),
+                  .init(title: IdentityFields.linkedIn.title, value: linkedIn),
+                  .init(title: IdentityFields.reddit.title, value: reddit),
+                  .init(title: IdentityFields.facebook.title, value: facebook),
+                  .init(title: IdentityFields.yahoo.title, value: yahoo),
+                  .init(title: IdentityFields.instagram.title, value: instagram)
+              ],
+              customFields: extraContactDetails)
+    }
+
+    var workDetailsSection: Section {
+        .init(title: #localized("Work details"),
+              rows: [
+                  .init(title: IdentityFields.company.title, value: company),
+                  .init(title: IdentityFields.jobTitle.title, value: jobTitle),
+                  .init(title: IdentityFields.personalWebsite.title, value: personalWebsite),
+                  .init(title: IdentityFields.workPhoneNumber.title, value: workPhoneNumber),
+                  .init(title: IdentityFields.workEmail.title, value: workEmail)
+              ],
+              customFields: extraWorkDetails)
+    }
 }
 
 extension IdentityDetailViewModel {
-    func copyValueToClipboard(value: String, message: String) {
-        copyToClipboard(text: value, message: #localized("%@ copied", message))
+    func copyToClipboard(_ row: Row) {
+        copyToClipboard(text: row.value, message: #localized("%@ copied", row.title))
     }
 
     func copyTotpToken(_ token: String) {

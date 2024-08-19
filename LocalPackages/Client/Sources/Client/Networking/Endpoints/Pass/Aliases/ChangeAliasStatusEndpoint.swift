@@ -39,10 +39,10 @@ struct ChangeAliasStatusEndpoint: Endpoint {
 
     init(shareId: String,
          itemId: String,
-         enable: Bool) {
-        debugDescription = "Change alias sync status"
+         enabled: Bool) {
+        debugDescription = "Change alias status"
         path = "/pass/v1/share/\(shareId)/alias/\(itemId)/status"
         method = .put
-        body = .init(enable: enable)
+        body = .init(enable: enabled)
     }
 }

@@ -53,6 +53,10 @@ private extension SharedUseCasesContainer {
         SharedRepositoryContainer.shared.itemRepository()
     }
 
+    var inviteRepository: any InviteRepositoryProtocol {
+        SharedRepositoryContainer.shared.inviteRepository()
+    }
+
     var userManager: any UserManagerProtocol {
         SharedServiceContainer.shared.userManager()
     }
@@ -290,6 +294,7 @@ extension SharedUseCasesContainer {
                        removeUserLocalData: self.removeUserLocalData(),
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                       accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                        vaultsManager: self.vaultsManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
@@ -396,7 +401,8 @@ extension SharedUseCasesContainer {
                           preferencesManager: self.preferencesManager,
                           apiManager: self.apiManager,
                           syncEventLoop: self.syncEventLoop,
-                          refreshFeatureFlags: self.refreshFeatureFlags()) }
+                          refreshFeatureFlags: self.refreshFeatureFlags(),
+                          inviteRepository: self.inviteRepository) }
     }
 
     var addAndSwitchToNewUserAccount: Factory<any AddAndSwitchToNewUserAccountUseCase> {
@@ -406,7 +412,8 @@ extension SharedUseCasesContainer {
                                             preferencesManager: self.preferencesManager,
                                             apiManager: self.apiManager,
                                             fullVaultsSync: self.fullVaultsSync(),
-                                            refreshFeatureFlags: self.refreshFeatureFlags()) }
+                                            refreshFeatureFlags: self.refreshFeatureFlags(),
+                                            inviteRepository: self.inviteRepository) }
     }
 
     var logOutAllAccounts: Factory<any LogOutAllAccountsUseCase> {

@@ -29,6 +29,8 @@ import Macro
 import ProtonCoreLogin
 import SwiftUI
 
+typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
+
 @MainActor
 protocol CreateEditItemViewModelDelegate: AnyObject {
     func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
@@ -97,7 +99,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
 
     // Scanning
     @Published var isShowingScanner = false
-    let scanResponsePublisher: PassthroughSubject<(any ScanResult)?, any Error> = .init()
+    let scanResponsePublisher = ScanResponsePublisher()
 
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)

@@ -45,6 +45,7 @@ public final class ToggleSentinel: ToggleSentinelUseCase {
 
     public func execute() async throws -> Bool {
         let userId = try await userManager.getActiveUserId()
+        try await settingsService.refreshSettings(for: userId)
         let userSettings = await settingsService.getSettings(for: userId)
         guard userSettings.highSecurity.eligible else {
             throw PassError.sentinelNotEligible
