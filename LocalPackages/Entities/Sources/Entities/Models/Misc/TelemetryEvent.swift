@@ -59,6 +59,8 @@ public enum TelemetryEventType: Sendable, Equatable {
     case monitorItemDetailFromWeakPassword
     case monitorItemDetailFromMissing2FA
     case monitorItemDetailFromReusedPassword
+    case multiAccountAddAccount
+    case multiAccountRemoveAccount
 
     /// For local storage only as we store events locally before sending to the BE in batch
     public var rawValue: String {
@@ -115,6 +117,10 @@ public enum TelemetryEventType: Sendable, Equatable {
             "monitor.item.detail.from.missing.2fa"
         case .monitorItemDetailFromReusedPassword:
             "monitor.item.detail.from.reused.password"
+        case .multiAccountAddAccount:
+            "multi.account.add.account"
+        case .multiAccountRemoveAccount:
+            "multi.account.remove.account"
         }
     }
 
@@ -165,6 +171,10 @@ public enum TelemetryEventType: Sendable, Equatable {
             self = .monitorItemDetailFromMissing2FA
         case "monitor.item.detail.from.reused.password":
             self = .monitorItemDetailFromReusedPassword
+        case "multi.account.add.account":
+            self = .multiAccountAddAccount
+        case "multi.account.remove.account":
+            self = .multiAccountRemoveAccount
         default:
             if let crudEvent = Self.crudEvent(rawValue: rawValue) {
                 self = crudEvent
