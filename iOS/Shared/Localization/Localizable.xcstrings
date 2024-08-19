@@ -16211,6 +16211,26 @@
         }
       }
     },
+    "Alias disabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias disabled"
+          }
+        }
+      }
+    },
+    "Alias enabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias enabled"
+          }
+        }
+      }
+    },
     "Alias of login item \"%@\"" : {
       "localizations" : {
         "be" : {
@@ -17007,6 +17027,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bí danh"
+          }
+        }
+      }
+    },
+    "Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead."
           }
         }
       }
@@ -37153,6 +37183,26 @@
         }
       }
     },
+    "Disable alias" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable alias"
+          }
+        }
+      }
+    },
+    "Disable instead" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable instead"
+          }
+        }
+      }
+    },
     "Disable Proton Sentinel" : {
       "localizations" : {
         "be" : {
@@ -40333,6 +40383,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bật"
+          }
+        }
+      }
+    },
+    "Enable alias" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable alias"
           }
         }
       }
@@ -67051,7 +67111,7 @@
         }
       }
     },
-    "Move to trash" : {
+    "Move to Trash" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -67086,7 +67146,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Move to trash"
+            "value" : "Move to Trash"
           }
         },
         "es" : {
