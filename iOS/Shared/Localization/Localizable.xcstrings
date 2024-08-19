@@ -52095,6 +52095,16 @@
         }
       }
     },
+    "Hide social security number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide social security number"
+          }
+        }
+      }
+    },
     "Hide-my-email aliases" : {
       "localizations" : {
         "be" : {
@@ -97126,6 +97136,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hiển thị mã bảo mật"
+          }
+        }
+      }
+    },
+    "Show social security number" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show social security number"
           }
         }
       }
