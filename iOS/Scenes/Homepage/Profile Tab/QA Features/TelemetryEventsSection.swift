@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@_spi(QA)
 import Client
 import DesignSystem
 import Entities
@@ -192,6 +193,9 @@ private extension TelemetryEventType {
              .monitorItemDetailFromWeakPassword:
             // swiftlint:disable:next force_unwrapping
             UIImage(systemName: "person.badge.shield.checkmark.fill")!
+        case .multiAccountAddAccount, .multiAccountRemoveAccount:
+            // swiftlint:disable:next force_unwrapping
+            UIImage(systemName: "person.3.fill")!
         }
     }
 
@@ -227,7 +231,9 @@ private extension TelemetryEventType {
              .monitorDisplayWeakPasswords,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
-             .monitorItemDetailFromWeakPassword:
+             .monitorItemDetailFromWeakPassword,
+             .multiAccountAddAccount,
+             .multiAccountRemoveAccount:
             ItemContentType.note.normMajor1Color
         }
     }
@@ -264,7 +270,9 @@ private extension TelemetryEventType {
              .monitorDisplayWeakPasswords,
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
-             .monitorItemDetailFromWeakPassword:
+             .monitorItemDetailFromWeakPassword,
+             .multiAccountAddAccount,
+             .multiAccountRemoveAccount:
             ItemContentType.note.normMinor1Color
         }
     }
@@ -323,6 +331,10 @@ private extension TelemetryEventType {
             "View item detail from missing 2FA list"
         case .monitorItemDetailFromReusedPassword:
             "View item detail from reused password list"
+        case .multiAccountAddAccount:
+            "Add new account"
+        case .multiAccountRemoveAccount:
+            "Remove an account"
         }
     }
 }
