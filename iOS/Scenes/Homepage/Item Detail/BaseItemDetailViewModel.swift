@@ -42,11 +42,11 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isMonitored = false // Only applicable to login items
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
+    @Published var showingTrashAliasAlert = false
 
     private var superBindValuesCalled = false
 
     let isShownAsSheet: Bool
-    let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
 
     let upgradeChecker: any UpgradeCheckerProtocol
@@ -60,7 +60,6 @@ class BaseItemDetailViewModel: ObservableObject {
     let vault: VaultListUiModel?
     let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
-    let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
@@ -69,6 +68,8 @@ class BaseItemDetailViewModel: ObservableObject {
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private(set) var itemRepository
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
 
     var isAllowedToEdit: Bool {
         guard let vault else {

@@ -833,10 +833,17 @@ extension HomepageCoordinator {
 
         guard let message else { return }
 
-        if let config, config.dismissBeforeShowing {
-            dismissTopMostViewController(animated: true) { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomInfoMessage(message)
+        if let config {
+            if config.dismissBeforeShowing {
+                dismissTopMostViewController(animated: true) { [weak self] in
+                    guard let self else { return }
+                    if config.refresh {
+                        refresh()
+                    }
+                    bannerManager.displayBottomInfoMessage(message)
+                }
+            } else if config.refresh {
+                refresh()
             }
         } else {
             bannerManager.displayBottomInfoMessage(message)

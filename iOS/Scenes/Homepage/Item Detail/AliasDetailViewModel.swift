@@ -23,6 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
+import Foundation
 import Macro
 
 @MainActor
@@ -34,12 +35,16 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var note = ""
     @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?
+    @Published private(set) var aliasEnabled = false
+    @Published private(set) var togglingAliasStatus = false
 
-    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
+        aliasEnabled = itemContent.item.isAliasEnabled
         if case .alias = itemContent.contentData {
             name = itemContent.name
             note = itemContent.note
@@ -57,6 +62,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                                                               itemId: itemContent.item.itemID)
                 aliasEmail = alias.email
                 mailboxes = alias.mailboxes
+                aliasEnabled = itemContent.item.isAliasEnabled
                 logger.info("Get alias detail successfully \(itemContent.debugDescription)")
             } catch {
                 logger.error(error)
@@ -65,11 +71,19 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         }
     }
 
+    func toggleAliasState() {
+        setAliasStatus(enabled: !aliasEnabled)
+    }
+
+    func disableAlias() {
+        setAliasStatus(enabled: false)
+    }
+
     override func refresh() {
         mailboxes = nil
         error = nil
-        getAlias()
         super.refresh()
+        getAlias()
     }
 
     func copyAliasEmail() {
@@ -78,5 +92,32 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     func copyMailboxEmail(_ email: String) {
         copyToClipboard(text: email, message: #localized("Email address copied"))
+    }
+}
+
+private extension AliasDetailViewModel {
+    func setAliasStatus(enabled: Bool) {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { togglingAliasStatus = false }
+            do {
+                togglingAliasStatus = true
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.changeAliasStatus(userId: userId,
+                                                           item: itemContent,
+                                                           enabled: enabled)
+                let message = if enabled {
+                    #localized("Alias enabled")
+                } else {
+                    #localized("Alias disabled")
+                }
+                router.display(element: .infosMessage(message, config: .refresh))
+                logger.trace("Successfully updated the alias status of \(enabled)")
+                aliasEnabled = enabled
+            } catch {
+                logger.error(error)
+                self.error = error
+            }
+        }
     }
 }
