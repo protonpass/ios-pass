@@ -34,8 +34,7 @@ public protocol UserManagerProtocol: Sendable {
 
     func setUp() async throws
     func getActiveUserData() async throws -> UserData?
-    func addAndMarkAsActive(userData: UserData) async throws
-    func update(userData: UserData) async throws
+    func upsertAndMarkAsActive(userData: UserData) async throws
     func switchActiveUser(with userId: String) async throws
     func getAllUsers() async throws -> [UserData]
     func remove(userId: String) async throws
@@ -110,21 +109,11 @@ public extension UserManager {
         return userProfiles.userDatas
     }
 
-    func addAndMarkAsActive(userData: UserData) async throws {
+    func upsertAndMarkAsActive(userData: UserData) async throws {
         assertDidSetUp()
 
         try await userDataDatasource.upsert(userData)
         try await switchActiveUser(with: userData.user.ID)
-    }
-
-    func update(userData: UserData) async throws {
-        try await userDataDatasource.upsert(userData)
-        try await updateCachedUserAccounts()
-
-        if let activeUserId,
-           activeUserId == userData.user.ID {
-            await publishNewActiveUser(userData)
-        }
     }
 
     /// Remove user profile from database and memory. If the user being removed if the current active user it sets
@@ -185,7 +174,7 @@ public extension UserManager {
                 return
             }
             do {
-                try await addAndMarkAsActive(userData: userData)
+                try await upsertAndMarkAsActive(userData: userData)
             } catch {
                 logger.error(error)
             }

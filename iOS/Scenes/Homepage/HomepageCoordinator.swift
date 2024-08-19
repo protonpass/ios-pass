@@ -970,12 +970,12 @@ extension HomepageCoordinator {
             guard let self, let userData = try? await userManager.getActiveUserData() else { return }
             var updatedUser = userData.user
             updatedUser.setNewKeys(userInfo.userKeys)
-            try? await userManager.update(userData: .init(credential: authCredential,
-                                                          user: updatedUser,
-                                                          salts: userData.salts,
-                                                          passphrases: userData.passphrases,
-                                                          addresses: userInfo.userAddresses,
-                                                          scopes: userData.scopes))
+            try? await userManager.upsertAndMarkAsActive(userData: .init(credential: authCredential,
+                                                                         user: updatedUser,
+                                                                         salts: userData.salts,
+                                                                         passphrases: userData.passphrases,
+                                                                         addresses: userInfo.userAddresses,
+                                                                         scopes: userData.scopes))
 
             dismissTopMostViewController { [weak self] in
                 guard let self else { return }

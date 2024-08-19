@@ -186,7 +186,7 @@
     </entity>
     <entity name="UserProfileEntity" representedClassName="UserProfileEntity" syncable="YES">
         <attribute name="encryptedData" attributeType="Binary"/>
-        <attribute name="isActive" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="isActive" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="updateTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <uniquenessConstraints>
