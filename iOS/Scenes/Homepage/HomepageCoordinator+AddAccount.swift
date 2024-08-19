@@ -102,6 +102,8 @@ private extension HomepageCoordinator {
                 }
                 router.display(element: .globalLoading(shouldShow: false))
 
+                addTelemetryEvent(with: .multiAccountAddAccount)
+
                 router.present(for: .fullSync)
                 logger.info("Doing full sync")
                 try await addAndSwitchToNewUserAccount(userData: userData,
