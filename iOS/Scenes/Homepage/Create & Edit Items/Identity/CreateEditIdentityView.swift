@@ -431,8 +431,7 @@ private extension CreateEditIdentityView {
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.zipOrPostalCode.title,
-                            value: $viewModel.zipOrPostalCode,
-                            keyboardType: .asciiCapableNumberPad)
+                            value: $viewModel.zipOrPostalCode)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.city.title,

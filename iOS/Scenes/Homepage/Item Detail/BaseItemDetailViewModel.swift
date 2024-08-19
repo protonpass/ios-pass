@@ -42,7 +42,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isMonitored = false // Only applicable to login items
     @Published var moreInfoSectionExpanded = false
     @Published var showingDeleteAlert = false
-    @Published var showingGenericAlert = false
+    @Published var showingTrashAliasAlert = false
 
     private var superBindValuesCalled = false
 

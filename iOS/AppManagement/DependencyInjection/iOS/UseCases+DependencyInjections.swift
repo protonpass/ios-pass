@@ -72,7 +72,7 @@ private extension UseCasesContainer {
     }
 
     var inviteRepository: any InviteRepositoryProtocol {
-        RepositoryContainer.shared.inviteRepository()
+        SharedRepositoryContainer.shared.inviteRepository()
     }
 
     var publicKeyRepository: any PublicKeyRepositoryProtocol {
@@ -185,7 +185,8 @@ extension UseCasesContainer {
     }
 
     var checkAddressesForInvite: Factory<any CheckAddressesForInviteUseCase> {
-        self { CheckAddressesForInvite(accessRepository: self.accessRepository,
+        self { CheckAddressesForInvite(userManager: self.userManager,
+                                       accessRepository: self.accessRepository,
                                        organizationRepository: SharedRepositoryContainer.shared
                                            .organizationRepository(),
                                        shareInviteRepository: self.shareInviteRepository) }

@@ -60,7 +60,7 @@ struct BiometricAuthenticationView: View {
             }
             .padding()
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onFirstAppear {
+            .onAppear {
                 if case .noAttempts = viewModel.state {
                     // Only automatically prompt for biometric authentication when no attempts were made
                     // Otherwise let the users know how many attempts are remaining

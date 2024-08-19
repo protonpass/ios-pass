@@ -142,6 +142,7 @@ struct ItemsTabView: View {
             }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
+                viewModel.continueFullSyncIfNeeded()
             }
         }
         .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)
@@ -242,7 +243,7 @@ struct ItemsTabView: View {
                                    SquircleCheckbox()
                                } else {
                                    ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                         isSync: item.isAlias ? item.isAliasSync : true,
+                                                         isEnabled: item.isAlias ? item.isAliasEnabled : true,
                                                          pinned: item.pinned)
                                        .onTapGesture {
                                            viewModel.handleThumbnailSelection(item)
