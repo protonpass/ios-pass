@@ -61,7 +61,7 @@ public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
                                    addresses: newAddresses,
                                    scopes: userData.scopes)
 
-        try await userManager.update(userData: newUserData)
+        try await userManager.upsertAndMarkAsActive(userData: newUserData)
         return newAddresses
     }
 }
