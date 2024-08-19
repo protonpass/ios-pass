@@ -79308,6 +79308,17 @@
         }
       }
     },
+    "Please select a reason" : {
+      "comment" : "Message shown when the user didn't pick a reason for reporting a bug",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select a reason"
+          }
+        }
+      }
+    },
     "Prefix" : {
       "localizations" : {
         "be" : {
