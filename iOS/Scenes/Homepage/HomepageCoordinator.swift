@@ -78,7 +78,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
     private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
