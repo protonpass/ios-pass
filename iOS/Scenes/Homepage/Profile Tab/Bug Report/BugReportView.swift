@@ -28,6 +28,8 @@ struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
     @StateObject private var viewModel = BugReportViewModel()
+    @State private var showMissingReasonAlert = false
+    @State private var highlightReasons = false
     var onError: (any Error) -> Void
     var onSuccess: () -> Void
     @State var isShowing = false
@@ -61,6 +63,10 @@ struct BugReportView: View {
                 onError(error)
             }
         }
+        .animation(.default, value: highlightReasons)
+        .alert("Please select a reason",
+               isPresented: $showMissingReasonAlert,
+               actions: { Button(action: { highlightReasons = true }, label: { Text("OK") }) })
     }
 }
 
@@ -80,8 +86,12 @@ private extension BugReportView {
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Send bug report") {
-                viewModel.send()
-            }.disabled(viewModel.cantSend)
+                if viewModel.cantSend {
+                    showMissingReasonAlert = true
+                } else {
+                    viewModel.send()
+                }
+            }
         }
     }
 }
@@ -126,7 +136,8 @@ private extension BugReportView {
                         .foregroundStyle(PassColor.textNorm.toColor)
                 } else {
                     Text("I want to report a problem with...")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .foregroundStyle(highlightReasons ?
+                            PassColor.interactionNormMajor2.toColor : PassColor.textNorm.toColor)
                 }
 
                 Spacer()
@@ -138,6 +149,9 @@ private extension BugReportView {
         })
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
+        .onTapGesture {
+            highlightReasons = false
+        }
     }
 }
 
