@@ -120,6 +120,10 @@ private extension TelemetryEvent {
             "pass_monitor.item_detail_from_missing_2fa"
         case .monitorItemDetailFromReusedPassword:
             "pass_monitor.item_detail_from_reused_password"
+        case .multiAccountAddAccount:
+            "pass_multi_account.add_account"
+        case .multiAccountRemoveAccount:
+            "pass_multi_account.remove_account"
         }
     }
 
