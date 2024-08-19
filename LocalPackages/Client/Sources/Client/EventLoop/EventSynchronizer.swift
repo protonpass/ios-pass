@@ -379,56 +379,20 @@ private extension EventSynchronizer {
                 break
             }
 
-            // Split the fetched items into batches of 100
-            let batches = paginatedAlias.aliases.chunked(into: 100)
+            let itemsContent = Dictionary(uniqueKeysWithValues: paginatedAlias.aliases.map { alias in
+                (alias.pendingAliasID, ItemContentProtobuf(name: alias.aliasEmail,
+                                                           note: alias.aliasNote,
+                                                           itemUuid: UUID().uuidString,
+                                                           data: .alias,
+                                                           customFields: []))
+            })
 
-            // Transform and send each batch in parallel
-            try await withThrowingTaskGroup(of: Void.self) { group in
-                for batch in batches {
-                    let newItems = transform(batch)
-                    group.addTask {
-                        _ = try await self.itemRepository.createPendingAliasesItem(userId: userId,
-                                                                                   shareId: shareId,
-                                                                                   itemsContent: newItems)
-                    }
-                }
-
-                // Wait for all tasks in the group to complete
-//                try await group.waitForAll()
-                while !group.isEmpty {
-                    do {
-                        try await group.next()
-                    } catch is CancellationError {
-                        // we decide that cancellation errors thrown by children,
-                        // should not cause cancellation of the entire group.
-                        continue
-                    } catch {
-                        // other errors though we print and cancel the group,
-                        // and all of the remaining child tasks within it.
-                        group.cancelAll()
-                        throw error
-                    }
-                }
-            }
+            _ = try await itemRepository.createPendingAliasesItem(userId: userId,
+                                                                  shareId: shareId,
+                                                                  itemsContent: itemsContent)
 
             // Move to the next page
             sinceLastToken = paginatedAlias.lastToken
         }
-    }
-
-    func transform(_ pendingAliases: [PendingAlias]) -> [String: any ProtobufableItemContentProtocol] {
-        var transFormAliases = [String: any ProtobufableItemContentProtocol]()
-        for pendingAlias in pendingAliases {
-            transFormAliases[pendingAlias.pendingAliasID] = generateItemContent(pendinAlias: pendingAlias)
-        }
-        return transFormAliases
-    }
-
-    func generateItemContent(pendinAlias: PendingAlias) -> ItemContentProtobuf {
-        ItemContentProtobuf(name: pendinAlias.aliasEmail,
-                            note: pendinAlias.aliasNote,
-                            itemUuid: pendinAlias.pendingAliasID,
-                            data: .alias,
-                            customFields: [])
     }
 }
