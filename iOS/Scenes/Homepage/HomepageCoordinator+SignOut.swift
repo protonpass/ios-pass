@@ -58,6 +58,9 @@ extension HomepageCoordinator {
         Task { @MainActor [weak self] in
             guard let self else { return }
             do {
+                if userManager.allUserAccounts.value.count > 1 {
+                    addTelemetryEvent(with: .multiAccountRemoveAccount)
+                }
                 if try await logOutUser(userId: userId) {
                     delegate?.homepageCoordinatorWantsToLogOut()
                 }
