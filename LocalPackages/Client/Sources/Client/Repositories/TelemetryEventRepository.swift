@@ -121,7 +121,7 @@ public extension TelemetryEventRepository {
         return .allEventsSent(userIds: sentUserIds)
     }
 
-    @available(*, deprecated, message: "For testing purposes only")
+    @_spi(QA)
     func forceSendAllEvents() async throws {
         logger.debug("Force sending all events")
         for userData in try await userManager.getAllUsers() {
