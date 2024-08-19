@@ -89,7 +89,9 @@ private extension AliasSyncConfigurationViewModel {
                 }
 
                 let userId = try await userManager.getActiveUserId()
-                aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
+                if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
+                    aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
+                }
                 async let fetchDomains = try aliasRepository.getAllAliasDomains(userId: userId)
                 async let fetchedMailboxes = try aliasRepository.getAllAliasMailboxes(userId: userId)
                 let result = try await (fetchDomains, fetchedMailboxes)
