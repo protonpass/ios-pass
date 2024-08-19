@@ -92,6 +92,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         if Task.isCancelled {
             return false
         }
+
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
 
         let updatedShares = try await removeSuperfluousLocalShares(userId: userId,
@@ -113,7 +114,13 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         let hasNewEvents = try await syncCreateAndUpdateEvents(userId: userId,
                                                                localShares: localShares,
                                                                remoteShares: remoteShares)
-
+        // swiftlint:disable:next todo
+        // TODO: Check alias sync QA
+        // Must keep an eye on this `aliasSync` await as there could be lot of aliases to sync for a user meaning
+        // this could impact negatively the entire sync process.
+        // We should stress test this with QA on SL account have lots of aliases to sync to be sure this does not
+        // break anything
+        let _ = try await aliasSync
         return hasNewEvents || updatedShares
     }
 }
