@@ -24,4 +24,5 @@ import Foundation
 public protocol ItemTypeIdentifiable: ItemIdentifiable {
     var type: ItemContentType { get }
     var aliasEmail: String? { get }
+    var aliasEnabled: Bool { get }
 }
