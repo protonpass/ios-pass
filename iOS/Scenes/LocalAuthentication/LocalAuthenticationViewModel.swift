@@ -45,6 +45,11 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     let mode: Mode
+
+    // Only applicable to app cover flow because local authentication process is wrapped inside a view modifier
+    // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
+    // and somehow automatic keyboard avoidance is broken so we manually avoid keyboard here
+    let manuallyAvoidKeyboard: Bool
     let onAuth: () -> Void
 
     @Published private(set) var state: LocalAuthenticationState = .noAttempts
@@ -65,11 +70,13 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
 
     init(mode: Mode,
          delayed: Bool,
+         manuallyAvoidKeyboard: Bool,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping () -> Void) {
         self.mode = mode
         self.delayed = delayed
+        self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
         self.onAuth = onAuth
         self.onSuccess = onSuccess
         self.onFailure = onFailure

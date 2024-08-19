@@ -31,10 +31,10 @@ struct UpdateUserSharePermissionsEndpoint: Endpoint {
     var body: UserSharePermissionRequest?
 
     init(shareId: String,
-         userId: String,
+         userShareId: String,
          request: UserSharePermissionRequest) {
         debugDescription = "Update a user's share persmission"
-        path = "/pass/v1/share/\(shareId)/user/\(userId)"
+        path = "/pass/v1/share/\(shareId)/user/\(userShareId)"
         method = .put
         body = request
     }

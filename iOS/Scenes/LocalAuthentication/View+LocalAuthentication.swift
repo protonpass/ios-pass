@@ -28,7 +28,8 @@ import SwiftUI
 struct LocalAuthenticationModifier: ViewModifier {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
-    @State private var authenticated: Bool
+    @State private var method: LocalAuthenticationMethod
+    @State private var authenticated = false
 
     // autolocker as @State because it needs to be updated
     // when user changes appLockTime in setting
@@ -43,6 +44,8 @@ struct LocalAuthenticationModifier: ViewModifier {
     // NSLocalizedDescription=User interaction required.}
     private let delayed: Bool
 
+    private let manuallyAvoidKeyboard: Bool
+
     /// Authentication is started and awaiting for user's response (enterring PIN or biometrically authenticate)
     private let onAuth: (() -> Void)?
 
@@ -55,17 +58,17 @@ struct LocalAuthenticationModifier: ViewModifier {
     /// Authentication failed
     private let onFailure: () -> Void
 
-    private var preferences: SharedPreferences { preferencesManager.sharedPreferences.unwrapped() }
-
     init(delayed: Bool,
+         manuallyAvoidKeyboard: Bool,
          onAuth: (() -> Void)?,
          onAuthSkipped: (() -> Void)?,
          onSuccess: (() -> Void)?,
          onFailure: @escaping () -> Void) {
         let preferences = preferencesManager.sharedPreferences.unwrapped()
-        _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
+        _method = .init(initialValue: preferences.localAuthenticationMethod)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
+        self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
         self.onAuth = onAuth
         self.onAuthSkipped = onAuthSkipped
         self.onSuccess = onSuccess
@@ -75,62 +78,81 @@ struct LocalAuthenticationModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        let authenticationRequired = preferences.localAuthenticationMethod != .none && !authenticated
         GeometryReader { proxy in
             content
                 .frame(width: proxy.size.width, height: proxy.size.height)
         }
         .overlay {
-            if authenticationRequired {
+            if !authenticated, method != .none {
                 let handleSuccess: () -> Void = {
                     authenticated = true
                     autolocker.releaseCountdown()
                     onSuccess?()
                 }
 
-                LocalAuthenticationView(mode: preferences
-                    .localAuthenticationMethod == .pin ? .pin : .biometric,
-                    delayed: delayed,
-                    onAuth: { onAuth?() },
-                    onSuccess: handleSuccess,
-                    onFailure: onFailure)
+                LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
+                                        delayed: delayed,
+                                        manuallyAvoidKeyboard: manuallyAvoidKeyboard,
+                                        onAuth: { onAuth?() },
+                                        onSuccess: handleSuccess,
+                                        onFailure: onFailure)
             }
         }
-        .onAppear {
-            if !authenticationRequired {
-                onAuthSkipped?()
-            }
-        }
+        .animation(.default, value: authenticated)
+        // Take into account right away appLockTime when user updates it
         .onReceive(preferencesManager
             .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
             .filter(\.appLockTime)) { newValue in
-                // Take into account right away appLockTime when user updates it
                 autolocker = .init(appLockTime: newValue)
                 autolocker.startCountdown()
         }
+        // Take into account right away method when user updates it
+        .onReceive(preferencesManager
+            .sharedPreferencesUpdates
+            .receive(on: DispatchQueue.main)
+            .filter(\.localAuthenticationMethod)) { newValue in
+                method = newValue
+        }
         // Start the timer whenever app is backgrounded
-        .onReceive(UIApplication.willResignActiveNotification,
-                   perform: autolocker.startCountdown)
-        // When app is foregrounded, check if authentication is needed or could be skipped
-        .onReceive(UIApplication.didBecomeActiveNotification) {
-            if autolocker.shouldAutolockNow(), preferences.localAuthenticationMethod != .none {
+        .onReceive(UIApplication.willResignActiveNotification, perform: autolocker.startCountdown)
+        .onReceive(foregroundEventsPublisher()) {
+            if method == .none {
+                onAuthSkipped?()
+            } else if autolocker.shouldAutolockNow() {
                 authenticated = false
-            } else {
+            } else if authenticated {
                 onAuthSkipped?()
             }
         }
     }
 }
 
+private extension LocalAuthenticationModifier {
+    // Different events could be triggered when app is foregrounded
+    // depending on context (app is fully backgrounded or just moved to app switch menu)
+    // so we listen to all of them
+    @MainActor
+    func foregroundEventsPublisher() -> AnyPublisher<Void, Never> {
+        let center = NotificationCenter.default
+        let willEnterForeground = center.publisher(for: UIApplication.willEnterForegroundNotification)
+        let didBecomeActive = center.publisher(for: UIApplication.didBecomeActiveNotification)
+        return Publishers.Merge(willEnterForeground, didBecomeActive)
+            .map { _ in () }
+            .eraseToAnyPublisher()
+    }
+}
+
 extension View {
     @MainActor
-    func localAuthentication(delayed: Bool,
+    func localAuthentication(delayed: Bool = false,
+                             manuallyAvoidKeyboard: Bool = false,
                              onAuth: (() -> Void)? = nil,
                              onAuthSkipped: (() -> Void)? = nil,
                              onSuccess: (() -> Void)? = nil,
                              onFailure: @escaping () -> Void) -> some View {
         modifier(LocalAuthenticationModifier(delayed: delayed,
+                                             manuallyAvoidKeyboard: manuallyAvoidKeyboard,
                                              onAuth: onAuth,
                                              onAuthSkipped: onAuthSkipped,
                                              onSuccess: onSuccess,
@@ -142,13 +164,7 @@ private extension Autolocker {
     convenience init(appLockTime: AppLockTime) {
         struct AutolockerSettingsProvider: SettingsProvider {
             let appLockTime: AppLockTime
-            var lockTime: AutolockTimeout {
-                if let intervalInMinutes = appLockTime.intervalInMinutes {
-                    .minutes(intervalInMinutes)
-                } else {
-                    .never
-                }
-            }
+            var lockTime: AutolockTimeout { .minutes(appLockTime.intervalInMinutes) }
         }
         self.init(lockTimeProvider: AutolockerSettingsProvider(appLockTime: appLockTime))
     }

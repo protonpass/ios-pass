@@ -207,6 +207,10 @@ extension SharedRepositoryContainer {
         self { LocalAuthCredentialDatasource(symmetricKeyProvider: self.symmetricKeyProvider,
                                              databaseService: self.databaseService) }
     }
+
+    var remoteInviteDatasource: Factory<any RemoteInviteDatasourceProtocol> {
+        self { RemoteInviteDatasource(apiServicing: self.apiManager) }
+    }
 }
 
 // MARK: Repositories
@@ -301,6 +305,12 @@ extension SharedRepositoryContainer {
                                      logManager: self.logManager) }
     }
 
+    var inviteRepository: Factory<any InviteRepositoryProtocol> {
+        self { InviteRepository(remoteInviteDatasource: self.remoteInviteDatasource(),
+                                userManager: self.userManager,
+                                logManager: self.logManager) }
+    }
+
     var telemetryEventRepository: Factory<any TelemetryEventRepositoryProtocol> {
         self {
             TelemetryEventRepository(localDatasource: self.localTelemetryEventDatasource(),
@@ -343,7 +353,6 @@ extension SharedRepositoryContainer {
     var organizationRepository: Factory<any OrganizationRepositoryProtocol> {
         self { OrganizationRepository(localDatasource: self.localOrganizationDatasource(),
                                       remoteDatasource: self.remoteOrganizationDatasource(),
-                                      userManager: self.userManager,
                                       logManager: self.logManager) }
     }
 

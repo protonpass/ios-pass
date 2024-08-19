@@ -21,14 +21,20 @@
 
 import Client
 import Foundation
+import UIKit
+
+public enum RootContainer: Sendable {
+    case window(UIWindow)
+    case viewController(UIViewController?)
+}
 
 public protocol SetUpBeforeLaunchingUseCase: Sendable {
-    func execute() async throws
+    func execute(rootContainer: RootContainer) async throws
 }
 
 public extension SetUpBeforeLaunchingUseCase {
-    func callAsFunction() async throws {
-        try await execute()
+    func callAsFunction(rootContainer: RootContainer) async throws {
+        try await execute(rootContainer: rootContainer)
     }
 }
 
@@ -47,9 +53,23 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
 
     /// Order matters, `UserManager` needs to be set up before `PrefererencesManager`
     /// because `PrefererencesManager` depends on `UserManager`
-    public func execute() async throws {
+    public func execute(rootContainer: RootContainer) async throws {
         try await userManager.setUp()
         try await prefererencesManager.setUp()
         try await applyMigration()
+
+        await MainActor.run {
+            let theme = prefererencesManager.sharedPreferences.unwrapped().theme
+            switch rootContainer {
+            case let .window(window):
+                window.overrideUserInterfaceStyle = theme.userInterfaceStyle
+            case let .viewController(rootViewController):
+                if let rootViewController {
+                    rootViewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
+                } else {
+                    assertionFailure("rootViewController should not be nil")
+                }
+            }
+        }
     }
 }

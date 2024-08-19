@@ -25,13 +25,15 @@ import SwiftUI
 
 public struct AliasSyncExplanationView: View {
     let missingAliases: Int
-    let closeAction: (() -> Void)?
-    let action: () -> Void
+    let dimissAction: (() -> Void)?
+    let enableAliasSyncAction: () -> Void
 
-    public init(missingAliases: Int, closeAction: (() -> Void)?, action: @escaping () -> Void) {
+    public init(missingAliases: Int,
+                dimissAction: (() -> Void)? = nil,
+                enableAliasSyncAction: @escaping () -> Void) {
         self.missingAliases = missingAliases
-        self.closeAction = closeAction
-        self.action = action
+        self.dimissAction = dimissAction
+        self.enableAliasSyncAction = enableAliasSyncAction
     }
 
     public var body: some View {
@@ -50,23 +52,22 @@ public struct AliasSyncExplanationView: View {
                 CapsuleTextButton(title: #localized("Sync aliases"),
                                   titleColor: PassColor.interactionNormMinor1,
                                   backgroundColor: PassColor.interactionNormMajor2,
-                                  action: action)
+                                  action: enableAliasSyncAction)
             }
             .padding(24)
 
-            if let closeAction {
-                Button(action: closeAction) {
+            if let dimissAction {
+                Button(action: dimissAction) {
                     Image(uiImage: IconProvider.cross)
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .frame(width: 16, height: 16)
+                        .frame(width: 24, height: 24)
                         .padding(16)
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                        .foregroundStyle(PassColor.textWeak.toColor)
                 }
             }
         }
-
         .roundedEditableSection()
     }
 }
