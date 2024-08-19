@@ -87,12 +87,16 @@ struct AliasDetailView: View {
         .itemDetailSetUp(viewModel)
         .onFirstAppear(perform: viewModel.getAlias)
         .alert("Move to Trash", isPresented: $viewModel.showingTrashAliasAlert) {
-            Button("Disable instead") { viewModel.disableAlias() }
+            if viewModel.isSimpleLoginAliasSyncActive {
+                Button("Disable instead") { viewModel.disableAlias() }
+            }
             Button("Move to Trash") { viewModel.moveToTrash() }
             Button("Cancel", role: .cancel) {}
         } message: {
-            // swiftlint:disable:next line_length
-            Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
+            if viewModel.isSimpleLoginAliasSyncActive {
+                // swiftlint:disable:next line_length
+                Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
+            }
         }
         .onFirstAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
@@ -127,12 +131,14 @@ struct AliasDetailView: View {
             .contentShape(.rect)
             .onTapGesture { viewModel.copyAliasEmail() }
 
-            if viewModel.togglingAliasStatus {
-                ProgressView()
-            } else {
-                StaticToggle(isOn: viewModel.aliasEnabled,
-                             tintColor: iconTintColor,
-                             action: { viewModel.toggleAliasState() })
+            if viewModel.isSimpleLoginAliasSyncActive {
+                if viewModel.togglingAliasStatus {
+                    ProgressView()
+                } else {
+                    StaticToggle(isOn: viewModel.aliasEnabled,
+                                 tintColor: iconTintColor,
+                                 action: { viewModel.toggleAliasState() })
+                }
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)

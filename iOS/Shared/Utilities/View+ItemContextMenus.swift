@@ -18,8 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
+import Factory
+import ProtonCoreFeatureFlags
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -124,16 +127,17 @@ enum ItemContextMenu {
                                       icon: IconProvider.squares,
                                       action: onCopyAlias))
 
-            if item.aliasEnabled {
-                firstOptions.append(.init(title: "Disable alias",
-                                          icon: IconProvider.circleSlash,
-                                          action: { onToggleAliasStatus(false) }))
-            } else {
-                firstOptions.append(.init(title: "Enable alias",
-                                          icon: IconProvider.alias,
-                                          action: { onToggleAliasStatus(true) }))
+            if isFeatureFlagEnables(flag: FeatureFlagType.passSimpleLoginAliasesSync) {
+                if item.aliasEnabled {
+                    firstOptions.append(.init(title: "Disable alias",
+                                              icon: IconProvider.circleSlash,
+                                              action: { onToggleAliasStatus(false) }))
+                } else {
+                    firstOptions.append(.init(title: "Enable alias",
+                                              icon: IconProvider.alias,
+                                              action: { onToggleAliasStatus(true) }))
+                }
             }
-
             var sections: [ItemContextMenuOptionSection] = []
             sections.append(.init(options: firstOptions))
             sections += Self.commonLastSections(item: item,
@@ -247,6 +251,10 @@ enum ItemContextMenu {
 
             return sections
         }
+    }
+
+    private func isFeatureFlagEnables(flag: any FeatureFlagTypeProtocol) -> Bool {
+        SharedUseCasesContainer.shared.getFeatureFlagStatus().execute(for: flag)
     }
 }
 

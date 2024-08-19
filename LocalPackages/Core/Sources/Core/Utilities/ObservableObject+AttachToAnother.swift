@@ -19,17 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import Foundation
 
 public extension ObservableObject {
     /// Trigger `objectWillChange` of another's `ObservableObjectPublisher`
     /// Use to make nested `ObservableObject`s.
     /// E.g: ViewModel1 depends on ViewModel2 and ViewModel1 needs to trigger its `objectWillChange`
     /// whenever ViewModel2 is changed.
-    func attach<T: ObservableObject>(to another: T, storeIn cancellable: inout Set<AnyCancellable>)
+    /// This should alway notify on the main queue as it impact UI refreshing
+    func attach<T: ObservableObject>(to another: T,
+                                     on queue: DispatchQueue = .main,
+                                     storeIn cancellable: inout Set<AnyCancellable>)
         where T.ObjectWillChangePublisher == ObservableObjectPublisher {
-        objectWillChange.sink { [unowned another] _ in
-            another.objectWillChange.send()
-        }
-        .store(in: &cancellable)
+        objectWillChange
+            .receive(on: queue)
+            .sink { [unowned another] _ in
+                another.objectWillChange.send()
+            }
+            .store(in: &cancellable)
     }
 }
