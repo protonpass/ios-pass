@@ -40,7 +40,7 @@ extension IdentityDetailViewModel {
 
         init(title: String, rows: [Row], customFields: [CustomFieldUiModel]) {
             self.title = title
-            self.rows = rows.filter { !$0.value.isEmpty }
+            self.rows = rows.filter { $0.value?.isEmpty == false }
             self.customFields = customFields
         }
 
@@ -51,10 +51,11 @@ extension IdentityDetailViewModel {
 
     struct Row: Identifiable, Equatable {
         let title: String
-        let value: String
+        let value: String?
+        var isSocialSecurityNumber = false
 
         var id: String {
-            title + value
+            title + (value ?? "")
         }
     }
 }
@@ -62,92 +63,41 @@ extension IdentityDetailViewModel {
 @MainActor
 final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var title = ""
-    @Published private(set) var firstName = ""
-    @Published private(set) var middleName = ""
-    @Published private(set) var lastName = ""
-    @Published private(set) var fullName = ""
-    @Published private(set) var email = ""
-    @Published private(set) var phoneNumber = ""
-    @Published private(set) var birthdate = ""
-    @Published private(set) var gender = ""
-    @Published private(set) var extraPersonalDetails: [CustomFieldUiModel] = []
-    @Published private(set) var organization = ""
-    @Published private(set) var streetAddress = ""
-    @Published private(set) var zipOrPostalCode = ""
-    @Published private(set) var city = ""
-    @Published private(set) var stateOrProvince = ""
-    @Published private(set) var countryOrRegion = ""
-    @Published private(set) var floor = ""
-    @Published private(set) var county = ""
-    @Published private(set) var extraAddressDetails: [CustomFieldUiModel] = []
-    @Published private(set) var socialSecurityNumber = ""
-    @Published private(set) var passportNumber = ""
-    @Published private(set) var licenseNumber = ""
-    @Published private(set) var website = ""
-    @Published private(set) var xHandle = ""
-    @Published private(set) var secondPhoneNumber = ""
-    @Published private(set) var linkedIn = ""
-    @Published private(set) var reddit = ""
-    @Published private(set) var facebook = ""
-    @Published private(set) var yahoo = ""
-    @Published private(set) var instagram = ""
-    @Published private(set) var extraContactDetails: [CustomFieldUiModel] = []
-    @Published private(set) var company = ""
-    @Published private(set) var jobTitle = ""
-    @Published private(set) var personalWebsite = ""
-    @Published private(set) var workPhoneNumber = ""
-    @Published private(set) var workEmail = ""
-    @Published private(set) var extraWorkDetails: [CustomFieldUiModel] = []
-    @Published private(set) var extraSections: [CustomSection] = []
+    @Published private var identity: IdentityData?
+
+    var extraPersonalDetails: [CustomFieldUiModel] {
+        identity?.extraPersonalDetails.map(\.toCustomFieldUiModel) ?? []
+    }
+
+    var extraAddressDetails: [CustomFieldUiModel] {
+        identity?.extraAddressDetails.map(\.toCustomFieldUiModel) ?? []
+    }
+
+    var extraContactDetails: [CustomFieldUiModel] {
+        identity?.extraContactDetails.map(\.toCustomFieldUiModel) ?? []
+    }
+
+    var extraWorkDetails: [CustomFieldUiModel] {
+        identity?.extraWorkDetails.map(\.toCustomFieldUiModel) ?? []
+    }
+
+    var extraSections: [CustomSection] {
+        identity?.extraSections ?? []
+    }
 
     override func bindValues() {
         super.bindValues()
-        guard case let .identity(data) = itemContent.contentData else {
-            return
-        }
         title = itemContent.name
-        fullName = data.fullName
-        email = data.email
-        phoneNumber = data.phoneNumber
-        firstName = data.firstName
-        middleName = data.middleName
-        lastName = data.lastName
-        birthdate = data.birthdate
-        gender = data.gender
-        extraPersonalDetails = data.extraPersonalDetails.map(\.toCustomFieldUiModel)
-        organization = data.organization
-        streetAddress = data.streetAddress
-        zipOrPostalCode = data.zipOrPostalCode
-        city = data.city
-        stateOrProvince = data.stateOrProvince
-        countryOrRegion = data.countryOrRegion
-        floor = data.floor
-        county = data.county
-        extraAddressDetails = data.extraAddressDetails.map(\.toCustomFieldUiModel)
-        socialSecurityNumber = data.socialSecurityNumber
-        passportNumber = data.passportNumber
-        licenseNumber = data.licenseNumber
-        website = data.website
-        xHandle = data.xHandle
-        secondPhoneNumber = data.secondPhoneNumber
-        linkedIn = data.linkedIn
-        reddit = data.reddit
-        facebook = data.facebook
-        yahoo = data.yahoo
-        instagram = data.instagram
-        extraContactDetails = data.extraContactDetails.map(\.toCustomFieldUiModel)
-        company = data.company
-        jobTitle = data.jobTitle
-
-        personalWebsite = data.personalWebsite
-        workPhoneNumber = data.workPhoneNumber
-        workEmail = data.workEmail
-        extraWorkDetails = data.extraWorkDetails.map(\.toCustomFieldUiModel)
-        extraSections = data.extraSections
+        identity = itemContent.identityItem
     }
 
     var sections: [Section] {
-        [personalDetailsSection, addressDetailsSection, contactDetailsSection, workDetailsSection]
+        [
+            personalDetailsSection,
+            addressDetailsSection,
+            contactDetailsSection,
+            workDetailsSection
+        ]
     }
 }
 
@@ -155,14 +105,14 @@ private extension IdentityDetailViewModel {
     var personalDetailsSection: Section {
         .init(title: #localized("Personal details"),
               rows: [
-                  .init(title: IdentityFields.firstName.title, value: firstName),
-                  .init(title: IdentityFields.middleName.title, value: middleName),
-                  .init(title: IdentityFields.lastName.title, value: lastName),
-                  .init(title: IdentityFields.fullName.title, value: fullName),
-                  .init(title: IdentityFields.email.title, value: email),
-                  .init(title: IdentityFields.phoneNumber.title, value: phoneNumber),
-                  .init(title: IdentityFields.birthdate.title, value: birthdate),
-                  .init(title: IdentityFields.gender.title, value: gender)
+                  .init(title: IdentityFields.firstName.title, value: identity?.firstName),
+                  .init(title: IdentityFields.middleName.title, value: identity?.middleName),
+                  .init(title: IdentityFields.lastName.title, value: identity?.lastName),
+                  .init(title: IdentityFields.fullName.title, value: identity?.fullName),
+                  .init(title: IdentityFields.email.title, value: identity?.email),
+                  .init(title: IdentityFields.phoneNumber.title, value: identity?.phoneNumber),
+                  .init(title: IdentityFields.birthdate.title, value: identity?.birthdate),
+                  .init(title: IdentityFields.gender.title, value: identity?.gender)
               ],
               customFields: extraPersonalDetails)
     }
@@ -170,14 +120,14 @@ private extension IdentityDetailViewModel {
     var addressDetailsSection: Section {
         .init(title: #localized("Address details"),
               rows: [
-                  .init(title: IdentityFields.organization.title, value: organization),
-                  .init(title: IdentityFields.streetAddress.title, value: streetAddress),
-                  .init(title: IdentityFields.zipOrPostalCode.title, value: zipOrPostalCode),
-                  .init(title: IdentityFields.city.title, value: city),
-                  .init(title: IdentityFields.stateOrProvince.title, value: stateOrProvince),
-                  .init(title: IdentityFields.countryOrRegion.title, value: countryOrRegion),
-                  .init(title: IdentityFields.floor.title, value: floor),
-                  .init(title: IdentityFields.county.title, value: county)
+                  .init(title: IdentityFields.organization.title, value: identity?.organization),
+                  .init(title: IdentityFields.streetAddress.title, value: identity?.streetAddress),
+                  .init(title: IdentityFields.zipOrPostalCode.title, value: identity?.zipOrPostalCode),
+                  .init(title: IdentityFields.city.title, value: identity?.city),
+                  .init(title: IdentityFields.stateOrProvince.title, value: identity?.stateOrProvince),
+                  .init(title: IdentityFields.countryOrRegion.title, value: identity?.countryOrRegion),
+                  .init(title: IdentityFields.floor.title, value: identity?.floor),
+                  .init(title: IdentityFields.county.title, value: identity?.county)
               ],
               customFields: extraAddressDetails)
     }
@@ -185,17 +135,19 @@ private extension IdentityDetailViewModel {
     var contactDetailsSection: Section {
         .init(title: #localized("Contact details"),
               rows: [
-                  .init(title: IdentityFields.socialSecurityNumber.title, value: socialSecurityNumber),
-                  .init(title: IdentityFields.passportNumber.title, value: passportNumber),
-                  .init(title: IdentityFields.licenseNumber.title, value: licenseNumber),
-                  .init(title: IdentityFields.website.title, value: website),
-                  .init(title: IdentityFields.xHandle.title, value: xHandle),
-                  .init(title: IdentityFields.secondPhoneNumber.title, value: secondPhoneNumber),
-                  .init(title: IdentityFields.linkedIn.title, value: linkedIn),
-                  .init(title: IdentityFields.reddit.title, value: reddit),
-                  .init(title: IdentityFields.facebook.title, value: facebook),
-                  .init(title: IdentityFields.yahoo.title, value: yahoo),
-                  .init(title: IdentityFields.instagram.title, value: instagram)
+                  .init(title: IdentityFields.socialSecurityNumber.title,
+                        value: identity?.socialSecurityNumber,
+                        isSocialSecurityNumber: true),
+                  .init(title: IdentityFields.passportNumber.title, value: identity?.passportNumber),
+                  .init(title: IdentityFields.licenseNumber.title, value: identity?.licenseNumber),
+                  .init(title: IdentityFields.website.title, value: identity?.website),
+                  .init(title: IdentityFields.xHandle.title, value: identity?.xHandle),
+                  .init(title: IdentityFields.secondPhoneNumber.title, value: identity?.secondPhoneNumber),
+                  .init(title: IdentityFields.linkedIn.title, value: identity?.linkedIn),
+                  .init(title: IdentityFields.reddit.title, value: identity?.reddit),
+                  .init(title: IdentityFields.facebook.title, value: identity?.facebook),
+                  .init(title: IdentityFields.yahoo.title, value: identity?.yahoo),
+                  .init(title: IdentityFields.instagram.title, value: identity?.instagram)
               ],
               customFields: extraContactDetails)
     }
@@ -203,11 +155,11 @@ private extension IdentityDetailViewModel {
     var workDetailsSection: Section {
         .init(title: #localized("Work details"),
               rows: [
-                  .init(title: IdentityFields.company.title, value: company),
-                  .init(title: IdentityFields.jobTitle.title, value: jobTitle),
-                  .init(title: IdentityFields.personalWebsite.title, value: personalWebsite),
-                  .init(title: IdentityFields.workPhoneNumber.title, value: workPhoneNumber),
-                  .init(title: IdentityFields.workEmail.title, value: workEmail)
+                  .init(title: IdentityFields.company.title, value: identity?.company),
+                  .init(title: IdentityFields.jobTitle.title, value: identity?.jobTitle),
+                  .init(title: IdentityFields.personalWebsite.title, value: identity?.personalWebsite),
+                  .init(title: IdentityFields.workPhoneNumber.title, value: identity?.workPhoneNumber),
+                  .init(title: IdentityFields.workEmail.title, value: identity?.workEmail)
               ],
               customFields: extraWorkDetails)
     }
@@ -215,7 +167,9 @@ private extension IdentityDetailViewModel {
 
 extension IdentityDetailViewModel {
     func copyToClipboard(_ row: Row) {
-        copyToClipboard(text: row.value, message: #localized("%@ copied", row.title))
+        if let value = row.value {
+            copyToClipboard(text: value, message: #localized("%@ copied", row.title))
+        }
     }
 
     func copyTotpToken(_ token: String) {
