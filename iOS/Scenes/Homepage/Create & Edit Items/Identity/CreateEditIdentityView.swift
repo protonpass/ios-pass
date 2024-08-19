@@ -98,7 +98,7 @@ struct CreateEditIdentityView: View {
 //        case countryOrRegion
 //        case floor
 //        case county
-//        case socialSecurityNumber
+        case socialSecurityNumber
 //        case passportNumber
 //        case licenseNumber
 //        case website
@@ -346,24 +346,28 @@ private extension CreateEditIdentityView {
             VStack(spacing: DesignConstant.sectionPadding) {
                 if viewModel.firstName.shouldShow {
                     identityRow(title: IdentityFields.firstName.title,
-                                value: $viewModel.firstName.value)
+                                value: $viewModel.firstName.value,
+                                inputAutocapitalization: .words)
                     PassSectionDivider()
                 }
 
                 if viewModel.middleName.shouldShow {
                     identityRow(title: IdentityFields.middleName.title,
-                                value: $viewModel.middleName.value)
+                                value: $viewModel.middleName.value,
+                                inputAutocapitalization: .words)
                     PassSectionDivider()
                 }
 
                 if viewModel.lastName.shouldShow {
                     identityRow(title: IdentityFields.lastName.title,
-                                value: $viewModel.lastName.value)
+                                value: $viewModel.lastName.value,
+                                inputAutocapitalization: .words)
                     PassSectionDivider()
                 }
 
                 identityRow(title: IdentityFields.fullName.title,
-                            value: $viewModel.fullName)
+                            value: $viewModel.fullName,
+                            inputAutocapitalization: .words)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.email.title,
@@ -385,7 +389,8 @@ private extension CreateEditIdentityView {
                 if viewModel.gender.shouldShow {
                     PassSectionDivider()
                     identityRow(title: IdentityFields.gender.title,
-                                value: $viewModel.gender.value)
+                                value: $viewModel.gender.value,
+                                inputAutocapitalization: .sentences)
                 }
 
                 ForEach($viewModel.extraPersonalDetails) { $field in
@@ -422,27 +427,33 @@ private extension CreateEditIdentityView {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
                 identityRow(title: IdentityFields.organization.title,
-                            value: $viewModel.organization)
+                            value: $viewModel.organization,
+                            inputAutocapitalization: .sentences)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.streetAddress.title,
-                            value: $viewModel.streetAddress)
+                            value: $viewModel.streetAddress,
+                            inputAutocapitalization: .words)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.zipOrPostalCode.title,
-                            value: $viewModel.zipOrPostalCode)
+                            value: $viewModel.zipOrPostalCode,
+                            inputAutocapitalization: .characters)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.city.title,
-                            value: $viewModel.city)
+                            value: $viewModel.city,
+                            inputAutocapitalization: .words)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.stateOrProvince.title,
-                            value: $viewModel.stateOrProvince)
+                            value: $viewModel.stateOrProvince,
+                            inputAutocapitalization: .words)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.countryOrRegion.title,
-                            value: $viewModel.countryOrRegion)
+                            value: $viewModel.countryOrRegion,
+                            inputAutocapitalization: .words)
 
                 if viewModel.floor.shouldShow {
                     PassSectionDivider()
@@ -453,7 +464,8 @@ private extension CreateEditIdentityView {
                 if viewModel.county.shouldShow {
                     PassSectionDivider()
                     identityRow(title: IdentityFields.county.title,
-                                value: $viewModel.county.value)
+                                value: $viewModel.county.value,
+                                inputAutocapitalization: .words)
                 }
 
                 ForEach($viewModel.extraAddressDetails) { $field in
@@ -490,15 +502,19 @@ private extension CreateEditIdentityView {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
                 identityRow(title: IdentityFields.socialSecurityNumber.title,
-                            value: $viewModel.socialSecurityNumber)
+                            value: $viewModel.socialSecurityNumber,
+                            inputAutocapitalization: .characters,
+                            isSensitive: true)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.passportNumber.title,
-                            value: $viewModel.passportNumber)
+                            value: $viewModel.passportNumber,
+                            inputAutocapitalization: .characters)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.licenseNumber.title,
-                            value: $viewModel.licenseNumber)
+                            value: $viewModel.licenseNumber,
+                            inputAutocapitalization: .characters)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.website.title,
@@ -522,7 +538,8 @@ private extension CreateEditIdentityView {
                 if viewModel.reddit.shouldShow {
                     PassSectionDivider()
                     identityRow(title: IdentityFields.reddit.title,
-                                value: $viewModel.reddit.value)
+                                value: $viewModel.reddit.value,
+                                inputAutocapitalization: .characters)
                 }
 
                 if viewModel.facebook.shouldShow {
@@ -577,11 +594,13 @@ private extension CreateEditIdentityView {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
                 identityRow(title: IdentityFields.company.title,
-                            value: $viewModel.company)
+                            value: $viewModel.company,
+                            inputAutocapitalization: .words)
                 PassSectionDivider()
 
                 identityRow(title: IdentityFields.jobTitle.title,
-                            value: $viewModel.jobTitle)
+                            value: $viewModel.jobTitle,
+                            inputAutocapitalization: .sentences)
 
                 if viewModel.personalWebsite.shouldShow {
                     PassSectionDivider()
@@ -636,22 +655,35 @@ private extension CreateEditIdentityView {
                      subtitle: String? = nil,
                      value: Binding<String>,
                      focusedField: Field? = nil,
-                     keyboardType: UIKeyboardType = .default) -> some View {
+                     keyboardType: UIKeyboardType = .default,
+                     inputAutocapitalization: TextInputAutocapitalization = .never,
+                     isSensitive: Bool = false) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
                     .sectionTitleText()
 
-                TextField(subtitle ?? title, text: value)
-                    .textInputAutocapitalization(.never)
-                    .keyboardType(keyboardType)
-                    .autocorrectionDisabled()
-                    .focused($focusedField, equals: focusedField)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .submitLabel(.next)
-                    // swiftlint:disable:next todo
-                    // TODO: set next focus
-                    .onSubmit {}
+                if isSensitive {
+                    SensitiveTextField(text: value,
+                                       placeholder: subtitle ?? title,
+                                       focusedField: $focusedField,
+                                       field: Field.socialSecurityNumber)
+                        .keyboardType(keyboardType)
+                        .textInputAutocapitalization(inputAutocapitalization)
+                        .autocorrectionDisabled()
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                } else {
+                    TextField(subtitle ?? title, text: value)
+                        .textInputAutocapitalization(inputAutocapitalization)
+                        .keyboardType(keyboardType)
+                        .autocorrectionDisabled()
+                        .focused($focusedField, equals: focusedField)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .submitLabel(.next)
+                        // swiftlint:disable:next todo
+                        // TODO: set next focus
+                        .onSubmit {}
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
