@@ -120,7 +120,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         // this could impact negatively the entire sync process.
         // We should stress test this with QA on SL account have lots of aliases to sync to be sure this does not
         // break anything
-        let _ = try await aliasSync
+        _ = try await aliasSync
         return hasNewEvents || updatedShares
     }
 }
