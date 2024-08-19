@@ -16211,6 +16211,26 @@
         }
       }
     },
+    "Alias disabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias disabled"
+          }
+        }
+      }
+    },
+    "Alias enabled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias enabled"
+          }
+        }
+      }
+    },
     "Alias of login item \"%@\"" : {
       "localizations" : {
         "be" : {
@@ -37163,6 +37183,16 @@
         }
       }
     },
+    "Disable alias" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable alias"
+          }
+        }
+      }
+    },
     "Disable instead" : {
       "localizations" : {
         "en" : {
@@ -40353,6 +40383,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bật"
+          }
+        }
+      }
+    },
+    "Enable alias" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable alias"
           }
         }
       }
@@ -67071,7 +67111,7 @@
         }
       }
     },
-    "Move to trash" : {
+    "Move to Trash" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -67106,7 +67146,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Move to trash"
+            "value" : "Move to Trash"
           }
         },
         "es" : {
@@ -88271,6 +88311,16 @@
         }
       }
     },
+    "Scroll for more" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scroll for more"
+          }
+        }
+      }
+    },
     "Search" : {
       "localizations" : {
         "be" : {
@@ -100356,12 +100406,12 @@
         }
       }
     },
-    "Sync Aliases" : {
+    "Sync aliases" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sync Aliases"
+            "value" : "Sync aliases"
           }
         }
       }

@@ -62,18 +62,18 @@ struct ItemSquircleThumbnail: View {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let data: ItemThumbnailData
     private let pinned: Bool
-    private let isSync: Bool
+    private let isEnabled: Bool
     private let size: ItemSquircleThumbnailSize
     private let alternativeBackground: Bool
 
     init(data: ItemThumbnailData,
-         isSync: Bool = true,
+         isEnabled: Bool = true,
          pinned: Bool = false,
          size: ItemSquircleThumbnailSize = .regular,
          alternativeBackground: Bool = false) {
         self.data = data
         self.pinned = pinned
-        self.isSync = isSync
+        self.isEnabled = isEnabled
         self.size = size
         self.alternativeBackground = alternativeBackground
     }
@@ -92,10 +92,16 @@ private extension ItemSquircleThumbnail {
         case let .icon(type):
             SquircleThumbnail(data: size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon),
                               tintColor: type.normMajor2Color,
-                              backgroundColor: !isSync ? .clear : alternativeBackground ? type
+                              backgroundColor: !isEnabled ? .clear : alternativeBackground ? type
                                   .normMinor2Color : type.normMinor1Color,
                               height: size.height)
-                .overlay(aliasSyncOverlay(type: type, height: size.height))
+                .if(!isEnabled) { view in
+                    view.overlay {
+                        RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
+                            .stroke((alternativeBackground ? type.normMinor2Color : type.normMinor1Color).toColor,
+                                    lineWidth: 1)
+                    }
+                }
 
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),
@@ -145,17 +151,6 @@ private extension ItemSquircleThumbnail {
                     print(error)
                 }
             }
-        }
-    }
-
-    @ViewBuilder
-    func aliasSyncOverlay(type: ItemContentType, height: CGFloat) -> some View {
-        if !isSync {
-            RoundedRectangle(cornerRadius: height / 2.5, style: .continuous)
-                .stroke((alternativeBackground ? type.normMinor2Color : type.normMinor1Color).toColor,
-                        lineWidth: 1)
-        } else {
-            EmptyView()
         }
     }
 }

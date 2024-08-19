@@ -28,10 +28,12 @@ public struct MailboxSelectionView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var mailboxSelection: AliasLinkedMailboxSelection
     public let title: String
+    public var tint: Color
 
-    public init(mailboxSelection: Binding<AliasLinkedMailboxSelection>, title: String) {
+    public init(mailboxSelection: Binding<AliasLinkedMailboxSelection>, title: String, tint: Color) {
         _mailboxSelection = mailboxSelection
         self.title = title
+        self.tint = tint
     }
 
     public var body: some View {
@@ -45,14 +47,12 @@ public struct MailboxSelectionView: View {
                             let isSelected = mailboxSelection.selectedMailboxes.contains(mailbox)
                             HStack {
                                 Text(mailbox.email)
-                                    .foregroundStyle(isSelected ?
-                                        PassColor.loginInteractionNormMajor2.toColor : PassColor
-                                        .textNorm.toColor)
+                                    .foregroundStyle(isSelected ? tint : PassColor.textNorm.toColor)
                                 Spacer()
 
                                 if isSelected {
                                     Image(uiImage: IconProvider.checkmark)
-                                        .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
+                                        .foregroundStyle(tint)
                                 }
                             }
                             .contentShape(.rect)

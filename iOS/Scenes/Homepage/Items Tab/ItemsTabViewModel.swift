@@ -118,6 +118,16 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             }
         }
     }
+
+    func continueFullSyncIfNeeded() {
+        Task { [weak self] in
+            guard let self else { return }
+            if let userId = vaultsManager.incompleteFullSyncUserId {
+                router.present(for: .fullSync)
+                await vaultsManager.fullSync(userId: userId)
+            }
+        }
+    }
 }
 
 // MARK: - Private APIs

@@ -43,10 +43,6 @@ public extension LocalOrganizationDatasource {
     }
 
     func upsertOrganization(_ organization: Organization, userId: String) async throws {
-        // Due to Core Data bug about not able to update boolean and numeric fields
-        // we have to remove before inserting
-        try await removeOrganization(userId: userId)
-
         let taskContext = newTaskContext(type: .insert)
 
         let batchInsertRequest =

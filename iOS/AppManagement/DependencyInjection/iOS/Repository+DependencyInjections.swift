@@ -41,18 +41,8 @@ private extension RepositoryContainer {
         SharedToolingContainer.shared.apiManager()
     }
 
-    var logManager: any LogManagerProtocol {
-        SharedToolingContainer.shared.logManager()
-    }
-
     var userManager: any UserManagerProtocol {
         SharedServiceContainer.shared.userManager()
-    }
-}
-
-private extension RepositoryContainer {
-    var remoteInviteDatasource: Factory<any RemoteInviteDatasourceProtocol> {
-        self { RemoteInviteDatasource(apiServicing: self.apiManager) }
     }
 }
 
@@ -60,12 +50,6 @@ extension RepositoryContainer {
     var reportRepository: Factory<any ReportRepositoryProtocol> {
         self { ReportRepository(apiServicing: self.apiManager,
                                 userManager: self.userManager) }
-    }
-
-    var inviteRepository: Factory<any InviteRepositoryProtocol> {
-        self { InviteRepository(remoteInviteDatasource: self.remoteInviteDatasource(),
-                                userManager: self.userManager,
-                                logManager: self.logManager) }
     }
 
     var extraPasswordRepository: Factory<any ExtraPasswordRepositoryProtocol> {

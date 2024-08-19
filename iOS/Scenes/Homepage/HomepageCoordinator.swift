@@ -214,6 +214,7 @@ private extension HomepageCoordinator {
             .publisher(for: UIApplication.didEnterBackgroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
+                coverApp()
                 eventLoop.stop()
             }
             .store(in: &cancellables)
@@ -312,7 +313,8 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                if let organization = try await organizationRepository.refreshOrganization() {
+                let userId = try await userManager.getActiveUserId()
+                if let organization = try await organizationRepository.refreshOrganization(userId: userId) {
                     try await overrideSecuritySettings(with: organization)
                 }
             } catch {
@@ -540,9 +542,9 @@ extension HomepageCoordinator {
                 case .addAccount:
                     beginAddAccountFlow()
                 case .simpleLoginSyncActivation:
-                    presentSimpleLoginAliasActivation()
+                    present(SimpleLoginAliasActivationView())
                 case .aliasesSyncConfiguration:
-                    presentAliasSyncConfiguration()
+                    present(AliasSyncConfigurationView())
                 }
             }
             .store(in: &cancellables)
@@ -831,10 +833,17 @@ extension HomepageCoordinator {
 
         guard let message else { return }
 
-        if let config, config.dismissBeforeShowing {
-            dismissTopMostViewController(animated: true) { [weak self] in
-                guard let self else { return }
-                bannerManager.displayBottomInfoMessage(message)
+        if let config {
+            if config.dismissBeforeShowing {
+                dismissTopMostViewController(animated: true) { [weak self] in
+                    guard let self else { return }
+                    if config.refresh {
+                        refresh()
+                    }
+                    bannerManager.displayBottomInfoMessage(message)
+                }
+            } else if config.refresh {
+                refresh()
             }
         } else {
             bannerManager.displayBottomInfoMessage(message)

@@ -1,5 +1,5 @@
 //
-// View+Extension.swift
+// AliasOptionsSheetContent.swift
 // Proton Pass - Created on 02/08/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -37,13 +37,21 @@ public enum AliasOptionsSheetState {
     }
 }
 
-public extension View {
-    @ViewBuilder
-    func aliasOptionsSheetContent(for state: AliasOptionsSheetState) -> some View {
+public struct AliasOptionsSheetContent: View {
+    private let state: AliasOptionsSheetState
+    private let tint: Color
+
+    public init(state: AliasOptionsSheetState, tint: Color) {
+        self.state = state
+        self.tint = tint
+    }
+
+    public var body: some View {
         switch state {
         case let .mailbox(mailboxSelection, title):
             MailboxSelectionView(mailboxSelection: mailboxSelection,
-                                 title: title)
+                                 title: title,
+                                 tint: tint)
         case let .suffix(suffixSelection):
             SuffixSelectionView(selection: suffixSelection)
         }

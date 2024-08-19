@@ -71,6 +71,9 @@ struct AccountList: View {
         .onFirstAppear {
             animated.toggle()
         }
+        .if(details.count > 5) { view in
+            view.scrollViewEmbeded(showsIndicators: false)
+        }
     }
 }
 

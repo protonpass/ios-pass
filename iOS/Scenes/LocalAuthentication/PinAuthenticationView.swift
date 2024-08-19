@@ -28,7 +28,6 @@ struct PinAuthenticationView: View {
     @ObservedObject private var viewModel: LocalAuthenticationViewModel
     @FocusState private var isFocused
     @State private var pinCode = ""
-    private let module = resolve(\SharedToolingContainer.module)
 
     init(viewModel: LocalAuthenticationViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -36,6 +35,8 @@ struct PinAuthenticationView: View {
 
     var body: some View {
         VStack(alignment: .center) {
+            Spacer()
+
             Image(uiImage: PassIcon.passIcon)
                 .resizable()
                 .scaledToFit()
@@ -84,36 +85,28 @@ struct PinAuthenticationView: View {
                                             .withAlphaComponent(0.3),
                                         disabled: pinCode.count < Constants.PINCode.minLength,
                                         height: 60,
-                                        action: { viewModel.checkPinCode(pinCode) })
+                                        action: {
+                                            viewModel.checkPinCode(pinCode)
+                                            isFocused = false
+                                            pinCode = ""
+                                        })
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-        .if(module == .hostApp) { view in
-            // Only applicable to host app because local authentication process is wrapped inside a view modifier
-            // which is applied to a SwiftUI view wrapped inside a UIHostingViewController
-            // and somehow automatic keyboard avoidance is broken so we manually avoid keyboard here
+        .if(viewModel.manuallyAvoidKeyboard) { view in
             view
                 .keyboardAwarePadding()
         }
         .accentColor(PassColor.interactionNorm.toColor)
         .tint(PassColor.interactionNorm.toColor)
         .animation(.default, value: viewModel.state)
-        .onChange(of: viewModel.state) { _ in
-            pinCode = ""
-        }
         .onAppear {
             let notifyAuthProcessAndFocus: () -> Void = {
                 viewModel.onAuth()
                 isFocused = true
             }
-            // Delay keyboard appearance when in extension context because
-            // it takes longer for the view to be rendered
-            if module == .hostApp {
+            DispatchQueue.main.asyncAfter(deadline: .now() + viewModel.delayedTime) {
                 notifyAuthProcessAndFocus()
-            } else {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.75) {
-                    notifyAuthProcessAndFocus()
-                }
             }
         }
     }
