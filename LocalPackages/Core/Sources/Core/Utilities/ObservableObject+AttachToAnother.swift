@@ -27,10 +27,11 @@ public extension ObservableObject {
     /// E.g: ViewModel1 depends on ViewModel2 and ViewModel1 needs to trigger its `objectWillChange`
     /// whenever ViewModel2 is changed.
     /// This should alway notify on the main queue as it impact UI refreshing
-    func attach<T: ObservableObject>(to another: T, storeIn cancellable: inout Set<AnyCancellable>)
+    func attach<T: ObservableObject>(to another: T, on queue: DispatchQueue = .main,
+                                     storeIn cancellable: inout Set<AnyCancellable>)
         where T.ObjectWillChangePublisher == ObservableObjectPublisher {
         objectWillChange
-            .receive(on: DispatchQueue.main)
+            .receive(on: queue)
             .sink { [unowned another] _ in
                 another.objectWillChange.send()
             }
