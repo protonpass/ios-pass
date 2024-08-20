@@ -49,17 +49,6 @@ public extension LocalAccessDatasource {
         return entities.compactMap { $0.toUserAccess() }
     }
 
-//    func upsert(access: UserAccess) async throws {
-//        let taskContext = newTaskContext(type: .insert)
-//
-//        let batchInsertRequest =
-//            newBatchInsertRequest(entity: AccessEntity.entity(context: taskContext),
-//                                  sourceItems: [access]) { managedObject, access in
-//                (managedObject as? AccessEntity)?.hydrate(from: access)
-//            }
-//        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
-//    }
-
     func upsert(access: UserAccess) async throws {
         try await upsertElements(items: [access],
                                  fetchPredicate: NSPredicate(format: "userID == %@", access.userId),
@@ -99,8 +88,4 @@ private extension LocalAccessDatasource {
             }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
-
-//    func updateEntity(_ entity: AccessEntity, with newItem: UserAccess) {
-//        entity.hydrate(from: newItem)
-//    }
 }

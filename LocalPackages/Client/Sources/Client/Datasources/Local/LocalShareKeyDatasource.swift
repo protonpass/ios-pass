@@ -44,15 +44,18 @@ public extension LocalShareKeyDatasource {
 
     func upsertKeys(_ keys: [SymmetricallyEncryptedShareKey]) async throws {
         try await upsertElements(items: keys,
-                                 fetchPredicate: NSPredicate(format: "shareID IN %@ AND keyRotation IN %@", keys.map(\.shareId), keys.map(\.shareKey.keyRotation)),
+                                 fetchPredicate: NSPredicate(format: "shareID IN %@ AND keyRotation IN %@",
+                                                             keys.map(\.shareId),
+                                                             keys.map(\.shareKey.keyRotation)),
                                  itemComparisonKey: { item in
-            ShareKeyComparison(shareID: item.shareId, keyRotation: item.shareKey.keyRotation)
+                                     ShareKeyComparison(shareID: item.shareId,
+                                                        keyRotation: item.shareKey.keyRotation)
                                  },
                                  entityComparisonKey: { entity in
-            ShareKeyComparison(shareID: entity.shareID, keyRotation: entity.keyRotation)
+                                     ShareKeyComparison(shareID: entity.shareID, keyRotation: entity.keyRotation)
                                  },
                                  updateEntity: { (entity: ShareKeyEntity, key: SymmetricallyEncryptedShareKey) in
-            entity.hydrate(from: key)
+                                     entity.hydrate(from: key)
                                  },
                                  insertItems: { [weak self] keys in
                                      guard let self else { return }
