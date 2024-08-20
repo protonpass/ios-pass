@@ -21,7 +21,7 @@ let package = Package(name: "Macro",
                       ],
                       dependencies: [
                           // Depend on the Swift 5.9 release of SwiftSyntax
-                          .package(url: "https://github.com/apple/swift-syntax.git", exact: "509.0.0"),
+                          .package(url: "https://github.com/apple/swift-syntax.git", exact: "510.0.3"),
 //                          .package(url: "https://github.com/lukacs-m/swift-spyable.git", branch: "main")
                       ],
                       targets: [
