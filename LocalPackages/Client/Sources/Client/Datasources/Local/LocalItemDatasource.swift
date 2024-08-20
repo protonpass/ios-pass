@@ -162,7 +162,7 @@ public extension LocalItemDatasource {
                                      ItemKeyComparison(itemID: entity.itemID, shareID: entity.shareID)
                                  },
                                  updateEntity: { (entity: ItemEntity, item: SymmetricallyEncryptedItem) in
-                                         entity.hydrate(from: item)
+                                     entity.hydrate(from: item)
                                  },
                                  insertItems: insertItems)
     }
@@ -309,62 +309,62 @@ private extension LocalItemDatasource {
         }
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
-
-    func updateEntity(_ entity: ItemEntity, with newItem: SymmetricallyEncryptedItem) {
-        let newItemData = newItem.item
-
-        if entity.aliasEmail != newItemData.aliasEmail {
-            entity.aliasEmail = newItemData.aliasEmail
-        }
-        if entity.content != newItemData.content {
-            entity.content = newItemData.content
-        }
-        if entity.contentFormatVersion != newItemData.contentFormatVersion {
-            entity.contentFormatVersion = newItemData.contentFormatVersion
-        }
-        if entity.createTime != newItemData.createTime {
-            entity.createTime = newItemData.createTime
-        }
-        if entity.isLogInItem != newItem.isLogInItem {
-            entity.isLogInItem = newItem.isLogInItem
-        }
-        if entity.itemKey != newItemData.itemKey {
-            entity.itemKey = newItemData.itemKey
-        }
-        if entity.keyRotation != newItemData.keyRotation {
-            entity.keyRotation = newItemData.keyRotation
-        }
-        if entity.lastUseTime != newItemData.lastUseTime {
-            entity.lastUseTime = newItemData.lastUseTime ?? 0
-        }
-        if entity.modifyTime != newItemData.modifyTime {
-            entity.modifyTime = newItemData.modifyTime
-        }
-        if entity.pinned != newItemData.pinned {
-            entity.pinned = newItemData.pinned
-        }
-        if entity.revision != newItemData.revision {
-            entity.revision = newItemData.revision
-        }
-        if entity.revisionTime != newItemData.revisionTime {
-            entity.revisionTime = newItemData.revisionTime
-        }
-        if entity.shareID != newItem.shareId {
-            entity.shareID = newItem.shareId
-        }
-        if entity.userID != newItem.userId {
-            entity.userID = newItem.userId
-        }
-        if entity.state != newItemData.state {
-            entity.state = newItemData.state
-        }
-        if entity.symmetricallyEncryptedContent != newItem.encryptedContent {
-            entity.symmetricallyEncryptedContent = newItem.encryptedContent
-        }
-        if entity.flags != Int64(newItemData.flags) {
-            entity.flags = Int64(newItemData.flags)
-        }
-    }
+//
+//    func updateEntity(_ entity: ItemEntity, with newItem: SymmetricallyEncryptedItem) {
+//        let newItemData = newItem.item
+//
+//        if entity.aliasEmail != newItemData.aliasEmail {
+//            entity.aliasEmail = newItemData.aliasEmail
+//        }
+//        if entity.content != newItemData.content {
+//            entity.content = newItemData.content
+//        }
+//        if entity.contentFormatVersion != newItemData.contentFormatVersion {
+//            entity.contentFormatVersion = newItemData.contentFormatVersion
+//        }
+//        if entity.createTime != newItemData.createTime {
+//            entity.createTime = newItemData.createTime
+//        }
+//        if entity.isLogInItem != newItem.isLogInItem {
+//            entity.isLogInItem = newItem.isLogInItem
+//        }
+//        if entity.itemKey != newItemData.itemKey {
+//            entity.itemKey = newItemData.itemKey
+//        }
+//        if entity.keyRotation != newItemData.keyRotation {
+//            entity.keyRotation = newItemData.keyRotation
+//        }
+//        if entity.lastUseTime != newItemData.lastUseTime {
+//            entity.lastUseTime = newItemData.lastUseTime ?? 0
+//        }
+//        if entity.modifyTime != newItemData.modifyTime {
+//            entity.modifyTime = newItemData.modifyTime
+//        }
+//        if entity.pinned != newItemData.pinned {
+//            entity.pinned = newItemData.pinned
+//        }
+//        if entity.revision != newItemData.revision {
+//            entity.revision = newItemData.revision
+//        }
+//        if entity.revisionTime != newItemData.revisionTime {
+//            entity.revisionTime = newItemData.revisionTime
+//        }
+//        if entity.shareID != newItem.shareId {
+//            entity.shareID = newItem.shareId
+//        }
+//        if entity.userID != newItem.userId {
+//            entity.userID = newItem.userId
+//        }
+//        if entity.state != newItemData.state {
+//            entity.state = newItemData.state
+//        }
+//        if entity.symmetricallyEncryptedContent != newItem.encryptedContent {
+//            entity.symmetricallyEncryptedContent = newItem.encryptedContent
+//        }
+//        if entity.flags != Int64(newItemData.flags) {
+//            entity.flags = Int64(newItemData.flags)
+//        }
+//    }
 }
 
 public extension LocalItemDatasource {

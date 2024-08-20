@@ -64,7 +64,8 @@ public extension LocalAuthCredentialDatasource {
         let key = try await symmetricKeyProvider.getSymmetricKey()
 
         try await upsertElements(items: [credential],
-                                 fetchPredicate: NSPredicate(format: "userID == %@ AND module == %@", userId,
+                                 fetchPredicate: NSPredicate(format: "userID == %@ AND module == %@",
+                                                             userId,
                                                              module.rawValue),
                                  itemComparisonKey: { _ in
                                      AuthCredentialKeyComparison(userId: userId, module: module.rawValue)
@@ -74,15 +75,15 @@ public extension LocalAuthCredentialDatasource {
                                  },
                                  updateEntity: { (entity: AuthCredentialEntity, item: AuthCredential) in
                                      try entity.hydrate(userId: userId,
-                                                         authCredential: item,
-                                                         module: module,
-                                                         key: key)
+                                                        authCredential: item,
+                                                        module: module,
+                                                        key: key)
                                  },
                                  insertItems: { [weak self] credentials in
                                      guard let self else { return }
-                                     try await insertCredential(userId: userId, 
+                                     try await insertCredential(userId: userId,
                                                                 credentials: credentials,
-                                                                module: module, 
+                                                                module: module,
                                                                 key: key)
                                  })
     }
