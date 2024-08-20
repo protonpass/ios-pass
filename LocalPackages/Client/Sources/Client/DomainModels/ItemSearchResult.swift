@@ -79,6 +79,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
     public let itemId: String
     public let type: ItemContentType
     public let aliasEmail: String?
+    public let aliasEnabled: Bool
     public let highlightableTitle: any HighlightableText
     public let highlightableDetail: [any HighlightableText]
     public let url: String?
@@ -91,6 +92,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
                 itemId: String,
                 type: ItemContentType,
                 aliasEmail: String?,
+                aliasEnabled: Bool,
                 title: SearchResultEither,
                 detail: [SearchResultEither],
                 url: String?,
@@ -102,6 +104,7 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
         self.itemId = itemId
         self.type = type
         self.aliasEmail = aliasEmail
+        self.aliasEnabled = aliasEnabled
         highlightableTitle = title
         highlightableDetail = detail
         self.url = url

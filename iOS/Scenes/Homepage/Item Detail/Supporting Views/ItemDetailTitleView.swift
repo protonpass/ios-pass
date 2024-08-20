@@ -32,6 +32,7 @@ struct ItemDetailTitleView: View {
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemSquircleThumbnail(data: itemContent.thumbnailData(),
+                                  isEnabled: itemContent.item.isAliasEnabled,
                                   pinned: itemContent.item.pinned,
                                   size: .large)
 

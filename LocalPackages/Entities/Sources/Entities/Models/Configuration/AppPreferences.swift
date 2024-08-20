@@ -38,6 +38,9 @@ public struct AppPreferences: Codable, Equatable, Sendable {
     /// Whether to show or not custom domain explanation when viewing monitored aliases
     public var dismissedCustomDomainExplanation: Bool
 
+    /// Whether to show or not SimpleLogin alias sync explanation when in profile tab
+    public var dismissedAliasesSyncExplanation: Bool
+
     // swiftlint:disable:next todo
     // TODO: Introduced in april 2024, can be removed several months later
     public var didMigratePreferences: Bool
@@ -47,13 +50,15 @@ public struct AppPreferences: Codable, Equatable, Sendable {
                 createdItemsCount: Int,
                 dismissedBannerIds: [String],
                 dismissedCustomDomainExplanation: Bool,
-                didMigratePreferences: Bool) {
+                didMigratePreferences: Bool,
+                dismissedAliasesSyncExplanation: Bool) {
         self.onboarded = onboarded
         self.telemetryThreshold = telemetryThreshold
         self.createdItemsCount = createdItemsCount
         self.dismissedBannerIds = dismissedBannerIds
         self.dismissedCustomDomainExplanation = dismissedCustomDomainExplanation
         self.didMigratePreferences = didMigratePreferences
+        self.dismissedAliasesSyncExplanation = dismissedAliasesSyncExplanation
     }
 }
 
@@ -65,6 +70,7 @@ private extension AppPreferences {
         static let dismissedBannerIds: [String] = []
         static let dismissedCustomDomainExplanation = false
         static let didMigratePreferences = false
+        static let dismissedAliasesSyncExplanation = false
     }
 
     enum CodingKeys: String, CodingKey {
@@ -74,6 +80,7 @@ private extension AppPreferences {
         case dismissedBannerIds
         case dismissedCustomDomainExplanation
         case didMigratePreferences
+        case dismissedAliasesSyncExplanation
     }
 }
 
@@ -89,6 +96,8 @@ public extension AppPreferences {
             try container.decodeIfPresent(Bool.self, forKey: .dismissedCustomDomainExplanation)
         let didMigratePreferences = try container.decodeIfPresent(Bool.self,
                                                                   forKey: .didMigratePreferences)
+        let dismissedAliasesSyncExplanation = try container.decodeIfPresent(Bool.self,
+                                                                            forKey: .dismissedAliasesSyncExplanation)
 
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
@@ -96,7 +105,9 @@ public extension AppPreferences {
                   dismissedBannerIds: dismissedBannerIds ?? Default.dismissedBannerIds,
                   dismissedCustomDomainExplanation: dismissedCustomDomainExplanation ?? Default
                       .dismissedCustomDomainExplanation,
-                  didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences)
+                  didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences,
+                  dismissedAliasesSyncExplanation: dismissedAliasesSyncExplanation ?? Default
+                      .dismissedAliasesSyncExplanation)
     }
 }
 
@@ -107,6 +118,7 @@ extension AppPreferences: Defaultable {
               createdItemsCount: Default.createdItemsCount,
               dismissedBannerIds: Default.dismissedBannerIds,
               dismissedCustomDomainExplanation: Default.dismissedCustomDomainExplanation,
-              didMigratePreferences: Default.didMigratePreferences)
+              didMigratePreferences: Default.didMigratePreferences,
+              dismissedAliasesSyncExplanation: Default.dismissedAliasesSyncExplanation)
     }
 }

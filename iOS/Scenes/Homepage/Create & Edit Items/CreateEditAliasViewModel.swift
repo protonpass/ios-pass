@@ -21,60 +21,11 @@
 import Client
 import Combine
 import Core
+import DesignSystem
 import Entities
 import Factory
 import ProtonCoreLogin
 import SwiftUI
-
-final class SuffixSelection: ObservableObject, Equatable, Hashable {
-    @Published var selectedSuffix: Suffix?
-    let suffixes: [Suffix]
-
-    var selectedSuffixString: String { selectedSuffix?.suffix ?? "" }
-
-    init(suffixes: [Suffix]) {
-        self.suffixes = suffixes
-        selectedSuffix = suffixes.first
-    }
-
-    static func == (lhs: SuffixSelection, rhs: SuffixSelection) -> Bool {
-        lhs.selectedSuffix == rhs.selectedSuffix && lhs.suffixes == rhs.suffixes
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(selectedSuffix)
-        hasher.combine(suffixes)
-    }
-}
-
-final class MailboxSelection: ObservableObject, Equatable, Hashable {
-    @Published var selectedMailboxes: [Mailbox]
-    let mailboxes: [Mailbox]
-
-    var selectedMailboxesString: String {
-        selectedMailboxes.map(\.email).joined(separator: "\n")
-    }
-
-    init(mailboxes: [Mailbox]) {
-        self.mailboxes = mailboxes
-        if let defaultMailbox = mailboxes.first {
-            selectedMailboxes = [defaultMailbox]
-        } else {
-            selectedMailboxes = []
-        }
-    }
-
-    static func == (lhs: MailboxSelection, rhs: MailboxSelection) -> Bool {
-        lhs.selectedMailboxes == rhs.selectedMailboxes && lhs.mailboxes == rhs.mailboxes
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(selectedMailboxes)
-        hasher.combine(mailboxes)
-    }
-}
-
-// MARK: - Initialization
 
 @MainActor
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
@@ -85,13 +36,15 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var prefixManuallyEdited = false
     @Published var note = ""
 
-    var suffix: String { suffixSelection?.selectedSuffixString ?? "" }
-    var mailboxes: String { mailboxSelection?.selectedMailboxesString ?? "" }
+    var suffix: String { suffixSelection.selectedSuffixString }
+    var mailboxes: String { mailboxSelection.selectedMailboxesString }
 
     @Published private(set) var aliasEmail = ""
     @Published private(set) var state: State = .loading
     @Published private(set) var prefixError: AliasPrefixError?
     @Published private(set) var canCreateAlias = true
+    @Published var mailboxSelection: AliasLinkedMailboxSelection = .defaultEmpty
+    @Published var suffixSelection: SuffixSelection = .defaultEmpty
 
     override var shouldUpgrade: Bool {
         if case .create = mode {
@@ -116,11 +69,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     private(set) var alias: Alias?
-    private(set) var suffixSelection: SuffixSelection?
-    private(set) var mailboxSelection: MailboxSelection?
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     override var isSaveable: Bool {
         switch mode {
@@ -188,22 +138,21 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func generateAliasCreationInfo() -> AliasCreationInfo? {
-        guard let selectedSuffix = suffixSelection?.selectedSuffix,
-              let selectedMailboxes = mailboxSelection?.selectedMailboxes else { return nil }
+        guard let selectedSuffix = suffixSelection.selectedSuffix else { return nil }
         return .init(prefix: prefix,
                      suffix: selectedSuffix,
-                     mailboxIds: selectedMailboxes.map(\.ID))
+                     mailboxIds: mailboxSelection.selectedMailboxes.map(\.ID))
     }
 
     override func additionalEdit() async throws {
-        guard let alias, let mailboxSelection else { return }
-        if Set(alias.mailboxes) == Set(mailboxSelection.selectedMailboxes) { return }
-        if case let .edit(itemContent) = mode {
-            let mailboxIds = mailboxSelection.selectedMailboxes.map(\.ID)
-            _ = try await changeMailboxesTask(shareId: itemContent.shareId,
-                                              itemId: itemContent.item.itemID,
-                                              mailboxIDs: mailboxIds).value
-        }
+        guard let alias,
+              Set(alias.mailboxes) != Set(mailboxSelection.selectedMailboxes),
+              case let .edit(itemContent) = mode
+        else { return }
+        let mailboxIds = mailboxSelection.selectedMailboxes.map(\.ID)
+        try await changeMailboxes(shareId: itemContent.shareId,
+                                  itemId: itemContent.item.itemID,
+                                  mailboxIDs: mailboxIds)
     }
 
     private func validatePrefix() {
@@ -226,11 +175,10 @@ extension CreateEditAliasViewModel {
                 state = .loading
 
                 let shareId = selectedVault.shareId
-                let aliasOptions = try await getAliasOptionsTask(shareId: shareId).value
+                let aliasOptions = try await getAliasOptions(shareId: shareId)
+
                 suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                suffixSelection?.attach(to: self, storeIn: &cancellables)
-                mailboxSelection = .init(mailboxes: aliasOptions.mailboxes)
-                mailboxSelection?.attach(to: self, storeIn: &cancellables)
+                mailboxSelection = .init(allUserMailboxes: aliasOptions.mailboxes)
                 canCreateAlias = aliasOptions.canCreateAlias
 
                 if case let .edit(itemContent) = mode {
@@ -239,7 +187,7 @@ extension CreateEditAliasViewModel {
                                                                   itemId: itemContent.item.itemID)
                     aliasEmail = alias.email
                     self.alias = alias
-                    mailboxSelection?.selectedMailboxes = alias.mailboxes
+                    mailboxSelection.selectedMailboxes = alias.mailboxes
                     logger.info("Get alias successfully \(itemContent.debugDescription)")
                 }
 
@@ -251,40 +199,20 @@ extension CreateEditAliasViewModel {
             }
         }
     }
-
-    func showMailboxSelection() {
-        guard let mailboxSelection else { return }
-        router.present(for: .mailboxView(mailboxSelection, mode.isEditMode ? .edit : .create))
-    }
-
-    func showSuffixSelection() {
-        guard let suffixSelection else { return }
-        router.present(for: .suffixView(suffixSelection))
-    }
 }
 
 // MARK: - Private supporting tasks
 
 private extension CreateEditAliasViewModel {
-    func getAliasOptionsTask(shareId: String) -> Task<AliasOptions, any Error> {
-        Task.detached(priority: .userInitiated) { [weak self] in
-            guard let self else {
-                throw PassError.deallocatedSelf
-            }
-            return try await aliasRepository.getAliasOptions(shareId: shareId)
-        }
+    func getAliasOptions(shareId: String) async throws -> AliasOptions {
+        try await aliasRepository.getAliasOptions(shareId: shareId)
     }
 
-    func changeMailboxesTask(shareId: String,
-                             itemId: String,
-                             mailboxIDs: [Int]) -> Task<Void, any Error> {
-        Task.detached(priority: .userInitiated) { [weak self] in
-            guard let self else {
-                throw PassError.deallocatedSelf
-            }
-            try await aliasRepository.changeMailboxes(shareId: shareId,
-                                                      itemId: itemId,
-                                                      mailboxIDs: mailboxIDs)
-        }
+    func changeMailboxes(shareId: String,
+                         itemId: String,
+                         mailboxIDs: [Int]) async throws {
+        try await aliasRepository.changeMailboxes(shareId: shareId,
+                                                  itemId: itemId,
+                                                  mailboxIDs: mailboxIDs)
     }
 }

@@ -1,7 +1,7 @@
 //
 // MailboxSection.swift
-// Proton Pass - Created on 17/02/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 02/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,18 +19,24 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct MailboxSection: View {
-    @ObservedObject var mailboxSelection: MailboxSelection
+public struct MailboxSection: View {
+    let mailboxSelection: AliasLinkedMailboxSelection
     let mode: Mode
 
-    enum Mode {
+    public init(mailboxSelection: AliasLinkedMailboxSelection, mode: Mode) {
+        self.mailboxSelection = mailboxSelection
+        self.mode = mode
+    }
+
+    public enum Mode: Sendable {
         case create, edit
 
-        var title: String {
+        public var title: String {
             switch self {
             case .create:
                 #localized("Forward to")
@@ -40,7 +46,7 @@ struct MailboxSection: View {
         }
     }
 
-    var body: some View {
+    public var body: some View {
         HStack {
             ItemDetailSectionIcon(icon: IconProvider.forward)
 
@@ -54,7 +60,7 @@ struct MailboxSection: View {
 
             ItemDetailSectionIcon(icon: IconProvider.chevronDown)
         }
-        .animation(.default, value: mailboxSelection.selectedMailboxes)
+        .animation(.default, value: mailboxSelection)
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
         .contentShape(.rect)
