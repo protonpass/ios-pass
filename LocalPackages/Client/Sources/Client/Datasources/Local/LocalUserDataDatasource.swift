@@ -70,34 +70,18 @@ public extension LocalUserDataDatasource {
         try await upsertElements(items: [userData],
                                  fetchPredicate: NSPredicate(format: "userID == %@", userId),
                                  itemComparisonKey: { _ in
-                    UserDataKeyComparison(userId: userId)
+                                     UserDataKeyComparison(userId: userId)
                                  },
                                  entityComparisonKey: { entity in
-            UserDataKeyComparison(userId: entity.userID)
+                                     UserDataKeyComparison(userId: entity.userID)
                                  },
-                                 updateEntity: { (entity: UserProfileEntity, item: UserData) in
-                                    try? entity.hydrate(userData: userData, key: key)
+                                 updateEntity: { (entity: UserProfileEntity, _: UserData) in
+                                     try entity.hydrate(userData: userData, key: key)
                                  },
                                  insertItems: { [weak self] userDatas in
                                      guard let self else { return }
                                      try await insert(userDatas, key: key)
                                  })
-//        try await remove(userId: userData.user.ID)
-//        let context = newTaskContext(type: .insert)
-//        let key = try await symmetricKeyProvider.getSymmetricKey()
-//        var hydrationError: (any Error)?
-//        let request = newBatchInsertRequest(entity: UserProfileEntity.entity(context: context),
-//                                            sourceItems: [userData]) { object, userData in
-//            do {
-//                try (object as? UserProfileEntity)?.hydrate(userData: userData, key: key)
-//            } catch {
-//                hydrationError = error
-//            }
-//        }
-//        if let hydrationError {
-//            throw hydrationError
-//        }
-//        try await execute(batchInsertRequest: request, context: context)
     }
 
     func getActiveUser() async throws -> UserProfile? {
@@ -141,10 +125,9 @@ private extension LocalUserDataDatasource {
     struct UserDataKeyComparison: Hashable {
         let userId: String
     }
-    
+
     func insert(_ userData: [UserData], key: SymmetricKey) async throws {
         let context = newTaskContext(type: .insert)
-//        let key = try await symmetricKeyProvider.getSymmetricKey()
         var hydrationError: (any Error)?
         let request = newBatchInsertRequest(entity: UserProfileEntity.entity(context: context),
                                             sourceItems: userData) { object, userData in
@@ -159,16 +142,4 @@ private extension LocalUserDataDatasource {
         }
         try await execute(batchInsertRequest: request, context: context)
     }
-//
-//    func insertOrganization(_ organization: [Organization], userId: String) async throws {
-//        let taskContext = newTaskContext(type: .insert)
-//
-//        let batchInsertRequest =
-//            newBatchInsertRequest(entity: OrganizationEntity.entity(context: taskContext),
-//                                  sourceItems: organization) { managedObject, organization in
-//                (managedObject as? OrganizationEntity)?.hydrate(from: organization, userId: userId)
-//            }
-//
-//        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
-//    }
 }
