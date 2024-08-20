@@ -43,15 +43,21 @@ public extension LocalOrganizationDatasource {
     }
 
     func upsertOrganization(_ organization: Organization, userId: String) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: OrganizationEntity.entity(context: taskContext),
-                                  sourceItems: [organization]) { managedObject, organization in
-                (managedObject as? OrganizationEntity)?.hydrate(from: organization, userId: userId)
-            }
-
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await upsertElements(items: [organization],
+                                 fetchPredicate: NSPredicate(format: "userID == %@", userId),
+                                 itemComparisonKey: { _ in
+                                     OrganizationKeyComparison(userId: userId)
+                                 },
+                                 entityComparisonKey: { entity in
+                                     OrganizationKeyComparison(userId: entity.userID)
+                                 },
+                                 updateEntity: { (entity: OrganizationEntity, item: Organization) in
+                                     entity.hydrate(from: item, userId: userId)
+                                 },
+                                 insertItems: { [weak self] organization in
+                                     guard let self else { return }
+                                     try await insertOrganization(organization, userId: userId)
+                                 })
     }
 
     func removeOrganization(userId: String) async throws {
@@ -60,5 +66,23 @@ public extension LocalOrganizationDatasource {
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
+    }
+}
+
+private extension LocalOrganizationDatasource {
+    struct OrganizationKeyComparison: Hashable {
+        let userId: String
+    }
+
+    func insertOrganization(_ organization: [Organization], userId: String) async throws {
+        let taskContext = newTaskContext(type: .insert)
+
+        let batchInsertRequest =
+            newBatchInsertRequest(entity: OrganizationEntity.entity(context: taskContext),
+                                  sourceItems: organization) { managedObject, organization in
+                (managedObject as? OrganizationEntity)?.hydrate(from: organization, userId: userId)
+            }
+
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }

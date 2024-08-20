@@ -43,13 +43,21 @@ public extension LocalShareKeyDatasource {
     }
 
     func upsertKeys(_ keys: [SymmetricallyEncryptedShareKey]) async throws {
-        let taskContext = newTaskContext(type: .insert)
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: ShareKeyEntity.entity(context: taskContext),
-                                  sourceItems: keys) { managedObject, key in
-                (managedObject as? ShareKeyEntity)?.hydrate(from: key)
-            }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await upsertElements(items: keys,
+                                 fetchPredicate: NSPredicate(format: "shareID IN %@ AND keyRotation IN %@", keys.map(\.shareId), keys.map(\.shareKey.keyRotation)),
+                                 itemComparisonKey: { item in
+            ShareKeyComparison(shareID: item.shareId, keyRotation: item.shareKey.keyRotation)
+                                 },
+                                 entityComparisonKey: { entity in
+            ShareKeyComparison(shareID: entity.shareID, keyRotation: entity.keyRotation)
+                                 },
+                                 updateEntity: { (entity: ShareKeyEntity, key: SymmetricallyEncryptedShareKey) in
+            entity.hydrate(from: key)
+                                 },
+                                 insertItems: { [weak self] keys in
+                                     guard let self else { return }
+                                     try await insert(keys)
+                                 })
     }
 
     func removeAllKeys(userId: String) async throws {
@@ -73,5 +81,22 @@ public extension LocalShareKeyDatasource {
                                                                     userId: userId,
                                                                     shareKey: $0.shareKey) }
         try await upsertKeys(updatedKeys)
+    }
+}
+
+private extension LocalShareKeyDatasource {
+    struct ShareKeyComparison: Hashable {
+        let shareID: String
+        let keyRotation: Int64
+    }
+
+    func insert(_ keys: [SymmetricallyEncryptedShareKey]) async throws {
+        let taskContext = newTaskContext(type: .insert)
+        let batchInsertRequest =
+            newBatchInsertRequest(entity: ShareKeyEntity.entity(context: taskContext),
+                                  sourceItems: keys) { managedObject, key in
+                (managedObject as? ShareKeyEntity)?.hydrate(from: key)
+            }
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }
