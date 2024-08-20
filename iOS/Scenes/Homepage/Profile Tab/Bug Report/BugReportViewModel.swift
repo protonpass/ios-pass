@@ -68,9 +68,7 @@ final class BugReportViewModel: ObservableObject {
     @Published private(set) var hasSent = false
     @Published private(set) var actionInProcess = false
     @Published var shouldSendLogs = true
-    @Published var selectedContent = [PhotosPickerItem]()
-
-    var cantSend: Bool { object == nil || description.count < 10 }
+    @Published var selectedPhotos = [PhotosPickerItem]()
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let sendUserBugReport = resolve(\UseCasesContainer.sendUserBugReport)
@@ -83,14 +81,15 @@ final class BugReportViewModel: ObservableObject {
     }
 
     init() {
-        $selectedContent
+        $selectedPhotos
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] content in
+            .sink { [weak self] photos in
                 guard let self else {
                     return
                 }
-                addContent(content: content)
-            }.store(in: &cancellable)
+                addPhotos(photos)
+            }
+            .store(in: &cancellable)
     }
 
     func send() {
@@ -118,7 +117,7 @@ final class BugReportViewModel: ObservableObject {
         }
     }
 
-    func addFiles(files: Result<[URL], any Error>) {
+    func addFiles(_ files: Result<[URL], any Error>) {
         switch files {
         case let .success(fileUrls):
             do {
@@ -135,14 +134,13 @@ final class BugReportViewModel: ObservableObject {
         }
     }
 
-    func clearAllAddedFiles() {
-        currentFiles.removeAll()
-        selectedContent.removeAll()
+    func removeFile(_ name: String) {
+        currentFiles.removeValue(forKey: name)
     }
 }
 
 private extension BugReportViewModel {
-    func addContent(content: [PhotosPickerItem]) {
+    func addPhotos(_ photos: [PhotosPickerItem]) {
         Task { [weak self] in
             guard let self else {
                 return
@@ -152,10 +150,10 @@ private extension BugReportViewModel {
             }
             do {
                 actionInProcess = true
-                for key in currentFiles.keys where key.contains("Content -") {
+                for key in currentFiles.keys where key.contains("Screenshot -") {
                     currentFiles.removeValue(forKey: key)
                 }
-                let data = try await fetchContentUrls(content: content)
+                let data = try await fetchContentUrls(photos)
                 currentFiles = currentFiles.merging(data) { _, new in new }
             } catch {
                 self.error = error
@@ -163,17 +161,17 @@ private extension BugReportViewModel {
         }
     }
 
-    func fetchContentUrls(content: [PhotosPickerItem]) async throws -> [String: URL] {
+    func fetchContentUrls(_ photos: [PhotosPickerItem]) async throws -> [String: URL] {
         try await withThrowingTaskGroup(of: DataUrl?.self, returning: [String: URL].self) { group in
-            for item in content {
-                group.addTask { try await item.loadTransferable(type: DataUrl.self) }
+            for photo in photos {
+                group.addTask { try await photo.loadTransferable(type: DataUrl.self) }
             }
 
             var contentUrls: [String: URL] = [:]
 
             for try await result in group {
                 if let result {
-                    contentUrls["Content - \(result.url.lastPathComponent)"] = result.url
+                    contentUrls["Screenshot - \(result.url.lastPathComponent)"] = result.url
                 }
             }
 

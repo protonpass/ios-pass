@@ -539,8 +539,7 @@ private extension CreateEditIdentityView {
                 if viewModel.reddit.shouldShow {
                     PassSectionDivider()
                     identityRow(title: IdentityFields.reddit.title,
-                                value: $viewModel.reddit.value,
-                                inputAutocapitalization: .characters)
+                                value: $viewModel.reddit.value)
                 }
 
                 if viewModel.facebook.shouldShow {
