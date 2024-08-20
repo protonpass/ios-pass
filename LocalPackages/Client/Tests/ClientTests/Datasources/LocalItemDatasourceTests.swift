@@ -47,8 +47,8 @@ extension LocalItemDatasourceTests {
         let lhsItem = lhs.item
         let rhsItem = rhs.item
         XCTAssertEqual(lhsItem.itemID, rhsItem.itemID)
-//        XCTAssertEqual(lhsItem.revision, rhsItem.revision)
-//        XCTAssertEqual(lhsItem.contentFormatVersion, rhsItem.contentFormatVersion)
+        XCTAssertEqual(lhsItem.revision, rhsItem.revision)
+        XCTAssertEqual(lhsItem.contentFormatVersion, rhsItem.contentFormatVersion)
         XCTAssertEqual(lhsItem.keyRotation, rhsItem.keyRotation)
         XCTAssertEqual(lhsItem.content, rhsItem.content)
         XCTAssertEqual(lhsItem.itemKey, rhsItem.itemKey)

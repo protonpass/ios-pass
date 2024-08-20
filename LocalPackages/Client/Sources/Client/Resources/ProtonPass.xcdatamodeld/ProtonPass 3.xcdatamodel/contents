@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
@@ -40,14 +40,14 @@
         <attribute name="content" attributeType="String"/>
         <attribute name="contentFormatVersion" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="createTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="flags" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="flags" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="isLogInItem" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="itemID" attributeType="String" defaultValueString=""/>
         <attribute name="itemKey" optional="YES" attributeType="String"/>
         <attribute name="keyRotation" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="lastUseTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="modifyTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="pinned" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="pinned" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="pinTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="revision" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="revisionTime" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
