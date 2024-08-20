@@ -61,6 +61,8 @@ extension SharedServiceContainer {
                                  shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
                                  remoteSyncEventsDatasource: SharedRepositoryContainer.shared
                                      .remoteSyncEventsDatasource(),
+                                 aliasRepository: SharedRepositoryContainer.shared.aliasRepository(),
+                                 accessRepository: SharedRepositoryContainer.shared.accessRepository(),
                                  userManager: self.userManager(),
                                  logManager: self.logManager) }
     }

@@ -192,7 +192,8 @@ extension TelemetryEventRepositoryTests {
                                          monitor: .init(protonAddress: .random(), aliases: .random()),
                                          pendingInvites: 1,
                                          waitingNewUserInvites: 1,
-                                         minVersionUpgrade: nil))
+                                         minVersionUpgrade: nil, 
+                                         userData: UserAliasSyncData.default))
             case userId3:
                 // Business user
                     .init(userId: userId3,
@@ -207,7 +208,8 @@ extension TelemetryEventRepositoryTests {
                                          monitor: .init(protonAddress: .random(), aliases: .random()),
                                          pendingInvites: 1,
                                          waitingNewUserInvites: 1,
-                                         minVersionUpgrade: nil))
+                                         minVersionUpgrade: nil,
+                                         userData: UserAliasSyncData.default))
             default:
                 // Free user
                     .init(userId: userId3,
@@ -222,7 +224,8 @@ extension TelemetryEventRepositoryTests {
                                          monitor: .init(protonAddress: .random(), aliases: .random()),
                                          pendingInvites: 1,
                                          waitingNewUserInvites: 1,
-                                         minVersionUpgrade: nil))
+                                         minVersionUpgrade: nil,
+                                         userData: UserAliasSyncData.default))
             }
 
             localAccessDatasource.stubbedGetAccessResult = access
@@ -331,7 +334,8 @@ extension TelemetryEventRepositoryTests {
                                 monitor: .init(protonAddress: .random(), aliases: .random()),
                                 pendingInvites: 1,
                                 waitingNewUserInvites: 1,
-                                minVersionUpgrade: nil)
+                                minVersionUpgrade: nil, 
+                                userData: UserAliasSyncData.default)
         localAccessDatasource.stubbedGetAccessResult = .init(userId: userId, access: freeAccess)
 
         thresholdProvider.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
@@ -401,7 +405,8 @@ extension TelemetryEventRepositoryTests {
                                     monitor: .init(protonAddress: .random(), aliases: .random()),
                                     pendingInvites: 1,
                                     waitingNewUserInvites: 1,
-                                    minVersionUpgrade: nil)
+                                    minVersionUpgrade: nil, 
+                                    userData: UserAliasSyncData.default)
         localAccessDatasource.stubbedGetAccessResult = .init(userId: userId, access: businessAccess)
 
         sut = TelemetryEventRepository(localDatasource: localDatasource,
@@ -451,7 +456,8 @@ extension TelemetryEventRepositoryTests {
                                     monitor: .init(protonAddress: .random(), aliases: .random()),
                                     pendingInvites: 1,
                                     waitingNewUserInvites: 1,
-                                    minVersionUpgrade: nil)
+                                    minVersionUpgrade: nil, 
+                                    userData: UserAliasSyncData.default)
         localAccessDatasource.stubbedGetAccessResult = .init(userId: userId, access: businessAccess)
 
         sut = TelemetryEventRepository(localDatasource: localDatasource,

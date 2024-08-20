@@ -62,15 +62,18 @@ struct ItemSquircleThumbnail: View {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let data: ItemThumbnailData
     private let pinned: Bool
+    private let isEnabled: Bool
     private let size: ItemSquircleThumbnailSize
     private let alternativeBackground: Bool
 
     init(data: ItemThumbnailData,
+         isEnabled: Bool = true,
          pinned: Bool = false,
          size: ItemSquircleThumbnailSize = .regular,
          alternativeBackground: Bool = false) {
         self.data = data
         self.pinned = pinned
+        self.isEnabled = isEnabled
         self.size = size
         self.alternativeBackground = alternativeBackground
     }
@@ -89,8 +92,16 @@ private extension ItemSquircleThumbnail {
         case let .icon(type):
             SquircleThumbnail(data: size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon),
                               tintColor: type.normMajor2Color,
-                              backgroundColor: alternativeBackground ? type.normMinor2Color : type.normMinor1Color,
+                              backgroundColor: !isEnabled ? .clear : alternativeBackground ? type
+                                  .normMinor2Color : type.normMinor1Color,
                               height: size.height)
+                .if(!isEnabled) { view in
+                    view.overlay {
+                        RoundedRectangle(cornerRadius: size.height / 2.5, style: .continuous)
+                            .stroke((alternativeBackground ? type.normMinor2Color : type.normMinor1Color).toColor,
+                                    lineWidth: 1)
+                    }
+                }
 
         case let .initials(type, initials):
             SquircleThumbnail(data: .initials(initials),
