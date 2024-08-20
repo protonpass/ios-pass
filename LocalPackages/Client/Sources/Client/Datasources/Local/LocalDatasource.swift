@@ -101,7 +101,7 @@ public extension LocalDatasource {
                                                  fetchPredicate: NSPredicate,
                                                  itemComparisonKey: @escaping (ElementType) -> AnyHashable,
                                                  entityComparisonKey: @escaping (EntityType) -> AnyHashable,
-                                                 updateEntity: @escaping (EntityType, ElementType) -> Void,
+                                                 updateEntity: @escaping (EntityType, ElementType) throws -> Void,
                                                  insertItems: @escaping ([ElementType]) async throws
                                                      -> Void) async throws where EntityType: NSManagedObject {
         let taskContext = newTaskContext(type: .insert)
@@ -136,7 +136,7 @@ public extension LocalDatasource {
         if !itemsToUpdate.isEmpty {
             try await taskContext.perform {
                 for (item, entity) in itemsToUpdate {
-                    updateEntity(entity, item)
+                    try updateEntity(entity, item)
                 }
                 if taskContext.hasChanges {
                     try taskContext.save()

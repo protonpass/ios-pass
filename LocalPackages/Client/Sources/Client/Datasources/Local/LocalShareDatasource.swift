@@ -98,17 +98,6 @@ private extension LocalShareDatasource {
         let shareId: String
     }
 
-//    func insertOrganization(_ organization: [Organization], userId: String) async throws {
-//        let taskContext = newTaskContext(type: .insert)
-//
-//        let batchInsertRequest =
-//            newBatchInsertRequest(entity: OrganizationEntity.entity(context: taskContext),
-//                                  sourceItems: organization) { managedObject, organization in
-//                (managedObject as? OrganizationEntity)?.hydrate(from: organization, userId: userId)
-//            }
-//
-//        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
-//    }
     func insert(_ shares: [SymmetricallyEncryptedShare], userId: String) async throws {
         let taskContext = newTaskContext(type: .insert)
 

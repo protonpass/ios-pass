@@ -161,10 +161,8 @@ public extension LocalItemDatasource {
                                  entityComparisonKey: { entity in
                                      ItemKeyComparison(itemID: entity.itemID, shareID: entity.shareID)
                                  },
-                                 updateEntity: { (entity: ItemEntity,
-                                                  item: SymmetricallyEncryptedItem) in
+                                 updateEntity: { (entity: ItemEntity, item: SymmetricallyEncryptedItem) in
                                          entity.hydrate(from: item)
-//                                         updateEntity(entity, with: item)
                                  },
                                  insertItems: insertItems)
     }
