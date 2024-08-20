@@ -58,6 +58,9 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
 
     /// Flags for this item. Possible values:
     /// - SkipHealthCheck: 1<<0 = 1, if first bit of Int is 1 then the item should not be monitored in `Pass
+    /// - EmailBreached: 1<<1 = 1, if second bit of Int is 1 then the item has a breached email
+    /// - AliasDisabled: 1<<2 = 1, if third bit of Int is 1 then the alias is disabled
+    /// This is being implemented in the `ItemFlagable` protocol
     /// Monitor`
     public let flags: Int
 

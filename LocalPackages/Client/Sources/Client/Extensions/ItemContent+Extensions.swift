@@ -53,6 +53,7 @@ public extension ItemContent {
                      shareId: shareId,
                      type: contentData.type,
                      aliasEmail: item.aliasEmail,
+                     aliasEnabled: aliasEnabled,
                      title: name,
                      description: note,
                      url: url,
@@ -61,7 +62,8 @@ public extension ItemContent {
                      lastUseTime: item.lastUseTime ?? 0,
                      modifyTime: item.modifyTime,
                      state: item.itemState,
-                     pinned: item.pinned)
+                     pinned: item.pinned,
+                     isAliasEnabled: item.isAliasEnabled)
     }
 
     func toAuthenticatorItem(totpData: TOTPData) -> AuthenticatorItem? {

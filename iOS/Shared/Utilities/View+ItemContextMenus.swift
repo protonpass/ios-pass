@@ -18,8 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
+import Factory
+import ProtonCoreFeatureFlags
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -38,6 +41,7 @@ enum ItemContextMenu {
     case alias(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
                onCopyAlias: () -> Void,
+               onToggleAliasStatus: (Bool) -> Void,
                onEdit: () -> Void,
                onPinToggle: () -> Void,
                onViewHistory: () -> Void,
@@ -112,16 +116,30 @@ enum ItemContextMenu {
         case let .alias(item,
                         isEditable,
                         onCopyAlias,
+                        onToggleAliasStatus,
                         onEdit,
                         onPinToggle,
                         onViewHistory,
                         onTrash):
+            var firstOptions = [ItemContextMenuOption]()
+
+            firstOptions.append(.init(title: "Copy alias address",
+                                      icon: IconProvider.squares,
+                                      action: onCopyAlias))
+
+            if isFeatureFlagEnables(flag: FeatureFlagType.passSimpleLoginAliasesSync) {
+                if item.aliasEnabled {
+                    firstOptions.append(.init(title: "Disable alias",
+                                              icon: IconProvider.circleSlash,
+                                              action: { onToggleAliasStatus(false) }))
+                } else {
+                    firstOptions.append(.init(title: "Enable alias",
+                                              icon: IconProvider.alias,
+                                              action: { onToggleAliasStatus(true) }))
+                }
+            }
             var sections: [ItemContextMenuOptionSection] = []
-
-            sections.append(.init(options: [.init(title: "Copy alias address",
-                                                  icon: IconProvider.alias,
-                                                  action: onCopyAlias)]))
-
+            sections.append(.init(options: firstOptions))
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
                                                 onEdit: onEdit,
@@ -234,6 +252,10 @@ enum ItemContextMenu {
             return sections
         }
     }
+
+    private func isFeatureFlagEnables(flag: any FeatureFlagTypeProtocol) -> Bool {
+        SharedUseCasesContainer.shared.getFeatureFlagStatus().execute(for: flag)
+    }
 }
 
 private extension ItemContextMenu {
@@ -286,7 +308,7 @@ struct ItemContextMenuOption: Identifiable {
     }
 
     static func trashOption(action: @escaping () -> Void) -> ItemContextMenuOption {
-        .init(title: "Move to trash",
+        .init(title: "Move to Trash",
               icon: IconProvider.trash,
               action: action,
               isDestructive: true)
@@ -357,6 +379,9 @@ extension View {
                 itemContextMenu(.alias(item: item,
                                        isEditable: isEditable,
                                        onCopyAlias: { handler.copyAlias(item) },
+                                       onToggleAliasStatus: { enabled in
+                                           handler.toggleAliasStatus(item, enabled: enabled)
+                                       },
                                        onEdit: { handler.edit(item) },
                                        onPinToggle: { handler.toggleItemPinning(item) },
                                        onViewHistory: { handler.viewHistory(item) },

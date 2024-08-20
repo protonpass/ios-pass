@@ -28,7 +28,8 @@ struct ItemSearchResultView: View, Equatable {
     var body: some View {
         HStack {
             VStack {
-                ItemSquircleThumbnail(data: result.thumbnailData())
+                ItemSquircleThumbnail(data: result.thumbnailData(),
+                                      isEnabled: result.aliasEnabled)
             }
             .frame(maxHeight: .infinity, alignment: .top)
 

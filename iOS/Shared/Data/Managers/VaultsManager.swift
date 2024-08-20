@@ -247,6 +247,7 @@ extension VaultsManager {
     }
 
     // Delete everything and download again
+    @MainActor
     func fullSync(userId: String) async {
         vaultSyncEventStream.send(.started)
         incompleteFullSyncUserId = userId
@@ -414,6 +415,7 @@ extension VaultsManager {
         }
     }
 
+    @MainActor
     func updateItemTypeFilterOption(_ filterOption: ItemTypeFilterOption) {
         self.filterOption = filterOption
     }

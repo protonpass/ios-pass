@@ -20,11 +20,13 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
+    @State private var animate = false
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
 
@@ -84,6 +86,23 @@ struct AliasDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .onFirstAppear(perform: viewModel.getAlias)
+        .alert("Move to Trash", isPresented: $viewModel.showingTrashAliasAlert) {
+            if viewModel.isSimpleLoginAliasSyncActive {
+                Button("Disable instead") { viewModel.disableAlias() }
+            }
+            Button("Move to Trash") { viewModel.moveToTrash() }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            if viewModel.isSimpleLoginAliasSyncActive {
+                // swiftlint:disable:next line_length
+                Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
+            }
+        }
+        .onFirstAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                animate = true
+            }
+        }
     }
 
     private var aliasMailboxesSection: some View {
@@ -111,8 +130,19 @@ struct AliasDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
             .onTapGesture { viewModel.copyAliasEmail() }
+
+            if viewModel.isSimpleLoginAliasSyncActive {
+                if viewModel.togglingAliasStatus {
+                    ProgressView()
+                } else {
+                    StaticToggle(isOn: viewModel.aliasEnabled,
+                                 tintColor: iconTintColor,
+                                 action: { viewModel.toggleAliasState() })
+                }
+            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.togglingAliasStatus)
         .contextMenu {
             Button { viewModel.copyAliasEmail() } label: {
                 Text("Copy")
@@ -134,6 +164,7 @@ struct AliasDetailView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Text("Forwarding to")
                     .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
                 if let mailboxes = viewModel.mailboxes {
                     ForEach(mailboxes, id: \.ID) { mailbox in
@@ -162,7 +193,7 @@ struct AliasDetailView: View {
                         SkeletonBlock(tintColor: iconTintColor)
                     }
                     .clipShape(Capsule())
-                    .shimmering()
+                    .shimmering(active: animate)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
