@@ -29,6 +29,7 @@ public enum TaskContextType: String {
 }
 
 enum LocalDatasourceError: Error, CustomDebugStringConvertible {
+    case batchUpdateError(NSBatchUpdateRequest)
     case batchInsertError(NSBatchInsertRequest)
     case batchDeleteError(NSBatchDeleteRequest)
     case databaseOperationsOnMainThread
@@ -36,6 +37,8 @@ enum LocalDatasourceError: Error, CustomDebugStringConvertible {
 
     public var debugDescription: String {
         switch self {
+        case let .batchUpdateError(request):
+            return "Failed to batch udpate entity \(request.entityName)"
         case let .batchInsertError(request):
             return "Failed to batch insert entity \(request.entityName)"
         case let .batchDeleteError(request):
@@ -95,6 +98,155 @@ public extension LocalDatasource {
                                            })
         return request
     }
+
+    // swiftlint:disable:next function_parameter_count
+    func upsertElements<ElementType, EntityType>(items: [ElementType],
+                                                 fetchPredicate: NSPredicate,
+                                                 itemComparisonKey: @escaping (ElementType) -> AnyHashable,
+                                                 entityComparisonKey: @escaping (EntityType) -> AnyHashable,
+                                                 updateEntity: @escaping (EntityType, ElementType) -> Void,
+                                                 insertItems: @escaping ([ElementType]) async throws
+                                                     -> Void) async throws where EntityType: NSManagedObject {
+        let taskContext = newTaskContext(type: .insert)
+
+        // Fetch existing entities based on the provided predicate
+        let fetchRequest = NSFetchRequest<EntityType>(entityName: String(describing: EntityType.self))
+        fetchRequest.predicate = fetchPredicate
+
+        let existingEntities = try await taskContext.perform {
+            try taskContext.fetch(fetchRequest)
+        }
+
+        // Use a Set for fast lookup
+        let existingEntitiesDict = Dictionary(uniqueKeysWithValues: existingEntities
+            .map { (entityComparisonKey($0),
+                    $0) })
+
+        var itemsToInsert: [ElementType] = []
+        var itemsToUpdate: [(ElementType, EntityType)] = []
+
+        // Separate items into those to insert or update
+        for item in items {
+            let key = itemComparisonKey(item)
+            if let existingEntity = existingEntitiesDict[key] {
+                itemsToUpdate.append((item, existingEntity))
+            } else {
+                itemsToInsert.append(item)
+            }
+        }
+
+        // Perform batch update of existing entities
+        if !itemsToUpdate.isEmpty {
+            try await taskContext.perform {
+                for (item, entity) in itemsToUpdate {
+                    updateEntity(entity, item)
+                }
+                if taskContext.hasChanges {
+                    try taskContext.save()
+                }
+            }
+        }
+
+        // Perform batch insert for new items
+        if !itemsToInsert.isEmpty {
+            try await insertItems(itemsToInsert)
+        }
+    }
+
+//    func upsertElements<ElementType, EntityType>(items: [ElementType],
+//                                               fetchPredicate: NSPredicate,
+//                                               itemComparaisonKey: @escaping (ElementType) -> AnyHashable,
+//                                               entityComparaisonKey: @escaping (EntityType) -> AnyHashable,
+//                                               updateEntity: @escaping (EntityType, ElementType) -> Void,
+//                                               insertItems: @escaping ([ElementType]) async throws
+//                                                   -> Void) async throws where EntityType: NSManagedObject {
+//        let taskContext = newTaskContext(type: .insert)
+//
+//        // Fetch existing entities based on the provided predicate
+//        let fetchRequest = NSFetchRequest<EntityType>(entityName: String(describing: EntityType.self))
+//        fetchRequest.predicate = fetchPredicate
+//
+//        let existingEntities = try await taskContext.perform {
+//            try taskContext.fetch(fetchRequest)
+//        }
+//
+//        // Create a dictionary for quick lookup using the entity key
+//        let existingEntitiesDict = Dictionary(grouping: existingEntities, by: { entityComparaisonKey($0) })
+//
+//        var itemsToInsert: [ElementType] = []
+//        var itemsToUpdate: [(ElementType, EntityType)] = []
+//
+//        // Determine whether to insert or update each item
+//        for item in items {
+//            let key = itemComparaisonKey(item)
+//            if let existingEntity = existingEntitiesDict[key]?.first {
+//                itemsToUpdate.append((item, existingEntity))
+//            } else {
+//                itemsToInsert.append(item)
+//            }
+//        }
+//
+//        // Update existing entities
+//        for (item, entity) in itemsToUpdate {
+//            updateEntity(entity, item)
+//        }
+//
+//        // Perform batch insert for new items
+//        if !itemsToInsert.isEmpty {
+//            try await insertItems(itemsToInsert)
+//        }
+//
+//        // Save context if there were updates
+//        if taskContext.hasChanges {
+//            try taskContext.save()
+//        }
+//    }
+
+//    func testUpsertItems<ElementType, EntityType>(
+//        items: [ElementType],
+//        fetchPredicate: NSPredicate,
+//        updateEntity: @escaping (EntityType, ElementType) -> Void,
+//        insertItems: @escaping ([ElementType]) async throws -> Void
+//    ) async throws where EntityType: NSManagedObject {
+//
+//        let taskContext = newTaskContext(type: .insert)
+//
+//        // Fetch existing entities based on the provided predicate
+//        let fetchRequest = EntityType.fetchRequest()
+//        fetchRequest.predicate = fetchPredicate
+//
+//        let existingEntities = try await taskContext.perform {
+//            try taskContext.fetch(fetchRequest)
+//        }
+//
+//        // Create a dictionary for quick lookup using an identifying key if needed
+//        var itemsToInsert: [ElementType] = []
+//        var itemsToUpdate: [(ElementType, EntityType)] = []
+//
+//        // Logic to map and compare items with existing entities
+//        for item in items {
+//            if let matchingEntity = existingEntities.first(where: { /* Add your comparison logic here */ }) {
+//                itemsToUpdate.append((item, matchingEntity))
+//            } else {
+//                itemsToInsert.append(item)
+//            }
+//        }
+//
+//        // Update existing entities
+//        for (item, entity) in itemsToUpdate {
+//            updateEntity(entity, item)
+//        }
+//
+//        // Perform batch insert for new items
+//        if !itemsToInsert.isEmpty {
+//            try await insertItems(itemsToInsert)
+//        }
+//
+//        // Save context if there were updates
+//        if taskContext.hasChanges {
+//            try taskContext.save()
+//        }
+//    }
 }
 
 // MARK: - Covenience core data methods
@@ -115,6 +267,26 @@ extension LocalDatasource {
                 return
             } else {
                 throw LocalDatasourceError.batchInsertError(request)
+            }
+        }
+    }
+
+    func execute(batchUpdateRequest request: NSBatchUpdateRequest,
+                 context: NSManagedObjectContext) async throws {
+        request.resultType = .statusOnlyResultType
+        try await context.perform {
+            guard context.hasPersistentStore else { return }
+            #if DEBUG
+            if Thread.isMainThread {
+                throw LocalDatasourceError.databaseOperationsOnMainThread
+            }
+            #endif
+            let fetchResult = try context.execute(request)
+            if let result = fetchResult as? NSBatchUpdateResult,
+               let success = result.result as? Bool, success {
+                return
+            } else {
+                throw LocalDatasourceError.batchUpdateError(request)
             }
         }
     }
