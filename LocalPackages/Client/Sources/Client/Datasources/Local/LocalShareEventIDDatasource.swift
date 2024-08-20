@@ -48,15 +48,26 @@ public extension LocalShareEventIDDatasource {
     }
 
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
-        let taskContext = newTaskContext(type: .insert)
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: ShareEventIDEntity.entity(context: taskContext),
-                                  sourceItems: [lastEventId]) { managedObject, lastEventId in
-                (managedObject as? ShareEventIDEntity)?.hydrate(userId: userId,
-                                                                shareId: shareId,
-                                                                lastEventId: lastEventId)
-            }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await upsertElements(items: [lastEventId],
+                                 fetchPredicate: NSPredicate(format: "userID == %@ AND shareID == %@", userId,
+                                                             shareId),
+                                 itemComparisonKey: { _ in
+                                     ShareEventIDKeyComparison(userId: userId, shareId: shareId)
+                                 },
+                                 entityComparisonKey: { entity in
+                                     ShareEventIDKeyComparison(userId: entity.userID, shareId: entity.shareID)
+                                 },
+                                 updateEntity: { (entity: ShareEventIDEntity, _: String) in
+                                     entity.hydrate(userId: userId,
+                                                    shareId: shareId,
+                                                    lastEventId: lastEventId)
+                                 },
+                                 insertItems: { [weak self] lastEventId in
+                                     guard let self else { return }
+                                     try await insert(userId: userId,
+                                                      shareId: shareId,
+                                                      lastEventId: lastEventId)
+                                 })
     }
 
     func removeAllEntries(userId: String) async throws {
@@ -65,5 +76,24 @@ public extension LocalShareEventIDDatasource {
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
+    }
+}
+
+private extension LocalShareEventIDDatasource {
+    struct ShareEventIDKeyComparison: Hashable {
+        let userId: String
+        let shareId: String
+    }
+
+    func insert(userId: String, shareId: String, lastEventId: [String]) async throws {
+        let taskContext = newTaskContext(type: .insert)
+        let batchInsertRequest =
+            newBatchInsertRequest(entity: ShareEventIDEntity.entity(context: taskContext),
+                                  sourceItems: lastEventId) { managedObject, lastEventId in
+                (managedObject as? ShareEventIDEntity)?.hydrate(userId: userId,
+                                                                shareId: shareId,
+                                                                lastEventId: lastEventId)
+            }
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }

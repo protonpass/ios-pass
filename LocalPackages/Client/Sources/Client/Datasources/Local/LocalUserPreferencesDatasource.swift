@@ -92,3 +92,21 @@ public extension LocalUserPreferencesDatasource {
                           context: taskContext)
     }
 }
+
+private extension LocalOrganizationDatasource {
+    struct OrganizationKeyComparison: Hashable {
+        let userId: String
+    }
+
+    func insertOrganization(_ organization: [Organization], userId: String) async throws {
+        let taskContext = newTaskContext(type: .insert)
+
+        let batchInsertRequest =
+            newBatchInsertRequest(entity: OrganizationEntity.entity(context: taskContext),
+                                  sourceItems: organization) { managedObject, organization in
+                (managedObject as? OrganizationEntity)?.hydrate(from: organization, userId: userId)
+            }
+
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+    }
+}

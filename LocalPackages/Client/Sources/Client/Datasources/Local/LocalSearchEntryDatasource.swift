@@ -62,15 +62,23 @@ public extension LocalSearchEntryDatasource {
     }
 
     func upsert(item: any ItemIdentifiable, userId: String, date: Date) async throws {
-        let taskContext = newTaskContext(type: .insert)
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: SearchEntryEntity.entity(context: taskContext),
-                                  sourceItems: [item]) { managedObject, item in
-                (managedObject as? SearchEntryEntity)?.hydrate(from: item,
-                                                               userId: userId,
-                                                               date: date)
-            }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await upsertElements(items: [item],
+                                 fetchPredicate: NSPredicate(format: "itemID == %@ AND shareID == %@",
+                                                             item.itemId,
+                                                             item.shareId),
+                                 itemComparisonKey: { item in
+                                     SearchEntryKeyComparison(itemId: item.itemId, shareId: item.shareId)
+                                 },
+                                 entityComparisonKey: { entity in
+                                     SearchEntryKeyComparison(itemId: entity.itemID, shareId: entity.shareID)
+                                 },
+                                 updateEntity: { (entity: SearchEntryEntity, item: ItemIdentifiable) in
+                                     entity.hydrate(from: item, userId: userId, date: date)
+                                 },
+                                 insertItems: { [weak self] item in
+                                     guard let self else { return }
+                                     try await insert(items: item, userId: userId, date: date)
+                                 })
     }
 
     func removeAllEntries(shareId: String) async throws {
@@ -109,5 +117,24 @@ public extension LocalSearchEntryDatasource {
                              userId: userId,
                              date: Date(timeIntervalSince1970: TimeInterval(entry.time)))
         }
+    }
+}
+
+private extension LocalSearchEntryDatasource {
+    struct SearchEntryKeyComparison: Hashable {
+        let itemId: String
+        let shareId: String
+    }
+
+    func insert(items: [any ItemIdentifiable], userId: String, date: Date) async throws {
+        let taskContext = newTaskContext(type: .insert)
+        let batchInsertRequest =
+            newBatchInsertRequest(entity: SearchEntryEntity.entity(context: taskContext),
+                                  sourceItems: items) { managedObject, item in
+                (managedObject as? SearchEntryEntity)?.hydrate(from: item,
+                                                               userId: userId,
+                                                               date: date)
+            }
+        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
     }
 }
