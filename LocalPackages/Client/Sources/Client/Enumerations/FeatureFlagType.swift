@@ -31,4 +31,5 @@ public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
     case passIdentityV1 = "PassIdentityV1"
     case passAccessKeyV1 = "PassAccessKeyV1"
     case passAccountSwitchV1 = "PassAccountSwitchV1"
+    case passSimpleLoginAliasesSync = "PassSimpleLoginAliasesSync"
 }

@@ -30,6 +30,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
     public let vault: Vault? // Optional because we only show vault when there're more than 1 vault
     public let type: ItemContentType
     public let aliasEmail: String?
+    public let aliasEnabled: Bool
     public let name: String
     public let note: String
     public let url: String?
@@ -60,6 +61,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable {
 
         type = itemContent.contentData.type
         aliasEmail = itemContent.item.aliasEmail
+        aliasEnabled = itemContent.item.isAliasEnabled
         name = itemContent.name
         note = itemContent.note
 
@@ -192,6 +194,7 @@ extension SearchableItem {
                      itemId: itemId,
                      type: type,
                      aliasEmail: aliasEmail,
+                     aliasEnabled: aliasEnabled,
                      title: title,
                      detail: detail,
                      url: url,
@@ -206,6 +209,7 @@ extension SearchableItem {
                          itemId: itemId,
                          type: type,
                          aliasEmail: aliasEmail,
+                         aliasEnabled: aliasEnabled,
                          title: .notMatched(name),
                          detail: [.notMatched(note)],
                          url: url,

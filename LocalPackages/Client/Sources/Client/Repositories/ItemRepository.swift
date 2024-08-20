@@ -52,6 +52,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get alias item by alias email
     func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
 
+    func changeAliasStatus(userId: String, item: ItemContent, enabled: Bool) async throws
+
     /// Get decrypted item content
     func getItemContent(shareId: String, itemId: String) async throws -> ItemContent?
 
@@ -351,14 +353,14 @@ public extension ItemRepository {
         -> [SymmetricallyEncryptedItem] {
         logger.trace("Creating pending alias item for user \(userId)")
 
-        let individualItemRequest = try await itemsContent.asyncCompactMap { pendingAliasId, value in
+        let aliasesItemInfos = try await itemsContent.asyncCompactMap { pendingAliasId, value in
             let request = try await createItemRequest(itemContent: value,
                                                       userId: userId,
                                                       shareId: shareId)
             return AliasesItemPendingInfo(pendingAliasID: pendingAliasId, item: request)
         }
 
-        let createPendingAliasRequest = CreateAliasesFromPendingRequest(items: individualItemRequest)
+        let createPendingAliasRequest = CreateAliasesFromPendingRequest(items: aliasesItemInfos)
         let createdItemsRevision =
             try await remoteDatasource.createPendingAliasesItem(userId: userId,
                                                                 shareId: shareId,
@@ -662,6 +664,25 @@ public extension ItemRepository {
         let logInItems = try await localDatasource.getActiveLogInItems(userId: userId)
         logger.trace("Got \(logInItems.count) active log in items for all shares")
         return logInItems
+    }
+
+    func changeAliasStatus(userId: String, item: ItemContent, enabled: Bool) async throws {
+        let shareId = item.shareId
+        let itemId = item.itemId
+        logger
+            .trace("Change the alias status for item \(itemId) and share \(shareId) with new status \(enabled)")
+        let updatedAlias = try await remoteDatasource.toggleAliasStatus(userId: userId,
+                                                                        shareId: shareId,
+                                                                        itemId: itemId,
+                                                                        enabled: enabled)
+        let symmetricKey = try await getSymmetricKey()
+        logger.trace("Updating item \(updatedAlias.itemID) to local database")
+        let encryptedItem = try await symmetricallyEncrypt(itemRevision: updatedAlias,
+                                                           shareId: shareId,
+                                                           userId: userId,
+                                                           symmetricKey: symmetricKey)
+        try await localDatasource.upsertItems([encryptedItem])
+        logger.trace("Saved item \(updatedAlias.itemID) to local database")
     }
 }
 

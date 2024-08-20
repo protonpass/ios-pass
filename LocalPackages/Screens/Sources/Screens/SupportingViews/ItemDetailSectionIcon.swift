@@ -1,7 +1,7 @@
 //
-// VaultThumbnail.swift
-// Proton Pass - Created on 31/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ItemDetailSectionIcon.swift
+// Proton Pass - Created on 02/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -19,16 +19,28 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
-import Entities
 import SwiftUI
 
-struct VaultThumbnail: View {
-    let vault: Vault
+public struct ItemDetailSectionIcon: View {
+    let icon: UIImage
+    let color: UIColor
+    let width: CGFloat
 
-    var body: some View {
-        CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-                     iconColor: vault.displayPreferences.color.color.color,
-                     backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16))
-            .animation(.default, value: vault)
+    public init(icon: UIImage,
+                color: UIColor = PassColor.textWeak,
+                width: CGFloat = 20) {
+        self.icon = icon
+        self.color = color
+        self.width = width
+    }
+
+    public var body: some View {
+        Image(uiImage: icon)
+            .resizable()
+            .renderingMode(.template)
+            .scaledToFit()
+            .foregroundStyle(color.toColor)
+            .frame(width: width)
+            .fixedSize(horizontal: false, vertical: true)
     }
 }

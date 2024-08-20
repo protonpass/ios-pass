@@ -24,6 +24,7 @@ import Factory
 import Foundation
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 extension ItemContent {

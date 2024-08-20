@@ -1,7 +1,7 @@
 //
 // MailboxSelectionView.swift
-// Proton Pass - Created on 17/02/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Proton Pass - Created on 01/08/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -24,33 +24,35 @@ import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct MailboxSelectionView: View {
+public struct MailboxSelectionView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var viewModel: MailboxSelectionViewModel
+    @Binding var mailboxSelection: AliasLinkedMailboxSelection
+    public let title: String
+    public var tint: Color
 
-    init(viewModel: MailboxSelectionViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
+    public init(mailboxSelection: Binding<AliasLinkedMailboxSelection>, title: String, tint: Color) {
+        _mailboxSelection = mailboxSelection
+        self.title = title
+        self.tint = tint
     }
 
-    private var selection: MailboxSelection { viewModel.mailboxSelection }
-
-    var body: some View {
+    public var body: some View {
         NavigationStack {
             // ZStack instead of VStack because of SwiftUI bug.
             // See more in "CreateAliasLiteView.swift"
             ZStack(alignment: .bottom) {
                 ScrollView {
                     LazyVStack(spacing: 0) {
-                        ForEach(selection.mailboxes, id: \.ID) { mailbox in
+                        ForEach(mailboxSelection.allUserMailboxes) { mailbox in
+                            let isSelected = mailboxSelection.selectedMailboxes.contains(mailbox)
                             HStack {
                                 Text(mailbox.email)
-                                    .foregroundStyle(isSelected(mailbox) ?
-                                        viewModel.mode.tintColor : PassColor.textNorm.toColor)
+                                    .foregroundStyle(isSelected ? tint : PassColor.textNorm.toColor)
                                 Spacer()
 
-                                if isSelected(mailbox) {
+                                if isSelected {
                                     Image(uiImage: IconProvider.checkmark)
-                                        .foregroundStyle(viewModel.mode.tintColor)
+                                        .foregroundStyle(tint)
                                 }
                             }
                             .contentShape(.rect)
@@ -58,15 +60,9 @@ struct MailboxSelectionView: View {
                             .padding(.horizontal)
                             .frame(height: OptionRowHeight.compact.value)
                             .onTapGesture {
-                                selection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
+                                mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
                             }
 
-                            PassDivider()
-                                .padding(.horizontal)
-                        }
-
-                        if viewModel.shouldUpgrade {
-                            upgradeButton
                             PassDivider()
                                 .padding(.horizontal)
                         }
@@ -86,30 +82,11 @@ struct MailboxSelectionView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(viewModel.titleMode.title)
+                    Text(title)
                         .navigationTitleText()
                 }
             }
         }
-    }
-
-    private func isSelected(_ mailbox: Mailbox) -> Bool {
-        selection.selectedMailboxes.contains(mailbox)
-    }
-
-    private var upgradeButton: some View {
-        Button(action: viewModel.upgrade) {
-            HStack {
-                Text("Upgrade for more mailboxes")
-                Image(uiImage: IconProvider.arrowOutSquare)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: 20)
-            }
-            .contentShape(.rect)
-            .foregroundStyle(viewModel.mode.tintColor)
-        }
-        .frame(height: OptionRowHeight.compact.value)
     }
 
     private var closeButton: some View {

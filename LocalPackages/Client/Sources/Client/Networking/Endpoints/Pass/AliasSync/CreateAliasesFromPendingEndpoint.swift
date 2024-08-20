@@ -23,11 +23,11 @@ import ProtonCoreNetworking
 
 struct CreateAliasesFromPendingResponse: Decodable, Sendable {
     let revisions: CreateAliasesData
-    let total: Int
-    let lastToken: String?
 
     struct CreateAliasesData: Decodable {
         let revisionsData: [Item]
+        let total: Int
+        let lastToken: String?
     }
 }
 
@@ -45,6 +45,7 @@ struct AliasesItemPendingInfo: Encodable, Sendable {
 
     enum CodingKeys: String, CodingKey {
         case pendingAliasID = "PendingAliasID"
+        case item = "Item"
     }
 }
 

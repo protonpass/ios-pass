@@ -88,10 +88,14 @@ struct ItemDetailToolbar: ToolbarContent {
                         }
 
                         Divider()
-
-                        Label("Move to trash", image: IconProvider.trash)
-                            .buttonEmbeded(role: .destructive,
-                                           action: { viewModel.moveToTrash() })
+                        Label("Move to Trash", image: IconProvider.trash)
+                            .buttonEmbeded(action: {
+                                if viewModel.itemContent.isAlias {
+                                    viewModel.showingTrashAliasAlert.toggle()
+                                } else {
+                                    viewModel.moveToTrash()
+                                }
+                            })
                             .hidden(!viewModel.isAllowedToEdit)
                     }, label: {
                         CircleButton(icon: IconProvider.threeDotsVertical,

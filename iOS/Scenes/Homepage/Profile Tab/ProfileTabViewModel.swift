@@ -80,6 +80,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
     @Published private(set) var secureLinks: [SecureLink]?
+    @Published private(set) var dismissedAliasesSyncExplanation = false
+    @Published private(set) var userAliasSyncData: UserAliasSyncData?
 
     // Accounts management
     @Published private var currentActiveUser: UserData?
@@ -121,13 +123,31 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
     }
 
+    var isSimpleLoginAliasSyncActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
+    var showAliasSyncExplanation: Int? {
+        guard isSimpleLoginAliasSyncActive,
+              !dismissedAliasesSyncExplanation,
+              let userSyncData = userAliasSyncData,
+              !userSyncData.aliasSyncEnabled else {
+            return nil
+        }
+        return userSyncData.pendingAliasToSync
+    }
+
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
-        plan = accessRepository.access.value?.access.plan
+        let access = accessRepository.access.value?.access
+        plan = access?.plan
+        userAliasSyncData = access?.userData
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
 
         let preferences = getSharedPreferences()
+        dismissedAliasesSyncExplanation = preferencesManager.appPreferences.unwrapped()
+            .dismissedCustomDomainExplanation
         appLockTime = preferences.appLockTime
         fallbackToPasscode = preferences.fallbackToPasscode
         quickTypeBar = preferences.quickTypeBar
@@ -148,7 +168,9 @@ extension ProfileTabViewModel {
 
     func refreshPlan() async {
         do {
-            plan = try await accessRepository.refreshAccess().access.plan
+            let access = try await accessRepository.refreshAccess().access
+            plan = access.plan
+            userAliasSyncData = access.userData
         } catch {
             logger.error(error)
         }
@@ -258,6 +280,14 @@ extension ProfileTabViewModel {
         delegate?.profileTabViewModelWantsToShowSettingsMenu()
     }
 
+    func showAliasSyncConfiguration() {
+        router.present(for: .aliasesSyncConfiguration)
+    }
+
+    func showSimpleLoginAliasesActivation() {
+        router.present(for: .simpleLoginSyncActivation)
+    }
+
     func showPrivacyPolicy() {
         router.navigate(to: .urlPage(urlString: ProtonLink.privacyPolicy))
     }
@@ -306,6 +336,19 @@ extension ProfileTabViewModel {
 
     func signOut(account: AccountCellDetail) {
         router.action(.signOut(userId: account.id))
+    }
+
+    func dismissAliasesSyncExplanation() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateAppPreferences(\.dismissedAliasesSyncExplanation,
+                                                                  value: true)
+                dismissedAliasesSyncExplanation = true
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 }
 
@@ -410,6 +453,19 @@ private extension ProfileTabViewModel {
                     }
                     await updateSupportedLocalAuthenticationMethods()
                 }
+            }
+            .store(in: &cancellables)
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] userAccess in
+                guard let self,
+                      let currentActiveUser,
+                      currentActiveUser.userId == userAccess.userId else { return }
+                plan = userAccess.access.plan
+                userAliasSyncData = userAccess.access.userData
             }
             .store(in: &cancellables)
     }

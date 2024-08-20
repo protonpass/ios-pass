@@ -49,6 +49,10 @@ extension AccessEntity {
     @NSManaged var pendingInvites: Int64
     @NSManaged var waitingNewUserInvites: Int64
     @NSManaged var minVersionUpgrade: String
+
+    @NSManaged var defaultShareID: String?
+    @NSManaged var aliasSyncEnabled: Bool
+    @NSManaged var pendingAliasToSync: Int64
 }
 
 extension AccessEntity {
@@ -61,11 +65,16 @@ extension AccessEntity {
                         vaultLimit: vaultLimit == -1 ? nil : Int(vaultLimit),
                         aliasLimit: aliasLimit == -1 ? nil : Int(aliasLimit),
                         totpLimit: totpLimit == -1 ? nil : Int(totpLimit))
+
+        let userAliasSyncData = UserAliasSyncData(defaultShareID: defaultShareID,
+                                                  aliasSyncEnabled: aliasSyncEnabled,
+                                                  pendingAliasToSync: Int(pendingAliasToSync))
         let access = Access(plan: plan,
                             monitor: .init(protonAddress: monitorProtonAddress, aliases: monitorAliases),
                             pendingInvites: Int(pendingInvites),
                             waitingNewUserInvites: Int(waitingNewUserInvites),
-                            minVersionUpgrade: minVersionUpgrade.nilIfEmpty)
+                            minVersionUpgrade: minVersionUpgrade.nilIfEmpty,
+                            userData: userAliasSyncData)
         return .init(userId: userID, access: access)
     }
 
@@ -73,6 +82,7 @@ extension AccessEntity {
         let access = userAccess.access
         let plan = userAccess.access.plan
         let monitor = userAccess.access.monitor
+        let userData = access.userData
         displayName = plan.displayName
         internalName = plan.internalName
         hideUpgrade = plan.hideUpgrade
@@ -87,5 +97,9 @@ extension AccessEntity {
         pendingInvites = Int64(access.pendingInvites)
         waitingNewUserInvites = Int64(access.waitingNewUserInvites)
         minVersionUpgrade = access.minVersionUpgrade ?? ""
+
+        defaultShareID = userData.defaultShareID
+        aliasSyncEnabled = userData.aliasSyncEnabled
+        pendingAliasToSync = Int64(userData.pendingAliasToSync)
     }
 }

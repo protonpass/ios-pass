@@ -22,6 +22,7 @@ import DesignSystem
 import Macro
 import PhotosUI
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct BugReportView: View {

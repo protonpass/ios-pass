@@ -54,6 +54,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
     private let shareKeyRepository: any ShareKeyRepositoryProtocol
     private let shareEventIDRepository: any ShareEventIDRepositoryProtocol
     private let remoteSyncEventsDatasource: any RemoteSyncEventsDatasourceProtocol
+    private let aliasRepository: any AliasRepositoryProtocol
+    private let accessRepository: any AccessRepositoryProtocol
     private let userManager: any UserManagerProtocol
     private let logger: Logger
 
@@ -62,6 +64,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
                 shareKeyRepository: any ShareKeyRepositoryProtocol,
                 shareEventIDRepository: any ShareEventIDRepositoryProtocol,
                 remoteSyncEventsDatasource: any RemoteSyncEventsDatasourceProtocol,
+                aliasRepository: any AliasRepositoryProtocol,
+                accessRepository: any AccessRepositoryProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.shareRepository = shareRepository
@@ -69,6 +73,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         self.shareKeyRepository = shareKeyRepository
         self.shareEventIDRepository = shareEventIDRepository
         self.remoteSyncEventsDatasource = remoteSyncEventsDatasource
+        self.aliasRepository = aliasRepository
+        self.accessRepository = accessRepository
         self.userManager = userManager
         logger = .init(manager: logManager)
     }
@@ -81,10 +87,12 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         // 2. Delete sync
         async let fetchLocalShares = shareRepository.getShares(userId: userId)
         async let fetchRemoteShares = shareRepository.getRemoteShares(userId: userId)
+        async let aliasSync: Void = aliasSync(userId: userId)
 
         if Task.isCancelled {
             return false
         }
+
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
 
         let updatedShares = try await removeSuperfluousLocalShares(userId: userId,
@@ -106,7 +114,13 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         let hasNewEvents = try await syncCreateAndUpdateEvents(userId: userId,
                                                                localShares: localShares,
                                                                remoteShares: remoteShares)
-
+        // swiftlint:disable:next todo
+        // TODO: Check alias sync QA
+        // Must keep an eye on this `aliasSync` await as there could be lot of aliases to sync for a user meaning
+        // this could impact negatively the entire sync process.
+        // We should stress test this with QA on SL account have lots of aliases to sync to be sure this does not
+        // break anything
+        _ = try await aliasSync
         return hasNewEvents || updatedShares
     }
 }
@@ -343,5 +357,42 @@ private extension EventSynchronizer {
         logger.trace("Found \(count) \(description) for share \(shareId)")
         try await operation()
         return true
+    }
+}
+
+// MARK: - Simplelogin alias sync
+
+private extension EventSynchronizer {
+    func aliasSync(userId: String) async throws {
+        let userAliasSyncSettings = try await accessRepository.getAccess().access.userData
+        guard userAliasSyncSettings.aliasSyncEnabled,
+              let shareId = userAliasSyncSettings.defaultShareID else {
+            return
+        }
+        var sinceLastToken: String?
+
+        while true {
+            let paginatedAlias = try await aliasRepository.getPendingAliasesToSync(userId: userId,
+                                                                                   since: sinceLastToken)
+
+            if paginatedAlias.aliases.isEmpty {
+                break
+            }
+
+            let itemsContent = Dictionary(uniqueKeysWithValues: paginatedAlias.aliases.map { alias in
+                (alias.pendingAliasID, ItemContentProtobuf(name: alias.aliasEmail,
+                                                           note: alias.aliasNote,
+                                                           itemUuid: UUID().uuidString,
+                                                           data: .alias,
+                                                           customFields: []))
+            })
+
+            _ = try await itemRepository.createPendingAliasesItem(userId: userId,
+                                                                  shareId: shareId,
+                                                                  itemsContent: itemsContent)
+
+            // Move to the next page
+            sinceLastToken = paginatedAlias.lastToken
+        }
     }
 }

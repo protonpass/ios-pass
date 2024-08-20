@@ -23,22 +23,6 @@ import Foundation
 
 public struct AliasOptions: Decodable, Sendable {
     public let suffixes: [Suffix]
-    public let mailboxes: [Mailbox]
+    public let mailboxes: [AliasLinkedMailbox]
     public let canCreateAlias: Bool
-}
-
-public struct Suffix: Decodable, Hashable, Sendable {
-    public let suffix: String
-    public let domain: String
-    public let signedSuffix: String
-    public let isCustom: Bool
-}
-
-extension Suffix: Equatable {
-    public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.suffix == rhs.suffix &&
-            lhs.domain == rhs.domain &&
-            lhs.signedSuffix == rhs.signedSuffix &&
-            lhs.isCustom == rhs.isCustom
-    }
 }
