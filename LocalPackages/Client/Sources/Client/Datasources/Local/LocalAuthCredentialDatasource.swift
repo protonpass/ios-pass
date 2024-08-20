@@ -73,18 +73,17 @@ public extension LocalAuthCredentialDatasource {
                                      AuthCredentialKeyComparison(userId: entity.userID, module: entity.module)
                                  },
                                  updateEntity: { (entity: AuthCredentialEntity, item: AuthCredential) in
-                                     try? entity.hydrate(userId: userId,
+                                     try entity.hydrate(userId: userId,
                                                          authCredential: item,
                                                          module: module,
                                                          key: key)
-//                                         guard let self else { return }
-//                                         updateEntity(entity, credential: item, userId: userId, module: module,
-//                                                      key: key)
                                  },
                                  insertItems: { [weak self] credentials in
                                      guard let self else { return }
-                                     try await insertCredential(userId: userId, credentials: credentials,
-                                                                module: module, key: key)
+                                     try await insertCredential(userId: userId, 
+                                                                credentials: credentials,
+                                                                module: module, 
+                                                                key: key)
                                  })
     }
 
@@ -125,16 +124,5 @@ private extension LocalAuthCredentialDatasource {
             throw hydrationError
         }
         try await execute(batchInsertRequest: request, context: context)
-    }
-
-    func updateEntity(_ entity: AuthCredentialEntity,
-                      credential: AuthCredential,
-                      userId: String,
-                      module: PassModule,
-                      key: SymmetricKey) {
-        try? entity.hydrate(userId: userId,
-                            authCredential: credential,
-                            module: module,
-                            key: key)
     }
 }
