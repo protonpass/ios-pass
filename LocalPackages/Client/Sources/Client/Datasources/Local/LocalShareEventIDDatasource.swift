@@ -49,7 +49,8 @@ public extension LocalShareEventIDDatasource {
 
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
         try await upsertElements(items: [lastEventId],
-                                 fetchPredicate: NSPredicate(format: "userID == %@ AND shareID == %@", userId,
+                                 fetchPredicate: NSPredicate(format: "userID == %@ AND shareID == %@",
+                                                             userId,
                                                              shareId),
                                  itemComparisonKey: { _ in
                                      ShareEventIDKeyComparison(userId: userId, shareId: shareId)
