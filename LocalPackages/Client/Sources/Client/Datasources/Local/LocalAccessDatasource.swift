@@ -50,14 +50,18 @@ public extension LocalAccessDatasource {
     }
 
     func upsert(access: UserAccess) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: AccessEntity.entity(context: taskContext),
-                                  sourceItems: [access]) { managedObject, access in
-                (managedObject as? AccessEntity)?.hydrate(from: access)
-            }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await upsert(items: [access],
+                         fetchPredicate: NSPredicate(format: "userID == %@", access.userId),
+                         itemComparisonKey: { item in
+                             AccessKeyComparison(userId: item.userId)
+                         },
+                         entityComparisonKey: { entity in
+                             AccessKeyComparison(userId: entity.userID)
+                         },
+                         updateEntity: { (entity: AccessEntity, item: UserAccess) in
+                             entity.hydrate(from: item)
+                         },
+                         insertItems: insert)
     }
 
     func removeAccess(userId: String) async throws {
@@ -66,5 +70,20 @@ public extension LocalAccessDatasource {
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: deleteContext)
+    }
+}
+
+private extension LocalAccessDatasource {
+    struct AccessKeyComparison: Hashable {
+        let userId: String
+    }
+
+    func insert(access: [UserAccess], context: NSManagedObjectContext) async throws {
+        let batchInsertRequest =
+            newBatchInsertRequest(entity: AccessEntity.entity(context: context),
+                                  sourceItems: access) { managedObject, access in
+                (managedObject as? AccessEntity)?.hydrate(from: access)
+            }
+        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }

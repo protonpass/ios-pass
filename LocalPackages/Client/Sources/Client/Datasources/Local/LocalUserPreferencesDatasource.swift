@@ -20,6 +20,7 @@
 //
 
 import CoreData
+import CryptoKit
 import Entities
 import Foundation
 
@@ -54,27 +55,25 @@ public extension LocalUserPreferencesDatasource {
     }
 
     func upsertPreferences(_ preferences: UserPreferences, for userId: String) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
         let key = try await symmetricKeyProvider.getSymmetricKey()
-        var hydrationError: (any Error)?
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: UserPreferencesEntity.entity(context: taskContext),
-                                  sourceItems: [preferences]) { managedObject, preferences in
-                do {
-                    try (managedObject as? UserPreferencesEntity)?.hydrate(preferences: preferences,
-                                                                           userId: userId,
-                                                                           key: key)
-                } catch {
-                    hydrationError = error
-                }
-            }
 
-        if let hydrationError {
-            throw hydrationError
-        }
-
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await upsert(items: [preferences],
+                         fetchPredicate: NSPredicate(format: "userID == %@", userId),
+                         itemComparisonKey: { _ in
+                             UserPreferencesKeyComparison(userId: userId)
+                         },
+                         entityComparisonKey: { entity in
+                             UserPreferencesKeyComparison(userId: entity.userID)
+                         },
+                         updateEntity: { (entity: UserPreferencesEntity, preferences: UserPreferences) in
+                             try entity.hydrate(preferences: preferences,
+                                                userId: userId,
+                                                key: key)
+                         },
+                         insertItems: { [weak self] _, context in
+                             guard let self else { return }
+                             try await insert(preferences, for: userId, key: key, context: context)
+                         })
     }
 
     func removePreferences(for userId: String) async throws {
@@ -90,5 +89,35 @@ public extension LocalUserPreferencesDatasource {
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserPreferencesEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
+    }
+}
+
+private extension LocalUserPreferencesDatasource {
+    struct UserPreferencesKeyComparison: Hashable {
+        let userId: String
+    }
+
+    func insert(_ preferences: UserPreferences,
+                for userId: String,
+                key: SymmetricKey,
+                context: NSManagedObjectContext) async throws {
+        var hydrationError: (any Error)?
+        let batchInsertRequest =
+            newBatchInsertRequest(entity: UserPreferencesEntity.entity(context: context),
+                                  sourceItems: [preferences]) { managedObject, preferences in
+                do {
+                    try (managedObject as? UserPreferencesEntity)?.hydrate(preferences: preferences,
+                                                                           userId: userId,
+                                                                           key: key)
+                } catch {
+                    hydrationError = error
+                }
+            }
+
+        if let hydrationError {
+            throw hydrationError
+        }
+
+        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }

@@ -20,6 +20,7 @@
 //
 
 import CoreData
+import CryptoKit
 import Entities
 import Foundation
 import ProtonCoreNetworking
@@ -60,12 +61,58 @@ public extension LocalAuthCredentialDatasource {
     func upsertCredential(userId: String,
                           credential: AuthCredential,
                           module: PassModule) async throws {
-        let context = newTaskContext(type: .insert)
         let key = try await symmetricKeyProvider.getSymmetricKey()
+
+        try await upsert(items: [credential],
+                         fetchPredicate: NSPredicate(format: "userID == %@ AND module == %@",
+                                                     userId,
+                                                     module.rawValue),
+                         itemComparisonKey: { _ in
+                             AuthCredentialKeyComparison(userId: userId, module: module.rawValue)
+                         },
+                         entityComparisonKey: { entity in
+                             AuthCredentialKeyComparison(userId: entity.userID, module: entity.module)
+                         },
+                         updateEntity: { (entity: AuthCredentialEntity, item: AuthCredential) in
+                             try entity.hydrate(userId: userId,
+                                                authCredential: item,
+                                                module: module,
+                                                key: key)
+                         },
+                         insertItems: { [weak self] credentials, context in
+                             guard let self else { return }
+                             try await insertCredential(userId: userId,
+                                                        credentials: credentials,
+                                                        module: module,
+                                                        key: key,
+                                                        context: context)
+                         })
+    }
+
+    func removeAllCredentials(userId: String) async throws {
+        let context = newTaskContext(type: .delete)
+        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "AuthCredentialEntity")
+        request.predicate = .init(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: request),
+                          context: context)
+    }
+}
+
+private extension LocalAuthCredentialDatasource {
+    struct AuthCredentialKeyComparison: Hashable {
+        let userId: String
+        let module: String
+    }
+
+    func insertCredential(userId: String,
+                          credentials: [AuthCredential],
+                          module: PassModule,
+                          key: SymmetricKey,
+                          context: NSManagedObjectContext) async throws {
         var hydrationError: (any Error)?
         let request =
             newBatchInsertRequest(entity: AuthCredentialEntity.entity(context: context),
-                                  sourceItems: [credential]) { managedObject, credential in
+                                  sourceItems: credentials) { managedObject, credential in
                 do {
                     try (managedObject as? AuthCredentialEntity)?.hydrate(userId: userId,
                                                                           authCredential: credential,
@@ -79,13 +126,5 @@ public extension LocalAuthCredentialDatasource {
             throw hydrationError
         }
         try await execute(batchInsertRequest: request, context: context)
-    }
-
-    func removeAllCredentials(userId: String) async throws {
-        let context = newTaskContext(type: .delete)
-        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "AuthCredentialEntity")
-        request.predicate = .init(format: "userID = %@", userId)
-        try await execute(batchDeleteRequest: .init(fetchRequest: request),
-                          context: context)
     }
 }

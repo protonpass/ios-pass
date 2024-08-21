@@ -95,6 +95,64 @@ public extension LocalDatasource {
                                            })
         return request
     }
+
+    // swiftlint:disable:next function_parameter_count
+    func upsert<ElementType, EntityType>(items: [ElementType],
+                                         fetchPredicate: NSPredicate,
+                                         itemComparisonKey: @escaping (ElementType) -> AnyHashable,
+                                         entityComparisonKey: @escaping (EntityType) -> AnyHashable,
+                                         updateEntity: @escaping (EntityType, ElementType) throws -> Void,
+                                         insertItems: @escaping ([ElementType],
+                                                                 NSManagedObjectContext) async throws
+                                             -> Void) async throws where EntityType: NSManagedObject {
+        let taskContext = newTaskContext(type: .insert)
+
+        // Fetch existing entities based on the provided predicate
+        let fetchRequest = NSFetchRequest<EntityType>(entityName: String(describing: EntityType.self))
+        fetchRequest.predicate = fetchPredicate
+
+        let existingEntities = try await taskContext.perform {
+            try taskContext.fetch(fetchRequest)
+        }
+
+        if !existingEntities.isEmpty {
+            // Use a Set for fast lookup
+            let existingEntitiesDict = Dictionary(uniqueKeysWithValues: existingEntities
+                .map { (entityComparisonKey($0), $0) })
+
+            var itemsToInsert: [ElementType] = []
+            var itemsToUpdate: [(ElementType, EntityType)] = []
+
+            // Separate items into those to insert or update
+            for item in items {
+                let key = itemComparisonKey(item)
+                if let existingEntity = existingEntitiesDict[key] {
+                    itemsToUpdate.append((item, existingEntity))
+                } else {
+                    itemsToInsert.append(item)
+                }
+            }
+
+            // Perform batch update of existing entities
+            if !itemsToUpdate.isEmpty {
+                try await taskContext.perform {
+                    for (item, entity) in itemsToUpdate {
+                        try updateEntity(entity, item)
+                    }
+                    if taskContext.hasChanges {
+                        try taskContext.save()
+                    }
+                }
+            }
+
+            // Perform batch insert for new items
+            if !itemsToInsert.isEmpty {
+                try await insertItems(itemsToInsert, taskContext)
+            }
+        } else if !items.isEmpty {
+            try await insertItems(items, taskContext)
+        }
+    }
 }
 
 // MARK: - Covenience core data methods
