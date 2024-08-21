@@ -67,21 +67,21 @@ public extension LocalUserDataDatasource {
     func upsert(_ userData: UserData) async throws {
         let key = try await symmetricKeyProvider.getSymmetricKey()
         let userId = userData.user.ID
-        try await upsertElements(items: [userData],
-                                 fetchPredicate: NSPredicate(format: "userID == %@", userId),
-                                 itemComparisonKey: { _ in
-                                     UserDataKeyComparison(userId: userId)
-                                 },
-                                 entityComparisonKey: { entity in
-                                     UserDataKeyComparison(userId: entity.userID)
-                                 },
-                                 updateEntity: { (entity: UserProfileEntity, _: UserData) in
-                                     try entity.hydrate(userData: userData, key: key)
-                                 },
-                                 insertItems: { [weak self] userDatas in
-                                     guard let self else { return }
-                                     try await insert(userDatas, key: key)
-                                 })
+        try await upsert(items: [userData],
+                         fetchPredicate: NSPredicate(format: "userID == %@", userId),
+                         itemComparisonKey: { _ in
+                             UserDataKeyComparison(userId: userId)
+                         },
+                         entityComparisonKey: { entity in
+                             UserDataKeyComparison(userId: entity.userID)
+                         },
+                         updateEntity: { (entity: UserProfileEntity, _: UserData) in
+                             try entity.hydrate(userData: userData, key: key)
+                         },
+                         insertItems: { [weak self] userDatas, context in
+                             guard let self else { return }
+                             try await insert(userDatas, key: key, context: context)
+                         })
     }
 
     func getActiveUser() async throws -> UserProfile? {
@@ -126,8 +126,7 @@ private extension LocalUserDataDatasource {
         let userId: String
     }
 
-    func insert(_ userData: [UserData], key: SymmetricKey) async throws {
-        let context = newTaskContext(type: .insert)
+    func insert(_ userData: [UserData], key: SymmetricKey, context: NSManagedObjectContext) async throws {
         var hydrationError: (any Error)?
         let request = newBatchInsertRequest(entity: UserProfileEntity.entity(context: context),
                                             sourceItems: userData) { object, userData in
