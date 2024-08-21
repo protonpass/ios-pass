@@ -122,7 +122,7 @@ public extension LocalDatasource {
         if !existingEntitiesDict.isEmpty {
             var itemsToInsert: [ElementType] = []
             var itemsToUpdate: [(ElementType, EntityType)] = []
-            
+
             // Separate items into those to insert or update
             for item in items {
                 let key = itemComparisonKey(item)
@@ -132,7 +132,7 @@ public extension LocalDatasource {
                     itemsToInsert.append(item)
                 }
             }
-            
+
             // Perform batch update of existing entities
             if !itemsToUpdate.isEmpty {
                 try await taskContext.perform {
@@ -144,7 +144,7 @@ public extension LocalDatasource {
                     }
                 }
             }
-            
+
             // Perform batch insert for new items
             if !itemsToInsert.isEmpty {
                 try await insertItems(itemsToInsert)
