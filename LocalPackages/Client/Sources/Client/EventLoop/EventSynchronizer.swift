@@ -22,6 +22,7 @@
 import Core
 import Entities
 import Foundation
+import ProtonCoreFeatureFlags
 import ProtonCoreNetworking
 
 /*
@@ -57,6 +58,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
     private let aliasRepository: any AliasRepositoryProtocol
     private let accessRepository: any AccessRepositoryProtocol
     private let userManager: any UserManagerProtocol
+    private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
     private let logger: Logger
 
     public init(shareRepository: any ShareRepositoryProtocol,
@@ -67,7 +69,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
                 aliasRepository: any AliasRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 userManager: any UserManagerProtocol,
-                logManager: any LogManagerProtocol) {
+                logManager: any LogManagerProtocol,
+                featureFlagsRepository: any FeatureFlagsRepositoryProtocol) {
         self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.shareKeyRepository = shareKeyRepository
@@ -76,7 +79,12 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         self.aliasRepository = aliasRepository
         self.accessRepository = accessRepository
         self.userManager = userManager
+        self.featureFlagsRepository = featureFlagsRepository
         logger = .init(manager: logManager)
+    }
+
+    var isSimpleLoginAliasSyncActive: Bool {
+        featureFlagsRepository.isEnabled(FeatureFlagType.passSimpleLoginAliasesSync, reloadValue: true)
     }
 
     /// Return `true` if new events found
@@ -87,7 +95,9 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         // 2. Delete sync
         async let fetchLocalShares = shareRepository.getShares(userId: userId)
         async let fetchRemoteShares = shareRepository.getRemoteShares(userId: userId)
-        async let aliasSync: Void = aliasSync(userId: userId)
+        if isSimpleLoginAliasSyncActive {
+            async let aliasSync: Void = aliasSync(userId: userId)
+        }
 
         if Task.isCancelled {
             return false
@@ -114,13 +124,17 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         let hasNewEvents = try await syncCreateAndUpdateEvents(userId: userId,
                                                                localShares: localShares,
                                                                remoteShares: remoteShares)
-        // swiftlint:disable:next todo
-        // TODO: Check alias sync QA
-        // Must keep an eye on this `aliasSync` await as there could be lot of aliases to sync for a user meaning
-        // this could impact negatively the entire sync process.
-        // We should stress test this with QA on SL account have lots of aliases to sync to be sure this does not
-        // break anything
-        _ = try await aliasSync
+        if isSimpleLoginAliasSyncActive {
+            // swiftlint:disable:next todo
+            // TODO: Check alias sync QA
+            // Must keep an eye on this `aliasSync` await as there could be lot of aliases to sync for a user
+            // meaning
+            // this could impact negatively the entire sync process.
+            // We should stress test this with QA on SL account have lots of aliases to sync to be sure this does
+            // not
+            // break anything
+            _ = try await aliasSync
+        }
         return hasNewEvents || updatedShares
     }
 }
