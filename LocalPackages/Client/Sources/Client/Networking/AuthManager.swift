@@ -160,6 +160,14 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         serialAccessQueue.sync {
             // The forking of sessions should be done at this point in the future and any looping on Pass module
             // should be removed
+
+            // Remove all existing credentials related to the same userID
+            // This is to handle logging into the same account multiple times
+            for (key, value) in cachedCredentials
+                where value.credential.userID == credential.userID {
+                cachedCredentials.removeValue(forKey: key)
+            }
+
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: credential.UID, module: passModule)
                 let newCredentials = getCredentials(credential: credential,
