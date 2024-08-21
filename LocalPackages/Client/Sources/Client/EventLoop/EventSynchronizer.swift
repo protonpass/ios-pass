@@ -95,8 +95,10 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         // 2. Delete sync
         async let fetchLocalShares = shareRepository.getShares(userId: userId)
         async let fetchRemoteShares = shareRepository.getRemoteShares(userId: userId)
-        if isSimpleLoginAliasSyncActive {
-            async let aliasSync: Void = aliasSync(userId: userId)
+        async let fetchAliasSync: Void = if isSimpleLoginAliasSyncActive {
+            aliasSync(userId: userId)
+        } else {
+            ()
         }
 
         if Task.isCancelled {
@@ -124,17 +126,16 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         let hasNewEvents = try await syncCreateAndUpdateEvents(userId: userId,
                                                                localShares: localShares,
                                                                remoteShares: remoteShares)
-        if isSimpleLoginAliasSyncActive {
-            // swiftlint:disable:next todo
-            // TODO: Check alias sync QA
-            // Must keep an eye on this `aliasSync` await as there could be lot of aliases to sync for a user
-            // meaning
-            // this could impact negatively the entire sync process.
-            // We should stress test this with QA on SL account have lots of aliases to sync to be sure this does
-            // not
-            // break anything
-            _ = try await aliasSync
-        }
+        // swiftlint:disable:next todo
+        // TODO: Check alias sync QA
+        // Must keep an eye on this `aliasSync` await as there could be lot of aliases to sync for a user
+        // meaning
+        // this could impact negatively the entire sync process.
+        // We should stress test this with QA on SL account have lots of aliases to sync to be sure this does
+        // not
+        // break anything
+        _ = try await fetchAliasSync
+
         return hasNewEvents || updatedShares
     }
 }
