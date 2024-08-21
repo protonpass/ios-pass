@@ -6434,9 +6434,21 @@
     "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We detected that you have %lld alias that is present in SimpleLogin but missing in Proton Pass. Would you like to import it?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?"
+                }
+              }
+            }
           }
         }
       }
