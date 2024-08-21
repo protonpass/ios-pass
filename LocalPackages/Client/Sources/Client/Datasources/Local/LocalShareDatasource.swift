@@ -56,15 +56,21 @@ public extension LocalShareDatasource {
     }
 
     func upsertShares(_ shares: [SymmetricallyEncryptedShare], userId: String) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: ShareEntity.entity(context: taskContext),
-                                  sourceItems: shares) { managedObject, share in
-                (managedObject as? ShareEntity)?.hydrate(from: share, userId: userId)
-            }
-
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await upsert(items: shares,
+                         fetchPredicate: NSPredicate(format: "shareID in %@", shares.map(\.share.shareID)),
+                         itemComparisonKey: { share in
+                             ShareKeyComparison(shareId: share.share.shareID)
+                         },
+                         entityComparisonKey: { entity in
+                             ShareKeyComparison(shareId: entity.shareID)
+                         },
+                         updateEntity: { (entity: ShareEntity, item: SymmetricallyEncryptedShare) in
+                             entity.hydrate(from: item, userId: userId)
+                         },
+                         insertItems: { [weak self] shares, context in
+                             guard let self else { return }
+                             try await insert(shares, userId: userId, context: context)
+                         })
     }
 
     func removeShare(shareId: String, userId: String) async throws {
@@ -84,5 +90,23 @@ public extension LocalShareDatasource {
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
+    }
+}
+
+private extension LocalShareDatasource {
+    struct ShareKeyComparison: Hashable {
+        let shareId: String
+    }
+
+    func insert(_ shares: [SymmetricallyEncryptedShare],
+                userId: String,
+                context: NSManagedObjectContext) async throws {
+        let batchInsertRequest =
+            newBatchInsertRequest(entity: ShareEntity.entity(context: context),
+                                  sourceItems: shares) { managedObject, share in
+                (managedObject as? ShareEntity)?.hydrate(from: share, userId: userId)
+            }
+
+        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }

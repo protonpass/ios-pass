@@ -37,14 +37,14 @@ extension ItemEntity {
     @NSManaged var contentFormatVersion: Int64
     @NSManaged var createTime: Int64
     @NSManaged var isLogInItem: Bool // Custom field
-    @NSManaged var itemID: String?
+    @NSManaged var itemID: String
     @NSManaged var itemKey: String?
     @NSManaged var keyRotation: Int64
     @NSManaged var lastUseTime: Int64
     @NSManaged var modifyTime: Int64
     @NSManaged var revision: Int64
     @NSManaged var revisionTime: Int64
-    @NSManaged var shareID: String? // Custom field
+    @NSManaged var shareID: String // Custom field
     @NSManaged var state: Int64
     @NSManaged var pinned: Bool
     @NSManaged var pinTime: Int64
@@ -55,14 +55,6 @@ extension ItemEntity {
 
 extension ItemEntity {
     func toEncryptedItem() throws -> SymmetricallyEncryptedItem {
-        guard let shareID else {
-            throw PassError.coreData(.corrupted(object: self, property: "shareID"))
-        }
-
-        guard let itemID else {
-            throw PassError.coreData(.corrupted(object: self, property: "itemID"))
-        }
-
         guard let symmetricallyEncryptedContent else {
             throw PassError.coreData(.corrupted(object: self,
                                                 property: "symmetricallyEncryptedContent"))
