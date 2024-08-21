@@ -25,15 +25,31 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
+private extension BugReportView {
+    enum ValidationError: LocalizedError {
+        case missingReason
+        case shortDescription
+
+        var errorDescription: String? {
+            switch self {
+            case .missingReason:
+                #localized("Please select a reason")
+            case .shortDescription:
+                #localized("Please provide us with more details in the description")
+            }
+        }
+    }
+}
+
 struct BugReportView: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var focused
     @StateObject private var viewModel = BugReportViewModel()
-    @State private var showMissingReasonAlert = false
-    @State private var highlightReasons = false
+    @State private var validationError: ValidationError?
+    @State private var showFilePicker = false
+    @State private var showPhotoPicker = false
     var onError: (any Error) -> Void
     var onSuccess: () -> Void
-    @State var isShowing = false
 
     init(onError: @escaping (any Error) -> Void,
          onSuccess: @escaping () -> Void) {
@@ -46,7 +62,6 @@ struct BugReportView: View {
             mainContainer
                 .toolbar { toolbarContent }
                 .navigationTitle("Report a problem")
-                .navigationBarTitleDisplayMode(.inline)
                 .showSpinner(viewModel.actionInProcess)
                 .onFirstAppear {
                     focused = true
@@ -64,10 +79,17 @@ struct BugReportView: View {
                 onError(error)
             }
         }
-        .animation(.default, value: highlightReasons)
-        .alert("Please select a reason",
-               isPresented: $showMissingReasonAlert,
-               actions: { Button(action: { highlightReasons = true }, label: { Text("OK") }) })
+        .fileImporter(isPresented: $showFilePicker,
+                      allowedContentTypes: [.item],
+                      allowsMultipleSelection: true) { files in
+            viewModel.addFiles(files)
+        }
+        .photosPicker(isPresented: $showPhotoPicker,
+                      selection: $viewModel.selectedPhotos,
+                      maxSelectionCount: 4)
+        .alert(isPresented: $validationError.mappedToBool(),
+               error: validationError,
+               actions: { Button(action: {}, label: { Text("OK") }) })
     }
 }
 
@@ -75,7 +97,7 @@ private extension BugReportView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            CircleButton(icon: IconProvider.chevronDown,
+            CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: "Close",
@@ -83,12 +105,13 @@ private extension BugReportView {
         }
 
         ToolbarItem(placement: .navigationBarTrailing) {
-            CircleButton(icon: IconProvider.paperPlane,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Send bug report") {
-                if viewModel.cantSend {
-                    showMissingReasonAlert = true
+            CapsuleTextButton(title: #localized("Send"),
+                              titleColor: PassColor.textInvert,
+                              backgroundColor: PassColor.interactionNorm) {
+                if viewModel.object == nil {
+                    validationError = .missingReason
+                } else if viewModel.description.count < 10 {
+                    validationError = .shortDescription
                 } else {
                     viewModel.send()
                 }
@@ -97,29 +120,38 @@ private extension BugReportView {
     }
 }
 
+@MainActor
 private extension BugReportView {
     var mainContainer: some View {
         ScrollView {
-            VStack {
+            VStack(spacing: DesignConstant.sectionPadding * 1.5) {
                 objectSection
                 descriptionSection
-
-                includeLogsSection
-                includeFileSection
-                if !viewModel.currentFiles.isEmpty {
-                    selectedFiles
-                }
-
+                logsSection
+                attachmentsSection
                 Spacer()
             }
             .padding()
             .frame(maxHeight: .infinity)
+            .animation(.default, value: viewModel.currentFiles)
         }
         .tint(PassColor.interactionNorm.toColor)
         .background(PassColor.backgroundNorm.toColor)
     }
+
+    func pickerLabel(_ title: String) -> some View {
+        Label(title: { Text(title) },
+              icon: { Image(systemName: "chevron.up.chevron.down") })
+            .fontWeight(.bold)
+            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+            .labelStyle(.rightIcon)
+            .padding(DesignConstant.sectionPadding)
+            .roundedEditableSection(backgroundColor: PassColor.interactionNormMinor1,
+                                    borderColor: .clear)
+    }
 }
 
+@MainActor
 private extension BugReportView {
     var objectSection: some View {
         Menu(content: {
@@ -132,30 +164,16 @@ private extension BugReportView {
             }
         }, label: {
             HStack {
-                if let object = viewModel.object {
-                    Text(object.description)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                } else {
-                    Text("I want to report a problem with...")
-                        .foregroundStyle(highlightReasons ?
-                            PassColor.interactionNormMajor2.toColor : PassColor.textNorm.toColor)
-                }
-
+                pickerLabel(viewModel.object?.description ?? #localized("Select reason"))
                 Spacer()
-
-                ItemDetailSectionIcon(icon: IconProvider.chevronDown)
             }
-            .contentShape(.rect)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity)
+            .animation(.default, value: viewModel.object)
         })
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
-        .onTapGesture {
-            highlightReasons = false
-        }
     }
 }
 
+@MainActor
 private extension BugReportView {
     @ViewBuilder
     var descriptionSection: some View {
@@ -196,13 +214,12 @@ private extension BugReportView {
     }
 }
 
+@MainActor
 private extension BugReportView {
-    var includeLogsSection: some View {
+    var logsSection: some View {
         VStack {
-            Toggle("Send logs", isOn: $viewModel.shouldSendLogs)
+            Toggle("Logs", isOn: $viewModel.shouldSendLogs)
                 .foregroundStyle(PassColor.textNorm.toColor)
-                .padding(DesignConstant.sectionPadding)
-                .roundedEditableSection()
             // swiftlint:disable:next line_length
             Text("A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs.")
                 .sectionTitleText()
@@ -210,74 +227,57 @@ private extension BugReportView {
     }
 }
 
+@MainActor
 private extension BugReportView {
-    var includeFileSection: some View {
+    var attachmentsSection: some View {
         VStack {
             HStack {
-                CapsuleTextButton(title: #localized("Add a File"),
-                                  titleColor: PassColor.textInvert,
-                                  backgroundColor: PassColor.interactionNorm,
-                                  action: { isShowing.toggle() })
-                    .fileImporter(isPresented: $isShowing,
-                                  allowedContentTypes: [.item],
-                                  allowsMultipleSelection: true) { results in
-                        viewModel.addFiles(files: results)
-                    }
+                Text("Attachments")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                Spacer()
+                Menu(content: {
+                    Button(action: {
+                        showPhotoPicker = true
+                    }, label: {
+                        Text("Screenshot")
+                    })
 
-                PhotosPicker("Select Content",
-                             selection: $viewModel.selectedContent,
-                             maxSelectionCount: 2,
-                             photoLibrary: .shared())
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textInvert.toColor)
-                    .frame(height: 40)
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, 16)
-                    .background(PassColor.interactionNorm.toColor)
-                    .clipShape(Capsule())
-                    .buttonStyle(.plain)
+                    Button(action: {
+                        showFilePicker = true
+                    }, label: {
+                        Text("File")
+                    })
+                }, label: {
+                    pickerLabel(#localized("Attach"))
+                })
             }
-            .foregroundStyle(PassColor.textNorm.toColor)
-            .padding(DesignConstant.sectionPadding)
-            .roundedEditableSection()
-
-            Text("Add relevant files or images to the report")
-                .sectionTitleText()
-        }
-    }
-}
-
-private extension BugReportView {
-    var selectedFiles: some View {
-        VStack(alignment: .leading) {
-            Text("Added files")
-                .font(.callout.weight(.bold))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
                 FlowLayout(items: Array(viewModel.currentFiles.keys),
-                           viewMapping: { element in
-                               HStack(alignment: .center, spacing: 10) {
-                                   Text(element)
-                                       .lineLimit(1)
-                               }
-                               .font(.callout)
-                               .foregroundStyle(PassColor.textNorm.toColor)
-                               .padding(.horizontal, 10)
-                               .padding(.vertical, 8)
-                               .background(PassColor.interactionNormMinor1.toColor)
-                               .cornerRadius(9)
-                               .contentShape(.rect)
-                           })
+                           viewMapping: { view(for: $0) })
             }
-
-            CapsuleTextButton(title: #localized("Clear all files"),
-                              titleColor: PassColor.textInvert,
-                              backgroundColor: PassColor.interactionNorm,
-                              action: { viewModel.clearAllAddedFiles() })
         }
-        .foregroundStyle(PassColor.textNorm.toColor)
-        .frame(maxHeight: .infinity)
+    }
+
+    func view(for fileName: String) -> some View {
+        Label(title: {
+            Text(fileName)
+                .font(.callout)
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }, icon: {
+            Button(action: {
+                viewModel.removeFile(fileName)
+            }, label: {
+                Image(uiImage: IconProvider.crossCircle)
+                    .resizable()
+                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .frame(width: 18, height: 18)
+            })
+        })
+        .labelStyle(.rightIcon)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .overlay(RoundedRectangle(cornerRadius: 4)
+            .stroke(PassColor.backgroundMedium.toColor, lineWidth: 1))
     }
 }
