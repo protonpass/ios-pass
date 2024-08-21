@@ -127,11 +127,23 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
     }
 
+    var showAliasesSyncFlow: Bool {
+        guard isSimpleLoginAliasSyncActive,
+              let userSyncData = userAliasSyncData,
+              userSyncData
+              .aliasSyncEnabled || (!userSyncData.aliasSyncEnabled && userSyncData.pendingAliasToSync > 0) else {
+            return false
+        }
+
+        return true
+    }
+
     var showAliasSyncExplanation: Int? {
         guard isSimpleLoginAliasSyncActive,
               !dismissedAliasesSyncExplanation,
               let userSyncData = userAliasSyncData,
-              !userSyncData.aliasSyncEnabled else {
+              !userSyncData.aliasSyncEnabled,
+              userSyncData.pendingAliasToSync > 0 else {
             return nil
         }
         return userSyncData.pendingAliasToSync
