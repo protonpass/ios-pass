@@ -37,31 +37,6 @@ final class LocalItemDatasourceTests: XCTestCase {
 }
 
 extension LocalItemDatasourceTests {
-    func assertEqual(_ lhs: SymmetricallyEncryptedItem, _ rhs: SymmetricallyEncryptedItem) {
-        XCTAssertEqual(lhs.shareId, rhs.shareId)
-        XCTAssertEqual(lhs.itemId, rhs.itemId)
-        XCTAssertEqual(lhs.userId, rhs.userId)
-        XCTAssertEqual(lhs.encryptedContent, rhs.encryptedContent)
-        XCTAssertEqual(lhs.isLogInItem, rhs.isLogInItem)
-
-        let lhsItem = lhs.item
-        let rhsItem = rhs.item
-        XCTAssertEqual(lhsItem.itemID, rhsItem.itemID)
-        XCTAssertEqual(lhsItem.revision, rhsItem.revision)
-        XCTAssertEqual(lhsItem.contentFormatVersion, rhsItem.contentFormatVersion)
-        XCTAssertEqual(lhsItem.keyRotation, rhsItem.keyRotation)
-        XCTAssertEqual(lhsItem.content, rhsItem.content)
-        XCTAssertEqual(lhsItem.itemKey, rhsItem.itemKey)
-        XCTAssertEqual(lhsItem.state, rhsItem.state)
-        XCTAssertEqual(lhsItem.pinned, rhsItem.pinned)
-        XCTAssertEqual(lhsItem.pinTime, rhsItem.pinTime)
-        XCTAssertEqual(lhsItem.aliasEmail, rhsItem.aliasEmail)
-        XCTAssertEqual(lhsItem.createTime, rhsItem.createTime)
-        XCTAssertEqual(lhsItem.modifyTime, rhsItem.modifyTime)
-        XCTAssertEqual(lhsItem.lastUseTime, rhsItem.lastUseTime)
-        XCTAssertEqual(lhsItem.revisionTime, rhsItem.revisionTime)
-        XCTAssertEqual(lhsItem.flags, rhsItem.flags)
-    }
 
     func testGetAllItems() async throws {
         let currentUserId = "test"
@@ -224,7 +199,7 @@ extension LocalItemDatasourceTests {
         let optionalItems = try await sut.getItem(shareId: givenShareId,
                                                   itemId: givenItemId)
         let item = try await XCTUnwrapAsync(optionalItems)
-        assertEqual(item, updatedItem)
+        XCTAssertEqual(item, updatedItem)
     }
     
     func testTrashItems() async throws {
