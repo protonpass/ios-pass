@@ -80,4 +80,8 @@ public struct UserAliasSyncData: Decodable, Equatable, Sendable {
     public static var `default`: UserAliasSyncData {
         UserAliasSyncData(defaultShareID: nil, aliasSyncEnabled: false, pendingAliasToSync: 0)
     }
+
+    public var syncNeeded: Bool {
+        aliasSyncEnabled || (!aliasSyncEnabled && pendingAliasToSync > 0)
+    }
 }
