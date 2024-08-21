@@ -119,34 +119,38 @@ public extension LocalDatasource {
             .map { (entityComparisonKey($0),
                     $0) })
 
-        var itemsToInsert: [ElementType] = []
-        var itemsToUpdate: [(ElementType, EntityType)] = []
-
-        // Separate items into those to insert or update
-        for item in items {
-            let key = itemComparisonKey(item)
-            if let existingEntity = existingEntitiesDict[key] {
-                itemsToUpdate.append((item, existingEntity))
-            } else {
-                itemsToInsert.append(item)
-            }
-        }
-
-        // Perform batch update of existing entities
-        if !itemsToUpdate.isEmpty {
-            try await taskContext.perform {
-                for (item, entity) in itemsToUpdate {
-                    try updateEntity(entity, item)
-                }
-                if taskContext.hasChanges {
-                    try taskContext.save()
+        if !existingEntitiesDict.isEmpty {
+            var itemsToInsert: [ElementType] = []
+            var itemsToUpdate: [(ElementType, EntityType)] = []
+            
+            // Separate items into those to insert or update
+            for item in items {
+                let key = itemComparisonKey(item)
+                if let existingEntity = existingEntitiesDict[key] {
+                    itemsToUpdate.append((item, existingEntity))
+                } else {
+                    itemsToInsert.append(item)
                 }
             }
-        }
-
-        // Perform batch insert for new items
-        if !itemsToInsert.isEmpty {
-            try await insertItems(itemsToInsert)
+            
+            // Perform batch update of existing entities
+            if !itemsToUpdate.isEmpty {
+                try await taskContext.perform {
+                    for (item, entity) in itemsToUpdate {
+                        try updateEntity(entity, item)
+                    }
+                    if taskContext.hasChanges {
+                        try taskContext.save()
+                    }
+                }
+            }
+            
+            // Perform batch insert for new items
+            if !itemsToInsert.isEmpty {
+                try await insertItems(itemsToInsert)
+            }
+        } else if !items.isEmpty {
+            try await insertItems(items)
         }
     }
 }
