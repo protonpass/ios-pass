@@ -27,7 +27,7 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-enum AliasSyncConfigurationSheetState {
+private enum AliasSyncConfigurationSheetState {
     case domain
     case mailbox
     case vault
@@ -42,8 +42,8 @@ struct AliasSyncConfigurationView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Section {
-                SynchroElementRow(title: viewModel.defaultDomain?.domain ?? "",
-                                  subtitle: "domain") {
+                SynchroElementRow(title: "Default domain for aliases",
+                                  content: viewModel.defaultDomain?.domain ?? "") {
                     sheetState = .domain
                 }
             } header: {
@@ -53,8 +53,8 @@ struct AliasSyncConfigurationView: View {
             }
 
             Section {
-                SynchroElementRow(title: viewModel.defaultMailbox?.email ?? "",
-                                  subtitle: "mailbox") {
+                SynchroElementRow(title: "Default mailbox for aliases",
+                                  content: viewModel.defaultMailbox?.email ?? "") {
                     sheetState = .mailbox
                 }
             } header: {
@@ -91,20 +91,19 @@ struct AliasSyncConfigurationView: View {
                 .presentationDetents([.medium, .large])
                 .presentationDragIndicator(.visible)
         }
-
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
     }
 
     @ViewBuilder
-    func sheetContent(for state: AliasSyncConfigurationSheetState) -> some View {
+    private func sheetContent(for state: AliasSyncConfigurationSheetState) -> some View {
         switch state {
         case .domain:
-            GenericSelectionView(title: "domain",
+            GenericSelectionView(title: "Default domain for aliases",
                                  selected: $viewModel.defaultDomain,
                                  selections: viewModel.domains)
         case .mailbox:
-            GenericSelectionView(title: "mailbox",
+            GenericSelectionView(title: "Default mailbox for aliases",
                                  selected: $viewModel.defaultMailbox,
                                  selections: viewModel.mailboxes)
         case .vault:
@@ -115,19 +114,11 @@ struct AliasSyncConfigurationView: View {
 }
 
 private struct SynchroElementRow: View {
-    private let title: String
-    private let subtitle: String
+    let title: LocalizedStringKey
+    let content: String
     let action: () -> Void
 
-    init(title: String,
-         subtitle: String,
-         action: @escaping () -> Void) {
-        self.title = title
-        self.subtitle = subtitle
-        self.action = action
-    }
-
-    public var body: some View {
+    var body: some View {
         Button(action: action) {
             selectedElement
                 .padding(.horizontal)
@@ -140,11 +131,11 @@ private struct SynchroElementRow: View {
     private var selectedElement: some View {
         HStack(spacing: 16) {
             VStack(alignment: .leading) {
-                Text("Default \(subtitle) for aliases")
+                Text(title)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
 
-                Text(title)
+                Text(content)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
             Spacer()
@@ -193,15 +184,9 @@ extension Domain: TitleRepresentable {
 
 private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleRepresentable>: View {
     @Environment(\.dismiss) private var dismiss
+    let title: LocalizedStringKey
     @Binding var selected: Selection?
     let selections: [Selection]
-    let title: String
-
-    init(title: String, selected: Binding<Selection?>, selections: [Selection]) {
-        _selected = selected
-        self.selections = selections
-        self.title = title
-    }
 
     var body: some View {
         NavigationStack {
@@ -244,7 +229,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
             .animation(.default, value: selected)
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text("Default \(title) for aliases")
+                    Text(title)
                         .adaptiveForegroundStyle(PassColor.textNorm.toColor)
                 }
             }
