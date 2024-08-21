@@ -48,27 +48,28 @@ public extension LocalShareEventIDDatasource {
     }
 
     func upsertLastEventId(userId: String, shareId: String, lastEventId: String) async throws {
-        try await upsertElements(items: [lastEventId],
-                                 fetchPredicate: NSPredicate(format: "userID == %@ AND shareID == %@",
-                                                             userId,
-                                                             shareId),
-                                 itemComparisonKey: { _ in
-                                     ShareEventIDKeyComparison(userId: userId, shareId: shareId)
-                                 },
-                                 entityComparisonKey: { entity in
-                                     ShareEventIDKeyComparison(userId: entity.userID, shareId: entity.shareID)
-                                 },
-                                 updateEntity: { (entity: ShareEventIDEntity, _: String) in
-                                     entity.hydrate(userId: userId,
-                                                    shareId: shareId,
-                                                    lastEventId: lastEventId)
-                                 },
-                                 insertItems: { [weak self] lastEventId in
-                                     guard let self else { return }
-                                     try await insert(userId: userId,
-                                                      shareId: shareId,
-                                                      lastEventId: lastEventId)
-                                 })
+        try await upsert(items: [lastEventId],
+                         fetchPredicate: NSPredicate(format: "userID == %@ AND shareID == %@",
+                                                     userId,
+                                                     shareId),
+                         itemComparisonKey: { _ in
+                             ShareEventIDKeyComparison(userId: userId, shareId: shareId)
+                         },
+                         entityComparisonKey: { entity in
+                             ShareEventIDKeyComparison(userId: entity.userID, shareId: entity.shareID)
+                         },
+                         updateEntity: { (entity: ShareEventIDEntity, _: String) in
+                             entity.hydrate(userId: userId,
+                                            shareId: shareId,
+                                            lastEventId: lastEventId)
+                         },
+                         insertItems: { [weak self] lastEventId, context in
+                             guard let self else { return }
+                             try await insert(userId: userId,
+                                              shareId: shareId,
+                                              lastEventId: lastEventId,
+                                              context: context)
+                         })
     }
 
     func removeAllEntries(userId: String) async throws {
@@ -86,15 +87,17 @@ private extension LocalShareEventIDDatasource {
         let shareId: String
     }
 
-    func insert(userId: String, shareId: String, lastEventId: [String]) async throws {
-        let taskContext = newTaskContext(type: .insert)
+    func insert(userId: String,
+                shareId: String,
+                lastEventId: [String],
+                context: NSManagedObjectContext) async throws {
         let batchInsertRequest =
-            newBatchInsertRequest(entity: ShareEventIDEntity.entity(context: taskContext),
+            newBatchInsertRequest(entity: ShareEventIDEntity.entity(context: context),
                                   sourceItems: lastEventId) { managedObject, lastEventId in
                 (managedObject as? ShareEventIDEntity)?.hydrate(userId: userId,
                                                                 shareId: shareId,
                                                                 lastEventId: lastEventId)
             }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }

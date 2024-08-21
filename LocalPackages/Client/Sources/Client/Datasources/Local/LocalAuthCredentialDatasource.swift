@@ -63,29 +63,30 @@ public extension LocalAuthCredentialDatasource {
                           module: PassModule) async throws {
         let key = try await symmetricKeyProvider.getSymmetricKey()
 
-        try await upsertElements(items: [credential],
-                                 fetchPredicate: NSPredicate(format: "userID == %@ AND module == %@",
-                                                             userId,
-                                                             module.rawValue),
-                                 itemComparisonKey: { _ in
-                                     AuthCredentialKeyComparison(userId: userId, module: module.rawValue)
-                                 },
-                                 entityComparisonKey: { entity in
-                                     AuthCredentialKeyComparison(userId: entity.userID, module: entity.module)
-                                 },
-                                 updateEntity: { (entity: AuthCredentialEntity, item: AuthCredential) in
-                                     try entity.hydrate(userId: userId,
-                                                        authCredential: item,
+        try await upsert(items: [credential],
+                         fetchPredicate: NSPredicate(format: "userID == %@ AND module == %@",
+                                                     userId,
+                                                     module.rawValue),
+                         itemComparisonKey: { _ in
+                             AuthCredentialKeyComparison(userId: userId, module: module.rawValue)
+                         },
+                         entityComparisonKey: { entity in
+                             AuthCredentialKeyComparison(userId: entity.userID, module: entity.module)
+                         },
+                         updateEntity: { (entity: AuthCredentialEntity, item: AuthCredential) in
+                             try entity.hydrate(userId: userId,
+                                                authCredential: item,
+                                                module: module,
+                                                key: key)
+                         },
+                         insertItems: { [weak self] credentials, context in
+                             guard let self else { return }
+                             try await insertCredential(userId: userId,
+                                                        credentials: credentials,
                                                         module: module,
-                                                        key: key)
-                                 },
-                                 insertItems: { [weak self] credentials in
-                                     guard let self else { return }
-                                     try await insertCredential(userId: userId,
-                                                                credentials: credentials,
-                                                                module: module,
-                                                                key: key)
-                                 })
+                                                        key: key,
+                                                        context: context)
+                         })
     }
 
     func removeAllCredentials(userId: String) async throws {
@@ -106,8 +107,8 @@ private extension LocalAuthCredentialDatasource {
     func insertCredential(userId: String,
                           credentials: [AuthCredential],
                           module: PassModule,
-                          key: SymmetricKey) async throws {
-        let context = newTaskContext(type: .insert)
+                          key: SymmetricKey,
+                          context: NSManagedObjectContext) async throws {
         var hydrationError: (any Error)?
         let request =
             newBatchInsertRequest(entity: AuthCredentialEntity.entity(context: context),
