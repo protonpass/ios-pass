@@ -43,21 +43,21 @@ public extension LocalOrganizationDatasource {
     }
 
     func upsertOrganization(_ organization: Organization, userId: String) async throws {
-        try await upsertElements(items: [organization],
-                                 fetchPredicate: NSPredicate(format: "userID == %@", userId),
-                                 itemComparisonKey: { _ in
-                                     OrganizationKeyComparison(userId: userId)
-                                 },
-                                 entityComparisonKey: { entity in
-                                     OrganizationKeyComparison(userId: entity.userID)
-                                 },
-                                 updateEntity: { (entity: OrganizationEntity, item: Organization) in
-                                     entity.hydrate(from: item, userId: userId)
-                                 },
-                                 insertItems: { [weak self] organization in
-                                     guard let self else { return }
-                                     try await insertOrganization(organization, userId: userId)
-                                 })
+        try await upsert(items: [organization],
+                         fetchPredicate: NSPredicate(format: "userID == %@", userId),
+                         itemComparisonKey: { _ in
+                             OrganizationKeyComparison(userId: userId)
+                         },
+                         entityComparisonKey: { entity in
+                             OrganizationKeyComparison(userId: entity.userID)
+                         },
+                         updateEntity: { (entity: OrganizationEntity, item: Organization) in
+                             entity.hydrate(from: item, userId: userId)
+                         },
+                         insertItems: { [weak self] organization, context in
+                             guard let self else { return }
+                             try await insertOrganization(organization, userId: userId, context: context)
+                         })
     }
 
     func removeOrganization(userId: String) async throws {
@@ -74,15 +74,15 @@ private extension LocalOrganizationDatasource {
         let userId: String
     }
 
-    func insertOrganization(_ organization: [Organization], userId: String) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
+    func insertOrganization(_ organization: [Organization],
+                            userId: String,
+                            context: NSManagedObjectContext) async throws {
         let batchInsertRequest =
-            newBatchInsertRequest(entity: OrganizationEntity.entity(context: taskContext),
+            newBatchInsertRequest(entity: OrganizationEntity.entity(context: context),
                                   sourceItems: organization) { managedObject, organization in
                 (managedObject as? OrganizationEntity)?.hydrate(from: organization, userId: userId)
             }
 
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }

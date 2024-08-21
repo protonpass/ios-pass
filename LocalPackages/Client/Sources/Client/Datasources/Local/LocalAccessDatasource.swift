@@ -50,18 +50,18 @@ public extension LocalAccessDatasource {
     }
 
     func upsert(access: UserAccess) async throws {
-        try await upsertElements(items: [access],
-                                 fetchPredicate: NSPredicate(format: "userID == %@", access.userId),
-                                 itemComparisonKey: { item in
-                                     AccessKeyComparison(userId: item.userId)
-                                 },
-                                 entityComparisonKey: { entity in
-                                     AccessKeyComparison(userId: entity.userID)
-                                 },
-                                 updateEntity: { (entity: AccessEntity, item: UserAccess) in
-                                     entity.hydrate(from: item)
-                                 },
-                                 insertItems: insertAccess)
+        try await upsert(items: [access],
+                         fetchPredicate: NSPredicate(format: "userID == %@", access.userId),
+                         itemComparisonKey: { item in
+                             AccessKeyComparison(userId: item.userId)
+                         },
+                         entityComparisonKey: { entity in
+                             AccessKeyComparison(userId: entity.userID)
+                         },
+                         updateEntity: { (entity: AccessEntity, item: UserAccess) in
+                             entity.hydrate(from: item)
+                         },
+                         insertItems: insert)
     }
 
     func removeAccess(userId: String) async throws {
@@ -78,14 +78,12 @@ private extension LocalAccessDatasource {
         let userId: String
     }
 
-    func insertAccess(access: [UserAccess]) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
+    func insert(access: [UserAccess], context: NSManagedObjectContext) async throws {
         let batchInsertRequest =
-            newBatchInsertRequest(entity: AccessEntity.entity(context: taskContext),
+            newBatchInsertRequest(entity: AccessEntity.entity(context: context),
                                   sourceItems: access) { managedObject, access in
                 (managedObject as? AccessEntity)?.hydrate(from: access)
             }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }

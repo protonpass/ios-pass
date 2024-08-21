@@ -151,20 +151,20 @@ public extension LocalItemDatasource {
     }
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        try await upsertElements(items: items,
-                                 fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
-                                                             items.map(\.item.itemID),
-                                                             items.map(\.shareId)),
-                                 itemComparisonKey: { item in
-                                     ItemKeyComparison(itemID: item.item.itemID, shareID: item.shareId)
-                                 },
-                                 entityComparisonKey: { entity in
-                                     ItemKeyComparison(itemID: entity.itemID, shareID: entity.shareID)
-                                 },
-                                 updateEntity: { (entity: ItemEntity, item: SymmetricallyEncryptedItem) in
-                                     entity.hydrate(from: item)
-                                 },
-                                 insertItems: insertItems)
+        try await upsert(items: items,
+                         fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
+                                                     items.map(\.item.itemID),
+                                                     items.map(\.shareId)),
+                         itemComparisonKey: { item in
+                             ItemKeyComparison(itemID: item.item.itemID, shareID: item.shareId)
+                         },
+                         entityComparisonKey: { entity in
+                             ItemKeyComparison(itemID: entity.itemID, shareID: entity.shareID)
+                         },
+                         updateEntity: { (entity: ItemEntity, item: SymmetricallyEncryptedItem) in
+                             entity.hydrate(from: item)
+                         },
+                         insertItems: insert)
     }
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem],
@@ -300,71 +300,14 @@ private extension LocalItemDatasource {
         let shareID: String
     }
 
-    func insertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        let taskContext = newTaskContext(type: .insert)
-        let entity = ItemEntity.entity(context: taskContext)
+    func insert(_ items: [SymmetricallyEncryptedItem], context: NSManagedObjectContext) async throws {
+        let entity = ItemEntity.entity(context: context)
         let batchInsertRequest = newBatchInsertRequest(entity: entity,
                                                        sourceItems: items) { managedObject, item in
             (managedObject as? ItemEntity)?.hydrate(from: item)
         }
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
-//
-//    func updateEntity(_ entity: ItemEntity, with newItem: SymmetricallyEncryptedItem) {
-//        let newItemData = newItem.item
-//
-//        if entity.aliasEmail != newItemData.aliasEmail {
-//            entity.aliasEmail = newItemData.aliasEmail
-//        }
-//        if entity.content != newItemData.content {
-//            entity.content = newItemData.content
-//        }
-//        if entity.contentFormatVersion != newItemData.contentFormatVersion {
-//            entity.contentFormatVersion = newItemData.contentFormatVersion
-//        }
-//        if entity.createTime != newItemData.createTime {
-//            entity.createTime = newItemData.createTime
-//        }
-//        if entity.isLogInItem != newItem.isLogInItem {
-//            entity.isLogInItem = newItem.isLogInItem
-//        }
-//        if entity.itemKey != newItemData.itemKey {
-//            entity.itemKey = newItemData.itemKey
-//        }
-//        if entity.keyRotation != newItemData.keyRotation {
-//            entity.keyRotation = newItemData.keyRotation
-//        }
-//        if entity.lastUseTime != newItemData.lastUseTime {
-//            entity.lastUseTime = newItemData.lastUseTime ?? 0
-//        }
-//        if entity.modifyTime != newItemData.modifyTime {
-//            entity.modifyTime = newItemData.modifyTime
-//        }
-//        if entity.pinned != newItemData.pinned {
-//            entity.pinned = newItemData.pinned
-//        }
-//        if entity.revision != newItemData.revision {
-//            entity.revision = newItemData.revision
-//        }
-//        if entity.revisionTime != newItemData.revisionTime {
-//            entity.revisionTime = newItemData.revisionTime
-//        }
-//        if entity.shareID != newItem.shareId {
-//            entity.shareID = newItem.shareId
-//        }
-//        if entity.userID != newItem.userId {
-//            entity.userID = newItem.userId
-//        }
-//        if entity.state != newItemData.state {
-//            entity.state = newItemData.state
-//        }
-//        if entity.symmetricallyEncryptedContent != newItem.encryptedContent {
-//            entity.symmetricallyEncryptedContent = newItem.encryptedContent
-//        }
-//        if entity.flags != Int64(newItemData.flags) {
-//            entity.flags = Int64(newItemData.flags)
-//        }
-//    }
 }
 
 public extension LocalItemDatasource {
