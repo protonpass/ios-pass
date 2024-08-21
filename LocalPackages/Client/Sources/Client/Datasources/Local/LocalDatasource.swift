@@ -97,13 +97,14 @@ public extension LocalDatasource {
     }
 
     // swiftlint:disable:next function_parameter_count
-    func upsertElements<ElementType, EntityType>(items: [ElementType],
-                                                 fetchPredicate: NSPredicate,
-                                                 itemComparisonKey: @escaping (ElementType) -> AnyHashable,
-                                                 entityComparisonKey: @escaping (EntityType) -> AnyHashable,
-                                                 updateEntity: @escaping (EntityType, ElementType) throws -> Void,
-                                                 insertItems: @escaping ([ElementType]) async throws
-                                                     -> Void) async throws where EntityType: NSManagedObject {
+    func upsert<ElementType, EntityType>(items: [ElementType],
+                                         fetchPredicate: NSPredicate,
+                                         itemComparisonKey: @escaping (ElementType) -> AnyHashable,
+                                         entityComparisonKey: @escaping (EntityType) -> AnyHashable,
+                                         updateEntity: @escaping (EntityType, ElementType) throws -> Void,
+                                         insertItems: @escaping ([ElementType],
+                                                                 NSManagedObjectContext) async throws
+                                             -> Void) async throws where EntityType: NSManagedObject {
         let taskContext = newTaskContext(type: .insert)
 
         // Fetch existing entities based on the provided predicate
@@ -147,10 +148,10 @@ public extension LocalDatasource {
 
             // Perform batch insert for new items
             if !itemsToInsert.isEmpty {
-                try await insertItems(itemsToInsert)
+                try await insertItems(itemsToInsert, taskContext)
             }
         } else if !items.isEmpty {
-            try await insertItems(items)
+            try await insertItems(items, taskContext)
         }
     }
 }

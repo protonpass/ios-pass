@@ -57,23 +57,23 @@ public extension LocalUserPreferencesDatasource {
     func upsertPreferences(_ preferences: UserPreferences, for userId: String) async throws {
         let key = try await symmetricKeyProvider.getSymmetricKey()
 
-        try await upsertElements(items: [preferences],
-                                 fetchPredicate: NSPredicate(format: "userID == %@", userId),
-                                 itemComparisonKey: { _ in
-                                     UserPreferencesKeyComparison(userId: userId)
-                                 },
-                                 entityComparisonKey: { entity in
-                                     UserPreferencesKeyComparison(userId: entity.userID)
-                                 },
-                                 updateEntity: { (entity: UserPreferencesEntity, preferences: UserPreferences) in
-                                     try entity.hydrate(preferences: preferences,
-                                                        userId: userId,
-                                                        key: key)
-                                 },
-                                 insertItems: { [weak self] _ in
-                                     guard let self else { return }
-                                     try await insert(preferences, for: userId, key: key)
-                                 })
+        try await upsert(items: [preferences],
+                         fetchPredicate: NSPredicate(format: "userID == %@", userId),
+                         itemComparisonKey: { _ in
+                             UserPreferencesKeyComparison(userId: userId)
+                         },
+                         entityComparisonKey: { entity in
+                             UserPreferencesKeyComparison(userId: entity.userID)
+                         },
+                         updateEntity: { (entity: UserPreferencesEntity, preferences: UserPreferences) in
+                             try entity.hydrate(preferences: preferences,
+                                                userId: userId,
+                                                key: key)
+                         },
+                         insertItems: { [weak self] _, context in
+                             guard let self else { return }
+                             try await insert(preferences, for: userId, key: key, context: context)
+                         })
     }
 
     func removePreferences(for userId: String) async throws {
@@ -97,12 +97,13 @@ private extension LocalUserPreferencesDatasource {
         let userId: String
     }
 
-    func insert(_ preferences: UserPreferences, for userId: String, key: SymmetricKey) async throws {
-        let taskContext = newTaskContext(type: .insert)
-
+    func insert(_ preferences: UserPreferences,
+                for userId: String,
+                key: SymmetricKey,
+                context: NSManagedObjectContext) async throws {
         var hydrationError: (any Error)?
         let batchInsertRequest =
-            newBatchInsertRequest(entity: UserPreferencesEntity.entity(context: taskContext),
+            newBatchInsertRequest(entity: UserPreferencesEntity.entity(context: context),
                                   sourceItems: [preferences]) { managedObject, preferences in
                 do {
                     try (managedObject as? UserPreferencesEntity)?.hydrate(preferences: preferences,
@@ -117,6 +118,6 @@ private extension LocalUserPreferencesDatasource {
             throw hydrationError
         }
 
-        try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)
+        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }
