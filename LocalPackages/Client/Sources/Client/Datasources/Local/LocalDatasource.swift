@@ -115,12 +115,11 @@ public extension LocalDatasource {
             try taskContext.fetch(fetchRequest)
         }
 
-        // Use a Set for fast lookup
-        let existingEntitiesDict = Dictionary(uniqueKeysWithValues: existingEntities
-            .map { (entityComparisonKey($0),
-                    $0) })
+        if !existingEntities.isEmpty {
+            // Use a Set for fast lookup
+            let existingEntitiesDict = Dictionary(uniqueKeysWithValues: existingEntities
+                .map { (entityComparisonKey($0), $0) })
 
-        if !existingEntitiesDict.isEmpty {
             var itemsToInsert: [ElementType] = []
             var itemsToUpdate: [(ElementType, EntityType)] = []
 
