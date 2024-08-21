@@ -32,8 +32,8 @@ extension ShareEventIDEntity {
         NSFetchRequest<ShareEventIDEntity>(entityName: "ShareEventIDEntity")
     }
 
-    @NSManaged var userID: String?
-    @NSManaged var shareID: String?
+    @NSManaged var userID: String
+    @NSManaged var shareID: String
     @NSManaged var lastEventID: String?
 }
 
