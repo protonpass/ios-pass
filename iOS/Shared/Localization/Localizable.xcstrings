@@ -35186,16 +35186,6 @@
         }
       }
     },
-    "Default %@ for aliases" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Default %@ for aliases"
-          }
-        }
-      }
-    },
     "Default browser" : {
       "comment" : "Settings page",
       "localizations" : {
@@ -35353,6 +35343,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trình duyệt mặc định"
+          }
+        }
+      }
+    },
+    "Default domain for aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default domain for aliases"
+          }
+        }
+      }
+    },
+    "Default mailbox for aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default mailbox for aliases"
           }
         }
       }
