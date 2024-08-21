@@ -55,14 +55,6 @@ extension ItemEntity {
 
 extension ItemEntity {
     func toEncryptedItem() throws -> SymmetricallyEncryptedItem {
-//        guard let shareID else {
-//            throw PassError.coreData(.corrupted(object: self, property: "shareID"))
-//        }
-//
-//        guard let itemID else {
-//            throw PassError.coreData(.corrupted(object: self, property: "itemID"))
-//        }
-
         guard let symmetricallyEncryptedContent else {
             throw PassError.coreData(.corrupted(object: self,
                                                 property: "symmetricallyEncryptedContent"))
