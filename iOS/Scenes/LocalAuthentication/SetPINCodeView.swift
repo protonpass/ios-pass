@@ -62,9 +62,6 @@ struct SetPINCodeView: View {
             .background(PassColor.backgroundNorm.toColor)
             .animation(.default, value: viewModel.error)
             .toolbar { toolbarContent }
-            .onChange(of: viewModel.pinIsSet) { _ in
-                isFocused = false
-            }
             .onAppear {
                 isFocused = true
             }
