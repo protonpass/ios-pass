@@ -96,61 +96,72 @@ public extension LocalDatasource {
         return request
     }
 
-    // swiftlint:disable:next function_parameter_count
-    func upsert<ElementType, EntityType>(items: [ElementType],
-                                         fetchPredicate: NSPredicate,
-                                         itemComparisonKey: @escaping (ElementType) -> AnyHashable,
-                                         entityComparisonKey: @escaping (EntityType) -> AnyHashable,
-                                         updateEntity: @escaping (EntityType, ElementType) throws -> Void,
-                                         insertItems: @escaping ([ElementType],
-                                                                 NSManagedObjectContext) async throws
-                                             -> Void) async throws where EntityType: NSManagedObject {
-        let taskContext = newTaskContext(type: .insert)
-
-        // Fetch existing entities based on the provided predicate
-        let fetchRequest = NSFetchRequest<EntityType>(entityName: String(describing: EntityType.self))
-        fetchRequest.predicate = fetchPredicate
-
-        let existingEntities = try await taskContext.perform {
-            try taskContext.fetch(fetchRequest)
+    func upsert<Item, Entity>(_ items: [Item],
+                              entityType: Entity.Type,
+                              fetchPredicate: NSPredicate,
+                              isEqual: @escaping (Item, Entity) -> Bool,
+                              hydrate: @escaping (Item, Entity) throws -> Void) async throws
+        where Entity: NSManagedObject {
+        guard !items.isEmpty else {
+            return
         }
 
-        if !existingEntities.isEmpty {
-            // Use a Set for fast lookup
-            let existingEntitiesDict = Dictionary(uniqueKeysWithValues: existingEntities
-                .map { (entityComparisonKey($0), $0) })
+        let context = newTaskContext(type: .insert)
 
-            var itemsToInsert: [ElementType] = []
-            var itemsToUpdate: [(ElementType, EntityType)] = []
+        // Fetch existing entities
+        let fetchRequest = NSFetchRequest<Entity>(entityName: String(describing: Entity.self))
+        fetchRequest.predicate = fetchPredicate
 
-            // Separate items into those to insert or update
+        let existingEntities = try await context.perform {
+            try context.fetch(fetchRequest)
+        }
+
+        // Closure to insert new items
+        let insert: ([Item]) async throws -> Void = { [weak self] itemsToInsert in
+            guard let self else { return }
+            let entity = entityType.entity(context: context)
+            var hydrationError: (any Error)?
+            let request = newBatchInsertRequest(entity: entity,
+                                                sourceItems: itemsToInsert) { object, item in
+                if let entityObject = object as? Entity {
+                    do {
+                        try hydrate(item, entityObject)
+                    } catch {
+                        hydrationError = error
+                    }
+                } else {
+                    assertionFailure("Failed to parse entity as \(entity.self)")
+                }
+            }
+            if let hydrationError {
+                throw hydrationError
+            }
+            try await execute(batchInsertRequest: request, context: context)
+        }
+
+        if existingEntities.isEmpty {
+            // Nothing exist yet => insert everything
+            try await insert(items)
+        } else {
+            // Something exists => insert if not exist and update if exist
+            var itemsToInsert = [Item]()
             for item in items {
-                let key = itemComparisonKey(item)
-                if let existingEntity = existingEntitiesDict[key] {
-                    itemsToUpdate.append((item, existingEntity))
+                if let entityToUpdate = existingEntities.first(where: { isEqual(item, $0) }) {
+                    try hydrate(item, entityToUpdate)
                 } else {
                     itemsToInsert.append(item)
                 }
             }
 
-            // Perform batch update of existing entities
-            if !itemsToUpdate.isEmpty {
-                try await taskContext.perform {
-                    for (item, entity) in itemsToUpdate {
-                        try updateEntity(entity, item)
-                    }
-                    if taskContext.hasChanges {
-                        try taskContext.save()
-                    }
+            try await context.perform {
+                if context.hasChanges {
+                    try context.save()
                 }
             }
 
-            // Perform batch insert for new items
             if !itemsToInsert.isEmpty {
-                try await insertItems(itemsToInsert, taskContext)
+                try await insert(itemsToInsert)
             }
-        } else if !items.isEmpty {
-            try await insertItems(items, taskContext)
         }
     }
 }
