@@ -200,7 +200,7 @@ private extension SearchViewModel {
             if Task.isCancelled {
                 return
             }
-            state = SearchViewState.results(ItemCount(items: results), filteredAndSortedResults)
+            state = .results(ItemCount(items: results), filteredAndSortedResults)
         }
     }
 
@@ -303,6 +303,15 @@ extension SearchViewModel {
 
 private extension SearchViewModel {
     func setup() {
+        itemRepository
+            .itemsWereUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                refreshResults()
+            }
+            .store(in: &cancellables)
+
         $query
             .debounce(for: 0.4, scheduler: DispatchQueue.main)
             .dropFirst()
