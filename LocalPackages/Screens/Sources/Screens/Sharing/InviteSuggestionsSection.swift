@@ -26,21 +26,24 @@ import SwiftUI
 
 public struct InviteSuggestionsSection: View {
     @State private var selectedIndex = 0
-    @Binding private var selectedEmails: [String]
+    private let selectedEmails: [String]
     private let recommendations: InviteRecommendations
     private let isFetchingMore: Bool
     private let displayCounts: Bool
+    private let onSelect: (String) -> Void
     private let onLoadMore: () -> Void
 
-    public init(selectedEmails: Binding<[String]>,
+    public init(selectedEmails: [String],
                 recommendations: InviteRecommendations,
                 isFetchingMore: Bool,
                 displayCounts: Bool,
+                onSelect: @escaping (String) -> Void,
                 onLoadMore: @escaping () -> Void) {
-        _selectedEmails = selectedEmails
+        self.selectedEmails = selectedEmails
         self.recommendations = recommendations
         self.isFetchingMore = isFetchingMore
         self.displayCounts = displayCounts
+        self.onSelect = onSelect
         self.onLoadMore = onLoadMore
     }
 
@@ -76,20 +79,12 @@ private extension InviteSuggestionsSection {
         ForEach(emails, id: \.self) { email in
             SuggestedEmailView(email: email,
                                isSelected: selectedEmails.contains(email),
-                               onSelect: { handleSelection(email) })
+                               onSelect: { onSelect(email) })
                 .onAppear {
                     if selectedIndex == 1, email == recommendations.planRecommendedEmails.last {
                         onLoadMore()
                     }
                 }
-        }
-    }
-
-    func handleSelection(_ email: String) {
-        if selectedEmails.contains(email) {
-            selectedEmails.removeAll(where: { $0 == email })
-        } else {
-            selectedEmails.append(email)
         }
     }
 
