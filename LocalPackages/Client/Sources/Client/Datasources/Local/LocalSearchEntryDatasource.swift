@@ -62,22 +62,16 @@ public extension LocalSearchEntryDatasource {
     }
 
     func upsert(item: any ItemIdentifiable, userId: String, date: Date) async throws {
-        try await upsert(items: [item],
+        try await upsert([item],
+                         entityType: SearchEntryEntity.self,
                          fetchPredicate: NSPredicate(format: "itemID == %@ AND shareID == %@",
                                                      item.itemId,
                                                      item.shareId),
-                         itemComparisonKey: { item in
-                             SearchEntryKeyComparison(itemId: item.itemId, shareId: item.shareId)
+                         isEqual: { item, entity in
+                             item.itemId == entity.itemID && item.shareId == entity.shareID
                          },
-                         entityComparisonKey: { entity in
-                             SearchEntryKeyComparison(itemId: entity.itemID, shareId: entity.shareID)
-                         },
-                         updateEntity: { (entity: SearchEntryEntity, item: ItemIdentifiable) in
+                         hydrate: { item, entity in
                              entity.hydrate(from: item, userId: userId, date: date)
-                         },
-                         insertItems: { [weak self] item, context in
-                             guard let self else { return }
-                             try await insert(items: item, userId: userId, date: date, context: context)
                          })
     }
 
@@ -117,26 +111,5 @@ public extension LocalSearchEntryDatasource {
                              userId: userId,
                              date: Date(timeIntervalSince1970: TimeInterval(entry.time)))
         }
-    }
-}
-
-private extension LocalSearchEntryDatasource {
-    struct SearchEntryKeyComparison: Hashable {
-        let itemId: String
-        let shareId: String
-    }
-
-    func insert(items: [any ItemIdentifiable],
-                userId: String,
-                date: Date,
-                context: NSManagedObjectContext) async throws {
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: SearchEntryEntity.entity(context: context),
-                                  sourceItems: items) { managedObject, item in
-                (managedObject as? SearchEntryEntity)?.hydrate(from: item,
-                                                               userId: userId,
-                                                               date: date)
-            }
-        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }
