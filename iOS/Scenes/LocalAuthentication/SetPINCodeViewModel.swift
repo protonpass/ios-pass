@@ -39,7 +39,6 @@ final class SetPINCodeViewModel: ObservableObject, DeinitPrintable {
 
     @Published private(set) var state: SetPINCodeViewModel.State = .definition
     @Published private(set) var error: ValidationError?
-    @Published private(set) var pinIsSet = false
     @Published var definedPIN = ""
     @Published var confirmedPIN = ""
 
@@ -100,7 +99,6 @@ private extension SetPINCodeViewModel {
             do {
                 try await updateSharedPreferences(\.localAuthenticationMethod, value: .pin)
                 try await updateSharedPreferences(\.pinCode, value: pinCode)
-                pinIsSet = true
                 router.display(element: .successMessage(#localized("PIN code set"),
                                                         config: .init(dismissBeforeShowing: true)))
             } catch {
