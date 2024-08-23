@@ -426,7 +426,8 @@ extension SharedUseCasesContainer {
                                  vaultsManager: self.vaultsManager,
                                  apiManager: self.apiManager,
                                  authManager: self.authManager,
-                                 credentialManager: SharedServiceContainer.shared.credentialManager()) }
+                                 credentialManager: SharedServiceContainer.shared.credentialManager(),
+                                 keychain: SharedToolingContainer.shared.keychain()) }
     }
 }
 
