@@ -1747,7 +1747,7 @@ private extension HomepageCoordinator {
         }
 
         if config.dismissBeforeShowing {
-            window?.resignFirstResponder()
+            window?.endEditing(true)
         }
     }
 }
