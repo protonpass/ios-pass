@@ -42,7 +42,6 @@ public extension AuthenticateBiometricallyUseCase {
  */
 public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     private let keychainService: any KeychainProtocol
-    private let biometricKey = "BiometricsPolicyState"
 
     public init(keychainService: any KeychainProtocol) {
         self.keychainService = keychainService
@@ -63,6 +62,7 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     }
 
     private func checkIfUserBiometricsSettingsChanged(context: LAContext) throws -> Bool {
+        let biometricKey = Constants.biometricStateKey
         // If there is no saved policy state yet, save it
         var error: NSError?
         context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)

@@ -101,7 +101,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
-    private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var customCoordinator: (any CustomCoordinator)?
@@ -346,7 +345,6 @@ private extension HomepageCoordinator {
                 if exitEditMode {
                     itemsTabViewModel?.isEditMode = false
                 }
-                searchViewModel?.refreshResults()
                 itemDetailCoordinator?.refresh()
                 createEditItemCoordinator?.refresh()
             } catch {
@@ -1546,7 +1544,6 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                 addNewEvent(type: .update(type))
                 let userId = try await userManager.getActiveUserId()
                 vaultsManager.refresh(userId: userId)
-                searchViewModel?.refreshResults()
                 itemDetailCoordinator?.refresh()
                 dismissTopMostViewController { [weak self] in
                     guard let self else { return }
