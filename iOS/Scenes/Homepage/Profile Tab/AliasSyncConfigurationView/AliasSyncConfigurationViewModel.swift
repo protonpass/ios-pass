@@ -36,16 +36,16 @@ import UseCases
 final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     @Published var selectedVault: VaultListUiModel?
     @Published private(set) var vaults: [VaultListUiModel] = []
-
     @Published var defaultDomain: Domain?
     @Published private(set) var domains: [Domain] = []
 
     @Published var defaultMailbox: Mailbox?
     @Published private(set) var mailboxes: [Mailbox] = []
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
-    private var aliasSettings: AliasSettings?
+    @Published private(set) var pendingSyncDisableAliases = 0
 
     @Published private(set) var loading = false
+    @Published private(set) var showSyncSection = false
 
     @LazyInjected(\SharedRepositoryContainer
         .accessRepository) private var accessRepository: any AccessRepositoryProtocol
@@ -59,6 +59,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     private var selectedVaultTask: Task<Void, Never>?
     private var selectedDomainTask: Task<Void, Never>?
     private var selectedMailboxTask: Task<Void, Never>?
+    private var aliasSettings: AliasSettings?
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -77,7 +78,16 @@ private extension AliasSyncConfigurationViewModel {
             defer { loading = false }
             loading = true
             do {
-                userAliasSyncData = try? await accessRepository.getAccess().access.userData
+                userAliasSyncData = try await accessRepository.getAccess().access.userData
+                let userId = try await userManager.getActiveUserId()
+                if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
+                    showSyncSection = true
+                } else {
+                    pendingSyncDisableAliases = try await aliasRepository.getAliasSyncStatus(userId: userId)
+                        .pendingAliasCount
+                    showSyncSection = pendingSyncDisableAliases > 0
+                }
+
                 vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
                 if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {
                     guard let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) else {
@@ -88,7 +98,6 @@ private extension AliasSyncConfigurationViewModel {
                     self.selectedVault = selectedVault
                 }
 
-                let userId = try await userManager.getActiveUserId()
                 if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
                     aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
                 }
