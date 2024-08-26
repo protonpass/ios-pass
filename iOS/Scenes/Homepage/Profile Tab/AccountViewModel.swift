@@ -90,7 +90,9 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
             .compactMap(\.?.user.canManageSubscription)
             .sink { [weak self] canManageSubscription in
                 guard let self else { return }
-                self.canManageSubscription = canManageSubscription
+                // Temporarily hide "Manage subscription" option while waiting for dynamic plans
+                let isB2B = plan?.isBusinessUser == true
+                self.canManageSubscription = canManageSubscription && !isB2B
             }
             .store(in: &cancellables)
     }
