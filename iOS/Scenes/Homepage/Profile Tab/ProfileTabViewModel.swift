@@ -64,8 +64,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
-    @LazyInjected(\SharedRepositoryContainer
-        .aliasRepository) private var aliasRepository: any AliasRepositoryProtocol
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository)
+    private var aliasRepository: any AliasRepositoryProtocol
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
