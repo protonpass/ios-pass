@@ -165,20 +165,17 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 // MARK: - Public APIs
 
 extension ProfileTabViewModel {
-    func checkPendingAliases() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let userId = try await userManager.getActiveUserId()
-                if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
-                    pendingSyncDisableAliases = nil
-                } else {
-                    let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
-                    pendingSyncDisableAliases = number > 0 ? number : nil
-                }
-            } catch {
-                handle(error: error)
+    func checkPendingAliases() async {
+        do {
+            let userId = try await userManager.getActiveUserId()
+            if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
+                pendingSyncDisableAliases = nil
+            } else {
+                let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
+                pendingSyncDisableAliases = number > 0 ? number : nil
             }
+        } catch {
+            handle(error: error)
         }
     }
 
