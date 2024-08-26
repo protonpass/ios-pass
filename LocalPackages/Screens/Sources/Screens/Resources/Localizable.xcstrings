@@ -775,6 +775,12 @@
             "value" : "Legg til konto"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account toevoegen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -797,6 +803,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pridať účet"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj račun"
           }
         },
         "sv" : {
@@ -1993,7 +2005,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Luo todentamisavain"
+            "value" : "Luo pääsyavain"
           }
         },
         "fr" : {
@@ -2102,10 +2114,112 @@
     },
     "Default SimpleLogin vault" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прадвызначанае сховішча SimpleLogin"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard SimpleLogin-boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standardtresor für SimpleLogin"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προεπιλεγμένη κρύπτη SimpleLogin"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Default SimpleLogin vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caja fuerte de SimpleLogin por defecto"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bóveda de SimpleLogin por defecto"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oletusarvoinen SimpleLogin-holvi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Coffre-fort SimpleLogin par défaut"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brankas SimpleLogin bawaan"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგულისხმევი SimpleLogin-ის საცავი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본 SimpleLogin 금고"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard SimpleLogin-hvelv"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domyślny sejf SimpleLogin"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cofre padrão do SimpleLogin"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seif implicit SimpleLogin"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard SimpleLogin-valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan SimpleLogin kasası"
           }
         }
       }
@@ -2272,10 +2386,112 @@
     },
     "Enable SimpleLogin sync" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уключыць сінхранізацыю SimpleLogin"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver SimpleLogin-synkronisering"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin-Synchronisierung aktivieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ενεργοποιήστε το συγχρονισμό SimpleLogin"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enable SimpleLogin sync"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar la sincronización con SimpleLogin"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar sincronización de SimpleLogin"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ota SimpleLogin-synkronointi käyttöön"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer la synchronisation avec SimpleLogin"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktifkan sinkronisasi SimpleLogin"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin-ის სინქრონიზაციის ჩართვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin 동기화 활성화"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver SimpleLogin synkronisering"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz synchronizację SimpleLogin"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar sincronização com SimpleLogin"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activare sincronizare SimpleLogin"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivera SimpleLogin-synkronisering"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin eşitlemesini aç"
           }
         }
       }
@@ -2606,7 +2822,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пераслаць на"
+            "value" : "Перасылаць на"
           }
         },
         "cs" : {
@@ -4243,7 +4459,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acciones rápidas en elementos"
+            "value" : "Acciones rápidas en los elementos"
           }
         },
         "es-419" : {
@@ -6081,6 +6297,12 @@
             "value" : "Prepnúť na"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preklopite na"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6103,10 +6325,118 @@
     },
     "Sync aliases" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сінхранізацыя псеўданімаў"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synkroniser aliasser"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasse synchronisieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Συγχρονισμός ψευδωνύμων"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sync aliases"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizar los alias"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizar los alias"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synkronoi aliakset"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchroniser les alias"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinkronisasikan alias"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფსევდონიმების სინქი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "별칭 동기화"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synkroniser aliaser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchroniseer aliassen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronizuj aliasy"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizar alias"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizare aliasuri"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synkronisera alias"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takma adları eşitle"
           }
         }
       }
@@ -6433,6 +6763,72 @@
     },
     "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімы, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Магчыма, што вы хочаце імпартаваць іх?"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімаў, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Магчыма, што вы хочаце імпартаваць іх?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданім, які прысутнічае ў SimpleLogin, але адсутнічае ў Proton Pass. Магчыма, што вы хочаце імпартаваць яго?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімаў, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Магчыма, што вы хочаце імпартаваць іх?"
+                }
+              }
+            }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vi har registreret, at du har %lld alias, som er til stede i SimpleLogin, men som mangler i Proton Pass. Vil du gerne importere det?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vi har registreret, at du har %lld aliasser, som er til stede i SimpleLogin, men som mangler i Proton Pass. Vil du gerne importere dem?"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Εντοπίσαμε ότι έχετε %lld ψευδώνυμο που υπάρχει στο SimpleLogin αλλά λείπει στο Proton Pass. Θέλετε να το εισαγάγετε;"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Εντοπίσαμε ότι έχετε %lld ψευδώνυμα που υπάρχουν στο SimpleLogin αλλά λείπουν στο Proton Pass. Θέλετε να τα εισαγάγετε;"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -6446,6 +6842,198 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Hemos detectado que tienes %lld alias en SimpleLogin pero no aparece en Proton Pass. ¿Deseas importarlo?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Hemos detectado que tienes %lld alias en SimpleLogin pero no aparecen en Proton Pass. ¿Deseas importarlos?"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Hemos detectado que tiene %lld alias en SimpleLogin pero no aparece en Proton Pass. ¿Desea importarlo?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Hemos detectado que tiene %lld alias en SimpleLogin pero no aparecen en Proton Pass. ¿Desea importarlos?"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Nous avons détecté que vous avez %lld alias qui est présent dans SimpleLogin mais manquant dans Proton Pass. Souhaitez-vous l'importer ?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Nous avons détecté que vous avez %lld alias qui sont présents dans SimpleLogin mais manquants dans Proton Pass. Souhaitez-vous les importer ?"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kami mendeteksi bahwa Anda memiliki %lld alias yang ada di SimpleLogin namun belum tercatat pada Proton Pass. Apakah Anda ingin mengimpor alias ini?"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აღმოვაჩინეთ, რომ გაქვთ %lld ფსევდონიმი, რომელიც არსებობს SimpleLogin-ში, მაგრამ არა Proton Pass-ში. გნებავთ მათი შემოტანა?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აღმოვაჩინეთ, რომ გაქვთ %lld ფსევდონიმი, რომელიც არსებობს SimpleLogin-ში, მაგრამ არა Proton Pass-ში. გნებავთ მათი შემოტანა?"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "SimpleLogin에 %lld개의 별칭이 존재하지만 Proton Pass에는 누락된 별칭이 있음이 발견되었어요. 해당 별명을 불러오시겠어요?"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vi oppdaget at du har %lld alias som er til stede i SimpleLogin, men mangler i Proton Pass. Vil du importere det?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vi oppdaget at du har %lld aliaser som er til stede i SimpleLogin, men mangler i Proton Pass. Vil du importere dem?"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Detectamos que você tem o alias %lld que está presente no SimpleLogin, mas ausente no Proton Pass. Gostaria de importá-lo?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Detectamos que você tem %lld aliases que estão presentes no SimpleLogin, mas ausentes no Proton Pass. Gostaria de importá-los?"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Am detectat că aveți %lld aliasuri care există în SimpleLogin, dar lipsesc în Proton Pass. Doriți să le importați?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Am detectat că aveți %lld alias care există în SimpleLogin, dar lipsește în Proton Pass. Doriți să-l importați?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Am detectat că aveți %lld de aliasuri care există în SimpleLogin, dar lipsesc în Proton Pass. Doriți să le importați?"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vi upptäckte att du har %lld alias som finns i SimpleLogin men saknas i Proton Pass. Vill du importera det?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Vi upptäckte att du har %lld alias som finns i SimpleLogin men saknas i Proton Pass. Vill du importera dem?"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "SimpleLogin üzerinde bulunan ancak Proton Pass üzerinde bulunmayan %lld takma adınızın olduğunu gördük. Bunu içe aktarmak ister misiniz?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "SimpleLogin üzerinde bulunan ancak Proton Pass üzerinde bulunmayan %lld takma adınızın olduğunu gördük. Bunları içe aktarmak ister misiniz?"
                 }
               }
             }
