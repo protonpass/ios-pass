@@ -151,20 +151,17 @@ public extension LocalItemDatasource {
     }
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws {
-        try await upsert(items: items,
+        try await upsert(items,
+                         entityType: ItemEntity.self,
                          fetchPredicate: NSPredicate(format: "itemID IN %@ AND shareID IN %@",
                                                      items.map(\.item.itemID),
                                                      items.map(\.shareId)),
-                         itemComparisonKey: { item in
-                             ItemKeyComparison(itemID: item.item.itemID, shareID: item.shareId)
+                         isEqual: { item, entity in
+                             item.shareId == entity.shareID && item.itemId == entity.itemID
                          },
-                         entityComparisonKey: { entity in
-                             ItemKeyComparison(itemID: entity.itemID, shareID: entity.shareID)
-                         },
-                         updateEntity: { (entity: ItemEntity, item: SymmetricallyEncryptedItem) in
+                         hydrate: { item, entity in
                              entity.hydrate(from: item)
-                         },
-                         insertItems: insert)
+                         })
     }
 
     func upsertItems(_ items: [SymmetricallyEncryptedItem],
@@ -289,24 +286,6 @@ public extension LocalItemDatasource {
         // Set the batch size to optimize fetching
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
-    }
-}
-
-// MARK: - upset utils
-
-private extension LocalItemDatasource {
-    struct ItemKeyComparison: Hashable {
-        let itemID: String
-        let shareID: String
-    }
-
-    func insert(_ items: [SymmetricallyEncryptedItem], context: NSManagedObjectContext) async throws {
-        let entity = ItemEntity.entity(context: context)
-        let batchInsertRequest = newBatchInsertRequest(entity: entity,
-                                                       sourceItems: items) { managedObject, item in
-            (managedObject as? ItemEntity)?.hydrate(from: item)
-        }
-        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }
 
