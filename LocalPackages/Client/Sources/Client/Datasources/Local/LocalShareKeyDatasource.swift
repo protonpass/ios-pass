@@ -43,23 +43,16 @@ public extension LocalShareKeyDatasource {
     }
 
     func upsertKeys(_ keys: [SymmetricallyEncryptedShareKey]) async throws {
-        try await upsert(items: keys,
+        try await upsert(keys,
+                         entityType: ShareKeyEntity.self,
                          fetchPredicate: NSPredicate(format: "shareID IN %@ AND keyRotation IN %@",
                                                      keys.map(\.shareId),
                                                      keys.map(\.shareKey.keyRotation)),
-                         itemComparisonKey: { item in
-                             ShareKeyComparison(shareID: item.shareId,
-                                                keyRotation: item.shareKey.keyRotation)
+                         isEqual: { item, entity in
+                             item.shareId == entity.shareID && item.shareKey.keyRotation == entity.keyRotation
                          },
-                         entityComparisonKey: { entity in
-                             ShareKeyComparison(shareID: entity.shareID, keyRotation: entity.keyRotation)
-                         },
-                         updateEntity: { (entity: ShareKeyEntity, key: SymmetricallyEncryptedShareKey) in
-                             entity.hydrate(from: key)
-                         },
-                         insertItems: { [weak self] keys, context in
-                             guard let self else { return }
-                             try await insert(keys, context: context)
+                         hydrate: { item, entity in
+                             entity.hydrate(from: item)
                          })
     }
 
@@ -84,21 +77,5 @@ public extension LocalShareKeyDatasource {
                                                                     userId: userId,
                                                                     shareKey: $0.shareKey) }
         try await upsertKeys(updatedKeys)
-    }
-}
-
-private extension LocalShareKeyDatasource {
-    struct ShareKeyComparison: Hashable {
-        let shareID: String
-        let keyRotation: Int64
-    }
-
-    func insert(_ keys: [SymmetricallyEncryptedShareKey], context: NSManagedObjectContext) async throws {
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: ShareKeyEntity.entity(context: context),
-                                  sourceItems: keys) { managedObject, key in
-                (managedObject as? ShareKeyEntity)?.hydrate(from: key)
-            }
-        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }
