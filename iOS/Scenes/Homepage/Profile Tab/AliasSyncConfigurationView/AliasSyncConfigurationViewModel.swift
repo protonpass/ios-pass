@@ -42,7 +42,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     @Published var defaultMailbox: Mailbox?
     @Published private(set) var mailboxes: [Mailbox] = []
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
-    @Published private(set) var pendingSyncDisableAliases = 0
+    @Published private(set) var pendingSyncDisabledAliases = 0
 
     @Published private(set) var loading = false
     @Published private(set) var showSyncSection = false
@@ -84,9 +84,9 @@ private extension AliasSyncConfigurationViewModel {
                     showSyncSection = true
                     aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
                 } else {
-                    pendingSyncDisableAliases = try await aliasRepository.getAliasSyncStatus(userId: userId)
+                    pendingSyncDisabledAliases = try await aliasRepository.getAliasSyncStatus(userId: userId)
                         .pendingAliasCount
-                    showSyncSection = pendingSyncDisableAliases > 0
+                    showSyncSection = pendingSyncDisabledAliases > 0
                 }
 
                 vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
