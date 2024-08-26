@@ -101,7 +101,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // References
     private weak var itemsTabViewModel: ItemsTabViewModel?
-    private weak var searchViewModel: SearchViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
     private var customCoordinator: (any CustomCoordinator)?
@@ -346,7 +345,6 @@ private extension HomepageCoordinator {
                 if exitEditMode {
                     itemsTabViewModel?.isEditMode = false
                 }
-                searchViewModel?.refreshResults()
                 itemDetailCoordinator?.refresh()
                 createEditItemCoordinator?.refresh()
             } catch {
@@ -833,17 +831,10 @@ extension HomepageCoordinator {
 
         guard let message else { return }
 
-        if let config {
-            if config.dismissBeforeShowing {
-                dismissTopMostViewController(animated: true) { [weak self] in
-                    guard let self else { return }
-                    if config.refresh {
-                        refresh()
-                    }
-                    bannerManager.displayBottomInfoMessage(message)
-                }
-            } else if config.refresh {
-                refresh()
+        if let config, config.dismissBeforeShowing {
+            dismissTopMostViewController(animated: true) { [weak self] in
+                guard let self else { return }
+                bannerManager.displayBottomInfoMessage(message)
             }
         } else {
             bannerManager.displayBottomInfoMessage(message)
@@ -1553,7 +1544,6 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                 addNewEvent(type: .update(type))
                 let userId = try await userManager.getActiveUserId()
                 vaultsManager.refresh(userId: userId)
-                searchViewModel?.refreshResults()
                 itemDetailCoordinator?.refresh()
                 dismissTopMostViewController { [weak self] in
                     guard let self else { return }
@@ -1751,6 +1741,10 @@ private extension HomepageCoordinator {
 
         if config.refresh {
             refresh()
+        }
+
+        if config.dismissBeforeShowing {
+            window?.endEditing(true)
         }
     }
 }

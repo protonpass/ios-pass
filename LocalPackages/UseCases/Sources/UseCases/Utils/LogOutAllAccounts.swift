@@ -21,6 +21,7 @@
 //
 
 import Client
+import Core
 import Entities
 @preconcurrency import ProtonCoreFeatureFlags
 import ProtonCoreLogin
@@ -47,6 +48,7 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
     private let apiManager: any APIManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let credentialManager: any CredentialManagerProtocol
+    private let keychain: any KeychainProtocol
 
     public init(userManager: any UserManagerProtocol,
                 syncEventLoop: any SyncEventLoopProtocol,
@@ -57,7 +59,8 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
                 vaultsManager: any VaultsManagerProtocol,
                 apiManager: any APIManagerProtocol,
                 authManager: any AuthManagerProtocol,
-                credentialManager: any CredentialManagerProtocol) {
+                credentialManager: any CredentialManagerProtocol,
+                keychain: any KeychainProtocol) {
         self.userManager = userManager
         self.syncEventLoop = syncEventLoop
         self.preferencesManager = preferencesManager
@@ -68,6 +71,7 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
         self.apiManager = apiManager
         self.authManager = authManager
         self.credentialManager = credentialManager
+        self.keychain = keychain
     }
 
     public func execute() async throws {
@@ -97,5 +101,7 @@ public final class LogOutAllAccounts: LogOutAllAccountsUseCase {
         DispatchQueue.main.async {
             UIPasteboard.general.items = []
         }
+
+        try keychain.removeOrError(forKey: Constants.biometricStateKey)
     }
 }

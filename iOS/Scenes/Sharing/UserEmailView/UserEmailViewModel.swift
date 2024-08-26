@@ -96,7 +96,16 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     }
 
     func deselect(_ email: String) {
-        selectedEmails.removeAll(where: { $0 == email })
+        selectedEmails.removeAll { $0 == email }
+    }
+
+    func handleSelection(suggestedEmail: String) {
+        if selectedEmails.contains(suggestedEmail) {
+            deselect(suggestedEmail)
+        } else {
+            email = ""
+            selectedEmails.append(suggestedEmail)
+        }
     }
 
     func `continue`() async -> Bool {
