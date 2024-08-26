@@ -63,21 +63,22 @@ struct AliasSyncConfigurationView: View {
                     .fontWeight(.bold)
             }
 
-            Section {
-                if let userSyncData = viewModel.userAliasSyncData,
-                   !userSyncData.aliasSyncEnabled {
-                    AliasSyncExplanationView(missingAliases: userSyncData.pendingAliasToSync) {
-                        viewModel.showSimpleLoginAliasesActivation()
+            if viewModel.showSyncSection {
+                Section {
+                    if viewModel.pendingSyncDisabledAliases > 0 {
+                        AliasSyncExplanationView(missingAliases: viewModel.pendingSyncDisabledAliases) {
+                            viewModel.showSimpleLoginAliasesActivation()
+                        }
+                    } else {
+                        SelectedSyncVaultRow(vault: viewModel.selectedVault?.vault) {
+                            sheetState = .vault
+                        }
                     }
-                } else {
-                    SelectedSyncVaultRow(vault: viewModel.selectedVault?.vault) {
-                        sheetState = .vault
-                    }
+                } header: {
+                    Text("SimpleLogin sync")
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .fontWeight(.bold)
                 }
-            } header: {
-                Text("SimpleLogin sync")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .fontWeight(.bold)
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
