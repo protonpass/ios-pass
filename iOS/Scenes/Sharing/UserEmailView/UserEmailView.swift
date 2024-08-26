@@ -64,10 +64,11 @@ struct UserEmailView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                 } else if let recommendations = viewModel.recommendationsState.recommendations,
                           !recommendations.isEmpty {
-                    InviteSuggestionsSection(selectedEmails: $viewModel.selectedEmails,
+                    InviteSuggestionsSection(selectedEmails: viewModel.selectedEmails,
                                              recommendations: recommendations,
                                              isFetchingMore: viewModel.isFetchingMore,
                                              displayCounts: Bundle.main.isQaBuild,
+                                             onSelect: { viewModel.handleSelection(suggestedEmail: $0) },
                                              onLoadMore: {
                                                  viewModel
                                                      .updateRecommendations(removingCurrentRecommendations: false)
