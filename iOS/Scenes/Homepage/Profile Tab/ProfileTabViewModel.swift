@@ -85,7 +85,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var dismissedAliasesSyncExplanation = false
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
 
-    @Published private var pendingSyncDisableAliases: Int?
+    @Published private var pendingSyncDisabledAliases: Int?
 
     // Accounts management
     @Published private var currentActiveUser: UserData?
@@ -137,7 +137,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         else {
             return nil
         }
-        return pendingSyncDisableAliases
+        return pendingSyncDisabledAliases
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
@@ -169,10 +169,10 @@ extension ProfileTabViewModel {
         do {
             let userId = try await userManager.getActiveUserId()
             if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
-                pendingSyncDisableAliases = nil
+                pendingSyncDisabledAliases = nil
             } else {
                 let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
-                pendingSyncDisableAliases = number > 0 ? number : nil
+                pendingSyncDisabledAliases = number > 0 ? number : nil
             }
         } catch {
             handle(error: error)
