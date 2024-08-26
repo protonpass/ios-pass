@@ -31,6 +31,7 @@ public enum Constants {
     public static let existingUserSharingSignatureContext = "pass.invite.vault.existing-user"
     public static let newUserSharingSignatureContext = "pass.invite.vault.new-user"
     public static let freeAccountsLimit = 1
+    public static let biometricStateKey = "BiometricsPolicyState"
 
     public enum PINCode {
         public static let minLength = 4

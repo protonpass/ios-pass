@@ -24,7 +24,7 @@ import Entities
 
 // swiftlint:disable cyclomatic_complexity
 /// Items that live in memory for search purpose
-public struct SearchableItem: ItemTypeIdentifiable, Equatable {
+public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let shareId: String
     public let itemId: String
     public let vault: Vault? // Optional because we only show vault when there're more than 1 vault
