@@ -73,6 +73,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 }
 
 private extension AliasSyncConfigurationViewModel {
+    // swiftlint:disable:next cyclomatic_complexity
     func setUp() {
         Task {
             defer { loading = false }
