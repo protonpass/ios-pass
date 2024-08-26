@@ -56,6 +56,7 @@ struct ProfileTabView: View {
             .task {
                 await viewModel.refreshPlan()
                 await viewModel.updateSupportedLocalAuthenticationMethods()
+                await viewModel.checkPendingAliases()
             }
             .onAppear {
                 viewModel.fetchSecureLinks()
@@ -81,7 +82,8 @@ struct ProfileTabView: View {
                 } else {
                     autoFillDisabledSection
                 }
-                if viewModel.showAliasesSyncFlow {
+
+                if viewModel.isSimpleLoginAliasSyncActive {
                     aliasesSection
                         .padding(.vertical)
                 }

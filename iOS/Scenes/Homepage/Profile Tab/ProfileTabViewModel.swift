@@ -64,6 +64,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository)
+    private var aliasRepository: any AliasRepositoryProtocol
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -82,6 +84,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var secureLinks: [SecureLink]?
     @Published private(set) var dismissedAliasesSyncExplanation = false
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
+
+    @Published private var pendingSyncDisabledAliases: Int?
 
     // Accounts management
     @Published private var currentActiveUser: UserData?
@@ -127,19 +131,13 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
     }
 
-    var showAliasesSyncFlow: Bool {
-        isSimpleLoginAliasSyncActive && userAliasSyncData?.syncNeeded == true
-    }
-
     var showAliasSyncExplanation: Int? {
         guard isSimpleLoginAliasSyncActive,
-              !dismissedAliasesSyncExplanation,
-              let userSyncData = userAliasSyncData,
-              !userSyncData.aliasSyncEnabled,
-              userSyncData.pendingAliasToSync > 0 else {
+              !dismissedAliasesSyncExplanation
+        else {
             return nil
         }
-        return userSyncData.pendingAliasToSync
+        return pendingSyncDisabledAliases
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
@@ -167,6 +165,20 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 // MARK: - Public APIs
 
 extension ProfileTabViewModel {
+    func checkPendingAliases() async {
+        do {
+            let userId = try await userManager.getActiveUserId()
+            if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
+                pendingSyncDisabledAliases = nil
+            } else {
+                let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
+                pendingSyncDisabledAliases = number > 0 ? number : nil
+            }
+        } catch {
+            handle(error: error)
+        }
+    }
+
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
