@@ -43,20 +43,14 @@ public extension LocalOrganizationDatasource {
     }
 
     func upsertOrganization(_ organization: Organization, userId: String) async throws {
-        try await upsert(items: [organization],
+        try await upsert([organization],
+                         entityType: OrganizationEntity.self,
                          fetchPredicate: NSPredicate(format: "userID == %@", userId),
-                         itemComparisonKey: { _ in
-                             OrganizationKeyComparison(userId: userId)
+                         isEqual: { _, entity in
+                             entity.userID == userId
                          },
-                         entityComparisonKey: { entity in
-                             OrganizationKeyComparison(userId: entity.userID)
-                         },
-                         updateEntity: { (entity: OrganizationEntity, item: Organization) in
+                         hydrate: { item, entity in
                              entity.hydrate(from: item, userId: userId)
-                         },
-                         insertItems: { [weak self] organization, context in
-                             guard let self else { return }
-                             try await insertOrganization(organization, userId: userId, context: context)
                          })
     }
 
@@ -66,23 +60,5 @@ public extension LocalOrganizationDatasource {
         fetchRequest.predicate = NSPredicate(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
-    }
-}
-
-private extension LocalOrganizationDatasource {
-    struct OrganizationKeyComparison: Hashable {
-        let userId: String
-    }
-
-    func insertOrganization(_ organization: [Organization],
-                            userId: String,
-                            context: NSManagedObjectContext) async throws {
-        let batchInsertRequest =
-            newBatchInsertRequest(entity: OrganizationEntity.entity(context: context),
-                                  sourceItems: organization) { managedObject, organization in
-                (managedObject as? OrganizationEntity)?.hydrate(from: organization, userId: userId)
-            }
-
-        try await execute(batchInsertRequest: batchInsertRequest, context: context)
     }
 }
