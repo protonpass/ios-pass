@@ -107,32 +107,6 @@ public final class APIManager: Sendable, APIManagerProtocol {
         authManager.setUpDelegate(self)
     }
 
-    private func makeAPIManagerElements(credential: Credential?) -> APIManagerElements {
-        let apiService = if let credential {
-            PMAPIService.createAPIService(doh: doh,
-                                          sessionUID: credential.UID,
-                                          challengeParametersProvider: challengeProvider)
-        } else {
-            PMAPIService.createAPIServiceWithoutSession(doh: doh,
-                                                        challengeParametersProvider: challengeProvider)
-        }
-
-        apiService.authDelegate = authManager
-        apiService.serviceDelegate = self
-
-        let theme = themeProvider.sharedPreferences.unwrapped().theme
-        let humanHelper = HumanCheckHelper(apiService: apiService,
-                                           inAppTheme: { theme.inAppTheme },
-                                           clientApp: .pass)
-        apiService.humanDelegate = humanHelper
-
-        apiService.loggingDelegate = self
-        apiService.forceUpgradeDelegate = forceUpgradeHelper
-        return .init(apiService: apiService,
-                     humanVerification: humanHelper,
-                     isAuthenticated: credential?.isForUnauthenticatedSession == false)
-    }
-
     @discardableResult
     public func getUnauthApiService() -> any APIService {
         if let unauthApiService = allCurrentApiServices.unauthApiService {
@@ -175,6 +149,32 @@ private extension APIManager {
         let trustKit = TrustKitWrapper.current
         PMAPIService.trustKit = trustKit
         PMAPIService.noTrustKit = trustKit == nil
+    }
+
+    func makeAPIManagerElements(credential: Credential?) -> APIManagerElements {
+        let apiService = if let credential {
+            PMAPIService.createAPIService(doh: doh,
+                                          sessionUID: credential.UID,
+                                          challengeParametersProvider: challengeProvider)
+        } else {
+            PMAPIService.createAPIServiceWithoutSession(doh: doh,
+                                                        challengeParametersProvider: challengeProvider)
+        }
+
+        apiService.authDelegate = authManager
+        apiService.serviceDelegate = self
+
+        let theme = themeProvider.sharedPreferences.unwrapped().theme
+        let humanHelper = HumanCheckHelper(apiService: apiService,
+                                           inAppTheme: { theme.inAppTheme },
+                                           clientApp: .pass)
+        apiService.humanDelegate = humanHelper
+
+        apiService.loggingDelegate = self
+        apiService.forceUpgradeDelegate = forceUpgradeHelper
+        return .init(apiService: apiService,
+                     humanVerification: humanHelper,
+                     isAuthenticated: credential?.isForUnauthenticatedSession == false)
     }
 
     func setUpCore(apiService: any APIService) {
