@@ -73,7 +73,6 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 }
 
 private extension AliasSyncConfigurationViewModel {
-    // swiftlint:disable:next cyclomatic_complexity
     func setUp() {
         Task {
             defer { loading = false }
@@ -83,6 +82,7 @@ private extension AliasSyncConfigurationViewModel {
                 let userId = try await userManager.getActiveUserId()
                 if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
                     showSyncSection = true
+                    aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
                 } else {
                     pendingSyncDisableAliases = try await aliasRepository.getAliasSyncStatus(userId: userId)
                         .pendingAliasCount
@@ -99,9 +99,6 @@ private extension AliasSyncConfigurationViewModel {
                     self.selectedVault = selectedVault
                 }
 
-                if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
-                    aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
-                }
                 async let fetchDomains = try aliasRepository.getAllAliasDomains(userId: userId)
                 async let fetchedMailboxes = try aliasRepository.getAllAliasMailboxes(userId: userId)
                 let result = try await (fetchDomains, fetchedMailboxes)
