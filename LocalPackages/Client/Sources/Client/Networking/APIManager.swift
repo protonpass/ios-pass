@@ -28,7 +28,7 @@ import ProtonCoreChallenge
 import ProtonCoreCryptoGoInterface
 @preconcurrency import ProtonCoreDoh
 @preconcurrency import ProtonCoreEnvironment
-import ProtonCoreForceUpgrade
+@preconcurrency import ProtonCoreForceUpgrade
 import ProtonCoreFoundations
 import ProtonCoreHumanVerification
 @preconcurrency import ProtonCoreNetworking
@@ -60,6 +60,8 @@ public final class APIManager: Sendable, APIManagerProtocol {
     private let userManager: any UserManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let appVer: String
+    private let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
+                                                                              challenge: .init())
     private let forceUpgradeHelper: ForceUpgradeHelper
     private var allCurrentApiServices = [APIManagerElements]()
 
@@ -88,39 +90,14 @@ public final class APIManager: Sendable, APIManagerProtocol {
             forceUpgradeHelper = .init(config: .desktop)
         }
 
-        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
-                                                                          challenge: .init())
         for credential in authManager.getAllCurrentCredentials() {
-            let newApiService = PMAPIService.createAPIService(doh: doh,
-                                                              sessionUID: credential.UID,
-                                                              challengeParametersProvider: challengeProvider)
-            newApiService.authDelegate = authManager
-            newApiService.serviceDelegate = self
-            let humanHelper = createHumanChecker(apiService: newApiService)
-
-            newApiService.humanDelegate = humanHelper
-            newApiService.loggingDelegate = self
-            newApiService.forceUpgradeDelegate = forceUpgradeHelper
-            allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
-                                                            humanVerification: humanHelper,
-                                                            isAuthenticated: !credential
-                                                                .isForUnauthenticatedSession))
+            allCurrentApiServices.append(makeAPIManagerElements(credential: credential))
         }
 
         if allCurrentApiServices.isEmpty {
-            let newApiService = PMAPIService
-                .createAPIServiceWithoutSession(doh: doh, challengeParametersProvider: challengeProvider)
-            newApiService.authDelegate = authManager
-            newApiService.serviceDelegate = self
-            let humanHelper = createHumanChecker(apiService: newApiService)
-
-            newApiService.humanDelegate = humanHelper
-            newApiService.loggingDelegate = self
-            newApiService.forceUpgradeDelegate = forceUpgradeHelper
-            allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
-                                                            humanVerification: humanHelper,
-                                                            isAuthenticated: false))
-            fetchUnauthSessionIfNeeded(apiService: newApiService)
+            let elements = makeAPIManagerElements(credential: nil)
+            allCurrentApiServices.append(elements)
+            fetchUnauthSessionIfNeeded(apiService: elements.apiService)
         }
 
         if let apiService = allCurrentApiServices.first {
@@ -135,24 +112,10 @@ public final class APIManager: Sendable, APIManagerProtocol {
         if let unauthApiService = allCurrentApiServices.unauthApiService {
             return unauthApiService
         }
-        let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
-                                                                          challenge: .init())
-        let newApiService = PMAPIService.createAPIServiceWithoutSession(doh: doh,
-                                                                        challengeParametersProvider: challengeProvider)
-        newApiService.authDelegate = authManager
-        newApiService.serviceDelegate = self
-
-        let humanHelper = createHumanChecker(apiService: newApiService)
-        newApiService.humanDelegate = humanHelper
-        newApiService.loggingDelegate = self
-        newApiService.forceUpgradeDelegate = forceUpgradeHelper
-        allCurrentApiServices.append(APIManagerElements(apiService: newApiService,
-                                                        humanVerification: humanHelper,
-                                                        isAuthenticated: false))
-
-        fetchUnauthSessionIfNeeded(apiService: newApiService)
-
-        return newApiService
+        let elements = makeAPIManagerElements(credential: nil)
+        allCurrentApiServices.append(elements)
+        fetchUnauthSessionIfNeeded(apiService: elements.apiService)
+        return elements.apiService
     }
 
     public func getApiService(userId: String) throws -> any APIService {
@@ -186,6 +149,32 @@ private extension APIManager {
         let trustKit = TrustKitWrapper.current
         PMAPIService.trustKit = trustKit
         PMAPIService.noTrustKit = trustKit == nil
+    }
+
+    func makeAPIManagerElements(credential: Credential?) -> APIManagerElements {
+        let apiService = if let credential {
+            PMAPIService.createAPIService(doh: doh,
+                                          sessionUID: credential.UID,
+                                          challengeParametersProvider: challengeProvider)
+        } else {
+            PMAPIService.createAPIServiceWithoutSession(doh: doh,
+                                                        challengeParametersProvider: challengeProvider)
+        }
+
+        apiService.authDelegate = authManager
+        apiService.serviceDelegate = self
+
+        let theme = themeProvider.sharedPreferences.unwrapped().theme
+        let humanHelper = HumanCheckHelper(apiService: apiService,
+                                           inAppTheme: { theme.inAppTheme },
+                                           clientApp: .pass)
+        apiService.humanDelegate = humanHelper
+
+        apiService.loggingDelegate = self
+        apiService.forceUpgradeDelegate = forceUpgradeHelper
+        return .init(apiService: apiService,
+                     humanVerification: humanHelper,
+                     isAuthenticated: credential?.isForUnauthenticatedSession == false)
     }
 
     func setUpCore(apiService: any APIService) {
@@ -239,26 +228,23 @@ extension APIManager: AuthHelperDelegate {
     public func credentialsWereUpdated(authCredential: AuthCredential,
                                        credential: Credential,
                                        for sessionUID: String) {
-        allCurrentApiServices = allCurrentApiServices.map { element in
-            guard element.apiService.sessionUID == sessionUID else {
-                return element
-            }
+        if allCurrentApiServices.contains(where: { $0.apiService.sessionUID == sessionUID }) {
+            // Credentials already exist
+            // => update the related ApiService
+            allCurrentApiServices = allCurrentApiServices.map { element in
+                guard element.apiService.sessionUID == sessionUID else {
+                    return element
+                }
 
-            return element.copy(isAuthenticated: !authCredential.isForUnauthenticatedSession)
+                return element.copy(isAuthenticated: !authCredential.isForUnauthenticatedSession)
+            }
+        } else {
+            // Credentials not yet exist
+            // => make a new ApiService
+            allCurrentApiServices.append(makeAPIManagerElements(credential: credential))
         }
 
         logger.info("Session credentials are updated")
-    }
-
-    func createHumanChecker(apiService: any APIService) -> HumanCheckHelper {
-        HumanCheckHelper(apiService: apiService,
-                         inAppTheme: { [weak self] in
-                             guard let self else {
-                                 return .matchSystem
-                             }
-                             return themeProvider.sharedPreferences.unwrapped().theme
-                                 .inAppTheme
-                         }, clientApp: .pass)
     }
 }
 
