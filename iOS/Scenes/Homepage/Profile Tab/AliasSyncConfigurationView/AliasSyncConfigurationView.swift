@@ -65,8 +65,8 @@ struct AliasSyncConfigurationView: View {
 
             if viewModel.showSyncSection {
                 Section {
-                    if viewModel.pendingSyncDisableAliases > 0 {
-                        AliasSyncExplanationView(missingAliases: viewModel.pendingSyncDisableAliases) {
+                    if viewModel.pendingSyncDisabledAliases > 0 {
+                        AliasSyncExplanationView(missingAliases: viewModel.pendingSyncDisabledAliases) {
                             viewModel.showSimpleLoginAliasesActivation()
                         }
                     } else {
