@@ -67,20 +67,14 @@ public extension LocalUserDataDatasource {
     func upsert(_ userData: UserData) async throws {
         let key = try await symmetricKeyProvider.getSymmetricKey()
         let userId = userData.user.ID
-        try await upsert(items: [userData],
+        try await upsert([userData],
+                         entityType: UserProfileEntity.self,
                          fetchPredicate: NSPredicate(format: "userID == %@", userId),
-                         itemComparisonKey: { _ in
-                             UserDataKeyComparison(userId: userId)
+                         isEqual: { _, entity in
+                             entity.userID == userId
                          },
-                         entityComparisonKey: { entity in
-                             UserDataKeyComparison(userId: entity.userID)
-                         },
-                         updateEntity: { (entity: UserProfileEntity, _: UserData) in
-                             try entity.hydrate(userData: userData, key: key)
-                         },
-                         insertItems: { [weak self] userDatas, context in
-                             guard let self else { return }
-                             try await insert(userDatas, key: key, context: context)
+                         hydrate: { item, entity in
+                             try entity.hydrate(userData: item, key: key)
                          })
     }
 
@@ -118,27 +112,5 @@ public extension LocalUserDataDatasource {
         let context = newTaskContext(type: .delete)
         let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "UserProfileEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: request), context: context)
-    }
-}
-
-private extension LocalUserDataDatasource {
-    struct UserDataKeyComparison: Hashable {
-        let userId: String
-    }
-
-    func insert(_ userData: [UserData], key: SymmetricKey, context: NSManagedObjectContext) async throws {
-        var hydrationError: (any Error)?
-        let request = newBatchInsertRequest(entity: UserProfileEntity.entity(context: context),
-                                            sourceItems: userData) { object, userData in
-            do {
-                try (object as? UserProfileEntity)?.hydrate(userData: userData, key: key)
-            } catch {
-                hydrationError = error
-            }
-        }
-        if let hydrationError {
-            throw hydrationError
-        }
-        try await execute(batchInsertRequest: request, context: context)
     }
 }
