@@ -22,14 +22,23 @@ import Core
 import Entities
 import UIKit
 
-public protocol HighlightableText: Sendable {
+public protocol HighlightableText: Sendable, Hashable {
     var fullText: String { get }
     var highlightText: String? { get }
     var isLeadingText: Bool { get }
     var isTrailingText: Bool { get }
 }
 
-public enum SearchResultEither: HighlightableText {
+public extension HighlightableText {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(fullText)
+        hasher.combine(highlightText)
+        hasher.combine(isLeadingText)
+        hasher.combine(isTrailingText)
+    }
+}
+
+public enum SearchResultEither: HighlightableText, Hashable {
     case notMatched(String)
     case matched(SearchResult)
 
@@ -137,7 +146,15 @@ extension ItemSearchResult: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(itemId)
         hasher.combine(shareId)
-        let texts = [highlightableTitle.highlightText] + highlightableDetail.map(\.highlightText)
-        hasher.combine(texts)
+        hasher.combine(type)
+        hasher.combine(aliasEmail)
+        hasher.combine(aliasEnabled)
+        hasher.combine(highlightableTitle.hashValue)
+        hasher.combine(highlightableDetail.map(\.hashValue))
+        hasher.combine(url)
+        hasher.combine(vault)
+        hasher.combine(lastUseTime)
+        hasher.combine(modifyTime)
+        hasher.combine(pinned)
     }
 }

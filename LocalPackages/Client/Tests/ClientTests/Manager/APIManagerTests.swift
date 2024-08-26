@@ -107,6 +107,7 @@ final class APIManagerTests: XCTestCase {
     let key = SymmetricKey.random()
     let mock = NonSendableSymmetricKeyProviderMock()
     var userManager: UserManagerProtocolMock!
+    var themeProvider: ThemeProviderMock!
     var sut: APIManager!
     var authManager: AuthManagerProtocol!
     var stubbedCurrentActiveUser: CurrentValueSubject<UserData?, Never>!
@@ -120,6 +121,9 @@ final class APIManagerTests: XCTestCase {
         stubbedCurrentActiveUser = .init(nil)
         userManager.stubbedCurrentActiveUser = stubbedCurrentActiveUser
         mock.stubbedGetSymmetricKeyResult = key
+
+        themeProvider = .init()
+        themeProvider.stubbedSharedPreferences = .init(.default)
 
         authManager = AuthManager(keychain: userDefaultsKeychainMock,
                                   symmetricKeyProvider: mock,
@@ -180,7 +184,7 @@ final class APIManagerTests: XCTestCase {
     func testAPIServiceIsCreatedWithoutSessionIfNoSessionIsPersisted() throws {
         sut = APIManager(authManager: authManager,
                          userManager: userManager,
-                         themeProvider: ThemeProviderMock(),
+                         themeProvider: themeProvider,
                          appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                          doh: ProtonPassDoHMock(),
                          logManager: LogManagerProtocolMock())
@@ -195,7 +199,7 @@ final class APIManagerTests: XCTestCase {
         // Given
         sut = APIManager(authManager: authManager,
                          userManager: userManager,
-                         themeProvider: ThemeProviderMock(),
+                         themeProvider: themeProvider,
                          appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                          doh: ProtonPassDoHMock(),
                          logManager: LogManagerProtocolMock())
@@ -220,7 +224,7 @@ final class APIManagerTests: XCTestCase {
             // WHEN
             sut = APIManager(authManager: authManager,
                              userManager: userManager,
-                             themeProvider: ThemeProviderMock(),
+                             themeProvider: themeProvider,
                              appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                              doh: ProtonPassDoHMock(),
                              logManager: LogManagerProtocolMock())
@@ -251,7 +255,7 @@ final class APIManagerTests: XCTestCase {
         // WHEN
         sut = APIManager(authManager: authManager,
                          userManager: userManager,
-                         themeProvider: ThemeProviderMock(),
+                         themeProvider: themeProvider,
                          appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                          doh: ProtonPassDoHMock(),
                          logManager: LogManagerProtocolMock())
@@ -288,7 +292,7 @@ final class APIManagerTests: XCTestCase {
         // WHEN
         sut = APIManager(authManager: authManager,
                          userManager: userManager,
-                         themeProvider: ThemeProviderMock(),
+                         themeProvider: themeProvider,
                          appVersion: "ios-pass@\(Bundle.main.fullAppVersionName)",
                          doh: ProtonPassDoHMock(),
                          logManager: LogManagerProtocolMock())
