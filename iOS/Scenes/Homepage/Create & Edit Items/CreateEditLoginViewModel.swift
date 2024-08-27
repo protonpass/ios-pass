@@ -45,8 +45,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var canAddOrEdit2FAURI = true
     @Published var title = ""
     @Published private(set) var passkeys: [Passkey] = []
+
+    @Published var emailOrUsername = ""
     @Published var email = ""
     @Published var username = ""
+    @Published private(set) var emailUsernameExpanded = false
+
     @Published var password = ""
     @Published private(set) var passwordStrength: PasswordStrength?
     private var originalTotpUri = ""
@@ -59,7 +63,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var isShowingNoCameraPermissionView = false
     @Published var isShowingCodeScanner = false
     @Published private(set) var loading = false
-    @Published var showUsernameField = false
 
     private var allowedAndroidApps: [AllowedAndroidApp] = []
 
@@ -83,13 +86,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-    private let setUpEmailAndUsername = resolve(\SharedUseCasesContainer.setUpEmailAndUsername)
 
     override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
-
-    var usernameFlagActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit)
-    }
 
     private var loginDelegate: (any CreateEditLoginViewModelDelegate)? {
         delegate as? (any CreateEditLoginViewModelDelegate)
@@ -111,7 +109,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
                 title = itemContent.name
-                parseAndSetUpEmailAndUsername(data: data)
                 password = data.password
                 originalTotpUri = data.totpUri
                 totpUri = sanitizeTotpUriForEditing(data.totpUri)
@@ -129,7 +126,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                 self.title = title ?? request?.relyingPartyIdentifier ?? ""
                 self.note = note ?? ""
                 username = request?.userName ?? ""
-                showUsernameField = !username.isEmpty
                 if let totpUri {
                     self.totpUri = sanitizeTotpUriForEditing(totpUri)
                 }
@@ -172,8 +168,23 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             if let newPasskey = try await newPasskey() {
                 passkeys.append(newPasskey.toPasskey)
             }
-            let logInData = ItemContentData.login(.init(email: email,
-                                                        username: username,
+
+            var finalEmail = ""
+            var finalUsername = ""
+
+            if emailUsernameExpanded {
+                finalEmail = email
+                finalUsername = username
+            } else {
+                if validateEmail(email: emailOrUsername) {
+                    finalEmail = emailOrUsername
+                } else {
+                    finalUsername = emailOrUsername
+                }
+            }
+
+            let logInData = ItemContentData.login(.init(email: finalEmail,
+                                                        username: finalUsername,
                                                         password: password,
                                                         totpUri: sanitizedTotpUri,
                                                         urls: sanitizedUrls,
@@ -240,7 +251,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func save() {
-        if validateURLs(), checkEmail() {
+        if validateURLs() {
             super.save()
         }
     }
@@ -278,8 +289,24 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
+    func expandEmailAndUsername() {
+        guard !emailUsernameExpanded else { return }
+        defer { emailUsernameExpanded = true }
+        guard !emailOrUsername.isEmpty else { return }
+
+        if validateEmail(email: emailOrUsername) {
+            email = emailOrUsername
+        } else {
+            username = emailOrUsername
+        }
+    }
+
     func useRealEmailAddress() {
-        email = emailAddress
+        if emailUsernameExpanded {
+            email = emailAddress
+        } else {
+            emailOrUsername = emailAddress
+        }
     }
 
     func generatePassword() {
@@ -338,17 +365,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         return invalidURLs.isEmpty
     }
 
-    func checkEmail() -> Bool {
-        guard getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit) else {
-            return true
-        }
-        if !email.isEmpty, !validateEmail(email: email) {
-            router.display(element: .errorMessage("Invalid email address"))
-            return false
-        }
-        return true
-    }
-
     func remove(passkey: Passkey) {
         passkeys.removeAll(where: { $0.keyID == passkey.keyID })
     }
@@ -393,17 +409,9 @@ private extension CreateEditLoginViewModel {
             }
             .store(in: &cancellables)
 
-        if #available(iOS 17, *),
-           getFeatureFlagStatus(with: FeatureFlagType.passUsernameSplit) {
+        if #available(iOS 17, *) {
             UsernameTip.enabled = true
         }
-    }
-
-    func parseAndSetUpEmailAndUsername(data: LogInItemData) {
-        let result = setUpEmailAndUsername(container: data)
-        email = result.email
-        username = result.username
-        showUsernameField = !username.isEmpty
     }
 }
 

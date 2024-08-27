@@ -11448,6 +11448,16 @@
         }
       }
     },
+    "Add email or username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add email or username"
+          }
+        }
+      }
+    },
     "Add field" : {
       "localizations" : {
         "be" : {
@@ -40044,6 +40054,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã sao chép địa chỉ email"
+          }
+        }
+      }
+    },
+    "Email or username" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email or username"
           }
         }
       }
