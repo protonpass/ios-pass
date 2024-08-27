@@ -121,7 +121,6 @@ private final class CreateEditNoteContentUIView: UIView {
         tv.textColor = PassColor.textNorm
         tv.backgroundColor = .clear
         tv.delegate = self
-        tv.contentInset = .init(top: 0, left: padding, bottom: 0, right: padding)
         return tv
     }()
 
@@ -172,8 +171,7 @@ private extension CreateEditNoteContentUIView {
             scrollView.topAnchor.constraint(equalTo: topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            scrollView.widthAnchor.constraint(equalTo: widthAnchor)
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
 
         // Root container view
@@ -217,8 +215,10 @@ private extension CreateEditNoteContentUIView {
         containerView.addSubview(contentTextView)
         NSLayoutConstraint.activate([
             contentTextView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
-            contentTextView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
-            contentTextView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
+            contentTextView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                                     constant: padding - 5),
+            contentTextView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                      constant: -padding),
             contentTextView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
     }
