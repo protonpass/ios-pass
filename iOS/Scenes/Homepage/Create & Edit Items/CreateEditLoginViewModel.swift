@@ -85,7 +85,6 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
@@ -109,6 +108,12 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
                 title = itemContent.name
+
+                emailOrUsername = data.email.isEmpty ? data.username : data.email
+                emailUsernameExpanded = !data.email.isEmpty && !data.username.isEmpty
+                email = data.email
+                username = data.username
+
                 password = data.password
                 originalTotpUri = data.totpUri
                 totpUri = sanitizeTotpUriForEditing(data.totpUri)
