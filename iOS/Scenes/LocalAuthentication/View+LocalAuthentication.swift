@@ -25,15 +25,30 @@ import Factory
 import ProtonCoreKeymaker
 import SwiftUI
 
+extension Notification.Name {
+    static let lockAppToRemoveLocalAuth = Notification.Name(rawValue: "lockAppToRemoveLocalAuth")
+    static let lockAppToDefinePIN = Notification.Name(rawValue: "lockAppToDefinePIN")
+}
+
+enum LocalAuthenticationSuccessMode {
+    case none
+    case definePIN
+    case removeLocalAuth
+
+    static var `default`: Self { .none }
+}
+
 struct LocalAuthenticationModifier: ViewModifier {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
     @State private var method: LocalAuthenticationMethod
-    @State private var authenticated = false
+    @State private var authenticated: Bool
 
     // autolocker as @State because it needs to be updated
     // when user changes appLockTime in setting
     @State private var autolocker: Autolocker
+
+    @State private var successMode: LocalAuthenticationSuccessMode = .default
 
     // When autofill from QuickType bar, we need to wait a bit for the view to be fully loaded
     // Otherwise we would receive error -1004 when calling biometricallyAuthenticate function
@@ -53,19 +68,22 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let onAuthSkipped: (() -> Void)?
 
     /// Authentication succeeded
-    private let onSuccess: (() -> Void)?
+    private let onSuccess: ((LocalAuthenticationSuccessMode) -> Void)?
 
     /// Authentication failed
     private let onFailure: (String?) -> Void
+
+    private let checkForAuthenticationSubject = PassthroughSubject<Void, Never>()
 
     init(delayed: Bool,
          manuallyAvoidKeyboard: Bool,
          onAuth: (() -> Void)?,
          onAuthSkipped: (() -> Void)?,
-         onSuccess: (() -> Void)?,
+         onSuccess: ((LocalAuthenticationSuccessMode) -> Void)?,
          onFailure: @escaping (String?) -> Void) {
         let preferences = preferencesManager.sharedPreferences.unwrapped()
         _method = .init(initialValue: preferences.localAuthenticationMethod)
+        _authenticated = .init(initialValue: preferences.localAuthenticationMethod == .none)
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
         self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
@@ -87,7 +105,8 @@ struct LocalAuthenticationModifier: ViewModifier {
                 let handleSuccess: () -> Void = {
                     authenticated = true
                     autolocker.releaseCountdown()
-                    onSuccess?()
+                    onSuccess?(successMode)
+                    successMode = .default
                 }
 
                 LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
@@ -99,7 +118,9 @@ struct LocalAuthenticationModifier: ViewModifier {
             }
         }
         .animation(.default, value: authenticated)
-        .onAppear(perform: checkForAuthentication)
+        .onAppear {
+            checkForAuthenticationSubject.send()
+        }
         // Take into account right away appLockTime when user updates it
         .onReceive(preferencesManager
             .sharedPreferencesUpdates
@@ -117,7 +138,20 @@ struct LocalAuthenticationModifier: ViewModifier {
         }
         // Start the timer whenever app is backgrounded
         .onReceive(UIApplication.willResignActiveNotification, perform: autolocker.startCountdown)
-        .onReceive(foregroundEventsPublisher, perform: checkForAuthentication)
+        .onReceive(foregroundEventsPublisher) {
+            checkForAuthenticationSubject.send()
+        }
+        .onReceive(checkForAuthenticationSubject.debounce(for: 0.2, scheduler: DispatchQueue.main)) {
+            checkForAuthentication()
+        }
+        .onReceive(.lockAppToDefinePIN) {
+            successMode = .definePIN
+            authenticated = false
+        }
+        .onReceive(.lockAppToRemoveLocalAuth) {
+            successMode = .removeLocalAuth
+            authenticated = false
+        }
     }
 }
 
@@ -152,7 +186,7 @@ extension View {
                              manuallyAvoidKeyboard: Bool = false,
                              onAuth: (() -> Void)? = nil,
                              onAuthSkipped: (() -> Void)? = nil,
-                             onSuccess: (() -> Void)? = nil,
+                             onSuccess: ((LocalAuthenticationSuccessMode) -> Void)? = nil,
                              onFailure: @escaping (String?) -> Void) -> some View {
         modifier(LocalAuthenticationModifier(delayed: delayed,
                                              manuallyAvoidKeyboard: manuallyAvoidKeyboard,
