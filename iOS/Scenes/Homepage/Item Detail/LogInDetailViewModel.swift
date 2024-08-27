@@ -103,6 +103,8 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             passkeys = data.passkeys
             name = itemContent.name
             note = itemContent.note
+            email = data.email
+            username = data.username
             password = data.password
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
