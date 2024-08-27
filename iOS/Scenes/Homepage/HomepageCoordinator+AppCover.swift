@@ -56,6 +56,24 @@ extension HomepageCoordinator {
 
 private extension HomepageCoordinator {
     func makeAppCoverViewController(windowSize: CGSize) -> UIViewController {
+        let successHandler: (LocalAuthenticationSuccessMode) -> Void = { [weak self] mode in
+            guard let self else { return }
+            authenticated = true
+            uncoverApp { [weak self] _ in
+                guard let self else { return }
+                switch mode {
+                case .definePIN:
+                    router.present(for: .setPINCode)
+                case .removeLocalAuth:
+                    updateSharedPreferences(\.fallbackToPasscode, value: true)
+                    updateSharedPreferences(\.appLockTime, value: .default)
+                    updateSharedPreferences(\.localAuthenticationMethod, value: .none)
+                case .none:
+                    break
+                }
+            }
+        }
+
         let view = AppCoverView(windowSize: windowSize,
                                 onAuth: { [weak self] in
                                     guard let self else { return }
@@ -65,11 +83,7 @@ private extension HomepageCoordinator {
                                     guard let self else { return }
                                     uncoverApp()
                                 },
-                                onSuccess: { [weak self] in
-                                    guard let self else { return }
-                                    authenticated = true
-                                    uncoverApp()
-                                },
+                                onSuccess: successHandler,
                                 onFailure: { [weak self] message in
                                     guard let self else { return }
                                     handleFailedLocalAuthentication(message)
@@ -77,12 +91,13 @@ private extension HomepageCoordinator {
         return UIHostingController(rootView: view)
     }
 
-    func uncoverApp() {
+    func uncoverApp(completion: ((Bool) -> Void)? = nil) {
         UIView.animate(withDuration: DesignConstant.animationDuration,
                        animations: { [weak self] in
                            guard let self else { return }
                            appCoverView?.alpha = 0
-                       })
+                       },
+                       completion: completion)
     }
 }
 
@@ -90,7 +105,7 @@ private struct AppCoverView: View {
     let windowSize: CGSize
     let onAuth: () -> Void
     let onAuthSkipped: () -> Void
-    let onSuccess: () -> Void
+    let onSuccess: (LocalAuthenticationSuccessMode) -> Void
     let onFailure: (String?) -> Void
 
     var body: some View {
