@@ -101,32 +101,39 @@ final class LocalAuthenticationViewModel: ObservableObject, DeinitPrintable {
                 let authenticated = try await authenticate(policy: policy,
                                                            reason: #localized("Please authenticate"))
                 if authenticated {
-                    recordSuccess()
+                    try await recordSuccess()
                 } else {
-                    recordFailure(nil)
+                    await recordFailure(nil)
                 }
             } catch PassError.biometricChange {
                 // swiftlint:disable:next line_length
                 onFailure(#localized("We have detected a change in your biometric authentication settings. For security reasons, you have been logged out."))
             } catch {
-                recordFailure(error)
+                await recordFailure(error)
             }
         }
     }
 
     func checkPinCode(_ enteredPinCode: String) {
-        guard let currentPIN = getSharedPreferences().pinCode else {
-            // No PIN code is set before, can't do anything but logging out
-            let message = "Can not check PIN code. No PIN code set."
-            assertionFailure(message)
-            logger.error(message)
-            onFailure(nil)
-            return
-        }
-        if currentPIN == enteredPinCode {
-            recordSuccess()
-        } else {
-            recordFailure(nil)
+        Task { [weak self] in
+            guard let self else { return }
+            guard let currentPIN = getSharedPreferences().pinCode else {
+                // No PIN code is set before, can't do anything but logging out
+                let message = "Can not check PIN code. No PIN code set."
+                assertionFailure(message)
+                logger.error(message)
+                onFailure(nil)
+                return
+            }
+            if currentPIN == enteredPinCode {
+                do {
+                    try await recordSuccess()
+                } catch {
+                    await recordFailure(error)
+                }
+            } else {
+                await recordFailure(nil)
+            }
         }
     }
 
@@ -153,34 +160,24 @@ private extension LocalAuthenticationViewModel {
         }
     }
 
-    func recordFailure(_ error: (any Error)?) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
+    func recordFailure(_ error: (any Error)?) async {
+        do {
+            try await updateSharedPreferences(\.failedAttemptCount, value: failedAttemptCount + 1)
 
-                let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
-                if let error {
-                    logger.error(logMessage + " Reason \(error)")
-                } else {
-                    logger.error(logMessage)
-                }
-            } catch {
-                // Failed to even record error, something's very wrong. Just log out.
-                onFailure(nil)
+            let logMessage = "\(mode.rawValue) authentication failed. Increased failed attempt count."
+            if let error {
+                logger.error(logMessage + " Reason \(error)")
+            } else {
+                logger.error(logMessage)
             }
+        } catch {
+            // Failed to even record error, something's very wrong. Just log out.
+            onFailure(nil)
         }
     }
 
-    func recordSuccess() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await updateSharedPreferences(\.failedAttemptCount, value: 0)
-                try await onSuccess()
-            } catch {
-                logger.error(error)
-            }
-        }
+    func recordSuccess() async throws {
+        try await updateSharedPreferences(\.failedAttemptCount, value: 0)
+        try await onSuccess()
     }
 }

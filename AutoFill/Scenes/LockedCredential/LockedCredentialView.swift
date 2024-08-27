@@ -35,7 +35,7 @@ struct LockedCredentialView: View {
         NavigationStack {
             PassColor.backgroundNorm.toColor
                 .localAuthentication(delayed: true,
-                                     onSuccess: { viewModel.getAndReturnCredential() },
+                                     onSuccess: { _ in viewModel.getAndReturnCredential() },
                                      onFailure: { viewModel.handleAuthenticationFailure($0) })
                 .toolbar { toolbarContent }
         }

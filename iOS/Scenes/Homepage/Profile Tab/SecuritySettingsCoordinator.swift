@@ -91,14 +91,16 @@ private extension SecuritySettingsCoordinator {
 
         case (.none, .biometric):
             // Enable biometric authentication
-            try await biometricallyAuthenticateAndUpdateMethod(newMethod,
-                                                               policy: enablingPolicy)
+            try await biometricallyAuthenticateAndTurnOnBiometric()
 
-        case (.biometric, .none),
-             (.biometric, .pin):
-            // Disable biometric authentication or change from biometric to PIN
-            try await biometricallyAuthenticateAndUpdateMethod(newMethod,
-                                                               policy: authenticatingPolicy)
+        case (.biometric, .none):
+            // Disable biometric authentication
+            delegate?.childCoordinatorWantsToDismissTopViewController()
+            NotificationCenter.default.post(name: .lockAppToRemoveLocalAuth, object: nil)
+
+        case (.biometric, .pin):
+            // Switch from biometric to PIN
+            NotificationCenter.default.post(name: .lockAppToDefinePIN, object: nil)
 
         case (.none, .pin):
             // Enable PIN authentication
@@ -111,30 +113,11 @@ private extension SecuritySettingsCoordinator {
         }
     }
 
-    func biometricallyAuthenticateAndUpdateMethod(_ newMethod: LocalAuthenticationMethod,
-                                                  policy: LAPolicy) async throws {
-        let succesHandler: () async throws -> Void = { [weak self] in
-            guard let self else { return }
-            delegate?.childCoordinatorWantsToDismissTopViewController()
-
-            if newMethod != .biometric {
-                try await updateSharedPreferences(\.fallbackToPasscode, value: true)
-            }
-
-            if newMethod == .pin {
-                definePINCodeAndChangeToPINMethod()
-            } else {
-                try await updateSharedPreferences(\.localAuthenticationMethod, value: newMethod)
-            }
-        }
-
+    func biometricallyAuthenticateAndTurnOnBiometric() async throws {
         delegate?.childCoordinatorWantsToDismissTopViewController()
-        let authenticate = try await authenticate(policy: policy,
-                                                  reason: #localized("Please authenticate"))
-        if authenticate {
-            try await succesHandler()
-        } else {
-            delegate?.childCoordinatorDidFailLocalAuthentication()
+        if try await authenticate(policy: enablingPolicy,
+                                  reason: #localized("Please authenticate")) {
+            try await updateSharedPreferences(\.localAuthenticationMethod, value: .biometric)
         }
     }
 
