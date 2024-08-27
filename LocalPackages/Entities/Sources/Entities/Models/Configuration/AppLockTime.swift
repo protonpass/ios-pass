@@ -50,4 +50,28 @@ public enum AppLockTime: Int, Codable, CaseIterable, Sendable {
             240
         }
     }
+
+    public init?(rawValue: Int) {
+        self = switch rawValue {
+        case 0:
+            .immediately
+        case 1:
+            .oneMinute
+        case 2:
+            .twoMinutes
+        case 3:
+            .fiveMinutes
+        case 4:
+            .tenMinutes
+        case 5:
+            .oneHour
+        case 6:
+            .fourHours
+        case 7:
+            // Deprecated "Never" case
+            .default
+        default:
+            .default
+        }
+    }
 }
