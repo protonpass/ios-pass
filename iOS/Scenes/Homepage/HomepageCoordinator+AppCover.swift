@@ -65,9 +65,7 @@ private extension HomepageCoordinator {
                 case .definePIN:
                     router.present(for: .setPINCode)
                 case .removeLocalAuth:
-                    updateSharedPreferences(\.fallbackToPasscode, value: true)
-                    updateSharedPreferences(\.appLockTime, value: .default)
-                    updateSharedPreferences(\.localAuthenticationMethod, value: .none)
+                    removeLocalAuth()
                 case .none:
                     break
                 }
@@ -98,6 +96,28 @@ private extension HomepageCoordinator {
                            appCoverView?.alpha = 0
                        },
                        completion: { _ in completion?() })
+    }
+
+    func removeLocalAuth() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                async let updateFallbackToPasscode: () =
+                    preferencesManager.updateSharedPreferences(\.fallbackToPasscode,
+                                                               value: true)
+
+                async let updateAppLockTime: () =
+                    preferencesManager.updateSharedPreferences(\.appLockTime, value: .default)
+
+                async let updateMethod: () =
+                    preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                               value: .none)
+
+                _ = try await (updateFallbackToPasscode, updateAppLockTime, updateMethod)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 }
 
