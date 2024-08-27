@@ -1032,12 +1032,9 @@ extension HomepageCoordinator {
 extension HomepageCoordinator {
     func presentSecurity(_ securityWeakness: SecurityWeakness) {
         let isSheet = shouldShowAsSheet()
-        let results: (view: any View, isSheet: Bool) = if case let .breaches(userBreaches) = securityWeakness {
-            (view: DarkWebMonitorHomeView(viewModel: .init(userBreaches: userBreaches)), isSheet: true)
-        } else {
-            (view: SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness), isSheet: isSheet),
-             isSheet: isSheet)
-        }
+        let results = (view: SecurityWeaknessDetailView(viewModel: .init(type: securityWeakness),
+                                                        isSheet: isSheet),
+                       isSheet: isSheet)
 
         if results.isSheet {
             present(results.view)
