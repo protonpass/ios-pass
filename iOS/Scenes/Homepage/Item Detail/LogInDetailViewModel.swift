@@ -57,7 +57,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let getLoginSecurityIssues = resolve(\UseCasesContainer.getLoginSecurityIssues)
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
-    private let setUpEmailAndUsername = resolve(\SharedUseCasesContainer.setUpEmailAndUsername)
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
     private var cancellable: AnyCancellable?
@@ -104,7 +103,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             passkeys = data.passkeys
             name = itemContent.name
             note = itemContent.note
-            parseAndSetUpEmailAndUsername(data: data)
             password = data.password
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
@@ -150,12 +148,6 @@ private extension LogInDetailViewModel {
                 handle(error)
             }
         }
-    }
-
-    func parseAndSetUpEmailAndUsername(data: LogInItemData) {
-        let result = setUpEmailAndUsername(container: data)
-        email = result.email
-        username = result.username
     }
 }
 

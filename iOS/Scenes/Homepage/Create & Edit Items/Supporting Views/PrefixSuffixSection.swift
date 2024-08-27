@@ -83,13 +83,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .animation(.default, value: prefixError)
 
-                if !prefix.isEmpty {
-                    Button(action: {
-                        prefix = ""
-                    }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross)
-                    })
-                }
+                ClearTextButton(text: $prefix)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

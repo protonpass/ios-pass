@@ -48,13 +48,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !title.isEmpty {
-                Button(action: {
-                    title = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
-            }
+            ClearTextButton(text: $title)
         }
         .padding(DesignConstant.sectionPadding)
         .animation(.default, value: title.isEmpty)

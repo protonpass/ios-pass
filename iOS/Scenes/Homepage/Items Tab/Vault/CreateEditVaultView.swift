@@ -133,13 +133,7 @@ struct CreateEditVaultView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                if !viewModel.title.isEmpty {
-                    Button(action: {
-                        viewModel.title = ""
-                    }, label: {
-                        ItemDetailSectionIcon(icon: IconProvider.cross)
-                    })
-                }
+                ClearTextButton(text: $viewModel.title)
             }
             .padding(DesignConstant.sectionPadding)
             .roundedEditableSection()
