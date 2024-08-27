@@ -59,7 +59,7 @@ private extension HomepageCoordinator {
         let successHandler: (LocalAuthenticationSuccessMode) -> Void = { [weak self] mode in
             guard let self else { return }
             authenticated = true
-            uncoverApp { [weak self] _ in
+            uncoverApp { [weak self] in
                 guard let self else { return }
                 switch mode {
                 case .definePIN:
@@ -91,13 +91,13 @@ private extension HomepageCoordinator {
         return UIHostingController(rootView: view)
     }
 
-    func uncoverApp(completion: ((Bool) -> Void)? = nil) {
+    func uncoverApp(completion: (() -> Void)? = nil) {
         UIView.animate(withDuration: DesignConstant.animationDuration,
                        animations: { [weak self] in
                            guard let self else { return }
                            appCoverView?.alpha = 0
                        },
-                       completion: completion)
+                       completion: { _ in completion?() })
     }
 }
 
