@@ -154,6 +154,7 @@ enum SecureRowType {
 
 struct PassMonitorView: View {
     @StateObject var viewModel: PassMonitorViewModel
+    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
 
     private enum ElementSizes {
         static let cellHeight: CGFloat = 75
@@ -181,7 +182,10 @@ struct PassMonitorView: View {
             .refreshable {
                 try? await viewModel.refresh()
             }
-            .navigationStackEmbeded()
+            .routingProvided
+            .sheetDestinations(sheetDestination: $router.presentedSheet)
+            .navigationStackEmbeded($router.path)
+            .environmentObject(router)
             .task {
                 try? await viewModel.refresh()
             }
@@ -384,7 +388,10 @@ private extension PassMonitorView {
                            title: "Dark Web Monitoring",
                            subTitle: "No breaches detected",
                            info: nil,
-                           action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
+                           action: {
+                               router.navigate(to: .darkWebMonitorHome(breaches))
+                               viewModel.addTelemetryEvent(with: SecurityWeakness.breaches.telemetryEventType)
+                           })
         } else {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
                 HStack {
@@ -432,7 +439,11 @@ private extension PassMonitorView {
                 CapsuleTextButton(title: #localized("View details"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.passwordInteractionNormMajor2,
-                                  action: { viewModel.showSecurityWeakness(type: .breaches(breaches)) })
+                                  action: {
+                                      router.navigate(to: .darkWebMonitorHome(breaches))
+                                      viewModel
+                                          .addTelemetryEvent(with: SecurityWeakness.breaches.telemetryEventType)
+                                  })
             }
             .padding(24)
             .roundedDetailSection(backgroundColor: breaches.breached ? PassColor
