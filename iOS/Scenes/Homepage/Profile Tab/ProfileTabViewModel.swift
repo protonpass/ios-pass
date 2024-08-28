@@ -202,35 +202,20 @@ extension ProfileTabViewModel {
     }
 
     func editLocalAuthenticationMethod() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            guard !supportedLocalAuthenticationMethods.isEmpty else {
-                assertionFailure("No local authentication methods supported")
-                return
-            }
-            securitySettingsCoordinator.editMethod(supportedLocalAuthenticationMethods)
+        guard !supportedLocalAuthenticationMethods.isEmpty else {
+            assertionFailure("No local authentication methods supported")
+            return
         }
+        securitySettingsCoordinator.editMethod(supportedLocalAuthenticationMethods)
     }
 
     func editAppLockTime() {
         guard canUpdateAppLockTime else { return }
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            securitySettingsCoordinator.editAppLockTime()
-        }
+        securitySettingsCoordinator.editAppLockTime()
     }
 
     func editPINCode() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            securitySettingsCoordinator.editPINCode()
-        }
+        securitySettingsCoordinator.editPINCode()
     }
 
     func handleEnableAutoFillAction() {
