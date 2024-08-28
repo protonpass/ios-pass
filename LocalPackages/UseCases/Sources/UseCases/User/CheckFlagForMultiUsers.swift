@@ -64,15 +64,14 @@ public final class CheckFlagForMultiUsers: CheckFlagForMultiUsersUseCase {
     }
 
     public func execute(flag: String, userIds: [String]) async throws -> Bool {
-        var enabled = false
         for userId in userIds {
             let apiService = try apiServicing.getApiService(userId: userId)
             let request = FeatureFlagRequest()
             let (_, response): (_, FeatureFlagResponse) = try await apiService.perform(request: request)
             if response.toggles.contains(where: { $0.name == flag && $0.enabled }) {
-                enabled = true
+                return true
             }
         }
-        return enabled
+        return false
     }
 }
