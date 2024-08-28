@@ -106,6 +106,10 @@ private extension UseCasesContainer {
     var localAccessDatasource: any LocalAccessDatasourceProtocol {
         SharedRepositoryContainer.shared.localAccessDatasource()
     }
+
+    var apiManager: any APIManagerProtocol {
+        SharedToolingContainer.shared.apiManager()
+    }
 }
 
 // MARK: User report
@@ -371,7 +375,7 @@ extension UseCasesContainer {
 extension UseCasesContainer {
     var updateUserAddresses: Factory<any UpdateUserAddressesUseCase> {
         self { UpdateUserAddresses(userManager: self.userManager,
-                                   apiServicing: SharedToolingContainer.shared.apiManager()) }
+                                   apiServicing: self.apiManager) }
     }
 
     var refreshAccessAndMonitorState: Factory<any RefreshAccessAndMonitorStateUseCase> {
@@ -410,6 +414,10 @@ extension UseCasesContainer {
     var logOutExcessFreeAccounts: Factory<any LogOutExcessFreeAccountsUseCase> {
         self { LogOutExcessFreeAccounts(datasource: self.localAccessDatasource,
                                         logOutUser: SharedUseCasesContainer.shared.logOutUser()) }
+    }
+
+    var checkFlagForMultiUsers: Factory<any CheckFlagForMultiUsersUseCase> {
+        self { CheckFlagForMultiUsers(apiServicing: self.apiManager) }
     }
 }
 
