@@ -173,8 +173,6 @@ private extension LogInDetailView {
                     .placeholderText()
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(.rect)
-            .onTapGesture(perform: { viewModel.copyEmail() })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
