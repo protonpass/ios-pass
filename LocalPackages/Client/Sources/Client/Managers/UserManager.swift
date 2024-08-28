@@ -146,7 +146,7 @@ public extension UserManager {
 
     func cleanAllUsers() async throws {
         try await userDataDatasource.removeAll()
-        currentActiveUser.send(nil)
+        await publishNewActiveUser(nil)
         allUserAccounts.send([])
         userProfiles = []
     }

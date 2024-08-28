@@ -56,6 +56,22 @@ extension HomepageCoordinator {
 
 private extension HomepageCoordinator {
     func makeAppCoverViewController(windowSize: CGSize) -> UIViewController {
+        let successHandler: (LocalAuthenticationSuccessMode) -> Void = { [weak self] mode in
+            guard let self else { return }
+            authenticated = true
+            uncoverApp { [weak self] in
+                guard let self else { return }
+                switch mode {
+                case .definePIN:
+                    router.present(for: .setPINCode)
+                case .removeLocalAuth:
+                    removeLocalAuth()
+                case .none:
+                    break
+                }
+            }
+        }
+
         let view = AppCoverView(windowSize: windowSize,
                                 onAuth: { [weak self] in
                                     guard let self else { return }
@@ -65,11 +81,7 @@ private extension HomepageCoordinator {
                                     guard let self else { return }
                                     uncoverApp()
                                 },
-                                onSuccess: { [weak self] in
-                                    guard let self else { return }
-                                    authenticated = true
-                                    uncoverApp()
-                                },
+                                onSuccess: successHandler,
                                 onFailure: { [weak self] message in
                                     guard let self else { return }
                                     handleFailedLocalAuthentication(message)
@@ -77,12 +89,35 @@ private extension HomepageCoordinator {
         return UIHostingController(rootView: view)
     }
 
-    func uncoverApp() {
+    func uncoverApp(completion: (() -> Void)? = nil) {
         UIView.animate(withDuration: DesignConstant.animationDuration,
                        animations: { [weak self] in
                            guard let self else { return }
                            appCoverView?.alpha = 0
-                       })
+                       },
+                       completion: { _ in completion?() })
+    }
+
+    func removeLocalAuth() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                async let updateFallbackToPasscode: () =
+                    preferencesManager.updateSharedPreferences(\.fallbackToPasscode,
+                                                               value: true)
+
+                async let updateAppLockTime: () =
+                    preferencesManager.updateSharedPreferences(\.appLockTime, value: .default)
+
+                async let updateMethod: () =
+                    preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                               value: .none)
+
+                _ = try await (updateFallbackToPasscode, updateAppLockTime, updateMethod)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 }
 
@@ -90,7 +125,7 @@ private struct AppCoverView: View {
     let windowSize: CGSize
     let onAuth: () -> Void
     let onAuthSkipped: () -> Void
-    let onSuccess: () -> Void
+    let onSuccess: (LocalAuthenticationSuccessMode) -> Void
     let onFailure: (String?) -> Void
 
     var body: some View {
