@@ -80,8 +80,9 @@ public final class GetLocalAuthenticationMethods: GetLocalAuthenticationMethodsU
                 default:
                     throw error
                 }
+            } else {
+                throw error
             }
-            throw error
         }
 
         supportedTypes.append(.pin)
