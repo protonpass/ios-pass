@@ -196,6 +196,7 @@ public extension PreferencesManager {
 private extension PreferencesManager {
     func resetSharedPreferences() async throws {
         try await updateSharedPreferences(\.localAuthenticationMethod, value: .none)
+        try await updateSharedPreferences(\.appLockTime, value: .default)
         try await updateSharedPreferences(\.pinCode, value: nil)
         try await updateSharedPreferences(\.failedAttemptCount, value: 0)
     }
