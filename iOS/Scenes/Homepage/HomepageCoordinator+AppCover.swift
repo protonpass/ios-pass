@@ -102,18 +102,13 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                async let updateFallbackToPasscode: () =
-                    preferencesManager.updateSharedPreferences(\.fallbackToPasscode,
-                                                               value: true)
-
-                async let updateAppLockTime: () =
-                    preferencesManager.updateSharedPreferences(\.appLockTime, value: .default)
-
-                async let updateMethod: () =
-                    preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
-                                                               value: .none)
-
-                _ = try await (updateFallbackToPasscode, updateAppLockTime, updateMethod)
+                // Update one by one to avoid race condition that could corrupt the final settings
+                try await preferencesManager.updateSharedPreferences(\.localAuthenticationMethod,
+                                                                     value: .none)
+                try await preferencesManager.updateSharedPreferences(\.fallbackToPasscode,
+                                                                     value: true)
+                try await preferencesManager.updateSharedPreferences(\.appLockTime,
+                                                                     value: .default)
             } catch {
                 handle(error: error)
             }
