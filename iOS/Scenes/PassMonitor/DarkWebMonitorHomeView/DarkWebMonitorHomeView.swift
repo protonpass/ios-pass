@@ -109,12 +109,14 @@ private extension DarkWebMonitorHomeView {
 }
 
 private extension DarkWebMonitorHomeView {
-    func notMonitoredSection(title: LocalizedStringKey) -> some View {
+    func emptySection(title: LocalizedStringKey,
+                      subtitle: LocalizedStringKey,
+                      iconDisplay: Bool) -> some View {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                Text("Monitoring paused")
+                Text(subtitle)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
             }
@@ -122,9 +124,11 @@ private extension DarkWebMonitorHomeView {
 
             Spacer()
 
-            ItemDetailSectionIcon(icon: IconProvider.chevronRight,
-                                  color: PassColor.textNorm,
-                                  width: 15)
+            if iconDisplay {
+                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                      color: PassColor.textNorm,
+                                      width: 15)
+            }
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
@@ -141,14 +145,16 @@ private extension DarkWebMonitorHomeView {
             if viewModel.access?.monitor.protonAddress == true {
                 monitoredProtonAddressesSection
             } else {
-                notMonitoredSection(title: "Proton addresses")
+                emptySection(title: "Proton addresses",
+                             subtitle: "Monitoring paused",
+                             iconDisplay: true)
                     .buttonEmbeded { pushProtonAddressesList() }
             }
         }, header: {
             HStack(spacing: 0) {
                 let title = viewModel.userBreaches.addresses
                     .isEmpty ? #localized("Proton addresses") :
-                    #localized("Proton addresses (%lld)", viewModel.userBreaches.addresses.count)
+                    #localized("Proton addresses") + " " + "\(viewModel.userBreaches.addresses.count)"
 
                 Text(title)
                     .monitorSectionTitleText(maxWidth: nil)
@@ -230,9 +236,17 @@ private extension DarkWebMonitorHomeView {
 
             case let .fetched(infos):
                 if viewModel.access?.monitor.aliases == true {
-                    monitoredAliasesSection(infos)
+                    if infos.isEmpty {
+                        emptySection(title: title,
+                                     subtitle: "No aliases",
+                                     iconDisplay: false)
+                    } else {
+                        monitoredAliasesSection(infos)
+                    }
                 } else {
-                    notMonitoredSection(title: title)
+                    emptySection(title: title,
+                                 subtitle: "Monitoring paused",
+                                 iconDisplay: true)
                         .buttonEmbeded { pushAliasesList() }
                 }
 
@@ -251,8 +265,8 @@ private extension DarkWebMonitorHomeView {
             }
         }, header: {
             HStack(spacing: 0) {
-                let title = if case let .fetched(data) = viewModel.aliasBreachesState, !data.isEmpty {
-                    #localized("Hide-my-email aliases (%lld)", data.count)
+                let title = if let number = viewModel.aliasBreachesState.numberDisplay {
+                    #localized("Hide-my-email aliases") + " " + number
                 } else {
                     #localized("Hide-my-email aliases")
                 }
@@ -288,7 +302,7 @@ private extension DarkWebMonitorHomeView {
                                       subTitle: unresolvedBreaches ? item
                                           .latestBreach : "No breaches detected",
                                       count: unresolvedBreaches ? item.breachCounter : nil,
-                                      hasBreaches: unresolvedBreaches /* hasBreaches */,
+                                      hasBreaches: unresolvedBreaches,
                                       isDetail: false,
                                       action: { router.navigate(to: .breachDetail(.alias(item))) })
             }
@@ -357,11 +371,12 @@ private extension DarkWebMonitorHomeView {
             .roundedEditableSection()
         }, header: {
             HStack(spacing: 0) {
-                let title = if case let .fetched(data) = viewModel.customEmailsState, !data.isEmpty {
-                    #localized("Custom email address (%lld)", data.count)
+                let title = if let number = viewModel.customEmailsState.numberDisplay {
+                    #localized("Custom email address") + " " + number
                 } else {
                     #localized("Custom email address")
                 }
+
                 Text(title)
                     .monitorSectionTitleText(maxWidth: nil)
 
@@ -571,11 +586,11 @@ private extension DarkWebMonitorHomeView {
     }
 }
 
-private extension Int {
-    var breachDescription: String {
-        self == 0 ? #localized("No breaches detected") : #localized("Found in %lld breaches", self)
-    }
-}
+// private extension Int {
+//    var breachDescription: String {
+//        self == 0 ? #localized("No breaches detected") : #localized("Found in %lld breaches", self)
+//    }
+// }
 
 private extension [AliasMonitorInfo] {
     var breachCount: Int {
@@ -592,5 +607,14 @@ private extension [AliasMonitorInfo] {
 private extension [CustomEmail] {
     var breachCount: Int {
         filter { $0.breachCounter > 0 }.count
+    }
+}
+
+private extension FetchableObject where T: Collection, T.Element: Equatable {
+    var numberDisplay: String? {
+        if case let .fetched(data) = self, !data.isEmpty {
+            return "\(data.count)"
+        }
+        return nil
     }
 }
