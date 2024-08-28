@@ -586,12 +586,6 @@ private extension DarkWebMonitorHomeView {
     }
 }
 
-// private extension Int {
-//    var breachDescription: String {
-//        self == 0 ? #localized("No breaches detected") : #localized("Found in %lld breaches", self)
-//    }
-// }
-
 private extension [AliasMonitorInfo] {
     var breachCount: Int {
         filter { !$0.alias.item.monitoringDisabled && $0.alias.item.isBreached }.count
