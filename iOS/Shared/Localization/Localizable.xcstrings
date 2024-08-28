@@ -34774,16 +34774,6 @@
         }
       }
     },
-    "Custom email address (%lld)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Custom email address (%lld)"
-          }
-        }
-      }
-    },
     "Custom email monitoring" : {
       "localizations" : {
         "be" : {
@@ -53521,16 +53511,6 @@
         }
       }
     },
-    "Hide-my-email aliases (%lld)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hide-my-email aliases (%lld)"
-          }
-        }
-      }
-    },
     "Hide-my-email aliases monitoring paused" : {
       "localizations" : {
         "be" : {
@@ -69337,6 +69317,16 @@
         }
       }
     },
+    "No aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No aliases"
+          }
+        }
+      }
+    },
     "No breaches detected" : {
       "localizations" : {
         "be" : {
@@ -82479,16 +82469,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các địa chỉ Proton"
-          }
-        }
-      }
-    },
-    "Proton addresses (%lld)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton addresses (%lld)"
           }
         }
       }
