@@ -154,7 +154,7 @@ private extension DarkWebMonitorHomeView {
             HStack(spacing: 0) {
                 let title = viewModel.userBreaches.addresses
                     .isEmpty ? #localized("Proton addresses") :
-                    #localized("Proton addresses") + " " + "\(viewModel.userBreaches.addresses.count)"
+                    #localized("Proton addresses") + " " + "(\(viewModel.userBreaches.addresses.count))"
 
                 Text(title)
                     .monitorSectionTitleText(maxWidth: nil)
@@ -613,7 +613,7 @@ private extension [CustomEmail] {
 private extension FetchableObject where T: Collection, T.Element: Equatable {
     var numberDisplay: String? {
         if case let .fetched(data) = self, !data.isEmpty {
-            return "\(data.count)"
+            return "(\(data.count))"
         }
         return nil
     }
