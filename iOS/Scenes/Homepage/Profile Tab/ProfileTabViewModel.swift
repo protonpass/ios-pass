@@ -67,6 +67,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository)
     private var aliasRepository: any AliasRepositoryProtocol
 
+    @LazyInjected(\UseCasesContainer.checkFlagForMultiUsers) private var checkFlagForMultiUsers
+
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
     var canUpdateAppLockTime: Bool {
@@ -116,15 +118,13 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     /// Accesses of all logged in accounts
     @Published private var accesses = [UserAccess]()
 
+    @AppStorage("isMultiAccountActive") private(set) var isMultiAccountActive = false
+
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
     var isSecureLinkActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
-    }
-
-    var isMultiAccountActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passAccountSwitchV1)
     }
 
     var isSimpleLoginAliasSyncActive: Bool {
@@ -196,6 +196,17 @@ extension ProfileTabViewModel {
     func updateSupportedLocalAuthenticationMethods() async {
         do {
             supportedLocalAuthenticationMethods = try await getAuthMethods(policy: policy)
+        } catch {
+            logger.error(error)
+        }
+    }
+
+    func checkForMultiAccountsSupport() async {
+        do {
+            let flag = FeatureFlagType.passAccountSwitchV1.rawValue
+            let userIds = userManager.allUserAccounts.value.map(\.userId)
+            isMultiAccountActive = try await checkFlagForMultiUsers(flag: flag,
+                                                                    userIds: userIds)
         } catch {
             logger.error(error)
         }

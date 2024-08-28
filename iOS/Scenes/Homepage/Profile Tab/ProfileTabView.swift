@@ -57,6 +57,7 @@ struct ProfileTabView: View {
                 await viewModel.refreshPlan()
                 await viewModel.updateSupportedLocalAuthenticationMethods()
                 await viewModel.checkPendingAliases()
+                await viewModel.checkForMultiAccountsSupport()
             }
             .onAppear {
                 viewModel.fetchSecureLinks()
