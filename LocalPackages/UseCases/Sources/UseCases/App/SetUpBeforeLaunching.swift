@@ -41,13 +41,16 @@ public extension SetUpBeforeLaunchingUseCase {
 public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
     private let userManager: any UserManagerProtocol
     private let prefererencesManager: any PreferencesManagerProtocol
+    private let authManager: any AuthManagerProtocol
     private let applyMigration: any ApplyAppMigrationUseCase
 
     public init(userManager: any UserManagerProtocol,
                 prefererencesManager: any PreferencesManagerProtocol,
+                authManager: any AuthManagerProtocol,
                 applyMigration: any ApplyAppMigrationUseCase) {
         self.userManager = userManager
         self.prefererencesManager = prefererencesManager
+        self.authManager = authManager
         self.applyMigration = applyMigration
     }
 
@@ -57,6 +60,7 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
         try await userManager.setUp()
         try await prefererencesManager.setUp()
         try await applyMigration()
+        authManager.setUp()
 
         await MainActor.run {
             let theme = prefererencesManager.sharedPreferences.unwrapped().theme

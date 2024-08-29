@@ -32,6 +32,7 @@ import ProtonCoreUtilities
 public protocol AuthManagerProtocol: Sendable, AuthDelegate {
     var sessionWasInvalidated: AnyPublisher<(sessionId: String, userId: String?), Never> { get }
 
+    func setUp()
     func setUpDelegate(_ delegate: any AuthHelperDelegate)
     func getCredential(userId: String) -> AuthCredential?
     func clearSessions(sessionId: String)
@@ -65,6 +66,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     private let module: PassModule
     private let _sessionWasInvalidated: PassthroughSubject<(sessionId: String, userId: String?), Never> = .init()
     private let logger: Logger
+    private var didSetUp = false
 
     // This exposes a read only publisher to the rest of the application as AnyPublisher has no send function
     public var sessionWasInvalidated: AnyPublisher<(sessionId: String, userId: String?), Never> {
@@ -79,10 +81,15 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.module = module
         logger = .init(manager: logManager)
+    }
+
+    public func setUp() {
         cachedCredentials = getCachedCredentials()
+        didSetUp = true
     }
 
     public func setUpDelegate(_ delegate: any AuthHelperDelegate) {
+        assertDidSetUp()
         serialAccessQueue.sync {
             self.delegate = delegate
         }
@@ -90,6 +97,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func getCredential(userId: String) -> AuthCredential? {
         logger.info("getting authCredential for userId id \(userId)")
+        assertDidSetUp()
 
         return serialAccessQueue.sync {
             cachedCredentials
@@ -100,6 +108,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func removeCredentials(userId: String) {
         logger.info("Removing credential for userId id \(userId)")
+        assertDidSetUp()
 
         serialAccessQueue.sync {
             cachedCredentials = cachedCredentials.filter { _, value in
@@ -110,6 +119,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     }
 
     public func removeAllCredentials() {
+        assertDidSetUp()
         serialAccessQueue.sync {
             cachedCredentials = [:]
             saveCachedCredentialsToKeychain()
@@ -118,6 +128,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func credential(sessionUID: String) -> Credential? {
         logger.info("Getting credential for session id \(sessionUID)")
+        assertDidSetUp()
 
         return serialAccessQueue.sync {
             let key = CredentialsKey(sessionId: sessionUID, module: module)
@@ -127,6 +138,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func authCredential(sessionUID: String) -> AuthCredential? {
         logger.info("Getting authCredential for session id \(sessionUID)")
+        assertDidSetUp()
 
         return serialAccessQueue.sync {
             let key = CredentialsKey(sessionId: sessionUID, module: module)
@@ -136,6 +148,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func onUpdate(credential: Credential, sessionUID: String) {
         logger.info("Update Session credentials with session id \(sessionUID)")
+        assertDidSetUp()
 
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
@@ -156,6 +169,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func onSessionObtaining(credential: Credential) {
         logger.info("Obtained Session credentials with session id \(credential.UID)")
+        assertDidSetUp()
 
         serialAccessQueue.sync {
             // The forking of sessions should be done at this point in the future and any looping on Pass module
@@ -185,6 +199,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
                                                     salt: String?,
                                                     privateKey: String?) {
         logger.info("Additional credentials for session id \(sessionUID)")
+        assertDidSetUp()
 
         serialAccessQueue.sync {
             for passModule in PassModule.allCases {
@@ -208,6 +223,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func onAuthenticatedSessionInvalidated(sessionUID: String) {
         logger.info("Authenticated session invalidated for session id \(sessionUID)")
+        assertDidSetUp()
 
         serialAccessQueue.sync {
             let key = CredentialsKey(sessionId: sessionUID, module: module)
@@ -221,6 +237,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func onUnauthenticatedSessionInvalidated(sessionUID: String) {
         logger.info("unauthenticated session invalidated for session id \(sessionUID)")
+        assertDidSetUp()
 
         serialAccessQueue.sync {
             let key = CredentialsKey(sessionId: sessionUID, module: module)
@@ -234,6 +251,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func clearSessions(sessionId: String) {
         logger.info("Clear sessions for session id \(sessionId)")
+        assertDidSetUp()
 
         serialAccessQueue.sync {
             removeCredentials(for: sessionId)
@@ -243,6 +261,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     public func clearSessions(userId: String) {
         logger.info("Clear sessions for user id \(userId)")
+        assertDidSetUp()
 
         serialAccessQueue.sync {
             cachedCredentials = cachedCredentials.filter { $0.value.credential.userID != userId }
@@ -251,7 +270,8 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     }
 
     public func getAllCurrentCredentials() -> [Credential] {
-        cachedCredentials.compactMap { key, element -> Credential? in
+        assertDidSetUp()
+        return cachedCredentials.compactMap { key, element -> Credential? in
             guard key.module == module else {
                 return nil
             }
@@ -263,6 +283,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 public extension AuthManager {
     /// Introduced on July 2024 for multi accounts support. Can be removed later on.
     func migrate(_ credential: AuthCredential) {
+        assertDidSetUp()
         for module in PassModule.allCases {
             let key = CredentialsKey(sessionId: credential.sessionID, module: module)
             cachedCredentials[key] = .init(credential: .init(credential),
@@ -272,15 +293,23 @@ public extension AuthManager {
         saveCachedCredentialsToKeychain()
     }
 
-    @available(*, deprecated, message: "For debugging purposes only")
+    @_spi(QA)
     func getAllCredentialsOfAllModules() -> [Credentials] {
-        Array(cachedCredentials.values)
+        assertDidSetUp()
+        return Array(cachedCredentials.values)
     }
 }
 
 // MARK: - Utils
 
 private extension AuthManager {
+    func assertDidSetUp() {
+        assert(didSetUp, "AuthManager not set up. Call setUp() function as soon as possible.")
+        if !didSetUp {
+            logger.error("AuthManager not set up")
+        }
+    }
+
     func getCredentials(credential: Credential,
                         authCredential: AuthCredential? = nil,
                         module: PassModule,
