@@ -94,6 +94,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
     var addAndSwitchToNewUserAccount
 
+    @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
@@ -156,14 +158,20 @@ private extension HomepageCoordinator {
             }
             .store(in: &cancellables)
 
+        var isFirstLaunched = true
         userManager.currentActiveUser
-            .dropFirst()
             .receive(on: DispatchQueue.main)
             .compactMap { $0 }
+            .removeDuplicates(by: { $0.user.ID == $1.user.ID })
             .sink { [weak self] userData in
                 guard let self else { return }
                 homepageTabDelegate?.refreshTabIcons()
-                let message = #localized("Switched to %@", userData.user.email ?? "")
+
+                let email = userData.user.email ?? ""
+                let message = isFirstLaunched ?
+                    #localized("Signed in as %@", email) : #localized("Switched to %@", email)
+                isFirstLaunched = false
+
                 bannerManager.displayBottomInfoMessage(message)
             }
             .store(in: &cancellables)
@@ -221,16 +229,30 @@ private extension HomepageCoordinator {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
-                guard let self else { return }
-                logger.info("App goes back to foreground")
-                refresh(exitEditMode: false)
-                sendAllEventsIfApplicable()
-                eventLoop.start()
-                eventLoop.forceSync()
-                refreshAccessAndMonitorStateSync()
-                refreshSettings()
-                refreshFeatureFlags()
-                doLogOutExcessFreeAccounts()
+                Task { [weak self] in
+                    guard let self else { return }
+                    do {
+                        logger.info("App goes back to foreground")
+                        if let window {
+                            // Configurations could be changed from extensions
+                            // (logged out, token refreshed...), so we need to set up
+                            // everything as if the app is first launched
+                            try await setUpBeforeLaunching(rootContainer: .window(window))
+                        } else {
+                            assertionFailure("window should not be nil")
+                        }
+                        refresh(exitEditMode: false)
+                        sendAllEventsIfApplicable()
+                        eventLoop.start()
+                        eventLoop.forceSync()
+                        refreshAccessAndMonitorStateSync()
+                        refreshSettings()
+                        refreshFeatureFlags()
+                        doLogOutExcessFreeAccounts()
+                    } catch {
+                        logger.error(error)
+                    }
+                }
             }
             .store(in: &cancellables)
     }
