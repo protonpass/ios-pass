@@ -35,7 +35,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     }
 
     /// Self-initialized properties
-    private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -142,8 +141,7 @@ private extension CredentialProviderCoordinator {
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
 
-        guard let activeUserId = userManager.activeUserId,
-              credentialProvider.isAuthenticated(userId: activeUserId) else {
+        guard userManager.activeUserId != nil else {
             showNotLoggedInView()
             return
         }
@@ -233,8 +231,7 @@ private extension CredentialProviderCoordinator {
 private extension CredentialProviderCoordinator {
     func configureExtension() {
         guard let context else { return }
-        guard let activeUserId = userManager.activeUserId,
-              credentialProvider.isAuthenticated(userId: activeUserId) else {
+        guard let activeUserId = userManager.activeUserId else {
             showNotLoggedInView()
             return
         }
