@@ -71,6 +71,7 @@ final class AuthManagerTests: XCTestCase {
                           symmetricKeyProvider: symmetricKeyProvider,
                           module: .hostApp,
                           logManager: LogManagerProtocolMock())
+        sut.setUp()
     }
 
     override func tearDown() {
