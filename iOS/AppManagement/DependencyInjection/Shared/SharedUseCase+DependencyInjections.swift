@@ -96,6 +96,7 @@ extension SharedUseCasesContainer {
     var setUpBeforeLaunching: Factory<any SetUpBeforeLaunchingUseCase> {
         self { SetUpBeforeLaunching(userManager: self.userManager,
                                     prefererencesManager: self.preferencesManager,
+                                    authManager: SharedDataContainer.shared.credentialProvider(),
                                     applyMigration: self.applyAppMigration()) }
     }
 }

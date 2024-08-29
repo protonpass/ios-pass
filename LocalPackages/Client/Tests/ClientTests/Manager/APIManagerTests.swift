@@ -129,6 +129,7 @@ final class APIManagerTests: XCTestCase {
                                   symmetricKeyProvider: mock,
                                   module: .hostApp,
                                   logManager: LogManagerProtocolMock())
+        authManager.setUp()
     }
 
     override func tearDown() {
