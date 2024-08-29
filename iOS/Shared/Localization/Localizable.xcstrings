@@ -98569,6 +98569,17 @@
         }
       }
     },
+    "Signed in as %@" : {
+      "comment" : "Placeholder is an email. Message shown when the app is launched to let the user know which account they are using.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signed in as %@"
+          }
+        }
+      }
+    },
     "SimpleLogin aliases will be imported into this vault." : {
       "localizations" : {
         "be" : {
