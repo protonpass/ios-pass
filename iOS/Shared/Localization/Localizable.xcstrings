@@ -34,6 +34,36 @@
             }
           }
         },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" je kopírován do schránky. Vyprší za %2$lld sekundy."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" je kopírován do schránky. Vyprší za %2$lld sekund."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" je kopírován do schránky. Vyprší za %2$lld sekundu."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" je kopírován do schránky. Vyprší za %2$lld sekund."
+                }
+              }
+            }
+          }
+        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -15670,6 +15700,12 @@
             "value" : "Псеўданім адключаны"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias deaktivován"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15724,6 +15760,12 @@
             "value" : "Alias dinonaktifkan"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias ​​disabilitato"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15746,6 +15788,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias uitgeschakeld"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias został wyłączony"
           }
         },
         "pt-BR" : {
@@ -15780,6 +15828,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Псеўданім уключаны"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias povolen"
           }
         },
         "da" : {
@@ -15836,6 +15890,12 @@
             "value" : "Alias diaktifkan"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias ​​abilitato"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15852,6 +15912,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias aktivert"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias został włączony"
           }
         },
         "pt-BR" : {
@@ -16688,6 +16754,12 @@
             "value" : "Псеўданімы перамешчаныя ў Сметніцу працягнуць перасылаць лісты. Спачатку адключыце псеўданім, калі хочаце спыніць атрыманне лістоў на гэты адрас."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasy v koši budou nadále přeposílat e-maily. Pokud chcete přestat dostávat e-maily na tuto adresu, zakažte ji."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16742,6 +16814,12 @@
             "value" : "Alias dalam Sampah akan masih meneruskan email. Jika Anda ingin berhenti menerima email pada alamat ini, nonaktifkan saja."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gli alias nel Cestino continueranno a inoltrare le email. Se non vuoi più ricevere email su questo indirizzo, disabilitalo."
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16758,6 +16836,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aliaser i papirkurven fortsetter å videresende e-poster. Hvis du vil slutte å motta e-post på denne adressen, deaktiver den i stedet."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasy w Koszu będą nadal przekierowywać wiadomości. Wyłącz alias, jeśli chcesz zatrzymać otrzymywanie wiadomości na ten adres."
           }
         },
         "pt-BR" : {
@@ -19813,6 +19897,12 @@
             "value" : "Далучыць"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Připojit"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19867,6 +19957,12 @@
             "value" : "Lampirkan"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allega"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19883,6 +19979,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Legg ved"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj"
           }
         },
         "pt-BR" : {
@@ -19918,6 +20020,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Далучэнні"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přílohy"
           }
         },
         "da" : {
@@ -19972,6 +20080,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lampiran"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allegati"
           }
         },
         "ka" : {
@@ -35925,6 +36039,12 @@
             "value" : "Прадвызначаны дамен для псеўданімаў"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Výchozí doména pro aliasy"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35977,6 +36097,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Domain bawaan untuk alias"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio predefinito per gli alias"
           }
         },
         "ka" : {
@@ -36037,6 +36163,12 @@
             "value" : "Прадвызначаная паштовая скрыня для псеўданімаў"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Výchozí e-mailová schránka pro aliasy"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36091,6 +36223,12 @@
             "value" : "Kotak surat bawaan untuk alias"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casella di posta predefinita per gli alias"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36113,6 +36251,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Standaard mailbox voor aliassen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domyślna skrzynka pocztowa dla aliasów"
           }
         },
         "pt-BR" : {
@@ -37269,6 +37413,12 @@
             "value" : "Адключыць псеўданім"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deaktivovat alias"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37321,6 +37471,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nonaktifkan alias"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disabilita l'alias"
           }
         },
         "ka" : {
@@ -37385,6 +37541,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адключыць"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Místo toho deaktivovat"
           }
         },
         "da" : {
@@ -37457,6 +37619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deaktiver i stedet"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyłącz"
           }
         },
         "pt-BR" : {
@@ -40677,6 +40845,12 @@
             "value" : "Уключыць псеўданім"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolit alias"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40731,6 +40905,12 @@
             "value" : "Aktifkan alias"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita l'alias"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40747,6 +40927,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktiver alias"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz alias"
           }
         },
         "pt-BR" : {
@@ -46484,6 +46670,12 @@
             "value" : "Файл"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soubor"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46538,6 +46730,12 @@
             "value" : "Berkas"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46560,6 +46758,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bestand"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plik"
           }
         },
         "pt-BR" : {
@@ -52636,6 +52840,12 @@
             "value" : "Схаваць нумар сацыяльнага страхавання"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skrýt rodné číslo (číslo sociálního pojištění)"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52690,6 +52900,12 @@
             "value" : "Sembunyikan nomor jaminan sosial"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nascondi il numero di previdenza sociale"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52706,6 +52922,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skjul personnummer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukryj numer ubezpieczenia społecznego"
           }
         },
         "pt-BR" : {
@@ -64214,6 +64436,12 @@
             "value" : "Паштовыя скрыні"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mailové schránky"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64268,6 +64496,12 @@
             "value" : "Kotak surat"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caselle di posta"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64290,6 +64524,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Postvakken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skrzynki pocztowe"
           }
         },
         "pt-BR" : {
@@ -67759,6 +67999,12 @@
             "value" : "Перамясціць у Сметніцу"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přesunout do koše"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67811,6 +68057,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pindahkan ke Sampah"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sposta nel cestino"
           }
         },
         "ka" : {
@@ -79907,6 +80159,12 @@
             "value" : "Забяспечце нас падрабязнымі звесткамі ў апісанні"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do popisu prosím uveďte více podrobností"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79943,6 +80201,12 @@
             "value" : "Proporcione más detalles en la descripción"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anna meille lisätietoja kuvauksessa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79953,6 +80217,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mohon sertakan rincian yang lebih banyak kepada kami pada kolom deskripsi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ti preghiamo di fornirci maggiori dettagli nella descrizione"
           }
         },
         "ka" : {
@@ -79971,6 +80241,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vennligst gi oss flere detaljer i beskrivelsen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wpisz więcej szczegółów w opisie"
           }
         },
         "pt-BR" : {
@@ -80006,6 +80282,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Выберыце прычыну"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte prosím důvod"
           }
         },
         "da" : {
@@ -80062,6 +80344,12 @@
             "value" : "Silakan pilih alasan"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona un motivo"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -80084,6 +80372,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Selecteer een reden"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz powód"
           }
         },
         "pt-BR" : {
@@ -89174,6 +89468,12 @@
             "value" : "Здымак экрана"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snímek obrazovky"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89228,6 +89528,12 @@
             "value" : "Tangkapan layar"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Screenshot"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89244,6 +89550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skjermbilde"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrzut ekranu"
           }
         },
         "pt-BR" : {
@@ -89278,6 +89590,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Прагарніце, каб убачыць больш"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posuňte pro další"
           }
         },
         "da" : {
@@ -89334,6 +89652,12 @@
             "value" : "Gulir untuk yang lainnya"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scorri per saperne di più"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89350,6 +89674,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bla for mer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przewiń, aby zobaczyć więcej"
           }
         },
         "pt-BR" : {
@@ -92693,6 +93023,12 @@
             "value" : "Выберыце прычыну"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte důvod"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92747,6 +93083,12 @@
             "value" : "Pilih alasan"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seleziona motivo"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92763,6 +93105,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Velg årsak"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz powód"
           }
         },
         "pt-BR" : {
@@ -97985,6 +98333,12 @@
             "value" : "Паказаць нумар сацыяльнага страхавання"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit rodné číslo (číslo sociálního pojištění)"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -98037,6 +98391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tampilkan nomor jaminan sosial"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra il numero di previdenza sociale"
           }
         },
         "ka" : {
@@ -98642,6 +99002,12 @@
             "value" : "Alias SimpleLogin akan diimpor ke brankas ini."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gli alias SimpleLogin verranno importati in questa cassaforte."
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -98752,6 +99118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sinkronisasi SimpleLogin"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizzazione SimpleLogin"
           }
         },
         "ka" : {
@@ -101563,6 +101935,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sinkronisasikan alias"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizza gli alias"
           }
         },
         "ka" : {
@@ -117980,6 +118358,12 @@
             "value" : "Kami mendeteksi perubahan dalam pengaturan autentikasi biometrik Anda. Demi keamanan, Anda telah dikeluarkan."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbiamo rilevato una modifica nelle impostazioni di autenticazione biometrica. Per motivi di sicurezza sei stato disconnesso."
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -117996,6 +118380,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vi har oppdaget en endring i innstillingene for biometrisk autentisering. Av sikkerhetsgrunner har du blitt logget av."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wykryliśmy zmianę ustawień uwierzytelniania biometrycznego. Wylogowano ze względów bezpieczeństwa."
           }
         },
         "pt-BR" : {
