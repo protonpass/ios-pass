@@ -2446,6 +2446,12 @@
             "value" : "Aktifkan sinkronisasi SimpleLogin"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attiva la sincronizzazione con SimpleLogin"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6385,6 +6391,12 @@
             "value" : "Sinkronisasikan alias"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sincronizza gli alias"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6883,6 +6895,24 @@
             }
           }
         },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Havaitsimme, että sinulla on SimpleLoginissa %lld alias, joka puuttuu Proton Passista. Haluaisitko tuoda sen?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Havaitsimme, että sinulla on SimpleLoginissa %lld aliasta, jotka puuttuvat Proton Passista. Haluaisitko tuoda ne?"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -6908,6 +6938,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Kami mendeteksi bahwa Anda memiliki %lld alias yang ada di SimpleLogin namun belum tercatat pada Proton Pass. Apakah Anda ingin mengimpor alias ini?"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Abbiamo rilevato che hai un alias %lld presente in SimpleLogin ma mancante in Proton Pass. Desideri importarlo?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Abbiamo rilevato che hai alias %lld presenti in SimpleLogin ma mancanti in Proton Pass. Desideri importarli?"
                 }
               }
             }
@@ -6956,6 +7004,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Vi oppdaget at du har %lld aliaser som er til stede i SimpleLogin, men mangler i Proton Pass. Vil du importere dem?"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Masz %lld aliasy SimpleLogin, które nie są widoczne w Proton Pass. Czy chcesz je zaimportować?"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Masz %lld aliasów SimpleLogin, które nie są widoczne w Proton Pass. Czy chcesz je zaimportować?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Masz %lld alias SimpleLogin, który nie jest widoczny w Proton Pass. Czy chcesz go zaimportować?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Masz %lld aliasów SimpleLogin, które nie są widoczne w Proton Pass. Czy chcesz je zaimportować?"
                 }
               }
             }
