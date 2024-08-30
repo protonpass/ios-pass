@@ -52,6 +52,15 @@ enum ItemMode: Equatable, Hashable {
             false
         }
     }
+
+    var canChangeVault: Bool {
+        switch self {
+        case .clone, .create:
+            true
+        default:
+            false
+        }
+    }
 }
 
 enum ItemCreationType: Equatable, Hashable {
@@ -108,7 +117,6 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     let logger = resolve(\SharedToolingContainer.logger)
     let vaults: [Vault]
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
 
@@ -122,15 +130,6 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
 
     var isPhone: Bool {
         UIDevice.current.userInterfaceIdiom == .phone
-    }
-
-    /// Only able to select vault when creating items
-    var editableVault: Vault? {
-        if case .create = mode {
-            selectedVault
-        } else {
-            nil
-        }
     }
 
     weak var delegate: (any CreateEditItemViewModelDelegate)?
@@ -148,18 +147,14 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }
 
-        guard let vault = vaults.first(where: { $0.shareId == vaultShareId }) ?? vaults.first else {
-            throw PassError.vault(.vaultNotFound(vaultShareId))
+        let editableVault = vaults.first { $0.shareId == vaultShareId && $0.canEdit }
+        let oldestOwnedVault = vaults.twoOldestVaults.owned
+
+        guard let vault = editableVault ?? oldestOwnedVault else {
+            throw PassError.vault(.noEditableVault)
         }
 
-        if vault.canEdit {
-            selectedVault = vault
-        } else {
-            guard let vault = vaults.twoOldestVaults.owned ?? vaults.first else {
-                throw PassError.vault(.vaultNotFound(vaultShareId))
-            }
-            selectedVault = vault
-        }
+        selectedVault = vault
         self.mode = mode
         self.upgradeChecker = upgradeChecker
         self.vaults = vaults
@@ -237,11 +232,6 @@ private extension BaseCreateEditItemViewModel {
                 isFreeUser = try await upgradeChecker.isFreeUser()
                 canAddMoreCustomFields = !isFreeUser
                 canScanDocuments = DocScanner.isSupported
-                if isFreeUser,
-                   case .create = mode, vaults.count > 1,
-                   let mainVault = await getMainVault() {
-                    selectedVault = mainVault
-                }
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
