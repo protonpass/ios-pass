@@ -85,6 +85,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let createPasskey = resolve(\SharedUseCasesContainer.createPasskey)
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
+    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
     override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
 
@@ -104,6 +105,10 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func bindValues() {
+        defer {
+            emailUsernameExpanded = emailUsernameExpanded || getSharedPreferences().alwaysShowUsernameField
+        }
+
         switch mode {
         case let .clone(itemContent), let .edit(itemContent):
             if case let .login(data) = itemContent.contentData {
