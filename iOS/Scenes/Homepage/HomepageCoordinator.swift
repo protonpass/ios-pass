@@ -64,6 +64,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
 
     // App cover/local authentication
     @LazyInjected(\RouterContainer.window) var window
@@ -521,8 +522,8 @@ extension HomepageCoordinator {
                     profileTabViewModelWantsToShowSettingsMenu()
                 case let .createEditLogin(item):
                     presentCreateEditLoginView(mode: item)
-                case let .createItem(_, type, _):
-                    handleItemCreation(type: type)
+                case let .createItem(item, type, _):
+                    handleItemCreation(item: item, type: type)
                 case let .editItem(itemContent):
                     presentEditItemView(for: itemContent)
                 case let .cloneItem(itemContent):
@@ -1512,20 +1513,35 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func handleItemCreation(type: ItemContentType) {
+    func handleItemCreation(item: SymmetricallyEncryptedItem, type: ItemContentType) {
         Task { [weak self] in
             guard let self else {
                 return
             }
             do {
+                let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
+                let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
+                let displayToastMessage: () -> Void = { [weak self] in
+                    guard let self else { return }
+                    if vaultsManager.isItemVisible(item, type: type) {
+                        bannerManager.displayBottomInfoMessage(type.creationMessage)
+                    } else {
+                        bannerManager.displayBottomInfoMessage(type.creationMessage,
+                                                               dismissButtonTitle: type
+                                                                   .openMessage) { [weak self] _ in
+                            guard let self else { return }
+                            router.present(for: .itemDetail(itemContent))
+                        }
+                    }
+                }
+
                 addNewEvent(type: .create(type))
-                dismissAllViewControllers(animated: true) { [weak self] in
+                dismissAllViewControllers(animated: true) {
                     // We have eventual crashes after creating items
                     // Looks like it's because the keyboard is not fully dismissed
                     // and in between we try to show a banner
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                        guard let self else { return }
-                        bannerManager.displayBottomInfoMessage(type.creationMessage)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        displayToastMessage()
                     }
                 }
                 let userId = try await userManager.getActiveUserId()
