@@ -25,14 +25,20 @@ import SwiftUI
 public struct VaultThumbnail: View {
     private let vault: Vault
 
+    private var iconColor: UIColor {
+        vault.displayPreferences.color.color.color
+    }
+
     public init(vault: Vault) {
         self.vault = vault
     }
 
     public var body: some View {
         CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-                     iconColor: vault.displayPreferences.color.color.color,
-                     backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16))
+                     iconColor: iconColor,
+                     iconDisabledColor: iconColor.withAlphaComponent(0.75),
+                     backgroundColor: iconColor.withAlphaComponent(0.16),
+                     backgroundDisabledColor: iconColor.withAlphaComponent(0.08))
             .animation(.default, value: vault)
     }
 }

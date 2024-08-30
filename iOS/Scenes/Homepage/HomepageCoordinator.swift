@@ -503,8 +503,6 @@ extension HomepageCoordinator {
                     presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
                 case let .customizeNewVault(vault, itemContent):
                     presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
-                case .vaultSelection:
-                    createEditItemViewModelWantsToChangeVault()
                 case .setPINCode:
                     presentSetPINCodeView()
                 case let .history(item):
@@ -524,7 +522,7 @@ extension HomepageCoordinator {
                 case let .createEditLogin(item):
                     presentCreateEditLoginView(mode: item)
                 case let .createItem(_, type, _):
-                    createEditItemViewModelDidCreateItem(type: type)
+                    handleItemCreation(type: type)
                 case let .editItem(itemContent):
                     presentEditItemView(for: itemContent)
                 case let .cloneItem(itemContent):
@@ -1498,19 +1496,6 @@ extension HomepageCoordinator {
 // MARK: - CreateEditItemViewModelDelegate
 
 extension HomepageCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToChangeVault() {
-        let viewModel = VaultSelectorViewModel()
-        let view = VaultSelectorView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = 66 * vaultsManager.getVaultCount() + 180
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
                                                       shouldDisplayTotp: Bool) {
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
@@ -1527,7 +1512,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelDidCreateItem(type: ItemContentType) {
+    func handleItemCreation(type: ItemContentType) {
         Task { [weak self] in
             guard let self else {
                 return
@@ -1544,7 +1529,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                     }
                 }
                 let userId = try await userManager.getActiveUserId()
-                vaultsManager.refresh(userId: userId)
+                try await vaultsManager.asyncRefresh(userId: userId)
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
             } catch {
