@@ -73629,6 +73629,16 @@
         }
       }
     },
+    "Open alias" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open alias"
+          }
+        }
+      }
+    },
     "Open camera" : {
       "localizations" : {
         "be" : {
@@ -73785,6 +73795,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mở máy ảnh"
+          }
+        }
+      }
+    },
+    "Open credit card" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open credit card"
+          }
+        }
+      }
+    },
+    "Open identity" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open identity"
+          }
+        }
+      }
+    },
+    "Open login" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open login"
+          }
+        }
+      }
+    },
+    "Open note" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open note"
           }
         }
       }

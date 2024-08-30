@@ -190,6 +190,21 @@ extension ItemContentType {
         }
     }
 
+    var openMessage: String {
+        switch self {
+        case .login:
+            #localized("Open login")
+        case .alias:
+            #localized("Open alias")
+        case .creditCard:
+            #localized("Open credit card")
+        case .note:
+            #localized("Open note")
+        case .identity:
+            #localized("Open identity")
+        }
+    }
+
     var restoreMessage: String {
         switch self {
         case .login:

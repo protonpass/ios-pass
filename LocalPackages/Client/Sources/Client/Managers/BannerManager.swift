@@ -28,7 +28,7 @@ public protocol BannerDisplayProtocol: Sendable {
 
     func displayBottomInfoMessage(_ message: String,
                                   dismissButtonTitle: String,
-                                  onDismiss: @escaping (@Sendable (PMBanner) -> Void))
+                                  onDismiss: @escaping (@Sendable @MainActor (PMBanner) -> Void))
 
     func displayBottomInfoMessage(_ message: String)
     func displayTopErrorMessage(_ message: String,
@@ -74,7 +74,7 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
 
     public func displayBottomInfoMessage(_ message: String,
                                          dismissButtonTitle: String,
-                                         onDismiss: @escaping (@Sendable (PMBanner) -> Void)) {
+                                         onDismiss: @escaping (@Sendable @MainActor (PMBanner) -> Void)) {
         guard let container else {
             return
         }
