@@ -483,11 +483,6 @@ extension SharedUseCasesContainer {
         self { CopyToClipboard(getSharedPreferences: self.getSharedPreferences()) }
     }
 
-    var setUpEmailAndUsername: Factory<any SetUpEmailAndUsernameUseCase> {
-        self { SetUpEmailAndUsername(featureFlags: self.getFeatureFlagStatus(),
-                                     emailValidator: self.validateEmail()) }
-    }
-
     var applyAppMigration: Factory<any ApplyAppMigrationUseCase> {
         self { ApplyAppMigration(dataMigrationManager: SharedServiceContainer.shared.dataMigrationManager(),
                                  userManager: self.userManager,
