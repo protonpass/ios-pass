@@ -86,7 +86,7 @@ enum ItemCreationType: Equatable, Hashable {
 
 @MainActor
 class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate, CustomFieldEditionDelegate {
-    @Published private(set) var selectedVault: Vault
+    @Published var selectedVault: Vault
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
@@ -94,6 +94,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
 
     @Published var customFieldUiModels = [CustomFieldUiModel]()
+    @Published var isShowingVaultSelector = false
     @Published var isObsolete = false
     @Published var isShowingDiscardAlert = false
 
@@ -108,7 +109,6 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     let vaults: [Vault]
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let getMainVault = resolve(\SharedUseCasesContainer.getMainVault)
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
 
@@ -247,19 +247,6 @@ private extension BaseCreateEditItemViewModel {
                 router.display(element: .displayErrorBanner(error))
             }
         }
-
-        vaultsManager.$vaultSelection
-            .dropFirst()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] selection in
-                guard let self,
-                      let newSelectedVault = selection.preciseVault,
-                      newSelectedVault != selectedVault else {
-                    return
-                }
-                selectedVault = newSelectedVault
-            }
-            .store(in: &cancellables)
     }
 
     func createItem(for type: ItemContentType) async throws -> SymmetricallyEncryptedItem? {
@@ -406,9 +393,5 @@ extension BaseCreateEditItemViewModel {
                 router.display(element: .displayErrorBanner(error))
             }
         }
-    }
-
-    func changeVault() {
-        router.present(for: .vaultSelection)
     }
 }

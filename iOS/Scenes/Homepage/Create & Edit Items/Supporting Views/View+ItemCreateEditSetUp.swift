@@ -37,6 +37,14 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                onAction: dismiss.callAsFunction)
             .discardChangesAlert(isPresented: $viewModel.isShowingDiscardAlert,
                                  onDiscard: dismiss.callAsFunction)
+            .sheet(isPresented: $viewModel.isShowingVaultSelector) {
+                // Add more height when free users to make room for upsell banner
+                let height = viewModel.vaults.count * 74 + (viewModel.isFreeUser ? 180 : 50)
+                VaultSelectorView(selectedVault: $viewModel.selectedVault,
+                                  isFreeUser: viewModel.isFreeUser,
+                                  onUpgrade: { viewModel.upgrade() })
+                    .presentationDetents([.height(CGFloat(height)), .large])
+            }
             .toolbar {
                 CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
                                       isSaveable: viewModel.isSaveable,
@@ -46,7 +54,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       itemContentType: viewModel.itemContentType(),
                                       shouldUpgrade: viewModel.shouldUpgrade,
                                       isPhone: viewModel.isPhone,
-                                      onSelectVault: { viewModel.changeVault() },
+                                      onSelectVault: { viewModel.isShowingVaultSelector.toggle() },
                                       onGoBack: { viewModel.isShowingDiscardAlert.toggle() },
                                       onUpgrade: {
                                           if viewModel.shouldUpgrade {

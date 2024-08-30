@@ -19,8 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
-import UIKit
+import SwiftUI
 
 public enum Theme: Int, Codable, CaseIterable, Sendable {
     case light = 0
@@ -37,6 +36,17 @@ public enum Theme: Int, Codable, CaseIterable, Sendable {
             .dark
         case .matchSystem:
             .unspecified
+        }
+    }
+
+    public var colorScheme: ColorScheme? {
+        switch self {
+        case .light:
+            .light
+        case .dark:
+            .dark
+        case .matchSystem:
+            nil
         }
     }
 }
