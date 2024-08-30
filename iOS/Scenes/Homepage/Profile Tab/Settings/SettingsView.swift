@@ -112,6 +112,14 @@ private extension SettingsView {
                              isOn: viewModel.displayFavIcons,
                              action: { viewModel.toggleDisplayFavIcons() })
             }
+
+            PassSectionDivider()
+
+            OptionRow(height: .tall) {
+                StaticToggle("Always show username field",
+                             isOn: viewModel.alwaysShowUsernameField,
+                             action: { viewModel.toggleAlwaysShowUsernameField() })
+            }
         }
         .roundedEditableSection()
     }
