@@ -18677,6 +18677,17 @@
         }
       }
     },
+    "Always show username field" : {
+      "comment" : "Title of the toggle to control the display of username field when creating/editing login items",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Always show username field"
+          }
+        }
+      }
+    },
     "Application" : {
       "localizations" : {
         "be" : {

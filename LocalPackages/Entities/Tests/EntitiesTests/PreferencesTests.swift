@@ -72,7 +72,8 @@ final class PreferencesTests: XCTestCase {
             fallbackToPasscode: SharedPreferences.default.fallbackToPasscode,
             appLockTime: defaultObject.appLockTime,
             clipboardExpiration: .twoMinutes,
-            shareClipboard: true)
+            shareClipboard: true, 
+            alwaysShowUsernameField: false)
         try decodeAndAssert(SharedPreferences.self, json: json, expectation: expectation)
     }
 
