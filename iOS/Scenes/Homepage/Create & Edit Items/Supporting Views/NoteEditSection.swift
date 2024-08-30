@@ -45,13 +45,7 @@ struct NoteEditSection<Field: Hashable>: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !note.isEmpty {
-                Button(action: {
-                    note = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
-            }
+            ClearTextButton(text: $note)
         }
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
