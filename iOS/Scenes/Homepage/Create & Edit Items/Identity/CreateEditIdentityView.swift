@@ -687,13 +687,7 @@ private extension CreateEditIdentityView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !value.wrappedValue.isEmpty {
-                Button(action: {
-                    value.wrappedValue = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
-            }
+            ClearTextButton(text: value)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: focusedField)

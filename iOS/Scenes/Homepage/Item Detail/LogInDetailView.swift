@@ -121,12 +121,20 @@ private extension LogInDetailView {
 private extension LogInDetailView {
     var usernamePassword2FaSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            emailRow
-            PassSectionDivider()
-            if !viewModel.username.isEmpty {
-                usernameRow
+            if viewModel.email.isEmpty, viewModel.username.isEmpty {
+                emptyEmailOrUsernameRow
                 PassSectionDivider()
+            } else {
+                if !viewModel.email.isEmpty {
+                    emailRow
+                    PassSectionDivider()
+                }
+                if !viewModel.username.isEmpty {
+                    usernameRow
+                    PassSectionDivider()
+                }
             }
+
             passwordRow
 
             switch viewModel.totpTokenState {
@@ -151,6 +159,22 @@ private extension LogInDetailView {
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
         .animation(.default, value: viewModel.totpTokenState)
+    }
+
+    var emptyEmailOrUsernameRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.envelope, color: iconTintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Email or username")
+                    .sectionTitleText()
+
+                Text("Empty")
+                    .placeholderText()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
     var emailRow: some View {

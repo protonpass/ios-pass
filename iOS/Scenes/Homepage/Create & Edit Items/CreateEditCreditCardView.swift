@@ -125,13 +125,7 @@ private extension CreateEditCreditCardView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !viewModel.cardholderName.isEmpty {
-                Button(action: {
-                    viewModel.cardholderName = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
-            }
+            ClearTextButton(text: $viewModel.cardholderName)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.cardholderName.isEmpty)
@@ -155,13 +149,7 @@ private extension CreateEditCreditCardView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !viewModel.cardNumber.isEmpty {
-                Button(action: {
-                    viewModel.cardNumber = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
-            }
+            ClearTextButton(text: $viewModel.cardNumber)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.cardNumber.isEmpty)
@@ -187,13 +175,7 @@ private extension CreateEditCreditCardView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !viewModel.verificationNumber.isEmpty {
-                Button(action: {
-                    viewModel.verificationNumber = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
-            }
+            ClearTextButton(text: $viewModel.verificationNumber)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.verificationNumber.isEmpty)
@@ -219,13 +201,7 @@ private extension CreateEditCreditCardView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            if !viewModel.pin.isEmpty {
-                Button(action: {
-                    viewModel.pin = ""
-                }, label: {
-                    ItemDetailSectionIcon(icon: IconProvider.cross)
-                })
-            }
+            ClearTextButton(text: $viewModel.pin)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.verificationNumber.isEmpty)
