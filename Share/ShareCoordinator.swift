@@ -144,10 +144,8 @@ private extension ShareCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case .vaultSelection:
-                    presentVaultSelector()
                 case let .createItem(_, type, _):
-                    createEditItemViewModelDidCreateItem(type: type)
+                    handleItemCreation(type: type)
                 default:
                     break
                 }
@@ -284,19 +282,6 @@ private extension ShareCoordinator {
         }
     }
 
-    func presentVaultSelector() {
-        guard let topMostViewController else { return }
-        let view = VaultSelectorView(viewModel: .init())
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = 66 * vaultsManager.getVaultCount() + 180 // Space for upsell banner
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: topMostViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func dismissExtension() {
         context?.completeRequest(returningItems: nil)
     }
@@ -371,7 +356,7 @@ extension ShareCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelDidCreateItem(type: ItemContentType) {
+    func handleItemCreation(type: ItemContentType) {
         let alert = UIAlertController(title: type.creationMessage, message: nil, preferredStyle: .alert)
         let closeAction = UIAlertAction(title: #localized("Close"), style: .default) { [weak self] _ in
             guard let self else { return }

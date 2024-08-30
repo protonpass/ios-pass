@@ -51,20 +51,26 @@ public struct CircleButton: View {
     @Environment(\.isEnabled) private var isEnabled
     let icon: UIImage
     let iconColor: UIColor
+    let iconDisabledColor: UIColor
     let backgroundColor: UIColor
+    let backgroundDisabledColor: UIColor
     let type: CircleButtonType
     let accessibilityLabel: LocalizedStringKey?
     let action: (() -> Void)?
 
     public init(icon: UIImage,
                 iconColor: UIColor,
+                iconDisabledColor: UIColor = PassColor.textDisabled,
                 backgroundColor: UIColor,
+                backgroundDisabledColor: UIColor = PassColor.backgroundWeak,
                 accessibilityLabel: LocalizedStringKey? = nil,
                 type: CircleButtonType = .regular,
                 action: (() -> Void)? = nil) {
         self.icon = icon
         self.iconColor = iconColor
+        self.iconDisabledColor = iconDisabledColor
         self.backgroundColor = backgroundColor
+        self.backgroundDisabledColor = backgroundDisabledColor
         self.type = type
         self.action = action
         self.accessibilityLabel = accessibilityLabel
@@ -82,14 +88,14 @@ public struct CircleButton: View {
 
     private var realBody: some View {
         ZStack {
-            (isEnabled ? backgroundColor : PassColor.backgroundWeak).toColor
+            (isEnabled ? backgroundColor : backgroundDisabledColor).toColor
                 .clipShape(Circle())
 
             Image(uiImage: icon)
                 .resizable()
                 .renderingMode(.template)
                 .scaledToFit()
-                .foregroundStyle((isEnabled ? iconColor : PassColor.textDisabled).toColor)
+                .foregroundStyle((isEnabled ? iconColor : iconDisabledColor).toColor)
                 .frame(width: type.iconWidth, height: type.iconWidth)
         }
         .frame(width: type.width, height: type.width)
