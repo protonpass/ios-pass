@@ -22,6 +22,9 @@ This repository contains the source code for the Proton Pass iOS application.
 
 The app targets iOS 16 and above. Make sure you have Xcode 15+ installed, check out the repo and open `ProtonPass.xcodeproj` to run the project.
 
+You will need to build PassRustCore to be able to build the project.
+The instruction to do that is located in the [Proton Pass Common Project](https://github.com/protonpass/proton-pass-common)
+
 # Technical Choices
 
 ## UI

@@ -2,8 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>APP_VERSION_IDENTIFIER =
-	<string>$(APP_VERSION_IDENTIFIER =
+	<key>APP_VERSION_IDENTIFIER</key>
+	<string>$(APP_VERSION_IDENTIFIER)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -19,10 +19,10 @@
 	</array>
 	<key>GIT_COMMIT_HASH</key>
 	<string></string>
-	<key>IS_BETA_BUILD =
-	<string>$(IS_BETA_BUILD =
-	<key>IS_QA_BUILD =
-	<string>$(IS_QA_BUILD =
+	<key>IS_BETA_BUILD</key>
+	<string>$(IS_BETA_BUILD)</string>
+	<key>IS_QA_BUILD</key>
+	<string>$(IS_QA_BUILD)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>ITSEncryptionExportComplianceCode</key>
