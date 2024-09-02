@@ -175,7 +175,8 @@ extension Preferences: PreferencesMigrator {
                                    spotlightSearchableVaults: spotlightSearchableVaults,
                                    extraPasswordEnabled: false,
                                    protonPasswordFailedVerificationCount: 0,
-                                   lastSelectedShareId: nil)
+                                   lastSelectedShareId: nil,
+                                   lastCreatedItemShareId: nil)
         return (app, shared, user)
     }
 }
