@@ -20,6 +20,7 @@
 
 import Client
 import CoreData
+import CryptoKit
 import Foundation
 import ProtonCoreLogin
 

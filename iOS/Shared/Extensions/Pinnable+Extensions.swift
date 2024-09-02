@@ -31,8 +31,4 @@ extension Pinnable {
     var pinIcon: UIImage {
         pinned ? PassIcon.pinAngledSlash : PassIcon.pinAngled
     }
-
-    var pinMessage: String {
-        pinned ? #localized("Item successfully pinned") : #localized("Item successfully unpinned")
-    }
 }
