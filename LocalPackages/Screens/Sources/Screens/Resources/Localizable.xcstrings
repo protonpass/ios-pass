@@ -2120,6 +2120,12 @@
             "value" : "Прадвызначанае сховішча SimpleLogin"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Výchozí trezor SimpleLogin"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2174,6 +2180,12 @@
             "value" : "Brankas SimpleLogin bawaan"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cassaforte SimpleLogin predefinita"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2208,6 +2220,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seif implicit SimpleLogin"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predvolený trezor SimpleLogin"
           }
         },
         "sv" : {
@@ -2392,6 +2410,12 @@
             "value" : "Уключыць сінхранізацыю SimpleLogin"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolit synchronizaci se SimpleLogin"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2486,6 +2510,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Activare sincronizare SimpleLogin"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapnúť SimpleLogin synchronizáciu"
           }
         },
         "sv" : {
@@ -6337,6 +6367,12 @@
             "value" : "Сінхранізацыя псеўданімаў"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronizovat aliasy"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6437,6 +6473,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sincronizare aliasuri"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronizovať aliasy"
           }
         },
         "sv" : {
@@ -6805,6 +6847,36 @@
             }
           }
         },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zjistili jsme, že máte %lld aliasy, které jsou přítomné v SimpleLogin, ale chybí v Proton Pass. Chcete je importovat?"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zjistili jsme, že máte %lld aliasů, které jsou přítomné v SimpleLogin, ale chybí v Proton Pass. Chcete je importovat?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zjistili jsme, že máte %lld alias, který je přítomen v SimpleLogin, ale chybí v Proton Pass. Chcete jej importovat?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zjistili jsme, že máte %lld aliasů, které jsou přítomné v SimpleLogin, ale chybí v Proton Pass. Chcete je importovat?"
+                }
+              }
+            }
+          }
+        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -7076,6 +7148,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Am detectat că aveți %lld de aliasuri care există în SimpleLogin, dar lipsesc în Proton Pass. Doriți să le importați?"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zistili sme, že máte %lld aliasy, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zistili sme, že máte %lld alias, ktorý je prítomný v SimpleLogin, ale chýba v Proton Pass. Chcete ho naimportovať?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
                 }
               }
             }
