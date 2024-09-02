@@ -1,6 +1,5 @@
 //
-//
-// UnpinItem.swift
+// UnpinItems.swift
 // Proton Pass - Created on 30/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,33 +20,26 @@
 //
 
 import Client
-import Core
 import Entities
 
-public protocol UnpinItemUseCase: Sendable {
-    @discardableResult
-    func execute(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
+public protocol UnpinItemsUseCase: Sendable {
+    func execute(_ items: [any ItemIdentifiable]) async throws
 }
 
-public extension UnpinItemUseCase {
-    @discardableResult
-    func callAsFunction(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        try await execute(item: item)
+public extension UnpinItemsUseCase {
+    func callAsFunction(_ items: [any ItemIdentifiable]) async throws {
+        try await execute(items)
     }
 }
 
-public final class UnpinItem: UnpinItemUseCase {
+public final class UnpinItems: UnpinItemsUseCase {
     private let itemRepository: any ItemRepositoryProtocol
-    private let logger: Logger
 
-    public init(itemRepository: any ItemRepositoryProtocol,
-                logManager: any LogManagerProtocol) {
+    public init(itemRepository: any ItemRepositoryProtocol) {
         self.itemRepository = itemRepository
-        logger = .init(manager: logManager)
     }
 
-    public func execute(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        logger.trace("Pinning item \(item.debugDescription)")
-        return try await itemRepository.unpinItem(item: item)
+    public func execute(_ items: [any ItemIdentifiable]) async throws {
+        try await itemRepository.unpinItems(items)
     }
 }

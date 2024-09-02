@@ -20,6 +20,7 @@
 
 import Client
 import CoreData
+import CryptoKit
 import Entities
 import Foundation
 import ProtonCoreNetworking

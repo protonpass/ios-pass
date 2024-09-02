@@ -74,6 +74,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
+    private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
+    private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
@@ -266,7 +268,7 @@ private extension ItemsTabViewModel {
     func selectOrDeselect(_ item: ItemUiModel) {
         var items = currentSelectedItems.value
         if items.contains(item) {
-            items.removeAll(where: { $0.isEqual(with: item) })
+            items.removeAll { $0 == item }
         } else {
             items.append(item)
         }
@@ -300,12 +302,30 @@ extension ItemsTabViewModel {
         canEditItem(vaults: vaultsManager.getAllVaults(), item: item)
     }
 
+    // False negative on unhandled_throwing_task rule. Double check later with newer version of SwiftLint
+    // swiftlint:disable unhandled_throwing_task
     func pinSelectedItems() {
-        print(#function)
+        Task { [weak self] in
+            guard let self else { return }
+            await performBulkAction { [weak self] items in
+                guard let self else { return }
+                try await pinItems(items.filter { $0.pinned == false })
+            } successMessage: { items in
+                #localized("%lld items successfully pinned", items.count)
+            }
+        }
     }
 
     func unpinSelectedItems() {
-        print(#function)
+        Task { [weak self] in
+            guard let self else { return }
+            await performBulkAction { [weak self] items in
+                guard let self else { return }
+                try await unpinItems(items.filter(\.pinned))
+            } successMessage: { items in
+                #localized("%lld items successfully unpinned", items.count)
+            }
+        }
     }
 
     func presentVaultListToMoveSelectedItems() {
@@ -316,16 +336,11 @@ extension ItemsTabViewModel {
     func trashSelectedItems() {
         Task { [weak self] in
             guard let self else { return }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                router.display(element: .globalLoading(shouldShow: true))
-                let items = currentSelectedItems.value
+            await performBulkAction { [weak self] items in
+                guard let self else { return }
                 try await doTrashSelectedItems(items)
-                currentSelectedItems.send([])
-                let message = #localized("%lld items moved to trash", items.count)
-                router.display(element: .infosMessage(message, config: .dismissAndRefresh))
-            } catch {
-                handle(error: error)
+            } successMessage: { items in
+                #localized("%lld items moved to trash", items.count)
             }
         }
     }
@@ -333,16 +348,11 @@ extension ItemsTabViewModel {
     func restoreSelectedItems() {
         Task { [weak self] in
             guard let self else { return }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                router.display(element: .globalLoading(shouldShow: true))
-                let items = currentSelectedItems.value
+            await performBulkAction { [weak self] items in
+                guard let self else { return }
                 try await doRestoreSelectedItems(items)
-                currentSelectedItems.send([])
-                let message = #localized("Restored %lld items", items.count)
-                router.display(element: .successMessage(message, config: .dismissAndRefresh))
-            } catch {
-                handle(error: error)
+            } successMessage: { items in
+                #localized("Restored %lld items", items.count)
             }
         }
     }
@@ -350,20 +360,17 @@ extension ItemsTabViewModel {
     func permanentlyDeleteSelectedItems() {
         Task { [weak self] in
             guard let self else { return }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                router.display(element: .globalLoading(shouldShow: true))
-                let items = currentSelectedItems.value
+            await performBulkAction { [weak self] items in
+                guard let self else { return }
                 let userId = try await userManager.getActiveUserId()
                 try await doPermanentlyDeleteSelectedItems(userId: userId, items)
-                currentSelectedItems.send([])
-                let message = #localized("Permanently deleted %lld items", items.count)
-                router.display(element: .infosMessage(message, config: .dismissAndRefresh))
-            } catch {
-                handle(error: error)
+            } successMessage: { items in
+                #localized("Permanently deleted %lld items", items.count)
             }
         }
     }
+
+    // swiftlint:enable unhandled_throwing_task
 
     func askForBulkPermanentDeleteConfirmation() {
         let items = currentSelectedItems.value
@@ -453,6 +460,23 @@ extension ItemsTabViewModel {
     }
 }
 
+private extension ItemsTabViewModel {
+    func performBulkAction(_ action: ([ItemUiModel]) async throws -> Void,
+                           successMessage: ([ItemUiModel]) -> String) async {
+        defer { router.display(element: .globalLoading(shouldShow: false)) }
+        do {
+            router.display(element: .globalLoading(shouldShow: true))
+            let items = currentSelectedItems.value
+            try await action(items)
+            currentSelectedItems.send([])
+            let message = successMessage(items)
+            router.display(element: .successMessage(message, config: .dismissAndRefresh))
+        } catch {
+            handle(error: error)
+        }
+    }
+}
+
 // MARK: - SortTypeListViewModelDelegate
 
 extension ItemsTabViewModel: SortTypeListViewModelDelegate {
@@ -477,11 +501,5 @@ extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
 private extension [UserInvite] {
     var toInfoBanners: InfoBanner {
         .invite(self)
-    }
-}
-
-private extension [ItemIdentifiable] {
-    func contains(_ otherItem: any ItemIdentifiable) -> Bool {
-        contains(where: { $0.isEqual(with: otherItem) })
     }
 }
