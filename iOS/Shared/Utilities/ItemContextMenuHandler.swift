@@ -153,13 +153,9 @@ extension ItemContextMenuHandler {
             guard let self else { return }
             let userId = try await userManager.getActiveUserId()
             try await itemRepository.changeAliasStatus(userId: userId,
-                                                       item: itemContent,
+                                                       items: [itemContent],
                                                        enabled: enabled)
-            let message = if enabled {
-                #localized("Alias enabled")
-            } else {
-                #localized("Alias disabled")
-            }
+            let message = enabled ? #localized("Alias enabled") : #localized("Alias disabled")
             await router.display(element: .infosMessage(message, config: .refresh))
         }
     }
