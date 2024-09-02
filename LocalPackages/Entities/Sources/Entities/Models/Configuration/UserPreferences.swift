@@ -41,18 +41,23 @@ public struct UserPreferences: Codable, Equatable, Sendable {
     /// `shareId` of the last selected vault. `nil` if all vaults are selected
     public var lastSelectedShareId: String?
 
+    /// `shareId` of the last created item
+    public var lastCreatedItemShareId: String?
+
     public init(spotlightEnabled: Bool,
                 spotlightSearchableContent: SpotlightSearchableContent,
                 spotlightSearchableVaults: SpotlightSearchableVaults,
                 extraPasswordEnabled: Bool,
                 protonPasswordFailedVerificationCount: Int,
-                lastSelectedShareId: String?) {
+                lastSelectedShareId: String?,
+                lastCreatedItemShareId: String?) {
         self.spotlightEnabled = spotlightEnabled
         self.spotlightSearchableContent = spotlightSearchableContent
         self.spotlightSearchableVaults = spotlightSearchableVaults
         self.extraPasswordEnabled = extraPasswordEnabled
         self.protonPasswordFailedVerificationCount = protonPasswordFailedVerificationCount
         self.lastSelectedShareId = lastSelectedShareId
+        self.lastCreatedItemShareId = lastCreatedItemShareId
     }
 }
 
@@ -64,6 +69,7 @@ private extension UserPreferences {
         static let extraPasswordEnabled = false
         static let protonPasswordFailedVerificationCount = 0
         static let lastSelectedShareId: String? = nil
+        static let lastCreatedItemShareId: String? = nil
     }
 
     enum CodingKeys: String, CodingKey {
@@ -73,6 +79,7 @@ private extension UserPreferences {
         case extraPasswordEnabled
         case protonPasswordFailedVerificationCount
         case lastSelectedShareId
+        case lastCreatedItemShareId
     }
 }
 
@@ -89,13 +96,15 @@ public extension UserPreferences {
         let protonPasswordFailedVerificationCount =
             try container.decodeIfPresent(Int.self, forKey: .protonPasswordFailedVerificationCount)
         let lastSelectedShareId = try container.decodeIfPresent(String?.self, forKey: .lastSelectedShareId)
+        let lastCreatedItemShareId = try container.decodeIfPresent(String?.self, forKey: .lastCreatedItemShareId)
         self.init(spotlightEnabled: spotlightEnabled ?? Default.spotlightEnabled,
                   spotlightSearchableContent: spotlightSearchableContent ?? Default.spotlightSearchableContent,
                   spotlightSearchableVaults: spotlightSearchableVaults ?? Default.spotlightSearchableVaults,
                   extraPasswordEnabled: extraPasswordEnabled ?? Default.extraPasswordEnabled,
                   protonPasswordFailedVerificationCount: protonPasswordFailedVerificationCount
                       ?? Default.protonPasswordFailedVerificationCount,
-                  lastSelectedShareId: lastSelectedShareId ?? Default.lastSelectedShareId)
+                  lastSelectedShareId: lastSelectedShareId ?? Default.lastSelectedShareId,
+                  lastCreatedItemShareId: lastCreatedItemShareId ?? Default.lastCreatedItemShareId)
     }
 }
 
@@ -106,7 +115,8 @@ extension UserPreferences: Defaultable {
               spotlightSearchableVaults: Default.spotlightSearchableVaults,
               extraPasswordEnabled: Default.extraPasswordEnabled,
               protonPasswordFailedVerificationCount: Default.protonPasswordFailedVerificationCount,
-              lastSelectedShareId: Default.lastSelectedShareId)
+              lastSelectedShareId: Default.lastSelectedShareId,
+              lastCreatedItemShareId: Default.lastCreatedItemShareId)
     }
 }
 
