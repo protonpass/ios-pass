@@ -263,7 +263,7 @@ private extension ItemsTabViewModel {
         }
     }
 
-    func selectOrDeselect(_ item: any ItemIdentifiable) {
+    func selectOrDeselect(_ item: ItemUiModel) {
         var items = currentSelectedItems.value
         if items.contains(item) {
             items.removeAll(where: { $0.isEqual(with: item) })
@@ -298,6 +298,14 @@ extension ItemsTabViewModel {
 
     func isEditable(_ item: any ItemIdentifiable) -> Bool {
         canEditItem(vaults: vaultsManager.getAllVaults(), item: item)
+    }
+
+    func pinSelectedItems() {
+        print(#function)
+    }
+
+    func unpinSelectedItems() {
+        print(#function)
     }
 
     func presentVaultListToMoveSelectedItems() {
@@ -424,7 +432,7 @@ extension ItemsTabViewModel {
         }
     }
 
-    func handleSelection(_ item: any ItemIdentifiable) {
+    func handleSelection(_ item: ItemUiModel) {
         if isEditMode {
             selectOrDeselect(item)
         } else {
@@ -432,7 +440,7 @@ extension ItemsTabViewModel {
         }
     }
 
-    func handleThumbnailSelection(_ item: any ItemIdentifiable) {
+    func handleThumbnailSelection(_ item: ItemUiModel) {
         if isEditable(item) {
             selectOrDeselect(item)
             isEditMode = true
