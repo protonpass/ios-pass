@@ -38,12 +38,17 @@ extension VaultSelection {
     }
 }
 
+enum TogglePinningOption {
+    case pin, unpin
+}
+
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var actionsDisabled = true
+    @Published private(set) var togglePinningOption: TogglePinningOption = .pin
 
     var selectedItemsCount: Int {
         currentSelectedItems.value.count
@@ -61,6 +66,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
             .sink { [weak self] items in
                 guard let self else { return }
                 actionsDisabled = items.isEmpty
+                togglePinningOption = items.allSatisfy(\.pinned) ? .unpin : .pin
             }
             .store(in: &cancellables)
     }

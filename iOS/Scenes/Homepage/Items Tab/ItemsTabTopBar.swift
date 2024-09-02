@@ -31,6 +31,8 @@ struct ItemsTabTopBar: View {
     @Binding var isEditMode: Bool
     let onSearch: () -> Void
     let onShowVaultList: () -> Void
+    let onPin: () -> Void
+    let onUnpin: () -> Void
     let onMove: () -> Void
     let onTrash: () -> Void
     let onRestore: () -> Void
@@ -133,9 +135,17 @@ private extension ItemsTabTopBar {
                     Text(verbatim: "\(viewModel.selectedItemsCount)")
                         .font(.title3.bold())
                         .foregroundStyle(PassColor.textNorm.toColor)
+                        .monospacedDigit()
                 }
 
                 Spacer()
+
+                switch viewModel.togglePinningOption {
+                case .pin:
+                    button(action: onPin, icon: PassIcon.pinAngled)
+                case .unpin:
+                    button(action: onUnpin, icon: PassIcon.pinAngledSlash)
+                }
 
                 switch viewModel.vaultSelection {
                 case .all, .precise:
@@ -152,7 +162,7 @@ private extension ItemsTabTopBar {
                 }
             }
             .padding(.horizontal)
-            .animation(.default, value: viewModel.selectedItemsCount > 0)
+            .animation(.default, value: viewModel.selectedItemsCount)
 
             Spacer()
 
