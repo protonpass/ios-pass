@@ -109,13 +109,9 @@ private extension AliasDetailViewModel {
                 togglingAliasStatus = true
                 let userId = try await userManager.getActiveUserId()
                 try await itemRepository.changeAliasStatus(userId: userId,
-                                                           item: itemContent,
+                                                           items: [itemContent],
                                                            enabled: enabled)
-                let message = if enabled {
-                    #localized("Alias enabled")
-                } else {
-                    #localized("Alias disabled")
-                }
+                let message = enabled ? #localized("Alias enabled") : #localized("Alias disabled")
                 router.display(element: .infosMessage(message, config: .refresh))
                 logger.trace("Successfully updated the alias status of \(enabled)")
                 aliasEnabled = enabled

@@ -371,11 +371,33 @@ extension ItemsTabViewModel {
     }
 
     func disableSelectedAliases() {
-        print(#function)
+        Task { [weak self] in
+            guard let self else { return }
+            await performBulkAction { [weak self] items in
+                guard let self else { return }
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.changeAliasStatus(userId: userId,
+                                                           items: items.filter(\.aliasEnabled),
+                                                           enabled: false)
+            } successMessage: { items in
+                #localized("%lld aliases disabled", items.count)
+            }
+        }
     }
 
     func enableSelectedAliases() {
-        print(#function)
+        Task { [weak self] in
+            guard let self else { return }
+            await performBulkAction { [weak self] items in
+                guard let self else { return }
+                let userId = try await userManager.getActiveUserId()
+                try await itemRepository.changeAliasStatus(userId: userId,
+                                                           items: items.filter(\.aliasDisabled),
+                                                           enabled: true)
+            } successMessage: { items in
+                #localized("%lld aliases enabled", items.count)
+            }
+        }
     }
 
     // swiftlint:enable unhandled_throwing_task

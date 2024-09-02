@@ -142,13 +142,6 @@ private extension ItemsTabTopBar {
 
                 Spacer()
 
-                switch viewModel.togglePinningOption {
-                case .pin:
-                    button(action: onPin, icon: PassIcon.pinAngled)
-                case .unpin:
-                    button(action: onUnpin, icon: PassIcon.pinAngledSlash)
-                }
-
                 switch viewModel.vaultSelection {
                 case .all, .precise:
                     button(action: onMove, icon: IconProvider.folderArrowIn)
@@ -163,22 +156,21 @@ private extension ItemsTabTopBar {
                            color: PassColor.signalDanger)
                 }
 
-                if !viewModel.extraOptions.isEmpty {
-                    Menu(content: {
-                        ForEach(viewModel.extraOptions, id: \.self) { option in
+                Menu(content: {
+                    ForEach(viewModel.extraOptions, id: \.self) { option in
+                        Section {
                             Button(action: { handle(extraOption: option) },
                                    label: { Label(option.title, uiImage: option.icon) })
                         }
-                    }, label: {
-                        CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: PassColor.textNorm,
-                                     backgroundColor: .clear)
-                    })
-                }
+                    }
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: PassColor.textNorm,
+                                 backgroundColor: .clear)
+                })
             }
             .padding(.horizontal)
             .animation(.default, value: viewModel.selectedItemsCount)
-            .animation(.default, value: viewModel.extraOptions)
 
             Spacer()
 
@@ -199,6 +191,10 @@ private extension ItemsTabTopBar {
 
     func handle(extraOption: ExtraBulkActionOption) {
         switch extraOption {
+        case .pin:
+            onPin()
+        case .unpin:
+            onUnpin()
         case .disableAliases:
             onDisableAliases()
         case .enableAliases:
