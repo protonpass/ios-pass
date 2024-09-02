@@ -84,7 +84,9 @@ struct ItemsTabView: View {
                                onMove: { viewModel.presentVaultListToMoveSelectedItems() },
                                onTrash: { viewModel.trashSelectedItems() },
                                onRestore: { viewModel.restoreSelectedItems() },
-                               onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() })
+                               onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() },
+                               onDisableAliases: { viewModel.disableSelectedAliases() },
+                               onEnableAliases: { viewModel.enableSelectedAliases() })
 
                 if viewModel.showingUpgradeAppBanner {
                     Button(action: { viewModel.openAppOnAppStore() },

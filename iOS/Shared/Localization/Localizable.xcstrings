@@ -37666,6 +37666,16 @@
         }
       }
     },
+    "Disable aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable aliases"
+          }
+        }
+      }
+    },
     "Disable instead" : {
       "localizations" : {
         "be" : {
@@ -41266,6 +41276,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma adı kullanıma al"
+          }
+        }
+      }
+    },
+    "Enable aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable aliases"
           }
         }
       }
