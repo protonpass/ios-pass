@@ -668,45 +668,41 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetActiveLogInItems()
         return stubbedGetActiveLogInItemsResult
     }
-    // MARK: - pinItem
-    public var pinItemItemThrowableError33: Error?
-    public var closurePinItem: () -> () = {}
-    public var invokedPinItemfunction = false
-    public var invokedPinItemCount = 0
-    public var invokedPinItemParameters: (item: any ItemIdentifiable, Void)?
-    public var invokedPinItemParametersList = [(item: any ItemIdentifiable, Void)]()
-    public var stubbedPinItemResult: SymmetricallyEncryptedItem!
+    // MARK: - pinItems
+    public var pinItemsThrowableError33: Error?
+    public var closurePinItems: () -> () = {}
+    public var invokedPinItemsfunction = false
+    public var invokedPinItemsCount = 0
+    public var invokedPinItemsParameters: (items: [any ItemIdentifiable], Void)?
+    public var invokedPinItemsParametersList = [(items: [any ItemIdentifiable], Void)]()
 
-    public func pinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        invokedPinItemfunction = true
-        invokedPinItemCount += 1
-        invokedPinItemParameters = (item, ())
-        invokedPinItemParametersList.append((item, ()))
-        if let error = pinItemItemThrowableError33 {
+    public func pinItems(_ items: [any ItemIdentifiable]) async throws {
+        invokedPinItemsfunction = true
+        invokedPinItemsCount += 1
+        invokedPinItemsParameters = (items, ())
+        invokedPinItemsParametersList.append((items, ()))
+        if let error = pinItemsThrowableError33 {
             throw error
         }
-        closurePinItem()
-        return stubbedPinItemResult
+        closurePinItems()
     }
-    // MARK: - unpinItem
-    public var unpinItemItemThrowableError34: Error?
-    public var closureUnpinItem: () -> () = {}
-    public var invokedUnpinItemfunction = false
-    public var invokedUnpinItemCount = 0
-    public var invokedUnpinItemParameters: (item: any ItemIdentifiable, Void)?
-    public var invokedUnpinItemParametersList = [(item: any ItemIdentifiable, Void)]()
-    public var stubbedUnpinItemResult: SymmetricallyEncryptedItem!
+    // MARK: - unpinItems
+    public var unpinItemsThrowableError34: Error?
+    public var closureUnpinItems: () -> () = {}
+    public var invokedUnpinItemsfunction = false
+    public var invokedUnpinItemsCount = 0
+    public var invokedUnpinItemsParameters: (items: [any ItemIdentifiable], Void)?
+    public var invokedUnpinItemsParametersList = [(items: [any ItemIdentifiable], Void)]()
 
-    public func unpinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        invokedUnpinItemfunction = true
-        invokedUnpinItemCount += 1
-        invokedUnpinItemParameters = (item, ())
-        invokedUnpinItemParametersList.append((item, ()))
-        if let error = unpinItemItemThrowableError34 {
+    public func unpinItems(_ items: [any ItemIdentifiable]) async throws {
+        invokedUnpinItemsfunction = true
+        invokedUnpinItemsCount += 1
+        invokedUnpinItemsParameters = (items, ())
+        invokedUnpinItemsParametersList.append((items, ()))
+        if let error = unpinItemsThrowableError34 {
             throw error
         }
-        closureUnpinItem()
-        return stubbedUnpinItemResult
+        closureUnpinItems()
     }
     // MARK: - getAllPinnedItems
     public var getAllPinnedItemsThrowableError35: Error?

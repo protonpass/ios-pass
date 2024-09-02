@@ -4738,6 +4738,50 @@
         }
       }
     },
+    "%lld items successfully pinned" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item successfully pinned"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items successfully pinned"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld items successfully unpinned" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item successfully unpinned"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items successfully unpinned"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld member(s)" : {
       "localizations" : {
         "be" : {
