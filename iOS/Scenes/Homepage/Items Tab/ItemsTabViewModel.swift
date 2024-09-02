@@ -370,6 +370,14 @@ extension ItemsTabViewModel {
         }
     }
 
+    func disableSelectedAliases() {
+        print(#function)
+    }
+
+    func enableSelectedAliases() {
+        print(#function)
+    }
+
     // swiftlint:enable unhandled_throwing_task
 
     func askForBulkPermanentDeleteConfirmation() {

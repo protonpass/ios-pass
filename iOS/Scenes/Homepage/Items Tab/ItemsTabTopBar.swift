@@ -37,6 +37,8 @@ struct ItemsTabTopBar: View {
     let onTrash: () -> Void
     let onRestore: () -> Void
     let onPermanentlyDelete: () -> Void
+    let onDisableAliases: () -> Void
+    let onEnableAliases: () -> Void
 
     var body: some View {
         ZStack {
@@ -160,9 +162,23 @@ private extension ItemsTabTopBar {
                            icon: IconProvider.trashCross,
                            color: PassColor.signalDanger)
                 }
+
+                if !viewModel.extraOptions.isEmpty {
+                    Menu(content: {
+                        ForEach(viewModel.extraOptions, id: \.self) { option in
+                            Button(action: { handle(extraOption: option) },
+                                   label: { Label(option.title, uiImage: option.icon) })
+                        }
+                    }, label: {
+                        CircleButton(icon: IconProvider.threeDotsVertical,
+                                     iconColor: PassColor.textNorm,
+                                     backgroundColor: .clear)
+                    })
+                }
             }
             .padding(.horizontal)
             .animation(.default, value: viewModel.selectedItemsCount)
+            .animation(.default, value: viewModel.extraOptions)
 
             Spacer()
 
@@ -179,5 +195,14 @@ private extension ItemsTabTopBar {
         }
         .disabled(viewModel.actionsDisabled)
         .animation(.default, value: viewModel.actionsDisabled)
+    }
+
+    func handle(extraOption: ExtraBulkActionOption) {
+        switch extraOption {
+        case .disableAliases:
+            onDisableAliases()
+        case .enableAliases:
+            onEnableAliases()
+        }
     }
 }
