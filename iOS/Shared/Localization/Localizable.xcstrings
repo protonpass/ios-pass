@@ -11455,6 +11455,24 @@
             "state" : "translated",
             "value" : "Add email or username"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un correo electrónico o un nombre de usuario"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un correo electrónico o un nombre de usuario"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une adresse e-mail ou un nom d'utilisateur"
+          }
         }
       }
     },
@@ -15818,6 +15836,12 @@
             "value" : "Alias dezactivat"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias vypnutý"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15940,6 +15964,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias activat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias zapnutý"
           }
         },
         "sv" : {
@@ -16864,6 +16894,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aliasurile din gunoi vor continua să redirecționeze mesajele primite. Dacă doriți să nu mai primiți mesaje la această adresă, dezactivați-o."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasy v koši budú aj naďalej preposielať emaily. Ak chcete prestať dostávať emaily na túto adresu, vypnite ju."
           }
         },
         "sv" : {
@@ -20009,6 +20045,12 @@
             "value" : "Atașare"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Priložiť"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20138,6 +20180,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fișiere atașate"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prílohy"
           }
         },
         "sv" : {
@@ -36151,6 +36199,12 @@
             "value" : "Domeniu implicit pentru aliasuri"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predvolená doména pre aliasy"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36279,6 +36333,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cont de e-mail implicit pentru aliasuri"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predvolená poštová schránka pre aliasy"
           }
         },
         "sv" : {
@@ -37531,6 +37591,12 @@
             "value" : "Dezactivare alias"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vypnúť alias"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37613,6 +37679,12 @@
             "value" : "Nonaktifkan saja"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disabilita invece"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37647,6 +37719,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dezactivare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Namiesto toho vypnúť"
           }
         },
         "sv" : {
@@ -40060,10 +40138,160 @@
     },
     "Email or username" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Электронная пошта або імя карыстальніка"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail nebo uživatelské jméno"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail eller brugernavn"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E‐Mail‐Adresse oder Benutzername"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διεύθυνση ή όνομα χρήστη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email or username"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección de correo electrónico o nombre de usuario"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correo o nombre de usuario"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sähköpostiosoite tai käyttäjätunnus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse e-mail ou nom d'utilisateur"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email atau nama pengguna"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email o nome utente"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールアドレスまたはユーザー名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელფოსტა ან მომხმარებლის სახელი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일 또는 사용자 이름"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-post eller brukernavn"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mailadres of gebruikersnaam"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres e-mail lub nazwa użytkownika"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail ou nome de usuário"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail sau utilizator"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email alebo používateľské meno"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-pošta ali uporabniško ime"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-post eller användarnamn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta adresi ya da kullanıcı adı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Е-пошта чи ім'я користувача"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email hoặc tên người dùng"
           }
         }
       }
@@ -40965,6 +41193,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Activare alias"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapnúť alias"
           }
         },
         "sv" : {
@@ -46796,6 +47030,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fișier"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Súbor"
           }
         },
         "sv" : {
@@ -52960,6 +53200,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ascundere număr de securitate socială"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukryť rodné číslo (číslo sociálneho poistenia)"
           }
         },
         "sv" : {
@@ -64564,6 +64810,12 @@
             "value" : "Conturi de e-mail"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poštové schránky"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68119,6 +68371,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mutare în «Gunoi»"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presunúť do koša"
           }
         },
         "sv" : {
@@ -80281,6 +80539,12 @@
             "value" : "Furnizați mai multe detalii în descriere."
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do popisu uveďte viac podrobností, prosím"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -80410,6 +80674,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Selectați un motiv"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte dôvod, prosím"
           }
         },
         "sv" : {
@@ -84235,7 +84505,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminare toate legăturile web inactive"
+            "value" : "Eliminare toate legături weble web inactive"
           }
         },
         "sk" : {
@@ -89590,6 +89860,12 @@
             "value" : "Captură de ecran"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snímka obrazovky"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89615,7 +89891,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Posuňte pro další"
+            "value" : "Přejděte dolů pro více informací"
           }
         },
         "da" : {
@@ -89712,6 +89988,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Derulați pentru mai mult"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prejdite nižšie pre viac informácií"
           }
         },
         "sv" : {
@@ -91074,7 +91356,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Legături web sigure"
+            "value" : "Legături web securizate"
           }
         },
         "sk" : {
@@ -93143,6 +93425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Selectați motivul"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte dôvod"
           }
         },
         "sv" : {
@@ -98455,6 +98743,12 @@
             "value" : "Afișare număr de securitate socială"
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť rodné číslo (číslo sociálneho poistenia)"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -98957,6 +99251,30 @@
             "state" : "translated",
             "value" : "Signed in as %@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado como %@"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectado como %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecté en tant que %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceduto come %@"
+          }
         }
       }
     },
@@ -98966,6 +99284,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Псеўданімы SimpleLogin будуць імпартаваны ў гэта сховішча."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin aliasy budou importovány do tohoto trezoru."
           }
         },
         "da" : {
@@ -99064,6 +99388,12 @@
             "value" : "Aliasurile SimpleLogin vor fi importate în acest seif."
           }
         },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasy SimpleLogin budú importované do tohto trezora."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -99084,6 +99414,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сінхранізацыя SimpleLogin"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronizace SimpleLogin"
           }
         },
         "da" : {
@@ -99186,6 +99522,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sincronizare SimpleLogin"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin synchronizácia"
           }
         },
         "sv" : {
@@ -101903,6 +102245,12 @@
             "value" : "Сінхранізацыя псеўданімаў"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronizovat aliasy"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -102003,6 +102351,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sincronizare aliasuri"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronizovať aliasy"
           }
         },
         "sv" : {
@@ -116685,7 +117039,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afișare toate legăturile web sigure"
+            "value" : "Afișare toate legături weble web securizate"
           }
         },
         "sk" : {
@@ -118324,6 +118678,12 @@
             "value" : "Сістэма выявіла, што ў вашых наладах аўтэнтыфікацыі па біяметрыі адбыліся змяненні. У мэтах бяспекі, вам неабходна паўторна ўвайсці ў сістэму."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zjistili jsme změnu ve vašem nastavení biometrického ověřování. Z bezpečnostních důvodů jste byli odhlášeni."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -118418,6 +118778,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Am detectat o modificare a setărilor de autentificare biometrică. Din motive de securitate, contul a fost deconectat."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zistili sme zmenu vo vašich nastaveniach biometrického overovania. Z bezpečnostných dôvodov došlo k odhláseniu."
           }
         },
         "sv" : {
@@ -122847,7 +123213,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Momentan nu aveți legături web sigure"
+            "value" : "Momentan nu aveți legături web web securizate"
           }
         },
         "sk" : {
@@ -126150,6 +126516,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваш тарыфны план дазваляе выкарыстоўваць элементы толькі з вашых двух першых сховішч у якасці аўтазапаўнення."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Váš tarif umožňuje pro automatické vyplňování použít pouze položky z prvních 2 trezorů."
           }
         },
         "da" : {
