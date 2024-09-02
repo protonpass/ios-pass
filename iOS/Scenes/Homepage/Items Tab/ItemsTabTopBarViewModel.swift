@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import DesignSystem
 import Entities
 import Factory
 import Macro
@@ -40,16 +41,18 @@ extension VaultSelection {
     }
 }
 
-enum TogglePinningOption {
-    case pin, unpin
-}
-
 enum ExtraBulkActionOption {
+    case pin
+    case unpin
     case disableAliases
     case enableAliases
 
     var title: LocalizedStringKey {
         switch self {
+        case .pin:
+            "Pin"
+        case .unpin:
+            "Unpin"
         case .disableAliases:
             "Disable aliases"
         case .enableAliases:
@@ -59,6 +62,10 @@ enum ExtraBulkActionOption {
 
     var icon: UIImage {
         switch self {
+        case .pin:
+            PassIcon.pinAngled
+        case .unpin:
+            PassIcon.pinAngledSlash
         case .disableAliases:
             IconProvider.circleSlash
         case .enableAliases:
@@ -74,7 +81,6 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var actionsDisabled = true
-    @Published private(set) var togglePinningOption: TogglePinningOption = .pin
     @Published private(set) var extraOptions: [ExtraBulkActionOption] = []
 
     var selectedItemsCount: Int {
@@ -95,9 +101,15 @@ final class ItemsTabTopBarViewModel: ObservableObject {
             .sink { [weak self] items in
                 guard let self else { return }
                 actionsDisabled = items.isEmpty
-                togglePinningOption = items.allSatisfy(\.pinned) ? .unpin : .pin
 
                 extraOptions.removeAll()
+
+                if items.allSatisfy(\.pinned) {
+                    extraOptions.append(.unpin)
+                } else {
+                    extraOptions.append(.pin)
+                }
+
                 if aliasSyncEnabled, items.allSatisfy(\.isAlias) {
                     if items.allSatisfy({ $0.aliasEnabled == false }) {
                         extraOptions.append(.enableAliases)
