@@ -61,8 +61,13 @@ private extension HomepageCoordinator {
     }
 
     func createNewItem() {
-        let viewModel = ItemTypeListViewModel()
-        viewModel.delegate = self
+        let viewModel = ItemTypeListViewModel(mode: .hostApp) { [weak self] type in
+            guard let self else { return }
+            dismissTopMostViewController { [weak self] in
+                guard let self else { return }
+                presentCreateItemView(for: type)
+            }
+        }
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
         viewController.sheetPresentationController?.detents = [.medium(), .large()]

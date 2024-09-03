@@ -60,6 +60,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
+    @LazyInjected(\SharedUseCasesContainer.getUserPreferences) private var getUserPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
@@ -223,7 +224,7 @@ private extension CredentialProviderCoordinator {
     func createNewLoginWithPasskey(_ request: PasskeyCredentialRequest) {
         Task { [weak self] in
             guard let self else { return }
-            await showCreateLoginView(url: nil, request: request)
+            await showCreateNewItem(for: .login(nil, request))
         }
     }
 }
@@ -383,7 +384,7 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    func showCreateLoginView(url: URL?, request: PasskeyCredentialRequest?) async {
+    func showCreateNewItem(for mode: AutoFillCreationMode) async {
         do {
             showLoadingHud()
             let userId = try await userManager.getActiveUserId()
@@ -393,18 +394,35 @@ private extension CredentialProviderCoordinator {
             let vaults = vaultsManager.getAllVaultContents().map(\.vault)
 
             hideLoadingHud()
-            let creationType = ItemCreationType.login(title: url?.host,
-                                                      url: url?.schemeAndHost,
-                                                      autofill: true,
-                                                      passkeyCredentialRequest: request)
-            let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: vaults.oldestOwned?.shareId ?? "",
-                                                                       type: creationType),
-                                                         upgradeChecker: upgradeChecker,
-                                                         vaults: vaults)
-            viewModel.delegate = self
-            let view = CreateEditLoginView(viewModel: viewModel)
-            present(view)
-            currentCreateEditItemViewModel = viewModel
+
+            let lastCreateItemVault = vaults.first { $0.shareId == getUserPreferences().lastCreatedItemShareId }
+            let shareId = (lastCreateItemVault ?? vaults.oldestOwned)?.shareId ?? ""
+
+            switch mode {
+            case let .login(url, request):
+                let creationType = ItemCreationType.login(title: url?.host,
+                                                          url: url?.schemeAndHost,
+                                                          autofill: true,
+                                                          passkeyCredentialRequest: request)
+                let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
+                                                                           type: creationType),
+                                                             upgradeChecker: upgradeChecker,
+                                                             vaults: vaults)
+                viewModel.delegate = self
+                present(CreateEditLoginView(viewModel: viewModel),
+                        dismissBeforePresenting: true)
+                currentCreateEditItemViewModel = viewModel
+
+            case .alias:
+                let viewModel = try CreateEditAliasViewModel(mode: .create(shareId: shareId,
+                                                                           type: .alias),
+                                                             upgradeChecker: upgradeChecker,
+                                                             vaults: vaults)
+                viewModel.delegate = self
+                present(CreateEditAliasView(viewModel: viewModel),
+                        dismissBeforePresenting: true)
+                currentCreateEditItemViewModel = viewModel
+            }
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
@@ -426,16 +444,27 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func present(_ view: some View) {
+    func present(_ view: some View, dismissBeforePresenting: Bool) {
         let viewController = UIHostingController(rootView: view)
-        present(viewController)
+        present(viewController, dismissBeforePresenting: dismissBeforePresenting)
     }
 
-    func present(_ viewController: UIViewController, animated: Bool = true, dismissible: Bool = false) {
+    func present(_ viewController: UIViewController,
+                 animated: Bool = true,
+                 dismissible: Bool = false,
+                 dismissBeforePresenting: Bool = false) {
         viewController.isModalInPresentation = !dismissible
         viewController.overrideUserInterfaceStyle = rootViewController?
             .overrideUserInterfaceStyle ?? .unspecified
-        topMostViewController?.present(viewController, animated: animated)
+        if dismissBeforePresenting {
+            rootViewController?.topMostViewController.dismiss(animated: animated) { [weak self] in
+                guard let self else { return }
+                rootViewController?.topMostViewController.present(viewController,
+                                                                  animated: animated)
+            }
+        } else {
+            topMostViewController?.present(viewController, animated: animated)
+        }
     }
 
     func startUpgradeFlow() {
@@ -492,10 +521,10 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
         present(viewController, dismissible: true)
     }
 
-    func credentialsViewModelWantsToCreateLoginItem(url: URL?) {
+    func credentialsViewModelWantsToCreateNewItem(_ mode: AutoFillCreationMode) {
         Task { [weak self] in
             guard let self else { return }
-            await showCreateLoginView(url: url, request: nil)
+            await showCreateNewItem(for: mode)
         }
     }
 }
@@ -547,6 +576,12 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
                     logger.error(error)
                 }
             }
+
+        case .alias:
+            if let email = item.item.aliasEmail {
+                context?.completeRequest(withSelectedCredential: .init(user: email, password: ""))
+            }
+
         default:
             handleCreatedItem(type)
         }
