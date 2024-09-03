@@ -384,11 +384,12 @@ private extension CreateEditLoginView {
                 Text("Email or username")
                     .sectionTitleText()
 
-                TextField("Add email or username", text: $viewModel.emailOrUsername)
+                TrimmingTextField("Add email or username", text: $viewModel.emailOrUsername)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .emailOrUsername)
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .keyboardType(.emailAddress)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
             }
@@ -410,11 +411,12 @@ private extension CreateEditLoginView {
                 Text("Email address")
                     .sectionTitleText()
 
-                TextField("Add email address", text: $viewModel.email)
+                TrimmingTextField("Add email address", text: $viewModel.email)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .email)
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .keyboardType(.emailAddress)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .username }
             }
@@ -436,7 +438,7 @@ private extension CreateEditLoginView {
                 Text("Username")
                     .sectionTitleText()
 
-                TextField("Add username", text: $viewModel.username)
+                TrimmingTextField("Add username", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
