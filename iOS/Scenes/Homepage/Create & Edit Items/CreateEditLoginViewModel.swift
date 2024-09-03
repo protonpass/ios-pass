@@ -300,7 +300,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func expandEmailAndUsername() {
         guard !emailUsernameExpanded else { return }
         defer { emailUsernameExpanded = true }
-        guard !emailOrUsername.isEmpty, !email.isEmpty, !username.isEmpty else { return }
+        guard emailOrUsername != email, emailOrUsername != username else { return }
 
         if validateEmail(email: emailOrUsername) {
             email = emailOrUsername
@@ -436,6 +436,10 @@ extension CreateEditLoginViewModel: GeneratePasswordViewModelDelegate {
 extension CreateEditLoginViewModel: AliasCreationLiteInfoDelegate {
     func aliasLiteCreationInfo(_ info: AliasCreationLiteInfo) {
         aliasCreationLiteInfo = info
-        email = info.aliasAddress
+        if emailUsernameExpanded {
+            email = info.aliasAddress
+        } else {
+            emailOrUsername = info.aliasAddress
+        }
     }
 }
