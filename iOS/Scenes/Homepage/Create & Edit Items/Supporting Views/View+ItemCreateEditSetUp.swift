@@ -24,6 +24,7 @@ import SwiftUI
 /// Set up common UI appearance for item create/edit pages
 /// e.g. navigation bar, background color, toolbar, discard changes alert...
 struct ItemCreateEditSetUpModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: BaseCreateEditItemViewModel
 
@@ -44,6 +45,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                   isFreeUser: viewModel.isFreeUser,
                                   onUpgrade: { viewModel.upgrade() })
                     .presentationDetents([.height(CGFloat(height)), .large])
+                    .environment(\.colorScheme, colorScheme)
             }
             .toolbar {
                 CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),

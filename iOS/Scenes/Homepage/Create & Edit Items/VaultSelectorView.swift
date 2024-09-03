@@ -31,7 +31,6 @@ struct VaultSelectorView: View {
     let onUpgrade: () -> Void
 
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
     private var vaults: [VaultListUiModel] {
         vaultsManager.getAllVaultContents().map { .init(vaultContent: $0) }
@@ -66,7 +65,6 @@ struct VaultSelectorView: View {
                 }
             }
         }
-        .preferredColorScheme(getSharedPreferences().theme.colorScheme)
     }
 
     @MainActor
