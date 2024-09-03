@@ -267,34 +267,32 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func generateAlias() {
-        if let aliasOptions, let aliasCreationLiteInfo {
-            loginDelegate?
-                .createEditLoginViewModelWantsToGenerateAlias(options: aliasOptions,
-                                                              creationInfo: aliasCreationLiteInfo,
-                                                              delegate: self)
-        } else {
-            Task { [weak self] in
-                guard let self else { return }
-                defer { self.loading = false }
-                do {
-                    loading = true
-                    let aliasOptions = try await aliasRepository.getAliasOptions(shareId: selectedVault.shareId)
-                    if let firstSuffix = aliasOptions.suffixes.first,
-                       let firstMailbox = aliasOptions.mailboxes.first {
-                        var prefix = PrefixUtils.generatePrefix(fromTitle: title)
-                        if prefix.isEmpty {
-                            prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
-                        }
-
-                        self.aliasOptions = aliasOptions
-                        aliasCreationLiteInfo = .init(prefix: prefix,
-                                                      suffix: firstSuffix,
-                                                      mailboxes: [firstMailbox])
-                        generateAlias()
-                    }
-                } catch {
-                    router.display(element: .displayErrorBanner(error))
+        Task { [weak self] in
+            guard let self else { return }
+            defer { self.loading = false }
+            do {
+                loading = true
+                if aliasOptions == nil {
+                    aliasOptions = try await aliasRepository.getAliasOptions(shareId: selectedVault.shareId)
                 }
+                if let aliasOptions,
+                   let firstSuffix = aliasOptions.suffixes.first,
+                   let firstMailbox = aliasOptions.mailboxes.first {
+                    var prefix = PrefixUtils.generatePrefix(fromTitle: title)
+                    if prefix.isEmpty {
+                        prefix = String.random(allowedCharacters: [.lowercase, .digit], length: 5)
+                    }
+
+                    let info = AliasCreationLiteInfo(prefix: prefix,
+                                                     suffix: firstSuffix,
+                                                     mailboxes: [firstMailbox])
+                    loginDelegate?
+                        .createEditLoginViewModelWantsToGenerateAlias(options: aliasOptions,
+                                                                      creationInfo: info,
+                                                                      delegate: self)
+                }
+            } catch {
+                router.display(element: .displayErrorBanner(error))
             }
         }
     }
@@ -302,7 +300,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func expandEmailAndUsername() {
         guard !emailUsernameExpanded else { return }
         defer { emailUsernameExpanded = true }
-        guard !emailOrUsername.isEmpty else { return }
+        guard !emailOrUsername.isEmpty, !email.isEmpty, !username.isEmpty else { return }
 
         if validateEmail(email: emailOrUsername) {
             email = emailOrUsername
@@ -387,15 +385,15 @@ private extension CreateEditLoginViewModel {
         bindValues()
 
         $selectedVault
-            .eraseToAnyPublisher()
-            .dropFirst()
             .receive(on: RunLoop.main)
+            .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
+                // Reset alias options after switching vault because
+                // options are bound to vaults
                 if aliasOptions != nil {
                     aliasOptions = nil
                     aliasCreationLiteInfo = nil
-                    username = ""
                     email = ""
                 }
             }

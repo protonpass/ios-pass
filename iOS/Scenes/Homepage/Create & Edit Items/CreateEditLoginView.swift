@@ -107,6 +107,7 @@ struct CreateEditLoginView: View {
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
                     .animation(.default, value: viewModel.emailUsernameExpanded)
                     .animation(.default, value: viewModel.passkeys.count)
+                    .animation(.default, value: viewModel.isAlias)
                     .showSpinner(viewModel.loading)
                 }
                 // swiftformat:disable all
@@ -317,7 +318,13 @@ private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             if !viewModel.email.isEmpty, viewModel.isAlias {
-                pendingAliasRow
+                if viewModel.emailUsernameExpanded {
+                    pendingAliasRow(expanded: true)
+                    PassSectionDivider()
+                    usernameRow
+                } else {
+                    pendingAliasRow(expanded: false)
+                }
             } else {
                 if viewModel.emailUsernameExpanded {
                     emailRow
@@ -340,34 +347,38 @@ private extension CreateEditLoginView {
         .roundedEditableSection()
     }
 
+    var expandableEmailIcon: some View {
+        ZStack(alignment: .topTrailing) {
+            if #available(iOS 17, *) {
+                ItemDetailSectionIcon(icon: IconProvider.envelope)
+                    .buttonEmbeded {
+                        viewModel.expandEmailAndUsername()
+                    }
+                    .popoverTip(UsernameTip())
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.envelope)
+                    .buttonEmbeded {
+                        viewModel.expandEmailAndUsername()
+                    }
+            }
+
+            Image(uiImage: IconProvider.plus)
+                .resizable()
+                .renderingMode(.template)
+                .frame(width: 9, height: 9)
+                .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
+                .padding(2)
+                .background(PassColor.loginInteractionNormMinor1.toColor)
+                .clipShape(.circle)
+                .overlay(Circle()
+                    .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
+                .offset(x: 5, y: -2)
+        }
+    }
+
     var emailOrUsernameRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ZStack(alignment: .topTrailing) {
-                if #available(iOS 17, *) {
-                    ItemDetailSectionIcon(icon: IconProvider.envelope)
-                        .buttonEmbeded {
-                            viewModel.expandEmailAndUsername()
-                        }
-                        .popoverTip(UsernameTip())
-                } else {
-                    ItemDetailSectionIcon(icon: IconProvider.envelope)
-                        .buttonEmbeded {
-                            viewModel.expandEmailAndUsername()
-                        }
-                }
-
-                Image(uiImage: IconProvider.plus)
-                    .resizable()
-                    .renderingMode(.template)
-                    .frame(width: 9, height: 9)
-                    .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
-                    .padding(2)
-                    .background(PassColor.loginInteractionNormMinor1.toColor)
-                    .clipShape(.circle)
-                    .overlay(Circle()
-                        .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
-                    .offset(x: 5, y: -2)
-            }
+            expandableEmailIcon
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Email or username")
@@ -443,9 +454,13 @@ private extension CreateEditLoginView {
         .id(usernameID)
     }
 
-    var pendingAliasRow: some View {
+    func pendingAliasRow(expanded: Bool) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.alias)
+            if expanded {
+                ItemDetailSectionIcon(icon: IconProvider.envelope)
+            } else {
+                expandableEmailIcon
+            }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Email address")
