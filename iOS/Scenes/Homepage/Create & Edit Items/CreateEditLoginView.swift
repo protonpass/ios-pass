@@ -395,7 +395,11 @@ private extension CreateEditLoginView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            ClearTextButton(text: $viewModel.emailOrUsername)
+            ClearTextButton(text: $viewModel.emailOrUsername,
+                            onClear: {
+                                viewModel.email = ""
+                                viewModel.username = ""
+                            })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.emailOrUsername.isEmpty)
