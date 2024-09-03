@@ -27,6 +27,7 @@ import Screens
 import SwiftUI
 
 struct CreateAliasLiteView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateAliasLiteViewModel
     @FocusState private var focusedField: Field?

@@ -25,6 +25,7 @@ import Screens
 import SwiftUI
 
 struct CreateEditAliasView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditAliasViewModel
     @FocusState private var focusedField: Field?

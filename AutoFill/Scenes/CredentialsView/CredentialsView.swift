@@ -29,8 +29,10 @@ import Screens
 import SwiftUI
 
 struct CredentialsView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
+    @State private var showItemTypeList = false
 
     init(viewModel: CredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -80,6 +82,14 @@ struct CredentialsView: View {
                 SelectPasskeyView(info: info, context: context)
                     .presentationDetents([.height(CGFloat(info.passkeys.count * 60) + 80)])
             }
+        }
+        .sheet(isPresented: $showItemTypeList) {
+            let viewModel = ItemTypeListViewModel(mode: .autoFillExtension,
+                                                  onSelect: { self.viewModel.createNewItem($0) })
+            ItemTypeListView(viewModel: viewModel)
+                .presentationDetents([.height(200)])
+                .presentationDragIndicator(.visible)
+                .environment(\.colorScheme, colorScheme)
         }
     }
 }
@@ -133,13 +143,17 @@ private extension CredentialsView {
 
             Spacer()
 
-            CapsuleTextButton(title: #localized("Create login"),
-                              titleColor: PassColor.loginInteractionNormMajor2,
-                              backgroundColor: PassColor.loginInteractionNormMinor1,
-                              height: 52,
-                              action: { viewModel.createLoginItem() })
-                .padding(.horizontal)
-                .padding(.vertical, 8)
+            HStack {
+                CapsuleLabelButton(icon: IconProvider.plus,
+                                   title: #localized("Create"),
+                                   titleColor: PassColor.interactionNormMajor2,
+                                   backgroundColor: PassColor.interactionNormMinor1,
+                                   maxWidth: nil,
+                                   action: { showItemTypeList.toggle() })
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: viewModel.state)
