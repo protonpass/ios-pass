@@ -65,4 +65,5 @@ public struct ModifiedItem: Decodable, Sendable {
     public let state: Int64
     public let modifyTime: Int64
     public let revisionTime: Int64
+    public let flags: Int
 }
