@@ -43,22 +43,18 @@ struct AliasSyncConfigurationView: View {
         VStack(alignment: .leading) {
             Section {
                 SynchroElementRow(title: "Default domain for aliases",
-                                  content: viewModel.defaultDomain?.domain) {
-                    if !viewModel.domains.isEmpty {
-                        sheetState = .domain
-                    }
-                }
+                                  content: viewModel.defaultDomain?.domain,
+                                  loaded: !viewModel.domains.isEmpty,
+                                  action: { sheetState = .domain })
             } header: {
                 sectionHeader("Domain")
             }
 
             Section {
                 SynchroElementRow(title: "Default mailbox for aliases",
-                                  content: viewModel.defaultMailbox?.email) {
-                    if !viewModel.mailboxes.isEmpty {
-                        sheetState = .mailbox
-                    }
-                }
+                                  content: viewModel.defaultMailbox?.email,
+                                  loaded: !viewModel.mailboxes.isEmpty,
+                                  action: { sheetState = .mailbox })
             } header: {
                 sectionHeader("Mailboxes")
             }
@@ -127,11 +123,13 @@ private extension AliasSyncConfigurationView {
         case .domain:
             GenericSelectionView(title: "Default domain for aliases",
                                  selected: $viewModel.defaultDomain,
-                                 selections: viewModel.domains)
+                                 selections: viewModel.domains,
+                                 optional: true)
         case .mailbox:
             GenericSelectionView(title: "Default mailbox for aliases",
                                  selected: $viewModel.defaultMailbox,
-                                 selections: viewModel.mailboxes)
+                                 selections: viewModel.mailboxes,
+                                 optional: false)
         case .vault:
             VaultSelectionView(selectedVault: $viewModel.selectedVault,
                                vaults: viewModel.vaults)
@@ -141,7 +139,8 @@ private extension AliasSyncConfigurationView {
     func presentationDetents(for state: AliasSyncConfigurationSheetState) -> Set<PresentationDetent> {
         let customHeight: CGFloat = switch state {
         case .domain:
-            OptionRowHeight.compact.value * CGFloat(viewModel.domains.count) + 50
+            // +1 for "Not selected" option
+            OptionRowHeight.compact.value * CGFloat(viewModel.domains.count + 1) + 50
         case .mailbox:
             OptionRowHeight.compact.value * CGFloat(viewModel.mailboxes.count) + 50
         case .vault:
@@ -154,28 +153,20 @@ private extension AliasSyncConfigurationView {
 private struct SynchroElementRow: View {
     let title: LocalizedStringKey
     let content: String?
+    let loaded: Bool
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            selectedElement
-                .padding(.horizontal)
-        }
-        .buttonStyle(.plain)
-        .roundedEditableSection()
-        .padding(.bottom, 10)
-    }
-
-    private var selectedElement: some View {
         HStack {
             VStack(alignment: .leading) {
                 Text(title)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
 
-                Text(verbatim: content ?? "Placeholder text")
+                Text(verbatim: loaded ?
+                    (content ?? #localized("Not selected")) : "Placeholder text")
                     .foregroundStyle(PassColor.textNorm.toColor)
-                    .if(content == nil) { view in
+                    .if(!loaded) { view in
                         view.redacted(reason: .placeholder)
                     }
             }
@@ -190,8 +181,15 @@ private struct SynchroElementRow: View {
                 .frame(maxHeight: 20)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 70)
-        .contentShape(.rect)
+        .frame(height: OptionRowHeight.medium.value)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .buttonEmbeded {
+            if loaded {
+                action()
+            }
+        }
+        .roundedEditableSection()
+        .padding(.bottom)
     }
 }
 
@@ -230,36 +228,24 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
     let title: LocalizedStringKey
     @Binding var selected: Selection?
     let selections: [Selection]
+    let optional: Bool
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 LazyVStack(spacing: 0) {
+                    if optional {
+                        row(title: #localized("Not selected"),
+                            isSelected: selected == nil,
+                            action: { selected = nil })
+
+                        PassDivider()
+                    }
+
                     ForEach(selections) { element in
-                        let isSelected = element == selected
-                        HStack {
-                            Text(element.title)
-                                .foregroundStyle(PassColor.textNorm.toColor)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-
-                            Spacer()
-
-                            if isSelected {
-                                Image(uiImage: IconProvider.checkmark)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .foregroundStyle(PassColor.interactionNorm.toColor)
-                                    .frame(maxHeight: 20)
-                            }
-                        }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: OptionRowHeight.compact.value)
-                        .contentShape(.rect)
-                        .animation(.default, value: isSelected)
-                        .buttonEmbeded {
-                            selected = element
-                            dismiss()
-                        }
+                        row(title: element.title,
+                            isSelected: selected == element,
+                            action: { selected = element })
 
                         if element != selections.last {
                             PassDivider()
@@ -277,6 +263,32 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
                         .navigationTitleText()
                 }
             }
+        }
+    }
+
+    func row(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+        HStack {
+            Text(title)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Spacer()
+
+            if isSelected {
+                Image(uiImage: IconProvider.checkmark)
+                    .resizable()
+                    .scaledToFit()
+                    .foregroundStyle(PassColor.interactionNorm.toColor)
+                    .frame(maxHeight: 20)
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: OptionRowHeight.compact.value)
+        .contentShape(.rect)
+        .animation(.default, value: isSelected)
+        .buttonEmbeded {
+            action()
+            dismiss()
         }
     }
 }
