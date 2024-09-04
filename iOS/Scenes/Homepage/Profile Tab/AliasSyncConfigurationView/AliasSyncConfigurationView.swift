@@ -43,24 +43,24 @@ struct AliasSyncConfigurationView: View {
         VStack(alignment: .leading) {
             Section {
                 SynchroElementRow(title: "Default domain for aliases",
-                                  content: viewModel.defaultDomain?.domain ?? "") {
-                    sheetState = .domain
+                                  content: viewModel.defaultDomain?.domain) {
+                    if !viewModel.domains.isEmpty {
+                        sheetState = .domain
+                    }
                 }
             } header: {
-                Text("Domain")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .fontWeight(.bold)
+                sectionHeader("Domain")
             }
 
             Section {
                 SynchroElementRow(title: "Default mailbox for aliases",
-                                  content: viewModel.defaultMailbox?.email ?? "") {
-                    sheetState = .mailbox
+                                  content: viewModel.defaultMailbox?.email) {
+                    if !viewModel.mailboxes.isEmpty {
+                        sheetState = .mailbox
+                    }
                 }
             } header: {
-                Text("Mailboxes")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .fontWeight(.bold)
+                sectionHeader("Mailboxes")
             }
 
             if viewModel.showSyncSection {
@@ -75,9 +75,7 @@ struct AliasSyncConfigurationView: View {
                         }
                     }
                 } header: {
-                    Text("SimpleLogin sync")
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .fontWeight(.bold)
+                    sectionHeader("SimpleLogin sync")
                 }
             }
         }
@@ -89,15 +87,42 @@ struct AliasSyncConfigurationView: View {
         .background(PassColor.backgroundNorm.toColor)
         .optionalSheet(binding: $sheetState) { state in
             sheetContent(for: state)
-                .presentationDetents([.medium, .large])
+                .presentationDetents(presentationDetents(for: state))
                 .presentationDragIndicator(.visible)
         }
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
+        .alert("Error occurred",
+               isPresented: $viewModel.error.mappedToBool(),
+               actions: {
+                   Button("Try again", action: {
+                       Task {
+                           await viewModel.loadData()
+                       }
+                   })
+
+                   Button("Cancel", action: dismiss.callAsFunction)
+               },
+               message: {
+                   if let error = viewModel.error {
+                       Text(error.localizedDescription)
+                   }
+               })
+        .task {
+            await viewModel.loadData()
+        }
+    }
+}
+
+private extension AliasSyncConfigurationView {
+    func sectionHeader(_ text: LocalizedStringKey) -> some View {
+        Text(text)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .fontWeight(.bold)
     }
 
     @ViewBuilder
-    private func sheetContent(for state: AliasSyncConfigurationSheetState) -> some View {
+    func sheetContent(for state: AliasSyncConfigurationSheetState) -> some View {
         switch state {
         case .domain:
             GenericSelectionView(title: "Default domain for aliases",
@@ -112,11 +137,23 @@ struct AliasSyncConfigurationView: View {
                                vaults: viewModel.vaults)
         }
     }
+
+    func presentationDetents(for state: AliasSyncConfigurationSheetState) -> Set<PresentationDetent> {
+        let customHeight: CGFloat = switch state {
+        case .domain:
+            OptionRowHeight.compact.value * CGFloat(viewModel.domains.count) + 50
+        case .mailbox:
+            OptionRowHeight.compact.value * CGFloat(viewModel.mailboxes.count) + 50
+        case .vault:
+            OptionRowHeight.medium.value * CGFloat(viewModel.vaults.count) + 50
+        }
+        return [.height(customHeight), .large]
+    }
 }
 
 private struct SynchroElementRow: View {
     let title: LocalizedStringKey
-    let content: String
+    let content: String?
     let action: () -> Void
 
     var body: some View {
@@ -130,15 +167,20 @@ private struct SynchroElementRow: View {
     }
 
     private var selectedElement: some View {
-        HStack(spacing: 16) {
+        HStack {
             VStack(alignment: .leading) {
                 Text(title)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
 
-                Text(content)
+                Text(verbatim: content ?? "Placeholder text")
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .if(content == nil) { view in
+                        view.redacted(reason: .placeholder)
+                    }
             }
+            .animation(.default, value: content)
+
             Spacer()
 
             Image(uiImage: IconProvider.chevronRight)
@@ -195,35 +237,36 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
                 LazyVStack(spacing: 0) {
                     ForEach(selections) { element in
                         let isSelected = element == selected
-                        Button(action: {
+                        HStack {
+                            Text(element.title)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Spacer()
+
+                            if isSelected {
+                                Image(uiImage: IconProvider.checkmark)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundStyle(PassColor.interactionNorm.toColor)
+                                    .frame(maxHeight: 20)
+                            }
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: OptionRowHeight.compact.value)
+                        .contentShape(.rect)
+                        .animation(.default, value: isSelected)
+                        .buttonEmbeded {
                             selected = element
                             dismiss()
-                        }, label: {
-                            HStack(spacing: 16) {
-                                VStack(alignment: .leading) {
-                                    Text(element.title)
-                                        .foregroundStyle(PassColor.textNorm.toColor)
-                                }
+                        }
 
-                                Spacer()
-
-                                if isSelected {
-                                    Image(uiImage: IconProvider.checkmark)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .foregroundStyle(PassColor.interactionNorm.toColor)
-                                        .frame(maxHeight: 20)
-                                }
-                            }
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 70)
-                            .contentShape(.rect)
-                            .animation(.default, value: isSelected)
-                        })
-                        .buttonStyle(.plain)
-                        .padding(.horizontal)
+                        if element != selections.last {
+                            PassDivider()
+                        }
                     }
                 }
+                .padding(.horizontal)
             }
             .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
@@ -231,7 +274,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text(title)
-                        .adaptiveForegroundStyle(PassColor.textNorm.toColor)
+                        .navigationTitleText()
                 }
             }
         }
