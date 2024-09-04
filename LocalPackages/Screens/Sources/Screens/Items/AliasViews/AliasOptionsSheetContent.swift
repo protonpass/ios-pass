@@ -27,33 +27,45 @@ public enum AliasOptionsSheetState {
     case mailbox(Binding<AliasLinkedMailboxSelection>, String)
     case suffix(Binding<SuffixSelection>)
 
-    public var height: CGFloat {
-        switch self {
-        case let .mailbox(mailboxSelection, _):
-            OptionRowHeight.compact.value * CGFloat(mailboxSelection.wrappedValue.allUserMailboxes.count) + 150
+    var height: CGFloat {
+        let elementCount = switch self {
+        case let .mailbox(selection, _):
+            selection.wrappedValue.allUserMailboxes.count
+        case let .suffix(selection):
+            selection.wrappedValue.suffixes.count
+        }
+
+        return switch self {
+        case .mailbox:
+            OptionRowHeight.compact.value * CGFloat(elementCount) + 100 // nav bar + close button
         case .suffix:
-            280
+            OptionRowHeight.compact.value * CGFloat(elementCount) + 60 // nav bar
         }
     }
 }
 
 public struct AliasOptionsSheetContent: View {
     private let state: AliasOptionsSheetState
-    private let tint: Color
+    private let onDismiss: () -> Void
 
-    public init(state: AliasOptionsSheetState, tint: Color) {
+    public init(state: AliasOptionsSheetState,
+                onDismiss: @escaping () -> Void) {
         self.state = state
-        self.tint = tint
+        self.onDismiss = onDismiss
     }
 
     public var body: some View {
-        switch state {
-        case let .mailbox(mailboxSelection, title):
-            MailboxSelectionView(mailboxSelection: mailboxSelection,
-                                 title: title,
-                                 tint: tint)
-        case let .suffix(suffixSelection):
-            SuffixSelectionView(selection: suffixSelection)
+        Group {
+            switch state {
+            case let .mailbox(mailboxSelection, title):
+                MailboxSelectionView(mailboxSelection: mailboxSelection,
+                                     title: title,
+                                     onDismiss: onDismiss)
+            case let .suffix(suffixSelection):
+                SuffixSelectionView(selection: suffixSelection, onDismiss: onDismiss)
+            }
         }
+        .presentationDetents([.height(state.height)])
+        .presentationDragIndicator(.visible)
     }
 }

@@ -24,19 +24,13 @@ import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct MailboxSelectionView: View {
-    @Environment(\.dismiss) private var dismiss
+struct MailboxSelectionView: View {
     @Binding var mailboxSelection: AliasLinkedMailboxSelection
-    public let title: String
-    public var tint: Color
+    let title: String
+    var tint = PassColor.aliasInteractionNormMajor2.toColor
+    let onDismiss: () -> Void
 
-    public init(mailboxSelection: Binding<AliasLinkedMailboxSelection>, title: String, tint: Color) {
-        _mailboxSelection = mailboxSelection
-        self.title = title
-        self.tint = tint
-    }
-
-    public var body: some View {
+    var body: some View {
         NavigationStack {
             // ZStack instead of VStack because of SwiftUI bug.
             // See more in "CreateAliasLiteView.swift"
@@ -63,8 +57,10 @@ public struct MailboxSelectionView: View {
                                 mailboxSelection.selectedMailboxes.insertOrRemove(mailbox, minItemCount: 1)
                             }
 
-                            PassDivider()
-                                .padding(.horizontal)
+                            if mailbox != mailboxSelection.allUserMailboxes.last {
+                                PassDivider()
+                                    .padding(.horizontal)
+                            }
                         }
 
                         // Gimmick view to take up space
@@ -90,7 +86,7 @@ public struct MailboxSelectionView: View {
     }
 
     private var closeButton: some View {
-        Button(action: dismiss.callAsFunction) {
+        Button(action: onDismiss) {
             Text("Close")
                 .foregroundStyle(PassColor.textNorm.toColor)
         }
