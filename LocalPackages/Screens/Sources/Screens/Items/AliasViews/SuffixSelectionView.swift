@@ -24,17 +24,13 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct SuffixSelectionView: View {
-    @Environment(\.dismiss) private var dismiss
+struct SuffixSelectionView: View {
     @Binding var selection: SuffixSelection
-
-    public init(selection: Binding<SuffixSelection>) {
-        _selection = selection
-    }
+    let onDismiss: () -> Void
 
     private var tintColor: UIColor { PassColor.aliasInteractionNormMajor2 }
 
-    public var body: some View {
+    var body: some View {
         NavigationStack {
             // ZStack instead of VStack because of SwiftUI bug.
             // See more in "CreateAliasLiteView.swift"
@@ -59,11 +55,13 @@ public struct SuffixSelectionView: View {
                             .frame(height: OptionRowHeight.compact.value)
                             .onTapGesture {
                                 selection.selectedSuffix = suffix
-                                dismiss()
+                                onDismiss()
                             }
 
-                            PassDivider()
-                                .padding(.horizontal)
+                            if suffix != selection.suffixes.last {
+                                PassDivider()
+                                    .padding(.horizontal)
+                            }
                         }
                     }
                 }
