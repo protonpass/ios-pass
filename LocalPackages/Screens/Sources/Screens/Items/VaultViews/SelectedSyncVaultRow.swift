@@ -71,7 +71,7 @@ public struct SelectedSyncVaultRow: View {
                 .frame(maxHeight: 20)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 70)
+        .frame(height: OptionRowHeight.medium.value)
         .contentShape(.rect)
     }
 }
