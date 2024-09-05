@@ -283,7 +283,7 @@ private extension CredentialsViewModel {
            !schemeAndHost.isEmpty,
            let notMatchedItem = results.notMatchedItems
            .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
-            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
+            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem.object,
                                                                       url: schemeAndHost)
             return
         }
@@ -342,7 +342,7 @@ private extension CredentialsViewModel {
             let hashedTerm = term.sha256
             logger.trace("Searching for term \(hashedTerm)")
             state = .searching
-            let searchResults = result?.searchableItems.result(for: term) ?? []
+            let searchResults = result?.searchableItems.map(\.object).result(for: term) ?? []
             if Task.isCancelled {
                 return
             }
