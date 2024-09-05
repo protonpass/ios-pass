@@ -63,6 +63,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
+    @LazyInjected(\SharedUseCasesContainer.getPassUsers) var getPassUsers
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -114,7 +115,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
                                sessionId: sessionInfos.sessionId)
                     }
                     .store(in: &cancellables)
-                start(mode: mode)
+                try await start(mode: mode)
             } catch {
                 handle(error: error)
             }
@@ -123,11 +124,11 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 }
 
 private extension CredentialProviderCoordinator {
-    func start(mode: AutoFillMode) {
+    func start(mode: AutoFillMode) async throws {
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
-            handleShowAllLoginsMode(identifiers: identifiers,
-                                    passkeyRequestParams: requestParams)
+            try await handleShowAllLoginsMode(identifiers: identifiers,
+                                              passkeyRequestParams: requestParams)
 
         case let .checkAndAutoFill(request):
             handleCheckAndAutoFill(request)
@@ -144,7 +145,7 @@ private extension CredentialProviderCoordinator {
     }
 
     func handleShowAllLoginsMode(identifiers: [ASCredentialServiceIdentifier],
-                                 passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
+                                 passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) async throws {
         guard let context else { return }
 
         guard userManager.activeUserId != nil else {
@@ -152,7 +153,9 @@ private extension CredentialProviderCoordinator {
             return
         }
 
-        let viewModel = CredentialsViewModel(serviceIdentifiers: identifiers,
+        let users = try await getPassUsers()
+        let viewModel = CredentialsViewModel(users: users,
+                                             serviceIdentifiers: identifiers,
                                              passkeyRequestParams: passkeyRequestParams,
                                              context: context)
         viewModel.delegate = self
