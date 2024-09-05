@@ -45,6 +45,7 @@ struct CredentialsView: View {
             stateViews
         }
         .task {
+            await viewModel.fetchItems()
             await viewModel.sync()
         }
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
@@ -106,11 +107,13 @@ private extension CredentialsView {
             }
             switch viewModel.state {
             case .idle:
+                accountSwitcher
+
                 if let planType = viewModel.planType, case .free = planType {
                     mainVaultsOnlyMessage
                 }
-                if let results = viewModel.results {
-                    if results.isEmpty {
+                if let result = viewModel.result {
+                    if result.isEmpty {
                         VStack {
                             Spacer()
                             Text("You currently have no login items")
@@ -120,7 +123,7 @@ private extension CredentialsView {
                             Spacer()
                         }
                     } else {
-                        itemList(results: results)
+                        itemList(result: result)
                     }
                 }
             case .searching:
@@ -138,7 +141,7 @@ private extension CredentialsView {
                 CredentialsSkeletonView()
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { viewModel.fetchItems() })
+                                   onRetry: { viewModel.fetchItemsSync() })
             }
 
             Spacer()
@@ -176,16 +179,67 @@ private extension CredentialsView {
 // MARK: ResultView & elements
 
 private extension CredentialsView {
-    func itemList(results: CredentialsFetchResult) -> some View {
+    @ViewBuilder
+    var accountSwitcher: some View {
+        if viewModel.users.count > 1 {
+            let allAccountsMessage = "All \(viewModel.users.count) accounts"
+            Menu(content: {
+                Button(action: {
+                    viewModel.selectedUser = nil
+                }, label: {
+                    if viewModel.selectedUser == nil {
+                        Label(allAccountsMessage, systemImage: "checkmark")
+                    } else {
+                        Text(verbatim: allAccountsMessage)
+                    }
+                })
+
+                Section {
+                    ForEach(viewModel.users) { user in
+                        Button(action: {
+                            viewModel.selectedUser = user
+                        }, label: {
+                            if user == viewModel.selectedUser {
+                                Label(user.email ?? "?", systemImage: "checkmark")
+                            } else {
+                                Text(verbatim: user.email ?? "?")
+                            }
+                        })
+                    }
+                }
+            }, label: {
+                HStack {
+                    if let selectedUser = viewModel.selectedUser {
+                        Text(verbatim: selectedUser.displayNameAndEmail)
+                            .font(.callout)
+                            .foregroundStyle(PassColor.textInvert.toColor)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(PassColor.interactionNormMajor2.toColor)
+                            .clipShape(Capsule())
+                    } else {
+                        Text(verbatim: allAccountsMessage)
+                            .fontWeight(.medium)
+                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    }
+
+                    Spacer()
+                }
+            })
+            .padding(.horizontal)
+        }
+    }
+
+    func itemList(result: CredentialsFetchResult) -> some View {
         ScrollViewReader { proxy in
             List {
-                matchedItemsSection(results.matchedItems)
-                notMatchedItemsSection(results.notMatchedItems)
+                matchedItemsSection(result.matchedItems)
+                notMatchedItemsSection(result.notMatchedItems)
             }
             .listStyle(.plain)
             .refreshable { await viewModel.sync() }
-            .animation(.default, value: results.matchedItems.hashValue)
-            .animation(.default, value: results.notMatchedItems.hashValue)
+            .animation(.default, value: result.matchedItems.hashValue)
+            .animation(.default, value: result.notMatchedItems.hashValue)
             .overlay {
                 if viewModel.selectedSortType.isAlphabetical {
                     HStack {

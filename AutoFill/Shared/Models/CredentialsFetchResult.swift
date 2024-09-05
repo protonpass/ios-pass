@@ -23,6 +23,8 @@ import Entities
 import Foundation
 
 struct CredentialsFetchResult: Equatable, Sendable {
+    let userId: String
+    let vaults: [Vault]
     let searchableItems: [SearchableItem]
     let matchedItems: [ItemUiModel]
     let notMatchedItems: [ItemUiModel]
@@ -31,9 +33,13 @@ struct CredentialsFetchResult: Equatable, Sendable {
         searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
     }
 
-    init(searchableItems: [SearchableItem],
+    init(userId: String,
+         vaults: [Vault],
+         searchableItems: [SearchableItem],
          matchedItems: [ItemUiModel],
          notMatchedItems: [ItemUiModel]) {
+        self.userId = userId
+        self.vaults = vaults
         self.searchableItems = searchableItems
         self.matchedItems = matchedItems
         self.notMatchedItems = notMatchedItems

@@ -303,6 +303,11 @@ extension SharedUseCasesContainer {
                        switchUser: self.switchUser())
         }
     }
+
+    var getPassUsers: Factory<any GetPassUsersUseCase> {
+        self { GetPassUsers(userManager: self.userManager,
+                            localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource()) }
+    }
 }
 
 // MARK: - Items

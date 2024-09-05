@@ -78,16 +78,24 @@ extension ItemSearchResult: CredentialItem {
 @MainActor
 final class CredentialsViewModel: ObservableObject {
     @Published private(set) var state = CredentialsViewState.loading
-    @Published private(set) var results: CredentialsFetchResult?
-    @Published private(set) var planType: Plan.PlanType?
+    @Published private var results: [CredentialsFetchResult] = []
+    @Published private(set) var users: [PassUser]
+    @Published var selectedUser: PassUser?
     @Published var query = ""
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var selectPasskeySheetInformation: SelectPasskeySheetInformation?
     @Published var isShowingConfirmationAlert = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-
     var selectedSortType = SortType.mostRecent
+
+    var planType: Plan.PlanType? {
+        selectedUser?.plan.planType
+    }
+
+    var result: CredentialsFetchResult? {
+        results.first { $0.userId == selectedUser?.id }
+    }
 
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
@@ -101,7 +109,6 @@ final class CredentialsViewModel: ObservableObject {
     @LazyInjected(\AutoFillUseCaseContainer
         .associateUrlAndAutoFillPassword) private var associateUrlAndAutoFillPassword
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
@@ -110,8 +117,6 @@ final class CredentialsViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
-
-    private var vaults = [Vault]()
 
     weak var delegate: (any CredentialsViewModelDelegate)?
     private(set) weak var context: ASCredentialProviderExtensionContext?
@@ -124,9 +129,12 @@ final class CredentialsViewModel: ObservableObject {
         }
     }
 
-    init(serviceIdentifiers: [ASCredentialServiceIdentifier],
+    init(users: [PassUser],
+         serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
          context: ASCredentialProviderExtensionContext) {
+        self.users = users
+        selectedUser = users.first
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
         self.context = context
@@ -144,46 +152,49 @@ extension CredentialsViewModel {
 
     func sync() async {
         do {
-            // swiftlint:disable:next todo
-            // TODO: will need to loo on all accounts
-            let userId = try await userManager.getActiveUserId()
-            let hasNewEvents = try await eventSynchronizer.sync(userId: userId)
-            if hasNewEvents {
-                fetchItems()
+            var shouldRefreshItems = false
+            for user in users {
+                let hasNewEvents = try await eventSynchronizer.sync(userId: user.id)
+                shouldRefreshItems = shouldRefreshItems || hasNewEvents
+            }
+
+            if shouldRefreshItems {
+                await fetchItems()
             }
         } catch {
             state = .error(error)
         }
     }
 
-    func fetchItems() {
-        Task { [weak self] in
-            guard let self else {
-                return
+    func fetchItems() async {
+        do {
+            logger.trace("Loading log in items")
+            if case .error = state {
+                state = .loading
             }
-            do {
-                logger.trace("Loading log in items")
-                if case .error = state {
-                    state = .loading
-                }
-                // swiftlint:disable:next todo
-                // TODO: will need to loop on all accounts
-                let userId = try await userManager.getActiveUserId()
-                async let plan = accessRepository.getPlan()
-                async let vaults = shareRepository.getVaults(userId: userId)
-                async let results = fetchCredentials(userId: userId,
-                                                     identifiers: serviceIdentifiers,
-                                                     params: passkeyRequestParams)
-                planType = try await plan.planType
-                self.vaults = try await vaults
-                self.results = try await results
 
-                state = .idle
-                logger.info("Loaded log in items")
-            } catch {
-                logger.error(error)
-                state = .error(error)
+            var results = [CredentialsFetchResult]()
+            for user in users {
+                let result = try await fetchCredentials(userId: user.id,
+                                                        identifiers: serviceIdentifiers,
+                                                        params: passkeyRequestParams)
+                results.append(result)
             }
+
+            self.results = results
+
+            state = .idle
+            logger.info("Loaded log in items")
+        } catch {
+            logger.error(error)
+            state = .error(error)
+        }
+    }
+
+    func fetchItemsSync() {
+        Task { [weak self] in
+            guard let self else { return }
+            await fetchItems()
         }
     }
 
@@ -214,8 +225,8 @@ extension CredentialsViewModel {
     }
 
     func select(item: any ItemIdentifiable) {
-        assert(results != nil, "Credentials are not fetched")
-        guard let results else { return }
+        assert(!results.isEmpty, "Credentials are not fetched")
+        guard let result else { return }
 
         Task { [weak self] in
             guard let self else {
@@ -225,9 +236,9 @@ extension CredentialsViewModel {
                 if let passkeyRequestParams {
                     try await handlePasskeySelection(for: item,
                                                      params: passkeyRequestParams,
-                                                     results: results)
+                                                     result: result)
                 } else {
-                    try await handlePasswordSelection(for: item, with: results)
+                    try await handlePasswordSelection(for: item, with: result)
                 }
             } catch {
                 logger.error(error)
@@ -267,7 +278,7 @@ private extension CredentialsViewModel {
         guard let context else { return }
         // Check if given URL is valid and user has edit right before proposing "associate & autofill"
         if notMatchedItemInformation == nil,
-           canEditItem(vaults: vaults, item: item),
+           canEditItem(vaults: [], item: item),
            let schemeAndHost = urls.first?.schemeAndHost,
            !schemeAndHost.isEmpty,
            let notMatchedItem = results.notMatchedItems
@@ -283,7 +294,7 @@ private extension CredentialsViewModel {
 
     func handlePasskeySelection(for item: any ItemIdentifiable,
                                 params: any PasskeyRequestParametersProtocol,
-                                results: CredentialsFetchResult) async throws {
+                                result: CredentialsFetchResult) async throws {
         guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),
@@ -293,7 +304,7 @@ private extension CredentialsViewModel {
 
         guard !loginData.passkeys.isEmpty else {
             // Fallback to password autofill when no passkeys
-            try await handlePasswordSelection(for: item, with: results)
+            try await handlePasswordSelection(for: item, with: result)
             return
         }
 
@@ -331,7 +342,7 @@ private extension CredentialsViewModel {
             let hashedTerm = term.sha256
             logger.trace("Searching for term \(hashedTerm)")
             state = .searching
-            let searchResults = results?.searchableItems.result(for: term) ?? []
+            let searchResults = result?.searchableItems.result(for: term) ?? []
             if Task.isCancelled {
                 return
             }
@@ -349,8 +360,6 @@ private extension CredentialsViewModel {
 
 private extension CredentialsViewModel {
     func setup() {
-        fetchItems()
-
         $query
             .debounce(for: 0.4, scheduler: DispatchQueue.main)
             .removeDuplicates()
