@@ -78,7 +78,7 @@ extension ItemSearchResult: CredentialItem {
 @MainActor
 final class CredentialsViewModel: ObservableObject {
     @Published private(set) var state = CredentialsViewState.loading
-    @Published private var results: [CredentialsFetchResult] = []
+    @Published private(set) var results: [CredentialsFetchResult] = []
     @Published private(set) var users: [PassUser]
     @Published var selectedUser: PassUser?
     @Published var query = ""
@@ -88,10 +88,6 @@ final class CredentialsViewModel: ObservableObject {
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
-
-    var planType: Plan.PlanType? {
-        selectedUser?.plan.planType
-    }
 
     var result: CredentialsFetchResult? {
         results.first { $0.userId == selectedUser?.id }
@@ -129,12 +125,42 @@ final class CredentialsViewModel: ObservableObject {
         }
     }
 
+    var planType: Plan.PlanType? {
+        selectedUser?.plan.planType
+    }
+
+    private var searchableItems: [SearchableItem] {
+        if let selectedUser {
+            results.first { $0.userId == selectedUser.id }?.searchableItems.map(\.object) ?? []
+        } else {
+            results.mergeAndDeduplicate(by: \.searchableItems)
+        }
+    }
+
+    var matchedItems: [ItemUiModel] {
+        if let selectedUser {
+            results.first { $0.userId == selectedUser.id }?.matchedItems.map(\.object) ?? []
+        } else {
+            results.mergeAndDeduplicate(by: \.matchedItems)
+        }
+    }
+
+    var notMatchedItems: [ItemUiModel] {
+        if let selectedUser {
+            results.first { $0.userId == selectedUser.id }?.notMatchedItems.map(\.object) ?? []
+        } else {
+            results.mergeAndDeduplicate(by: \.notMatchedItems)
+        }
+    }
+
     init(users: [PassUser],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
          context: ASCredentialProviderExtensionContext) {
         self.users = users
-        selectedUser = users.first
+        if users.count == 1 {
+            selectedUser = users.first
+        }
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
         self.context = context
@@ -342,7 +368,7 @@ private extension CredentialsViewModel {
             let hashedTerm = term.sha256
             logger.trace("Searching for term \(hashedTerm)")
             state = .searching
-            let searchResults = result?.searchableItems.map(\.object).result(for: term) ?? []
+            let searchResults = searchableItems.result(for: term)
             if Task.isCancelled {
                 return
             }
@@ -399,13 +425,11 @@ extension CredentialsViewModel: SortTypeListViewModelDelegate {
     }
 }
 
-extension Plan.PlanType {
-    var searchBarPlaceholder: String {
-        switch self {
-        case .free:
-            #localized("Search in oldest 2 vaults")
-        default:
-            #localized("Search in all vaults")
-        }
+private extension [CredentialsFetchResult] {
+    func mergeAndDeduplicate<T: ItemIdentifiable & Hashable>
+    (by keyPath: KeyPath<CredentialsFetchResult, [VaultIdentifiableObject<T>]>) -> [T] {
+        flatMap { $0[keyPath: keyPath] }
+            .deduplicate { $0.vaultId + $0.itemId }
+            .map(\.object)
     }
 }

@@ -100,9 +100,15 @@ private extension CredentialsView {
     var stateViews: some View {
         VStack(spacing: 0) {
             if viewModel.state != .loading {
+                let placeholder = if viewModel.selectedUser == nil {
+                    // TODO: Localize this
+                    "Search in \(viewModel.users.count) accounts"
+                } else {
+                    viewModel.planType.searchBarPlaceholder
+                }
                 SearchBar(query: $viewModel.query,
                           isFocused: $isFocusedOnSearchBar,
-                          placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
+                          placeholder: placeholder,
                           onCancel: { viewModel.cancel() })
             }
             switch viewModel.state {
@@ -112,8 +118,10 @@ private extension CredentialsView {
                 if let planType = viewModel.planType, case .free = planType {
                     mainVaultsOnlyMessage
                 }
-                if let result = viewModel.result {
-                    if result.isEmpty {
+
+                if !viewModel.results.isEmpty {
+                    if viewModel.matchedItems.isEmpty,
+                       viewModel.notMatchedItems.isEmpty {
                         VStack {
                             Spacer()
                             Text("You currently have no login items")
@@ -123,7 +131,8 @@ private extension CredentialsView {
                             Spacer()
                         }
                     } else {
-                        itemList(result: result)
+                        itemList(matchedItems: viewModel.matchedItems,
+                                 notMatchedItems: viewModel.notMatchedItems)
                     }
                 }
             case .searching:
@@ -161,6 +170,7 @@ private extension CredentialsView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: viewModel.state)
         .animation(.default, value: viewModel.planType)
+        .animation(.default, value: viewModel.results)
     }
 }
 
@@ -182,6 +192,7 @@ private extension CredentialsView {
     @ViewBuilder
     var accountSwitcher: some View {
         if viewModel.users.count > 1 {
+            // TODO: Localize this
             let allAccountsMessage = "All \(viewModel.users.count) accounts"
             Menu(content: {
                 Button(action: {
@@ -230,16 +241,17 @@ private extension CredentialsView {
         }
     }
 
-    func itemList(result: CredentialsFetchResult) -> some View {
+    func itemList(matchedItems: [ItemUiModel],
+                  notMatchedItems: [ItemUiModel]) -> some View {
         ScrollViewReader { proxy in
             List {
-                matchedItemsSection(result.matchedItems.map(\.object))
-                notMatchedItemsSection(result.notMatchedItems.map(\.object))
+                matchedItemsSection(matchedItems)
+                notMatchedItemsSection(notMatchedItems)
             }
             .listStyle(.plain)
             .refreshable { await viewModel.sync() }
-            .animation(.default, value: result.matchedItems.hashValue)
-            .animation(.default, value: result.notMatchedItems.hashValue)
+            .animation(.default, value: matchedItems.hashValue)
+            .animation(.default, value: notMatchedItems.hashValue)
             .overlay {
                 if viewModel.selectedSortType.isAlphabetical {
                     HStack {
@@ -433,5 +445,16 @@ private struct CredentialsSkeletonView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .shimmering()
+    }
+}
+
+private extension Plan.PlanType? {
+    var searchBarPlaceholder: String {
+        switch self {
+        case .free:
+            #localized("Search in oldest 2 vaults")
+        default:
+            #localized("Search in all vaults")
+        }
     }
 }
