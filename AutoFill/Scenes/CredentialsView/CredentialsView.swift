@@ -233,8 +233,8 @@ private extension CredentialsView {
     func itemList(result: CredentialsFetchResult) -> some View {
         ScrollViewReader { proxy in
             List {
-                matchedItemsSection(result.matchedItems)
-                notMatchedItemsSection(result.notMatchedItems)
+                matchedItemsSection(result.matchedItems.map(\.object))
+                notMatchedItemsSection(result.notMatchedItems.map(\.object))
             }
             .listStyle(.plain)
             .refreshable { await viewModel.sync() }

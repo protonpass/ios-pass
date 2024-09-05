@@ -22,12 +22,37 @@ import Client
 import Entities
 import Foundation
 
+struct VaultIdentifiableObject<T: Sendable & Hashable & ItemIdentifiable>: Sendable, Hashable {
+    let vaultId: String
+    let object: T
+}
+
+extension VaultIdentifiableObject: ItemIdentifiable {
+    var shareId: String {
+        object.shareId
+    }
+
+    var itemId: String {
+        object.itemId
+    }
+}
+
+private extension VaultIdentifiableObject {
+    init(vaults: [Vault], object: T) throws {
+        guard let vault = vaults.first(where: { $0.shareId == object.shareId }) else {
+            throw PassError.vault(.vaultNotFound(shareId: object.shareId))
+        }
+        vaultId = vault.id
+        self.object = object
+    }
+}
+
 struct CredentialsFetchResult: Equatable, Sendable {
     let userId: String
     let vaults: [Vault]
-    let searchableItems: [SearchableItem]
-    let matchedItems: [ItemUiModel]
-    let notMatchedItems: [ItemUiModel]
+    let searchableItems: [VaultIdentifiableObject<SearchableItem>]
+    let matchedItems: [VaultIdentifiableObject<ItemUiModel>]
+    let notMatchedItems: [VaultIdentifiableObject<ItemUiModel>]
 
     var isEmpty: Bool {
         searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
@@ -37,11 +62,11 @@ struct CredentialsFetchResult: Equatable, Sendable {
          vaults: [Vault],
          searchableItems: [SearchableItem],
          matchedItems: [ItemUiModel],
-         notMatchedItems: [ItemUiModel]) {
+         notMatchedItems: [ItemUiModel]) throws {
         self.userId = userId
         self.vaults = vaults
-        self.searchableItems = searchableItems
-        self.matchedItems = matchedItems
-        self.notMatchedItems = notMatchedItems
+        self.searchableItems = try searchableItems.map { try .init(vaults: vaults, object: $0) }
+        self.matchedItems = try matchedItems.map { try .init(vaults: vaults, object: $0) }
+        self.notMatchedItems = try notMatchedItems.map { try .init(vaults: vaults, object: $0) }
     }
 }
