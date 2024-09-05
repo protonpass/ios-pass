@@ -29,13 +29,16 @@ import SwiftUI
 struct ItemDetailMoreInfoSection: View {
     @Binding var isExpanded: Bool
     private let item: ItemContent
+    private let vault: Vault?
     let onCopy: (_ text: String, _ bannerMessage: String) -> Void
 
     init(isExpanded: Binding<Bool>,
          itemContent: ItemContent,
+         vault: Vault?,
          onCopy: @escaping (_ text: String, _ bannerMessage: String) -> Void) {
         _isExpanded = isExpanded
         item = itemContent
+        self.vault = vault
         self.onCopy = onCopy
     }
 
@@ -64,33 +67,22 @@ struct ItemDetailMoreInfoSection: View {
 
             if isExpanded {
                 VStack(alignment: .leading) {
-                    HStack {
-                        title(#localized("Item ID") + ":")
-                        Text(item.itemId)
-                            .textSelection(.enabled)
-                            .onTapGesture(perform: copyItemId)
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    infoRow(title: #localized("Item ID"),
+                            value: item.itemId,
+                            copyMessage: #localized("Item ID copied"))
 
-                    HStack {
-                        title(#localized("Vault ID") + ":")
-                        Text(item.shareId)
-                            .textSelection(.enabled)
-                            .onTapGesture(perform: copyVaultId)
-                        Spacer()
+                    if let vault {
+                        infoRow(title: #localized("Vault ID"),
+                                value: vault.id,
+                                copyMessage: #localized("Vault ID copied"))
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
 
                     if Bundle.main.isQaBuild {
-                        HStack {
-                            title("CFV:")
-                            Text(verbatim: "\(item.item.contentFormatVersion)")
-                                .textSelection(.enabled)
-                                .onTapGesture(perform: copyVaultId)
-                            Spacer()
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        infoRow(title: "Share ID",
+                                value: item.shareId,
+                                copyMessage: "Share ID copied")
+
+                        infoRow(title: "CVF", value: "\(item.item.contentFormatVersion)")
                     }
                 }
                 .font(.caption)
@@ -105,12 +97,21 @@ struct ItemDetailMoreInfoSection: View {
 }
 
 private extension ItemDetailMoreInfoSection {
-    func copyItemId() {
-        onCopy(item.itemId, #localized("Item ID copied"))
-    }
+    func infoRow(title: String, value: String, copyMessage: String? = nil) -> some View {
+        HStack {
+            Text(verbatim: "\(title) :")
+                .fontWeight(.semibold)
+                .frame(maxHeight: .infinity, alignment: .topTrailing)
 
-    func copyVaultId() {
-        onCopy(item.shareId, #localized("Vault ID copied"))
+            Text(value)
+                .if(copyMessage) { view, copyMessage in
+                    view.textSelection(.enabled)
+                        .onTapGesture {
+                            onCopy(value, copyMessage)
+                        }
+                }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     func icon(from image: UIImage) -> some View {
@@ -119,11 +120,5 @@ private extension ItemDetailMoreInfoSection {
             .scaledToFit()
             .frame(width: 16)
             .foregroundStyle(PassColor.textWeak.toColor)
-    }
-
-    func title(_ text: String) -> some View {
-        Text(text)
-            .fontWeight(.semibold)
-            .frame(maxHeight: .infinity, alignment: .topTrailing)
     }
 }
