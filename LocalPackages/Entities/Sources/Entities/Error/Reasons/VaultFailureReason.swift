@@ -27,6 +27,7 @@ public extension PassError {
         case noSelectedVault
         case vaultNotEmpty(String)
         case noEditableVault
+        case vaultNotFound(shareId: String)
 
         public var debugDescription: String {
             switch self {
@@ -38,6 +39,8 @@ public extension PassError {
                 "Vault not empty \"\(id)\""
             case .noEditableVault:
                 "No editable vault"
+            case let .vaultNotFound(shareId):
+                "Vault not found shareId \(shareId)"
             }
         }
     }
