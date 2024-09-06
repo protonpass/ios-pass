@@ -131,27 +131,48 @@ final class CredentialsViewModel: ObservableObject {
 
     private var searchableItems: [SearchableItem] {
         if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.searchableItems.map(\.object) ?? []
+            return results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
         } else {
-            results.mergeAndDeduplicate(by: \.searchableItems)
+            do {
+                return try results.mergeAndDeduplicate(by: \.searchableItems,
+                                                       vaultId: { try getVaultId(from: $0) })
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+                return []
+            }
         }
     }
 
     var matchedItems: [ItemUiModel] {
         if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.matchedItems.map(\.object) ?? []
+            return results.first { $0.userId == selectedUser.id }?.matchedItems ?? []
         } else {
-            results.mergeAndDeduplicate(by: \.matchedItems)
+            do {
+                return try results.mergeAndDeduplicate(by: \.matchedItems,
+                                                       vaultId: { try getVaultId(from: $0) })
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+                return []
+            }
         }
     }
 
     var notMatchedItems: [ItemUiModel] {
         if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.notMatchedItems.map(\.object) ?? []
+            return results.first { $0.userId == selectedUser.id }?.notMatchedItems ?? []
         } else {
-            results.mergeAndDeduplicate(by: \.notMatchedItems)
+            do {
+                return try results.mergeAndDeduplicate(by: \.notMatchedItems,
+                                                       vaultId: { try getVaultId(from: $0) })
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+                return []
+            }
         }
     }
+
+    private var shareIdToVaultIdDict = [String: String]() // ShareID -> VaultID
+    private var shareIdToUserIdDict = [String: String]() // ShareID -> UserID
 
     init(users: [PassUser],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
@@ -252,7 +273,6 @@ extension CredentialsViewModel {
 
     func select(item: any ItemIdentifiable) {
         assert(!results.isEmpty, "Credentials are not fetched")
-        guard let result else { return }
 
         Task { [weak self] in
             guard let self else {
@@ -261,10 +281,9 @@ extension CredentialsViewModel {
             do {
                 if let passkeyRequestParams {
                     try await handlePasskeySelection(for: item,
-                                                     params: passkeyRequestParams,
-                                                     result: result)
+                                                     params: passkeyRequestParams)
                 } else {
-                    try await handlePasswordSelection(for: item, with: result)
+                    try await handlePasswordSelection(for: item)
                 }
             } catch {
                 logger.error(error)
@@ -293,23 +312,34 @@ extension CredentialsViewModel {
         }
     }
 
+    func getUser(for item: any ItemIdentifiable) -> PassUser? {
+        if let userId = shareIdToUserIdDict[item.shareId] {
+            return users.first { $0.id == userId }
+        }
+        if let result = results.first(where: { $0.vaults.contains { $0.shareId == item.shareId } }),
+           let user = users.first(where: { $0.id == result.userId }) {
+            shareIdToUserIdDict[item.shareId] = user.id
+            return user
+        }
+        return nil
+    }
+
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
 }
 
 private extension CredentialsViewModel {
-    func handlePasswordSelection(for item: any ItemIdentifiable,
-                                 with results: CredentialsFetchResult) async throws {
+    func handlePasswordSelection(for item: any ItemIdentifiable) async throws {
         guard let context else { return }
         // Check if given URL is valid and user has edit right before proposing "associate & autofill"
         if notMatchedItemInformation == nil,
-           canEditItem(vaults: [], item: item),
+           canEditItem(vaults: results.flatMap(\.vaults), item: item),
            let schemeAndHost = urls.first?.schemeAndHost,
            !schemeAndHost.isEmpty,
-           let notMatchedItem = results.notMatchedItems
+           let notMatchedItem = notMatchedItems
            .first(where: { $0.itemId == item.itemId && $0.shareId == item.shareId }) {
-            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem.object,
+            notMatchedItemInformation = UnmatchedItemAlertInformation(item: notMatchedItem,
                                                                       url: schemeAndHost)
             return
         }
@@ -319,8 +349,7 @@ private extension CredentialsViewModel {
     }
 
     func handlePasskeySelection(for item: any ItemIdentifiable,
-                                params: any PasskeyRequestParametersProtocol,
-                                result: CredentialsFetchResult) async throws {
+                                params: any PasskeyRequestParametersProtocol) async throws {
         guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),
@@ -330,7 +359,7 @@ private extension CredentialsViewModel {
 
         guard !loginData.passkeys.isEmpty else {
             // Fallback to password autofill when no passkeys
-            try await handlePasswordSelection(for: item, with: result)
+            try await handlePasswordSelection(for: item)
             return
         }
 
@@ -380,6 +409,17 @@ private extension CredentialsViewModel {
             }
         }
     }
+
+    func getVaultId(from shareId: String) throws -> String {
+        if let vaultId = shareIdToVaultIdDict[shareId] {
+            return vaultId
+        }
+        if let vault = results.flatMap(\.vaults).first(where: { $0.shareId == shareId }) {
+            shareIdToVaultIdDict[shareId] = vault.id
+            return vault.id
+        }
+        throw PassError.vault(.vaultNotFound(shareId: shareId))
+    }
 }
 
 // MARK: Setup & utils functions
@@ -427,9 +467,13 @@ extension CredentialsViewModel: SortTypeListViewModelDelegate {
 
 private extension [CredentialsFetchResult] {
     func mergeAndDeduplicate<T: ItemIdentifiable & Hashable>
-    (by keyPath: KeyPath<CredentialsFetchResult, [VaultIdentifiableObject<T>]>) -> [T] {
-        flatMap { $0[keyPath: keyPath] }
-            .deduplicate { $0.vaultId + $0.itemId }
-            .map(\.object)
+    (by keyPath: KeyPath<CredentialsFetchResult, [T]>,
+     vaultId: (_ shareId: String) throws -> String) rethrows -> [T] {
+        try flatMap { $0[keyPath: keyPath] }
+            .deduplicate { item in
+                let vaultId = try vaultId(item.shareId)
+                return vaultId + item.itemId
+            }
+            .compactMap { $0 }
     }
 }

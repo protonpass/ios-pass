@@ -23,9 +23,16 @@ import DesignSystem
 import SwiftUI
 
 struct HighlightText: View {
-    let texts: [Text]
+    private let texts: [Text]
+    private let lineLimit: Int
+    private let hasAdditionalTexts: Bool
 
-    init(highlightableText: any HighlightableText) {
+    init(highlightableText: any HighlightableText,
+         additionalTexts: [Text] = [],
+         lineLimit: Int = 2) {
+        self.lineLimit = lineLimit
+        hasAdditionalTexts = !additionalTexts.isEmpty
+
         var texts = [Text]()
 
         if !highlightableText.isLeadingText {
@@ -48,10 +55,13 @@ struct HighlightText: View {
         if !highlightableText.isTrailingText {
             texts.append(Text(verbatim: "..."))
         }
+        texts.append(contentsOf: additionalTexts)
         self.texts = texts
     }
 
     public var body: some View {
         Text(texts)
+            .lineLimit(lineLimit)
+            .truncationMode(hasAdditionalTexts ? .middle : .tail)
     }
 }
