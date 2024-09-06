@@ -141,7 +141,14 @@ private extension CredentialsView {
                 if results.isEmpty {
                     NoSearchResultsInAllVaultView(query: viewModel.query)
                 } else {
+                    let getUser: (any ItemIdentifiable) -> PassUser? = { item in
+                        if viewModel.users.count > 1, viewModel.selectedUser == nil {
+                            return viewModel.getUser(for: item)
+                        }
+                        return nil
+                    }
                     CredentialSearchResultView(results: results,
+                                               getUser: getUser,
                                                selectedSortType: $viewModel.selectedSortType,
                                                sortAction: { viewModel.presentSortTypeList() },
                                                selectItem: { viewModel.select(item: $0) })
@@ -237,7 +244,7 @@ private extension CredentialsView {
                     Spacer()
                 }
             })
-            .padding(.horizontal)
+            .padding([.horizontal, .bottom])
         }
     }
 
@@ -340,7 +347,10 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GenericCredentialItemRow(item: item, selectItem: { viewModel.select(item: $0) })
+                    let user = viewModel.selectedUser == nil ? viewModel.getUser(for: item) : nil
+                    GenericCredentialItemRow(item: item,
+                                             user: user,
+                                             selectItem: { viewModel.select(item: $0) })
                         .plainListRow()
                         .padding(.horizontal)
                 }
