@@ -45,4 +45,8 @@ public struct PassUser: Sendable, Identifiable, Equatable {
         }
         return email ?? ""
     }
+
+    public var emailWithoutDomain: String? {
+        email?.components(separatedBy: "@").first
+    }
 }
