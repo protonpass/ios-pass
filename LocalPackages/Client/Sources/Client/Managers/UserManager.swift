@@ -35,7 +35,12 @@ public protocol UserManagerProtocol: Sendable {
     func setUp() async throws
     func getActiveUserData() async throws -> UserData?
     func upsertAndMarkAsActive(userData: UserData) async throws
-    func switchActiveUser(with userId: String) async throws
+
+    /// When `onMemory` is `true`, we don't save the active user ID to the database
+    /// This is to let extensions dynamically switch between accounts when creating items
+    /// as we don't want extensions to affect the current active user.
+    func switchActiveUser(with userId: String, onMemory: Bool) async throws
+
     func getAllUsers() async throws -> [UserData]
     func remove(userId: String) async throws
     func cleanAllUsers() async throws
@@ -113,7 +118,7 @@ public extension UserManager {
         assertDidSetUp()
 
         try await userDataDatasource.upsert(userData)
-        try await switchActiveUser(with: userData.user.ID)
+        try await switchActiveUser(with: userData.user.ID, onMemory: false)
     }
 
     /// Remove user profile from database and memory. If the user being removed if the current active user it sets
@@ -127,15 +132,25 @@ public extension UserManager {
         try await updateCachedUserAccounts()
 
         if userProfiles.activeUser == nil, let newActiveUser = userProfiles.first {
-            try await switchActiveUser(with: newActiveUser.userdata.user.ID)
+            try await switchActiveUser(with: newActiveUser.userdata.user.ID, onMemory: false)
         }
     }
 
-    func switchActiveUser(with newActiveUserId: String) async throws {
+    func switchActiveUser(with newActiveUserId: String, onMemory: Bool) async throws {
         assertDidSetUp()
+        if onMemory {
+            if let tempActiveUserData = userProfiles.first(where: { $0.userdata.user.ID == newActiveUserId }) {
+                userProfiles = userProfiles.map {
+                    .init(userdata: $0.userdata,
+                          isActive: newActiveUserId == $0.userdata.user.ID,
+                          updateTime: $0.updateTime)
+                }
+                await publishNewActiveUser(tempActiveUserData.userdata)
+            }
+            return
+        }
 
         try await userDataDatasource.updateNewActiveUser(userId: newActiveUserId)
-
         try await updateCachedUserAccounts()
 
         guard let activeUserData = userProfiles.activeUser?.userdata else {

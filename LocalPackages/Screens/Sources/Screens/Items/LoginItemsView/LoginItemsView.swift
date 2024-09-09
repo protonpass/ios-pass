@@ -32,7 +32,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     private let itemRow: (ItemUiModel) -> ItemRow
     private let searchResultRow: (ItemSearchResult) -> SearchResultRow
     private let onRefresh: () async -> Void
-    private let onCreate: () -> Void
+    private let onCreate: ([Vault]) -> Void
     private let onCancel: () -> Void
 
     public init(searchableItems: [SearchableItem],
@@ -41,7 +41,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
                 itemRow: @escaping (ItemUiModel) -> ItemRow,
                 searchResultRow: @escaping (ItemSearchResult) -> SearchResultRow,
                 onRefresh: @escaping () async -> Void,
-                onCreate: @escaping () -> Void,
+                onCreate: @escaping ([Vault]) -> Void,
                 onCancel: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(searchableItems: searchableItems,
                                                uiModels: uiModels))
@@ -145,7 +145,7 @@ private extension LoginItemsView {
                           titleColor: PassColor.loginInteractionNormMajor2,
                           backgroundColor: PassColor.loginInteractionNormMinor1,
                           height: 52,
-                          action: onCreate)
+                          action: { onCreate([]) })
             .padding(.horizontal)
             .padding(.vertical, 8)
     }

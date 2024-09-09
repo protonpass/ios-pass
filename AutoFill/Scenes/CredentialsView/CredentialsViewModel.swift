@@ -174,6 +174,13 @@ final class CredentialsViewModel: ObservableObject {
     private var shareIdToVaultIdDict = [String: String]() // ShareID -> VaultID
     private var shareIdToUserIdDict = [String: String]() // ShareID -> UserID
 
+    var selectedUserIdForNewItem: String?
+
+    var shouldAskForUserWhenCreatingNewItem: Bool {
+        guard users.count > 1 else { return false }
+        return selectedUser == nil
+    }
+
     init(users: [PassUser],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
@@ -302,11 +309,21 @@ extension CredentialsViewModel {
     }
 
     func createNewItem(_ type: ItemType) {
+        guard let userId = shouldAskForUserWhenCreatingNewItem ?
+            selectedUserIdForNewItem : selectedUser?.id else {
+            assertionFailure("No userID selected to create new item")
+            return
+        }
+        let vaults = results.first { $0.userId == userId }?.vaults ?? []
+
         switch type {
         case .login:
-            delegate?.credentialsViewModelWantsToCreateNewItem(.login(urls.first, nil))
+            delegate?.credentialsViewModelWantsToCreateNewItem(.login(userId: userId,
+                                                                      vaults,
+                                                                      urls.first,
+                                                                      nil))
         case .alias:
-            delegate?.credentialsViewModelWantsToCreateNewItem(.alias)
+            delegate?.credentialsViewModelWantsToCreateNewItem(.alias(userId: userId, vaults))
         default:
             assertionFailure("Item type \(type.description) not supported")
         }
