@@ -107,6 +107,7 @@ struct CreateEditLoginView: View {
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
                     .animation(.default, value: viewModel.emailUsernameExpanded)
                     .animation(.default, value: viewModel.passkeys.count)
+                    .animation(.default, value: viewModel.isAlias)
                     .showSpinner(viewModel.loading)
                 }
                 // swiftformat:disable all
@@ -316,8 +317,14 @@ private extension CreateEditLoginView {
 private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            if !viewModel.email.isEmpty, viewModel.isAlias {
-                pendingAliasRow
+            if !viewModel.email.isEmpty || !viewModel.emailOrUsername.isEmpty, viewModel.isAlias {
+                if viewModel.emailUsernameExpanded {
+                    pendingAliasRow(expanded: true)
+                    PassSectionDivider()
+                    usernameRow
+                } else {
+                    pendingAliasRow(expanded: false)
+                }
             } else {
                 if viewModel.emailUsernameExpanded {
                     emailRow
@@ -340,50 +347,59 @@ private extension CreateEditLoginView {
         .roundedEditableSection()
     }
 
+    var expandableEmailIcon: some View {
+        ZStack(alignment: .topTrailing) {
+            if #available(iOS 17, *) {
+                ItemDetailSectionIcon(icon: IconProvider.envelope)
+                    .buttonEmbeded {
+                        viewModel.expandEmailAndUsername()
+                    }
+                    .popoverTip(UsernameTip())
+            } else {
+                ItemDetailSectionIcon(icon: IconProvider.envelope)
+                    .buttonEmbeded {
+                        viewModel.expandEmailAndUsername()
+                    }
+            }
+
+            Image(uiImage: IconProvider.plus)
+                .resizable()
+                .renderingMode(.template)
+                .frame(width: 9, height: 9)
+                .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
+                .padding(2)
+                .background(PassColor.loginInteractionNormMinor1.toColor)
+                .clipShape(.circle)
+                .overlay(Circle()
+                    .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
+                .offset(x: 5, y: -2)
+        }
+    }
+
     var emailOrUsernameRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ZStack(alignment: .topTrailing) {
-                if #available(iOS 17, *) {
-                    ItemDetailSectionIcon(icon: IconProvider.envelope)
-                        .buttonEmbeded {
-                            viewModel.expandEmailAndUsername()
-                        }
-                        .popoverTip(UsernameTip())
-                } else {
-                    ItemDetailSectionIcon(icon: IconProvider.envelope)
-                        .buttonEmbeded {
-                            viewModel.expandEmailAndUsername()
-                        }
-                }
-
-                Image(uiImage: IconProvider.plus)
-                    .resizable()
-                    .renderingMode(.template)
-                    .frame(width: 9, height: 9)
-                    .foregroundStyle(PassColor.loginInteractionNormMajor2.toColor)
-                    .padding(2)
-                    .background(PassColor.loginInteractionNormMinor1.toColor)
-                    .clipShape(.circle)
-                    .overlay(Circle()
-                        .stroke(UIColor.secondarySystemGroupedBackground.toColor, lineWidth: 2))
-                    .offset(x: 5, y: -2)
-            }
+            expandableEmailIcon
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Email or username")
                     .sectionTitleText()
 
-                TextField("Add email or username", text: $viewModel.emailOrUsername)
+                TrimmingTextField("Add email or username", text: $viewModel.emailOrUsername)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .emailOrUsername)
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .keyboardType(.emailAddress)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .password }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            ClearTextButton(text: $viewModel.emailOrUsername)
+            ClearTextButton(text: $viewModel.emailOrUsername,
+                            onClear: {
+                                viewModel.email = ""
+                                viewModel.username = ""
+                            })
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.emailOrUsername.isEmpty)
@@ -399,11 +415,12 @@ private extension CreateEditLoginView {
                 Text("Email address")
                     .sectionTitleText()
 
-                TextField("Add email address", text: $viewModel.email)
+                TrimmingTextField("Add email address", text: $viewModel.email)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .email)
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .keyboardType(.emailAddress)
                     .submitLabel(.next)
                     .onSubmit { focusedField = .username }
             }
@@ -425,7 +442,7 @@ private extension CreateEditLoginView {
                 Text("Username")
                     .sectionTitleText()
 
-                TextField("Add username", text: $viewModel.username)
+                TrimmingTextField("Add username", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .username)
@@ -443,14 +460,18 @@ private extension CreateEditLoginView {
         .id(usernameID)
     }
 
-    var pendingAliasRow: some View {
+    func pendingAliasRow(expanded: Bool) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: IconProvider.alias)
+            if expanded {
+                ItemDetailSectionIcon(icon: IconProvider.envelope)
+            } else {
+                expandableEmailIcon
+            }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Email address")
                     .sectionTitleText()
-                Text(viewModel.email)
+                Text(expanded ? viewModel.email : viewModel.emailOrUsername)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)

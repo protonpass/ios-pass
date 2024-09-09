@@ -63,6 +63,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var plan: Plan?
     @Published private(set) var displayFavIcons: Bool
     @Published private(set) var shareClipboard: Bool
+    @Published private(set) var alwaysShowUsernameField: Bool
     @Published private(set) var spotlightEnabled: Bool
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
@@ -82,6 +83,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
         selectedClipboardExpiration = sharedPreferences.clipboardExpiration
         displayFavIcons = sharedPreferences.displayFavIcons
         shareClipboard = sharedPreferences.shareClipboard
+        alwaysShowUsernameField = sharedPreferences.alwaysShowUsernameField
         spotlightEnabled = userPreferences.spotlightEnabled
         spotlightSearchableContent = userPreferences.spotlightSearchableContent
         spotlightSearchableVaults = userPreferences.spotlightSearchableVaults
@@ -121,6 +123,19 @@ extension SettingsViewModel {
                     logger.info("Removed all cached fav icons")
                 }
                 displayFavIcons = newValue
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func toggleAlwaysShowUsernameField() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let newValue = !alwaysShowUsernameField
+                try await updateSharedPreferences(\.alwaysShowUsernameField, value: newValue)
+                alwaysShowUsernameField = newValue
             } catch {
                 handle(error)
             }
@@ -190,7 +205,7 @@ extension SettingsViewModel {
                 router.present(for: .fullSync)
                 logger.info("Doing full sync")
                 let userId = try await userManager.getActiveUserId()
-                try await fullVaultsSync(userId: userId)
+                await fullVaultsSync(userId: userId)
                 logger.info("Done full sync")
                 router.display(element: .successMessage(config: .refresh))
             } catch {
