@@ -33,6 +33,7 @@ struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
     @State private var showItemTypeList = false
+    @State private var showUserList = false
 
     init(viewModel: CredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -92,6 +93,24 @@ struct CredentialsView: View {
                 .presentationDragIndicator(.visible)
                 .environment(\.colorScheme, colorScheme)
         }
+        .confirmationDialog("Create",
+                            isPresented: $showUserList,
+                            actions: {
+                                ForEach(viewModel.users) { user in
+                                    Button(action: {
+                                        viewModel.selectedUserIdForNewItem = user.id
+                                        showItemTypeList.toggle()
+                                    }, label: {
+                                        Text(verbatim: user.email ?? user.displayName ?? "?")
+                                    })
+                                }
+
+                                Button("Cancel", role: .cancel, action: {})
+                            },
+                            message: {
+                                // TODO: localize this
+                                Text(verbatim: "Select account")
+                            })
     }
 }
 
@@ -168,7 +187,13 @@ private extension CredentialsView {
                                    titleColor: PassColor.interactionNormMajor2,
                                    backgroundColor: PassColor.interactionNormMinor1,
                                    maxWidth: nil,
-                                   action: { showItemTypeList.toggle() })
+                                   action: {
+                                       if viewModel.shouldAskForUserWhenCreatingNewItem {
+                                           showUserList.toggle()
+                                       } else {
+                                           showItemTypeList.toggle()
+                                       }
+                                   })
                 Spacer()
             }
             .padding(.horizontal)

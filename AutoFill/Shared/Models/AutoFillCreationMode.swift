@@ -22,6 +22,24 @@ import Entities
 import Foundation
 
 enum AutoFillCreationMode {
-    case login(URL?, PasskeyCredentialRequest?)
-    case alias
+    case login(userId: String, [Vault], URL?, PasskeyCredentialRequest?)
+    case alias(userId: String, [Vault])
+
+    var vaults: [Vault] {
+        switch self {
+        case let .login(_, vaults, _, _):
+            vaults
+        case let .alias(_, vaults):
+            vaults
+        }
+    }
+
+    var userId: String {
+        switch self {
+        case let .login(userId, _, _, _):
+            userId
+        case let .alias(userId, _):
+            userId
+        }
+    }
 }

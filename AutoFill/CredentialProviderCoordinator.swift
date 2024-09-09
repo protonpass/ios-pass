@@ -217,9 +217,10 @@ private extension CredentialProviderCoordinator {
         guard let context else { return }
         let view = PasskeyCredentialsView(request: request,
                                           context: context,
-                                          onCreate: { [weak self] in
+                                          onCreate: { [weak self] vaults in
                                               guard let self else { return }
-                                              createNewLoginWithPasskey(request)
+                                              createNewLoginWithPasskey(vaults: vaults,
+                                                                        request: request)
                                           },
                                           onCancel: { [weak self] in
                                               guard let self else { return }
@@ -229,10 +230,10 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    func createNewLoginWithPasskey(_ request: PasskeyCredentialRequest) {
+    func createNewLoginWithPasskey(vaults: [Vault], request: PasskeyCredentialRequest) {
         Task { [weak self] in
             guard let self else { return }
-            await showCreateNewItem(for: .login(nil, request))
+            await showCreateNewItem(for: .login(userId: "", vaults, nil, request))
         }
     }
 }
@@ -394,20 +395,21 @@ private extension CredentialProviderCoordinator {
 
     func showCreateNewItem(for mode: AutoFillCreationMode) async {
         do {
-            showLoadingHud()
-            let userId = try await userManager.getActiveUserId()
-            if vaultsManager.getAllVaultContents().isEmpty {
-                try await vaultsManager.asyncRefresh(userId: userId)
-            }
-            let vaults = vaultsManager.getAllVaultContents().map(\.vault)
-
-            hideLoadingHud()
-
+            let vaults = mode.vaults
             let lastCreateItemVault = vaults.first { $0.shareId == getUserPreferences().lastCreatedItemShareId }
             let shareId = (lastCreateItemVault ?? vaults.oldestOwned)?.shareId ?? ""
 
+            let userId = mode.userId
+            // Temporarily switch the on-memory active user and reload the vaults contents
+            // This is to work-around the fact that many of our repositories, use cases, view models
+            // still depend on the active user instead of dynamically take a userID
+            // especially when creating new login items we need to check some limitations
+            // (login with 2FA, custom fields...)
+            try await userManager.switchActiveUser(with: userId, onMemory: true)
+            try await vaultsManager.asyncRefresh(userId: userId)
+
             switch mode {
-            case let .login(url, request):
+            case let .login(_, _, url, request):
                 let creationType = ItemCreationType.login(title: url?.host,
                                                           url: url?.schemeAndHost,
                                                           autofill: true,

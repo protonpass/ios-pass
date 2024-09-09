@@ -28,12 +28,12 @@ import SwiftUI
 
 struct PasskeyCredentialsView: View {
     @StateObject private var viewModel: PasskeyCredentialsViewModel
-    private let onCreate: () -> Void
+    private let onCreate: ([Vault]) -> Void
     private let onCancel: () -> Void
 
     init(request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext,
-         onCreate: @escaping () -> Void,
+         onCreate: @escaping ([Vault]) -> Void,
          onCancel: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(request: request, context: context))
         self.onCreate = onCreate
