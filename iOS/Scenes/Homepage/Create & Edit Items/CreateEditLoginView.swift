@@ -317,7 +317,7 @@ private extension CreateEditLoginView {
 private extension CreateEditLoginView {
     var usernamePasswordTOTPSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            if !viewModel.email.isEmpty, viewModel.isAlias {
+            if !viewModel.email.isEmpty || !viewModel.emailOrUsername.isEmpty, viewModel.isAlias {
                 if viewModel.emailUsernameExpanded {
                     pendingAliasRow(expanded: true)
                     PassSectionDivider()
@@ -471,7 +471,7 @@ private extension CreateEditLoginView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Email address")
                     .sectionTitleText()
-                Text(viewModel.email)
+                Text(expanded ? viewModel.email : viewModel.emailOrUsername)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
