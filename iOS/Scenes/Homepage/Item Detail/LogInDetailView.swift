@@ -224,8 +224,7 @@ private extension LogInDetailView {
 
     var usernameRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
-            ItemDetailSectionIcon(icon: viewModel.isAlias ? IconProvider.alias : IconProvider.user,
-                                  color: iconTintColor)
+            ItemDetailSectionIcon(icon: IconProvider.user, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Username")

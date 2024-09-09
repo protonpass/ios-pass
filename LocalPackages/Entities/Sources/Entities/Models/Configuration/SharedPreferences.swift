@@ -60,6 +60,9 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
     /// Share clipboard's content to devices logged in with same Apple ID
     public var shareClipboard: Bool
 
+    /// Always display username field when creating or editing login items
+    public var alwaysShowUsernameField: Bool
+
     public var localAuthenticationPolicy: LAPolicy {
         fallbackToPasscode ? .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
     }
@@ -75,7 +78,8 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
                 fallbackToPasscode: Bool,
                 appLockTime: AppLockTime,
                 clipboardExpiration: ClipboardExpiration,
-                shareClipboard: Bool) {
+                shareClipboard: Bool,
+                alwaysShowUsernameField: Bool) {
         self.quickTypeBar = quickTypeBar
         self.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         self.theme = theme
@@ -88,6 +92,7 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
         self.appLockTime = appLockTime
         self.clipboardExpiration = clipboardExpiration
         self.shareClipboard = shareClipboard
+        self.alwaysShowUsernameField = alwaysShowUsernameField
     }
 }
 
@@ -105,6 +110,7 @@ private extension SharedPreferences {
         static let appLockTime: AppLockTime = .default
         static let clipboardExpiration: ClipboardExpiration = .default
         static let shareClipboard = false
+        static let alwaysShowUsernameField = false
     }
 
     enum CodingKeys: String, CodingKey {
@@ -120,6 +126,7 @@ private extension SharedPreferences {
         case appLockTime
         case clipboardExpiration
         case shareClipboard
+        case alwaysShowUsernameField
     }
 }
 
@@ -141,6 +148,7 @@ public extension SharedPreferences {
         let clipboardExpiration = try container.decodeIfPresent(ClipboardExpiration.self,
                                                                 forKey: .clipboardExpiration)
         let shareClipboard = try container.decodeIfPresent(Bool.self, forKey: .shareClipboard)
+        let alwaysShowUsernameField = try container.decodeIfPresent(Bool.self, forKey: .alwaysShowUsernameField)
         self.init(quickTypeBar: quickTypeBar ?? Default.quickTypeBar,
                   automaticallyCopyTotpCode: automaticallyCopyTotpCode ?? Default.automaticallyCopyTotpCode,
                   theme: theme ?? Default.theme,
@@ -152,7 +160,8 @@ public extension SharedPreferences {
                   fallbackToPasscode: fallbackToPasscode ?? Default.fallbackToPasscode,
                   appLockTime: appLockTime ?? Default.appLockTime,
                   clipboardExpiration: clipboardExpiration ?? Default.clipboardExpiration,
-                  shareClipboard: shareClipboard ?? Default.shareClipboard)
+                  shareClipboard: shareClipboard ?? Default.shareClipboard,
+                  alwaysShowUsernameField: alwaysShowUsernameField ?? Default.alwaysShowUsernameField)
     }
 }
 
@@ -169,6 +178,7 @@ extension SharedPreferences: Defaultable {
               fallbackToPasscode: Default.fallbackToPasscode,
               appLockTime: Default.appLockTime,
               clipboardExpiration: Default.clipboardExpiration,
-              shareClipboard: Default.shareClipboard)
+              shareClipboard: Default.shareClipboard,
+              alwaysShowUsernameField: Default.alwaysShowUsernameField)
     }
 }

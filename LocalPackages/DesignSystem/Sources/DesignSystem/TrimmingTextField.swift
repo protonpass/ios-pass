@@ -1,6 +1,6 @@
 //
-// ClearTextButton.swift
-// Proton Pass - Created on 27/08/2024.
+// TrimmingTextField.swift
+// Proton Pass - Created on 03/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,35 +19,25 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct ClearTextButton: View {
-    @Binding var text: String
-    let mode: DisplayMode
-    let onClear: (() -> Void)?
+public struct TrimmingTextField: View {
+    private let placeholder: LocalizedStringKey
+    private let trimmedCharacterSet: CharacterSet
+    @Binding private var text: String
 
-    public enum DisplayMode {
-        case always
-        case whenNotEmpty
-    }
-
-    public init(text: Binding<String>,
-                mode: DisplayMode = .whenNotEmpty,
-                onClear: (() -> Void)? = nil) {
+    public init(_ placeholder: LocalizedStringKey,
+                text: Binding<String>,
+                trimmedCharacterSet: CharacterSet = .whitespacesAndNewlines) {
+        self.placeholder = placeholder
         _text = text
-        self.mode = mode
-        self.onClear = onClear
+        self.trimmedCharacterSet = trimmedCharacterSet
     }
 
     public var body: some View {
-        if mode == .always || (mode == .whenNotEmpty && !text.isEmpty) {
-            Button(action: {
-                text = ""
-                onClear?()
-            }, label: {
-                ItemDetailSectionIcon(icon: IconProvider.cross)
-            })
-        }
+        TextField(placeholder, text: $text)
+            .onChange(of: text) { newValue in
+                text = newValue.trimmingCharacters(in: trimmedCharacterSet)
+            }
     }
 }
