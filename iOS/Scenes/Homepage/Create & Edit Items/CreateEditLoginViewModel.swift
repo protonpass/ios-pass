@@ -343,6 +343,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     func removeAlias() {
         aliasCreationLiteInfo = nil
         email = ""
+        emailOrUsername = ""
     }
 
     func handleScanResult(_ result: Result<String, any Error>, customField: CustomFieldUiModel? = nil) {
