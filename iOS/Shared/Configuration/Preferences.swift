@@ -168,7 +168,8 @@ extension Preferences: PreferencesMigrator {
                                        fallbackToPasscode: fallbackToPasscode,
                                        appLockTime: appLockTime,
                                        clipboardExpiration: clipboardExpiration,
-                                       shareClipboard: shareClipboard)
+                                       shareClipboard: shareClipboard,
+                                       alwaysShowUsernameField: false)
         let user = UserPreferences(spotlightEnabled: spotlightEnabled,
                                    spotlightSearchableContent: spotlightSearchableContent,
                                    spotlightSearchableVaults: spotlightSearchableVaults,
