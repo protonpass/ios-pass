@@ -33,7 +33,9 @@ struct VaultSelectorView: View {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
     private var vaults: [VaultListUiModel] {
-        vaultsManager.getAllVaultContents().map { .init(vaultContent: $0) }
+        vaultsManager
+            .getAllEditableVaultContents()
+            .map { .init(vaultContent: $0) }
     }
 
     var body: some View {
@@ -82,6 +84,5 @@ struct VaultSelectorView: View {
                 .padding(.horizontal)
         })
         .buttonStyle(.plain)
-        .disabled(!vault.vault.canEdit)
     }
 }
