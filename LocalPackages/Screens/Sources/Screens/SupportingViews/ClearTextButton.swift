@@ -25,6 +25,7 @@ import SwiftUI
 public struct ClearTextButton: View {
     @Binding var text: String
     let mode: DisplayMode
+    let onClear: (() -> Void)?
 
     public enum DisplayMode {
         case always
@@ -32,15 +33,18 @@ public struct ClearTextButton: View {
     }
 
     public init(text: Binding<String>,
-                mode: DisplayMode = .whenNotEmpty) {
+                mode: DisplayMode = .whenNotEmpty,
+                onClear: (() -> Void)? = nil) {
         _text = text
         self.mode = mode
+        self.onClear = onClear
     }
 
     public var body: some View {
         if mode == .always || (mode == .whenNotEmpty && !text.isEmpty) {
             Button(action: {
                 text = ""
+                onClear?()
             }, label: {
                 ItemDetailSectionIcon(icon: IconProvider.cross)
             })
