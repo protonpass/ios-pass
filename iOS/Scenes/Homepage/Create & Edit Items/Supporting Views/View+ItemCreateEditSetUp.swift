@@ -40,7 +40,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                  onDiscard: dismiss.callAsFunction)
             .sheet(isPresented: $viewModel.isShowingVaultSelector) {
                 // Add more height when free users to make room for upsell banner
-                let height = viewModel.vaults.count * 74 + (viewModel.isFreeUser ? 180 : 50)
+                let height = viewModel.vaults.filter(\.canEdit).count * 74 + (viewModel.isFreeUser ? 180 : 50)
                 VaultSelectorView(selectedVault: $viewModel.selectedVault,
                                   isFreeUser: viewModel.isFreeUser,
                                   onUpgrade: { viewModel.upgrade() })
