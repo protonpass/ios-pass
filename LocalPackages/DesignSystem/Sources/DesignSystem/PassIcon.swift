@@ -86,6 +86,7 @@ public extension PassIcon {
     static let scanner = Self.icon(named: "Scanner")
     static let shieldCheck = Self.icon(named: "ShieldCheck")
     static let swirls = Self.icon(named: "Swirls")
+    static let aliasSlash = Self.icon(named: "AliasSlash")
 
     static let tabProfilePaidSelected = Self.icon(named: "TabProfilePaidSelected")
     static let tabProfilePaidUnselected = Self.icon(named: "TabProfilePaidUnselected")
