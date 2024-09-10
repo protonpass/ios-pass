@@ -1,6 +1,6 @@
 //
-// AutoFillCreationMode.swift
-// Proton Pass - Created on 03/09/2024.
+// LoginCreationInfo.swift
+// Proton Pass - Created on 10/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,25 +21,9 @@
 import Entities
 import Foundation
 
-enum AutoFillCreationMode {
-    case login(userId: String, [Vault], URL?, PasskeyCredentialRequest?)
-    case alias(userId: String, [Vault])
-
-    var vaults: [Vault] {
-        switch self {
-        case let .login(_, vaults, _, _):
-            vaults
-        case let .alias(_, vaults):
-            vaults
-        }
-    }
-
-    var userId: String {
-        switch self {
-        case let .login(userId, _, _, _):
-            userId
-        case let .alias(userId, _):
-            userId
-        }
-    }
+struct LoginCreationInfo: Sendable {
+    let userId: String
+    let vaults: [Vault]
+    let url: URL?
+    let request: PasskeyCredentialRequest?
 }

@@ -50,28 +50,8 @@ extension ItemContentType {
 
 @MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
-    @MainActor
-    enum Mode {
-        case hostApp, autoFillExtension
-
-        var displayShowMoreButton: Bool {
-            switch self {
-            case .hostApp: !UIDevice.current.isIpad
-            case .autoFillExtension: false
-            }
-        }
-
-        var supportedTypes: [ItemType] {
-            switch self {
-            case .hostApp: ItemType.allCases
-            case .autoFillExtension: [.login, .alias]
-            }
-        }
-    }
-
     @Published private(set) var limitation: AliasLimitation?
-    @Published private(set) var showMoreButton: Bool
-    let mode: Mode
+    @Published private(set) var showMoreButton = true
     let onSelect: (ItemType) -> Void
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
@@ -89,9 +69,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 
     weak var uiSheetPresentationController: UISheetPresentationController?
 
-    init(mode: Mode, onSelect: @escaping (ItemType) -> Void) {
-        self.mode = mode
-        showMoreButton = mode.displayShowMoreButton
+    init(onSelect: @escaping (ItemType) -> Void) {
         self.onSelect = onSelect
         super.init()
         Task { [weak self] in
