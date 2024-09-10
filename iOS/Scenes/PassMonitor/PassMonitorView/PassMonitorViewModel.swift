@@ -47,7 +47,7 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private let getSentinelStatus = resolve(\SharedUseCasesContainer.getSentinelStatus)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let refreshAccessAndMonitorState = resolve(\UseCasesContainer.refreshAccessAndMonitorState)
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var refreshingTask: Task<Void, Never>?
@@ -194,7 +194,7 @@ private extension PassMonitorViewModel {
     }
 }
 
-private extension SecurityWeakness {
+extension SecurityWeakness {
     var telemetryEventType: TelemetryEventType {
         switch self {
         case .weakPasswords:
