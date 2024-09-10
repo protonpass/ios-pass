@@ -18,11 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import Core
+import DesignSystem
 import Entities
 import Factory
 import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
 
 extension VaultSelection {
@@ -38,17 +41,47 @@ extension VaultSelection {
     }
 }
 
-enum TogglePinningOption {
-    case pin, unpin
+enum ExtraBulkActionOption {
+    case pin
+    case unpin
+    case disableAliases
+    case enableAliases
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .pin:
+            "Pin"
+        case .unpin:
+            "Unpin"
+        case .disableAliases:
+            "Disable aliases"
+        case .enableAliases:
+            "Enable aliases"
+        }
+    }
+
+    var icon: UIImage {
+        switch self {
+        case .pin:
+            PassIcon.pinAngled
+        case .unpin:
+            PassIcon.pinAngledSlash
+        case .disableAliases:
+            IconProvider.circleSlash
+        case .enableAliases:
+            IconProvider.alias
+        }
+    }
 }
 
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var actionsDisabled = true
-    @Published private(set) var togglePinningOption: TogglePinningOption = .pin
+    @Published private(set) var extraOptions: [ExtraBulkActionOption] = []
 
     var selectedItemsCount: Int {
         currentSelectedItems.value.count
@@ -61,12 +94,29 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     init() {
         vaultsManager.attach(to: self, storeIn: &cancellables)
         actionsDisabled = currentSelectedItems.value.isEmpty
+
+        let aliasSyncEnabled = getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
         currentSelectedItems
             .receive(on: DispatchQueue.main)
             .sink { [weak self] items in
                 guard let self else { return }
                 actionsDisabled = items.isEmpty
-                togglePinningOption = items.allSatisfy(\.pinned) ? .unpin : .pin
+
+                extraOptions.removeAll()
+
+                if items.allSatisfy(\.pinned) {
+                    extraOptions.append(.unpin)
+                } else {
+                    extraOptions.append(.pin)
+                }
+
+                if aliasSyncEnabled, items.allSatisfy(\.isAlias) {
+                    if items.allSatisfy({ $0.aliasEnabled == false }) {
+                        extraOptions.append(.enableAliases)
+                    } else {
+                        extraOptions.append(.disableAliases)
+                    }
+                }
             }
             .store(in: &cancellables)
     }
