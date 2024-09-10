@@ -90,7 +90,7 @@ private extension ItemSquircleThumbnail {
     var thumbnail: some View {
         switch data {
         case let .icon(type):
-            SquircleThumbnail(data: size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon),
+            SquircleThumbnail(data: iconData(type: type),
                               tintColor: type.normMajor2Color,
                               backgroundColor: !isEnabled ? .clear : alternativeBackground ? type
                                   .normMinor2Color : type.normMinor1Color,
@@ -167,6 +167,14 @@ private extension ItemSquircleThumbnail {
                                   height: size.pinHeight * 4 / 5)
                 }
                 .padding(-size.pinHeight / 5)
+        }
+    }
+
+    func iconData(type: ItemContentType) -> SquircleThumbnailData {
+        if type != .alias {
+            size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon)
+        } else {
+            isEnabled ? .icon(type.regularIcon) : .icon(PassIcon.aliasSlash)
         }
     }
 }

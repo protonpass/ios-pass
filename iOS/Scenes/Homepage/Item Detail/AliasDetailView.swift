@@ -121,7 +121,7 @@ struct AliasDetailView: View {
             ItemDetailSectionIcon(icon: IconProvider.user, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Alias address")
+                Text(viewModel.aliasEnabled ? "Alias address" : "Alias address (disabled)")
                     .sectionTitleText()
 
                 Text(viewModel.aliasEmail)
@@ -130,6 +130,7 @@ struct AliasDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
             .onTapGesture { viewModel.copyAliasEmail() }
+            .layoutPriority(1)
 
             if viewModel.isSimpleLoginAliasSyncActive {
                 if viewModel.togglingAliasStatus {

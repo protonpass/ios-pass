@@ -31,6 +31,8 @@ struct ItemSwipeModifier: ViewModifier {
     let isEditable: Bool
     let itemContextMenuHandler: ItemContextMenuHandler
 
+    @State private var showingTrashAliasAlert = false
+
     /// Active item:  swipe right-to-left to move to trash
     /// Trashed item: swipe left-to-right to restore, swipe right-to-left to permanently delete
     func body(content: Content) -> some View {
@@ -67,7 +69,11 @@ struct ItemSwipeModifier: ViewModifier {
                     .tint(PassColor.signalDanger.toColor)
                 } else {
                     Button(action: {
-                        itemContextMenuHandler.trash(item)
+                        if item.type == .alias {
+                            showingTrashAliasAlert.toggle()
+                        } else {
+                            itemContextMenuHandler.trash(item)
+                        }
                     }, label: {
                         Label(title: {
                             Text("Trash")
@@ -76,6 +82,20 @@ struct ItemSwipeModifier: ViewModifier {
                         })
                     })
                     .tint(PassColor.signalDanger.toColor)
+                }
+            }
+            .alert("Move to Trash", isPresented: $showingTrashAliasAlert) {
+                if item.aliasEnabled {
+                    Button("Disable instead") {
+                        itemContextMenuHandler.disableAlias(item) /* viewModel.disableAlias()*/
+                    }
+                }
+                Button("Move to Trash") { itemContextMenuHandler.trash(item) }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                if item.aliasEnabled {
+                    // swiftlint:disable:next line_length
+                    Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
                 }
             }
     }
