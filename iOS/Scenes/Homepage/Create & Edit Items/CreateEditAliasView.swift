@@ -160,9 +160,7 @@ struct CreateEditAliasView: View {
         .itemCreateEditSetUp(viewModel)
         .optionalSheet(binding: $sheetState) { state in
             AliasOptionsSheetContent(state: state,
-                                     tint: PassColor.aliasInteractionNormMajor2.toColor)
-                .presentationDetents([.height(state.height)])
-                .presentationDragIndicator(.visible)
+                                     onDismiss: { sheetState = nil })
         }
     }
 
