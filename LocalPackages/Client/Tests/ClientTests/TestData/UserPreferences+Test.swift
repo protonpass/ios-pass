@@ -28,6 +28,7 @@ extension UserPreferences {
               spotlightSearchableVaults: .random()!,
               extraPasswordEnabled: .random(),
               protonPasswordFailedVerificationCount: .random(in: 1...10),
-              lastSelectedShareId: nil)
+              lastSelectedShareId: nil,
+              lastCreatedItemShareId: nil)
     }
 }
