@@ -26,7 +26,7 @@ public extension PassError {
         case canNotDeleteLastVault
         case noSelectedVault
         case vaultNotEmpty(String)
-        case vaultNotFound(String)
+        case noEditableVault
 
         public var debugDescription: String {
             switch self {
@@ -36,8 +36,8 @@ public extension PassError {
                 "No selected vault"
             case let .vaultNotEmpty(id):
                 "Vault not empty \"\(id)\""
-            case let .vaultNotFound(id):
-                "Vault not found \"\(id)\""
+            case .noEditableVault:
+                "No editable vault"
             }
         }
     }

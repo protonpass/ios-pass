@@ -267,7 +267,6 @@ extension CredentialProviderCoordinator: ExtensionCoordinator {
 // MARK: - Setup & Utils
 
 private extension CredentialProviderCoordinator {
-    // swiftlint:disable cyclomatic_complexity
     func setUpRouting() {
         router
             .newSheetDestination
@@ -277,8 +276,6 @@ private extension CredentialProviderCoordinator {
                 switch destination {
                 case .upgradeFlow:
                     startUpgradeFlow()
-                case .vaultSelection:
-                    createEditItemViewModelWantsToChangeVault()
                 case let .createItem(item, type, response):
                     handleItemCreation(item, type: type, response: response)
                 default:
@@ -506,21 +503,6 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 
 extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToChangeVault() {
-        guard let rootViewController else { return }
-        let viewModel = VaultSelectorViewModel()
-
-        let view = VaultSelectorView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = 66 * vaultsManager.getVaultCount() + 180 // Space for upsell banner
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, dismissible: true)
-    }
-
     func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
                                                       shouldDisplayTotp: Bool) {
         guard let rootViewController else {
@@ -591,5 +573,3 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
         showGeneratePasswordView(delegate: delegate)
     }
 }
-
-// swiftlint:enable cyclomatic_complexity

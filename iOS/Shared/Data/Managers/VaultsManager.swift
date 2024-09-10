@@ -419,6 +419,28 @@ extension VaultsManager {
     func updateItemTypeFilterOption(_ filterOption: ItemTypeFilterOption) {
         self.filterOption = filterOption
     }
+
+    func isItemVisible(_ item: any ItemIdentifiable, type: ItemContentType) -> Bool {
+        switch vaultSelection {
+        case .all:
+            true
+
+        case let .precise(vault):
+            if vault.shareId == item.shareId {
+                switch filterOption {
+                case .all:
+                    true
+                case let .precise(filterType):
+                    filterType == type
+                }
+            } else {
+                false
+            }
+
+        case .trash:
+            false
+        }
+    }
 }
 
 private extension VaultsManager {

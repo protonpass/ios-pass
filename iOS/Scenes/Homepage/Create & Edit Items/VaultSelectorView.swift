@@ -26,29 +26,40 @@ import SwiftUI
 
 struct VaultSelectorView: View {
     @Environment(\.dismiss) private var dismiss
-    let viewModel: VaultSelectorViewModel
+    @Binding var selectedVault: Vault
+    let isFreeUser: Bool
+    let onUpgrade: () -> Void
+
+    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+
+    private var vaults: [VaultListUiModel] {
+        vaultsManager
+            .getAllEditableVaultContents()
+            .map { .init(vaultContent: $0) }
+    }
 
     var body: some View {
         NavigationStack {
             VStack {
-                if viewModel.isFreeUser {
-                    LimitedVaultOperationsBanner(onUpgrade: { viewModel.upgrade() })
+                if isFreeUser {
+                    LimitedVaultOperationsBanner(onUpgrade: onUpgrade)
                         .padding([.horizontal, .top])
                 }
 
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(viewModel.allVaults, id: \.hashValue) { vault in
+                        ForEach(vaults) { vault in
                             view(for: vault)
-                            PassDivider()
-                                .padding(.horizontal)
+                            if vault != vaults.last {
+                                PassDivider()
+                                    .padding(.horizontal)
+                            }
                         }
                     }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .background(PassColor.backgroundWeak.toColor)
-            .animation(.default, value: viewModel.isFreeUser)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Select a vault")
@@ -61,18 +72,17 @@ struct VaultSelectorView: View {
     @MainActor
     private func view(for vault: VaultListUiModel) -> some View {
         Button(action: {
-            viewModel.select(vault: vault.vault)
+            selectedVault = vault.vault
             dismiss()
         }, label: {
             VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
                      title: vault.vault.name,
                      itemCount: vault.itemCount,
                      isShared: vault.vault.shared,
-                     isSelected: viewModel.isSelected(vault: vault.vault),
+                     isSelected: selectedVault == vault.vault,
                      height: 74)
                 .padding(.horizontal)
         })
         .buttonStyle(.plain)
-        .opacityReduced(!vault.vault.canEdit)
     }
 }
