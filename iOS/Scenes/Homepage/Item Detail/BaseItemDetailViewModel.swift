@@ -63,8 +63,8 @@ class BaseItemDetailViewModel: ObservableObject {
 
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
-    private let pinItem = resolve(\SharedUseCasesContainer.pinItem)
-    private let unpinItem = resolve(\SharedUseCasesContainer.unpinItem)
+    private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
+    private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
@@ -166,12 +166,14 @@ class BaseItemDetailViewModel: ObservableObject {
             do {
                 logger.trace("beginning of pin/unpin of \(itemContent.debugDescription)")
                 router.display(element: .globalLoading(shouldShow: true))
-                let newItemState = if itemContent.item.pinned {
-                    try await unpinItem(item: itemContent)
+                if itemContent.item.pinned {
+                    try await unpinItems([itemContent])
                 } else {
-                    try await pinItem(item: itemContent)
+                    try await pinItems([itemContent])
                 }
-                router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
+                let message = itemContent.item.pinned ?
+                    #localized("Item successfully unpinned") : #localized("Item successfully pinned")
+                router.display(element: .successMessage(message, config: .refresh))
                 logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
                 donateToItemForceTouchTip()
             } catch {

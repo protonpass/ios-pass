@@ -308,14 +308,12 @@ extension SharedUseCasesContainer {
 // MARK: - Items
 
 extension SharedUseCasesContainer {
-    var pinItem: Factory<any PinItemUseCase> {
-        self { PinItem(itemRepository: self.itemRepository,
-                       logManager: self.logManager) }
+    var pinItems: Factory<any PinItemsUseCase> {
+        self { PinItems(itemRepository: self.itemRepository) }
     }
 
-    var unpinItem: Factory<any UnpinItemUseCase> {
-        self { UnpinItem(itemRepository: self.itemRepository,
-                         logManager: self.logManager) }
+    var unpinItems: Factory<any UnpinItemsUseCase> {
+        self { UnpinItems(itemRepository: self.itemRepository) }
     }
 
     var canEditItem: Factory<any CanEditItemUseCase> {

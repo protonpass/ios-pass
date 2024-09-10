@@ -140,9 +140,9 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Get active log in items of all shares
     func getActiveLogInItems(userId: String) async throws -> [SymmetricallyEncryptedItem]
 
-    func pinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
+    func pinItems(_ items: [any ItemIdentifiable]) async throws
 
-    func unpinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
+    func unpinItems(_ items: [any ItemIdentifiable]) async throws
 
     func getAllPinnedItems() async throws -> [SymmetricallyEncryptedItem]
 
@@ -689,36 +689,38 @@ public extension ItemRepository {
 // MARK: - item Pinning functionalities
 
 public extension ItemRepository {
-    func pinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        logger.trace("Pin item \(item.itemId) for share \(item.shareId)")
+    func pinItems(_ items: [any ItemIdentifiable]) async throws {
         let userId = try await userManager.getActiveUserId()
-        let pinItemRevision = try await remoteDatasource.pin(userId: userId, item: item)
+        logger.trace("Pinning \(items.count) items for user \(userId)")
         let symmetricKey = try await getSymmetricKey()
-        logger.trace("Updating item \(pinItemRevision.itemID) to local database")
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinItemRevision,
-                                                           shareId: item.shareId,
-                                                           userId: userId,
-                                                           symmetricKey: symmetricKey)
-        try await localDatasource.upsertItems([encryptedItem])
-        logger.trace("Saved item \(pinItemRevision.itemID) to local database")
+        try await groupedEditItems(items) { [weak self] item in
+            guard let self else { return }
+            let pinnedItem = try await remoteDatasource.pin(userId: userId, item: item)
+            let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinnedItem,
+                                                               shareId: item.shareId,
+                                                               userId: userId,
+                                                               symmetricKey: symmetricKey)
+            try await localDatasource.upsertItems([encryptedItem])
+        }
+        logger.info("Finish pinning \(items.count) items for user \(userId)")
         try await refreshPinnedItemDataStream()
-        return encryptedItem
     }
 
-    func unpinItem(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        logger.trace("Unpiin item \(item.itemId) for share \(item.shareId)")
+    func unpinItems(_ items: [any ItemIdentifiable]) async throws {
         let userId = try await userManager.getActiveUserId()
-        let unpinItemRevision = try await remoteDatasource.unpin(userId: userId, item: item)
+        logger.trace("Unpinning \(items.count) items for user \(userId)")
         let symmetricKey = try await getSymmetricKey()
-        logger.trace("Updating item \(unpinItemRevision.itemID) to local database")
-        let encryptedItem = try await symmetricallyEncrypt(itemRevision: unpinItemRevision,
-                                                           shareId: item.shareId,
-                                                           userId: userId,
-                                                           symmetricKey: symmetricKey)
-        try await localDatasource.upsertItems([encryptedItem])
-        logger.trace("Saved item \(unpinItemRevision.itemID) to local database")
+        try await groupedEditItems(items) { [weak self] item in
+            guard let self else { return }
+            let pinnedItem = try await remoteDatasource.unpin(userId: userId, item: item)
+            let encryptedItem = try await symmetricallyEncrypt(itemRevision: pinnedItem,
+                                                               shareId: item.shareId,
+                                                               userId: userId,
+                                                               symmetricKey: symmetricKey)
+            try await localDatasource.upsertItems([encryptedItem])
+        }
+        logger.info("Finish unpinning \(items.count) items for user \(userId)")
         try await refreshPinnedItemDataStream()
-        return encryptedItem
     }
 }
 
@@ -901,6 +903,22 @@ private extension ItemRepository {
         try await allItems.groupAndBulkAction(by: \.shareId,
                                               shouldInclude: shouldInclude,
                                               action: action)
+    }
+
+    func groupedEditItems(_ items: [any ItemIdentifiable],
+                          action: @escaping @Sendable (any ItemIdentifiable) async throws -> Void) async throws {
+        if items.count == 1, let firstItem = items.first {
+            /// Avoid `TaskGroup` overhead when there's only 1 item
+            try await action(firstItem)
+        } else {
+            await withThrowingTaskGroup(of: Void.self) { taskGroup in
+                for item in items {
+                    taskGroup.addTask {
+                        try await action(item)
+                    }
+                }
+            }
+        }
     }
 }
 
