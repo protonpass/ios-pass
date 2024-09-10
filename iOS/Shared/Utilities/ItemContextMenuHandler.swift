@@ -32,8 +32,8 @@ final class ItemContextMenuHandler: @unchecked Sendable {
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedUseCasesContainer.pinItem) private var pinItem
-    @LazyInjected(\SharedUseCasesContainer.unpinItem) private var unpinItem
+    @LazyInjected(\SharedUseCasesContainer.pinItems) private var pinItems
+    @LazyInjected(\SharedUseCasesContainer.unpinItems) private var unpinItems
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     init() {}
@@ -97,12 +97,14 @@ extension ItemContextMenuHandler {
     func toggleItemPinning(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: true) { [weak self] itemContent in
             guard let self else { return }
-            let newItemState = if itemContent.item.pinned {
-                try await unpinItem(item: itemContent)
+            if itemContent.item.pinned {
+                try await unpinItems([item])
             } else {
-                try await pinItem(item: itemContent)
+                try await pinItems([item])
             }
-            await router.display(element: .successMessage(newItemState.item.pinMessage, config: .refresh))
+            let message = itemContent.item.pinned ?
+                #localized("Item successfully unpinned") : #localized("Item successfully pinned")
+            await router.display(element: .successMessage(message, config: .refresh))
             logger.trace("Success of pin/unpin of \(itemContent.debugDescription)")
         }
     }
