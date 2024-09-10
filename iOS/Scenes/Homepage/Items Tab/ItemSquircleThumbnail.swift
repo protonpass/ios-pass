@@ -170,6 +170,7 @@ private extension ItemSquircleThumbnail {
         }
     }
 
+    // swiftlint:disable void_function_in_ternary
     func iconData(type: ItemContentType) -> SquircleThumbnailData {
         if type != .alias {
             size == .regular ? .icon(type.regularIcon) : .icon(type.largeIcon)
@@ -177,4 +178,5 @@ private extension ItemSquircleThumbnail {
             isEnabled ? .icon(type.regularIcon) : .icon(PassIcon.aliasSlash)
         }
     }
+    // swiftlint:enable void_function_in_ternary
 }
