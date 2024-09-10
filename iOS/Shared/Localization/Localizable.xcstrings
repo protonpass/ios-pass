@@ -17334,28 +17334,6 @@
         }
       }
     },
-    "All %lld accounts" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "All %lld account"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "All %lld accounts"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "All current breaches will be marked as resolved. In case of future data breaches, you'll be notified." : {
       "localizations" : {
         "be" : {
