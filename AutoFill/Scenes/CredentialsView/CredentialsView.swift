@@ -46,7 +46,7 @@ struct CredentialsView: View {
         }
         .task {
             await viewModel.fetchItems()
-            await viewModel.sync()
+            await viewModel.sync(ignoreError: true)
         }
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
@@ -82,6 +82,7 @@ struct CredentialsView: View {
                let context = viewModel.context {
                 SelectPasskeyView(info: info, context: context)
                     .presentationDetents([.height(CGFloat(info.passkeys.count * 60) + 80)])
+                    .environment(\.colorScheme, colorScheme)
             }
         }
         .confirmationDialog("Create",
@@ -164,7 +165,7 @@ private extension CredentialsView {
                 CredentialsSkeletonView()
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { viewModel.fetchItemsSync() })
+                                   onRetry: { Task { await viewModel.fetchItems() } })
             }
 
             Spacer()
@@ -264,7 +265,7 @@ private extension CredentialsView {
                 notMatchedItemsSection(notMatchedItems)
             }
             .listStyle(.plain)
-            .refreshable { await viewModel.sync() }
+            .refreshable { await viewModel.sync(ignoreError: false) }
             .animation(.default, value: matchedItems.hashValue)
             .animation(.default, value: notMatchedItems.hashValue)
             .overlay {
