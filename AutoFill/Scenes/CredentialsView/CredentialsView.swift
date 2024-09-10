@@ -98,8 +98,7 @@ struct CredentialsView: View {
                                 Button("Cancel", role: .cancel, action: {})
                             },
                             message: {
-                                // TODO: localize this
-                                Text(verbatim: "Select account")
+                                Text("Select account")
                             })
     }
 }
@@ -110,8 +109,7 @@ private extension CredentialsView {
         VStack(spacing: 0) {
             if viewModel.state != .loading {
                 let placeholder = if viewModel.selectedUser == nil {
-                    // TODO: Localize this
-                    "Search in \(viewModel.users.count) accounts"
+                    #localized("Search in %lld accounts", viewModel.users.count)
                 } else {
                     viewModel.planType.searchBarPlaceholder
                 }
@@ -210,8 +208,7 @@ private extension CredentialsView {
     @ViewBuilder
     var accountSwitcher: some View {
         if viewModel.users.count > 1 {
-            // TODO: Localize this
-            let allAccountsMessage = "All \(viewModel.users.count) accounts"
+            let allAccountsMessage = #localized("All %lld accounts", viewModel.users.count)
             Menu(content: {
                 Button(action: {
                     viewModel.selectedUser = nil

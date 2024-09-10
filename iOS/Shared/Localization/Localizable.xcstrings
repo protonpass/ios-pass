@@ -17334,6 +17334,28 @@
         }
       }
     },
+    "All %lld accounts" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "All %lld account"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "All %lld accounts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "All current breaches will be marked as resolved. In case of future data breaches, you'll be notified." : {
       "localizations" : {
         "be" : {
@@ -89874,6 +89896,29 @@
         }
       }
     },
+    "Search in %lld accounts" : {
+      "comment" : "Placeholder of the search bar when searching in multi accounts",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Search in %lld account"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Search in %lld accounts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Search in all vaults" : {
       "localizations" : {
         "be" : {
@@ -92695,6 +92740,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chọn một kho lưu trữ"
+          }
+        }
+      }
+    },
+    "Select account" : {
+      "comment" : "Title of the sheet to let the users pick an account to create an item (when having multiple logged in accounts)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select account"
           }
         }
       }
