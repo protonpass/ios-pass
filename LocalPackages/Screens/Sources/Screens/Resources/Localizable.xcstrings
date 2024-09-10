@@ -991,6 +991,28 @@
         }
       }
     },
+    "All %lld accounts" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "All %lld account"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "All %lld accounts"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Cancel" : {
       "comment" : "Accessibility label",
       "localizations" : {

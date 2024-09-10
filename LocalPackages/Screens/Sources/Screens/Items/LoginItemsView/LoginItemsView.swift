@@ -28,7 +28,11 @@ import SwiftUI
 public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     @StateObject private var viewModel: LoginItemsViewModel
     @FocusState private var isFocused
+    @Binding private var selectedUser: PassUser?
+    private let searchableItems: [SearchableItem]
+    private let uiModels: [ItemUiModel]
     private let mode: Mode
+    private let users: [PassUser]
     private let itemRow: (ItemUiModel) -> ItemRow
     private let searchResultRow: (ItemSearchResult) -> SearchResultRow
     private let onRefresh: () async -> Void
@@ -38,6 +42,8 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     public init(searchableItems: [SearchableItem],
                 uiModels: [ItemUiModel],
                 mode: Mode,
+                users: [PassUser],
+                selectedUser: Binding<PassUser?>,
                 itemRow: @escaping (ItemUiModel) -> ItemRow,
                 searchResultRow: @escaping (ItemSearchResult) -> SearchResultRow,
                 onRefresh: @escaping () async -> Void,
@@ -45,7 +51,11 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
                 onCancel: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(searchableItems: searchableItems,
                                                uiModels: uiModels))
+        self.searchableItems = searchableItems
+        self.uiModels = uiModels
         self.mode = mode
+        self.users = users
+        _selectedUser = selectedUser
         self.itemRow = itemRow
         self.searchResultRow = searchResultRow
         self.onRefresh = onRefresh
@@ -54,7 +64,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     }
 
     public var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             searchBar
             content
             if mode.allowCreation {
@@ -64,6 +74,11 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(PassColor.backgroundNorm.toColor)
         .animation(.default, value: viewModel.state)
+        .animation(.default, value: searchableItems)
+        .animation(.default, value: uiModels)
+        .animation(.default, value: selectedUser)
+        .onChange(of: searchableItems) { viewModel.searchableItems = $0 }
+        .onChange(of: uiModels) { viewModel.uiModels = $0 }
     }
 }
 
@@ -79,7 +94,15 @@ private extension LoginItemsView {
     var content: some View {
         switch viewModel.state {
         case .idle:
-            allItems
+            VStack {
+                title
+                description
+                if users.count > 1 {
+                    AccountsMenu(selectedUser: $selectedUser, users: users)
+                }
+                allItems
+            }
+            .padding(.horizontal)
         case .searching:
             ProgressView()
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -94,13 +117,6 @@ private extension LoginItemsView {
 
     var allItems: some View {
         List {
-            title
-                .plainListRow()
-
-            description
-                .plainListRow()
-                .padding(.vertical)
-
             ForEach(viewModel.uiModels) { item in
                 itemRow(item)
                     .plainListRow()
@@ -108,7 +124,6 @@ private extension LoginItemsView {
         }
         .refreshable { await onRefresh() }
         .listStyle(.plain)
-        .padding(.horizontal)
     }
 
     func searchResults(_ results: [ItemSearchResult]) -> some View {

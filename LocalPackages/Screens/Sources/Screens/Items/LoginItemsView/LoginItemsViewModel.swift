@@ -45,9 +45,8 @@ enum LoginItemsViewModelState: Equatable {
 final class LoginItemsViewModel: ObservableObject {
     @Published private(set) var state: LoginItemsViewModelState = .idle
     @Published var query = ""
-
-    private let searchableItems: [SearchableItem]
-    let uiModels: [ItemUiModel]
+    @Published var searchableItems: [SearchableItem]
+    @Published var uiModels: [ItemUiModel]
 
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
