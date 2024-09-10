@@ -28,7 +28,8 @@ struct CreateEditItemToolbar: ToolbarContent {
     let isSaveable: Bool
     let isSaving: Bool
     let canScanDocuments: Bool
-    let vault: Vault?
+    let vault: Vault
+    let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
     let isPhone: Bool
@@ -71,8 +72,8 @@ struct CreateEditItemToolbar: ToolbarContent {
 private extension CreateEditItemToolbar {
     var buttons: some View {
         HStack {
-            if let vault {
-                vaultButton(vault)
+            if canChangeVault {
+                vaultButton
             }
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
@@ -98,7 +99,7 @@ private extension CreateEditItemToolbar {
         }
     }
 
-    func vaultButton(_ vault: Vault) -> some View {
+    var vaultButton: some View {
         HStack {
             Image(uiImage: vault.displayPreferences.icon.icon.bigImage)
                 .resizable()

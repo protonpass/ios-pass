@@ -24,6 +24,7 @@ import SwiftUI
 /// Set up common UI appearance for item create/edit pages
 /// e.g. navigation bar, background color, toolbar, discard changes alert...
 struct ItemCreateEditSetUpModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: BaseCreateEditItemViewModel
 
@@ -37,16 +38,26 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                onAction: dismiss.callAsFunction)
             .discardChangesAlert(isPresented: $viewModel.isShowingDiscardAlert,
                                  onDiscard: dismiss.callAsFunction)
+            .sheet(isPresented: $viewModel.isShowingVaultSelector) {
+                // Add more height when free users to make room for upsell banner
+                let height = viewModel.vaults.filter(\.canEdit).count * 74 + (viewModel.isFreeUser ? 180 : 50)
+                VaultSelectorView(selectedVault: $viewModel.selectedVault,
+                                  isFreeUser: viewModel.isFreeUser,
+                                  onUpgrade: { viewModel.upgrade() })
+                    .presentationDetents([.height(CGFloat(height)), .large])
+                    .environment(\.colorScheme, colorScheme)
+            }
             .toolbar {
                 CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
                                       isSaveable: viewModel.isSaveable,
                                       isSaving: viewModel.isSaving,
                                       canScanDocuments: viewModel.canScanDocuments,
-                                      vault: viewModel.editableVault,
+                                      vault: viewModel.selectedVault,
+                                      canChangeVault: viewModel.mode.canChangeVault,
                                       itemContentType: viewModel.itemContentType(),
                                       shouldUpgrade: viewModel.shouldUpgrade,
                                       isPhone: viewModel.isPhone,
-                                      onSelectVault: { viewModel.changeVault() },
+                                      onSelectVault: { viewModel.isShowingVaultSelector.toggle() },
                                       onGoBack: { viewModel.isShowingDiscardAlert.toggle() },
                                       onUpgrade: {
                                           if viewModel.shouldUpgrade {
