@@ -118,6 +118,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     let vaults: [Vault]
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+    private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
+    private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
 
     var hasEmptyCustomField: Bool {
@@ -147,10 +149,16 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }
 
+        let lastCreatedItemVault: Vault? = if let shareId = getUserPreferences().lastCreatedItemShareId {
+            vaults.first { $0.shareId == shareId && $0.canEdit }
+        } else {
+            nil
+        }
+
         let editableVault = vaults.first { $0.shareId == vaultShareId && $0.canEdit }
         let oldestOwnedVault = vaults.twoOldestVaults.owned
 
-        guard let vault = editableVault ?? oldestOwnedVault else {
+        guard let vault = lastCreatedItemVault ?? editableVault ?? oldestOwnedVault else {
             throw PassError.vault(.noEditableVault)
         }
 
@@ -338,9 +346,10 @@ extension BaseCreateEditItemViewModel {
                         logger.info("Created \(createdItem.debugDescription)")
                         let passkey = try await newPasskey()
                         router.present(for: .createItem(item: createdItem,
-                                                        type: itemContentType(),
+                                                        type: type,
                                                         createPasskeyResponse: passkey))
                     }
+                    try await updateUserPreferences(\.lastCreatedItemShareId, value: selectedVault.shareId)
                 }
 
                 switch mode {
