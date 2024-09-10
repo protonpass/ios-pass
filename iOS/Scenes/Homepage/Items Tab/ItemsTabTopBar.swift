@@ -37,6 +37,8 @@ struct ItemsTabTopBar: View {
     let onTrash: () -> Void
     let onRestore: () -> Void
     let onPermanentlyDelete: () -> Void
+    let onDisableAliases: () -> Void
+    let onEnableAliases: () -> Void
 
     var body: some View {
         ZStack {
@@ -140,13 +142,6 @@ private extension ItemsTabTopBar {
 
                 Spacer()
 
-                switch viewModel.togglePinningOption {
-                case .pin:
-                    button(action: onPin, icon: PassIcon.pinAngled)
-                case .unpin:
-                    button(action: onUnpin, icon: PassIcon.pinAngledSlash)
-                }
-
                 switch viewModel.vaultSelection {
                 case .all, .precise:
                     button(action: onMove, icon: IconProvider.folderArrowIn)
@@ -160,6 +155,19 @@ private extension ItemsTabTopBar {
                            icon: IconProvider.trashCross,
                            color: PassColor.signalDanger)
                 }
+
+                Menu(content: {
+                    ForEach(viewModel.extraOptions, id: \.self) { option in
+                        Section {
+                            Button(action: { handle(extraOption: option) },
+                                   label: { Label(option.title, uiImage: option.icon) })
+                        }
+                    }
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: PassColor.textNorm,
+                                 backgroundColor: .clear)
+                })
             }
             .padding(.horizontal)
             .animation(.default, value: viewModel.selectedItemsCount)
@@ -179,5 +187,18 @@ private extension ItemsTabTopBar {
         }
         .disabled(viewModel.actionsDisabled)
         .animation(.default, value: viewModel.actionsDisabled)
+    }
+
+    func handle(extraOption: ExtraBulkActionOption) {
+        switch extraOption {
+        case .pin:
+            onPin()
+        case .unpin:
+            onUnpin()
+        case .disableAliases:
+            onDisableAliases()
+        case .enableAliases:
+            onEnableAliases()
+        }
     }
 }

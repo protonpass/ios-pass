@@ -191,19 +191,19 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         return stubbedGetAliasItemResult
     }
     // MARK: - changeAliasStatus
-    public var changeAliasStatusUserIdItemEnabledThrowableError7: Error?
+    public var changeAliasStatusUserIdItemsEnabledThrowableError7: Error?
     public var closureChangeAliasStatus: () -> () = {}
     public var invokedChangeAliasStatusfunction = false
     public var invokedChangeAliasStatusCount = 0
-    public var invokedChangeAliasStatusParameters: (userId: String, item: ItemContent, enabled: Bool)?
-    public var invokedChangeAliasStatusParametersList = [(userId: String, item: ItemContent, enabled: Bool)]()
+    public var invokedChangeAliasStatusParameters: (userId: String, items: [any ItemIdentifiable], enabled: Bool)?
+    public var invokedChangeAliasStatusParametersList = [(userId: String, items: [any ItemIdentifiable], enabled: Bool)]()
 
-    public func changeAliasStatus(userId: String, item: ItemContent, enabled: Bool) async throws {
+    public func changeAliasStatus(userId: String, items: [any ItemIdentifiable], enabled: Bool) async throws {
         invokedChangeAliasStatusfunction = true
         invokedChangeAliasStatusCount += 1
-        invokedChangeAliasStatusParameters = (userId, item, enabled)
-        invokedChangeAliasStatusParametersList.append((userId, item, enabled))
-        if let error = changeAliasStatusUserIdItemEnabledThrowableError7 {
+        invokedChangeAliasStatusParameters = (userId, items, enabled)
+        invokedChangeAliasStatusParametersList.append((userId, items, enabled))
+        if let error = changeAliasStatusUserIdItemsEnabledThrowableError7 {
             throw error
         }
         closureChangeAliasStatus()

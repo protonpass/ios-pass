@@ -900,6 +900,50 @@
         }
       }
     },
+    "%lld aliases disabled" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias disabled"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliases disabled"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "%lld aliases enabled" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias enabled"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliases enabled"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld characters" : {
       "localizations" : {
         "be" : {
@@ -37666,6 +37710,16 @@
         }
       }
     },
+    "Disable aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disable aliases"
+          }
+        }
+      }
+    },
     "Disable instead" : {
       "localizations" : {
         "be" : {
@@ -41266,6 +41320,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma adı kullanıma al"
+          }
+        }
+      }
+    },
+    "Enable aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable aliases"
           }
         }
       }
