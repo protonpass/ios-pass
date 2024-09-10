@@ -93,6 +93,7 @@ final class CredentialsViewModel: ObservableObject {
         results.first { $0.userId == selectedUser?.id }
     }
 
+    private let multiAccountsMappingManager = MultiAccountsMappingManager()
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
@@ -131,48 +132,27 @@ final class CredentialsViewModel: ObservableObject {
 
     private var searchableItems: [SearchableItem] {
         if let selectedUser {
-            return results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
+            results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
         } else {
-            do {
-                return try results.mergeAndDeduplicate(by: \.searchableItems,
-                                                       vaultId: { try getVaultId(from: $0) })
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-                return []
-            }
+            getAllObjects(\.searchableItems)
         }
     }
 
     var matchedItems: [ItemUiModel] {
         if let selectedUser {
-            return results.first { $0.userId == selectedUser.id }?.matchedItems ?? []
+            results.first { $0.userId == selectedUser.id }?.matchedItems ?? []
         } else {
-            do {
-                return try results.mergeAndDeduplicate(by: \.matchedItems,
-                                                       vaultId: { try getVaultId(from: $0) })
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-                return []
-            }
+            getAllObjects(\.matchedItems)
         }
     }
 
     var notMatchedItems: [ItemUiModel] {
         if let selectedUser {
-            return results.first { $0.userId == selectedUser.id }?.notMatchedItems ?? []
+            results.first { $0.userId == selectedUser.id }?.notMatchedItems ?? []
         } else {
-            do {
-                return try results.mergeAndDeduplicate(by: \.notMatchedItems,
-                                                       vaultId: { try getVaultId(from: $0) })
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-                return []
-            }
+            getAllObjects(\.notMatchedItems)
         }
     }
-
-    private var shareIdToVaultIdDict = [String: String]() // ShareID -> VaultID
-    private var shareIdToUserIdDict = [String: String]() // ShareID -> UserID
 
     var selectedUserIdForNewItem: String?
 
@@ -232,6 +212,7 @@ extension CredentialsViewModel {
                 let result = try await fetchCredentials(userId: user.id,
                                                         identifiers: serviceIdentifiers,
                                                         params: passkeyRequestParams)
+                multiAccountsMappingManager.add(result.vaults, userId: user.id)
                 results.append(result)
             }
 
@@ -330,15 +311,12 @@ extension CredentialsViewModel {
     }
 
     func getUser(for item: any ItemIdentifiable) -> PassUser? {
-        if let userId = shareIdToUserIdDict[item.shareId] {
-            return users.first { $0.id == userId }
+        do {
+            return try multiAccountsMappingManager.getUser(for: item).object
+        } catch {
+            handle(error)
+            return nil
         }
-        if let result = results.first(where: { $0.vaults.contains { $0.shareId == item.shareId } }),
-           let user = users.first(where: { $0.id == result.userId }) {
-            shareIdToUserIdDict[item.shareId] = user.id
-            return user
-        }
-        return nil
     }
 
     func upgrade() {
@@ -427,15 +405,24 @@ private extension CredentialsViewModel {
         }
     }
 
-    func getVaultId(from shareId: String) throws -> String {
-        if let vaultId = shareIdToVaultIdDict[shareId] {
-            return vaultId
+    func getAllObjects<T: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<CredentialsFetchResult, [T]>) -> [T] {
+        do {
+            return try results
+                .flatMap { $0[keyPath: keyPath] }
+                .deduplicate { [multiAccountsMappingManager] item in
+                    let vaultId = try multiAccountsMappingManager.getVaultId(for: item.shareId).object
+                    return vaultId + item.itemId
+                }
+                .compactMap { $0 }
+        } catch {
+            handle(error)
+            return []
         }
-        if let vault = results.flatMap(\.vaults).first(where: { $0.shareId == shareId }) {
-            shareIdToVaultIdDict[shareId] = vault.id
-            return vault.id
-        }
-        throw PassError.vault(.vaultNotFound(shareId: shareId))
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
@@ -443,6 +430,8 @@ private extension CredentialsViewModel {
 
 private extension CredentialsViewModel {
     func setup() {
+        multiAccountsMappingManager.add(users)
+
         $query
             .debounce(for: 0.4, scheduler: DispatchQueue.main)
             .removeDuplicates()
@@ -479,18 +468,5 @@ private extension CredentialsViewModel {
 extension CredentialsViewModel: SortTypeListViewModelDelegate {
     func sortTypeListViewDidSelect(_ sortType: SortType) {
         selectedSortType = sortType
-    }
-}
-
-private extension [CredentialsFetchResult] {
-    func mergeAndDeduplicate<T: ItemIdentifiable & Hashable>
-    (by keyPath: KeyPath<CredentialsFetchResult, [T]>,
-     vaultId: (_ shareId: String) throws -> String) rethrows -> [T] {
-        try flatMap { $0[keyPath: keyPath] }
-            .deduplicate { item in
-                let vaultId = try vaultId(item.shareId)
-                return vaultId + item.itemId
-            }
-            .compactMap { $0 }
     }
 }
