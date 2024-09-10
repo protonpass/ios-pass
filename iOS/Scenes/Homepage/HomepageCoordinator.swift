@@ -1228,17 +1228,6 @@ extension HomepageCoordinator: ChildCoordinatorDelegate {
     }
 }
 
-// MARK: - ItemTypeListViewModelDelegate
-
-extension HomepageCoordinator: ItemTypeListViewModelDelegate {
-    func itemTypeListViewModelDidSelect(type: ItemType) {
-        dismissTopMostViewController { [weak self] in
-            guard let self else { return }
-            presentCreateItemView(for: type)
-        }
-    }
-}
-
 // MARK: - ItemsTabViewModelDelegate
 
 extension HomepageCoordinator: ItemsTabViewModelDelegate {

@@ -35,7 +35,7 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToLogOut()
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: any SortTypeListViewModelDelegate)
-    func credentialsViewModelWantsToCreateLoginItem(url: URL?)
+    func credentialsViewModelWantsToCreateNewItem(_ mode: AutoFillCreationMode)
 }
 
 enum CredentialsViewState: Equatable {
@@ -245,8 +245,15 @@ extension CredentialsViewModel {
         delegate?.credentialsViewModelWantsToLogOut()
     }
 
-    func createLoginItem() {
-        delegate?.credentialsViewModelWantsToCreateLoginItem(url: urls.first)
+    func createNewItem(_ type: ItemType) {
+        switch type {
+        case .login:
+            delegate?.credentialsViewModelWantsToCreateNewItem(.login(urls.first, nil))
+        case .alias:
+            delegate?.credentialsViewModelWantsToCreateNewItem(.alias)
+        default:
+            assertionFailure("Item type \(type.description) not supported")
+        }
     }
 
     func upgrade() {
