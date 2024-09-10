@@ -162,6 +162,7 @@ struct CreateEditAliasView: View {
         .optionalSheet(binding: $sheetState) { state in
             AliasOptionsSheetContent(state: state,
                                      onDismiss: { sheetState = nil })
+                .environment(\.colorScheme, colorScheme)
         }
     }
 
