@@ -64,6 +64,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
+    private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
 
     // App cover/local authentication
     @LazyInjected(\RouterContainer.window) var window
@@ -503,8 +504,6 @@ extension HomepageCoordinator {
                     presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
                 case let .customizeNewVault(vault, itemContent):
                     presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
-                case .vaultSelection:
-                    createEditItemViewModelWantsToChangeVault()
                 case .setPINCode:
                     presentSetPINCodeView()
                 case let .history(item):
@@ -523,8 +522,8 @@ extension HomepageCoordinator {
                     profileTabViewModelWantsToShowSettingsMenu()
                 case let .createEditLogin(item):
                     presentCreateEditLoginView(mode: item)
-                case let .createItem(_, type, _):
-                    createEditItemViewModelDidCreateItem(type: type)
+                case let .createItem(item, type, _):
+                    handleItemCreation(item: item, type: type)
                 case let .editItem(itemContent):
                     presentEditItemView(for: itemContent)
                 case let .cloneItem(itemContent):
@@ -1498,19 +1497,6 @@ extension HomepageCoordinator {
 // MARK: - CreateEditItemViewModelDelegate
 
 extension HomepageCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToChangeVault() {
-        let viewModel = VaultSelectorViewModel()
-        let view = VaultSelectorView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = 66 * vaultsManager.getVaultCount() + 180
-        viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
                                                       shouldDisplayTotp: Bool) {
         customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
@@ -1527,24 +1513,39 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
         customCoordinator?.start()
     }
 
-    func createEditItemViewModelDidCreateItem(type: ItemContentType) {
+    func handleItemCreation(item: SymmetricallyEncryptedItem, type: ItemContentType) {
         Task { [weak self] in
             guard let self else {
                 return
             }
             do {
+                let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
+                let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
+                let displayToastMessage: () -> Void = { [weak self] in
+                    guard let self else { return }
+                    if vaultsManager.isItemVisible(item, type: type) {
+                        bannerManager.displayBottomInfoMessage(type.creationMessage)
+                    } else {
+                        bannerManager.displayBottomInfoMessage(type.creationMessage,
+                                                               dismissButtonTitle: type
+                                                                   .openMessage) { [weak self] _ in
+                            guard let self else { return }
+                            router.present(for: .itemDetail(itemContent))
+                        }
+                    }
+                }
+
                 addNewEvent(type: .create(type))
-                dismissAllViewControllers(animated: true) { [weak self] in
+                dismissAllViewControllers(animated: true) {
                     // We have eventual crashes after creating items
                     // Looks like it's because the keyboard is not fully dismissed
                     // and in between we try to show a banner
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                        guard let self else { return }
-                        bannerManager.displayBottomInfoMessage(type.creationMessage)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        displayToastMessage()
                     }
                 }
                 let userId = try await userManager.getActiveUserId()
-                vaultsManager.refresh(userId: userId)
+                try await vaultsManager.asyncRefresh(userId: userId)
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
             } catch {
