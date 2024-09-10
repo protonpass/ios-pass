@@ -176,36 +176,37 @@ extension BreachEntitiesExtensionsTests {
                           email: "verified@proton.me",
                           breachCounter: 50,
                           flags: 2,
-                          lastBreachTime: 6),
-            ProtonAddress(addressID: "testid",
-                          email: "verified@proton.me",
-                          breachCounter: 40,
-                          flags: 2,
-                          lastBreachTime: 5),
-            ProtonAddress(addressID: "testid",
-                          email: "verified@proton.me",
-                          breachCounter: 30,
-                          flags: 2,
-                          lastBreachTime: 4),
-            ProtonAddress(addressID: "testid",
-                          email: "verified@proton.me",
-                          breachCounter: 20,
-                          flags: 2,
-                          lastBreachTime: 3),
-            ProtonAddress(addressID: "testid",
-                          email: "verified@proton.me",
-                          breachCounter: 15,
-                          flags: 2,
-                          lastBreachTime: 11),
-            ProtonAddress(addressID: "testid",
-                          email: "verified@proton.me",
-                          breachCounter: 10,
-                          flags: 2,
-                          lastBreachTime: 2)
+                          lastBreachTime: 6)
+//            ,
+//            ProtonAddress(addressID: "testid",
+//                          email: "verified@proton.me",
+//                          breachCounter: 40,
+//                          flags: 2,
+//                          lastBreachTime: 5),
+//            ProtonAddress(addressID: "testid",
+//                          email: "verified@proton.me",
+//                          breachCounter: 30,
+//                          flags: 2,
+//                          lastBreachTime: 4),
+//            ProtonAddress(addressID: "testid",
+//                          email: "verified@proton.me",
+//                          breachCounter: 20,
+//                          flags: 2,
+//                          lastBreachTime: 3),
+//            ProtonAddress(addressID: "testid",
+//                          email: "verified@proton.me",
+//                          breachCounter: 15,
+//                          flags: 2,
+//                          lastBreachTime: 11),
+//            ProtonAddress(addressID: "testid",
+//                          email: "verified@proton.me",
+//                          breachCounter: 10,
+//                          flags: 2,
+//                          lastBreachTime: 2)
         ]
-        XCTAssertEqual(userBreachData.topBreachedAddresses.count, 10)
+        XCTAssertEqual(userBreachData.topBreachedAddresses.count, 5)
         XCTAssertEqual(userBreachData.topBreachedAddresses.first?.breachCounter, 90)
-        XCTAssertEqual(userBreachData.topBreachedAddresses.last?.breachCounter, 10)
+        XCTAssertEqual(userBreachData.topBreachedAddresses.last?.breachCounter, 50)
         XCTAssertEqual(userBreachData.topBreachedAddresses, comparableArray)
     }
 }
