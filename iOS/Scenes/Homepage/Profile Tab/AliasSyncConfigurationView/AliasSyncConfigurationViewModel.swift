@@ -97,7 +97,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
             let result = try await (fetchDomains, fetchedMailboxes)
 
             domains = result.0
-            mailboxes = result.1
+            mailboxes = result.1.filter(\.verified)
             defaultDomain = domains.first { $0.id == aliasSettings?.defaultAliasDomain }
             defaultMailbox = mailboxes.first { $0.id == aliasSettings?.defaultMailboxID } ?? mailboxes.first
         } catch {

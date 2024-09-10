@@ -1,6 +1,6 @@
 import SwiftUI
 
-// swiftlint:disable discouraged_optional_boolean deprecated_foregroundcolor_modifier
+// swiftlint:disable discouraged_optional_boolean deprecated_foregroundcolor_modifier discouraged_anyview
 public extension TextView {
     /// Specifies whether or not this view allows rich text
     /// - Parameter enabled: If `true`, rich text editing controls will be enabled for the user
@@ -27,7 +27,6 @@ public extension TextView {
     func placeholder(_ placeholder: String, _ configure: (Text) -> some View) -> TextView {
         var view = self
         let text = Text(placeholder)
-        // swiftlint:disable:next discouraged_anyview
         view.placeholderView = AnyView(configure(text))
         return view
     }
@@ -35,7 +34,6 @@ public extension TextView {
     /// Specify a custom placeholder view
     func placeholder(_ placeholder: some View) -> TextView {
         var view = self
-        // swiftlint:disable:next discouraged_anyview
         view.placeholderView = AnyView(placeholder)
         return view
     }
@@ -161,4 +159,4 @@ public extension TextView {
     }
 }
 
-// swiftlint:enable discouraged_optional_boolean deprecated_foregroundcolor_modifier
+// swiftlint:enable discouraged_optional_boolean deprecated_foregroundcolor_modifier discouraged_anyview

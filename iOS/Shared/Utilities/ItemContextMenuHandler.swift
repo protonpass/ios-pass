@@ -115,6 +115,18 @@ extension ItemContextMenuHandler {
             await router.present(for: .history(itemContent))
         }
     }
+
+    func disableAlias(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: true) { [weak self] itemContent in
+            guard let self else { return }
+
+            let userId = try await userManager.getActiveUserId()
+            try await itemRepository.changeAliasStatus(userId: userId,
+                                                       items: [itemContent],
+                                                       enabled: false)
+            await router.display(element: .infosMessage(#localized("Alias disabled"), config: .refresh))
+        }
+    }
 }
 
 // MARK: - Copy functions

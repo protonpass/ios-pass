@@ -141,8 +141,8 @@ public extension FavIconRepository {
                                                                 conformingTo: .data)
 
             if let domainData = try getDecryptedData(domainUrl),
-               let decryptedImageData = try getDecryptedData(url) {
-                let decryptedRootDomain = String(decoding: domainData, as: UTF8.self)
+               let decryptedImageData = try getDecryptedData(url),
+               let decryptedRootDomain = String(data: domainData, encoding: .utf8) {
                 let fav = FavIcon(domain: decryptedRootDomain,
                                   data: decryptedImageData,
                                   isFromCache: true)

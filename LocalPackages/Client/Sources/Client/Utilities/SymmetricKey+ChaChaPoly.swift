@@ -43,6 +43,7 @@ public extension SymmetricKey {
         }
         let sealedBox = try ChaChaPoly.SealedBox(combined: data)
         let decryptedData = try ChaChaPoly.open(sealedBox, using: self)
+        // swiftlint:disable:next optional_data_string_conversion
         return String(decoding: decryptedData, as: UTF8.self)
     }
 

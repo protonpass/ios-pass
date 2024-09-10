@@ -160,7 +160,9 @@ private extension ItemsTabTopBar {
                     ForEach(viewModel.extraOptions, id: \.self) { option in
                         Section {
                             Button(action: { handle(extraOption: option) },
-                                   label: { Label(option.title, uiImage: option.icon) })
+                                   label: {
+                                       Label(option.title, uiImage: option.icon)
+                                   })
                         }
                     }
                 }, label: {
