@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct Plan: Decodable, Equatable, Sendable {
+public struct Plan: Decodable, Hashable, Sendable {
     /// ⚠️ Use `planType` instead
     /// Possible values: `free`, `plus`
     public let type: String

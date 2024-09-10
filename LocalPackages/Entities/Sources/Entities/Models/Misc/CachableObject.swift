@@ -1,7 +1,7 @@
 //
-// CredentialsFetchResult.swift
-// Proton Pass - Created on 07/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// CachableObject.swift
+// Proton Pass - Created on 10/09/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,26 +17,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Client
-import Entities
 import Foundation
 
-struct CredentialsFetchResult: Equatable, Sendable {
-    let userId: String
-    let vaults: [Vault]
-    let searchableItems: [SearchableItem]
-    let matchedItems: [ItemUiModel]
-    let notMatchedItems: [ItemUiModel]
+public struct CachableObject<T: Sendable>: Sendable {
+    public let cached: Bool
+    public let object: T
 
-    var isEmpty: Bool {
-        searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
+    public init(cached: Bool, object: T) {
+        self.cached = cached
+        self.object = object
     }
-}
-
-struct CredentialsForPasskeyCreation: Equatable, Sendable {
-    let userId: String
-    let vaults: [Vault]
-    let searchableItems: [SearchableItem]
-    let items: [ItemUiModel]
 }
