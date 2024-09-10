@@ -15007,6 +15007,16 @@
         }
       }
     },
+    "Alias address (disabled)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias address (disabled)"
+          }
+        }
+      }
+    },
     "Alias address copied" : {
       "localizations" : {
         "be" : {

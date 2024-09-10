@@ -130,7 +130,7 @@ enum ItemContextMenu {
             if isFeatureFlagEnables(flag: FeatureFlagType.passSimpleLoginAliasesSync) {
                 if item.aliasEnabled {
                     firstOptions.append(.init(title: "Disable alias",
-                                              icon: IconProvider.circleSlash,
+                                              icon: PassIcon.aliasSlash.toImage,
                                               action: { onToggleAliasStatus(false) }))
                 } else {
                     firstOptions.append(.init(title: "Enable alias",

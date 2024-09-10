@@ -67,7 +67,7 @@ enum ExtraBulkActionOption {
         case .unpin:
             PassIcon.pinAngledSlash
         case .disableAliases:
-            IconProvider.circleSlash
+            PassIcon.aliasSlash
         case .enableAliases:
             IconProvider.alias
         }
