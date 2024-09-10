@@ -72,4 +72,6 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
 
 extension ItemUiModel: Identifiable {
     public var id: String { itemId + shareId }
+
+    public var aliasDisabled: Bool { !aliasEnabled }
 }
