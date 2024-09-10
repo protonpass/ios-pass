@@ -215,7 +215,8 @@ extension LocalItemDatasourceTests {
                                         revision: insertedItem.item.revision,
                                         state: ItemState.trashed.rawValue,
                                         modifyTime: insertedItem.item.modifyTime,
-                                        revisionTime: insertedItem.item.revisionTime)
+                                        revisionTime: insertedItem.item.revisionTime,
+                                        flags: .random(in: 1...100))
         try await sut.upsertItems([insertedItem], modifiedItems: [modifiedItem])
         
         // Then
@@ -223,6 +224,7 @@ extension LocalItemDatasourceTests {
                                                   itemId: givenItemId)
         let item = try await XCTUnwrapAsync(optionalItems)
         XCTAssertEqual(item.item.itemState, .trashed)
+        XCTAssertEqual(item.item.flags, modifiedItem.flags)
     }
     
     func testUntrashItems() async throws {
@@ -238,7 +240,8 @@ extension LocalItemDatasourceTests {
                                         revision: insertedItem.item.revision,
                                         state: ItemState.active.rawValue,
                                         modifyTime: insertedItem.item.modifyTime,
-                                        revisionTime: insertedItem.item.revisionTime)
+                                        revisionTime: insertedItem.item.revisionTime,
+                                        flags: .random(in: 1...100))
         try await sut.upsertItems([insertedItem], modifiedItems: [modifiedItem])
         
         // Then
@@ -246,6 +249,7 @@ extension LocalItemDatasourceTests {
                                                   itemId: givenItemId)
         let item = try await XCTUnwrapAsync(optionalItems)
         XCTAssertEqual(item.item.itemState, .active)
+        XCTAssertEqual(item.item.flags, modifiedItem.flags)
     }
     
     func testDeleteItems() async throws {
