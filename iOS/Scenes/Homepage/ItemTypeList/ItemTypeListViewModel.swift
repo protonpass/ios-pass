@@ -49,14 +49,30 @@ extension ItemContentType {
 }
 
 @MainActor
-protocol ItemTypeListViewModelDelegate: AnyObject {
-    func itemTypeListViewModelDidSelect(type: ItemType)
-}
-
-@MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
+    @MainActor
+    enum Mode {
+        case hostApp, autoFillExtension
+
+        var displayShowMoreButton: Bool {
+            switch self {
+            case .hostApp: !UIDevice.current.isIpad
+            case .autoFillExtension: false
+            }
+        }
+
+        var supportedTypes: [ItemType] {
+            switch self {
+            case .hostApp: ItemType.allCases
+            case .autoFillExtension: [.login, .alias]
+            }
+        }
+    }
+
     @Published private(set) var limitation: AliasLimitation?
-    @Published private(set) var showMoreButton = true
+    @Published private(set) var showMoreButton: Bool
+    let mode: Mode
+    let onSelect: (ItemType) -> Void
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -71,12 +87,13 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
         !UIDevice.current.isIpad
     }
 
-    weak var delegate: (any ItemTypeListViewModelDelegate)?
     weak var uiSheetPresentationController: UISheetPresentationController?
 
-    override init() {
+    init(mode: Mode, onSelect: @escaping (ItemType) -> Void) {
+        self.mode = mode
+        showMoreButton = mode.displayShowMoreButton
+        self.onSelect = onSelect
         super.init()
-        showMoreButton = !UIDevice.current.isIpad
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -89,7 +106,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     }
 
     func select(type: ItemType) {
-        delegate?.itemTypeListViewModelDidSelect(type: type)
+        onSelect(type)
     }
 
     func showMore() {

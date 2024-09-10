@@ -34,7 +34,7 @@ struct ItemTypeListView: View {
             ZStack(alignment: .bottom) {
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(ItemType.allCases, id: \.self) { type in
+                        ForEach(viewModel.mode.supportedTypes, id: \.self) { type in
                             if type != .identity || viewModel.isIdentityActive {
                                 if type != ItemType.allCases.first {
                                     PassDivider()
