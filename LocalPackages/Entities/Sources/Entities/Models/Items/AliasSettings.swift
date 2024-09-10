@@ -21,10 +21,10 @@
 import Foundation
 
 public struct AliasSettings: Decodable, Sendable {
-    public let defaultAliasDomain: String
+    public let defaultAliasDomain: String?
     public let defaultMailboxID: String
 
-    public init(defaultAliasDomain: String,
+    public init(defaultAliasDomain: String?,
                 defaultMailboxID: String) {
         self.defaultAliasDomain = defaultAliasDomain
         self.defaultMailboxID = defaultMailboxID

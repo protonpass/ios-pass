@@ -70820,6 +70820,17 @@
         }
       }
     },
+    "Not selected" : {
+      "comment" : "Displayed when there's no chosen default domain for aliases yet",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not selected"
+          }
+        }
+      }
+    },
     "Note" : {
       "localizations" : {
         "be" : {
