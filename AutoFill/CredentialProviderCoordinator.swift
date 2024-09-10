@@ -125,10 +125,12 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 
 private extension CredentialProviderCoordinator {
     func start(mode: AutoFillMode) async throws {
+        let users = try await getPassUsers()
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
-            try await handleShowAllLoginsMode(identifiers: identifiers,
-                                              passkeyRequestParams: requestParams)
+            handleShowAllLoginsMode(users: users,
+                                    identifiers: identifiers,
+                                    passkeyRequestParams: requestParams)
 
         case let .checkAndAutoFill(request):
             handleCheckAndAutoFill(request)
@@ -140,20 +142,19 @@ private extension CredentialProviderCoordinator {
             configureExtension()
 
         case let .passkeyRegistration(request):
-            handlePasskeyRegistration(request)
+            handlePasskeyRegistration(users: users, request: request)
         }
     }
 
-    func handleShowAllLoginsMode(identifiers: [ASCredentialServiceIdentifier],
-                                 passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) async throws {
+    func handleShowAllLoginsMode(users: [PassUser],
+                                 identifiers: [ASCredentialServiceIdentifier],
+                                 passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
 
         guard userManager.activeUserId != nil else {
             showNotLoggedInView()
             return
         }
-
-        let users = try await getPassUsers()
         let viewModel = CredentialsViewModel(users: users,
                                              serviceIdentifiers: identifiers,
                                              passkeyRequestParams: passkeyRequestParams,
@@ -213,9 +214,11 @@ private extension CredentialProviderCoordinator {
         showView(LockedCredentialView(viewModel: viewModel))
     }
 
-    func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
+    func handlePasskeyRegistration(users: [PassUser],
+                                   request: PasskeyCredentialRequest) {
         guard let context else { return }
-        let view = PasskeyCredentialsView(request: request,
+        let view = PasskeyCredentialsView(users: users,
+                                          request: request,
                                           context: context,
                                           onCreate: { [weak self] vaults in
                                               guard let self else { return }

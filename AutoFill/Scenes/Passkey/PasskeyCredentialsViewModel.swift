@@ -26,15 +26,19 @@ import Foundation
 
 enum PasskeyCredentialsViewModelState {
     case loading
-    case loaded([SearchableItem], [ItemUiModel])
+    case loaded
     case error(any Error)
 }
 
 @MainActor
 final class PasskeyCredentialsViewModel: ObservableObject {
+    @Published private(set) var results: [CredentialsForPasskeyCreation] = []
     @Published private(set) var state: PasskeyCredentialsViewModelState = .loading
     @Published private(set) var isCreatingPasskey = false
     @Published var isShowingAssociationConfirmation = false
+    @Published var selectedUser: PassUser?
+
+    let users: [PassUser]
 
     var selectedItem: (any TitledItemIdentifiable)? {
         didSet {
@@ -47,15 +51,24 @@ final class PasskeyCredentialsViewModel: ObservableObject {
     private let logger = resolve(\SharedToolingContainer.logger)
 
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
-    @LazyInjected(\SharedServiceContainer.userManager) private(set) var userManager
     @LazyInjected(\AutoFillUseCaseContainer.getItemsForPasskeyCreation) private var getItemsForPasskeyCreation
     @LazyInjected(\AutoFillUseCaseContainer.createAndAssociatePasskey) private var createAndAssociatePasskey
 
     private let request: PasskeyCredentialRequest
     private weak var context: ASCredentialProviderExtensionContext?
 
-    init(request: PasskeyCredentialRequest,
+    var searchableItems: [SearchableItem] {
+        if let selectedUser {
+            results.first(where: { $0.userId == selectedUser.id })?.searchableItems ?? []
+        } else {
+            []
+        }
+    }
+
+    init(users: [PassUser],
+         request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext?) {
+        self.users = users
         self.request = request
         self.context = context
     }
@@ -64,9 +77,13 @@ final class PasskeyCredentialsViewModel: ObservableObject {
 extension PasskeyCredentialsViewModel {
     func sync(ignoreError: Bool) async {
         do {
-            let userId = try await userManager.getActiveUserId()
-            let hasNewEvents = try await eventSynchronizer.sync(userId: userId)
-            if hasNewEvents {
+            var shouldRefreshItems = false
+            for user in users {
+                let hasNewEvents = try await eventSynchronizer.sync(userId: user.id)
+                shouldRefreshItems = shouldRefreshItems || hasNewEvents
+            }
+
+            if shouldRefreshItems {
                 await loadCredentials()
             }
         } catch {
@@ -83,10 +100,12 @@ extension PasskeyCredentialsViewModel {
             if case .error = state {
                 state = .loading
             }
-            let userId = try await userManager.getActiveUserId()
-            let result = try await getItemsForPasskeyCreation(userId: userId, request)
-            state = .loaded(result.0, result.1)
-            logger.trace("Loaded \(result.0.count) credentials")
+            /*
+             let userId = try await userManager.getActiveUserId()
+             let result = try await getItemsForPasskeyCreation(userId: userId, request)
+             state = .loaded(result.0, result.1)
+             logger.trace("Loaded \(result.0.count) credentials")
+              */
         } catch {
             state = .error(error)
         }

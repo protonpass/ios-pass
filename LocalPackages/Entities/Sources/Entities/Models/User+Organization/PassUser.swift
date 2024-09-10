@@ -20,7 +20,7 @@
 //
 
 /// User object for UI representations
-public struct PassUser: Sendable, Identifiable, Equatable {
+public struct PassUser: Sendable, Identifiable, Hashable {
     public let id: String
     public let displayName: String?
     public let email: String?

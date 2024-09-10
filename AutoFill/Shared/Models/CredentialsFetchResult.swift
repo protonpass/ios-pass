@@ -33,3 +33,10 @@ struct CredentialsFetchResult: Equatable, Sendable {
         searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
     }
 }
+
+struct CredentialsForPasskeyCreation: Equatable, Sendable {
+    let userId: String
+    let vaults: [Vault]
+    let searchableItems: [SearchableItem]
+    let items: [ItemUiModel]
+}

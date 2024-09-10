@@ -31,11 +31,14 @@ struct PasskeyCredentialsView: View {
     private let onCreate: ([Vault]) -> Void
     private let onCancel: () -> Void
 
-    init(request: PasskeyCredentialRequest,
+    init(users: [PassUser],
+         request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext,
          onCreate: @escaping ([Vault]) -> Void,
          onCancel: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(request: request, context: context))
+        _viewModel = .init(wrappedValue: .init(users: users,
+                                               request: request,
+                                               context: context))
         self.onCreate = onCreate
         self.onCancel = onCancel
     }
@@ -48,9 +51,9 @@ struct PasskeyCredentialsView: View {
             case .loading:
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case let .loaded(searchableItems, uiModels):
-                LoginItemsView(searchableItems: searchableItems,
-                               uiModels: uiModels,
+            case .loaded:
+                LoginItemsView(searchableItems: [],
+                               uiModels: [],
                                mode: .passkeyCreation,
                                itemRow: { itemRow(for: $0) },
                                searchResultRow: { searchResultRow(for: $0) },

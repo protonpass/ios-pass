@@ -24,12 +24,12 @@ import Foundation
 
 protocol GetItemsForPasskeyCreationUseCase: Sendable {
     func execute(userId: String, _ request: PasskeyCredentialRequest) async throws
-        -> ([SearchableItem], [ItemUiModel])
+        -> CredentialsForPasskeyCreation
 }
 
 extension GetItemsForPasskeyCreationUseCase {
     func callAsFunction(userId: String,
-                        _ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel]) {
+                        _ request: PasskeyCredentialRequest) async throws -> CredentialsForPasskeyCreation {
         try await execute(userId: userId, request)
     }
 }
@@ -51,7 +51,7 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
     }
 
     func execute(userId: String,
-                 _ request: PasskeyCredentialRequest) async throws -> ([SearchableItem], [ItemUiModel]) {
+                 _ request: PasskeyCredentialRequest) async throws -> CredentialsForPasskeyCreation {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let getVaults = shareRepository.getVaults(userId: userId)
         async let getActiveLogInItems = itemRepositiry.getActiveLogInItems(userId: userId)
@@ -116,7 +116,10 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
             }
             .map(\.toItemUiModel)
         assert(searchableItems.count == includedItems.count, "Should have the same amount of items")
-        return (searchableItems, uiModels)
+        return .init(userId: userId,
+                     vaults: vaults,
+                     searchableItems: searchableItems,
+                     items: uiModels)
     }
 }
 
