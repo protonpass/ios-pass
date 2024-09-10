@@ -28,10 +28,6 @@ struct CredentialsFetchResult: Equatable, Sendable {
     let searchableItems: [SearchableItem]
     let matchedItems: [ItemUiModel]
     let notMatchedItems: [ItemUiModel]
-
-    var isEmpty: Bool {
-        searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
-    }
 }
 
 struct CredentialsForPasskeyCreation: Equatable, Sendable {

@@ -86,17 +86,11 @@ final class CredentialsViewModel: ObservableObject {
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
 
-    var result: CredentialsFetchResult? {
-        results.first { $0.userId == selectedUser?.id }
-    }
-
     private let multiAccountsMappingManager = MultiAccountsMappingManager()
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
-    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPassword) private var autoFillPassword
@@ -188,7 +182,7 @@ extension CredentialsViewModel {
         onCancel()
     }
 
-    func sync() async {
+    func sync(ignoreError: Bool) async {
         do {
             var shouldRefreshItems = false
             for user in users {
@@ -200,7 +194,10 @@ extension CredentialsViewModel {
                 await fetchItems()
             }
         } catch {
-            state = .error(error)
+            logger.error(error)
+            if !ignoreError {
+                state = .error(error)
+            }
         }
     }
 
@@ -227,13 +224,6 @@ extension CredentialsViewModel {
         } catch {
             logger.error(error)
             state = .error(error)
-        }
-    }
-
-    func fetchItemsSync() {
-        Task { [weak self] in
-            guard let self else { return }
-            await fetchItems()
         }
     }
 

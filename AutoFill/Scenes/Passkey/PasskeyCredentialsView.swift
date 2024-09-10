@@ -52,8 +52,8 @@ struct PasskeyCredentialsView: View {
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             case .loaded:
-                LoginItemsView(searchableItems: [],
-                               uiModels: [],
+                LoginItemsView(searchableItems: viewModel.searchableItems,
+                               uiModels: viewModel.items,
                                mode: .passkeyCreation,
                                itemRow: { itemRow(for: $0) },
                                searchResultRow: { searchResultRow(for: $0) },

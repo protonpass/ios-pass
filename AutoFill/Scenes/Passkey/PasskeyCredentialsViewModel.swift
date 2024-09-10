@@ -20,6 +20,7 @@
 
 @preconcurrency import AuthenticationServices
 import Client
+import Core
 import Entities
 import Factory
 import Foundation
@@ -48,11 +49,13 @@ final class PasskeyCredentialsViewModel: ObservableObject {
         }
     }
 
+    private let multiAccountsMappingManager = MultiAccountsMappingManager()
     private let logger = resolve(\SharedToolingContainer.logger)
 
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
     @LazyInjected(\AutoFillUseCaseContainer.getItemsForPasskeyCreation) private var getItemsForPasskeyCreation
     @LazyInjected(\AutoFillUseCaseContainer.createAndAssociatePasskey) private var createAndAssociatePasskey
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     private let request: PasskeyCredentialRequest
     private weak var context: ASCredentialProviderExtensionContext?
@@ -61,7 +64,15 @@ final class PasskeyCredentialsViewModel: ObservableObject {
         if let selectedUser {
             results.first(where: { $0.userId == selectedUser.id })?.searchableItems ?? []
         } else {
-            []
+            getAllObjects(\.searchableItems)
+        }
+    }
+
+    var items: [ItemUiModel] {
+        if let selectedUser {
+            results.first(where: { $0.userId == selectedUser.id })?.items ?? []
+        } else {
+            getAllObjects(\.items)
         }
     }
 
@@ -71,6 +82,7 @@ final class PasskeyCredentialsViewModel: ObservableObject {
         self.users = users
         self.request = request
         self.context = context
+        multiAccountsMappingManager.add(users)
     }
 }
 
@@ -100,13 +112,18 @@ extension PasskeyCredentialsViewModel {
             if case .error = state {
                 state = .loading
             }
-            /*
-             let userId = try await userManager.getActiveUserId()
-             let result = try await getItemsForPasskeyCreation(userId: userId, request)
-             state = .loaded(result.0, result.1)
-             logger.trace("Loaded \(result.0.count) credentials")
-              */
+            var results = [CredentialsForPasskeyCreation]()
+            for user in users {
+                let result = try await getItemsForPasskeyCreation(userId: user.id,
+                                                                  request)
+                multiAccountsMappingManager.add(result.vaults, userId: user.id)
+                results.append(result)
+            }
+            self.results = results
+            state = .loaded
+            logger.trace("Loaded credentials")
         } catch {
+            logger.error(error)
             state = .error(error)
         }
     }
@@ -126,7 +143,30 @@ extension PasskeyCredentialsViewModel {
                                                 request: request,
                                                 context: context)
         } catch {
-            state = .error(error)
+            handle(error)
+        }
+    }
+}
+
+private extension PasskeyCredentialsViewModel {
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
+
+    func getAllObjects<T: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<CredentialsForPasskeyCreation, [T]>)
+        -> [T] {
+        do {
+            return try results
+                .flatMap { $0[keyPath: keyPath] }
+                .deduplicate { [multiAccountsMappingManager] item in
+                    let vaultId = try multiAccountsMappingManager.getVaultId(for: item.shareId).object
+                    return vaultId + item.itemId
+                }
+                .compactMap { $0 }
+        } catch {
+            handle(error)
+            return []
         }
     }
 }
