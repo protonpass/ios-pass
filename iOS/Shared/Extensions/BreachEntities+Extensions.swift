@@ -25,7 +25,7 @@ import Macro
 
 extension UserBreaches {
     var topBreachedAddresses: [ProtonAddress] {
-        Array(breachedAddresses
+        Array(monitoredAddresses
             .sorted { $0.breachCounter > $1.breachCounter }
             .prefix(DesignConstant.previewBreachItemCount))
     }

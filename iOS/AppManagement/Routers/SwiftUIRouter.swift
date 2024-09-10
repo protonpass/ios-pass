@@ -42,11 +42,11 @@ enum GeneralRouterDestination: Hashable {
     case userSharePermission
     case shareSummary
     case historyDetail(currentRevision: ItemContent, pastRevision: ItemContent)
-    case darkWebMonitorHome(SecurityWeakness)
     case protonAddressesList([ProtonAddress])
     case aliasesList([AliasMonitorInfo])
     case breachDetail(BreachDetailsInfo)
     case monitoredAliases([AliasMonitorInfo], monitored: Bool)
+    case darkWebMonitorHome(UserBreaches)
 }
 
 enum GeneralSheetDestination: Identifiable, Hashable {
@@ -83,10 +83,6 @@ extension View {
             case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
                 DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
                                                                     pastRevision: pastRevision))
-            case let .darkWebMonitorHome(securityWeakness):
-                if case let .breaches(userBreaches) = securityWeakness {
-                    DarkWebMonitorHomeView(viewModel: .init(userBreaches: userBreaches))
-                }
             case let .protonAddressesList(addresses):
                 MonitorProtonAddressesView(viewModel: .init(addresses: addresses))
             case let .aliasesList(infos):
@@ -95,6 +91,8 @@ extension View {
                 DetailMonitoredItemView(viewModel: .init(infos: info))
             case let .monitoredAliases(infos, monitored):
                 MonitorAllAliasesView(infos: infos, monitored: monitored)
+            case let .darkWebMonitorHome(breach):
+                DarkWebMonitorHomeView(viewModel: .init(userBreaches: breach))
             }
         }
     }
