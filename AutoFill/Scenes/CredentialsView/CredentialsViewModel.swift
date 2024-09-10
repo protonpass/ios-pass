@@ -31,8 +31,6 @@ import SwiftUI
 
 @MainActor
 protocol CredentialsViewModelDelegate: AnyObject {
-    func credentialsViewModelWantsToCancel()
-    func credentialsViewModelWantsToLogOut()
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: any SortTypeListViewModelDelegate)
 }
@@ -157,12 +155,16 @@ final class CredentialsViewModel: ObservableObject {
         users.count > 1 && selectedUser == nil
     }
 
+    private let onCancel: () -> Void
+    private let onLogOut: () -> Void
     private let onCreate: (LoginCreationInfo) -> Void
 
     init(users: [PassUser],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
          context: ASCredentialProviderExtensionContext,
+         onCancel: @escaping () -> Void,
+         onLogOut: @escaping () -> Void,
          onCreate: @escaping (LoginCreationInfo) -> Void) {
         self.users = users
         if users.count == 1 {
@@ -171,6 +173,8 @@ final class CredentialsViewModel: ObservableObject {
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
         self.context = context
+        self.onCancel = onCancel
+        self.onLogOut = onLogOut
         self.onCreate = onCreate
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         setup()
@@ -181,7 +185,7 @@ final class CredentialsViewModel: ObservableObject {
 
 extension CredentialsViewModel {
     func cancel() {
-        delegate?.credentialsViewModelWantsToCancel()
+        onCancel()
     }
 
     func sync() async {
@@ -286,7 +290,7 @@ extension CredentialsViewModel {
 
     func handleAuthenticationFailure() {
         logger.error("Failed to locally authenticate. Logging out.")
-        delegate?.credentialsViewModelWantsToLogOut()
+        onLogOut()
     }
 
     func createNewItem(userId: String?) {
