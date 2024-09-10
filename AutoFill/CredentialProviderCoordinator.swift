@@ -155,6 +155,19 @@ private extension CredentialProviderCoordinator {
             showNotLoggedInView()
             return
         }
+
+        let onCancel: () -> Void = { [weak self] in
+            guard let self else { return }
+            cancelAutoFill(reason: .userCanceled, context: context)
+        }
+
+        let onLogOut: () -> Void = { [weak self] in
+            guard let self, let userId = userManager.activeUserId else {
+                return
+            }
+            logOut(userId: userId)
+        }
+
         let onCreate: (LoginCreationInfo) -> Void = { [weak self] info in
             Task { [weak self] in
                 guard let self else { return }
@@ -166,6 +179,8 @@ private extension CredentialProviderCoordinator {
                                              serviceIdentifiers: identifiers,
                                              passkeyRequestParams: passkeyRequestParams,
                                              context: context,
+                                             onCancel: onCancel,
+                                             onLogOut: onLogOut,
                                              onCreate: onCreate)
         viewModel.delegate = self
         credentialsViewModel = viewModel
@@ -502,18 +517,6 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
 // MARK: - CredentialsViewModelDelegate
 
 extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
-    func credentialsViewModelWantsToCancel() {
-        guard let context else { return }
-        cancelAutoFill(reason: .userCanceled, context: context)
-    }
-
-    func credentialsViewModelWantsToLogOut() {
-        guard let userId = userManager.activeUserId else {
-            return
-        }
-        logOut(userId: userId)
-    }
-
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: any SortTypeListViewModelDelegate) {
         guard let rootViewController else {
