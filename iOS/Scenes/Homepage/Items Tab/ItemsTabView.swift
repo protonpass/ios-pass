@@ -79,6 +79,8 @@ struct ItemsTabView: View {
                                isEditMode: $viewModel.isEditMode,
                                onSearch: { searchMode = .all(viewModel.vaultsManager.vaultSelection) },
                                onShowVaultList: { viewModel.presentVaultList() },
+                               onPin: { viewModel.pinSelectedItems() },
+                               onUnpin: { viewModel.unpinSelectedItems() },
                                onMove: { viewModel.presentVaultListToMoveSelectedItems() },
                                onTrash: { viewModel.trashSelectedItems() },
                                onRestore: { viewModel.restoreSelectedItems() },
