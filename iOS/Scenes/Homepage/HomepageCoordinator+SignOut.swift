@@ -62,6 +62,14 @@ extension HomepageCoordinator {
                     addTelemetryEvent(with: .multiAccountRemoveAccount)
                 }
                 if try await logOutUser(userId: userId) {
+                    /// Reset `appCoverView` when logging out from the last account
+                    /// because `appCoverView` is attached to the window level which outlives `HomepageCoordinator`
+                    /// Which stucks users on local auth screen when logging out & in without closing the app
+                    /// (`HomepageCoordinator` is destroyed when logging out from the last account.
+                    /// Left over `appCoverView`, which is attached to a destroyed `HomepageCoordinator`
+                    /// unable to uncover the app when local auth succeeds)
+                    appCoverView?.removeFromSuperview()
+                    appCoverView = nil
                     delegate?.homepageCoordinatorWantsToLogOut()
                 }
             } catch {
