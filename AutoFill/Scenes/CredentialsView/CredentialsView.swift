@@ -121,7 +121,11 @@ private extension CredentialsView {
             }
             switch viewModel.state {
             case .idle:
-                accountSwitcher
+                if viewModel.users.count > 1 {
+                    AccountsMenu(selectedUser: $viewModel.selectedUser,
+                                 users: viewModel.users)
+                        .padding(.horizontal)
+                }
 
                 if let planType = viewModel.planType, case .free = planType {
                     mainVaultsOnlyMessage
@@ -149,14 +153,8 @@ private extension CredentialsView {
                 if results.isEmpty {
                     NoSearchResultsInAllVaultView(query: viewModel.query)
                 } else {
-                    let getUser: (any ItemIdentifiable) -> PassUser? = { item in
-                        if viewModel.users.count > 1, viewModel.selectedUser == nil {
-                            return viewModel.getUser(for: item)
-                        }
-                        return nil
-                    }
                     CredentialSearchResultView(results: results,
-                                               getUser: getUser,
+                                               getUser: { viewModel.getUser(for: $0) },
                                                selectedSortType: $viewModel.selectedSortType,
                                                sortAction: { viewModel.presentSortTypeList() },
                                                selectItem: { viewModel.select(item: $0) })
@@ -206,57 +204,6 @@ private extension CredentialsView {
 // MARK: ResultView & elements
 
 private extension CredentialsView {
-    @ViewBuilder
-    var accountSwitcher: some View {
-        if viewModel.users.count > 1 {
-            let allAccountsMessage = #localized("All %lld accounts", viewModel.users.count)
-            Menu(content: {
-                Button(action: {
-                    viewModel.selectedUser = nil
-                }, label: {
-                    if viewModel.selectedUser == nil {
-                        Label(allAccountsMessage, systemImage: "checkmark")
-                    } else {
-                        Text(verbatim: allAccountsMessage)
-                    }
-                })
-
-                Section {
-                    ForEach(viewModel.users) { user in
-                        Button(action: {
-                            viewModel.selectedUser = user
-                        }, label: {
-                            if user == viewModel.selectedUser {
-                                Label(user.email ?? "?", systemImage: "checkmark")
-                            } else {
-                                Text(verbatim: user.email ?? "?")
-                            }
-                        })
-                    }
-                }
-            }, label: {
-                HStack {
-                    if let selectedUser = viewModel.selectedUser {
-                        Text(verbatim: selectedUser.displayNameAndEmail)
-                            .font(.callout)
-                            .foregroundStyle(PassColor.textInvert.toColor)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(PassColor.interactionNormMajor2.toColor)
-                            .clipShape(Capsule())
-                    } else {
-                        Text(verbatim: allAccountsMessage)
-                            .fontWeight(.medium)
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    }
-
-                    Spacer()
-                }
-            })
-            .padding([.horizontal, .bottom])
-        }
-    }
-
     func itemList(matchedItems: [ItemUiModel],
                   notMatchedItems: [ItemUiModel]) -> some View {
         ScrollViewReader { proxy in
@@ -356,9 +303,8 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    let user = viewModel.selectedUser == nil ? viewModel.getUser(for: item) : nil
                     GenericCredentialItemRow(item: item,
-                                             user: user,
+                                             user: viewModel.getUser(for: item),
                                              selectItem: { viewModel.select(item: $0) })
                         .plainListRow()
                         .padding(.horizontal)

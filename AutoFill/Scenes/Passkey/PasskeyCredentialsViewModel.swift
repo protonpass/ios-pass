@@ -146,6 +146,16 @@ extension PasskeyCredentialsViewModel {
             handle(error)
         }
     }
+
+    func getUser(for item: any ItemIdentifiable) -> PassUser? {
+        guard users.count > 1, selectedUser == nil else { return nil }
+        do {
+            return try multiAccountsMappingManager.getUser(for: item).object
+        } catch {
+            handle(error)
+            return nil
+        }
+    }
 }
 
 private extension PasskeyCredentialsViewModel {
