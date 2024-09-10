@@ -61,7 +61,7 @@ private extension HomepageCoordinator {
     }
 
     func createNewItem() {
-        let viewModel = ItemTypeListViewModel(mode: .hostApp) { [weak self] type in
+        let viewModel = ItemTypeListViewModel { [weak self] type in
             guard let self else { return }
             dismissTopMostViewController { [weak self] in
                 guard let self else { return }

@@ -35,7 +35,6 @@ protocol CredentialsViewModelDelegate: AnyObject {
     func credentialsViewModelWantsToLogOut()
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: any SortTypeListViewModelDelegate)
-    func credentialsViewModelWantsToCreateNewItem(_ mode: AutoFillCreationMode)
 }
 
 enum CredentialsViewState: Equatable {
@@ -154,17 +153,17 @@ final class CredentialsViewModel: ObservableObject {
         }
     }
 
-    var selectedUserIdForNewItem: String?
-
     var shouldAskForUserWhenCreatingNewItem: Bool {
-        guard users.count > 1 else { return false }
-        return selectedUser == nil
+        users.count > 1 && selectedUser == nil
     }
+
+    private let onCreate: (LoginCreationInfo) -> Void
 
     init(users: [PassUser],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
-         context: ASCredentialProviderExtensionContext) {
+         context: ASCredentialProviderExtensionContext,
+         onCreate: @escaping (LoginCreationInfo) -> Void) {
         self.users = users
         if users.count == 1 {
             selectedUser = users.first
@@ -172,6 +171,7 @@ final class CredentialsViewModel: ObservableObject {
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
         self.context = context
+        self.onCreate = onCreate
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         setup()
     }
@@ -289,24 +289,21 @@ extension CredentialsViewModel {
         delegate?.credentialsViewModelWantsToLogOut()
     }
 
-    func createNewItem(_ type: ItemType) {
-        guard let userId = shouldAskForUserWhenCreatingNewItem ?
-            selectedUserIdForNewItem : selectedUser?.id else {
+    func createNewItem(userId: String?) {
+        guard let userId = userId ?? selectedUser?.id else {
             assertionFailure("No userID selected to create new item")
             return
         }
-        let vaults = results.first { $0.userId == userId }?.vaults ?? []
-
-        switch type {
-        case .login:
-            delegate?.credentialsViewModelWantsToCreateNewItem(.login(userId: userId,
-                                                                      vaults,
-                                                                      urls.first,
-                                                                      nil))
-        case .alias:
-            delegate?.credentialsViewModelWantsToCreateNewItem(.alias(userId: userId, vaults))
-        default:
-            assertionFailure("Item type \(type.description) not supported")
+        do {
+            guard let vaults = results.first(where: { $0.userId == userId })?.vaults else {
+                throw PassError.vault(.vaultsNotFound(userId: userId))
+            }
+            onCreate(.init(userId: userId,
+                           vaults: vaults,
+                           url: urls.first,
+                           request: nil))
+        } catch {
+            handle(error)
         }
     }
 

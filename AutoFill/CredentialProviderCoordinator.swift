@@ -155,10 +155,18 @@ private extension CredentialProviderCoordinator {
             showNotLoggedInView()
             return
         }
+        let onCreate: (LoginCreationInfo) -> Void = { [weak self] info in
+            Task { [weak self] in
+                guard let self else { return }
+                await showCreateNewItem(info)
+            }
+        }
+
         let viewModel = CredentialsViewModel(users: users,
                                              serviceIdentifiers: identifiers,
                                              passkeyRequestParams: passkeyRequestParams,
-                                             context: context)
+                                             context: context,
+                                             onCreate: onCreate)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel))
@@ -236,7 +244,10 @@ private extension CredentialProviderCoordinator {
     func createNewLoginWithPasskey(vaults: [Vault], request: PasskeyCredentialRequest) {
         Task { [weak self] in
             guard let self else { return }
-            await showCreateNewItem(for: .login(userId: "", vaults, nil, request))
+            await showCreateNewItem(.init(userId: "",
+                                          vaults: vaults,
+                                          url: nil,
+                                          request: request))
         }
     }
 }
@@ -396,13 +407,13 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    func showCreateNewItem(for mode: AutoFillCreationMode) async {
+    func showCreateNewItem(_ info: LoginCreationInfo) async {
         do {
-            let vaults = mode.vaults
+            let vaults = info.vaults
             let lastCreateItemVault = vaults.first { $0.shareId == getUserPreferences().lastCreatedItemShareId }
             let shareId = (lastCreateItemVault ?? vaults.oldestOwned)?.shareId ?? ""
 
-            let userId = mode.userId
+            let userId = info.userId
             // Temporarily switch the on-memory active user and reload the vaults contents
             // This is to work-around the fact that many of our repositories, use cases, view models
             // still depend on the active user instead of dynamically take a userID
@@ -411,31 +422,18 @@ private extension CredentialProviderCoordinator {
             try await userManager.switchActiveUser(with: userId, onMemory: true)
             try await vaultsManager.asyncRefresh(userId: userId)
 
-            switch mode {
-            case let .login(_, _, url, request):
-                let creationType = ItemCreationType.login(title: url?.host,
-                                                          url: url?.schemeAndHost,
-                                                          autofill: true,
-                                                          passkeyCredentialRequest: request)
-                let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
-                                                                           type: creationType),
-                                                             upgradeChecker: upgradeChecker,
-                                                             vaults: vaults)
-                viewModel.delegate = self
-                present(CreateEditLoginView(viewModel: viewModel),
-                        dismissBeforePresenting: true)
-                currentCreateEditItemViewModel = viewModel
-
-            case .alias:
-                let viewModel = try CreateEditAliasViewModel(mode: .create(shareId: shareId,
-                                                                           type: .alias),
-                                                             upgradeChecker: upgradeChecker,
-                                                             vaults: vaults)
-                viewModel.delegate = self
-                present(CreateEditAliasView(viewModel: viewModel),
-                        dismissBeforePresenting: true)
-                currentCreateEditItemViewModel = viewModel
-            }
+            let creationType = ItemCreationType.login(title: info.url?.host,
+                                                      url: info.url?.schemeAndHost,
+                                                      autofill: true,
+                                                      passkeyCredentialRequest: info.request)
+            let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
+                                                                       type: creationType),
+                                                         upgradeChecker: upgradeChecker,
+                                                         vaults: vaults)
+            viewModel.delegate = self
+            present(CreateEditLoginView(viewModel: viewModel),
+                    dismissBeforePresenting: true)
+            currentCreateEditItemViewModel = viewModel
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
@@ -532,13 +530,6 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, dismissible: true)
-    }
-
-    func credentialsViewModelWantsToCreateNewItem(_ mode: AutoFillCreationMode) {
-        Task { [weak self] in
-            guard let self else { return }
-            await showCreateNewItem(for: mode)
-        }
     }
 }
 

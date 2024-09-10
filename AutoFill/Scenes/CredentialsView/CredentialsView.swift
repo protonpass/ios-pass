@@ -32,7 +32,6 @@ struct CredentialsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
-    @State private var showItemTypeList = false
     @State private var showUserList = false
 
     init(viewModel: CredentialsViewModel) {
@@ -85,21 +84,12 @@ struct CredentialsView: View {
                     .presentationDetents([.height(CGFloat(info.passkeys.count * 60) + 80)])
             }
         }
-        .sheet(isPresented: $showItemTypeList) {
-            let viewModel = ItemTypeListViewModel(mode: .autoFillExtension,
-                                                  onSelect: { self.viewModel.createNewItem($0) })
-            ItemTypeListView(viewModel: viewModel)
-                .presentationDetents([.height(200)])
-                .presentationDragIndicator(.visible)
-                .environment(\.colorScheme, colorScheme)
-        }
         .confirmationDialog("Create",
                             isPresented: $showUserList,
                             actions: {
                                 ForEach(viewModel.users) { user in
                                     Button(action: {
-                                        viewModel.selectedUserIdForNewItem = user.id
-                                        showItemTypeList.toggle()
+                                        viewModel.createNewItem(userId: user.id)
                                     }, label: {
                                         Text(verbatim: user.email ?? user.displayName ?? "?")
                                     })
@@ -181,23 +171,19 @@ private extension CredentialsView {
 
             Spacer()
 
-            HStack {
-                CapsuleLabelButton(icon: IconProvider.plus,
-                                   title: #localized("Create"),
-                                   titleColor: PassColor.interactionNormMajor2,
-                                   backgroundColor: PassColor.interactionNormMinor1,
-                                   maxWidth: nil,
-                                   action: {
-                                       if viewModel.shouldAskForUserWhenCreatingNewItem {
-                                           showUserList.toggle()
-                                       } else {
-                                           showItemTypeList.toggle()
-                                       }
-                                   })
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
+            CapsuleTextButton(title: #localized("Create login"),
+                              titleColor: PassColor.loginInteractionNormMajor2,
+                              backgroundColor: PassColor.loginInteractionNormMinor1,
+                              height: 52,
+                              action: {
+                                  if viewModel.shouldAskForUserWhenCreatingNewItem {
+                                      showUserList.toggle()
+                                  } else {
+                                      viewModel.createNewItem(userId: nil)
+                                  }
+                              })
+                              .padding(.horizontal)
+                              .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: viewModel.state)
