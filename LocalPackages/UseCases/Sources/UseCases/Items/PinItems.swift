@@ -1,6 +1,5 @@
 //
-//
-// PinItem.swift
+// PinItems.swift
 // Proton Pass - Created on 30/11/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -21,33 +20,26 @@
 //
 
 import Client
-import Core
 import Entities
 
-public protocol PinItemUseCase: Sendable {
-    @discardableResult
-    func execute(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem
+public protocol PinItemsUseCase: Sendable {
+    func execute(_ items: [any ItemIdentifiable]) async throws
 }
 
-public extension PinItemUseCase {
-    @discardableResult
-    func callAsFunction(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        try await execute(item: item)
+public extension PinItemsUseCase {
+    func callAsFunction(_ items: [any ItemIdentifiable]) async throws {
+        try await execute(items)
     }
 }
 
-public final class PinItem: PinItemUseCase {
+public final class PinItems: PinItemsUseCase {
     private let itemRepository: any ItemRepositoryProtocol
-    private let logger: Logger
 
-    public init(itemRepository: any ItemRepositoryProtocol,
-                logManager: any LogManagerProtocol) {
+    public init(itemRepository: any ItemRepositoryProtocol) {
         self.itemRepository = itemRepository
-        logger = .init(manager: logManager)
     }
 
-    public func execute(item: any ItemIdentifiable) async throws -> SymmetricallyEncryptedItem {
-        logger.trace("Pinning item \(item.debugDescription)")
-        return try await itemRepository.pinItem(item: item)
+    public func execute(_ items: [any ItemIdentifiable]) async throws {
+        try await itemRepository.pinItems(items)
     }
 }
