@@ -31,7 +31,7 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     private let onCreate: (LoginCreationInfo) -> Void
     private let onCancel: () -> Void
     private let onLogOut: () -> Void
-    private let multiAccountsMappingManager = MultiAccountsMappingManager()
+    private let shareIdToUserManager: ShareIdToUserManager
 
     let users: [PassUser]
 
@@ -65,10 +65,10 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
         self.onCancel = onCancel
         self.onLogOut = onLogOut
         self.users = users
+        shareIdToUserManager = .init(users: users)
         if users.count == 1 {
             selectedUser = users.first
         }
-        multiAccountsMappingManager.add(users)
     }
 
     // swiftlint:disable unavailable_function
@@ -126,7 +126,8 @@ extension AutoFillViewModel {
             var results = [T]()
             for user in users {
                 let result = try await fetchAutoFillCredentials(userId: user.id)
-                multiAccountsMappingManager.add(result.vaults, userId: result.userId)
+                shareIdToUserManager.index(vaults: result.vaults,
+                                           userId: result.userId)
                 results.append(result)
             }
 
@@ -153,14 +154,10 @@ extension AutoFillViewModel {
         }
     }
 
-    func getVaultId(for item: any ItemIdentifiable) throws -> String {
-        try multiAccountsMappingManager.getVaultId(for: item.shareId).object
-    }
-
     func getUser(for item: any ItemIdentifiable) -> PassUser? {
         guard users.count > 1, selectedUser == nil else { return nil }
         do {
-            return try multiAccountsMappingManager.getUser(for: item).object
+            return try shareIdToUserManager.getUser(for: item).object
         } catch {
             handle(error)
             return nil
