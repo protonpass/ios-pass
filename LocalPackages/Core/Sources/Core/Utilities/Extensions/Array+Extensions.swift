@@ -66,7 +66,7 @@ public extension Array {
     }
 
     /// Remove duplicated elements with a custom logic to determine the equalness
-    func deduplicate<Key: Hashable>(_ key: (Element) throws -> Key) rethrows -> [Element] {
+    func deduplicate<Key: Hashable>(by key: (Element) throws -> Key) rethrows -> [Element] {
         var seenKeys = Set<Key>()
         var result = [Element]()
         for item in self {
