@@ -19,10 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
+import Core
 import DesignSystem
 import Entities
-import Factory
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -33,6 +32,9 @@ struct CredentialsView: View {
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
     @State private var showUserList = false
+
+    @AppStorage(Constants.QA.displayAccountsMenu, store: kSharedUserDefaults)
+    private var displayAccountsMenu = false
 
     init(viewModel: CredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -106,10 +108,10 @@ private extension CredentialsView {
             }
             switch viewModel.state {
             case .idle:
-                if viewModel.users.count > 1 {
+                if viewModel.users.count > 1, displayAccountsMenu {
                     AccountsMenu(selectedUser: $viewModel.selectedUser,
                                  users: viewModel.users)
-                        .padding(.horizontal)
+                        .padding([.horizontal, .bottom])
                 }
 
                 if let planType = viewModel.planType, case .free = planType {

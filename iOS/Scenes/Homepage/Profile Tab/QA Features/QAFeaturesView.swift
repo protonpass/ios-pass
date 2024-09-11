@@ -35,6 +35,9 @@ struct QAFeaturesView: View {
     @AppStorage(Constants.QA.searchAndListSecureLink)
     private var searchAndListSecureLink = false
 
+    @AppStorage(Constants.QA.displayAccountsMenu, store: kSharedUserDefaults)
+    private var displayAccountsMenu = false
+
     var body: some View {
         NavigationStack {
             Form {
@@ -57,6 +60,10 @@ struct QAFeaturesView: View {
 
                     Toggle(isOn: $searchAndListSecureLink) {
                         Text(verbatim: "Display search secure link")
+                    }
+
+                    Toggle(isOn: $displayAccountsMenu) {
+                        Text(verbatim: "Display accounts menu in AutoFill")
                     }
                 }
                 if #available(iOS 17, *) {
