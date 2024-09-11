@@ -37,6 +37,9 @@ struct SearchResultsView: View {
     let onSelectItem: (ItemSearchResult) -> Void
     let onSelectSortType: () -> Void
 
+    @State private var showingTrashAliasAlert = false
+    @State private var aliasToTrash: (any ItemTypeIdentifiable)?
+
     init(selectedType: Binding<ItemContentType?>,
          selectedSortType: Binding<SortType>,
          itemContextMenuHandler: ItemContextMenuHandler,
@@ -65,6 +68,18 @@ struct SearchResultsView: View {
             topBarSearchInformations
             searchListItems
         }
+        .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
+                                          enabled: aliasToTrash?.aliasEnabled ?? false,
+                                          disableAction: {
+                                              if let aliasToTrash {
+                                                  viewModel.itemContextMenuHandler.disableAlias(aliasToTrash)
+                                              }
+                                          },
+                                          trashAction: {
+                                              if let aliasToTrash {
+                                                  viewModel.itemContextMenuHandler.trash(aliasToTrash)
+                                              }
+                                          }))
     }
 
     @ViewBuilder
@@ -95,6 +110,10 @@ struct SearchResultsView: View {
                                  isTrashed: viewModel.isTrash,
                                  isEditable: isEditable,
                                  onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
+                                 onAliasTrash: {
+                                     aliasToTrash = item
+                                     showingTrashAliasAlert.toggle()
+                                 },
                                  handler: viewModel.itemContextMenuHandler)
         })
         .plainListRow()
