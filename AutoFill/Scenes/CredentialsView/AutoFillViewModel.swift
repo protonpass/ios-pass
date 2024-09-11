@@ -47,6 +47,16 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
         users.count > 1 && selectedUser == nil
     }
 
+    /// Vautls of all users keeping only the first one of the ones sharing the same `VaultID`
+    private var uniqueVaults: [Vault] {
+        results
+            .flatMap(\.vaults)
+            // Make sure most permissive vaults are on top
+            // so we only keep the most permissive one after deduplicating
+            .sorted(by: { $0.shareRole > $1.shareRole })
+            .deduplicate(by: \.id)
+    }
+
     init(onCreate: @escaping (LoginCreationInfo) -> Void,
          onCancel: @escaping () -> Void,
          onLogOut: @escaping () -> Void,
@@ -159,18 +169,10 @@ extension AutoFillViewModel {
 
     func getAllObjects<Object: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<T, [Object]>)
         -> [Object] {
-        do {
-            return try results
-                .flatMap { $0[keyPath: keyPath] }
-                .deduplicate { [getVaultId] item in
-                    let vaultId = try getVaultId(item)
-                    return vaultId + item.itemId
-                }
-                .compactMap { $0 }
-        } catch {
-            handle(error)
-            return []
-        }
+        let uniqueShareIds = uniqueVaults.map(\.shareId)
+        return results
+            .flatMap { $0[keyPath: keyPath] }
+            .filter { uniqueShareIds.contains($0.shareId) }
     }
 }
 
