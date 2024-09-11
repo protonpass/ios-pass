@@ -63,14 +63,6 @@ public struct UserBreaches: Decodable, Equatable, Sendable, Hashable {
         customEmails.filter { !$0.verified }
     }
 
-//    public var hasBreachedAddresses: Bool {
-//        !breachedAddresses.isEmpty
-//    }
-
-//    public var breachedAddresses: [ProtonAddress] {
-//        addresses.filter { /* $0.breachCounter > 0 && */ !$0.monitoringDisabled }
-//    }
-
     public var monitoredAddresses: [ProtonAddress] {
         addresses.filter { !$0.monitoringDisabled }
     }
