@@ -37,6 +37,9 @@ struct SearchResultsView: View {
     let onSelectItem: (ItemSearchResult) -> Void
     let onSelectSortType: () -> Void
 
+    @State private var showingTrashAliasAlert = false
+    @State private var aliasToTrash: (any ItemTypeIdentifiable)?
+
     init(selectedType: Binding<ItemContentType?>,
          selectedSortType: Binding<SortType>,
          itemContextMenuHandler: ItemContextMenuHandler,
@@ -64,6 +67,24 @@ struct SearchResultsView: View {
             SearchResultChips(selectedType: $selectedType, itemCount: viewModel.itemCount)
             topBarSearchInformations
             searchListItems
+        }
+        .alert("Move to Trash", isPresented: $showingTrashAliasAlert) {
+            if let aliasToTrash, aliasToTrash.aliasEnabled {
+                Button("Disable instead") {
+                    viewModel.itemContextMenuHandler.disableAlias(aliasToTrash)
+                }
+            }
+            Button("Move to Trash") {
+                if let aliasToTrash {
+                    viewModel.itemContextMenuHandler.trash(aliasToTrash)
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            if let aliasToTrash, aliasToTrash.aliasEnabled {
+                // swiftlint:disable:next line_length
+                Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
+            }
         }
     }
 
@@ -95,6 +116,10 @@ struct SearchResultsView: View {
                                  isTrashed: viewModel.isTrash,
                                  isEditable: isEditable,
                                  onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
+                                 onAliasTrash: {
+                                     aliasToTrash = item
+                                     showingTrashAliasAlert.toggle()
+                                 },
                                  handler: viewModel.itemContextMenuHandler)
         })
         .plainListRow()

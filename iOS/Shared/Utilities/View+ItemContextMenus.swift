@@ -357,6 +357,7 @@ extension View {
                          isTrashed: Bool,
                          isEditable: Bool,
                          onPermanentlyDelete: @escaping () -> Void,
+                         onAliasTrash: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
         if isTrashed {
             itemContextMenu(.trashedItem(isEditable: isEditable,
@@ -385,7 +386,7 @@ extension View {
                                        onEdit: { handler.edit(item) },
                                        onPinToggle: { handler.toggleItemPinning(item) },
                                        onViewHistory: { handler.viewHistory(item) },
-                                       onTrash: { handler.trash(item) }))
+                                       onTrash: onAliasTrash))
 
             case .creditCard:
                 itemContextMenu(.creditCard(item: item,
