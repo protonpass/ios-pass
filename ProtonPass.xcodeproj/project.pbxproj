@@ -494,6 +494,7 @@
 		5B8D20AD2AA74B6600457CA3 /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20AC2AA74B6600457CA3 /* DesignSystem */; };
 		5B8D20B12AA751AF00457CA3 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20B02AA751AF00457CA3 /* MBProgressHUD */; };
 		5B8D20BE2AA7639E00457CA3 /* fusion in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20BD2AA7639E00457CA3 /* fusion */; };
+		5B92AB372C91C69E007365FC /* AliasTrashAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */; };
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
 		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
 		5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
@@ -974,6 +975,7 @@
 		5B8D209B2AA748AB00457CA3 /* Client */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Client; path = LocalPackages/Client; sourceTree = "<group>"; };
 		5B8D20A22AA7499400457CA3 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = LocalPackages/Core; sourceTree = "<group>"; };
 		5B8D20A92AA74B4700457CA3 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = LocalPackages/DesignSystem; sourceTree = "<group>"; };
+		5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasTrashAlertModifier.swift; sourceTree = "<group>"; };
 		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
 		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
 		5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpsellingViewConfiguration+Extensions.swift"; sourceTree = "<group>"; };
@@ -2222,6 +2224,7 @@
 			isa = PBXGroup;
 			children = (
 				356750D429D31E9200247648 /* ItemSwipeModifier.swift */,
+				5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */,
 			);
 			path = ViewModifiers;
 			sourceTree = "<group>";
@@ -3252,6 +3255,7 @@
 				354F769E28C90E0100EB2383 /* BaseItemDetailViewModel.swift in Sources */,
 				5BD4A90C2B15F18100C44C08 /* PasswordStrength+Extensions.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
+				5B92AB372C91C69E007365FC /* AliasTrashAlertModifier.swift in Sources */,
 				355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */,
 				35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */,
 				356A1F002B889DDA00561950 /* HomepageCoordinator+Passkey.swift in Sources */,

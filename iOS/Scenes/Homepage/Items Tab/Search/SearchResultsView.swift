@@ -68,24 +68,18 @@ struct SearchResultsView: View {
             topBarSearchInformations
             searchListItems
         }
-        .alert("Move to Trash", isPresented: $showingTrashAliasAlert) {
-            if let aliasToTrash, aliasToTrash.aliasEnabled {
-                Button("Disable instead") {
-                    viewModel.itemContextMenuHandler.disableAlias(aliasToTrash)
-                }
-            }
-            Button("Move to Trash") {
-                if let aliasToTrash {
-                    viewModel.itemContextMenuHandler.trash(aliasToTrash)
-                }
-            }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            if let aliasToTrash, aliasToTrash.aliasEnabled {
-                // swiftlint:disable:next line_length
-                Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
-            }
-        }
+        .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
+                                          enabled: aliasToTrash?.aliasEnabled ?? false,
+                                          disableAction: {
+                                              if let aliasToTrash {
+                                                  viewModel.itemContextMenuHandler.disableAlias(aliasToTrash)
+                                              }
+                                          },
+                                          trashAction: {
+                                              if let aliasToTrash {
+                                                  viewModel.itemContextMenuHandler.trash(aliasToTrash)
+                                              }
+                                          }))
     }
 
     @ViewBuilder
