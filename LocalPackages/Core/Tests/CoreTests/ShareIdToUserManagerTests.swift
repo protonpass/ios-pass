@@ -1,5 +1,5 @@
 //
-// MultiAccountsMappingManagerTests.swift
+// ShareIdToUserManagerTests.swift
 // Proton Pass - Created on 10/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -23,8 +23,8 @@
 import Entities
 import XCTest
 
-final class MultiAccountsMappingManagerTests: XCTestCase {
-    var sut: MultiAccountsMappingManager!
+final class ShareIdToUserManagerTests: XCTestCase {
+    var sut: ShareIdToUserManager!
 
     private struct Item: ItemIdentifiable {
         let shareId: String
@@ -35,88 +35,32 @@ final class MultiAccountsMappingManagerTests: XCTestCase {
         }
     }
 
-    override func setUp() {
-        super.setUp()
-        sut = MultiAccountsMappingManager()
-    }
-
     override func tearDown() {
         sut = nil
         super.tearDown()
     }
 }
 
-extension MultiAccountsMappingManagerTests {
-    func testGetVaultIdWithFailure() {
-        let expectation = XCTestExpectation(description: "Should fail")
-        // Given
-        sut.add([.random()], userId: .random())
-
-        do {
-            // When
-            _ = try sut.getVaultId(for: .random())
-        } catch {
-            // Then
-            if let passError = error as? PassError {
-                switch passError {
-                case let .vault(reason):
-                    if case .vaultNotFound = reason {
-                        expectation.fulfill()
-                    }
-                default:
-                    break
-                }
-            }
-        }
-        wait(for: [expectation])
-    }
-
-    func testGetVaultIdWithSuccess() throws {
-        // Given
-        let vault = Vault.random()
-        sut.add([vault], userId: .random())
-        sut.add([vault, .random(), .random()], userId: .random())
-
-        // When
-        let firstGet = try sut.getVaultId(for: vault.shareId)
-
-        // Then
-        XCTAssertFalse(firstGet.cached)
-        XCTAssertEqual(firstGet.object, vault.id)
-
-        // When
-        let secondGet = try sut.getVaultId(for: vault.shareId)
-
-        // Then
-        XCTAssertTrue(secondGet.cached)
-        XCTAssertEqual(secondGet.object, vault.id)
-    }
-
+extension ShareIdToUserManagerTests {
     func testGetUserWithFailure() {
-        let expectation = XCTestExpectation(description: "Should fail")
         // Given
+        sut = .init(users: [.random()])
         let item = Item.random()
-        sut.add([.random()])
-
-        do {
-            // When
-            _ = try sut.getUser(for: item)
-        } catch {
-            // Then
+        XCTAssertThrowsError(try sut.getUser(for: item)) { error in
             if let passError = error as? PassError {
                 switch passError {
                 case let .userManager(reason):
                     if case let .noUserFound(shareId, itemId) = reason,
                        shareId == item.shareId,
                        itemId == item.itemId {
-                        expectation.fulfill()
+                        break
                     }
+                    fallthrough
                 default:
-                    break
+                    XCTFail("Unexpected error \(error)")
                 }
             }
         }
-        wait(for: [expectation])
     }
 
     func testGetUserWithSuccess() throws {
@@ -124,8 +68,8 @@ extension MultiAccountsMappingManagerTests {
         let vault = Vault.random()
         let item = Item(shareId: vault.shareId, itemId: .random())
         let user = PassUser.random()
-        sut.add([user])
-        sut.add([vault], userId: user.id)
+        sut = .init(users: [user])
+        sut.index(vaults: [vault], userId: user.id)
 
         // When
         let firstGet = try sut.getUser(for: item)
