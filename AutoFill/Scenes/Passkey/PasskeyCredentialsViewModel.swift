@@ -39,6 +39,9 @@ final class PasskeyCredentialsViewModel: ObservableObject {
     @Published var isShowingAssociationConfirmation = false
     @Published var selectedUser: PassUser?
 
+    private let onCreate: (LoginCreationInfo) -> Void
+    private let onCancel: () -> Void
+    private let onLogOut: () -> Void
     let users: [PassUser]
 
     var selectedItem: (any TitledItemIdentifiable)? {
@@ -76,17 +79,55 @@ final class PasskeyCredentialsViewModel: ObservableObject {
         }
     }
 
+    var shouldAskForUserWhenCreatingNewItem: Bool {
+        users.count > 1 && selectedUser == nil
+    }
+
     init(users: [PassUser],
          request: PasskeyCredentialRequest,
-         context: ASCredentialProviderExtensionContext?) {
+         context: ASCredentialProviderExtensionContext?,
+         onCreate: @escaping (LoginCreationInfo) -> Void,
+         onCancel: @escaping () -> Void,
+         onLogOut: @escaping () -> Void) {
         self.users = users
         self.request = request
         self.context = context
+        self.onCreate = onCreate
+        self.onCancel = onCancel
+        self.onLogOut = onLogOut
         multiAccountsMappingManager.add(users)
     }
 }
 
 extension PasskeyCredentialsViewModel {
+    func handleAuthenticationSuccess() {
+        logger.info("Local authentication succesful")
+    }
+
+    func handleAuthenticationFailure() {
+        logger.error("Failed to locally authenticate. Logging out.")
+        onLogOut()
+    }
+
+    func cancel() {
+        onCancel()
+    }
+
+    func create(userId: String?) {
+        guard let userId = userId ?? selectedUser?.id else {
+            assertionFailure("No userID selected to create new item")
+            return
+        }
+        do {
+            guard let vaults = results.first(where: { $0.userId == userId })?.vaults else {
+                throw PassError.vault(.vaultsNotFound(userId: userId))
+            }
+            onCreate(.init(userId: userId, vaults: vaults, url: nil, request: request))
+        } catch {
+            handle(error)
+        }
+    }
+
     func sync(ignoreError: Bool) async {
         do {
             var shouldRefreshItems = false
