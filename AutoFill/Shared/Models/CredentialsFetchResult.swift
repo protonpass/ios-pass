@@ -22,7 +22,12 @@ import Client
 import Entities
 import Foundation
 
-struct CredentialsFetchResult: Equatable, Sendable {
+protocol AutoFillCredentials: Equatable, Sendable {
+    var userId: String { get }
+    var vaults: [Vault] { get }
+}
+
+struct CredentialsFetchResult: AutoFillCredentials {
     let userId: String
     let vaults: [Vault]
     let searchableItems: [SearchableItem]
@@ -30,7 +35,7 @@ struct CredentialsFetchResult: Equatable, Sendable {
     let notMatchedItems: [ItemUiModel]
 }
 
-struct CredentialsForPasskeyCreation: Equatable, Sendable {
+struct CredentialsForPasskeyCreation: AutoFillCredentials {
     let userId: String
     let vaults: [Vault]
     let searchableItems: [SearchableItem]
