@@ -84,19 +84,9 @@ struct ItemSwipeModifier: ViewModifier {
                     .tint(PassColor.signalDanger.toColor)
                 }
             }
-            .alert("Move to Trash", isPresented: $showingTrashAliasAlert) {
-                if item.aliasEnabled {
-                    Button("Disable instead") {
-                        itemContextMenuHandler.disableAlias(item)
-                    }
-                }
-                Button("Move to Trash") { itemContextMenuHandler.trash(item) }
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                if item.aliasEnabled {
-                    // swiftlint:disable:next line_length
-                    Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
-                }
-            }
+            .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
+                                              enabled: item.aliasEnabled,
+                                              disableAction: { itemContextMenuHandler.disableAlias(item) },
+                                              trashAction: { itemContextMenuHandler.trash(item) }))
     }
 }

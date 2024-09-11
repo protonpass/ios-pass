@@ -30,10 +30,6 @@ import SwiftUI
 
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
-    deinit {
-        print(deinitMessage)
-    }
-
     /// Self-initialized properties
     private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
@@ -74,6 +70,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var credentialsViewModel: CredentialsViewModel?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
     private var customCoordinator: (any CustomCoordinator)?
+    private var startTask: Task<Void, Never>?
 
     private var topMostViewController: UIViewController? {
         rootViewController?.topMostViewController
@@ -91,9 +88,17 @@ final class CredentialProviderCoordinator: DeinitPrintable {
         setUpRouting()
     }
 
+    deinit {
+        startTask?.cancel()
+        startTask = nil
+        print(deinitMessage)
+    }
+
     /// Necessary set up like initializing preferences and theme before starting user flow
     func setUpAndStart(mode: AutoFillMode) {
-        Task { [weak self] in
+        startTask?.cancel()
+        startTask = nil
+        startTask = Task { [weak self] in
             guard let self else { return }
             do {
                 try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))

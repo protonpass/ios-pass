@@ -284,13 +284,15 @@ public extension AuthManager {
     /// Introduced on July 2024 for multi accounts support. Can be removed later on.
     func migrate(_ credential: AuthCredential) {
         assertDidSetUp()
-        for module in PassModule.allCases {
-            let key = CredentialsKey(sessionId: credential.sessionID, module: module)
-            cachedCredentials[key] = .init(credential: .init(credential),
-                                           authCredential: credential,
-                                           module: module)
+        serialAccessQueue.sync {
+            for module in PassModule.allCases {
+                let key = CredentialsKey(sessionId: credential.sessionID, module: module)
+                cachedCredentials[key] = .init(credential: .init(credential),
+                                               authCredential: credential,
+                                               module: module)
+            }
+            saveCachedCredentialsToKeychain()
         }
-        saveCachedCredentialsToKeychain()
     }
 
     @_spi(QA)
