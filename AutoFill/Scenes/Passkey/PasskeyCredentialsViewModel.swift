@@ -32,17 +32,10 @@ enum PasskeyCredentialsViewModelState {
 }
 
 @MainActor
-final class PasskeyCredentialsViewModel: ObservableObject {
-    @Published private(set) var results: [CredentialsForPasskeyCreation] = []
+final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskeyCreation> {
     @Published private(set) var state: PasskeyCredentialsViewModelState = .loading
     @Published private(set) var isCreatingPasskey = false
     @Published var isShowingAssociationConfirmation = false
-    @Published var selectedUser: PassUser?
-
-    private let onCreate: (LoginCreationInfo) -> Void
-    private let onCancel: () -> Void
-    private let onLogOut: () -> Void
-    let users: [PassUser]
 
     var selectedItem: (any TitledItemIdentifiable)? {
         didSet {
@@ -52,13 +45,9 @@ final class PasskeyCredentialsViewModel: ObservableObject {
         }
     }
 
-    private let multiAccountsMappingManager = MultiAccountsMappingManager()
-    private let logger = resolve(\SharedToolingContainer.logger)
-
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
     @LazyInjected(\AutoFillUseCaseContainer.getItemsForPasskeyCreation) private var getItemsForPasskeyCreation
     @LazyInjected(\AutoFillUseCaseContainer.createAndAssociatePasskey) private var createAndAssociatePasskey
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     private let request: PasskeyCredentialRequest
     private weak var context: ASCredentialProviderExtensionContext?
@@ -79,96 +68,54 @@ final class PasskeyCredentialsViewModel: ObservableObject {
         }
     }
 
-    var shouldAskForUserWhenCreatingNewItem: Bool {
-        users.count > 1 && selectedUser == nil
-    }
-
     init(users: [PassUser],
          request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext?,
          onCreate: @escaping (LoginCreationInfo) -> Void,
          onCancel: @escaping () -> Void,
          onLogOut: @escaping () -> Void) {
-        self.users = users
         self.request = request
         self.context = context
-        self.onCreate = onCreate
-        self.onCancel = onCancel
-        self.onLogOut = onLogOut
-        multiAccountsMappingManager.add(users)
+        super.init(onCreate: onCreate,
+                   onCancel: onCancel,
+                   onLogOut: onLogOut,
+                   users: users)
+    }
+
+    override func getVaults(userId: String) -> [Vault]? {
+        results.first(where: { $0.userId == userId })?.vaults
+    }
+
+    override func generateLoginCreationInfo(userId: String, vaults: [Vault]) -> LoginCreationInfo {
+        .init(userId: userId, vaults: vaults, url: nil, request: request)
+    }
+
+    override func isErrorState() -> Bool {
+        if case .error = state {
+            true
+        } else {
+            false
+        }
+    }
+
+    override func fetchAutoFillCredentials(userId: String) async throws -> CredentialsForPasskeyCreation {
+        try await getItemsForPasskeyCreation(userId: userId, request)
+    }
+
+    override func changeToErrorState(_ error: any Error) {
+        state = .error(error)
+    }
+
+    override func changeToLoadingState() {
+        state = .loading
+    }
+
+    override func changeToLoadedState() {
+        state = .loaded
     }
 }
 
 extension PasskeyCredentialsViewModel {
-    func handleAuthenticationSuccess() {
-        logger.info("Local authentication succesful")
-    }
-
-    func handleAuthenticationFailure() {
-        logger.error("Failed to locally authenticate. Logging out.")
-        onLogOut()
-    }
-
-    func cancel() {
-        onCancel()
-    }
-
-    func create(userId: String?) {
-        guard let userId = userId ?? selectedUser?.id else {
-            assertionFailure("No userID selected to create new item")
-            return
-        }
-        do {
-            guard let vaults = results.first(where: { $0.userId == userId })?.vaults else {
-                throw PassError.vault(.vaultsNotFound(userId: userId))
-            }
-            onCreate(.init(userId: userId, vaults: vaults, url: nil, request: request))
-        } catch {
-            handle(error)
-        }
-    }
-
-    func sync(ignoreError: Bool) async {
-        do {
-            var shouldRefreshItems = false
-            for user in users {
-                let hasNewEvents = try await eventSynchronizer.sync(userId: user.id)
-                shouldRefreshItems = shouldRefreshItems || hasNewEvents
-            }
-
-            if shouldRefreshItems {
-                await loadCredentials()
-            }
-        } catch {
-            logger.error(error)
-            if !ignoreError {
-                state = .error(error)
-            }
-        }
-    }
-
-    func loadCredentials() async {
-        do {
-            logger.trace("Loading credentials")
-            if case .error = state {
-                state = .loading
-            }
-            var results = [CredentialsForPasskeyCreation]()
-            for user in users {
-                let result = try await getItemsForPasskeyCreation(userId: user.id,
-                                                                  request)
-                multiAccountsMappingManager.add(result.vaults, userId: user.id)
-                results.append(result)
-            }
-            self.results = results
-            state = .loaded
-            logger.trace("Loaded credentials")
-        } catch {
-            logger.error(error)
-            state = .error(error)
-        }
-    }
-
     func createAndAssociatePasskey() async {
         guard let context else { return }
         guard let selectedItem else {
@@ -187,31 +134,16 @@ extension PasskeyCredentialsViewModel {
             handle(error)
         }
     }
-
-    func getUser(for item: any ItemIdentifiable) -> PassUser? {
-        guard users.count > 1, selectedUser == nil else { return nil }
-        do {
-            return try multiAccountsMappingManager.getUser(for: item).object
-        } catch {
-            handle(error)
-            return nil
-        }
-    }
 }
 
 private extension PasskeyCredentialsViewModel {
-    func handle(_ error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
-    }
-
     func getAllObjects<T: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<CredentialsForPasskeyCreation, [T]>)
         -> [T] {
         do {
             return try results
                 .flatMap { $0[keyPath: keyPath] }
-                .deduplicate { [multiAccountsMappingManager] item in
-                    let vaultId = try multiAccountsMappingManager.getVaultId(for: item.shareId).object
+                .deduplicate { [getVaultId] item in
+                    let vaultId = try getVaultId(item)
                     return vaultId + item.itemId
                 }
                 .compactMap { $0 }

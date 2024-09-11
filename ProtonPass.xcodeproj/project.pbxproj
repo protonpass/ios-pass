@@ -179,6 +179,7 @@
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
 		356AC2B02C9188C000F9B1CD /* View+ConfirmUserDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356AC2AF2C9188C000F9B1CD /* View+ConfirmUserDialog.swift */; };
+		356AC2B22C91918F00F9B1CD /* AutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356AC2B12C91918F00F9B1CD /* AutoFillViewModel.swift */; };
 		356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */; };
 		356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */; };
 		356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B830B29C3359A0084488A /* EmptySearchView.swift */; };
@@ -768,6 +769,7 @@
 		356A1F042B88C56800561950 /* AutoFillMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillMode.swift; sourceTree = "<group>"; };
 		356A1F062B88C59C00561950 /* Passkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Passkey.swift; sourceTree = "<group>"; };
 		356AC2AF2C9188C000F9B1CD /* View+ConfirmUserDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ConfirmUserDialog.swift"; sourceTree = "<group>"; };
+		356AC2B12C91918F00F9B1CD /* AutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillViewModel.swift; sourceTree = "<group>"; };
 		356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
 		356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailPlaceholderView.swift; sourceTree = "<group>"; };
@@ -2367,6 +2369,7 @@
 			isa = PBXGroup;
 			children = (
 				5BFFB4FE2A57FE4F00C2D1F9 /* SubUIElements */,
+				356AC2B12C91918F00F9B1CD /* AutoFillViewModel.swift */,
 				3520F36228E325900053A606 /* CredentialsViewModel.swift */,
 				352866BC28E2DCB5000630E2 /* CredentialsView.swift */,
 				5BFFB4FC2A56D0C000C2D1F9 /* CredentialSearchResultView.swift */,
@@ -3007,6 +3010,7 @@
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
 				5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */,
+				356AC2B22C91918F00F9B1CD /* AutoFillViewModel.swift in Sources */,
 				5BD4A9002B10C4A000C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */,
 				35951DD02B8D226A006616BE /* ASCredentialRequest+Extensions.swift in Sources */,
 				3544F5E428E2341900834CA4 /* CredentialProviderViewController.swift in Sources */,

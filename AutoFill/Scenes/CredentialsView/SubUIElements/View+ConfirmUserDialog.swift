@@ -46,12 +46,12 @@ private struct ConfirmUserDialogModifier: ViewModifier {
     }
 }
 
+@MainActor
 extension View {
     func confirmUserDialog(isPresented: Binding<Bool>,
-                           users: [PassUser],
-                           onSelect: @escaping (PassUser) -> Void) -> some View {
+                           viewModel: AutoFillViewModel<some AutoFillCredentials>) -> some View {
         modifier(ConfirmUserDialogModifier(isPresented: isPresented,
-                                           users: users,
-                                           onSelect: onSelect))
+                                           users: viewModel.users,
+                                           onSelect: { viewModel.createNewItem(userId: $0.id) }))
     }
 }

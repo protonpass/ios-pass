@@ -55,13 +55,13 @@ struct PasskeyCredentialsView: View {
                                    if viewModel.shouldAskForUserWhenCreatingNewItem {
                                        showUserList.toggle()
                                    } else {
-                                       viewModel.create(userId: nil)
+                                       viewModel.createNewItem(userId: nil)
                                    }
                                },
-                               onCancel: { viewModel.cancel() })
+                               onCancel: { viewModel.handleCancel() })
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { Task { await viewModel.loadCredentials() } })
+                                   onRetry: { Task { await viewModel.fetchItems() } })
             }
         }
         .showSpinner(viewModel.isCreatingPasskey)
@@ -80,11 +80,9 @@ struct PasskeyCredentialsView: View {
                message: {
                    Text("A passkey will be created for the \"\(viewModel.selectedItem?.itemTitle ?? "")\" login.")
                })
-        .confirmUserDialog(isPresented: $showUserList,
-                           users: viewModel.users,
-                           onSelect: { viewModel.create(userId: $0.id) })
+        .confirmUserDialog(isPresented: $showUserList, viewModel: viewModel)
         .task {
-            await viewModel.loadCredentials()
+            await viewModel.fetchItems()
             // Ignore errors here otherwise users will always end up with errors when being offline
             await viewModel.sync(ignoreError: true)
         }

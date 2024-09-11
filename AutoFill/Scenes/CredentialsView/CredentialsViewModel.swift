@@ -73,11 +73,8 @@ extension ItemSearchResult: CredentialItem {
 }
 
 @MainActor
-final class CredentialsViewModel: ObservableObject {
+final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @Published private(set) var state = CredentialsViewState.loading
-    @Published private(set) var results: [CredentialsFetchResult] = []
-    @Published private(set) var users: [PassUser]
-    @Published var selectedUser: PassUser?
     @Published var query = ""
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var selectPasskeySheetInformation: SelectPasskeySheetInformation?
@@ -86,12 +83,10 @@ final class CredentialsViewModel: ObservableObject {
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
 
-    private let multiAccountsMappingManager = MultiAccountsMappingManager()
     private var lastTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
-    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPassword) private var autoFillPassword
     @LazyInjected(\AutoFillUseCaseContainer
@@ -101,8 +96,6 @@ final class CredentialsViewModel: ObservableObject {
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
     private let urls: [URL]
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
 
@@ -115,10 +108,6 @@ final class CredentialsViewModel: ObservableObject {
         } else {
             urls.first?.host() ?? ""
         }
-    }
-
-    var planType: Plan.PlanType? {
-        selectedUser?.plan.planType
     }
 
     private var searchableItems: [SearchableItem] {
@@ -145,14 +134,6 @@ final class CredentialsViewModel: ObservableObject {
         }
     }
 
-    var shouldAskForUserWhenCreatingNewItem: Bool {
-        users.count > 1 && selectedUser == nil
-    }
-
-    private let onCancel: () -> Void
-    private let onLogOut: () -> Void
-    private let onCreate: (LoginCreationInfo) -> Void
-
     init(users: [PassUser],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
@@ -160,73 +141,55 @@ final class CredentialsViewModel: ObservableObject {
          onCancel: @escaping () -> Void,
          onLogOut: @escaping () -> Void,
          onCreate: @escaping (LoginCreationInfo) -> Void) {
-        self.users = users
-        if users.count == 1 {
-            selectedUser = users.first
-        }
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
         self.context = context
-        self.onCancel = onCancel
-        self.onLogOut = onLogOut
-        self.onCreate = onCreate
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
+        super.init(onCreate: onCreate,
+                   onCancel: onCancel,
+                   onLogOut: onLogOut,
+                   users: users)
         setup()
+    }
+
+    override func getVaults(userId: String) -> [Vault]? {
+        results.first { $0.userId == userId }?.vaults
+    }
+
+    override func generateLoginCreationInfo(userId: String, vaults: [Vault]) -> LoginCreationInfo {
+        .init(userId: userId, vaults: vaults, url: urls.first, request: nil)
+    }
+
+    override func isErrorState() -> Bool {
+        if case .error = state {
+            true
+        } else {
+            false
+        }
+    }
+
+    override func fetchAutoFillCredentials(userId: String) async throws -> CredentialsFetchResult {
+        try await fetchCredentials(userId: userId,
+                                   identifiers: serviceIdentifiers,
+                                   params: passkeyRequestParams)
+    }
+
+    override func changeToErrorState(_ error: any Error) {
+        state = .error(error)
+    }
+
+    override func changeToLoadingState() {
+        state = .loading
+    }
+
+    override func changeToLoadedState() {
+        state = .idle
     }
 }
 
 // MARK: - Public actions
 
 extension CredentialsViewModel {
-    func cancel() {
-        onCancel()
-    }
-
-    func sync(ignoreError: Bool) async {
-        do {
-            var shouldRefreshItems = false
-            for user in users {
-                let hasNewEvents = try await eventSynchronizer.sync(userId: user.id)
-                shouldRefreshItems = shouldRefreshItems || hasNewEvents
-            }
-
-            if shouldRefreshItems {
-                await fetchItems()
-            }
-        } catch {
-            logger.error(error)
-            if !ignoreError {
-                state = .error(error)
-            }
-        }
-    }
-
-    func fetchItems() async {
-        do {
-            logger.trace("Loading log in items")
-            if case .error = state {
-                state = .loading
-            }
-
-            var results = [CredentialsFetchResult]()
-            for user in users {
-                let result = try await fetchCredentials(userId: user.id,
-                                                        identifiers: serviceIdentifiers,
-                                                        params: passkeyRequestParams)
-                multiAccountsMappingManager.add(result.vaults, userId: user.id)
-                results.append(result)
-            }
-
-            self.results = results
-
-            state = .idle
-            logger.info("Loaded log in items")
-        } catch {
-            logger.error(error)
-            state = .error(error)
-        }
-    }
-
     func presentSortTypeList() {
         delegate?.credentialsViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
                                                                  delegate: self)
@@ -272,47 +235,6 @@ extension CredentialsViewModel {
                 state = .error(error)
             }
         }
-    }
-
-    func handleAuthenticationSuccess() {
-        logger.info("Local authentication succesful")
-    }
-
-    func handleAuthenticationFailure() {
-        logger.error("Failed to locally authenticate. Logging out.")
-        onLogOut()
-    }
-
-    func createNewItem(userId: String?) {
-        guard let userId = userId ?? selectedUser?.id else {
-            assertionFailure("No userID selected to create new item")
-            return
-        }
-        do {
-            guard let vaults = results.first(where: { $0.userId == userId })?.vaults else {
-                throw PassError.vault(.vaultsNotFound(userId: userId))
-            }
-            onCreate(.init(userId: userId,
-                           vaults: vaults,
-                           url: urls.first,
-                           request: nil))
-        } catch {
-            handle(error)
-        }
-    }
-
-    func getUser(for item: any ItemIdentifiable) -> PassUser? {
-        guard users.count > 1, selectedUser == nil else { return nil }
-        do {
-            return try multiAccountsMappingManager.getUser(for: item).object
-        } catch {
-            handle(error)
-            return nil
-        }
-    }
-
-    func upgrade() {
-        router.present(for: .upgradeFlow)
     }
 }
 
@@ -401,8 +323,8 @@ private extension CredentialsViewModel {
         do {
             return try results
                 .flatMap { $0[keyPath: keyPath] }
-                .deduplicate { [multiAccountsMappingManager] item in
-                    let vaultId = try multiAccountsMappingManager.getVaultId(for: item.shareId).object
+                .deduplicate { [getVaultId] item in
+                    let vaultId = try getVaultId(item)
                     return vaultId + item.itemId
                 }
                 .compactMap { $0 }
@@ -411,19 +333,12 @@ private extension CredentialsViewModel {
             return []
         }
     }
-
-    func handle(_ error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
-    }
 }
 
 // MARK: Setup & utils functions
 
 private extension CredentialsViewModel {
     func setup() {
-        multiAccountsMappingManager.add(users)
-
         $query
             .debounce(for: 0.4, scheduler: DispatchQueue.main)
             .removeDuplicates()
