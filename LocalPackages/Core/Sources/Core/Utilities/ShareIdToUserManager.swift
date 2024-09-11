@@ -1,5 +1,5 @@
 //
-// MultiAccountsMappingManager.swift
+// ShareIdToUserManager.swift
 // Proton Pass - Created on 10/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -26,51 +26,32 @@ private struct UserVault: Sendable, Hashable {
     let vault: Vault
 }
 
-/// Cache and keep track of the mapping `ShareID` <-> `User` & `ShareID` <-> `VaultID`
-/// Used in multi accounts item display context:
-/// - Get the corresponding `VaultID` of item's `ShareID` to find out the same items across shared vaults
-/// - Get the `User` that owns an item
-public final class MultiAccountsMappingManager {
+/// Cache and keep track of the mapping `ShareID` <-> `User`
+/// Used in multi accounts item display context to get the user that owns an item
+public final class ShareIdToUserManager {
     private typealias ShareID = String
-    private typealias VaultID = String
     private typealias UserID = String
 
-    private var users = Set<PassUser>()
+    private let users: [PassUser]
     private var userVaults = Set<UserVault>()
 
-    private var shareToVault = [ShareID: VaultID]()
-    private var shareToUser = [ShareID: UserID]()
+    private var dict = [ShareID: UserID]()
 
-    public init() {}
+    public init(users: [PassUser]) {
+        self.users = users
+    }
 }
 
-public extension MultiAccountsMappingManager {
-    func add(_ users: [PassUser]) {
-        for user in users {
-            self.users.insert(user)
-        }
-    }
-
-    func add(_ vaults: [Vault], userId: String) {
+public extension ShareIdToUserManager {
+    func index(vaults: [Vault], userId: String) {
         for vault in vaults {
             userVaults.insert(.init(userId: userId, vault: vault))
         }
     }
 
-    func getVaultId(for shareId: String) throws -> CachableObject<String> {
-        if let vaultId = shareToVault[shareId] {
-            return .init(cached: true, object: vaultId)
-        }
-        if let vault = userVaults.map(\.vault).first(where: { $0.shareId == shareId }) {
-            shareToVault[shareId] = vault.id
-            return .init(cached: false, object: vault.id)
-        }
-        throw PassError.vault(.vaultNotFound(shareId: shareId))
-    }
-
     func getUser(for item: any ItemIdentifiable) throws -> CachableObject<PassUser> {
         // Get from cache
-        if let userId = shareToUser[item.shareId],
+        if let userId = dict[item.shareId],
            let user = users.first(where: { $0.id == userId }) {
             return .init(cached: true, object: user)
         }
@@ -78,7 +59,7 @@ public extension MultiAccountsMappingManager {
         // Cache missed, do the math and cache the result
         if let userVault = userVaults.first(where: { $0.vault.shareId == item.shareId }),
            let user = users.first(where: { $0.id == userVault.userId }) {
-            shareToUser[item.shareId] = user.id
+            dict[item.shareId] = user.id
             return .init(cached: false, object: user)
         }
         throw PassError.userManager(.noUserFound(shareId: item.shareId, itemId: item.itemId))
