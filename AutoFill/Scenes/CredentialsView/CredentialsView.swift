@@ -85,9 +85,7 @@ struct CredentialsView: View {
                     .environment(\.colorScheme, colorScheme)
             }
         }
-        .confirmUserDialog(isPresented: $showUserList,
-                           users: viewModel.users,
-                           onSelect: { viewModel.createNewItem(userId: $0.id) })
+        .confirmUserDialog(isPresented: $showUserList, viewModel: viewModel)
     }
 }
 
@@ -104,7 +102,7 @@ private extension CredentialsView {
                 SearchBar(query: $viewModel.query,
                           isFocused: $isFocusedOnSearchBar,
                           placeholder: placeholder,
-                          onCancel: { viewModel.cancel() })
+                          onCancel: { viewModel.handleCancel() })
             }
             switch viewModel.state {
             case .idle:
