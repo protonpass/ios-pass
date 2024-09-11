@@ -33,6 +33,9 @@ struct ItemsTabView: View {
     @Namespace private var animationNamespace
     @State private var searchMode: SearchMode?
 
+    @State private var showingTrashAliasAlert = false
+    @State private var aliasToTrash: (any ItemTypeIdentifiable)?
+
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
         ZStack {
@@ -148,6 +151,24 @@ struct ItemsTabView: View {
                 safeAreaInsets = proxy.safeAreaInsets
                 viewModel.continueFullSyncIfNeeded()
             }
+            .alert("Move to Trash", isPresented: $showingTrashAliasAlert) {
+                if let aliasToTrash, aliasToTrash.aliasEnabled {
+                    Button("Disable instead") {
+                        viewModel.itemContextMenuHandler.disableAlias(aliasToTrash)
+                    }
+                }
+                Button("Move to Trash") {
+                    if let aliasToTrash {
+                        viewModel.itemContextMenuHandler.trash(aliasToTrash)
+                    }
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                if let aliasToTrash, aliasToTrash.aliasEnabled {
+                    // swiftlint:disable:next line_length
+                    Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
+                }
+            }
         }
         .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)
     }
@@ -261,6 +282,10 @@ struct ItemsTabView: View {
                                          isTrashed: isTrashed,
                                          isEditable: isEditable,
                                          onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
+                                         onAliasTrash: {
+                                             aliasToTrash = item
+                                             showingTrashAliasAlert.toggle()
+                                         },
                                          handler: viewModel.itemContextMenuHandler)
                 }
                 .padding(.horizontal)
