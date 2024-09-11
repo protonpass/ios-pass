@@ -87,7 +87,7 @@ struct ItemSwipeModifier: ViewModifier {
             .alert("Move to Trash", isPresented: $showingTrashAliasAlert) {
                 if item.aliasEnabled {
                     Button("Disable instead") {
-                        itemContextMenuHandler.disableAlias(item) /* viewModel.disableAlias()*/
+                        itemContextMenuHandler.disableAlias(item)
                     }
                 }
                 Button("Move to Trash") { itemContextMenuHandler.trash(item) }
