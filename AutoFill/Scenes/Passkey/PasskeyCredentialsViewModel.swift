@@ -45,7 +45,6 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
         }
     }
 
-    @LazyInjected(\SharedServiceContainer.eventSynchronizer) private(set) var eventSynchronizer
     @LazyInjected(\AutoFillUseCaseContainer.getItemsForPasskeyCreation) private var getItemsForPasskeyCreation
     @LazyInjected(\AutoFillUseCaseContainer.createAndAssociatePasskey) private var createAndAssociatePasskey
 
@@ -132,24 +131,6 @@ extension PasskeyCredentialsViewModel {
                                                 context: context)
         } catch {
             handle(error)
-        }
-    }
-}
-
-private extension PasskeyCredentialsViewModel {
-    func getAllObjects<T: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<CredentialsForPasskeyCreation, [T]>)
-        -> [T] {
-        do {
-            return try results
-                .flatMap { $0[keyPath: keyPath] }
-                .deduplicate { [getVaultId] item in
-                    let vaultId = try getVaultId(item)
-                    return vaultId + item.itemId
-                }
-                .compactMap { $0 }
-        } catch {
-            handle(error)
-            return []
         }
     }
 }

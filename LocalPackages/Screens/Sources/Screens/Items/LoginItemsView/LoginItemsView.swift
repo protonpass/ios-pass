@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 import DesignSystem
 import Entities
 import Macro
@@ -38,6 +39,9 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     private let onRefresh: () async -> Void
     private let onCreate: () -> Void
     private let onCancel: () -> Void
+
+    @AppStorage(Constants.QA.displayAccountsMenu, store: kSharedUserDefaults)
+    private var displayAccountsMenu = false
 
     public init(searchableItems: [SearchableItem],
                 uiModels: [ItemUiModel],
@@ -97,7 +101,7 @@ private extension LoginItemsView {
             VStack {
                 title
                 description
-                if users.count > 1 {
+                if users.count > 1, displayAccountsMenu {
                     AccountsMenu(selectedUser: $selectedUser, users: users)
                 }
                 allItems

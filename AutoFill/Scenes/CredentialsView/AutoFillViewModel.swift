@@ -116,7 +116,7 @@ extension AutoFillViewModel {
             var results = [T]()
             for user in users {
                 let result = try await fetchAutoFillCredentials(userId: user.id)
-                multiAccountsMappingManager.add(result.vaults, userId: user.id)
+                multiAccountsMappingManager.add(result.vaults, userId: result.userId)
                 results.append(result)
             }
 
@@ -154,6 +154,22 @@ extension AutoFillViewModel {
         } catch {
             handle(error)
             return nil
+        }
+    }
+
+    func getAllObjects<Object: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<T, [Object]>)
+        -> [Object] {
+        do {
+            return try results
+                .flatMap { $0[keyPath: keyPath] }
+                .deduplicate { [getVaultId] item in
+                    let vaultId = try getVaultId(item)
+                    return vaultId + item.itemId
+                }
+                .compactMap { $0 }
+        } catch {
+            handle(error)
+            return []
         }
     }
 }
