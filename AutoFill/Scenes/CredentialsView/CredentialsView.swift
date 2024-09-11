@@ -85,22 +85,9 @@ struct CredentialsView: View {
                     .environment(\.colorScheme, colorScheme)
             }
         }
-        .confirmationDialog("Create",
-                            isPresented: $showUserList,
-                            actions: {
-                                ForEach(viewModel.users) { user in
-                                    Button(action: {
-                                        viewModel.createNewItem(userId: user.id)
-                                    }, label: {
-                                        Text(verbatim: user.email ?? user.displayName ?? "?")
-                                    })
-                                }
-
-                                Button("Cancel", role: .cancel, action: {})
-                            },
-                            message: {
-                                Text("Select account")
-                            })
+        .confirmUserDialog(isPresented: $showUserList,
+                           users: viewModel.users,
+                           onSelect: { viewModel.createNewItem(userId: $0.id) })
     }
 }
 

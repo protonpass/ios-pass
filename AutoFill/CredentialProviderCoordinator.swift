@@ -240,30 +240,34 @@ private extension CredentialProviderCoordinator {
     func handlePasskeyRegistration(users: [PassUser],
                                    request: PasskeyCredentialRequest) {
         guard let context else { return }
-        let view = PasskeyCredentialsView(users: users,
-                                          request: request,
-                                          context: context,
-                                          onCreate: { [weak self] vaults in
-                                              guard let self else { return }
-                                              createNewLoginWithPasskey(vaults: vaults,
-                                                                        request: request)
-                                          },
-                                          onCancel: { [weak self] in
-                                              guard let self else { return }
-                                              cancelAutoFill(reason: .userCanceled,
-                                                             context: context)
-                                          })
-        showView(view)
-    }
 
-    func createNewLoginWithPasskey(vaults: [Vault], request: PasskeyCredentialRequest) {
-        Task { [weak self] in
+        let onCancel: () -> Void = { [weak self] in
             guard let self else { return }
-            await showCreateNewItem(.init(userId: "",
-                                          vaults: vaults,
-                                          url: nil,
-                                          request: request))
+            cancelAutoFill(reason: .userCanceled, context: context)
         }
+
+        let onLogOut: () -> Void = { [weak self] in
+            guard let self, let userId = userManager.activeUserId else {
+                return
+            }
+            logOut(userId: userId)
+        }
+
+        let onCreate: (LoginCreationInfo) -> Void = { [weak self] info in
+            Task { [weak self] in
+                guard let self else { return }
+                await showCreateNewItem(info)
+            }
+        }
+
+        let viewModel = PasskeyCredentialsViewModel(users: users,
+                                                    request: request,
+                                                    context: context,
+                                                    onCreate: onCreate,
+                                                    onCancel: onCancel,
+                                                    onLogOut: onLogOut)
+        let view = PasskeyCredentialsView(viewModel: viewModel)
+        showView(view)
     }
 }
 

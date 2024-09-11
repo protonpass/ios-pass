@@ -28,19 +28,10 @@ import SwiftUI
 
 struct PasskeyCredentialsView: View {
     @StateObject private var viewModel: PasskeyCredentialsViewModel
-    private let onCreate: ([Vault]) -> Void
-    private let onCancel: () -> Void
+    @State private var showUserList = false
 
-    init(users: [PassUser],
-         request: PasskeyCredentialRequest,
-         context: ASCredentialProviderExtensionContext,
-         onCreate: @escaping ([Vault]) -> Void,
-         onCancel: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(users: users,
-                                               request: request,
-                                               context: context))
-        self.onCreate = onCreate
-        self.onCancel = onCancel
+    init(viewModel: PasskeyCredentialsViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -60,14 +51,22 @@ struct PasskeyCredentialsView: View {
                                itemRow: { itemRow(for: $0) },
                                searchResultRow: { searchResultRow(for: $0) },
                                onRefresh: { await viewModel.sync(ignoreError: false) },
-                               onCreate: onCreate,
-                               onCancel: onCancel)
+                               onCreate: {
+                                   if viewModel.shouldAskForUserWhenCreatingNewItem {
+                                       showUserList.toggle()
+                                   } else {
+                                       viewModel.create(userId: nil)
+                                   }
+                               },
+                               onCancel: { viewModel.cancel() })
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
                                    onRetry: { Task { await viewModel.loadCredentials() } })
             }
         }
         .showSpinner(viewModel.isCreatingPasskey)
+        .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
+                             onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .alert("Create passkey",
                isPresented: $viewModel.isShowingAssociationConfirmation,
                actions: {
@@ -81,6 +80,9 @@ struct PasskeyCredentialsView: View {
                message: {
                    Text("A passkey will be created for the \"\(viewModel.selectedItem?.itemTitle ?? "")\" login.")
                })
+        .confirmUserDialog(isPresented: $showUserList,
+                           users: viewModel.users,
+                           onSelect: { viewModel.create(userId: $0.id) })
         .task {
             await viewModel.loadCredentials()
             // Ignore errors here otherwise users will always end up with errors when being offline
