@@ -86,18 +86,10 @@ struct AliasDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .onFirstAppear(perform: viewModel.getAlias)
-        .alert("Move to Trash", isPresented: $viewModel.showingTrashAliasAlert) {
-            if viewModel.isSimpleLoginAliasSyncActive {
-                Button("Disable instead") { viewModel.disableAlias() }
-            }
-            Button("Move to Trash") { viewModel.moveToTrash() }
-            Button("Cancel", role: .cancel) {}
-        } message: {
-            if viewModel.isSimpleLoginAliasSyncActive {
-                // swiftlint:disable:next line_length
-                Text("Aliases in Trash will continue forwarding emails. If you want to stop receiving emails on this address, disable it instead.")
-            }
-        }
+        .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $viewModel.showingTrashAliasAlert,
+                                          enabled: viewModel.aliasEnabled,
+                                          disableAction: { viewModel.disableAlias() },
+                                          trashAction: { viewModel.moveToTrash() }))
         .onFirstAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 animate = true
