@@ -397,7 +397,7 @@ private extension EventSynchronizer {
 
             let itemsContent = Dictionary(uniqueKeysWithValues: paginatedAlias.aliases.map { alias in
                 (alias.pendingAliasID, ItemContentProtobuf(name: alias.aliasEmail,
-                                                           note: alias.aliasNote,
+                                                           note: "",
                                                            itemUuid: UUID().uuidString,
                                                            data: .alias,
                                                            customFields: []))
