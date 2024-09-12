@@ -22,9 +22,11 @@
 
 extension SymmetricallyEncryptedShare {
     static func random(shareId: String? = nil,
+                       vaultId: String? = nil,
                        contentKeyRotation: Int64? = nil) -> SymmetricallyEncryptedShare {
         .init(encryptedContent: .random(),
               share: .random(shareId: shareId,
+                             vaultId: vaultId,
                              contentKeyRotation: contentKeyRotation))
     }
 }
