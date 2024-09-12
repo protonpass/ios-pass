@@ -92,9 +92,8 @@ private extension ExtensionSettingsViewModel {
     // TODO: will have to be for all accounts
     func reindexCredentials(_ indexable: Bool) async throws {
         logger.trace("Reindexing credentials")
-        let userId = try await userManager.getActiveUserId()
         if indexable {
-            try await indexAllLoginItems(userId: userId)
+            try await indexAllLoginItems()
         } else {
             try await unindexAllLoginItems()
         }
