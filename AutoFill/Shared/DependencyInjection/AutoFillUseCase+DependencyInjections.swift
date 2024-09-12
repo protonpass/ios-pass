@@ -174,6 +174,10 @@ extension AutoFillUseCaseContainer {
 
     var updateLastUseTimeAndReindex: Factory<any UpdateLastUseTimeAndReindexUseCase> {
         self { UpdateLastUseTimeAndReindex(itemRepository: self.itemRepository,
+                                           localItemDatasource: SharedRepositoryContainer.shared
+                                               .localItemDatasource(),
+                                           localShareDatasource: SharedRepositoryContainer.shared
+                                               .localShareDatasource(),
                                            reindexLoginItem: self.reindexLoginItem()) }
     }
 }

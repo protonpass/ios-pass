@@ -102,7 +102,7 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
             try await copyTotpTokenAndNotify(itemContent: itemContent)
             let completion: (Bool) -> Void = { [weak self] _ in
                 guard let self else { return }
-                update(userId: itemContent.userId, item: itemContent, identifiers: identifiers)
+                update(item: itemContent, identifiers: identifiers)
             }
 
             if let passwordCredential = credential as? ASPasswordCredential {
@@ -127,12 +127,11 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
 }
 
 private extension CompleteAutoFill {
-    func update(userId: String, item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
+    func update(item: ItemContent, identifiers: [ASCredentialServiceIdentifier]) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await updateLastUseTimeAndReindex(userId: userId,
-                                                      item: item,
+                try await updateLastUseTimeAndReindex(item: item,
                                                       date: .now,
                                                       identifiers: identifiers)
                 await logManager.saveAllLogs()
