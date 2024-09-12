@@ -25,36 +25,67 @@ import Entities
 import Foundation
 
 public protocol UpdateLastUseTimeAndReindexUseCase: Sendable {
-    func execute(userId: String,
-                 item: ItemContent,
+    func execute(item: ItemContent,
                  date: Date,
                  identifiers: [ASCredentialServiceIdentifier]) async throws
 }
 
 public extension UpdateLastUseTimeAndReindexUseCase {
-    func callAsFunction(userId: String,
-                        item: ItemContent,
+    func callAsFunction(item: ItemContent,
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
-        try await execute(userId: userId, item: item, date: date, identifiers: identifiers)
+        try await execute(item: item, date: date, identifiers: identifiers)
     }
 }
 
 public final class UpdateLastUseTimeAndReindex: UpdateLastUseTimeAndReindexUseCase {
     private let itemRepository: any ItemRepositoryProtocol
+    private let localItemDatasource: any LocalItemDatasourceProtocol
+    private let localShareDatasource: any LocalShareDatasourceProtocol
     private let reindexLoginItem: any ReindexLoginItemUseCase
 
     public init(itemRepository: any ItemRepositoryProtocol,
+                localItemDatasource: any LocalItemDatasourceProtocol,
+                localShareDatasource: any LocalShareDatasourceProtocol,
                 reindexLoginItem: any ReindexLoginItemUseCase) {
         self.itemRepository = itemRepository
+        self.localItemDatasource = localItemDatasource
+        self.localShareDatasource = localShareDatasource
         self.reindexLoginItem = reindexLoginItem
     }
 
-    public func execute(userId: String,
-                        item: ItemContent,
+    /// Last use time is bound to users so even if ones don't have write access,
+    /// they can still update the last use of an item
+    ///
+    /// So we check for all the related items of a given item
+    /// (same item living in different vaults of different users because of sharing)
+    ///
+    /// Those items share the same `ItemID` but different `ShareID`
+    /// however those `ShareID` share the same `VaultID`
+    public func execute(item: ItemContent,
                         date: Date,
                         identifiers: [ASCredentialServiceIdentifier]) async throws {
-        try await itemRepository.updateLastUseTime(userId: userId, item: item, date: date)
-        try await reindexLoginItem(item: item, identifiers: identifiers, lastUseTime: date)
+        /// We get the `Share` of the item in order to know its `VaultID`
+        guard let share = try await localShareDatasource.getShare(userId: item.userId,
+                                                                  shareId: item.shareId) else {
+            throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
+        }
+
+        /// From the `VaultID`, we get all the related `ShareID`
+        let shares = try await localShareDatasource.getAllShares(vaultId: share.share.vaultID)
+        let shareIds = shares.map(\.share.shareID)
+
+        for shareId in shareIds {
+            /// We loop through all these related `ShareID` and update the last use time of the corresponding items
+            if let itemContent = try await itemRepository.getItemContent(shareId: shareId,
+                                                                         itemId: item.itemId) {
+                try await itemRepository.updateLastUseTime(userId: itemContent.userId,
+                                                           item: itemContent,
+                                                           date: date)
+            }
+        }
+        try await reindexLoginItem(item: item,
+                                   identifiers: identifiers,
+                                   lastUseTime: date)
     }
 }
