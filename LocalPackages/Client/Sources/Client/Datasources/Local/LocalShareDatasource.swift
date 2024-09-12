@@ -23,6 +23,7 @@ import CoreData
 public protocol LocalShareDatasourceProtocol: Sendable {
     func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare?
     func getAllShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
+    func getAllShares(vaultId: String) async throws -> [SymmetricallyEncryptedShare]
     func upsertShares(_ shares: [SymmetricallyEncryptedShare], userId: String) async throws
     func removeShare(shareId: String, userId: String) async throws
     func removeAllShares(userId: String) async throws
@@ -50,6 +51,15 @@ public extension LocalShareDatasource {
         let fetchRequest = ShareEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "userID = %@", userId)
         fetchRequest.sortDescriptors = [.init(key: "createTime", ascending: false)]
+        let shareEntities = try await execute(fetchRequest: fetchRequest,
+                                              context: taskContext)
+        return shareEntities.map { $0.toSymmetricallyEncryptedShare() }
+    }
+
+    func getAllShares(vaultId: String) async throws -> [SymmetricallyEncryptedShare] {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ShareEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "vaultID = %@", vaultId)
         let shareEntities = try await execute(fetchRequest: fetchRequest,
                                               context: taskContext)
         return shareEntities.map { $0.toSymmetricallyEncryptedShare() }
