@@ -70,7 +70,7 @@ extension PPKeychain: SettingsProvider {
 
     public var lockTime: AutolockTimeout {
         get {
-            guard let string = string(forKey: Self.LockTimeKey), let intValue = Int(string) else {
+            guard let string = try? stringOrError(forKey: Self.LockTimeKey), let intValue = Int(string) else {
                 return .never
             }
             return AutolockTimeout(rawValue: intValue)
