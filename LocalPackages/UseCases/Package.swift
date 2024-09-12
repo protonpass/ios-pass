@@ -47,7 +47,7 @@ let package = Package(name: "UseCases",
                           .package(name: "Core", path: "../Core"),
                           .package(name: "Client", path: "../Client"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
-                          .package(url: "https://github.com/getsentry/sentry-cocoa.git", exact: "8.29.0"),
+                          .package(url: "https://github.com/getsentry/sentry-cocoa.git", exact: "8.36.0"),
                           .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "26.1.2")
                       ],
                       targets: [
