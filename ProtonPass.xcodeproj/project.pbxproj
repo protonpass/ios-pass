@@ -2583,7 +2583,6 @@
 				3544BCBB28E1E42B00EFE130 /* Embed Frameworks */,
 				3544F5F228E2341900834CA4 /* Embed Foundation Extensions */,
 				35C2162A29EA92A4001720FF /* Copy appropriate Settings.bundle base on configuration */,
-				35610BC22A41C75B0065710D /* Update git commit hash */,
 			);
 			buildRules = (
 			);
@@ -2824,25 +2823,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		35610BC22A41C75B0065710D /* Update git commit hash */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Update git commit hash";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "scripts/public/update_git_commit_hash.sh\n";
-		};
 		35C2162A29EA92A4001720FF /* Copy appropriate Settings.bundle base on configuration */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
