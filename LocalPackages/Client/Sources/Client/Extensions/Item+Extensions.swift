@@ -30,7 +30,6 @@ public extension Item {
                                                          rhsKey: keyRotation))
         }
 
-        #warning("Handle this")
         guard let itemKey else {
             throw PassError.crypto(.failedToDecryptContent)
         }

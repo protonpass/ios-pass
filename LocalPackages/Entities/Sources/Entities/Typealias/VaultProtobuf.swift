@@ -24,7 +24,7 @@ public typealias VaultProtobuf = ProtonPassVaultV1_Vault
 
 public extension VaultProtobuf {
     init(data: Data) throws {
-        self = try VaultProtobuf(serializedData: data)
+        self = try VaultProtobuf(serializedBytes: data)
     }
 
     init(name: String,
