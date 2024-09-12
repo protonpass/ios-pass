@@ -573,10 +573,8 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self, let context else { return }
                 do {
-                    // swiftlint:disable:next todo
-                    // TODO: will have to index for all accounts
                     if getSharedPreferences().quickTypeBar {
-                        try await indexAllLoginItems(userId: item.userId)
+                        try await indexAllLoginItems()
                     }
                     if let response {
                         completePasskeyRegistration(response, context: context)

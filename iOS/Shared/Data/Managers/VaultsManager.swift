@@ -163,9 +163,7 @@ private extension VaultsManager {
             // "Do catch" separately because we don't want an operation to fail the others
             do {
                 if getSharedPreferences().quickTypeBar {
-                    // swiftlint:disable:next todo
-                    // TODO: will have to index for all account
-                    try await indexAllLoginItems(userId: userId)
+                    try await indexAllLoginItems()
                 }
             } catch {
                 logger.error(error)
