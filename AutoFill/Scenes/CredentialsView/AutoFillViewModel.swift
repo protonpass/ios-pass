@@ -49,12 +49,7 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
 
     /// Vautls of all users keeping only the first one of the ones sharing the same `VaultID`
     private var uniqueVaults: [Vault] {
-        results
-            .flatMap(\.vaults)
-            // Make sure most permissive vaults are on top
-            // so we only keep the most permissive one after deduplicating
-            .sorted(by: { $0.shareRole > $1.shareRole })
-            .deduplicate(by: \.id)
+        results.flatMap(\.vaults).deduplicated
     }
 
     init(onCreate: @escaping (LoginCreationInfo) -> Void,
