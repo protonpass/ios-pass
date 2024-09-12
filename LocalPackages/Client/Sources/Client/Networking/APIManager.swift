@@ -25,17 +25,17 @@ import Factory
 import Foundation
 import ProtonCoreAuthentication
 import ProtonCoreChallenge
-import ProtonCoreCryptoGoInterface
+@preconcurrency import ProtonCoreCryptoGoInterface
 @preconcurrency import ProtonCoreDoh
 @preconcurrency import ProtonCoreEnvironment
 @preconcurrency import ProtonCoreForceUpgrade
-import ProtonCoreFoundations
+@preconcurrency import ProtonCoreFoundations
 import ProtonCoreHumanVerification
 @preconcurrency import ProtonCoreNetworking
-import ProtonCoreObservability
-import ProtonCoreServices
+@preconcurrency import ProtonCoreObservability
+@preconcurrency import ProtonCoreServices
 
-private struct APIManagerElements {
+private struct APIManagerElements: Sendable {
     let apiService: any APIService
     let humanVerification: any HumanVerifyDelegate
     let isAuthenticated: Bool
