@@ -35,7 +35,7 @@ public struct AccountsMenu: View {
     }
 
     public var body: some View {
-        let allAccountsMessage = #localized("All %lld accounts", users.count)
+        let allAccountsMessage = #localized("All accounts (%lld)", users.count)
         Menu(content: {
             Button(action: {
                 selectedUser = nil
@@ -62,19 +62,19 @@ public struct AccountsMenu: View {
             }
         }, label: {
             HStack {
-                if let selectedUser {
-                    Text(verbatim: selectedUser.displayNameAndEmail)
-                        .font(.callout)
-                        .foregroundStyle(PassColor.textInvert.toColor)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(PassColor.interactionNormMajor2.toColor)
-                        .clipShape(Capsule())
+                let text = if let selectedUser {
+                    selectedUser.displayNameAndEmail
                 } else {
-                    Text(verbatim: allAccountsMessage)
-                        .fontWeight(.medium)
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    allAccountsMessage
                 }
+
+                Label(title: { Text(text) },
+                      icon: { Image(systemName: "chevron.up.chevron.down") })
+                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                    .labelStyle(.rightIcon)
+                    .padding(10)
+                    .background(PassColor.interactionNormMinor1.toColor)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
 
                 Spacer()
             }

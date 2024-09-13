@@ -111,11 +111,12 @@ private extension CredentialsView {
                 if viewModel.users.count > 1, displayAccountsMenu {
                     AccountsMenu(selectedUser: $viewModel.selectedUser,
                                  users: viewModel.users)
-                        .padding([.horizontal, .bottom])
+                        .padding(.horizontal)
                 }
 
                 if let planType = viewModel.planType, case .free = planType {
                     mainVaultsOnlyMessage
+                        .padding([.horizontal, .top])
                 }
 
                 if !viewModel.results.isEmpty {
