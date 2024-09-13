@@ -65,7 +65,6 @@ final class AppCoordinator {
     private var cancellables = Set<AnyCancellable>()
 
     private var preferences = resolve(\SharedToolingContainer.preferences)
-    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let appData = resolve(\SharedDataContainer.appData)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -73,18 +72,21 @@ final class AppCoordinator {
 
     @LazyInjected(\SharedToolingContainer.keychain) private var keychain
     @LazyInjected(\SharedToolingContainer.apiManager) private var apiManager
+    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
+
+    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    @LazyInjected(\SharedRepositoryContainer.localUserDataDatasource) var localUserDataDatasource
+
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) private var refreshFeatureFlags
     @LazyInjected(\SharedUseCasesContainer.setUpCoreTelemetry) private var setUpCoreTelemetry
-    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
-//    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
-    @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
-    @LazyInjected(\SharedRepositoryContainer.localUserDataDatasource) var localUserDataDatasource
+    @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) var sendErrorToSentry
+    @LazyInjected(\SharedUseCasesContainer.sendMessageToSentry) var sendMessageToSentry
 
-    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
-    private let sendMessageToSentry = resolve(\SharedUseCasesContainer.sendMessageToSentry)
+    //    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
 
     private var task: Task<Void, Never>?
 
