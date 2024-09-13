@@ -115,6 +115,8 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
     private let reachability: any ReachabilityServicing
     private let userManager: any UserManagerProtocol
     private var timerTask: Task<Void, Never>?
+    private var fetchEventsTask: Task<Void, Never>?
+
     private var secondCount = 0
     private var threshold = kThresholdRange.randomElement() ?? 5
     private var additionalTasks: [AdditionalTask] = []
@@ -168,9 +170,7 @@ public extension SyncEventLoop {
 
     /// Force a sync loop e.g when the app goes foreground, pull to refresh is triggered
     func forceSync() {
-        Task {
-            await fetchEventsTask()
-        }
+        fetchEvents()
     }
 
     /// Stop looping
@@ -213,37 +213,51 @@ private extension SyncEventLoop {
             if secondCount >= threshold {
                 secondCount = 0
                 threshold = kThresholdRange.randomElement() ?? 5
-                await fetchEventsTask()
+                fetchEvents()
             }
         }
     }
 
     /// The repeated task of the timer
-    func fetchEventsTask() async {
-        guard reachability.isNetworkAvailable.value else {
-            pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
-            delegate?.syncEventLoopDidSkipLoop(reason: .noInternetConnection)
+    func fetchEvents() {
+        guard fetchEventsTask == nil else {
             return
         }
+        fetchEventsTask = Task { [weak self] in
+            defer {
+                fetchEventsTask?.cancel()
+                fetchEventsTask = nil
+            }
 
-        for userData in userManager.allUserAccounts.value {
-            if activeTasks[userData.user.ID] != nil {
-                delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished(userId: userData.user.ID))
-            } else {
-                activeTasks[userData.user.ID] = Task { @MainActor [weak self] in
-                    guard let self else { return }
+            guard let self else {
+                return
+            }
 
-                    defer {
-                        self.activeTasks[userData.user.ID] = nil
-                        self.pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+            guard reachability.isNetworkAvailable.value else {
+                pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                delegate?.syncEventLoopDidSkipLoop(reason: .noInternetConnection)
+                return
+            }
+
+            for userData in userManager.allUserAccounts.value {
+                if activeTasks[userData.user.ID] != nil {
+                    delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished(userId: userData.user.ID))
+                } else {
+                    activeTasks[userData.user.ID] = Task { @MainActor [weak self] in
+                        guard let self else { return }
+
+                        defer {
+                            self.activeTasks[userData.user.ID] = nil
+                            self.pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                        }
+
+                        guard await backOffManager.canProceed() else {
+                            pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
+                            delegate?.syncEventLoopDidSkipLoop(reason: .backOff)
+                            return
+                        }
+                        await executeEventSync(currentUserId: userData.user.ID)
                     }
-
-                    guard await backOffManager.canProceed() else {
-                        pullToRefreshDelegate?.pullToRefreshShouldStopRefreshing()
-                        delegate?.syncEventLoopDidSkipLoop(reason: .backOff)
-                        return
-                    }
-                    await executeEventSync(currentUserId: userData.user.ID)
                 }
             }
         }

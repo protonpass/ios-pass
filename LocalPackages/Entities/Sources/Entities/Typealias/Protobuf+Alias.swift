@@ -70,7 +70,7 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
     }
 
     public init(data: Data) throws {
-        self = try ItemContentProtobuf(serializedData: data)
+        self = try ItemContentProtobuf(serializedBytes: data)
     }
 
     public init(name: String,
