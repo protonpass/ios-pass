@@ -991,7 +991,8 @@
         }
       }
     },
-    "All %lld accounts" : {
+    "All accounts (%lld)" : {
+      "comment" : "Placeholder is a number of total logged in accounts",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -999,13 +1000,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "All %lld account"
+                  "value" : "All accounts (%lld)"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "All %lld accounts"
+                  "value" : "All accounts (%lld)"
                 }
               }
             }
