@@ -298,7 +298,7 @@ private extension DarkWebMonitorHomeView {
         VStack(spacing: DesignConstant.sectionPadding) {
             ForEach(infos.topBreaches) { item in
                 let unresolvedBreaches = item.breachCounter > 0
-                darkWebMonitorHomeRow(title: item.alias.item.aliasEmail ?? "",
+                darkWebMonitorHomeRow(title: item.email,
                                       subTitle: unresolvedBreaches ? item
                                           .latestBreach : "No breaches detected",
                                       count: unresolvedBreaches ? item.breachCounter : nil,
@@ -593,7 +593,10 @@ private extension [AliasMonitorInfo] {
 
     var topBreaches: [AliasMonitorInfo] {
         Array(filter { !$0.alias.item.monitoringDisabled }
-            .sorted { ($0.breaches?.count ?? Int.min) > ($1.breaches?.count ?? Int.min) }
+            .sorted {
+                (($0.breaches?.count ?? Int.min), $0.alias.item.revisionTime, $1.email) >
+                    (($1.breaches?.count ?? Int.min), $0.alias.item.revisionTime, $0.email)
+            }
             .prefix(DesignConstant.previewBreachItemCount))
     }
 }
