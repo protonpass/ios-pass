@@ -595,10 +595,7 @@ private extension [AliasMonitorInfo] {
         Array(filter { !$0.alias.item.monitoringDisabled }
             .sorted {
                 (($0.breaches?.count ?? Int.min), $0.alias.item.revisionTime, $1.email) >
-                    (($1.breaches?.count ?? Int.min),
-                     $0.alias.item
-                         .revisionTime,
-                     $0.email)
+                    (($1.breaches?.count ?? Int.min), $0.alias.item.revisionTime, $0.email)
             }
             .prefix(DesignConstant.previewBreachItemCount))
     }
