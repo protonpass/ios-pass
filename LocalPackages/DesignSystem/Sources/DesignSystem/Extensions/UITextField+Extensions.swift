@@ -27,4 +27,12 @@ public extension UITextField {
         }
         return offset(from: beginningOfDocument, to: selectedRange.start)
     }
+
+    func setOnTextChangeListener(onTextChanged: @escaping () -> Void) {
+        addAction(UIAction { _ in
+            DispatchQueue.main.async {
+                onTextChanged()
+            }
+        }, for: .editingChanged)
+    }
 }
