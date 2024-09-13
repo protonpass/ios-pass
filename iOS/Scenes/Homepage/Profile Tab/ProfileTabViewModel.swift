@@ -164,9 +164,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     func reload() async {
         await refreshPlan()
-        async let _ = updateSupportedLocalAuthenticationMethods()
-        async let _ = checkForMultiAccountsSupport()
-        async let _ = fetchSecureLinks()
+        async let authMethod: Void = updateSupportedLocalAuthenticationMethods()
+        async let multiAccount: Void = checkForMultiAccountsSupport()
+        async let secureLink: Void = fetchSecureLinks()
+        _ = await (authMethod, multiAccount, secureLink)
     }
 }
 
