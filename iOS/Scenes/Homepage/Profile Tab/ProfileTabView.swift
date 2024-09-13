@@ -54,13 +54,7 @@ struct ProfileTabView: View {
             }
             .navigationStackEmbeded()
             .task {
-                await viewModel.refreshPlan()
-                await viewModel.updateSupportedLocalAuthenticationMethods()
-                await viewModel.checkPendingAliases()
-                await viewModel.checkForMultiAccountsSupport()
-            }
-            .onAppear {
-                viewModel.fetchSecureLinks()
+                await viewModel.reload()
             }
     }
 
