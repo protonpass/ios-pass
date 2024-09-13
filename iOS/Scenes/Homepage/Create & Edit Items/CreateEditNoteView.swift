@@ -145,6 +145,7 @@ private final class CreateEditNoteContentUIView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+
         setUpUI()
         titleTextField.becomeFirstResponder()
     }
@@ -221,6 +222,13 @@ private extension CreateEditNoteContentUIView {
                                                       constant: -padding),
             contentTextView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
         ])
+
+        titleTextField.setOnTextChangeListener { [weak self] in
+            guard let self else { return }
+            if let text = titleTextField.text {
+                delegate?.titleUpdated(text)
+            }
+        }
     }
 
     func updatePlaceholderVisibility() {
@@ -250,12 +258,6 @@ extension CreateEditNoteContentUIView: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        if let text = textField.text {
-            delegate?.titleUpdated(text)
-        }
     }
 }
 
