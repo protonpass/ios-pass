@@ -125,13 +125,15 @@ struct AliasDetailView: View {
             .layoutPriority(1)
 
             if viewModel.isSimpleLoginAliasSyncActive {
-                if viewModel.togglingAliasStatus {
-                    ProgressView()
-                } else {
-                    StaticToggle(isOn: viewModel.aliasEnabled,
-                                 tintColor: iconTintColor,
-                                 action: { viewModel.toggleAliasState() })
-                }
+                Group {
+                    if viewModel.togglingAliasStatus {
+                        ProgressView()
+                    } else {
+                        StaticToggle(isOn: viewModel.aliasEnabled,
+                                     tintColor: iconTintColor,
+                                     action: { viewModel.toggleAliasState() })
+                    }
+                }.frame(width: 42)
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
