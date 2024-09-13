@@ -120,6 +120,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @AppStorage("isMultiAccountActive") private(set) var isMultiAccountActive = false
 
+    private var currentUserTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
@@ -160,25 +161,19 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         refresh()
         setUp()
     }
+
+    func reload() async {
+        await refreshPlan()
+        async let authMethod: Void = updateSupportedLocalAuthenticationMethods()
+        async let multiAccount: Void = checkForMultiAccountsSupport()
+        async let secureLink: Void = fetchSecureLinks()
+        _ = await (authMethod, multiAccount, secureLink)
+    }
 }
 
 // MARK: - Public APIs
 
 extension ProfileTabViewModel {
-    func checkPendingAliases() async {
-        do {
-            let userId = try await userManager.getActiveUserId()
-            if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
-                pendingSyncDisabledAliases = nil
-            } else {
-                let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
-                pendingSyncDisabledAliases = number > 0 ? number : nil
-            }
-        } catch {
-            handle(error: error)
-        }
-    }
-
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
@@ -368,14 +363,11 @@ extension ProfileTabViewModel {
 // MARK: - Secure link
 
 extension ProfileTabViewModel {
-    func fetchSecureLinks() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                secureLinks = try await secureLinkManager.updateSecureLinks()
-            } catch {
-                logger.error(error)
-            }
+    func fetchSecureLinks() async {
+        do {
+            secureLinks = try await secureLinkManager.updateSecureLinks()
+        } catch {
+            logger.error(error)
         }
     }
 
@@ -391,6 +383,7 @@ extension ProfileTabViewModel {
 // MARK: - Private APIs
 
 private extension ProfileTabViewModel {
+    // swiftlint:disable cyclomatic_complexity
     func setUp() {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
@@ -445,12 +438,14 @@ private extension ProfileTabViewModel {
             .sink { [weak self] user in
                 guard let self else { return }
                 currentActiveUser = user
-                Task { [weak self] in
+                currentUserTask?.cancel()
+                currentUserTask = nil
+                currentUserTask = Task { [weak self] in
                     guard let self else {
                         return
                     }
                     await refreshPlan()
-                    fetchSecureLinks()
+                    await fetchSecureLinks()
                 }
             }
             .store(in: &cancellables)
@@ -481,6 +476,18 @@ private extension ProfileTabViewModel {
                 userAliasSyncData = userAccess.access.userData
             }
             .store(in: &cancellables)
+
+        $userAliasSyncData
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await checkPendingAliases()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func refresh() {
@@ -508,6 +515,20 @@ private extension ProfileTabViewModel {
             }
         case .pin:
             localAuthenticationMethod = .pin
+        }
+    }
+
+    func checkPendingAliases() async {
+        do {
+            let userId = try await userManager.getActiveUserId()
+            if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
+                pendingSyncDisabledAliases = nil
+            } else {
+                let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
+                pendingSyncDisabledAliases = number > 0 ? number : nil
+            }
+        } catch {
+            handle(error: error)
         }
     }
 
@@ -547,3 +568,5 @@ private extension UserData {
     var email: String { user.email ?? "?" }
     var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
 }
+
+// swiftlint:enable cyclomatic_complexity
