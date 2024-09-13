@@ -36,7 +36,6 @@ final class ExtensionSettingsViewModel: ObservableObject {
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     init() {
         let preferences = getSharedPreferences()
