@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import Entities
 import Factory
@@ -27,11 +28,14 @@ import Foundation
 class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     @Published private(set) var results: [T] = []
     @Published var selectedUser: PassUser?
+    var cancellables = Set<AnyCancellable>()
 
     private let onCreate: (LoginCreationInfo) -> Void
+    private let onSelectUser: ([PassUser]) -> Void
     private let onCancel: () -> Void
     private let onLogOut: () -> Void
     private let shareIdToUserManager: ShareIdToUserManager
+    private let userForNewItemSubject: UserForNewItemSubject
 
     let users: [PassUser]
 
@@ -53,17 +57,28 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     }
 
     init(onCreate: @escaping (LoginCreationInfo) -> Void,
+         onSelectUser: @escaping ([PassUser]) -> Void,
          onCancel: @escaping () -> Void,
          onLogOut: @escaping () -> Void,
-         users: [PassUser]) {
+         users: [PassUser],
+         userForNewItemSubject: UserForNewItemSubject) {
         self.onCreate = onCreate
+        self.onSelectUser = onSelectUser
         self.onCancel = onCancel
         self.onLogOut = onLogOut
         self.users = users
+        self.userForNewItemSubject = userForNewItemSubject
         shareIdToUserManager = .init(users: users)
         if users.count == 1 {
             selectedUser = users.first
         }
+
+        userForNewItemSubject
+            .sink { [weak self] user in
+                guard let self else { return }
+                createNewItem(userId: user.id)
+            }
+            .store(in: &cancellables)
     }
 
     // swiftlint:disable unavailable_function
@@ -147,6 +162,13 @@ extension AutoFillViewModel {
         } catch {
             handle(error)
         }
+    }
+
+    // Show the sheet at the coordinator level instead of a view modifier
+    // because SwiftUI's confirmationDialog (action sheet) as well as alerts
+    // don't inherit colorScheme from its parent view
+    func presentSelectUserActionSheet() {
+        onSelectUser(users)
     }
 
     func getUser(for item: any ItemIdentifiable) -> PassUser? {

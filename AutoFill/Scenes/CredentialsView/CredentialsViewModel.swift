@@ -20,7 +20,6 @@
 
 @preconcurrency import AuthenticationServices
 import Client
-import Combine
 import Core
 import CryptoKit
 import Entities
@@ -84,7 +83,6 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     var selectedSortType = SortType.mostRecent
 
     private var lastTask: Task<Void, Never>?
-    private var cancellables = Set<AnyCancellable>()
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
@@ -139,16 +137,20 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
          context: ASCredentialProviderExtensionContext,
          onCancel: @escaping () -> Void,
+         onSelectUser: @escaping ([PassUser]) -> Void,
          onLogOut: @escaping () -> Void,
-         onCreate: @escaping (LoginCreationInfo) -> Void) {
+         onCreate: @escaping (LoginCreationInfo) -> Void,
+         userForNewItemSubject: UserForNewItemSubject) {
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
         self.context = context
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         super.init(onCreate: onCreate,
+                   onSelectUser: onSelectUser,
                    onCancel: onCancel,
                    onLogOut: onLogOut,
-                   users: users)
+                   users: users,
+                   userForNewItemSubject: userForNewItemSubject)
         setup()
     }
 

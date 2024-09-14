@@ -40,9 +40,6 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
-    @AppStorage(Constants.QA.displayAccountsMenu, store: kSharedUserDefaults)
-    private var displayAccountsMenu = false
-
     public init(searchableItems: [SearchableItem],
                 uiModels: [ItemUiModel],
                 mode: Mode,
@@ -101,7 +98,7 @@ private extension LoginItemsView {
             VStack {
                 title
                 description
-                if users.count > 1, displayAccountsMenu {
+                if users.count > 1 {
                     AccountsMenu(selectedUser: $selectedUser, users: users)
                 }
                 allItems
