@@ -31,10 +31,6 @@ struct CredentialsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
-    @State private var showUserList = false
-
-    @AppStorage(Constants.QA.displayAccountsMenu, store: kSharedUserDefaults)
-    private var displayAccountsMenu = false
 
     init(viewModel: CredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -87,7 +83,6 @@ struct CredentialsView: View {
                     .environment(\.colorScheme, colorScheme)
             }
         }
-        .confirmUserDialog(isPresented: $showUserList, viewModel: viewModel)
     }
 }
 
@@ -108,7 +103,7 @@ private extension CredentialsView {
             }
             switch viewModel.state {
             case .idle:
-                if viewModel.users.count > 1, displayAccountsMenu {
+                if viewModel.users.count > 1 {
                     AccountsMenu(selectedUser: $viewModel.selectedUser,
                                  users: viewModel.users)
                         .padding(.horizontal)
@@ -162,7 +157,7 @@ private extension CredentialsView {
                               height: 52,
                               action: {
                                   if viewModel.shouldAskForUserWhenCreatingNewItem {
-                                      showUserList.toggle()
+                                      viewModel.presentSelectUserActionSheet()
                                   } else {
                                       viewModel.createNewItem(userId: nil)
                                   }

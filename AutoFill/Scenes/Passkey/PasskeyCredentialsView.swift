@@ -28,7 +28,6 @@ import SwiftUI
 
 struct PasskeyCredentialsView: View {
     @StateObject private var viewModel: PasskeyCredentialsViewModel
-    @State private var showUserList = false
 
     init(viewModel: PasskeyCredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -53,7 +52,7 @@ struct PasskeyCredentialsView: View {
                                onRefresh: { await viewModel.sync(ignoreError: false) },
                                onCreate: {
                                    if viewModel.shouldAskForUserWhenCreatingNewItem {
-                                       showUserList.toggle()
+                                       viewModel.presentSelectUserActionSheet()
                                    } else {
                                        viewModel.createNewItem(userId: nil)
                                    }
@@ -80,7 +79,6 @@ struct PasskeyCredentialsView: View {
                message: {
                    Text("A passkey will be created for the \"\(viewModel.selectedItem?.itemTitle ?? "")\" login.")
                })
-        .confirmUserDialog(isPresented: $showUserList, viewModel: viewModel)
         .task {
             await viewModel.fetchItems()
             // Ignore errors here otherwise users will always end up with errors when being offline
