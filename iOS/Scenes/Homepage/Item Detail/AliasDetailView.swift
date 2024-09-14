@@ -86,10 +86,12 @@ struct AliasDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .onFirstAppear(perform: viewModel.getAlias)
-        .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $viewModel.showingTrashAliasAlert,
-                                          enabled: viewModel.aliasEnabled,
-                                          disableAction: { viewModel.disableAlias() },
-                                          trashAction: { viewModel.moveToTrash() }))
+        .if(viewModel.aliasSyncEnabled) {
+            $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $viewModel.showingTrashAliasAlert,
+                                                enabled: viewModel.aliasEnabled,
+                                                disableAction: { viewModel.disableAlias() },
+                                                trashAction: { viewModel.moveToTrash() }))
+        }
         .onFirstAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 animate = true

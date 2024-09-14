@@ -151,18 +151,21 @@ struct ItemsTabView: View {
                 safeAreaInsets = proxy.safeAreaInsets
                 viewModel.continueFullSyncIfNeeded()
             }
-            .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
-                                              enabled: aliasToTrash?.aliasEnabled ?? false,
-                                              disableAction: {
-                                                  if let aliasToTrash {
-                                                      viewModel.itemContextMenuHandler.disableAlias(aliasToTrash)
-                                                  }
-                                              },
-                                              trashAction: {
-                                                  if let aliasToTrash {
-                                                      viewModel.itemContextMenuHandler.trash(aliasToTrash)
-                                                  }
-                                              }))
+            .if(viewModel.aliasSyncEnabled) {
+                $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
+                                                    enabled: aliasToTrash?.aliasEnabled ?? false,
+                                                    disableAction: {
+                                                        if let aliasToTrash {
+                                                            viewModel.itemContextMenuHandler
+                                                                .disableAlias(aliasToTrash)
+                                                        }
+                                                    },
+                                                    trashAction: {
+                                                        if let aliasToTrash {
+                                                            viewModel.itemContextMenuHandler.trash(aliasToTrash)
+                                                        }
+                                                    }))
+            }
         }
         .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)
     }
@@ -294,7 +297,8 @@ struct ItemsTabView: View {
                                     isEditMode: viewModel.isEditMode,
                                     isTrashed: isTrashed,
                                     isEditable: isEditable,
-                                    itemContextMenuHandler: viewModel.itemContextMenuHandler))
+                                    itemContextMenuHandler: viewModel.itemContextMenuHandler,
+                                    aliasSyncEnabled: viewModel.aliasSyncEnabled))
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))
         .disabled(!isEditable && viewModel.isEditMode)
