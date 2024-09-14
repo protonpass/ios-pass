@@ -25,8 +25,11 @@ import Core
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import Screens
 import SwiftUI
+
+typealias UserForNewItemSubject = PassthroughSubject<PassUser, Never>
 
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
@@ -35,6 +38,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let userForNewItemSubject = UserForNewItemSubject()
 
     private weak var rootViewController: UIViewController?
     private weak var context: ASCredentialProviderExtensionContext?
@@ -161,6 +165,11 @@ private extension CredentialProviderCoordinator {
             cancelAutoFill(reason: .userCanceled, context: context)
         }
 
+        let onSelectUser: ([PassUser]) -> Void = { [weak self] users in
+            guard let self else { return }
+            presentSelectUserActionSheet(users)
+        }
+
         let onLogOut: () -> Void = { [weak self] in
             guard let self, let userId = userManager.activeUserId else {
                 return
@@ -180,8 +189,10 @@ private extension CredentialProviderCoordinator {
                                              passkeyRequestParams: passkeyRequestParams,
                                              context: context,
                                              onCancel: onCancel,
+                                             onSelectUser: onSelectUser,
                                              onLogOut: onLogOut,
-                                             onCreate: onCreate)
+                                             onCreate: onCreate,
+                                             userForNewItemSubject: userForNewItemSubject)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel))
@@ -246,6 +257,11 @@ private extension CredentialProviderCoordinator {
             cancelAutoFill(reason: .userCanceled, context: context)
         }
 
+        let onSelectUser: ([PassUser]) -> Void = { [weak self] users in
+            guard let self else { return }
+            presentSelectUserActionSheet(users)
+        }
+
         let onLogOut: () -> Void = { [weak self] in
             guard let self, let userId = userManager.activeUserId else {
                 return
@@ -264,8 +280,10 @@ private extension CredentialProviderCoordinator {
                                                     request: request,
                                                     context: context,
                                                     onCreate: onCreate,
+                                                    onSelectUser: onSelectUser,
                                                     onCancel: onCancel,
-                                                    onLogOut: onLogOut)
+                                                    onLogOut: onLogOut,
+                                                    userForNewItemSubject: userForNewItemSubject)
         let view = PasskeyCredentialsView(viewModel: viewModel)
         showView(view)
     }
@@ -348,6 +366,23 @@ private extension CredentialProviderCoordinator {
                 }
             }
             .store(in: &cancellables)
+    }
+
+    func presentSelectUserActionSheet(_ users: [PassUser]) {
+        let alert = UIAlertController(title: #localized("Select account"),
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        for user in users {
+            alert.addAction(.init(title: user.email ?? user.displayName ?? "?",
+                                  style: .default,
+                                  handler: { [weak self] _ in
+                                      guard let self else { return }
+                                      userForNewItemSubject.send(user)
+                                  }))
+        }
+
+        alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
+        present(alert)
     }
 
     func handle(error: any Error) {

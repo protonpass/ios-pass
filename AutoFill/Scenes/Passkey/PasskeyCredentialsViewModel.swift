@@ -71,14 +71,18 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
          request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext?,
          onCreate: @escaping (LoginCreationInfo) -> Void,
+         onSelectUser: @escaping ([PassUser]) -> Void,
          onCancel: @escaping () -> Void,
-         onLogOut: @escaping () -> Void) {
+         onLogOut: @escaping () -> Void,
+         userForNewItemSubject: UserForNewItemSubject) {
         self.request = request
         self.context = context
         super.init(onCreate: onCreate,
+                   onSelectUser: onSelectUser,
                    onCancel: onCancel,
                    onLogOut: onLogOut,
-                   users: users)
+                   users: users,
+                   userForNewItemSubject: userForNewItemSubject)
     }
 
     override func getVaults(userId: String) -> [Vault]? {

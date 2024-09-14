@@ -178,7 +178,6 @@
 		356A1F072B88C59C00561950 /* Passkey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F062B88C59C00561950 /* Passkey.swift */; };
 		356A34C82978630100969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C72978630100969BA2 /* CodeScanner */; };
 		356A34CA2978642800969BA2 /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 356A34C92978642800969BA2 /* CodeScanner */; };
-		356AC2B02C9188C000F9B1CD /* View+ConfirmUserDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356AC2AF2C9188C000F9B1CD /* View+ConfirmUserDialog.swift */; };
 		356AC2B22C91918F00F9B1CD /* AutoFillViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356AC2B12C91918F00F9B1CD /* AutoFillViewModel.swift */; };
 		356B10F42A5FE9BC0037940C /* SetPINCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */; };
 		356B697B2949E55600868771 /* ItemDetailPlaceholderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */; };
@@ -768,7 +767,6 @@
 		356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyDetailRow.swift; sourceTree = "<group>"; };
 		356A1F042B88C56800561950 /* AutoFillMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillMode.swift; sourceTree = "<group>"; };
 		356A1F062B88C59C00561950 /* Passkey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Passkey.swift; sourceTree = "<group>"; };
-		356AC2AF2C9188C000F9B1CD /* View+ConfirmUserDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ConfirmUserDialog.swift"; sourceTree = "<group>"; };
 		356AC2B12C91918F00F9B1CD /* AutoFillViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillViewModel.swift; sourceTree = "<group>"; };
 		356B10F32A5FE9BC0037940C /* SetPINCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeView.swift; sourceTree = "<group>"; };
 		356B21D52870F844001220CB /* iOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = iOS.entitlements; sourceTree = "<group>"; };
@@ -2381,7 +2379,6 @@
 			isa = PBXGroup;
 			children = (
 				5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */,
-				356AC2AF2C9188C000F9B1CD /* View+ConfirmUserDialog.swift */,
 			);
 			path = SubUIElements;
 			sourceTree = "<group>";
@@ -3005,7 +3002,6 @@
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */,
 				3560844829DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
-				356AC2B02C9188C000F9B1CD /* View+ConfirmUserDialog.swift in Sources */,
 				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
