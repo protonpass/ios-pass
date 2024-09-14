@@ -37,11 +37,16 @@ final class SearchResultsViewModel: ObservableObject {
 
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
     let results: any SearchResults
     let isTrash: Bool
+
+    var aliasSyncEnabled: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
          itemCount: ItemCount,
