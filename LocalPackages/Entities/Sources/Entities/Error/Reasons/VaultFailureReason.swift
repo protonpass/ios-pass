@@ -40,7 +40,7 @@ public extension PassError {
             case .noEditableVault:
                 "No editable vault"
             case let .vaultsNotFound(userId):
-                "Vaults not found userId \(userId)"
+                "Vaults not found for userId \(userId)"
             }
         }
     }

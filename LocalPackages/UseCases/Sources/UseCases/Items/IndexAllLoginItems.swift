@@ -113,12 +113,23 @@ private extension IndexAllLoginItems {
         }
         let items = try await itemRepository.getActiveLogInItems(userId: userId)
         logger.trace("Found \(items.count) active login items")
-        if !access.access.plan.isFreeUser {
-            return items
-        }
+
         var vaults = try await shareRepository.getVaults(userId: userId)
         vaults = vaults.filter { applicableVaults.contains($0) }
-        let oldestVaults = vaults.twoOldestVaults
-        return items.filter { oldestVaults.isOneOf(shareId: $0.shareId) }
+
+        var applicableShareIds = [String]()
+        if access.access.plan.isFreeUser {
+            let oldestVaults = vaults.twoOldestVaults
+            if let owned = oldestVaults.owned {
+                applicableShareIds.append(owned.shareId)
+            }
+            if let other = oldestVaults.other {
+                applicableShareIds.append(other.shareId)
+            }
+        } else {
+            applicableShareIds = vaults.map(\.shareId)
+        }
+
+        return items.filter { applicableShareIds.contains($0.shareId) }
     }
 }
