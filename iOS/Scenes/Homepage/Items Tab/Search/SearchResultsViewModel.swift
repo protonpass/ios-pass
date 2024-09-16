@@ -44,9 +44,7 @@ final class SearchResultsViewModel: ObservableObject {
     let results: any SearchResults
     let isTrash: Bool
 
-    var aliasSyncEnabled: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
-    }
+    lazy var aliasSyncEnabled = getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
          itemCount: ItemCount,
