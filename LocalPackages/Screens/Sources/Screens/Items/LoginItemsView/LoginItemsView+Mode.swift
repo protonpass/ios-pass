@@ -43,10 +43,6 @@ extension LoginItemsView.Mode {
         }
     }
 
-    var searchBarPlaceholder: String {
-        #localized("Search", bundle: .module)
-    }
-
     var allowCreation: Bool {
         switch self {
         case .passkeyCreation:
