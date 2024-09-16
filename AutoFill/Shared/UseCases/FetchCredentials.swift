@@ -159,11 +159,11 @@ private extension FetchCredentials {
         logger.debug("Mapped \(encryptedItems.count) encrypted items for password autofill.")
         logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
         logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
-        return try CredentialsFetchResult(userId: userId,
-                                          vaults: vaults,
-                                          searchableItems: searchableItems,
-                                          matchedItems: matchedItems,
-                                          notMatchedItems: notMatchedItems)
+        return CredentialsFetchResult(userId: userId,
+                                      vaults: vaults,
+                                      searchableItems: searchableItems,
+                                      matchedItems: matchedItems,
+                                      notMatchedItems: notMatchedItems)
     }
 }
 
@@ -205,10 +205,10 @@ private extension FetchCredentials {
         logger.debug("Mapped \(encryptedItems.count) encrypted items for passkey autofill.")
         logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
         logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
-        return try CredentialsFetchResult(userId: userId,
-                                          vaults: vaults,
-                                          searchableItems: searchableItems,
-                                          matchedItems: matchedItems,
-                                          notMatchedItems: notMatchedItems)
+        return CredentialsFetchResult(userId: userId,
+                                      vaults: vaults,
+                                      searchableItems: searchableItems,
+                                      matchedItems: matchedItems,
+                                      notMatchedItems: notMatchedItems)
     }
 }
