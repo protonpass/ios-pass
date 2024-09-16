@@ -49,6 +49,7 @@ struct PasskeyCredentialsView: View {
                                selectedUser: $viewModel.selectedUser,
                                itemRow: { row(for: $0) },
                                searchResultRow: { row(for: $0) },
+                               searchBarPlaceholder: viewModel.searchBarPlaceholder,
                                onRefresh: { await viewModel.sync(ignoreError: false) },
                                onCreate: {
                                    if viewModel.shouldAskForUserWhenCreatingNewItem {

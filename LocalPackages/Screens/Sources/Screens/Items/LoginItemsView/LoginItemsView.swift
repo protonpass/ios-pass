@@ -36,6 +36,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     private let users: [PassUser]
     private let itemRow: (ItemUiModel) -> ItemRow
     private let searchResultRow: (ItemSearchResult) -> SearchResultRow
+    private let searchBarPlaceholder: String
     private let onRefresh: () async -> Void
     private let onCreate: () -> Void
     private let onCancel: () -> Void
@@ -47,6 +48,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
                 selectedUser: Binding<PassUser?>,
                 itemRow: @escaping (ItemUiModel) -> ItemRow,
                 searchResultRow: @escaping (ItemSearchResult) -> SearchResultRow,
+                searchBarPlaceholder: String,
                 onRefresh: @escaping () async -> Void,
                 onCreate: @escaping () -> Void,
                 onCancel: @escaping () -> Void) {
@@ -59,6 +61,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
         _selectedUser = selectedUser
         self.itemRow = itemRow
         self.searchResultRow = searchResultRow
+        self.searchBarPlaceholder = searchBarPlaceholder
         self.onRefresh = onRefresh
         self.onCreate = onCreate
         self.onCancel = onCancel
@@ -87,7 +90,7 @@ private extension LoginItemsView {
     var searchBar: some View {
         SearchBar(query: $viewModel.query,
                   isFocused: $isFocused,
-                  placeholder: mode.searchBarPlaceholder,
+                  placeholder: searchBarPlaceholder,
                   onCancel: onCancel)
     }
 

@@ -91,14 +91,9 @@ private extension CredentialsView {
     var stateViews: some View {
         VStack(spacing: 0) {
             if viewModel.state != .loading {
-                let placeholder = if viewModel.selectedUser == nil {
-                    #localized("Search in %lld accounts", viewModel.users.count)
-                } else {
-                    viewModel.planType.searchBarPlaceholder
-                }
                 SearchBar(query: $viewModel.query,
                           isFocused: $isFocusedOnSearchBar,
-                          placeholder: placeholder,
+                          placeholder: viewModel.searchBarPlaceholder,
                           onCancel: { viewModel.handleCancel() })
             }
             switch viewModel.state {
@@ -109,7 +104,7 @@ private extension CredentialsView {
                         .padding(.horizontal)
                 }
 
-                if let planType = viewModel.planType, case .free = planType {
+                if viewModel.isFreeUser {
                     mainVaultsOnlyMessage
                         .padding([.horizontal, .top])
                 }
@@ -167,7 +162,7 @@ private extension CredentialsView {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: viewModel.state)
-        .animation(.default, value: viewModel.planType)
+        .animation(.default, value: viewModel.selectedUser)
         .animation(.default, value: viewModel.results)
     }
 }
@@ -393,16 +388,5 @@ private struct CredentialsSkeletonView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .shimmering()
-    }
-}
-
-private extension Plan.PlanType? {
-    var searchBarPlaceholder: String {
-        switch self {
-        case .free:
-            #localized("Search in oldest 2 vaults")
-        default:
-            #localized("Search in all vaults")
-        }
     }
 }
