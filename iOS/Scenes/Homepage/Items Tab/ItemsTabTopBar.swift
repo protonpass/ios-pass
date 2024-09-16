@@ -156,23 +156,26 @@ private extension ItemsTabTopBar {
                            color: PassColor.signalDanger)
                 }
 
-                Menu(content: {
-                    ForEach(viewModel.extraOptions, id: \.self) { option in
-                        Section {
-                            Button(action: { handle(extraOption: option) },
-                                   label: {
-                                       Label(option.title, uiImage: option.icon)
-                                   })
+                if !viewModel.extraOptions.isEmpty {
+                    Menu(content: {
+                        ForEach(viewModel.extraOptions, id: \.self) { option in
+                            Section {
+                                Button(action: { handle(extraOption: option) },
+                                       label: {
+                                           Label(option.title, uiImage: option.icon)
+                                       })
+                            }
                         }
-                    }
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: PassColor.textNorm,
-                                 backgroundColor: .clear)
-                })
+                    }, label: {
+                        CircleButton(icon: IconProvider.threeDotsVertical,
+                                     iconColor: PassColor.textNorm,
+                                     backgroundColor: .clear)
+                    })
+                }
             }
             .padding(.horizontal)
             .animation(.default, value: viewModel.selectedItemsCount)
+            .animation(.default, value: viewModel.extraOptions.isEmpty)
 
             Spacer()
 
