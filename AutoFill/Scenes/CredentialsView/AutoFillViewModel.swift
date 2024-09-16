@@ -23,6 +23,7 @@ import Core
 import Entities
 import Factory
 import Foundation
+import Macro
 
 @MainActor
 class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
@@ -43,8 +44,21 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     @LazyInjected(\SharedToolingContainer.logger) var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
 
-    var planType: Plan.PlanType? {
-        selectedUser?.plan.planType
+    var isFreeUser: Bool {
+        selectedUser?.plan.isFreeUser == true
+    }
+
+    var searchBarPlaceholder: String {
+        if let selectedUser {
+            switch selectedUser.plan.planType {
+            case .free:
+                #localized("Search in oldest 2 vaults")
+            default:
+                #localized("Search in all vaults")
+            }
+        } else {
+            #localized("Search in %lld accounts", users.count)
+        }
     }
 
     var shouldAskForUserWhenCreatingNewItem: Bool {
