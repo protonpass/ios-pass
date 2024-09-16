@@ -40,9 +40,12 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     var isSimpleLoginAliasSyncActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
+    var aliasSyncEnabled: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
     }
 
