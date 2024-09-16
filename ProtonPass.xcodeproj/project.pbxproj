@@ -518,7 +518,7 @@
 		5BD4A8FE2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
 		5BD4A8FF2B10C48B00C44C08 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+Extensions.swift */; };
 		5BD4A9002B10C4A000C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
-		5BD4A9082B10E6E300C44C08 /* CredentialsFetchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */; };
+		5BD4A9082B10E6E300C44C08 /* AutoFillCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A9072B10E6E300C44C08 /* AutoFillCredentials.swift */; };
 		5BD4A90C2B15F18100C44C08 /* PasswordStrength+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */; };
 		5BD4A90D2B15F33700C44C08 /* PasswordStrength+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */; };
 		5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
@@ -995,7 +995,7 @@
 		5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelAutoFill.swift; sourceTree = "<group>"; };
 		5BD4A8FB2B10C1B900C44C08 /* ResetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetFactory.swift; sourceTree = "<group>"; };
 		5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemTypeIdentifiable+Extensions.swift"; sourceTree = "<group>"; };
-		5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsFetchResult.swift; sourceTree = "<group>"; };
+		5BD4A9072B10E6E300C44C08 /* AutoFillCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillCredentials.swift; sourceTree = "<group>"; };
 		5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PasswordStrength+Extensions.swift"; sourceTree = "<group>"; };
 		5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordStrengthIcon.swift; sourceTree = "<group>"; };
 		5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkListUIModel.swift; sourceTree = "<group>"; };
@@ -2388,7 +2388,7 @@
 			children = (
 				356A1F042B88C56800561950 /* AutoFillMode.swift */,
 				35951DCF2B8D226A006616BE /* ASCredentialRequest+Extensions.swift */,
-				5BD4A9072B10E6E300C44C08 /* CredentialsFetchResult.swift */,
+				5BD4A9072B10E6E300C44C08 /* AutoFillCredentials.swift */,
 				5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */,
 				356A1F062B88C59C00561950 /* Passkey.swift */,
 				35FD55A12C9072DC00805584 /* LoginCreationInfo.swift */,
@@ -2994,7 +2994,7 @@
 				354B247F2A77F2280060EDF7 /* CompleteAutoFill.swift in Sources */,
 				3559BAA62A5B32600020E172 /* AppLockTime+Extensions.swift in Sources */,
 				354E9AA92A4459C700AD2B9A /* BiometricAuthenticationView.swift in Sources */,
-				5BD4A9082B10E6E300C44C08 /* CredentialsFetchResult.swift in Sources */,
+				5BD4A9082B10E6E300C44C08 /* AutoFillCredentials.swift in Sources */,
 				355BDED7299E6EE4009FDBB1 /* CreateAliasLiteViewModel.swift in Sources */,
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */,

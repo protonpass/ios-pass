@@ -1,5 +1,5 @@
 //
-// CredentialsFetchResult.swift
+// AutoFillCredentials.swift
 // Proton Pass - Created on 07/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
