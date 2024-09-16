@@ -40,7 +40,7 @@ protocol CreateEditItemViewModelDelegate: AnyObject {
 }
 
 enum ItemMode: Equatable, Hashable {
-    case create(shareId: String, type: ItemCreationType)
+    case create(shareId: String?, type: ItemCreationType)
     case clone(ItemContent)
     case edit(ItemContent)
 
@@ -140,7 +140,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     init(mode: ItemMode,
          upgradeChecker: any UpgradeCheckerProtocol,
          vaults: [Vault]) throws {
-        let vaultShareId: String
+        let vaultShareId: String?
         switch mode {
         case let .create(shareId, _):
             vaultShareId = shareId
@@ -158,7 +158,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         let editableVault = vaults.first { $0.shareId == vaultShareId && $0.canEdit }
         let oldestOwnedVault = vaults.twoOldestVaults.owned
 
-        guard let vault = lastCreatedItemVault ?? editableVault ?? oldestOwnedVault else {
+        guard let vault = editableVault ?? lastCreatedItemVault ?? oldestOwnedVault else {
             throw PassError.vault(.noEditableVault)
         }
 
