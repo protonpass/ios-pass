@@ -70,6 +70,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private(set) var itemRepository
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     var isAllowedToEdit: Bool {
         guard let vault else {
