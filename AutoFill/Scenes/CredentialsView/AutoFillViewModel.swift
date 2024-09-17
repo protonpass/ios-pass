@@ -35,7 +35,7 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     private let onSelectUser: ([PassUser]) -> Void
     private let onCancel: () -> Void
     private let onLogOut: () -> Void
-    private let shareIdToUserManager: ShareIdToUserManager
+    private let shareIdToUserManager: any ShareIdToUserManagerProtocol
     private let userForNewItemSubject: UserForNewItemSubject
 
     let users: [PassUser]
@@ -82,7 +82,7 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
         self.onLogOut = onLogOut
         self.users = users
         self.userForNewItemSubject = userForNewItemSubject
-        shareIdToUserManager = .init(users: users)
+        shareIdToUserManager = ShareIdToUserManager(users: users)
         if users.count == 1 {
             selectedUser = users.first
         }
@@ -188,7 +188,7 @@ extension AutoFillViewModel {
     func getUser(for item: any ItemIdentifiable) -> PassUser? {
         guard users.count > 1, selectedUser == nil else { return nil }
         do {
-            return try shareIdToUserManager.getUser(for: item).object
+            return try shareIdToUserManager.getUser(for: item)
         } catch {
             handle(error)
             return nil
