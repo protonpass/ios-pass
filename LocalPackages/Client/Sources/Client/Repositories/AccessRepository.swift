@@ -22,6 +22,8 @@
 import Core
 import Entities
 
+// swiftlint:disable:next todo
+// TODO: Make the repository `UserManagerProtocol` independant
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     /// `Access` of current user
@@ -102,7 +104,9 @@ public extension AccessRepository {
         if let localAccess = try await localDatasource.getAccess(userId: userId),
            localAccess.access.plan != remoteAccess.plan {
             logger.info("New plan found")
-            didUpdateToNewPlan.send()
+            await MainActor.run {
+                didUpdateToNewPlan.send()
+            }
         }
 
         logger.trace("Upserting access for user \(userId)")

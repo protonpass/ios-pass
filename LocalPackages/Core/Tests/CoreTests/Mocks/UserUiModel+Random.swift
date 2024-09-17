@@ -1,6 +1,6 @@
 //
-// LoginItemsView+Mode.swift
-// Proton Pass - Created on 27/02/2024.
+// UserUiModel+Random.swift
+// Proton Pass - Created on 10/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,33 +20,15 @@
 //
 
 import Entities
-import Macro
 
-public extension LoginItemsView {
-    enum Mode {
-        case passkeyCreation
-    }
-}
-
-extension LoginItemsView.Mode {
-    var title: String {
-        switch self {
-        case .passkeyCreation:
-            #localized("Create passkey", bundle: .module)
-        }
-    }
-
-    var description: String {
-        switch self {
-        case .passkeyCreation:
-            #localized("Select an existing login or create a new one.", bundle: .module)
-        }
-    }
-
-    var allowCreation: Bool {
-        switch self {
-        case .passkeyCreation:
-            true
-        }
+extension UserUiModel {
+    static func random() -> UserUiModel {
+        .init(id: .random(),
+              displayName: .random(),
+              email: .random(),
+              plan: .init(type: .random(),
+                          internalName: .random(),
+                          displayName: .random(),
+                          hideUpgrade: .random()))
     }
 }

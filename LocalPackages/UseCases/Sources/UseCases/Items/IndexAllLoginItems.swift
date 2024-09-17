@@ -25,44 +25,44 @@ import Foundation
 
 /// Empty credential database and index all existing login items
 public protocol IndexAllLoginItemsUseCase: Sendable {
-    func execute(userId: String) async throws
+    func execute() async throws
 }
 
 public extension IndexAllLoginItemsUseCase {
-    func callAsFunction(userId: String) async throws {
-        try await execute(userId: userId)
+    func callAsFunction() async throws {
+        try await execute()
     }
 }
 
 public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUseCase {
+    private let userManager: any UserManagerProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
-    private let accessRepository: any AccessRepositoryProtocol
+    private let localAccessDatasource: any LocalAccessDatasourceProtocol
     private let credentialManager: any CredentialManagerProtocol
     private let mapLoginItem: any MapLoginItemUseCase
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let logger: Logger
 
-    public init(itemRepository: any ItemRepositoryProtocol,
+    public init(userManager: any UserManagerProtocol,
+                itemRepository: any ItemRepositoryProtocol,
                 shareRepository: any ShareRepositoryProtocol,
-                accessRepository: any AccessRepositoryProtocol,
+                localAccessDatasource: any LocalAccessDatasourceProtocol,
                 credentialManager: any CredentialManagerProtocol,
                 mapLoginItem: any MapLoginItemUseCase,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol) {
+        self.userManager = userManager
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        self.accessRepository = accessRepository
+        self.localAccessDatasource = localAccessDatasource
         self.credentialManager = credentialManager
         self.mapLoginItem = mapLoginItem
         self.symmetricKeyProvider = symmetricKeyProvider
         logger = .init(manager: logManager)
     }
 
-    // swiftlint:disable:next todo
-    // TODO: Will have to accept the credential of several accounts and not just one
-    // will either have to take list of ids or not remove previous credentials
-    public func execute(userId: String) async throws {
+    public func execute() async throws {
         let start = Date()
         logger.trace("Indexing all login items")
 
@@ -72,28 +72,62 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         }
 
         try await credentialManager.removeAllCredentials()
-        let items = try await filterItems(userId: userId)
+        let userIds = userManager.allUserAccounts.value.map(\.user.ID)
 
+        // Step 1: get all the vaults from all users
+        // Filterting out the duplicated and keep the most permissive ones
+        var allUsersVaults = [Vault]()
+        for userId in userIds {
+            let vaults = try await shareRepository.getVaults(userId: userId)
+            allUsersVaults.append(contentsOf: vaults)
+        }
+        let applicableVaults = allUsersVaults.deduplicated
+
+        // Step 2: fetch all the items related to the applicable vaults
+        var allUserItems = [SymmetricallyEncryptedItem]()
+        for userId in userIds {
+            let items = try await filterItems(userId: userId, applicableVaults: applicableVaults)
+            allUserItems.append(contentsOf: items)
+        }
+
+        // Step 3: index the fetched items
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-        let credentials = try items.flatMap { try mapLoginItem(item: $0, symmetricKey: symmetricKey) }
+        let credentials = try allUserItems.flatMap { try mapLoginItem(item: $0,
+                                                                      symmetricKey: symmetricKey) }
         try await credentialManager.insert(credentials: credentials)
 
         let time = Date().timeIntervalSince1970 - start.timeIntervalSince1970
         let priority = Task.currentPriority.debugDescription
-        logger.info("Indexed \(items.count) login items in \(time) seconds with priority \(priority)")
+        let itemCount = "\(allUserItems.count) login items"
+        let userCount = "\(userIds.count) users"
+        let timeCount = "\(time) seconds with priority \(priority)"
+        logger.info("Indexed \(itemCount) from \(userCount) in \(timeCount)")
     }
 }
 
 private extension IndexAllLoginItems {
-    func filterItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
-        let plan = try await accessRepository.getPlan()
+    func filterItems(userId: String,
+                     applicableVaults: [Vault]) async throws -> [SymmetricallyEncryptedItem] {
+        guard let access = try await localAccessDatasource.getAccess(userId: userId) else {
+            return []
+        }
         let items = try await itemRepository.getActiveLogInItems(userId: userId)
         logger.trace("Found \(items.count) active login items")
-        if !plan.isFreeUser {
-            return items
+
+        var applicableShareIds = [String]()
+        if access.access.plan.isFreeUser {
+            let vaults = try await shareRepository.getVaults(userId: userId)
+            let oldestVaults = vaults.twoOldestVaults
+            if let owned = oldestVaults.owned {
+                applicableShareIds.append(owned.shareId)
+            }
+            if let other = oldestVaults.other {
+                applicableShareIds.append(other.shareId)
+            }
+        } else {
+            applicableShareIds = applicableVaults.map(\.shareId)
         }
-        let vaults = try await shareRepository.getVaults(userId: userId)
-        let oldestVaults = vaults.twoOldestVaults
-        return items.filter { oldestVaults.isOneOf(shareId: $0.shareId) }
+
+        return items.filter { applicableShareIds.contains($0.shareId) }
     }
 }

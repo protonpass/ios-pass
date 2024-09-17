@@ -36,7 +36,7 @@ final class LocalShareDatasourceTests: XCTestCase {
 }
 
 extension LocalShareDatasourceTests {
-    func testGetAllShares() async throws {
+    func testGetAllSharesByUserId() async throws {
         // Given
         let givenShares = [SymmetricallyEncryptedShare].random(randomElement: .random())
         let givenUserId = String.random()
@@ -54,6 +54,44 @@ extension LocalShareDatasourceTests {
         let shareIds = Set(shares.map(\.share.shareID))
         let givenShareIds = Set(givenShares.map(\.share.shareID))
         XCTAssertEqual(shareIds, givenShareIds)
+    }
+
+    func testGetAllSharesByVaultId() async throws {
+        // Given
+        let vaultId1 = String.random()
+        let vaultId2 = String.random()
+
+        let share1 = SymmetricallyEncryptedShare.random(vaultId: vaultId1)
+        try await sut.upsertShares([share1], userId: .random())
+
+        let share2 = SymmetricallyEncryptedShare.random(vaultId: vaultId1)
+        try await sut.upsertShares([share2], userId: .random())
+
+        let share3 = SymmetricallyEncryptedShare.random(vaultId: vaultId2)
+        try await sut.upsertShares([share3], userId: .random())
+
+        let share4 = SymmetricallyEncryptedShare.random(vaultId: vaultId2)
+        try await sut.upsertShares([share4], userId: .random())
+
+        let share5 = SymmetricallyEncryptedShare.random(vaultId: vaultId2)
+        try await sut.upsertShares([share5], userId: .random())
+
+        // When
+        let batch1 = try await sut.getAllShares(vaultId: vaultId1)
+        let batch2 = try await sut.getAllShares(vaultId: vaultId2)
+        let batch3 = try await sut.getAllShares(vaultId: .random())
+
+        // Then
+        XCTAssertEqual(batch1.count, 2)
+        XCTAssertTrue(batch1.contains(share1))
+        XCTAssertTrue(batch1.contains(share2))
+
+        XCTAssertEqual(batch2.count, 3)
+        XCTAssertTrue(batch2.contains(share3))
+        XCTAssertTrue(batch2.contains(share4))
+        XCTAssertTrue(batch2.contains(share5))
+
+        XCTAssertTrue(batch3.isEmpty)
     }
 
     func testGetShare() async throws {

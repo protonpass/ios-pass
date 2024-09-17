@@ -203,8 +203,7 @@ extension UserManagerTests {
                 allUserDatas.removeAll { $0.userdata.user.ID == userId }
             }
         }
-        userDataDatasource.closureUpdateNewActiveUser  = { [weak self] in
-            guard let self else { return }
+        userDataDatasource.closureUpdateNewActiveUser  = {
             allUserDatas[0] = allUserDatas[0].copy(isActive: true)
         }
         
@@ -262,7 +261,7 @@ extension UserManagerTests {
         try await sut.upsertAndMarkAsActive(userData: user3)
         XCTAssertEqual(sut.activeUserId, user3.user.ID)
 
-        try await sut.switchActiveUser(with: user1.user.ID)
+        try await sut.switchActiveUser(with: user1.user.ID, onMemory: false)
         XCTAssertEqual(sut.activeUserId, user1.user.ID)
     }
 }
