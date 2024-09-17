@@ -21,9 +21,12 @@
 
 import Entities
 
+private typealias ShareID = String
+private typealias UserID = String
+
 private struct UserVault: Sendable, Hashable {
-    let userId: String
-    let vault: Vault
+    let userId: UserID
+    let shareId: ShareID
 }
 
 public protocol ShareIdToUserManagerProtocol {
@@ -34,9 +37,6 @@ public protocol ShareIdToUserManagerProtocol {
 /// Cache and keep track of the mapping `ShareID` <-> `User`
 /// Used in multi accounts item display context to get the user that owns an item
 public final class ShareIdToUserManager: ShareIdToUserManagerProtocol {
-    private typealias ShareID = String
-    private typealias UserID = String
-
     private let users: [UserUiModel]
     private var userVaults = Set<UserVault>()
 
@@ -50,7 +50,7 @@ public final class ShareIdToUserManager: ShareIdToUserManagerProtocol {
 public extension ShareIdToUserManager {
     func index(vaults: [Vault], userId: String) {
         for vault in vaults {
-            userVaults.insert(.init(userId: userId, vault: vault))
+            userVaults.insert(.init(userId: userId, shareId: vault.shareId))
         }
     }
 
@@ -68,7 +68,7 @@ extension ShareIdToUserManager {
         }
 
         // Cache missed, do the math and cache the result
-        if let userVault = userVaults.first(where: { $0.vault.shareId == item.shareId }),
+        if let userVault = userVaults.first(where: { $0.shareId == item.shareId }),
            let user = users.first(where: { $0.id == userVault.userId }) {
             dict[item.shareId] = user.id
             return .init(cached: false, object: user)
