@@ -27,7 +27,7 @@ import SwiftUI
 
 struct CredentialSearchResultView: View, Equatable {
     let results: [ItemSearchResult]
-    let getUser: (any ItemIdentifiable) -> PassUser?
+    let getUser: (any ItemIdentifiable) -> UserUiModel?
     @Binding var selectedSortType: SortType
     let sortAction: () -> Void
     let selectItem: (any TitledItemIdentifiable) -> Void

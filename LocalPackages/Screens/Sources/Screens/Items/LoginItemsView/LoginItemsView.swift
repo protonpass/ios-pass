@@ -29,11 +29,11 @@ import SwiftUI
 public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     @ObservedObject private var viewModel: LoginItemsViewModel
     @FocusState private var isFocused
-    @Binding private var selectedUser: PassUser?
+    @Binding private var selectedUser: UserUiModel?
     private let searchableItems: [SearchableItem]
     private let uiModels: [ItemUiModel]
     private let mode: Mode
-    private let users: [PassUser]
+    private let users: [UserUiModel]
     private let itemRow: (ItemUiModel) -> ItemRow
     private let searchResultRow: (ItemSearchResult) -> SearchResultRow
     private let searchBarPlaceholder: String
@@ -44,8 +44,8 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     public init(searchableItems: [SearchableItem],
                 uiModels: [ItemUiModel],
                 mode: Mode,
-                users: [PassUser],
-                selectedUser: Binding<PassUser?>,
+                users: [UserUiModel],
+                selectedUser: Binding<UserUiModel?>,
                 itemRow: @escaping (ItemUiModel) -> ItemRow,
                 searchResultRow: @escaping (ItemSearchResult) -> SearchResultRow,
                 searchBarPlaceholder: String,
@@ -72,6 +72,7 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
             searchBar
             content
             if mode.allowCreation {
+                Spacer()
                 createButton
             }
         }

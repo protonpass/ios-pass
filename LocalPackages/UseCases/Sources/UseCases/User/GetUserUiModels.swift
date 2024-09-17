@@ -1,5 +1,5 @@
 //
-// GetPassUsers.swift
+// GetUserUiModels.swift
 // Proton Pass - Created on 05/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,17 +22,17 @@
 import Client
 import Entities
 
-public protocol GetPassUsersUseCase: Sendable {
-    func execute() async throws -> [PassUser]
+public protocol GetUserUiModelsUseCase: Sendable {
+    func execute() async throws -> [UserUiModel]
 }
 
-public extension GetPassUsersUseCase {
-    func callAsFunction() async throws -> [PassUser] {
+public extension GetUserUiModelsUseCase {
+    func callAsFunction() async throws -> [UserUiModel] {
         try await execute()
     }
 }
 
-public final class GetPassUsers: GetPassUsersUseCase {
+public final class GetUserUiModels: GetUserUiModelsUseCase {
     private let userManager: any UserManagerProtocol
     private let localAccessDatasource: any LocalAccessDatasourceProtocol
 
@@ -42,26 +42,26 @@ public final class GetPassUsers: GetPassUsersUseCase {
         self.localAccessDatasource = localAccessDatasource
     }
 
-    public func execute() async throws -> [PassUser] {
+    public func execute() async throws -> [UserUiModel] {
         let userDatas = try await userManager.getAllUsers()
         guard !userDatas.isEmpty else {
             throw PassError.userManager(.noUserDataFound)
         }
 
-        var passUsers = [PassUser]()
+        var uiModels = [UserUiModel]()
 
         for userData in userDatas {
             let userId = userData.user.ID
             if let access = try await localAccessDatasource.getAccess(userId: userId) {
-                passUsers.append(.init(id: userId,
-                                       displayName: userData.user.displayName,
-                                       email: userData.user.email,
-                                       plan: access.access.plan))
+                uiModels.append(.init(id: userId,
+                                      displayName: userData.user.displayName,
+                                      email: userData.user.email,
+                                      plan: access.access.plan))
             } else {
                 throw PassError.userManager(.noAccessFound(userId))
             }
         }
 
-        return passUsers
+        return uiModels
     }
 }

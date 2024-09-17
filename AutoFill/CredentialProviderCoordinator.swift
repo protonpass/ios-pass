@@ -29,7 +29,7 @@ import Macro
 import Screens
 import SwiftUI
 
-typealias UserForNewItemSubject = PassthroughSubject<PassUser, Never>
+typealias UserForNewItemSubject = PassthroughSubject<UserUiModel, Never>
 
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
@@ -67,7 +67,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
-    @LazyInjected(\SharedUseCasesContainer.getPassUsers) var getPassUsers
+    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) var getUserUiModels
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -129,7 +129,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 
 private extension CredentialProviderCoordinator {
     func start(mode: AutoFillMode) async throws {
-        let users = try await getPassUsers()
+        let users = try await getUserUiModels()
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
             handleShowAllLoginsMode(users: users,
@@ -150,7 +150,7 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func handleShowAllLoginsMode(users: [PassUser],
+    func handleShowAllLoginsMode(users: [UserUiModel],
                                  identifiers: [ASCredentialServiceIdentifier],
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
@@ -165,7 +165,7 @@ private extension CredentialProviderCoordinator {
             cancelAutoFill(reason: .userCanceled, context: context)
         }
 
-        let onSelectUser: ([PassUser]) -> Void = { [weak self] users in
+        let onSelectUser: ([UserUiModel]) -> Void = { [weak self] users in
             guard let self else { return }
             presentSelectUserActionSheet(users)
         }
@@ -248,7 +248,7 @@ private extension CredentialProviderCoordinator {
         showView(LockedCredentialView(viewModel: viewModel))
     }
 
-    func handlePasskeyRegistration(users: [PassUser],
+    func handlePasskeyRegistration(users: [UserUiModel],
                                    request: PasskeyCredentialRequest) {
         guard let context else { return }
 
@@ -257,7 +257,7 @@ private extension CredentialProviderCoordinator {
             cancelAutoFill(reason: .userCanceled, context: context)
         }
 
-        let onSelectUser: ([PassUser]) -> Void = { [weak self] users in
+        let onSelectUser: ([UserUiModel]) -> Void = { [weak self] users in
             guard let self else { return }
             presentSelectUserActionSheet(users)
         }
@@ -368,7 +368,7 @@ private extension CredentialProviderCoordinator {
             .store(in: &cancellables)
     }
 
-    func presentSelectUserActionSheet(_ users: [PassUser]) {
+    func presentSelectUserActionSheet(_ users: [UserUiModel]) {
         let alert = UIAlertController(title: #localized("Select account"),
                                       message: nil,
                                       preferredStyle: .actionSheet)
