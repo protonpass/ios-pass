@@ -92,9 +92,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
 
-    var aliasSyncEnabled: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
-    }
+    lazy var aliasSyncEnabled = getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
 
     init() {
         setUp()
