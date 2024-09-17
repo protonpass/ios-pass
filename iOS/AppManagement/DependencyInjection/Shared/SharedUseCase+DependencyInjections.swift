@@ -217,15 +217,6 @@ extension SharedUseCasesContainer {
     }
 }
 
-// MARK: - Shares
-
-extension SharedUseCasesContainer {
-    var getCurrentSelectedShareId: Factory<any GetCurrentSelectedShareIdUseCase> {
-        self { GetCurrentSelectedShareId(vaultsManager: self.vaultsManager,
-                                         getMainVault: self.getMainVault()) }
-    }
-}
-
 // MARK: - Feature Flags
 
 extension SharedUseCasesContainer {
