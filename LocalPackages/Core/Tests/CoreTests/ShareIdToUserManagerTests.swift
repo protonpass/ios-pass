@@ -42,17 +42,23 @@ final class ShareIdToUserManagerTests: XCTestCase {
 }
 
 extension ShareIdToUserManagerTests {
-    func testGetUserWithFailure() {
+    func testGetUser() throws {
         // Given
-        sut = .init(users: [.random()])
-        let item = Item.random()
-        XCTAssertThrowsError(try sut.getCachableUser(for: item)) { error in
+        let vault = Vault.random()
+        let item1 = Item.random()
+        let user = UserUiModel.random()
+
+        // When
+        sut = .init(users: [user])
+
+        // Then
+        XCTAssertThrowsError(try sut.getUser(for: item1)) { error in
             if let passError = error as? PassError {
                 switch passError {
                 case let .userManager(reason):
                     if case let .noUserFound(shareId, itemId) = reason,
-                       shareId == item.shareId,
-                       itemId == item.itemId {
+                       shareId == item1.shareId,
+                       itemId == item1.itemId {
                         break
                     }
                     fallthrough
@@ -61,28 +67,12 @@ extension ShareIdToUserManagerTests {
                 }
             }
         }
-    }
 
-    func testGetUserWithSuccess() throws {
-        // Given
-        let vault = Vault.random()
-        let item = Item(shareId: vault.shareId, itemId: .random())
-        let user = PassUser.random()
-        sut = .init(users: [user])
+        // When
+        let item2 = Item(shareId: vault.shareId, itemId: .random())
         sut.index(vaults: [vault], userId: user.id)
 
-        // When
-        let firstGet = try sut.getCachableUser(for: item)
-
         // Then
-        XCTAssertFalse(firstGet.cached)
-        XCTAssertEqual(firstGet.object, user)
-
-        // When
-        let secondGet = try sut.getCachableUser(for: item)
-
-        // Then
-        XCTAssertTrue(secondGet.cached)
-        XCTAssertEqual(secondGet.object, user)
+        XCTAssertEqual(try sut.getUser(for: item2), user)
     }
 }
