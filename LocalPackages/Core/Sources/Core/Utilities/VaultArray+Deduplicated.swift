@@ -1,6 +1,6 @@
 //
-// LoginItemsView+Mode.swift
-// Proton Pass - Created on 27/02/2024.
+// VaultArray+Deduplicated.swift
+// Proton Pass - Created on 12/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,33 +20,11 @@
 //
 
 import Entities
-import Macro
 
-public extension LoginItemsView {
-    enum Mode {
-        case passkeyCreation
-    }
-}
-
-extension LoginItemsView.Mode {
-    var title: String {
-        switch self {
-        case .passkeyCreation:
-            #localized("Create passkey", bundle: .module)
-        }
-    }
-
-    var description: String {
-        switch self {
-        case .passkeyCreation:
-            #localized("Select an existing login or create a new one.", bundle: .module)
-        }
-    }
-
-    var allowCreation: Bool {
-        switch self {
-        case .passkeyCreation:
-            true
-        }
+public extension [Vault] {
+    /// Deduplicate the ones that share the same `VaultID`
+    /// keeping the most permissive one
+    var deduplicated: [Vault] {
+        sorted(by: { $0.shareRole > $1.shareRole }).deduplicate(by: \.id)
     }
 }

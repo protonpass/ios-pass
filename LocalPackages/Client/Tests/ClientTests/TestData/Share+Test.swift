@@ -22,9 +22,10 @@
 
 extension Share {
     static func random(shareId: String? = nil,
+                       vaultId: String? = nil,
                        contentKeyRotation: Int64? = nil) -> Share {
         .init(shareID: shareId ?? .random(),
-              vaultID: .random(),
+              vaultID: vaultId ?? .random(),
               addressID: .random(),
               targetType: .random(in: 0...10),
               targetID: .random(),

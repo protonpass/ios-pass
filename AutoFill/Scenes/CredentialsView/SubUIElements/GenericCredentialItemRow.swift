@@ -19,11 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import DesignSystem
 import Entities
 import SwiftUI
 
 struct GenericCredentialItemRow: View {
     let item: any CredentialItem
+    let user: UserUiModel?
     let selectItem: (any TitledItemIdentifiable) -> Void
 
     var body: some View {
@@ -33,7 +35,9 @@ struct GenericCredentialItemRow: View {
             if let item = item as? ItemUiModel {
                 GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                                title: item.title,
-                               description: item.description)
+                               description: item.description,
+                               secondaryTitle: secondaryTitle,
+                               secondaryTitleColor: PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else if let item = item as? ItemSearchResult {
                 HStack {
@@ -43,7 +47,9 @@ struct GenericCredentialItemRow: View {
                     .frame(maxHeight: .infinity, alignment: .top)
 
                     VStack(alignment: .leading, spacing: 4) {
-                        HighlightText(highlightableText: item.highlightableTitle)
+                        HighlightText(highlightableText: item.highlightableTitle,
+                                      additionalTexts: additionalSearchResultTitles)
+                            .fixedSize(horizontal: false, vertical: true)
 
                         VStack(alignment: .leading, spacing: 2) {
                             ForEach(0..<item.highlightableDetail.count, id: \.self) { index in
@@ -61,6 +67,27 @@ struct GenericCredentialItemRow: View {
                     .padding(.bottom)
                 }
             }
+        }
+    }
+}
+
+private extension GenericCredentialItemRow {
+    var secondaryTitle: String? {
+        if let emailWithoutDomain = user?.emailWithoutDomain {
+            "· \(emailWithoutDomain)"
+        } else {
+            nil
+        }
+    }
+
+    var additionalSearchResultTitles: [Text] {
+        if let secondaryTitle {
+            [
+                Text(verbatim: " "),
+                Text(secondaryTitle).adaptiveForegroundStyle(PassColor.textWeak.toColor)
+            ]
+        } else {
+            []
         }
     }
 }

@@ -92,6 +92,7 @@ struct NoteDetailView: View {
 
                     ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent,
+                                              vault: viewModel.vault?.vault,
                                               onCopy: { viewModel.copyToClipboard(text: $0, message: $1) })
                         .padding(.top, 24)
                         .id(bottomID)
