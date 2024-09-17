@@ -305,9 +305,9 @@ extension SharedUseCasesContainer {
         }
     }
 
-    var getPassUsers: Factory<any GetPassUsersUseCase> {
-        self { GetPassUsers(userManager: self.userManager,
-                            localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource()) }
+    var getUserUiModels: Factory<any GetUserUiModelsUseCase> {
+        self { GetUserUiModels(userManager: self.userManager,
+                               localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource()) }
     }
 }
 

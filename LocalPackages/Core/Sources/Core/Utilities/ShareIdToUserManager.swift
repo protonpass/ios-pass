@@ -28,7 +28,7 @@ private struct UserVault: Sendable, Hashable {
 
 public protocol ShareIdToUserManagerProtocol {
     func index(vaults: [Vault], userId: String)
-    func getUser(for item: any ItemIdentifiable) throws -> PassUser
+    func getUser(for item: any ItemIdentifiable) throws -> UserUiModel
 }
 
 /// Cache and keep track of the mapping `ShareID` <-> `User`
@@ -37,12 +37,12 @@ public final class ShareIdToUserManager: ShareIdToUserManagerProtocol {
     private typealias ShareID = String
     private typealias UserID = String
 
-    private let users: [PassUser]
+    private let users: [UserUiModel]
     private var userVaults = Set<UserVault>()
 
     private var dict = [ShareID: UserID]()
 
-    public init(users: [PassUser]) {
+    public init(users: [UserUiModel]) {
         self.users = users
     }
 }
@@ -54,13 +54,13 @@ public extension ShareIdToUserManager {
         }
     }
 
-    func getUser(for item: any ItemIdentifiable) throws -> PassUser {
+    func getUser(for item: any ItemIdentifiable) throws -> UserUiModel {
         try getCachableUser(for: item).object
     }
 }
 
 extension ShareIdToUserManager {
-    func getCachableUser(for item: any ItemIdentifiable) throws -> CachableObject<PassUser> {
+    func getCachableUser(for item: any ItemIdentifiable) throws -> CachableObject<UserUiModel> {
         // Get from cache
         if let userId = dict[item.shareId],
            let user = users.first(where: { $0.id == userId }) {

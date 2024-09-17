@@ -28,17 +28,17 @@ import Macro
 @MainActor
 class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     @Published private(set) var results: [T] = []
-    @Published var selectedUser: PassUser?
+    @Published var selectedUser: UserUiModel?
     var cancellables = Set<AnyCancellable>()
 
     private let onCreate: (LoginCreationInfo) -> Void
-    private let onSelectUser: ([PassUser]) -> Void
+    private let onSelectUser: ([UserUiModel]) -> Void
     private let onCancel: () -> Void
     private let onLogOut: () -> Void
     private let shareIdToUserManager: any ShareIdToUserManagerProtocol
     private let userForNewItemSubject: UserForNewItemSubject
 
-    let users: [PassUser]
+    let users: [UserUiModel]
 
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private var eventSynchronizer
     @LazyInjected(\SharedToolingContainer.logger) var logger
@@ -71,10 +71,10 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     }
 
     init(onCreate: @escaping (LoginCreationInfo) -> Void,
-         onSelectUser: @escaping ([PassUser]) -> Void,
+         onSelectUser: @escaping ([UserUiModel]) -> Void,
          onCancel: @escaping () -> Void,
          onLogOut: @escaping () -> Void,
-         users: [PassUser],
+         users: [UserUiModel],
          userForNewItemSubject: UserForNewItemSubject) {
         self.onCreate = onCreate
         self.onSelectUser = onSelectUser
@@ -185,7 +185,7 @@ extension AutoFillViewModel {
         onSelectUser(users)
     }
 
-    func getUser(for item: any ItemIdentifiable) -> PassUser? {
+    func getUser(for item: any ItemIdentifiable) -> UserUiModel? {
         guard users.count > 1, selectedUser == nil else { return nil }
         do {
             return try shareIdToUserManager.getUser(for: item)

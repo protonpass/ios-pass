@@ -25,11 +25,11 @@ import Macro
 import SwiftUI
 
 public struct UserAccountSelectionMenu: View {
-    @Binding private var selectedUser: PassUser?
-    private let users: [PassUser]
+    @Binding private var selectedUser: UserUiModel?
+    private let users: [UserUiModel]
 
-    public init(selectedUser: Binding<PassUser?>,
-                users: [PassUser]) {
+    public init(selectedUser: Binding<UserUiModel?>,
+                users: [UserUiModel]) {
         _selectedUser = selectedUser
         self.users = users
     }
