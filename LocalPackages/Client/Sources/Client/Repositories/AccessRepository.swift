@@ -22,6 +22,8 @@
 import Core
 import Entities
 
+// swiftlint:disable:next todo
+// TODO: Make the repository `UserManagerProtocol` independant
 // sourcery: AutoMockable
 public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     /// `Access` of current user
