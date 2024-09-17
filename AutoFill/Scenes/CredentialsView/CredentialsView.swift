@@ -99,8 +99,8 @@ private extension CredentialsView {
             switch viewModel.state {
             case .idle:
                 if viewModel.users.count > 1 {
-                    AccountsMenu(selectedUser: $viewModel.selectedUser,
-                                 users: viewModel.users)
+                    UserAccountSelectionMenu(selectedUser: $viewModel.selectedUser,
+                                             users: viewModel.users)
                         .padding(.horizontal)
                 }
 

@@ -102,7 +102,7 @@ private extension LoginItemsView {
                 title
                 description
                 if users.count > 1 {
-                    AccountsMenu(selectedUser: $selectedUser, users: users)
+                    UserAccountSelectionMenu(selectedUser: $selectedUser, users: users)
                 }
                 allItems
             }

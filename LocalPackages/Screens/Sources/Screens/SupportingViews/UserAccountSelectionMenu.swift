@@ -1,5 +1,5 @@
 //
-// AccountsMenu.swift
+// UserAccountSelectionMenu.swift
 // Proton Pass - Created on 10/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -24,7 +24,7 @@ import Entities
 import Macro
 import SwiftUI
 
-public struct AccountsMenu: View {
+public struct UserAccountSelectionMenu: View {
     @Binding private var selectedUser: PassUser?
     private let users: [PassUser]
 
