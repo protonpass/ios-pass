@@ -27,7 +27,7 @@ import Macro
 import SwiftUI
 
 public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
-    @StateObject private var viewModel: LoginItemsViewModel
+    @ObservedObject private var viewModel: LoginItemsViewModel
     @FocusState private var isFocused
     @Binding private var selectedUser: PassUser?
     private let searchableItems: [SearchableItem]
@@ -81,8 +81,6 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
         .animation(.default, value: searchableItems)
         .animation(.default, value: uiModels)
         .animation(.default, value: selectedUser)
-        .onChange(of: searchableItems) { viewModel.searchableItems = $0 }
-        .onChange(of: uiModels) { viewModel.uiModels = $0 }
     }
 }
 
