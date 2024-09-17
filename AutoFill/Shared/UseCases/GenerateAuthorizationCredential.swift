@@ -24,7 +24,7 @@ import Entities
 import Foundation
 import UseCases
 
-/// Retrieve username/password or resolve passkey challenge
+/// Retrieve username/password, resolve passkey challenge or calculate one-time code
 protocol GenerateAuthorizationCredentialUseCase: Sendable {
     func execute(_ request: AutoFillRequest) async throws -> (ItemContent, any ASAuthorizationCredential)
 }
@@ -38,11 +38,14 @@ extension GenerateAuthorizationCredentialUseCase {
 final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseCase {
     private let itemRepository: any ItemRepositoryProtocol
     private let resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase
+    private let totpService: any TOTPServiceProtocol
 
     init(itemRepository: any ItemRepositoryProtocol,
-         resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase) {
+         resolvePasskeyChallenge: any ResolvePasskeyChallengeUseCase,
+         totpService: any TOTPServiceProtocol) {
         self.itemRepository = itemRepository
         self.resolvePasskeyChallenge = resolvePasskeyChallenge
+        self.totpService = totpService
     }
 
     func execute(_ request: AutoFillRequest) async throws -> (ItemContent, any ASAuthorizationCredential) {
@@ -63,6 +66,7 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
         switch request {
         case .password:
             credential = ASPasswordCredential(user: logInData.authIdentifier, password: logInData.password)
+
         case let .passkey(credentialRequest):
             guard let key = logInData.passkeys.key(for: credentialRequest) else {
                 throw ASExtensionError(.credentialIdentityNotFound)
@@ -81,6 +85,16 @@ final class GenerateAuthorizationCredential: GenerateAuthorizationCredentialUseC
                                                           credentialID: response.credentialId)
             } else {
                 assertionFailure("Should be on iOS 17 and above when entering this case")
+                credential = ASPasswordCredential(user: logInData.authIdentifier,
+                                                  password: logInData.password)
+            }
+
+        case .oneTimeCode:
+            if #available(iOS 18, *) {
+                let token = try totpService.generateTotpToken(uri: logInData.totpUri)
+                credential = ASOneTimeCodeCredential(code: token.code)
+            } else {
+                assertionFailure("Should be on iOS 18 and above when entering this case")
                 credential = ASPasswordCredential(user: logInData.authIdentifier,
                                                   password: logInData.password)
             }
