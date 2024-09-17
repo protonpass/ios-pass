@@ -114,11 +114,9 @@ private extension IndexAllLoginItems {
         let items = try await itemRepository.getActiveLogInItems(userId: userId)
         logger.trace("Found \(items.count) active login items")
 
-        var vaults = try await shareRepository.getVaults(userId: userId)
-        vaults = vaults.filter { applicableVaults.contains($0) }
-
         var applicableShareIds = [String]()
         if access.access.plan.isFreeUser {
+            let vaults = try await shareRepository.getVaults(userId: userId)
             let oldestVaults = vaults.twoOldestVaults
             if let owned = oldestVaults.owned {
                 applicableShareIds.append(owned.shareId)
@@ -127,7 +125,7 @@ private extension IndexAllLoginItems {
                 applicableShareIds.append(other.shareId)
             }
         } else {
-            applicableShareIds = vaults.map(\.shareId)
+            applicableShareIds = applicableVaults.map(\.shareId)
         }
 
         return items.filter { applicableShareIds.contains($0.shareId) }
