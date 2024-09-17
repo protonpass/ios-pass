@@ -1,5 +1,5 @@
 //
-// PassUser.swift
+// UserUiModel.swift
 // Proton Pass - Created on 05/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -19,8 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-/// User object for UI representations
-public struct PassUser: Sendable, Identifiable, Hashable {
+public struct UserUiModel: Sendable, Identifiable, Hashable {
     public let id: String
     public let displayName: String?
     public let email: String?

@@ -25,7 +25,7 @@ import SwiftUI
 
 struct GenericCredentialItemRow: View {
     let item: any CredentialItem
-    let user: PassUser?
+    let user: UserUiModel?
     let selectItem: (any TitledItemIdentifiable) -> Void
 
     var body: some View {

@@ -67,11 +67,11 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
         }
     }
 
-    init(users: [PassUser],
+    init(users: [UserUiModel],
          request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext?,
          onCreate: @escaping (LoginCreationInfo) -> Void,
-         onSelectUser: @escaping ([PassUser]) -> Void,
+         onSelectUser: @escaping ([UserUiModel]) -> Void,
          onCancel: @escaping () -> Void,
          onLogOut: @escaping () -> Void,
          userForNewItemSubject: UserForNewItemSubject) {

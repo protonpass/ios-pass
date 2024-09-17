@@ -132,12 +132,12 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
         }
     }
 
-    init(users: [PassUser],
+    init(users: [UserUiModel],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
          context: ASCredentialProviderExtensionContext,
          onCancel: @escaping () -> Void,
-         onSelectUser: @escaping ([PassUser]) -> Void,
+         onSelectUser: @escaping ([UserUiModel]) -> Void,
          onLogOut: @escaping () -> Void,
          onCreate: @escaping (LoginCreationInfo) -> Void,
          userForNewItemSubject: UserForNewItemSubject) {
