@@ -21,12 +21,9 @@
 
 import Entities
 
-private typealias ShareID = String
-private typealias UserID = String
-
 private struct UserVault: Sendable, Hashable {
-    let userId: UserID
-    let shareId: ShareID
+    let userId: String
+    let shareId: String
 }
 
 public protocol ShareIdToUserManagerProtocol {
@@ -39,8 +36,6 @@ public protocol ShareIdToUserManagerProtocol {
 public final class ShareIdToUserManager: ShareIdToUserManagerProtocol {
     private let users: [UserUiModel]
     private var userVaults = Set<UserVault>()
-
-    private var dict = [ShareID: UserID]()
 
     public init(users: [UserUiModel]) {
         self.users = users
@@ -55,24 +50,10 @@ public extension ShareIdToUserManager {
     }
 
     func getUser(for item: any ItemIdentifiable) throws -> UserUiModel {
-        try getCachableUser(for: item).object
-    }
-}
-
-extension ShareIdToUserManager {
-    func getCachableUser(for item: any ItemIdentifiable) throws -> CachableObject<UserUiModel> {
-        // Get from cache
-        if let userId = dict[item.shareId],
-           let user = users.first(where: { $0.id == userId }) {
-            return .init(cached: true, object: user)
+        guard let userId = userVaults.first(where: { $0.shareId == item.shareId })?.userId,
+              let user = users.first(where: { $0.id == userId }) else {
+            throw PassError.userManager(.noUserFound(shareId: item.shareId, itemId: item.itemId))
         }
-
-        // Cache missed, do the math and cache the result
-        if let userVault = userVaults.first(where: { $0.shareId == item.shareId }),
-           let user = users.first(where: { $0.id == userVault.userId }) {
-            dict[item.shareId] = user.id
-            return .init(cached: false, object: user)
-        }
-        throw PassError.userManager(.noUserFound(shareId: item.shareId, itemId: item.itemId))
+        return user
     }
 }
