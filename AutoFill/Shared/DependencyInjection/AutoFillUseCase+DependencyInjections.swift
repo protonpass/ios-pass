@@ -113,7 +113,8 @@ extension AutoFillUseCaseContainer {
 
     var generateAuthorizationCredential: Factory<any GenerateAuthorizationCredentialUseCase> {
         self { GenerateAuthorizationCredential(itemRepository: self.itemRepository,
-                                               resolvePasskeyChallenge: self.resolvePasskeyChallenge) }
+                                               resolvePasskeyChallenge: self.resolvePasskeyChallenge,
+                                               totpService: SharedServiceContainer.shared.totpService()) }
     }
 
     var completePasskeyRegistration: Factory<any CompletePasskeyRegistrationUseCase> {
