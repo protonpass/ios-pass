@@ -37,7 +37,6 @@ final class CreateEditItemCoordinator: DeinitPrintable {
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let getCurrentSelectedShareId = resolve(\SharedUseCasesContainer.getCurrentSelectedShareId)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private weak var createEditItemDelegates: (any CreateEditItemDelegates)?
@@ -92,7 +91,7 @@ extension CreateEditItemCoordinator {
 
     @MainActor
     func presentCreateItemView(for itemType: ItemType) async throws {
-        guard let shareId = await getCurrentSelectedShareId() else { return }
+        let shareId = vaultsManager.vaultSelection.preciseVault?.shareId
         switch itemType {
         case .login:
             let logInType = ItemCreationType.login(autofill: false)

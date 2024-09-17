@@ -103,6 +103,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
                 actionsDisabled = items.isEmpty
 
                 extraOptions.removeAll()
+                guard vaultSelection != .trash else { return }
 
                 if items.allSatisfy(\.pinned) {
                     extraOptions.append(.unpin)
