@@ -19,10 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-import Combine
+import Core
 import DesignSystem
 import Entities
-import Factory
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -32,7 +31,6 @@ struct CredentialsView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: CredentialsViewModel
     @FocusState private var isFocusedOnSearchBar
-    @State private var showItemTypeList = false
 
     init(viewModel: CredentialsViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -45,7 +43,8 @@ struct CredentialsView: View {
             stateViews
         }
         .task {
-            await viewModel.sync()
+            await viewModel.fetchItems()
+            await viewModel.sync(ignoreError: true)
         }
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
@@ -81,15 +80,8 @@ struct CredentialsView: View {
                let context = viewModel.context {
                 SelectPasskeyView(info: info, context: context)
                     .presentationDetents([.height(CGFloat(info.passkeys.count * 60) + 80)])
+                    .environment(\.colorScheme, colorScheme)
             }
-        }
-        .sheet(isPresented: $showItemTypeList) {
-            let viewModel = ItemTypeListViewModel(mode: .autoFillExtension,
-                                                  onSelect: { self.viewModel.createNewItem($0) })
-            ItemTypeListView(viewModel: viewModel)
-                .presentationDetents([.height(200)])
-                .presentationDragIndicator(.visible)
-                .environment(\.colorScheme, colorScheme)
         }
     }
 }
@@ -101,16 +93,25 @@ private extension CredentialsView {
             if viewModel.state != .loading {
                 SearchBar(query: $viewModel.query,
                           isFocused: $isFocusedOnSearchBar,
-                          placeholder: viewModel.planType?.searchBarPlaceholder ?? "",
-                          onCancel: { viewModel.cancel() })
+                          placeholder: viewModel.searchBarPlaceholder,
+                          onCancel: { viewModel.handleCancel() })
             }
             switch viewModel.state {
             case .idle:
-                if let planType = viewModel.planType, case .free = planType {
-                    mainVaultsOnlyMessage
+                if viewModel.users.count > 1 {
+                    UserAccountSelectionMenu(selectedUser: $viewModel.selectedUser,
+                                             users: viewModel.users)
+                        .padding(.horizontal)
                 }
-                if let results = viewModel.results {
-                    if results.isEmpty {
+
+                if viewModel.isFreeUser {
+                    mainVaultsOnlyMessage
+                        .padding([.horizontal, .top])
+                }
+
+                if !viewModel.results.isEmpty {
+                    if viewModel.matchedItems.isEmpty,
+                       viewModel.notMatchedItems.isEmpty {
                         VStack {
                             Spacer()
                             Text("You currently have no login items")
@@ -120,7 +121,8 @@ private extension CredentialsView {
                             Spacer()
                         }
                     } else {
-                        itemList(results: results)
+                        itemList(matchedItems: viewModel.matchedItems,
+                                 notMatchedItems: viewModel.notMatchedItems)
                     }
                 }
             case .searching:
@@ -130,6 +132,7 @@ private extension CredentialsView {
                     NoSearchResultsInAllVaultView(query: viewModel.query)
                 } else {
                     CredentialSearchResultView(results: results,
+                                               getUser: { viewModel.getUser(for: $0) },
                                                selectedSortType: $viewModel.selectedSortType,
                                                sortAction: { viewModel.presentSortTypeList() },
                                                selectItem: { viewModel.select(item: $0) })
@@ -138,26 +141,29 @@ private extension CredentialsView {
                 CredentialsSkeletonView()
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { viewModel.fetchItems() })
+                                   onRetry: { Task { await viewModel.fetchItems() } })
             }
 
             Spacer()
 
-            HStack {
-                CapsuleLabelButton(icon: IconProvider.plus,
-                                   title: #localized("Create"),
-                                   titleColor: PassColor.interactionNormMajor2,
-                                   backgroundColor: PassColor.interactionNormMinor1,
-                                   maxWidth: nil,
-                                   action: { showItemTypeList.toggle() })
-                Spacer()
-            }
-            .padding(.horizontal)
-            .padding(.vertical, 8)
+            CapsuleTextButton(title: #localized("Create login"),
+                              titleColor: PassColor.loginInteractionNormMajor2,
+                              backgroundColor: PassColor.loginInteractionNormMinor1,
+                              height: 52,
+                              action: {
+                                  if viewModel.shouldAskForUserWhenCreatingNewItem {
+                                      viewModel.presentSelectUserActionSheet()
+                                  } else {
+                                      viewModel.createNewItem(userId: nil)
+                                  }
+                              })
+                              .padding(.horizontal)
+                              .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: viewModel.state)
-        .animation(.default, value: viewModel.planType)
+        .animation(.default, value: viewModel.selectedUser)
+        .animation(.default, value: viewModel.results)
     }
 }
 
@@ -176,16 +182,17 @@ private extension CredentialsView {
 // MARK: ResultView & elements
 
 private extension CredentialsView {
-    func itemList(results: CredentialsFetchResult) -> some View {
+    func itemList(matchedItems: [ItemUiModel],
+                  notMatchedItems: [ItemUiModel]) -> some View {
         ScrollViewReader { proxy in
             List {
-                matchedItemsSection(results.matchedItems)
-                notMatchedItemsSection(results.notMatchedItems)
+                matchedItemsSection(matchedItems)
+                notMatchedItemsSection(notMatchedItems)
             }
             .listStyle(.plain)
-            .refreshable { await viewModel.sync() }
-            .animation(.default, value: results.matchedItems.hashValue)
-            .animation(.default, value: results.notMatchedItems.hashValue)
+            .refreshable { await viewModel.sync(ignoreError: false) }
+            .animation(.default, value: matchedItems.hashValue)
+            .animation(.default, value: notMatchedItems.hashValue)
             .overlay {
                 if viewModel.selectedSortType.isAlphabetical {
                     HStack {
@@ -274,7 +281,9 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GenericCredentialItemRow(item: item, selectItem: { viewModel.select(item: $0) })
+                    GenericCredentialItemRow(item: item,
+                                             user: viewModel.getUser(for: item),
+                                             selectItem: { viewModel.select(item: $0) })
                         .plainListRow()
                         .padding(.horizontal)
                 }

@@ -1,7 +1,7 @@
 //
-// AutoFillCreationMode.swift
-// Proton Pass - Created on 03/09/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// AutoFillCredentials.swift
+// Proton Pass - Created on 07/07/2023.
+// Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,10 +18,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Entities
 import Foundation
 
-enum AutoFillCreationMode {
-    case login(URL?, PasskeyCredentialRequest?)
-    case alias
+protocol AutoFillCredentials: Equatable, Sendable {
+    var userId: String { get }
+    var vaults: [Vault] { get }
+}
+
+struct CredentialsFetchResult: AutoFillCredentials {
+    let userId: String
+    let vaults: [Vault]
+    let searchableItems: [SearchableItem]
+    let matchedItems: [ItemUiModel]
+    let notMatchedItems: [ItemUiModel]
+}
+
+struct CredentialsForPasskeyCreation: AutoFillCredentials {
+    let userId: String
+    let vaults: [Vault]
+    let searchableItems: [SearchableItem]
+    let items: [ItemUiModel]
 }

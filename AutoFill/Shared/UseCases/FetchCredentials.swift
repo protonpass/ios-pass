@@ -76,13 +76,15 @@ final class FetchCredentials: FetchCredentialsUseCase {
         try await logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
         if let params {
-            return try await fetchPasskeys(params: params,
+            return try await fetchPasskeys(userId: userId,
+                                           params: params,
                                            symmetricKey: symmetricKey,
                                            vaults: vaults,
                                            encryptedItems: encryptedItems,
                                            plan: plan)
         }
-        return try await fetchPasswords(identifiers: identifiers,
+        return try await fetchPasswords(userId: userId,
+                                        identifiers: identifiers,
                                         symmetricKey: symmetricKey,
                                         vaults: vaults,
                                         encryptedItems: encryptedItems,
@@ -105,7 +107,9 @@ private extension FetchCredentials {
 }
 
 private extension FetchCredentials {
-    func fetchPasswords(identifiers: [ASCredentialServiceIdentifier],
+    // swiftlint:disable:next function_parameter_count
+    func fetchPasswords(userId: String,
+                        identifiers: [ASCredentialServiceIdentifier],
                         symmetricKey: SymmetricKey,
                         vaults: [Vault],
                         encryptedItems: [SymmetricallyEncryptedItem],
@@ -155,14 +159,18 @@ private extension FetchCredentials {
         logger.debug("Mapped \(encryptedItems.count) encrypted items for password autofill.")
         logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
         logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
-        return CredentialsFetchResult(searchableItems: searchableItems,
+        return CredentialsFetchResult(userId: userId,
+                                      vaults: vaults,
+                                      searchableItems: searchableItems,
                                       matchedItems: matchedItems,
                                       notMatchedItems: notMatchedItems)
     }
 }
 
 private extension FetchCredentials {
-    func fetchPasskeys(params: any PasskeyRequestParametersProtocol,
+    // swiftlint:disable:next function_parameter_count
+    func fetchPasskeys(userId: String,
+                       params: any PasskeyRequestParametersProtocol,
                        symmetricKey: SymmetricKey,
                        vaults: [Vault],
                        encryptedItems: [SymmetricallyEncryptedItem],
@@ -197,7 +205,9 @@ private extension FetchCredentials {
         logger.debug("Mapped \(encryptedItems.count) encrypted items for passkey autofill.")
         logger.debug("\(vaults.count) vaults, \(searchableItems.count) searchable items")
         logger.debug("\(matchedItems.count) matched items, \(notMatchedItems.count) not matched items")
-        return CredentialsFetchResult(searchableItems: searchableItems,
+        return CredentialsFetchResult(userId: userId,
+                                      vaults: vaults,
+                                      searchableItems: searchableItems,
                                       matchedItems: matchedItems,
                                       notMatchedItems: notMatchedItems)
     }
