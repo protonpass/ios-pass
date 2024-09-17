@@ -46,7 +46,7 @@ extension ShareIdToUserManagerTests {
         // Given
         sut = .init(users: [.random()])
         let item = Item.random()
-        XCTAssertThrowsError(try sut.getUser(for: item)) { error in
+        XCTAssertThrowsError(try sut.getCachableUser(for: item)) { error in
             if let passError = error as? PassError {
                 switch passError {
                 case let .userManager(reason):
@@ -72,14 +72,14 @@ extension ShareIdToUserManagerTests {
         sut.index(vaults: [vault], userId: user.id)
 
         // When
-        let firstGet = try sut.getUser(for: item)
+        let firstGet = try sut.getCachableUser(for: item)
 
         // Then
         XCTAssertFalse(firstGet.cached)
         XCTAssertEqual(firstGet.object, user)
 
         // When
-        let secondGet = try sut.getUser(for: item)
+        let secondGet = try sut.getCachableUser(for: item)
 
         // Then
         XCTAssertTrue(secondGet.cached)

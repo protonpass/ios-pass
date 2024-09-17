@@ -26,9 +26,14 @@ private struct UserVault: Sendable, Hashable {
     let vault: Vault
 }
 
+public protocol ShareIdToUserManagerProtocol {
+    func index(vaults: [Vault], userId: String)
+    func getUser(for item: any ItemIdentifiable) throws -> PassUser
+}
+
 /// Cache and keep track of the mapping `ShareID` <-> `User`
 /// Used in multi accounts item display context to get the user that owns an item
-public final class ShareIdToUserManager {
+public final class ShareIdToUserManager: ShareIdToUserManagerProtocol {
     private typealias ShareID = String
     private typealias UserID = String
 
@@ -49,7 +54,13 @@ public extension ShareIdToUserManager {
         }
     }
 
-    func getUser(for item: any ItemIdentifiable) throws -> CachableObject<PassUser> {
+    func getUser(for item: any ItemIdentifiable) throws -> PassUser {
+        try getCachableUser(for: item).object
+    }
+}
+
+extension ShareIdToUserManager {
+    func getCachableUser(for item: any ItemIdentifiable) throws -> CachableObject<PassUser> {
         // Get from cache
         if let userId = dict[item.shareId],
            let user = users.first(where: { $0.id == userId }) {
