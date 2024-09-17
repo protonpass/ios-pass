@@ -1,5 +1,5 @@
 //
-// CachableObject.swift
+// UserUiModel+Random.swift
 // Proton Pass - Created on 10/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -19,14 +19,16 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Foundation
+import Entities
 
-public struct CachableObject<T: Sendable>: Sendable {
-    public let cached: Bool
-    public let object: T
-
-    public init(cached: Bool, object: T) {
-        self.cached = cached
-        self.object = object
+extension UserUiModel {
+    static func random() -> UserUiModel {
+        .init(id: .random(),
+              displayName: .random(),
+              email: .random(),
+              plan: .init(type: .random(),
+                          internalName: .random(),
+                          displayName: .random(),
+                          hideUpgrade: .random()))
     }
 }
