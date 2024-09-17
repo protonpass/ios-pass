@@ -31,17 +31,17 @@ public struct NoSearchResultsInAllVaultView: View {
 
     public var body: some View {
         VStack {
+            Spacer()
+                .frame(maxHeight: 180)
             Text("Couldn't find \"\(query)\"", bundle: .module)
                 .fontWeight(.semibold)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.bottom)
                 .animationsDisabled()
-
             TrySearchAgainText()
         }
         .padding(.horizontal)
-        .padding(.top, 180)
     }
 }
 
