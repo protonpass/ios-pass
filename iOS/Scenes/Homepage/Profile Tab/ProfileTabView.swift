@@ -283,12 +283,14 @@ struct ProfileTabView: View {
                                  action: { viewModel.toggleQuickTypeBar() })
                 }
 
-                PassSectionDivider()
+                if #unavailable(iOS 18.0) {
+                    PassSectionDivider()
 
-                OptionRow(height: .medium) {
-                    StaticToggle("Copy 2FA code",
-                                 isOn: viewModel.automaticallyCopyTotpCode,
-                                 action: { viewModel.toggleAutomaticCopyTotpCode() })
+                    OptionRow(height: .medium) {
+                        StaticToggle("Copy 2FA code",
+                                     isOn: viewModel.automaticallyCopyTotpCode,
+                                     action: { viewModel.toggleAutomaticCopyTotpCode() })
+                    }
                 }
             }
             .roundedEditableSection()
