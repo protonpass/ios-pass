@@ -28,16 +28,9 @@ import SwiftUI
 
 struct PasskeyCredentialsView: View {
     @StateObject private var viewModel: PasskeyCredentialsViewModel
-    private let onCreate: () -> Void
-    private let onCancel: () -> Void
 
-    init(request: PasskeyCredentialRequest,
-         context: ASCredentialProviderExtensionContext,
-         onCreate: @escaping () -> Void,
-         onCancel: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(request: request, context: context))
-        self.onCreate = onCreate
-        self.onCancel = onCancel
+    init(viewModel: PasskeyCredentialsViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -48,21 +41,32 @@ struct PasskeyCredentialsView: View {
             case .loading:
                 ProgressView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
-            case let .loaded(searchableItems, uiModels):
-                LoginItemsView(searchableItems: searchableItems,
-                               uiModels: uiModels,
+            case .loaded:
+                LoginItemsView(searchableItems: viewModel.searchableItems,
+                               uiModels: viewModel.items,
                                mode: .passkeyCreation,
-                               itemRow: { itemRow(for: $0) },
-                               searchResultRow: { searchResultRow(for: $0) },
+                               users: viewModel.users,
+                               selectedUser: $viewModel.selectedUser,
+                               itemRow: { row(for: $0) },
+                               searchResultRow: { row(for: $0) },
+                               searchBarPlaceholder: viewModel.searchBarPlaceholder,
                                onRefresh: { await viewModel.sync(ignoreError: false) },
-                               onCreate: onCreate,
-                               onCancel: onCancel)
+                               onCreate: {
+                                   if viewModel.shouldAskForUserWhenCreatingNewItem {
+                                       viewModel.presentSelectUserActionSheet()
+                                   } else {
+                                       viewModel.createNewItem(userId: nil)
+                                   }
+                               },
+                               onCancel: { viewModel.handleCancel() })
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { Task { await viewModel.loadCredentials() } })
+                                   onRetry: { Task { await viewModel.fetchItems() } })
             }
         }
         .showSpinner(viewModel.isCreatingPasskey)
+        .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
+                             onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .alert("Create passkey",
                isPresented: $viewModel.isShowingAssociationConfirmation,
                actions: {
@@ -77,7 +81,7 @@ struct PasskeyCredentialsView: View {
                    Text("A passkey will be created for the \"\(viewModel.selectedItem?.itemTitle ?? "")\" login.")
                })
         .task {
-            await viewModel.loadCredentials()
+            await viewModel.fetchItems()
             // Ignore errors here otherwise users will always end up with errors when being offline
             await viewModel.sync(ignoreError: true)
         }
@@ -85,16 +89,9 @@ struct PasskeyCredentialsView: View {
 }
 
 private extension PasskeyCredentialsView {
-    func itemRow(for uiModel: ItemUiModel) -> some View {
-        GenericCredentialItemRow(item: uiModel, selectItem: { viewModel.selectedItem = $0 })
-    }
-
-    func searchResultRow(for result: ItemSearchResult) -> some View {
-        Button(action: {
-            viewModel.selectedItem = result
-        }, label: {
-            ItemSearchResultView(result: result)
-        })
-        .buttonStyle(.plain)
+    func row(for item: any CredentialItem) -> some View {
+        GenericCredentialItemRow(item: item,
+                                 user: viewModel.getUser(for: item),
+                                 selectItem: { viewModel.selectedItem = $0 })
     }
 }

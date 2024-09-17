@@ -91,8 +91,7 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                                             shareId: item.shareId)
         if let updatedItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                             itemId: item.itemId) {
-            try await updateLastUseTimeAndReindex(userId: oldItemContent.userId,
-                                                  item: updatedItemContent,
+            try await updateLastUseTimeAndReindex(item: updatedItemContent,
                                                   date: .now,
                                                   identifiers: [request.serviceIdentifier])
         }

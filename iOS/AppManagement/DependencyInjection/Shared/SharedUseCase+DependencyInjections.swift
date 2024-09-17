@@ -173,9 +173,10 @@ extension SharedUseCasesContainer {
     }
 
     var indexAllLoginItems: Factory<any IndexAllLoginItemsUseCase> {
-        self { IndexAllLoginItems(itemRepository: self.itemRepository,
+        self { IndexAllLoginItems(userManager: self.userManager,
+                                  itemRepository: self.itemRepository,
                                   shareRepository: SharedRepositoryContainer.shared.shareRepository(),
-                                  accessRepository: self.accessRepository,
+                                  localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource(),
                                   credentialManager: self.credentialManager,
                                   mapLoginItem: self.mapLoginItem(),
                                   symmetricKeyProvider: self.symmetricKeyProvider,
@@ -302,6 +303,11 @@ extension SharedUseCasesContainer {
                        credentialManager: SharedServiceContainer.shared.credentialManager(),
                        switchUser: self.switchUser())
         }
+    }
+
+    var getUserUiModels: Factory<any GetUserUiModelsUseCase> {
+        self { GetUserUiModels(userManager: self.userManager,
+                               localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource()) }
     }
 }
 

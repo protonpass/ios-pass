@@ -1,7 +1,7 @@
 //
-// CredentialsFetchResult.swift
-// Proton Pass - Created on 07/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Vault+Random.swift
+// Proton Pass - Created on 10/09/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,25 +17,25 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Client
 import Entities
-import Foundation
 
-struct CredentialsFetchResult: Equatable, Sendable {
-    let searchableItems: [SearchableItem]
-    let matchedItems: [ItemUiModel]
-    let notMatchedItems: [ItemUiModel]
-
-    var isEmpty: Bool {
-        searchableItems.isEmpty && matchedItems.isEmpty && notMatchedItems.isEmpty
-    }
-
-    init(searchableItems: [SearchableItem],
-         matchedItems: [ItemUiModel],
-         notMatchedItems: [ItemUiModel]) {
-        self.searchableItems = searchableItems
-        self.matchedItems = matchedItems
-        self.notMatchedItems = notMatchedItems
+extension Vault {
+    static func random() -> Vault {
+        .init(id: .random(),
+              shareId: .random(),
+              addressId: .random(),
+              name: .random(),
+              description: .empty,
+              displayPreferences: .init(),
+              isOwner: .random(),
+              shareRole: .read,
+              members: 0,
+              maxMembers: 0,
+              pendingInvites: 0,
+              newUserInvitesReady: 0,
+              shared: .random(),
+              createTime: 0)
     }
 }

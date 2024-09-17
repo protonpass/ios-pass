@@ -27,6 +27,7 @@ import SwiftUI
 
 struct CredentialSearchResultView: View, Equatable {
     let results: [ItemSearchResult]
+    let getUser: (any ItemIdentifiable) -> UserUiModel?
     @Binding var selectedSortType: SortType
     let sortAction: () -> Void
     let selectItem: (any TitledItemIdentifiable) -> Void
@@ -134,7 +135,9 @@ private extension CredentialSearchResultView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GenericCredentialItemRow(item: item, selectItem: selectItem)
+                    GenericCredentialItemRow(item: item,
+                                             user: getUser(item),
+                                             selectItem: selectItem)
                         .plainListRow()
                         .padding(.horizontal)
                 }

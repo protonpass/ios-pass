@@ -118,19 +118,19 @@ public final class UserManagerProtocolMock: @unchecked Sendable, UserManagerProt
         closureUpsertAndMarkAsActive()
     }
     // MARK: - switchActiveUser
-    public var switchActiveUserWithThrowableError4: Error?
+    public var switchActiveUserWithOnMemoryThrowableError4: Error?
     public var closureSwitchActiveUser: () -> () = {}
     public var invokedSwitchActiveUserfunction = false
     public var invokedSwitchActiveUserCount = 0
-    public var invokedSwitchActiveUserParameters: (userId: String, Void)?
-    public var invokedSwitchActiveUserParametersList = [(userId: String, Void)]()
+    public var invokedSwitchActiveUserParameters: (userId: String, onMemory: Bool)?
+    public var invokedSwitchActiveUserParametersList = [(userId: String, onMemory: Bool)]()
 
-    public func switchActiveUser(with userId: String) async throws {
+    public func switchActiveUser(with userId: String, onMemory: Bool) async throws {
         invokedSwitchActiveUserfunction = true
         invokedSwitchActiveUserCount += 1
-        invokedSwitchActiveUserParameters = (userId, ())
-        invokedSwitchActiveUserParametersList.append((userId, ()))
-        if let error = switchActiveUserWithThrowableError4 {
+        invokedSwitchActiveUserParameters = (userId, onMemory)
+        invokedSwitchActiveUserParametersList.append((userId, onMemory))
+        if let error = switchActiveUserWithOnMemoryThrowableError4 {
             throw error
         }
         closureSwitchActiveUser()

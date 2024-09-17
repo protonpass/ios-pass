@@ -25,6 +25,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     @Environment(\.isEnabled) private var isEnabled
     let thumbnailView: ThumbnailView
     let title: String
+    let titleLineLimit: Int
     let secondaryTitle: String?
     let secondaryTitleColor: UIColor?
     let description: String?
@@ -32,12 +33,14 @@ struct GeneralItemRow<ThumbnailView: View>: View {
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
+         titleLineLimit: Int = 2,
          description: String?,
          descriptionLineLimit: Int = 1,
          secondaryTitle: String? = nil,
          secondaryTitleColor: UIColor? = nil) {
         self.thumbnailView = thumbnailView()
         self.title = title
+        self.titleLineLimit = titleLineLimit
         self.description = description
         self.descriptionLineLimit = descriptionLineLimit
         self.secondaryTitle = secondaryTitle
@@ -54,16 +57,10 @@ struct GeneralItemRow<ThumbnailView: View>: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                HStack {
-                    Text(title)
-                        .foregroundStyle((isEnabled ? PassColor.textNorm : PassColor.textWeak).toColor)
-                    if let secondaryTitle {
-                        Text(secondaryTitle)
-                            .foregroundStyle((isEnabled ?
-                                    (secondaryTitleColor ?? PassColor.textNorm) :
-                                    PassColor.textWeak).toColor)
-                    }
-                }
+                Text(titleTexts)
+                    .lineLimit(titleLineLimit)
+                    .truncationMode(secondaryTitle == nil ? .tail : .middle)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 if let description, !description.isEmpty {
                     Text(description)
@@ -80,5 +77,20 @@ struct GeneralItemRow<ThumbnailView: View>: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(.rect)
+    }
+
+    var titleTexts: [Text] {
+        var result = [Text]()
+        let titleText = Text(title)
+            .adaptiveForegroundStyle((isEnabled ? PassColor.textNorm : PassColor.textWeak).toColor)
+        result.append(titleText)
+        if let secondaryTitle {
+            result.append(Text(verbatim: " "))
+            let secondaryText = Text(secondaryTitle)
+                .adaptiveForegroundStyle((isEnabled ?
+                        (secondaryTitleColor ?? PassColor.textNorm) : PassColor.textWeak).toColor)
+            result.append(secondaryText)
+        }
+        return result
     }
 }

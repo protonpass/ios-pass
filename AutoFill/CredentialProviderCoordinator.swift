@@ -25,8 +25,11 @@ import Core
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import Screens
 import SwiftUI
+
+typealias UserForNewItemSubject = PassthroughSubject<UserUiModel, Never>
 
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
@@ -35,6 +38,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let userForNewItemSubject = UserForNewItemSubject()
 
     private weak var rootViewController: UIViewController?
     private weak var context: ASCredentialProviderExtensionContext?
@@ -63,6 +67,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
     @LazyInjected(\SharedUseCasesContainer.refreshFeatureFlags) var refreshFeatureFlags
+    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) var getUserUiModels
 
     /// Derived properties
     private var lastChildViewController: UIViewController?
@@ -114,7 +119,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
                                sessionId: sessionInfos.sessionId)
                     }
                     .store(in: &cancellables)
-                start(mode: mode)
+                try await start(mode: mode)
             } catch {
                 handle(error: error)
             }
@@ -123,10 +128,12 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 }
 
 private extension CredentialProviderCoordinator {
-    func start(mode: AutoFillMode) {
+    func start(mode: AutoFillMode) async throws {
+        let users = try await getUserUiModels()
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
-            handleShowAllLoginsMode(identifiers: identifiers,
+            handleShowAllLoginsMode(users: users,
+                                    identifiers: identifiers,
                                     passkeyRequestParams: requestParams)
 
         case let .checkAndAutoFill(request):
@@ -139,11 +146,12 @@ private extension CredentialProviderCoordinator {
             configureExtension()
 
         case let .passkeyRegistration(request):
-            handlePasskeyRegistration(request)
+            handlePasskeyRegistration(users: users, request: request)
         }
     }
 
-    func handleShowAllLoginsMode(identifiers: [ASCredentialServiceIdentifier],
+    func handleShowAllLoginsMode(users: [UserUiModel],
+                                 identifiers: [ASCredentialServiceIdentifier],
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
 
@@ -152,9 +160,39 @@ private extension CredentialProviderCoordinator {
             return
         }
 
-        let viewModel = CredentialsViewModel(serviceIdentifiers: identifiers,
+        let onCancel: () -> Void = { [weak self] in
+            guard let self else { return }
+            cancelAutoFill(reason: .userCanceled, context: context)
+        }
+
+        let onSelectUser: ([UserUiModel]) -> Void = { [weak self] users in
+            guard let self else { return }
+            presentSelectUserActionSheet(users)
+        }
+
+        let onLogOut: () -> Void = { [weak self] in
+            guard let self, let userId = userManager.activeUserId else {
+                return
+            }
+            logOut(userId: userId)
+        }
+
+        let onCreate: (LoginCreationInfo) -> Void = { [weak self] info in
+            Task { [weak self] in
+                guard let self else { return }
+                await showCreateNewItem(info)
+            }
+        }
+
+        let viewModel = CredentialsViewModel(users: users,
+                                             serviceIdentifiers: identifiers,
                                              passkeyRequestParams: passkeyRequestParams,
-                                             context: context)
+                                             context: context,
+                                             onCancel: onCancel,
+                                             onSelectUser: onSelectUser,
+                                             onLogOut: onLogOut,
+                                             onCreate: onCreate,
+                                             userForNewItemSubject: userForNewItemSubject)
         viewModel.delegate = self
         credentialsViewModel = viewModel
         showView(CredentialsView(viewModel: viewModel))
@@ -210,27 +248,44 @@ private extension CredentialProviderCoordinator {
         showView(LockedCredentialView(viewModel: viewModel))
     }
 
-    func handlePasskeyRegistration(_ request: PasskeyCredentialRequest) {
+    func handlePasskeyRegistration(users: [UserUiModel],
+                                   request: PasskeyCredentialRequest) {
         guard let context else { return }
-        let view = PasskeyCredentialsView(request: request,
-                                          context: context,
-                                          onCreate: { [weak self] in
-                                              guard let self else { return }
-                                              createNewLoginWithPasskey(request)
-                                          },
-                                          onCancel: { [weak self] in
-                                              guard let self else { return }
-                                              cancelAutoFill(reason: .userCanceled,
-                                                             context: context)
-                                          })
-        showView(view)
-    }
 
-    func createNewLoginWithPasskey(_ request: PasskeyCredentialRequest) {
-        Task { [weak self] in
+        let onCancel: () -> Void = { [weak self] in
             guard let self else { return }
-            await showCreateNewItem(for: .login(nil, request))
+            cancelAutoFill(reason: .userCanceled, context: context)
         }
+
+        let onSelectUser: ([UserUiModel]) -> Void = { [weak self] users in
+            guard let self else { return }
+            presentSelectUserActionSheet(users)
+        }
+
+        let onLogOut: () -> Void = { [weak self] in
+            guard let self, let userId = userManager.activeUserId else {
+                return
+            }
+            logOut(userId: userId)
+        }
+
+        let onCreate: (LoginCreationInfo) -> Void = { [weak self] info in
+            Task { [weak self] in
+                guard let self else { return }
+                await showCreateNewItem(info)
+            }
+        }
+
+        let viewModel = PasskeyCredentialsViewModel(users: users,
+                                                    request: request,
+                                                    context: context,
+                                                    onCreate: onCreate,
+                                                    onSelectUser: onSelectUser,
+                                                    onCancel: onCancel,
+                                                    onLogOut: onLogOut,
+                                                    userForNewItemSubject: userForNewItemSubject)
+        let view = PasskeyCredentialsView(viewModel: viewModel)
+        showView(view)
     }
 }
 
@@ -313,6 +368,23 @@ private extension CredentialProviderCoordinator {
             .store(in: &cancellables)
     }
 
+    func presentSelectUserActionSheet(_ users: [UserUiModel]) {
+        let alert = UIAlertController(title: #localized("Select account"),
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        for user in users {
+            alert.addAction(.init(title: user.email ?? user.displayName ?? "?",
+                                  style: .default,
+                                  handler: { [weak self] _ in
+                                      guard let self else { return }
+                                      userForNewItemSubject.send(user)
+                                  }))
+        }
+
+        alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
+        present(alert)
+    }
+
     func handle(error: any Error) {
         guard let context else { return }
         let defaultHandler: (any Error) -> Void = { [weak self] error in
@@ -389,45 +461,33 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    func showCreateNewItem(for mode: AutoFillCreationMode) async {
+    func showCreateNewItem(_ info: LoginCreationInfo) async {
         do {
-            showLoadingHud()
-            let userId = try await userManager.getActiveUserId()
-            if vaultsManager.getAllVaultContents().isEmpty {
-                try await vaultsManager.asyncRefresh(userId: userId)
-            }
-            let vaults = vaultsManager.getAllVaultContents().map(\.vault)
-
-            hideLoadingHud()
-
+            let vaults = info.vaults
             let lastCreateItemVault = vaults.first { $0.shareId == getUserPreferences().lastCreatedItemShareId }
             let shareId = (lastCreateItemVault ?? vaults.oldestOwned)?.shareId ?? ""
 
-            switch mode {
-            case let .login(url, request):
-                let creationType = ItemCreationType.login(title: url?.host,
-                                                          url: url?.schemeAndHost,
-                                                          autofill: true,
-                                                          passkeyCredentialRequest: request)
-                let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
-                                                                           type: creationType),
-                                                             upgradeChecker: upgradeChecker,
-                                                             vaults: vaults)
-                viewModel.delegate = self
-                present(CreateEditLoginView(viewModel: viewModel),
-                        dismissBeforePresenting: true)
-                currentCreateEditItemViewModel = viewModel
+            let userId = info.userId
+            // Temporarily switch the on-memory active user and reload the vaults contents
+            // This is to work-around the fact that many of our repositories, use cases, view models
+            // still depend on the active user instead of dynamically take a userID
+            // especially when creating new login items we need to check some limitations
+            // (login with 2FA, custom fields...)
+            try await userManager.switchActiveUser(with: userId, onMemory: true)
+            try await vaultsManager.asyncRefresh(userId: userId)
 
-            case .alias:
-                let viewModel = try CreateEditAliasViewModel(mode: .create(shareId: shareId,
-                                                                           type: .alias),
-                                                             upgradeChecker: upgradeChecker,
-                                                             vaults: vaults)
-                viewModel.delegate = self
-                present(CreateEditAliasView(viewModel: viewModel),
-                        dismissBeforePresenting: true)
-                currentCreateEditItemViewModel = viewModel
-            }
+            let creationType = ItemCreationType.login(title: info.url?.host,
+                                                      url: info.url?.schemeAndHost,
+                                                      autofill: true,
+                                                      passkeyCredentialRequest: info.request)
+            let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
+                                                                       type: creationType),
+                                                         upgradeChecker: upgradeChecker,
+                                                         vaults: vaults)
+            viewModel.delegate = self
+            present(CreateEditLoginView(viewModel: viewModel),
+                    dismissBeforePresenting: true)
+            currentCreateEditItemViewModel = viewModel
         } catch {
             logger.error(error)
             bannerManager.displayTopErrorMessage(error)
@@ -496,18 +556,6 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
 // MARK: - CredentialsViewModelDelegate
 
 extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
-    func credentialsViewModelWantsToCancel() {
-        guard let context else { return }
-        cancelAutoFill(reason: .userCanceled, context: context)
-    }
-
-    func credentialsViewModelWantsToLogOut() {
-        guard let userId = userManager.activeUserId else {
-            return
-        }
-        logOut(userId: userId)
-    }
-
     func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
                                                         delegate: any SortTypeListViewModelDelegate) {
         guard let rootViewController else {
@@ -524,13 +572,6 @@ extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         present(viewController, dismissible: true)
-    }
-
-    func credentialsViewModelWantsToCreateNewItem(_ mode: AutoFillCreationMode) {
-        Task { [weak self] in
-            guard let self else { return }
-            await showCreateNewItem(for: mode)
-        }
     }
 }
 
@@ -567,10 +608,8 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             Task { [weak self] in
                 guard let self, let context else { return }
                 do {
-                    // swiftlint:disable:next todo
-                    // TODO: will have to index for all accounts
                     if getSharedPreferences().quickTypeBar {
-                        try await indexAllLoginItems(userId: item.userId)
+                        try await indexAllLoginItems()
                     }
                     if let response {
                         completePasskeyRegistration(response, context: context)
