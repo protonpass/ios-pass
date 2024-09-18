@@ -147,6 +147,9 @@ private extension CredentialProviderCoordinator {
 
         case let .passkeyRegistration(request):
             handlePasskeyRegistration(users: users, request: request)
+
+        case let .showOneTimeCodes(identifiers):
+            handleShowOneTimeCodes(users: users, identifiers: identifiers)
         }
     }
 
@@ -286,6 +289,11 @@ private extension CredentialProviderCoordinator {
                                                     userForNewItemSubject: userForNewItemSubject)
         let view = PasskeyCredentialsView(viewModel: viewModel)
         showView(view)
+    }
+
+    func handleShowOneTimeCodes(users: [UserUiModel],
+                                identifiers: [ASCredentialServiceIdentifier]) {
+        showView(OneTimeCodesView())
     }
 }
 
