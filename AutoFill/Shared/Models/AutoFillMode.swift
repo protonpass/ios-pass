@@ -51,7 +51,7 @@ enum AutoFillRequest: Sendable {
 
 /// Possible entry points when autofilling
 enum AutoFillMode {
-    /// User wants to manually select an item to autofill
+    /// User wants to manually select an item to autofill username/password
     case showAllLogins([ASCredentialServiceIdentifier], (any PasskeyRequestParametersProtocol)?)
 
     /// When user picks a proposed email from QuickType bar
@@ -67,4 +67,7 @@ enum AutoFillMode {
     case configuration
 
     case passkeyRegistration(PasskeyCredentialRequest)
+
+    /// Users want to manually select an item to autofill 2FA code
+    case showOneTimeCodes([ASCredentialServiceIdentifier])
 }
