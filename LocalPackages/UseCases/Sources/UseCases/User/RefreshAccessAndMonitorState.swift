@@ -53,7 +53,7 @@ public final class RefreshAccessAndMonitorState: @unchecked Sendable, RefreshAcc
     }
 
     public func execute(userId: String) async throws {
-        async let getAccess = accessRepository.refreshAccess()
+        async let getAccess = accessRepository.refreshAccess(userId: userId)
         async let refreshUserBreaches = passMonitorRepository.refreshUserBreaches()
         async let refreshSecurityChecks: () = passMonitorRepository.refreshSecurityChecks()
         async let getAllAliases = getAllAliases(userId: userId)

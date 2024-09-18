@@ -47,7 +47,7 @@ public final class ShouldDisplayUpgradeAppBanner: ShouldDisplayUpgradeAppBannerU
     }
 
     public func execute() async throws -> Bool {
-        let access = try await accessRepository.refreshAccess()
+        let access = try await accessRepository.refreshAccess(userId: nil)
         if bundle.isQaBuild, userDefaults.bool(forKey: Constants.QA.forceDisplayUpgradeAppBanner) {
             return true
         }
