@@ -98,7 +98,6 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
 
     weak var delegate: (any CredentialsViewModelDelegate)?
-    private(set) weak var context: ASCredentialProviderExtensionContext?
 
     var domain: String {
         if let passkeyRequestParams {
@@ -143,9 +142,9 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
          userForNewItemSubject: UserForNewItemSubject) {
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
-        self.context = context
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
-        super.init(onCreate: onCreate,
+        super.init(context: context,
+                   onCreate: onCreate,
                    onSelectUser: onSelectUser,
                    onCancel: onCancel,
                    onLogOut: onLogOut,
