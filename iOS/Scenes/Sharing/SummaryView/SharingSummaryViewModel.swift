@@ -64,7 +64,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                 if Task.isCancelled {
                     return
                 }
-                async let getPlan = accessRepository.getPlan()
+                async let getPlan = accessRepository.getPlan(userId: nil)
                 async let sendShareInvite = sendShareInvite(with: infos)
 
                 plan = try await getPlan

@@ -50,7 +50,7 @@ public final class CheckAddressesForInvite: CheckAddressesForInviteUseCase {
     }
 
     public func execute(shareId: String, emails: [String]) async throws -> CheckAddressesResult {
-        let plan = try await accessRepository.getPlan()
+        let plan = try await accessRepository.getPlan(userId: nil)
 
         guard plan.isBusinessUser else {
             // Not business user => no restriction

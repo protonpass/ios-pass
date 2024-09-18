@@ -47,7 +47,7 @@ public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUs
             guard let self else {
                 return
             }
-            plan = try? await accessRepository.getPlan()
+            plan = try? await accessRepository.getPlan(userId: nil)
         }
     }
 

@@ -18,8 +18,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+@preconcurrency import AuthenticationServices
+import Entities
 
-final class OneTimeCodesViewModel {
-    init() {}
+enum OneTimeCodesViewModelState {
+    case loading
+    case loaded
+    case error(any Error)
+}
+
+final class OneTimeCodesViewModel: AutoFillViewModel<CredentialsForOneTimeCodeAutoFill> {
+    private let serviceIdentifiers: [ASCredentialServiceIdentifier]
+
+    init(users: [UserUiModel],
+         serviceIdentifiers: [ASCredentialServiceIdentifier],
+         context: ASCredentialProviderExtensionContext,
+         onCancel: @escaping () -> Void,
+         onSelectUser: @escaping ([UserUiModel]) -> Void,
+         onLogOut: @escaping () -> Void,
+         onCreate: @escaping (LoginCreationInfo) -> Void,
+         userForNewItemSubject: UserForNewItemSubject) {
+        self.serviceIdentifiers = serviceIdentifiers
+        super.init(context: context,
+                   onCreate: onCreate,
+                   onSelectUser: onSelectUser,
+                   onCancel: onCancel,
+                   onLogOut: onLogOut,
+                   users: users,
+                   userForNewItemSubject: userForNewItemSubject)
+    }
 }

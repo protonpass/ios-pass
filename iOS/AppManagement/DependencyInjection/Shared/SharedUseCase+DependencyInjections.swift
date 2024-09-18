@@ -368,10 +368,6 @@ extension SharedUseCasesContainer {
                                  userManager: self.userManager) }
     }
 
-    var getUserPlan: Factory<any GetUserPlanUseCase> {
-        self { GetUserPlan(repository: SharedRepositoryContainer.shared.accessRepository()) }
-    }
-
     var removeUserLocalData: Factory<any RemoveUserLocalDataUseCase> {
         self {
             let container = SharedRepositoryContainer.shared

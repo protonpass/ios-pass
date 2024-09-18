@@ -379,7 +379,7 @@ private extension EventSynchronizer {
 
 private extension EventSynchronizer {
     func aliasSync(userId: String) async throws {
-        let userAliasSyncSettings = try await accessRepository.getAccess().access.userData
+        let userAliasSyncSettings = try await accessRepository.getAccess(userId: userId).access.userData
         guard userAliasSyncSettings.aliasSyncEnabled,
               userAliasSyncSettings.pendingAliasToSync > 0,
               let shareId = userAliasSyncSettings.defaultShareID else {

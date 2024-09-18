@@ -49,7 +49,6 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
     @LazyInjected(\AutoFillUseCaseContainer.createAndAssociatePasskey) private var createAndAssociatePasskey
 
     private let request: PasskeyCredentialRequest
-    private weak var context: ASCredentialProviderExtensionContext?
 
     var searchableItems: [SearchableItem] {
         if let selectedUser {
@@ -76,8 +75,8 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
          onLogOut: @escaping () -> Void,
          userForNewItemSubject: UserForNewItemSubject) {
         self.request = request
-        self.context = context
-        super.init(onCreate: onCreate,
+        super.init(context: context,
+                   onCreate: onCreate,
                    onSelectUser: onSelectUser,
                    onCancel: onCancel,
                    onLogOut: onLogOut,

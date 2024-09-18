@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct AuthenticatorItem: Identifiable, Equatable {
+public struct AuthenticatorItem: Sendable, Identifiable, Equatable {
     public let itemId: String
     public let shareId: String
     public let icon: ItemThumbnailData

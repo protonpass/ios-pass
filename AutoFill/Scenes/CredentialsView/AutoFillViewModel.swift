@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import AuthenticationServices
 import Combine
 import Core
 import Entities
@@ -43,6 +44,8 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private var eventSynchronizer
     @LazyInjected(\SharedToolingContainer.logger) var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
+
+    private(set) weak var context: ASCredentialProviderExtensionContext?
 
     var isFreeUser: Bool {
         selectedUser?.plan.isFreeUser == true
@@ -70,12 +73,14 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
         results.flatMap(\.vaults).deduplicated
     }
 
-    init(onCreate: @escaping (LoginCreationInfo) -> Void,
+    init(context: ASCredentialProviderExtensionContext?,
+         onCreate: @escaping (LoginCreationInfo) -> Void,
          onSelectUser: @escaping ([UserUiModel]) -> Void,
          onCancel: @escaping () -> Void,
          onLogOut: @escaping () -> Void,
          users: [UserUiModel],
          userForNewItemSubject: UserForNewItemSubject) {
+        self.context = context
         self.onCreate = onCreate
         self.onSelectUser = onSelectUser
         self.onCancel = onCancel

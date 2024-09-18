@@ -236,7 +236,7 @@ private extension ManageSharedVaultViewModel {
             guard let self else {
                 return
             }
-            if let plan = try? await accessRepository.getPlan() {
+            if let plan = try? await accessRepository.getPlan(userId: nil) {
                 isFreeUser = plan.isFreeUser
                 isBusinessUser = plan.isBusinessUser
             }
