@@ -43,7 +43,7 @@ public final class ReachedVaultLimit: ReachedVaultLimitUseCase {
     }
 
     public func execute() async throws -> Bool {
-        guard let limit = try await accessRepository.getPlan().vaultLimit else {
+        guard let limit = try await accessRepository.getPlan(userId: nil).vaultLimit else {
             return false
         }
 

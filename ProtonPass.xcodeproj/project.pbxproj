@@ -14,6 +14,7 @@
 		350CF79D2A6FC4F2004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */; };
 		35116E792A82847300CAD616 /* View+ItemDetailSetUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */; };
 		351225A72C502602007D266E /* HomepageCoordinator+AddAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351225A62C502602007D266E /* HomepageCoordinator+AddAccount.swift */; };
+		3519B9DE2C9B174A005C7E71 /* GetItemsForOneTimeCodeAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3519B9DD2C9B174A005C7E71 /* GetItemsForOneTimeCodeAutoFill.swift */; };
 		351A96012BAC7E8700D599BB /* TipKitSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351A96002BAC7E8700D599BB /* TipKitSection.swift */; };
 		351B420C2B641976003FA3E3 /* View+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9D2A44430D00AD2B9A /* View+LocalAuthentication.swift */; };
 		351B420D2B6419F5003FA3E3 /* LocalAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */; };
@@ -643,6 +644,7 @@
 		350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataContainer+DependencyInjections.swift"; sourceTree = "<group>"; };
 		35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailSetUp.swift"; sourceTree = "<group>"; };
 		351225A62C502602007D266E /* HomepageCoordinator+AddAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+AddAccount.swift"; sourceTree = "<group>"; };
+		3519B9DD2C9B174A005C7E71 /* GetItemsForOneTimeCodeAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemsForOneTimeCodeAutoFill.swift; sourceTree = "<group>"; };
 		351A96002BAC7E8700D599BB /* TipKitSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipKitSection.swift; sourceTree = "<group>"; };
 		351E31A72B271E6E00750504 /* OpenAutoFillSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAutoFillSettings.swift; sourceTree = "<group>"; };
 		3520F36228E325900053A606 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
@@ -1251,6 +1253,7 @@
 				3577746E2B8FD71D0087A275 /* FetchCredentials.swift */,
 				35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */,
 				3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */,
+				3519B9DD2C9B174A005C7E71 /* GetItemsForOneTimeCodeAutoFill.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -2396,6 +2399,7 @@
 			children = (
 				5B503FF42A4E018500E6681C /* LogingManagerMock.swift */,
 				5B1453CE2A7114530048B022 /* UserDataMock.swift */,
+				84E10EABA5BC087B06289733 /* Generated */,
 			);
 			path = Mocks;
 			sourceTree = "<group>";
@@ -2467,6 +2471,14 @@
 				75283BF32946E21D006658A6 /* HomeRobot.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		84E10EABA5BC087B06289733 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Generated;
+			path = Generated;
 			sourceTree = "<group>";
 		};
 		FAEC58C22A8521630022E223 /* Subscription */ = {
@@ -2932,6 +2944,7 @@
 				5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
 				3567E46729B0ED8400511D62 /* NoCameraPermissionView.swift in Sources */,
 				5BD6138A2C20293B00968E0F /* SecureLinkListUIModel.swift in Sources */,
+				3519B9DE2C9B174A005C7E71 /* GetItemsForOneTimeCodeAutoFill.swift in Sources */,
 				5B0C74FD2A2F606C00272CE8 /* SharedServices+DependencyInjections.swift in Sources */,
 				355BDED8299E6F9C009FDBB1 /* CreateAliasLiteView.swift in Sources */,
 				35492E3D293E06C900BDE231 /* CreateEditLoginViewModel.swift in Sources */,

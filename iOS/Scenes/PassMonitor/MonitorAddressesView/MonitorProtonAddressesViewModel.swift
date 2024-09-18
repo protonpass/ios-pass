@@ -66,7 +66,8 @@ extension MonitorProtonAddressesViewModel {
                 router.display(element: .globalLoading(shouldShow: true))
                 let enabled = !access.monitor.protonAddress
                 let userId = try await userManager.getActiveUserId()
-                try await accessRepository.updateProtonAddressesMonitor(enabled)
+                try await accessRepository.updateProtonAddressesMonitor(userId: userId,
+                                                                        monitored: enabled)
                 try await refreshAccessAndMonitorState(userId: userId)
 
                 if enabled {

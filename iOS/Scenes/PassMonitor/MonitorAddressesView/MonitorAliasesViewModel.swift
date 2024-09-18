@@ -86,7 +86,7 @@ extension MonitorAliasesViewModel {
                 router.display(element: .globalLoading(shouldShow: true))
                 let enabled = !access.monitor.aliases
                 let userId = try await userManager.getActiveUserId()
-                try await accessRepository.updateAliasesMonitor(enabled)
+                try await accessRepository.updateAliasesMonitor(userId: userId, monitored: enabled)
                 try await refreshAccessAndMonitorState(userId: userId)
 
                 if enabled {

@@ -35,20 +35,24 @@ public protocol AccessRepositoryProtocol: AnyObject, Sendable {
     var didUpdateToNewPlan: PassthroughSubject<Void, Never> { get }
 
     /// Get from local, refresh if not exist
-    func getAccess() async throws -> UserAccess
-
-    /// Conveniently get the plan of current access
-    func getPlan() async throws -> Plan
+    func getAccess(userId: String?) async throws -> UserAccess
 
     /// Refresh the access of current users
     @discardableResult
-    func refreshAccess() async throws -> UserAccess
+    func refreshAccess(userId: String?) async throws -> UserAccess
 
     /// Load local accesses onto memory for quick access
     func loadAccesses() async throws
 
-    func updateProtonAddressesMonitor(_ monitored: Bool) async throws
-    func updateAliasesMonitor(_ monitored: Bool) async throws
+    func updateProtonAddressesMonitor(userId: String?, monitored: Bool) async throws
+    func updateAliasesMonitor(userId: String?, monitored: Bool) async throws
+}
+
+public extension AccessRepositoryProtocol {
+    /// Conveniently get the plan of current access
+    func getPlan(userId: String?) async throws -> Plan {
+        try await getAccess(userId: userId).access.plan
+    }
 }
 
 public actor AccessRepository: AccessRepositoryProtocol {
@@ -74,8 +78,12 @@ public actor AccessRepository: AccessRepositoryProtocol {
 }
 
 public extension AccessRepository {
-    func getAccess() async throws -> UserAccess {
-        let userId = try await userManager.getActiveUserId()
+    func getAccess(userId: String?) async throws -> UserAccess {
+        let userId = if let userId {
+            userId
+        } else {
+            try await userManager.getActiveUserId()
+        }
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
             logger.trace("Found local access for user \(userId)")
@@ -84,18 +92,16 @@ public extension AccessRepository {
         }
 
         logger.trace("No local access found for user \(userId). Refreshing...")
-        return try await refreshAccess()
-    }
-
-    func getPlan() async throws -> Plan {
-        let userId = try await userManager.getActiveUserId()
-        logger.trace("Getting plan for user \(userId)")
-        return try await getAccess().access.plan
+        return try await refreshAccess(userId: userId)
     }
 
     @discardableResult
-    func refreshAccess() async throws -> UserAccess {
-        let userId = try await userManager.getActiveUserId()
+    func refreshAccess(userId: String?) async throws -> UserAccess {
+        let userId = if let userId {
+            userId
+        } else {
+            try await userManager.getActiveUserId()
+        }
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess(userId: userId)
         let userAccess = UserAccess(userId: userId, access: remoteAccess)
@@ -122,20 +128,24 @@ public extension AccessRepository {
         self.accesses.send(accesses)
     }
 
-    func updateProtonAddressesMonitor(_ monitored: Bool) async throws {
-        try await updatePassMonitorState(.protonAddress(monitored))
+    func updateProtonAddressesMonitor(userId: String?, monitored: Bool) async throws {
+        try await updatePassMonitorState(userId: userId, request: .protonAddress(monitored))
     }
 
-    func updateAliasesMonitor(_ monitored: Bool) async throws {
-        try await updatePassMonitorState(.aliases(monitored))
+    func updateAliasesMonitor(userId: String?, monitored: Bool) async throws {
+        try await updatePassMonitorState(userId: userId, request: .aliases(monitored))
     }
 }
 
 private extension AccessRepository {
-    func updatePassMonitorState(_ request: UpdateMonitorStateRequest) async throws {
-        let userId = try await userManager.getActiveUserId()
+    func updatePassMonitorState(userId: String?, request: UpdateMonitorStateRequest) async throws {
+        let userId = if let userId {
+            userId
+        } else {
+            try await userManager.getActiveUserId()
+        }
         logger.trace("Updating monitor state for user \(userId)")
-        var access = try await getAccess()
+        var access = try await getAccess(userId: userId)
         let updatedMonitor = try await remoteDatasource.updatePassMonitorState(userId: userId, request: request)
         access.access.monitor = updatedMonitor
 

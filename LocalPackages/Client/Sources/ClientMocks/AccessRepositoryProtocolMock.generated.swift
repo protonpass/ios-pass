@@ -88,55 +88,47 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
         }
     }
     // MARK: - getAccess
-    public var getAccessThrowableError1: Error?
+    public var getAccessUserIdThrowableError1: Error?
     public var closureGetAccess: () -> () = {}
     public var invokedGetAccessfunction = false
     public var invokedGetAccessCount = 0
+    public var invokedGetAccessParameters: (userId: String?, Void)?
+    public var invokedGetAccessParametersList = [(userId: String?, Void)]()
     public var stubbedGetAccessResult: UserAccess!
 
-    public func getAccess() async throws -> UserAccess {
+    public func getAccess(userId: String?) async throws -> UserAccess {
         invokedGetAccessfunction = true
         invokedGetAccessCount += 1
-        if let error = getAccessThrowableError1 {
+        invokedGetAccessParameters = (userId, ())
+        invokedGetAccessParametersList.append((userId, ()))
+        if let error = getAccessUserIdThrowableError1 {
             throw error
         }
         closureGetAccess()
         return stubbedGetAccessResult
     }
-    // MARK: - getPlan
-    public var getPlanThrowableError2: Error?
-    public var closureGetPlan: () -> () = {}
-    public var invokedGetPlanfunction = false
-    public var invokedGetPlanCount = 0
-    public var stubbedGetPlanResult: Plan!
-
-    public func getPlan() async throws -> Plan {
-        invokedGetPlanfunction = true
-        invokedGetPlanCount += 1
-        if let error = getPlanThrowableError2 {
-            throw error
-        }
-        closureGetPlan()
-        return stubbedGetPlanResult
-    }
     // MARK: - refreshAccess
-    public var refreshAccessThrowableError3: Error?
+    public var refreshAccessUserIdThrowableError2: Error?
     public var closureRefreshAccess: () -> () = {}
     public var invokedRefreshAccessfunction = false
     public var invokedRefreshAccessCount = 0
+    public var invokedRefreshAccessParameters: (userId: String?, Void)?
+    public var invokedRefreshAccessParametersList = [(userId: String?, Void)]()
     public var stubbedRefreshAccessResult: UserAccess!
 
-    public func refreshAccess() async throws -> UserAccess {
+    public func refreshAccess(userId: String?) async throws -> UserAccess {
         invokedRefreshAccessfunction = true
         invokedRefreshAccessCount += 1
-        if let error = refreshAccessThrowableError3 {
+        invokedRefreshAccessParameters = (userId, ())
+        invokedRefreshAccessParametersList.append((userId, ()))
+        if let error = refreshAccessUserIdThrowableError2 {
             throw error
         }
         closureRefreshAccess()
         return stubbedRefreshAccessResult
     }
     // MARK: - loadAccesses
-    public var loadAccessesThrowableError4: Error?
+    public var loadAccessesThrowableError3: Error?
     public var closureLoadAccesses: () -> () = {}
     public var invokedLoadAccessesfunction = false
     public var invokedLoadAccessesCount = 0
@@ -144,43 +136,43 @@ public final class AccessRepositoryProtocolMock: @unchecked Sendable, AccessRepo
     public func loadAccesses() async throws {
         invokedLoadAccessesfunction = true
         invokedLoadAccessesCount += 1
-        if let error = loadAccessesThrowableError4 {
+        if let error = loadAccessesThrowableError3 {
             throw error
         }
         closureLoadAccesses()
     }
     // MARK: - updateProtonAddressesMonitor
-    public var updateProtonAddressesMonitorThrowableError5: Error?
+    public var updateProtonAddressesMonitorUserIdMonitoredThrowableError4: Error?
     public var closureUpdateProtonAddressesMonitor: () -> () = {}
     public var invokedUpdateProtonAddressesMonitorfunction = false
     public var invokedUpdateProtonAddressesMonitorCount = 0
-    public var invokedUpdateProtonAddressesMonitorParameters: (monitored: Bool, Void)?
-    public var invokedUpdateProtonAddressesMonitorParametersList = [(monitored: Bool, Void)]()
+    public var invokedUpdateProtonAddressesMonitorParameters: (userId: String?, monitored: Bool)?
+    public var invokedUpdateProtonAddressesMonitorParametersList = [(userId: String?, monitored: Bool)]()
 
-    public func updateProtonAddressesMonitor(_ monitored: Bool) async throws {
+    public func updateProtonAddressesMonitor(userId: String?, monitored: Bool) async throws {
         invokedUpdateProtonAddressesMonitorfunction = true
         invokedUpdateProtonAddressesMonitorCount += 1
-        invokedUpdateProtonAddressesMonitorParameters = (monitored, ())
-        invokedUpdateProtonAddressesMonitorParametersList.append((monitored, ()))
-        if let error = updateProtonAddressesMonitorThrowableError5 {
+        invokedUpdateProtonAddressesMonitorParameters = (userId, monitored)
+        invokedUpdateProtonAddressesMonitorParametersList.append((userId, monitored))
+        if let error = updateProtonAddressesMonitorUserIdMonitoredThrowableError4 {
             throw error
         }
         closureUpdateProtonAddressesMonitor()
     }
     // MARK: - updateAliasesMonitor
-    public var updateAliasesMonitorThrowableError6: Error?
+    public var updateAliasesMonitorUserIdMonitoredThrowableError5: Error?
     public var closureUpdateAliasesMonitor: () -> () = {}
     public var invokedUpdateAliasesMonitorfunction = false
     public var invokedUpdateAliasesMonitorCount = 0
-    public var invokedUpdateAliasesMonitorParameters: (monitored: Bool, Void)?
-    public var invokedUpdateAliasesMonitorParametersList = [(monitored: Bool, Void)]()
+    public var invokedUpdateAliasesMonitorParameters: (userId: String?, monitored: Bool)?
+    public var invokedUpdateAliasesMonitorParametersList = [(userId: String?, monitored: Bool)]()
 
-    public func updateAliasesMonitor(_ monitored: Bool) async throws {
+    public func updateAliasesMonitor(userId: String?, monitored: Bool) async throws {
         invokedUpdateAliasesMonitorfunction = true
         invokedUpdateAliasesMonitorCount += 1
-        invokedUpdateAliasesMonitorParameters = (monitored, ())
-        invokedUpdateAliasesMonitorParametersList.append((monitored, ()))
-        if let error = updateAliasesMonitorThrowableError6 {
+        invokedUpdateAliasesMonitorParameters = (userId, monitored)
+        invokedUpdateAliasesMonitorParametersList.append((userId, monitored))
+        if let error = updateAliasesMonitorUserIdMonitoredThrowableError5 {
             throw error
         }
         closureUpdateAliasesMonitor()

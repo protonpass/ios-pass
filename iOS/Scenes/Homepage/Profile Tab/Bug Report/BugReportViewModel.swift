@@ -98,7 +98,7 @@ final class BugReportViewModel: ObservableObject {
             guard let self else { return }
             actionInProcess = true
             do {
-                let plan = try await accessRepository.getPlan()
+                let plan = try await accessRepository.getPlan(userId: nil)
                 let planName = plan.type.capitalized
                 let objectDescription = object?.description ?? ""
                 let title = "[\(planName)] iOS Proton Pass: \(objectDescription)"
