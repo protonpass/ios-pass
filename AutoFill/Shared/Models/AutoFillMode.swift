@@ -24,12 +24,15 @@ import Entities
 enum AutoFillRequest: Sendable {
     case password(ASPasswordCredentialIdentity)
     case passkey(PasskeyCredentialRequest)
+    case oneTimeCode(OneTimeCodeCredentialIdentity)
 
     var recordIdentifier: String? {
         switch self {
         case let .password(credential):
             credential.recordIdentifier
         case let .passkey(credential):
+            credential.recordIdentifier
+        case let .oneTimeCode(credential):
             credential.recordIdentifier
         }
     }
@@ -39,6 +42,8 @@ enum AutoFillRequest: Sendable {
         case let .password(credential):
             [credential.serviceIdentifier]
         case let .passkey(credential):
+            [credential.serviceIdentifier]
+        case let .oneTimeCode(credential):
             [credential.serviceIdentifier]
         }
     }
