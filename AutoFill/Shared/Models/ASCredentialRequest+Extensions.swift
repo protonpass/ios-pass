@@ -48,6 +48,16 @@ extension ASCredentialRequest {
                                         supportedAlgorithms: request.supportedAlgorithms)
     }
 
+    @available(iOSApplicationExtension 18.0, *)
+    var oneTimeCodeCredentialIdentity: ASOneTimeCodeCredentialIdentity? {
+        guard let request = self as? ASOneTimeCodeCredentialRequest,
+              let credentialIdentity = request.credentialIdentity as? ASOneTimeCodeCredentialIdentity else {
+            assertionFailure("Failed to extract request's information")
+            return nil
+        }
+        return credentialIdentity
+    }
+
     var autoFillRequest: AutoFillRequest? {
         switch type {
         case .password:
@@ -59,6 +69,16 @@ extension ASCredentialRequest {
             if let passkeyCredentialRequest {
                 return .passkey(passkeyCredentialRequest)
             }
+
+        case .oneTimeCode:
+            if #available(iOS 18, *), let identity = oneTimeCodeCredentialIdentity {
+                return .oneTimeCode(.init(serviceIdentifier: identity.serviceIdentifier,
+                                          recordIdentifier: identity.recordIdentifier))
+            }
+
+        case .passkeyRegistration:
+            // Not yet supported
+            break
 
         @unknown default:
             assertionFailure("Unknown credential request type")
