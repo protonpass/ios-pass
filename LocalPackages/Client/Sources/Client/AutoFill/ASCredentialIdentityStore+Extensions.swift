@@ -39,10 +39,18 @@ extension ASCredentialIdentityStore {
 private extension ASCredentialIdentityStore {
     @available(iOS 17.0, *)
     func performActionWithPasskeys(_ action: Action, on credentials: [CredentialIdentity]) async throws {
-        let domainCredentials: [any ASCredentialIdentity] = try credentials.map {
-            switch $0 {
+        let domainCredentials: [any ASCredentialIdentity] = try credentials.compactMap { creds in
+            switch creds {
             case let .password(identity):
                 try identity.toASPasswordCredentialIdentity()
+
+            case let .oneTimeCode(identity):
+                if #available(iOS 18.0, *) {
+                    try identity.toASOneTimeCodeCredentialIdentity()
+                } else {
+                    nil
+                }
+
             case let .passkey(identity):
                 try identity.toASPasskeyCredentialIdentity()
             }
@@ -63,7 +71,7 @@ private extension ASCredentialIdentityStore {
             switch $0 {
             case let .password(identity):
                 try identity.toASPasswordCredentialIdentity()
-            case .passkey:
+            case .oneTimeCode, .passkey:
                 nil
             }
         }
@@ -86,6 +94,16 @@ private extension PasswordCredentialIdentity {
                                                         recordIdentifier: ids.serializeBase64())
         identity.rank = Int(lastUseTime)
         return identity
+    }
+}
+
+private extension OneTimeCodeIdentity {
+    @available(iOS 18.0, *)
+    func toASOneTimeCodeCredentialIdentity() throws -> ASOneTimeCodeCredentialIdentity {
+        let identifier = ASCredentialServiceIdentifier(identifier: url, type: .URL)
+        return try .init(serviceIdentifier: identifier,
+                         label: username,
+                         recordIdentifier: ids.serializeBase64())
     }
 }
 

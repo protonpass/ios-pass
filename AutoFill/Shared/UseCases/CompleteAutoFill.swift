@@ -113,6 +113,9 @@ final class CompleteAutoFill: @unchecked Sendable, CompleteAutoFillUseCase {
                 try await telemetryRepository.addNewEvent(userId: userId, type: .passkeyAuth)
                 context.completeAssertionRequest(using: passkeyCredential,
                                                  completionHandler: completion)
+            } else if #available(iOS 18, *),
+                      let oneTimeCodeCredential = credential as? ASOneTimeCodeCredential {
+                await context.completeOneTimeCodeRequest(using: oneTimeCodeCredential)
             } else {
                 assertionFailure("Unsupported credential")
             }
