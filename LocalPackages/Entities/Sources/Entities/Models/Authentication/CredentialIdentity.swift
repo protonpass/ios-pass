@@ -23,6 +23,7 @@ import Foundation
 
 public enum CredentialIdentity {
     case password(PasswordCredentialIdentity)
+    case oneTimeCode(OneTimeCodeIdentity)
     case passkey(PasskeyCredentialIdentity)
 }
 
@@ -46,6 +47,24 @@ public struct PasswordCredentialIdentity: Sendable {
         self.username = username
         self.url = url
         self.lastUseTime = lastUseTime
+    }
+}
+
+public struct OneTimeCodeIdentity: Sendable {
+    /// Maps the `recordIdentifier` property
+    public let ids: IDs
+    /// Maps the `label` property
+    public let username: String
+    /// Maps the `serviceIdentifier` property
+    public let url: String
+
+    public init(shareId: String,
+                itemId: String,
+                username: String,
+                url: String) {
+        ids = .init(shareId: shareId, itemId: itemId)
+        self.username = username
+        self.url = url
     }
 }
 

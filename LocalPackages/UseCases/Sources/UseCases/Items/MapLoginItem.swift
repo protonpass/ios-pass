@@ -47,23 +47,39 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
             throw PassError.credentialProvider(.notLogInItem)
         }
 
+        // Decompose into password identities
         var passwords = [CredentialIdentity]()
         if !data.authIdentifier.isEmpty, !data.password.isEmpty {
-            passwords = data.urls.map { CredentialIdentity.password(.init(shareId: itemContent.shareId,
-                                                                          itemId: itemContent.item.itemID,
-                                                                          username: data.authIdentifier,
-                                                                          url: $0,
-                                                                          lastUseTime: itemContent.item
-                                                                              .lastUseTime ?? 0)) }
+            passwords = data.urls.map {
+                CredentialIdentity.password(.init(shareId: itemContent.shareId,
+                                                  itemId: itemContent.item.itemID,
+                                                  username: data.authIdentifier,
+                                                  url: $0,
+                                                  lastUseTime: itemContent.item.lastUseTime ?? 0))
+            }
         }
 
-        let passkeys = data.passkeys.map { CredentialIdentity.passkey(.init(shareId: itemContent.shareId,
-                                                                            itemId: itemContent.itemId,
-                                                                            relyingPartyIdentifier: $0.rpID,
-                                                                            userName: $0.userName,
-                                                                            userHandle: $0.userHandle,
-                                                                            credentialId: $0.credentialID)) }
+        // Decompose into one-time code identities
+        var oneTimeCodes = [CredentialIdentity]()
+        if !data.authIdentifier.isEmpty, !data.totpUri.isEmpty {
+            oneTimeCodes = data.urls.map {
+                CredentialIdentity.oneTimeCode(.init(shareId: itemContent.shareId,
+                                                     itemId: itemContent.itemId,
+                                                     username: data.authIdentifier,
+                                                     url: $0))
+            }
+        }
 
-        return passwords + passkeys
+        // Decompose into passkeys identities
+        let passkeys = data.passkeys.map {
+            CredentialIdentity.passkey(.init(shareId: itemContent.shareId,
+                                             itemId: itemContent.itemId,
+                                             relyingPartyIdentifier: $0.rpID,
+                                             userName: $0.userName,
+                                             userHandle: $0.userHandle,
+                                             credentialId: $0.credentialID))
+        }
+
+        return passwords + oneTimeCodes + passkeys
     }
 }
