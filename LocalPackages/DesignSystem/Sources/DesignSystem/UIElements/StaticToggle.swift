@@ -47,6 +47,8 @@ public struct StaticToggle: View {
             }
         })
         .tint(tintColor.toColor)
-        .onTapGesture { action?() }
+        .simultaneousGesture(TapGesture().onEnded {
+            action?()
+        })
     }
 }
