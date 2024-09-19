@@ -48,33 +48,9 @@ struct CredentialsView: View {
         }
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
-        .alert("Associate URL?",
-               isPresented: $viewModel.isShowingConfirmationAlert,
-               actions: {
-                   if let information = viewModel.notMatchedItemInformation {
-                       Button(action: {
-                           viewModel.associateAndAutofill(item: information.item)
-                       }, label: {
-                           Text("Associate and autofill")
-                       })
-
-                       Button(action: {
-                           viewModel.select(item: information.item)
-                       }, label: {
-                           Text("Just autofill")
-                       })
-                   }
-
-                   Button(role: .cancel) {
-                       Text("Cancel")
-                   }
-               },
-               message: {
-                   if let information = viewModel.notMatchedItemInformation {
-                       // swiftlint:disable:next line_length
-                       Text("Would you want to associate « \(information.url) » with « \(information.item.itemTitle) »?")
-                   }
-               })
+        .associateUrlAlert(information: $viewModel.notMatchedItemInformation,
+                           onAssociateAndAutofill: { viewModel.associateAndAutofill(item: $0) },
+                           onJustAutofill: { viewModel.select(item: $0) })
         .sheet(isPresented: selectPasskeySheetBinding) {
             if let info = viewModel.selectPasskeySheetInformation,
                let context = viewModel.context {
