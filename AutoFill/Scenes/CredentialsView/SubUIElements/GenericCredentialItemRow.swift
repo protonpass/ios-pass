@@ -35,6 +35,7 @@ struct GenericCredentialItemRow: View {
             if let item = item as? ItemUiModel {
                 GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                                title: item.title,
+                               titleLineLimit: 2,
                                description: item.description,
                                secondaryTitle: secondaryTitle,
                                secondaryTitleColor: PassColor.textWeak)
