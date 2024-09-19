@@ -1,6 +1,6 @@
 //
-// AutoFillPassword.swift
-// Proton Pass - Created on 29/02/2024.
+// AutoFillCredentials.swift
+// Proton Pass - Created on 19/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,33 +21,41 @@
 import AuthenticationServices
 import Client
 import Entities
-import Foundation
 
-protocol AutoFillPasswordUseCase: Sendable {
+protocol AutoFillCredentialsUseCase: Sendable {
     func execute(_ item: any ItemIdentifiable,
+                 mode: CredentialsMode,
                  serviceIdentifiers: [ASCredentialServiceIdentifier],
                  context: ASCredentialProviderExtensionContext) async throws
 }
 
-extension AutoFillPasswordUseCase {
+extension AutoFillCredentialsUseCase {
     func callAsFunction(_ item: any ItemIdentifiable,
+                        mode: CredentialsMode,
                         serviceIdentifiers: [ASCredentialServiceIdentifier],
                         context: ASCredentialProviderExtensionContext) async throws {
-        try await execute(item, serviceIdentifiers: serviceIdentifiers, context: context)
+        try await execute(item,
+                          mode: mode,
+                          serviceIdentifiers: serviceIdentifiers,
+                          context: context)
     }
 }
 
-final class AutoFillPassword: AutoFillPasswordUseCase {
+final class AutoFillCredentials: AutoFillCredentialsUseCase {
     private let itemRepository: any ItemRepositoryProtocol
+    private let totpService: any TOTPServiceProtocol
     private let completeAutoFill: any CompleteAutoFillUseCase
 
     init(itemRepository: any ItemRepositoryProtocol,
+         totpService: any TOTPServiceProtocol,
          completeAutoFill: any CompleteAutoFillUseCase) {
         self.itemRepository = itemRepository
+        self.totpService = totpService
         self.completeAutoFill = completeAutoFill
     }
 
     func execute(_ item: any ItemIdentifiable,
+                 mode: CredentialsMode,
                  serviceIdentifiers: [ASCredentialServiceIdentifier],
                  context: ASCredentialProviderExtensionContext) async throws {
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
@@ -56,8 +64,14 @@ final class AutoFillPassword: AutoFillPasswordUseCase {
             throw PassError.itemNotFound(item)
         }
 
-        let credential = ASPasswordCredential(user: loginData.authIdentifier,
+        let credential: any ASAuthorizationCredential
+        if #available(iOS 18, *), case .oneTimeCodes = mode {
+            let token = try totpService.generateTotpToken(uri: loginData.totpUri)
+            credential = ASOneTimeCodeCredential(code: token.code)
+        } else {
+            credential = ASPasswordCredential(user: loginData.authIdentifier,
                                               password: loginData.password)
+        }
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,
                                    credential: credential,

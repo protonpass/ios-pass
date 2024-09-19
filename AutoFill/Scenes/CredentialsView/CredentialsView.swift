@@ -89,7 +89,7 @@ private extension CredentialsView {
                        viewModel.notMatchedItems.isEmpty {
                         VStack {
                             Spacer()
-                            Text("You currently have no login items")
+                            Text(viewModel.mode.emptyMessage)
                                 .multilineTextAlignment(.center)
                                 .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding()
@@ -241,11 +241,25 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GenericCredentialItemRow(item: item,
-                                             user: viewModel.getUser(for: item),
-                                             selectItem: { viewModel.select(item: $0) })
-                        .plainListRow()
-                        .padding(.horizontal)
+                    Group {
+                        switch viewModel.mode {
+                        case .passwords:
+                            GenericCredentialItemRow(item: item,
+                                                     user: viewModel.getUser(for: item),
+                                                     selectItem: { viewModel.select(item: $0) })
+                        case .oneTimeCodes:
+                            if let item = item as? ItemUiModel,
+                               let totpUri = item.totpUri {
+                                AuthenticatorRow(thumbnailView: { EmptyView() },
+                                                 uri: totpUri,
+                                                 title: item.itemTitle,
+                                                 totpManager: SharedServiceContainer.shared.totpManager(),
+                                                 onCopyTotpToken: { _ in viewModel.select(item: item) })
+                            }
+                        }
+                    }
+                    .plainListRow()
+                    .padding(.horizontal)
                 }
             }, header: {
                 Text(headerTitle)
@@ -348,5 +362,16 @@ private struct CredentialsSkeletonView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .shimmering()
+    }
+}
+
+private extension CredentialsMode {
+    var emptyMessage: LocalizedStringKey {
+        switch self {
+        case .passwords:
+            "You currently have no login items"
+        case .oneTimeCodes:
+            "You currently have no login items with 2FA secret key (TOTP)"
+        }
     }
 }

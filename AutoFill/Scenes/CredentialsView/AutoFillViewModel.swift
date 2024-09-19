@@ -38,7 +38,7 @@ protocol AutoFillViewModelDelegate: AnyObject {
 }
 
 @MainActor
-class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
+class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     @Published private(set) var results: [T] = []
     @Published var selectedUser: UserUiModel?
     var cancellables = Set<AnyCancellable>()
@@ -51,6 +51,8 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private var eventSynchronizer
     @LazyInjected(\SharedToolingContainer.logger) var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
+    @LazyInjected(\SharedUseCasesContainer.canEditItem) var canEditItem
+    @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill
 
     weak var delegate: (any AutoFillViewModelDelegate)?
     private(set) weak var context: ASCredentialProviderExtensionContext?
