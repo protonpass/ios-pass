@@ -18,10 +18,44 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
 struct OneTimeCodesView: View {
+    @StateObject private var viewModel: OneTimeCodesViewModel
+    @FocusState private var isFocusedOnSearchBar
+
+    init(viewModel: OneTimeCodesViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
+    }
+
     var body: some View {
-        Text(verbatim: "One-Time Codes")
+        ZStack {
+            switch viewModel.state {
+            case .loading:
+                ProgressView()
+            case .loaded:
+                ScrollView {
+                    LazyVStack {
+                        Text(verbatim: "Matched")
+                        ForEach(viewModel.matchedItems) { item in
+                            Text(item.title)
+                        }
+
+                        Text(verbatim: "Not Matched")
+                        ForEach(viewModel.notMatchedItems) { item in
+                            Text(item.title)
+                        }
+                    }
+                }
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: { Task { await viewModel.fetchItems() } })
+            }
+        }
+        .task {
+            await viewModel.fetchItems()
+            await viewModel.sync(ignoreError: true)
+        }
     }
 }

@@ -28,12 +28,6 @@ import Macro
 import Screens
 import SwiftUI
 
-@MainActor
-protocol CredentialsViewModelDelegate: AnyObject {
-    func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                        delegate: any SortTypeListViewModelDelegate)
-}
-
 enum CredentialsViewState: Equatable {
     /// Empty search query
     case idle
@@ -77,7 +71,6 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @Published var query = ""
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var selectPasskeySheetInformation: SelectPasskeySheetInformation?
-    @Published var isShowingConfirmationAlert = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
@@ -96,8 +89,6 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     private let urls: [URL]
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
-
-    weak var delegate: (any CredentialsViewModelDelegate)?
 
     var domain: String {
         if let passkeyRequestParams {
@@ -135,19 +126,11 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
          context: ASCredentialProviderExtensionContext,
-         onCancel: @escaping () -> Void,
-         onSelectUser: @escaping ([UserUiModel]) -> Void,
-         onLogOut: @escaping () -> Void,
-         onCreate: @escaping (LoginCreationInfo) -> Void,
          userForNewItemSubject: UserForNewItemSubject) {
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         super.init(context: context,
-                   onCreate: onCreate,
-                   onSelectUser: onSelectUser,
-                   onCancel: onCancel,
-                   onLogOut: onLogOut,
                    users: users,
                    userForNewItemSubject: userForNewItemSubject)
         setup()
@@ -192,8 +175,8 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
 
 extension CredentialsViewModel {
     func presentSortTypeList() {
-        delegate?.credentialsViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
-                                                                 delegate: self)
+        delegate?.autoFillViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
+                                                              delegate: self)
     }
 
     func associateAndAutofill(item: any ItemIdentifiable) {
@@ -334,23 +317,6 @@ private extension CredentialsViewModel {
             .sink { [weak self] term in
                 guard let self else { return }
                 doSearch(term: term)
-            }
-            .store(in: &cancellables)
-
-        $notMatchedItemInformation
-            .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                isShowingConfirmationAlert = true
-            }
-            .store(in: &cancellables)
-
-        $isShowingConfirmationAlert
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] showing in
-                guard let self, !showing else { return }
-                notMatchedItemInformation = nil
             }
             .store(in: &cancellables)
     }

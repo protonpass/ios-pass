@@ -41,10 +41,3 @@ struct CredentialsForPasskeyCreation: AutoFillCredentials {
     let searchableItems: [SearchableItem]
     let items: [ItemUiModel]
 }
-
-struct CredentialsForOneTimeCodeAutoFill: AutoFillCredentials {
-    let userId: String
-    let vaults: [Vault]
-    let matchedItems: [AuthenticatorItem]
-    let notMatchedItems: [AuthenticatorItem]
-}
