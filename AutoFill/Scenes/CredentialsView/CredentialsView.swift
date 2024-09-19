@@ -63,7 +63,6 @@ struct CredentialsView: View {
 }
 
 private extension CredentialsView {
-    @ViewBuilder
     var stateViews: some View {
         VStack(spacing: 0) {
             if viewModel.state != .loading {
@@ -81,7 +80,7 @@ private extension CredentialsView {
                 }
 
                 if viewModel.isFreeUser {
-                    mainVaultsOnlyMessage
+                    MainVaultsOnlyBanner(onTap: { viewModel.upgrade() })
                         .padding([.horizontal, .top])
                 }
 
@@ -226,21 +225,6 @@ private extension CredentialsView {
             .padding([.top, .horizontal])
             sortableSections(for: items)
         }
-    }
-
-    var mainVaultsOnlyMessage: some View {
-        ZStack {
-            Text("Your plan only allows to use items from your first 2 vaults for autofill purposes.")
-                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
-                Text(verbatim: " ") +
-                Text("Upgrade now")
-                .underline(color: PassColor.interactionNormMajor1.toColor)
-                .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
-        }
-        .padding()
-        .background(PassColor.interactionNormMinor1.toColor)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .onTapGesture(perform: viewModel.upgrade)
     }
 }
 

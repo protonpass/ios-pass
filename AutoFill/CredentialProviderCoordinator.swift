@@ -242,10 +242,21 @@ private extension CredentialProviderCoordinator {
             return
         }
         guard let context else { return }
+        #if DEBUG
+        /// As of iOS 18.0, the list of service identifiers is always empty
+        /// even though iOS could detect the OTP form
+        /// So we mock it for testing purpose
+        let filth = ASCredentialServiceIdentifier(identifier: "https://autofilth.lol", type: .URL)
+        let viewModel = OneTimeCodesViewModel(users: users,
+                                              serviceIdentifiers: [filth],
+                                              context: context,
+                                              userForNewItemSubject: userForNewItemSubject)
+        #else
         let viewModel = OneTimeCodesViewModel(users: users,
                                               serviceIdentifiers: identifiers,
                                               context: context,
                                               userForNewItemSubject: userForNewItemSubject)
+        #endif
         viewModel.delegate = self
         showView(OneTimeCodesView(viewModel: viewModel))
     }

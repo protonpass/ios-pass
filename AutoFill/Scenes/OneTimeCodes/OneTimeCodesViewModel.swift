@@ -29,14 +29,18 @@ enum OneTimeCodesViewModelState {
     case error(any Error)
 }
 
+@MainActor
 final class OneTimeCodesViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @Published private(set) var state = OneTimeCodesViewModelState.loading
+    @Published var query = ""
+
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
 
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
-    private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
+    @LazyInjected(\AutoFillUseCaseContainer.autoFillOneTimeCode) private var autoFillOneTimeCode
 
-    private let urls: [URL]
+    private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
+    let urls: [URL]
 
     var domain: String {
         urls.first?.host() ?? ""
@@ -109,5 +113,22 @@ final class OneTimeCodesViewModel: AutoFillViewModel<CredentialsFetchResult> {
 
     override func changeToLoadedState() {
         state = .loaded
+    }
+}
+
+extension OneTimeCodesViewModel {
+    func select(item: any ItemIdentifiable) {
+        guard let context else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await autoFillOneTimeCode(item,
+                                              serviceIdentifiers: serviceIdentifiers,
+                                              context: context)
+            } catch {
+                logger.error(error)
+                state = .error(error)
+            }
+        }
     }
 }
