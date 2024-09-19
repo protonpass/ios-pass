@@ -79,16 +79,14 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
-    @LazyInjected(\AutoFillUseCaseContainer.autoFillPassword) private var autoFillPassword
-    @LazyInjected(\AutoFillUseCaseContainer
-        .associateUrlAndAutoFillPassword) private var associateUrlAndAutoFillPassword
+    @LazyInjected(\AutoFillUseCaseContainer.autoFillCredentials) private var autoFillCredentials
     @LazyInjected(\AutoFillUseCaseContainer.autoFillPasskey) private var autoFillPasskey
 
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
     private let passkeyRequestParams: (any PasskeyRequestParametersProtocol)?
     private let urls: [URL]
     private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
-    private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
+    let mode: CredentialsMode
 
     var domain: String {
         if let passkeyRequestParams {
@@ -99,34 +97,57 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     }
 
     private var searchableItems: [SearchableItem] {
-        if let selectedUser {
+        let items = if let selectedUser {
             results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
         } else {
             getAllObjects(\.searchableItems)
         }
+
+        return switch mode {
+        case .passwords:
+            items
+        case .oneTimeCodes:
+            items.filter(\.hasTotpUri)
+        }
     }
 
     var matchedItems: [ItemUiModel] {
-        if let selectedUser {
+        let items = if let selectedUser {
             results.first { $0.userId == selectedUser.id }?.matchedItems ?? []
         } else {
             getAllObjects(\.matchedItems)
         }
+
+        return switch mode {
+        case .passwords:
+            items
+        case .oneTimeCodes:
+            items.filter(\.hasTotpUri)
+        }
     }
 
     var notMatchedItems: [ItemUiModel] {
-        if let selectedUser {
+        let items = if let selectedUser {
             results.first { $0.userId == selectedUser.id }?.notMatchedItems ?? []
         } else {
             getAllObjects(\.notMatchedItems)
         }
+
+        return switch mode {
+        case .passwords:
+            items
+        case .oneTimeCodes:
+            items.filter(\.hasTotpUri)
+        }
     }
 
-    init(users: [UserUiModel],
+    init(mode: CredentialsMode,
+         users: [UserUiModel],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          passkeyRequestParams: (any PasskeyRequestParametersProtocol)?,
          context: ASCredentialProviderExtensionContext,
          userForNewItemSubject: UserForNewItemSubject) {
+        self.mode = mode
         self.serviceIdentifiers = serviceIdentifiers
         self.passkeyRequestParams = passkeyRequestParams
         urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
@@ -188,10 +209,11 @@ extension CredentialsViewModel {
             router.display(element: .globalLoading(shouldShow: true))
             do {
                 logger.trace("Associate and autofilling \(item.debugDescription)")
-                try await associateUrlAndAutoFillPassword(item: item,
-                                                          urls: urls,
-                                                          serviceIdentifiers: serviceIdentifiers,
-                                                          context: context)
+                try await associateUrlAndAutoFill(item: item,
+                                                  mode: mode,
+                                                  urls: urls,
+                                                  serviceIdentifiers: serviceIdentifiers,
+                                                  context: context)
                 logger.info("Associate and autofill successfully \(item.debugDescription)")
             } catch {
                 logger.error(error)
@@ -238,7 +260,10 @@ private extension CredentialsViewModel {
         }
 
         // Given URL is not valid or item is matched, in either case just autofill normally
-        try await autoFillPassword(item, serviceIdentifiers: serviceIdentifiers, context: context)
+        try await autoFillCredentials(item,
+                                      mode: mode,
+                                      serviceIdentifiers: serviceIdentifiers,
+                                      context: context)
     }
 
     func handlePasskeySelection(for item: any ItemIdentifiable,

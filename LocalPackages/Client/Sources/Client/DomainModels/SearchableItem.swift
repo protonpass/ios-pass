@@ -34,6 +34,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let name: String
     public let note: String
     public let url: String?
+    public let hasTotpUri: Bool
     public let requiredExtras: [String] // E.g: Username for login items
     public let optionalExtras: [String] // E.g: URLs for login items
     public let lastUseTime: Int64
@@ -66,12 +67,15 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         note = itemContent.note
 
         var optionalExtras: [String] = []
+        var hasTotpUri = false
 
         switch itemContent.contentData {
         case let .login(data):
             url = data.urls.first
             requiredExtras = [data.email, data.username]
             optionalExtras = data.urls
+            hasTotpUri = !data.totpUri.isEmpty
+
         case let .identity(data):
             url = nil
             requiredExtras = [data.email, data.fullName]
@@ -125,6 +129,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
                     optionalExtras.append("\(customField.title): \(customField.content)")
                 }
             }
+
         default:
             url = nil
             requiredExtras = []
@@ -139,6 +144,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         modifyTime = itemContent.item.modifyTime
         pinned = itemContent.item.pinned
         self.optionalExtras = optionalExtras
+        self.hasTotpUri = hasTotpUri
     }
 }
 
