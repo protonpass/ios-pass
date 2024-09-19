@@ -50,14 +50,8 @@ public final class TOTPCircularTimerViewModel: ObservableObject {
 
         // Create a new timer
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self else {
-                return
-            }
-            Task { @MainActor [weak self] in
-                guard let self else {
-                    return
-                }
-
+            MainActor.assumeIsolated { [weak self] in
+                guard let self else { return }
                 remainingSeconds -= 1
                 percentage = remainingSeconds / Double(data.total)
             }

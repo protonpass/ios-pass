@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		350134FD2C9C505B008D803A /* AutoFillOneTimeCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350134FC2C9C505B008D803A /* AutoFillOneTimeCode.swift */; };
 		350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350AF86D299683940045B7B6 /* NoteEditSection.swift */; };
 		350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350AF86D299683940045B7B6 /* NoteEditSection.swift */; };
 		350AF87029968C190045B7B6 /* CreateEditItemToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E52829940C1900775FAC /* CreateEditItemToolbar.swift */; };
@@ -14,6 +15,7 @@
 		350CF79D2A6FC4F2004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */; };
 		35116E792A82847300CAD616 /* View+ItemDetailSetUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */; };
 		351225A72C502602007D266E /* HomepageCoordinator+AddAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351225A62C502602007D266E /* HomepageCoordinator+AddAccount.swift */; };
+		3517C7902C9C4AE000CD8028 /* MainVaultsOnlyBanner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3517C78F2C9C4AE000CD8028 /* MainVaultsOnlyBanner.swift */; };
 		351A96012BAC7E8700D599BB /* TipKitSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351A96002BAC7E8700D599BB /* TipKitSection.swift */; };
 		351B420C2B641976003FA3E3 /* View+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9D2A44430D00AD2B9A /* View+LocalAuthentication.swift */; };
 		351B420D2B6419F5003FA3E3 /* LocalAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */; };
@@ -640,10 +642,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		350134FC2C9C505B008D803A /* AutoFillOneTimeCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillOneTimeCode.swift; sourceTree = "<group>"; };
 		350AF86D299683940045B7B6 /* NoteEditSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditSection.swift; sourceTree = "<group>"; };
 		350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataContainer+DependencyInjections.swift"; sourceTree = "<group>"; };
 		35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailSetUp.swift"; sourceTree = "<group>"; };
 		351225A62C502602007D266E /* HomepageCoordinator+AddAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+AddAccount.swift"; sourceTree = "<group>"; };
+		3517C78F2C9C4AE000CD8028 /* MainVaultsOnlyBanner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainVaultsOnlyBanner.swift; sourceTree = "<group>"; };
 		351A96002BAC7E8700D599BB /* TipKitSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipKitSection.swift; sourceTree = "<group>"; };
 		351E31A72B271E6E00750504 /* OpenAutoFillSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAutoFillSettings.swift; sourceTree = "<group>"; };
 		3520F36228E325900053A606 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
@@ -1240,6 +1244,7 @@
 			isa = PBXGroup;
 			children = (
 				359A90292B9099E100A50138 /* AssociateUrlAndAutoFillPassword.swift */,
+				350134FC2C9C505B008D803A /* AutoFillOneTimeCode.swift */,
 				359A902B2B90AFFC00A50138 /* AutoFillPassword.swift */,
 				359A902F2B90C58300A50138 /* AutoFillPasskey.swift */,
 				5BD4A8FB2B10C1B900C44C08 /* ResetFactory.swift */,
@@ -2377,6 +2382,7 @@
 			children = (
 				35A6E78A2C9C2DA8002A01EF /* View+AssociateUrlAlert.swift */,
 				5BFFB4FF2A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift */,
+				3517C78F2C9C4AE000CD8028 /* MainVaultsOnlyBanner.swift */,
 			);
 			path = SubUIElements;
 			sourceTree = "<group>";
@@ -2953,6 +2959,7 @@
 				35702C982A1E81250089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
 				3559BAA52A5B32600020E172 /* Preferences.swift in Sources */,
 				355E92792A59D70800C22703 /* Factory+Extensions.swift in Sources */,
+				350134FD2C9C505B008D803A /* AutoFillOneTimeCode.swift in Sources */,
 				35951DCE2B8CCC48006616BE /* GenerateAuthorizationCredential.swift in Sources */,
 				35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
 				5BFFB5052A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift in Sources */,
@@ -3037,6 +3044,7 @@
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */,
 				354F1F1B29D8CAC500A6B1E8 /* AppData.swift in Sources */,
+				3517C7902C9C4AE000CD8028 /* MainVaultsOnlyBanner.swift in Sources */,
 				352352B72B91DEC900603B91 /* ItemSearchResultView.swift in Sources */,
 				5B0C75032A30806D00272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 			);

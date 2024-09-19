@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
+import Screens
 import SwiftUI
 
 struct OneTimeCodesView: View {
@@ -31,31 +33,121 @@ struct OneTimeCodesView: View {
 
     var body: some View {
         ZStack {
-            switch viewModel.state {
-            case .loading:
-                ProgressView()
-            case .loaded:
-                ScrollView {
-                    LazyVStack {
-                        Text(verbatim: "Matched")
-                        ForEach(viewModel.matchedItems) { item in
-                            Text(item.title)
-                        }
-
-                        Text(verbatim: "Not Matched")
-                        ForEach(viewModel.notMatchedItems) { item in
-                            Text(item.title)
-                        }
-                    }
-                }
-            case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { Task { await viewModel.fetchItems() } })
-            }
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+            stateView
         }
         .task {
             await viewModel.fetchItems()
             await viewModel.sync(ignoreError: true)
         }
+        .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
+                             onFailure: { _ in viewModel.handleAuthenticationFailure() })
+        .task {
+            await viewModel.fetchItems()
+            await viewModel.sync(ignoreError: true)
+        }
+    }
+}
+
+private extension OneTimeCodesView {
+    var stateView: some View {
+        VStack(spacing: 0) {
+            SearchBar(query: $viewModel.query,
+                      isFocused: $isFocusedOnSearchBar,
+                      placeholder: viewModel.searchBarPlaceholder,
+                      onCancel: { viewModel.handleCancel() })
+
+            switch viewModel.state {
+            case .loading:
+                ProgressView()
+
+            case .loaded:
+                if viewModel.users.count > 1 {
+                    UserAccountSelectionMenu(selectedUser: $viewModel.selectedUser,
+                                             users: viewModel.users)
+                        .padding(.horizontal)
+                }
+
+                if viewModel.isFreeUser {
+                    MainVaultsOnlyBanner(onTap: { viewModel.upgrade() })
+                        .padding([.horizontal, .top])
+                }
+
+                if !viewModel.results.isEmpty {
+                    if viewModel.matchedItems.isEmpty,
+                       viewModel.notMatchedItems.isEmpty {
+                        VStack {
+                            Spacer()
+                            Text("You currently have no login items")
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .padding()
+                            Spacer()
+                        }
+                    } else {
+                        itemList(matchedItems: viewModel.matchedItems,
+                                 notMatchedItems: viewModel.notMatchedItems)
+                    }
+                }
+
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: { Task { await viewModel.fetchItems() } })
+            }
+        }
+    }
+}
+
+private extension OneTimeCodesView {
+    func itemList(matchedItems: [ItemUiModel],
+                  notMatchedItems: [ItemUiModel]) -> some View {
+        ScrollViewReader { _ in
+            List {
+                if !viewModel.urls.isEmpty {
+                    section(for: matchedItems,
+                            title: "Suggestions for \(viewModel.domain)",
+                            emptyMessage: "No suggestions")
+                }
+
+                section(for: notMatchedItems,
+                        title: "Other items",
+                        emptyMessage: "No suggestions")
+            }
+            .listStyle(.plain)
+            .refreshable { await viewModel.sync(ignoreError: false) }
+            .animation(.default, value: matchedItems.hashValue)
+            .animation(.default, value: notMatchedItems.hashValue)
+        }
+    }
+
+    func section(for items: [ItemUiModel],
+                 title: LocalizedStringKey,
+                 emptyMessage: LocalizedStringKey) -> some View {
+        Section(content: {
+            if items.isEmpty {
+                Text(emptyMessage)
+                    .font(.callout.italic())
+                    .padding(.horizontal)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .plainListRow()
+            } else {
+                ForEach(items) { item in
+                    AuthenticatorRow(thumbnailView: {
+                                         EmptyView()
+                                     },
+                                     uri: item.totpUri ?? "",
+                                     title: item.title,
+                                     totpManager: SharedServiceContainer.shared.totpManager(),
+                                     onCopyTotpToken: { _ in viewModel.select(item: item) })
+                        .plainListRow()
+                }
+            }
+        }, header: {
+            Text(title)
+                .font(.callout)
+                .fontWeight(.bold)
+                .foregroundStyle(PassColor.textNorm.toColor)
+        })
     }
 }
