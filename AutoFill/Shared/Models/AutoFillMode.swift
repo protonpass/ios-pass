@@ -71,3 +71,7 @@ enum AutoFillMode {
     /// Users want to manually select an item to autofill 2FA code
     case showOneTimeCodes([ASCredentialServiceIdentifier])
 }
+
+enum CredentialsMode: Sendable {
+    case passwords, oneTimeCodes
+}
