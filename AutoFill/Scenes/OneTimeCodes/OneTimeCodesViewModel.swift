@@ -19,7 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import AuthenticationServices
+import Client
 import Entities
+import Factory
 
 enum OneTimeCodesViewModelState {
     case loading
@@ -27,24 +29,85 @@ enum OneTimeCodesViewModelState {
     case error(any Error)
 }
 
-final class OneTimeCodesViewModel: AutoFillViewModel<CredentialsForOneTimeCodeAutoFill> {
+final class OneTimeCodesViewModel: AutoFillViewModel<CredentialsFetchResult> {
+    @Published private(set) var state = OneTimeCodesViewModelState.loading
     private let serviceIdentifiers: [ASCredentialServiceIdentifier]
+
+    @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
+    private let mapServiceIdentifierToURL = resolve(\AutoFillUseCaseContainer.mapServiceIdentifierToURL)
+
+    private let urls: [URL]
+
+    var domain: String {
+        urls.first?.host() ?? ""
+    }
+
+    private var searchableItems: [SearchableItem] {
+        if let selectedUser {
+            results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
+        } else {
+            getAllObjects(\.searchableItems)
+        }
+    }
+
+    var matchedItems: [ItemUiModel] {
+        if let selectedUser {
+            results
+                .first { $0.userId == selectedUser.id }?
+                .matchedItems
+                .filter(\.hasTotpUri) ?? []
+        } else {
+            getAllObjects(\.matchedItems).filter(\.hasTotpUri)
+        }
+    }
+
+    var notMatchedItems: [ItemUiModel] {
+        if let selectedUser {
+            results
+                .first { $0.userId == selectedUser.id }?
+                .notMatchedItems
+                .filter(\.hasTotpUri) ?? []
+        } else {
+            getAllObjects(\.notMatchedItems).filter(\.hasTotpUri)
+        }
+    }
 
     init(users: [UserUiModel],
          serviceIdentifiers: [ASCredentialServiceIdentifier],
          context: ASCredentialProviderExtensionContext,
-         onCancel: @escaping () -> Void,
-         onSelectUser: @escaping ([UserUiModel]) -> Void,
-         onLogOut: @escaping () -> Void,
-         onCreate: @escaping (LoginCreationInfo) -> Void,
          userForNewItemSubject: UserForNewItemSubject) {
         self.serviceIdentifiers = serviceIdentifiers
+        urls = serviceIdentifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
         super.init(context: context,
-                   onCreate: onCreate,
-                   onSelectUser: onSelectUser,
-                   onCancel: onCancel,
-                   onLogOut: onLogOut,
                    users: users,
                    userForNewItemSubject: userForNewItemSubject)
+    }
+
+    override func getVaults(userId: String) -> [Vault]? {
+        results.first { $0.userId == userId }?.vaults
+    }
+
+    override func isErrorState() -> Bool {
+        if case .error = state {
+            true
+        } else {
+            false
+        }
+    }
+
+    override func fetchAutoFillCredentials(userId: String) async throws -> CredentialsFetchResult {
+        try await fetchCredentials(userId: userId, identifiers: serviceIdentifiers, params: nil)
+    }
+
+    override func changeToErrorState(_ error: any Error) {
+        state = .error(error)
+    }
+
+    override func changeToLoadingState() {
+        state = .loading
+    }
+
+    override func changeToLoadedState() {
+        state = .loaded
     }
 }

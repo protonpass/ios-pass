@@ -69,17 +69,9 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
     init(users: [UserUiModel],
          request: PasskeyCredentialRequest,
          context: ASCredentialProviderExtensionContext?,
-         onCreate: @escaping (LoginCreationInfo) -> Void,
-         onSelectUser: @escaping ([UserUiModel]) -> Void,
-         onCancel: @escaping () -> Void,
-         onLogOut: @escaping () -> Void,
          userForNewItemSubject: UserForNewItemSubject) {
         self.request = request
         super.init(context: context,
-                   onCreate: onCreate,
-                   onSelectUser: onSelectUser,
-                   onCancel: onCancel,
-                   onLogOut: onLogOut,
                    users: users,
                    userForNewItemSubject: userForNewItemSubject)
     }
