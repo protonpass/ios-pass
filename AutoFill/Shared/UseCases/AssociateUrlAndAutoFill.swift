@@ -1,5 +1,5 @@
 //
-// AssociateUrlAndAutoFillPassword.swift
+// AssociateUrlAndAutoFill.swift
 // Proton Pass - Created on 29/02/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -18,41 +18,50 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import AuthenticationServices
+@preconcurrency import AuthenticationServices
 import Client
 import Entities
 import Foundation
 
-protocol AssociateUrlAndAutoFillPasswordUseCase: Sendable {
+protocol AssociateUrlAndAutoFillUseCase: Sendable {
+    @MainActor
     func execute(item: any ItemIdentifiable,
+                 mode: CredentialsMode,
                  urls: [URL],
                  serviceIdentifiers: [ASCredentialServiceIdentifier],
                  context: ASCredentialProviderExtensionContext) async throws
 }
 
-extension AssociateUrlAndAutoFillPasswordUseCase {
+extension AssociateUrlAndAutoFillUseCase {
+    @MainActor
     func callAsFunction(item: any ItemIdentifiable,
+                        mode: CredentialsMode,
                         urls: [URL],
                         serviceIdentifiers: [ASCredentialServiceIdentifier],
                         context: ASCredentialProviderExtensionContext) async throws {
         try await execute(item: item,
+                          mode: mode,
                           urls: urls,
                           serviceIdentifiers: serviceIdentifiers,
                           context: context)
     }
 }
 
-final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseCase {
+final class AssociateUrlAndAutoFill: AssociateUrlAndAutoFillUseCase {
     private let itemRepository: any ItemRepositoryProtocol
+    private let totpService: any TOTPServiceProtocol
     private let completeAutoFill: any CompleteAutoFillUseCase
 
     init(itemRepository: any ItemRepositoryProtocol,
+         totpService: any TOTPServiceProtocol,
          completeAutoFill: any CompleteAutoFillUseCase) {
         self.itemRepository = itemRepository
+        self.totpService = totpService
         self.completeAutoFill = completeAutoFill
     }
 
     func execute(item: any ItemIdentifiable,
+                 mode: CredentialsMode,
                  urls: [URL],
                  serviceIdentifiers: [ASCredentialServiceIdentifier],
                  context: ASCredentialProviderExtensionContext) async throws {
@@ -82,8 +91,14 @@ final class AssociateUrlAndAutoFillPassword: AssociateUrlAndAutoFillPasswordUseC
                                             oldItem: oldContent.item,
                                             newItemContent: newContent,
                                             shareId: oldContent.shareId)
-        let credential = ASPasswordCredential(user: oldData.authIdentifier,
+        let credential: any ASAuthorizationCredential
+        if #available(iOS 18, *), case .oneTimeCodes = mode {
+            let token = try totpService.generateTotpToken(uri: oldData.totpUri)
+            credential = ASOneTimeCodeCredential(code: token.code)
+        } else {
+            credential = ASPasswordCredential(user: oldData.authIdentifier,
                                               password: oldData.password)
+        }
         try await completeAutoFill(quickTypeBar: false,
                                    identifiers: serviceIdentifiers,
                                    credential: credential,

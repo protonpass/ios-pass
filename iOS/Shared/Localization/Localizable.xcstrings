@@ -122980,6 +122980,16 @@
         }
       }
     },
+    "You currently have no login items with 2FA secret key (TOTP)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You currently have no login items with 2FA secret key (TOTP)"
+          }
+        }
+      }
+    },
     "You don't have any excluded login items from monitoring" : {
       "localizations" : {
         "be" : {

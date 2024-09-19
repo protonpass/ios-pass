@@ -132,7 +132,8 @@ private extension CredentialProviderCoordinator {
         let users = try await getUserUiModels()
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
-            handleShowAllLoginsMode(users: users,
+            handleShowAllLoginsMode(mode: .passwords,
+                                    users: users,
                                     identifiers: identifiers,
                                     passkeyRequestParams: requestParams)
 
@@ -149,11 +150,15 @@ private extension CredentialProviderCoordinator {
             handlePasskeyRegistration(users: users, request: request)
 
         case let .showOneTimeCodes(identifiers):
-            handleShowOneTimeCodes(users: users, identifiers: identifiers)
+            handleShowAllLoginsMode(mode: .oneTimeCodes,
+                                    users: users,
+                                    identifiers: identifiers,
+                                    passkeyRequestParams: nil)
         }
     }
 
-    func handleShowAllLoginsMode(users: [UserUiModel],
+    func handleShowAllLoginsMode(mode: CredentialsMode,
+                                 users: [UserUiModel],
                                  identifiers: [ASCredentialServiceIdentifier],
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
@@ -163,7 +168,18 @@ private extension CredentialProviderCoordinator {
             return
         }
 
-        let viewModel = CredentialsViewModel(users: users,
+        var identifiers = identifiers
+        #if DEBUG
+        /// As of iOS 18.0, the list of service identifiers when autofilling one-time code
+        /// is always empty even when iOS could detect the OTP form
+        /// So we mock it for testing purpose
+        if identifiers.isEmpty, case .oneTimeCodes = mode {
+            identifiers.append(.init(identifier: "https://autofilth.lol", type: .URL))
+        }
+        #endif
+
+        let viewModel = CredentialsViewModel(mode: mode,
+                                             users: users,
                                              serviceIdentifiers: identifiers,
                                              passkeyRequestParams: passkeyRequestParams,
                                              context: context,
@@ -233,32 +249,6 @@ private extension CredentialProviderCoordinator {
         viewModel.delegate = self
         let view = PasskeyCredentialsView(viewModel: viewModel)
         showView(view)
-    }
-
-    func handleShowOneTimeCodes(users: [UserUiModel],
-                                identifiers: [ASCredentialServiceIdentifier]) {
-        guard userManager.activeUserId != nil else {
-            showNotLoggedInView()
-            return
-        }
-        guard let context else { return }
-        #if DEBUG
-        /// As of iOS 18.0, the list of service identifiers is always empty
-        /// even though iOS could detect the OTP form
-        /// So we mock it for testing purpose
-        let filth = ASCredentialServiceIdentifier(identifier: "https://autofilth.lol", type: .URL)
-        let viewModel = OneTimeCodesViewModel(users: users,
-                                              serviceIdentifiers: [filth],
-                                              context: context,
-                                              userForNewItemSubject: userForNewItemSubject)
-        #else
-        let viewModel = OneTimeCodesViewModel(users: users,
-                                              serviceIdentifiers: identifiers,
-                                              context: context,
-                                              userForNewItemSubject: userForNewItemSubject)
-        #endif
-        viewModel.delegate = self
-        showView(OneTimeCodesView(viewModel: viewModel))
     }
 }
 
