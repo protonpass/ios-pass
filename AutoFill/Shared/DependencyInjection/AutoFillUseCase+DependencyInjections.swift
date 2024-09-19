@@ -130,6 +130,12 @@ extension AutoFillUseCaseContainer {
                                 completeAutoFill: self.completeAutoFill()) }
     }
 
+    var autoFillOneTimeCode: Factory<any AutoFillOneTimeCodeUseCase> {
+        self { AutoFillOneTimeCode(itemRepository: self.itemRepository,
+                                   totpService: SharedServiceContainer.shared.totpService(),
+                                   completeAutoFill: self.completeAutoFill()) }
+    }
+
     var autoFillPassword: Factory<any AutoFillPasswordUseCase> {
         self { AutoFillPassword(itemRepository: self.itemRepository,
                                 completeAutoFill: self.completeAutoFill()) }
