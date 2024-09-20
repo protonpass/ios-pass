@@ -23,7 +23,7 @@
 				<key>ShowsConfigurationUI</key>
 				<true/>
 				<key>ProvidesOneTimeCodes</key>
-				<false/>
+				<true/>
 			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
