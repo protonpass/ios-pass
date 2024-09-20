@@ -56,6 +56,10 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     override func prepareInterfaceForExtensionConfiguration() {
         coordinator.setUpAndStart(mode: .configuration)
     }
+
+    override func prepareOneTimeCodeCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
+        coordinator.setUpAndStart(mode: .showOneTimeCodes(serviceIdentifiers))
+    }
 }
 
 /* Other callbacks are superseded by these new callbacks on iOS 17 in the below extension */

@@ -33,7 +33,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
-         titleLineLimit: Int = 2,
+         titleLineLimit: Int = 1,
          description: String?,
          descriptionLineLimit: Int = 1,
          secondaryTitle: String? = nil,

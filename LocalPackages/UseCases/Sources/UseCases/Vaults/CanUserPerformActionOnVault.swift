@@ -56,7 +56,7 @@ public final class CanUserPerformActionOnVault: @unchecked Sendable, CanUserPerf
 private extension CanUserPerformActionOnVault {
     func setUp() {
         Task { [weak self] in
-            guard let self, let userPlan = try? await accessRepository.getPlan() else {
+            guard let self, let userPlan = try? await accessRepository.getPlan(userId: nil) else {
                 return
             }
 

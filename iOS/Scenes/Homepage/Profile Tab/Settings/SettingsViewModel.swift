@@ -47,13 +47,13 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let currentSpotlightVaults = resolve(\DataStreamContainer.currentSpotlightSelectedVaults)
     private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
     private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
-    private let getUserPlan = resolve(\SharedUseCasesContainer.getUserPlan)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
 
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
@@ -293,16 +293,17 @@ private extension SettingsViewModel {
             }
             .store(in: &cancellables)
 
-        getUserPlan()
+        accessRepository
+            .access
             .receive(on: DispatchQueue.main)
             .removeDuplicates()
-            .compactMap { $0 }
-            .sink { [weak self] refreshedPlan in
+            .compactMap { $0?.access }
+            .sink { [weak self] newAccess in
                 guard let self else {
                     return
                 }
-                plan = refreshedPlan
-                if refreshedPlan.isFreeUser {
+                plan = newAccess.plan
+                if newAccess.plan.isFreeUser {
                     spotlightEnabled = false
                 }
             }
