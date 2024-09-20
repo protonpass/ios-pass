@@ -48,9 +48,33 @@ struct CredentialsView: View {
         }
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
-        .associateUrlAlert(information: $viewModel.notMatchedItemInformation,
-                           onAssociateAndAutofill: { viewModel.associateAndAutofill(item: $0) },
-                           onJustAutofill: { viewModel.select(item: $0) })
+        .alert("Associate URL?",
+               isPresented: $viewModel.notMatchedItemInformation.mappedToBool(),
+               actions: {
+                   if let information = viewModel.notMatchedItemInformation {
+                       Button(action: {
+                           viewModel.associateAndAutofill(item: information.item)
+                       }, label: {
+                           Text("Associate and autofill")
+                       })
+
+                       Button(action: {
+                           viewModel.select(item: information.item)
+                       }, label: {
+                           Text("Just autofill")
+                       })
+                   }
+
+                   Button(role: .cancel) {
+                       Text("Cancel")
+                   }
+               },
+               message: {
+                   if let information = viewModel.notMatchedItemInformation {
+                       // swiftlint:disable:next line_length
+                       Text("Would you want to associate « \(information.url) » with « \(information.item.itemTitle) »?")
+                   }
+               })
         .sheet(isPresented: selectPasskeySheetBinding) {
             if let info = viewModel.selectPasskeySheetInformation,
                let context = viewModel.context {
@@ -80,7 +104,7 @@ private extension CredentialsView {
                 }
 
                 if viewModel.isFreeUser {
-                    MainVaultsOnlyBanner(onTap: { viewModel.upgrade() })
+                    mainVaultsOnlyMessage
                         .padding([.horizontal, .top])
                 }
 
@@ -225,6 +249,21 @@ private extension CredentialsView {
             .padding([.top, .horizontal])
             sortableSections(for: items)
         }
+    }
+
+    var mainVaultsOnlyMessage: some View {
+        ZStack {
+            Text("Your plan only allows to use items from your first 2 vaults for autofill purposes.")
+                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                Text(verbatim: " ") +
+                Text("Upgrade now")
+                .underline(color: PassColor.interactionNormMajor1.toColor)
+                .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
+        }
+        .padding()
+        .background(PassColor.interactionNormMinor1.toColor)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .onTapGesture(perform: viewModel.upgrade)
     }
 }
 
