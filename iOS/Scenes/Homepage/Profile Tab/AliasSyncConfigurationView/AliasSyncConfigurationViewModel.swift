@@ -71,8 +71,8 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
         defer { loading = false }
         loading = true
         do {
-            userAliasSyncData = try await accessRepository.getAccess().access.userData
             let userId = try await userManager.getActiveUserId()
+            userAliasSyncData = try await accessRepository.getAccess(userId: userId).access.userData
             aliasSettings = try await aliasRepository.getAliasSettings(userId: userId)
             if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
                 showSyncSection = true
@@ -184,7 +184,7 @@ private extension AliasSyncConfigurationViewModel {
             let userId = try await userManager.getActiveUserId()
             try await aliasRepository.enableSlAliasSync(userId: userId,
                                                         defaultShareID: selectedVault?.vault.shareId)
-            userAliasSyncData = try await accessRepository.getAccess().access.userData
+            userAliasSyncData = try await accessRepository.getAccess(userId: userId).access.userData
         } catch {
             handle(error: error)
         }

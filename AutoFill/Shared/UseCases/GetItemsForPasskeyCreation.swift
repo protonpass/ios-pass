@@ -55,7 +55,7 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let getVaults = shareRepository.getVaults(userId: userId)
         async let getActiveLogInItems = itemRepositiry.getActiveLogInItems(userId: userId)
-        async let getPlan = accessRepository.getPlan()
+        async let getPlan = accessRepository.getPlan(userId: userId)
 
         let symmetricKey = try await getSymmetricKey
         let vaults = try await getVaults

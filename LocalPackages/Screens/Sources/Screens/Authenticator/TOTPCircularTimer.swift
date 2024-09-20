@@ -23,7 +23,7 @@ import Entities
 import SwiftUI
 
 @MainActor
-final class TOTPCircularTimerViewModel: ObservableObject {
+public final class TOTPCircularTimerViewModel: ObservableObject {
     @Published private(set) var remainingSeconds = 1.0
     @Published private(set) var percentage = 1.0
 
@@ -50,14 +50,8 @@ final class TOTPCircularTimerViewModel: ObservableObject {
 
         // Create a new timer
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self else {
-                return
-            }
-            Task { @MainActor [weak self] in
-                guard let self else {
-                    return
-                }
-
+            MainActor.assumeIsolated { [weak self] in
+                guard let self else { return }
                 remainingSeconds -= 1
                 percentage = remainingSeconds / Double(data.total)
             }
@@ -70,14 +64,14 @@ final class TOTPCircularTimerViewModel: ObservableObject {
     }
 }
 
-struct TOTPCircularTimer: View {
+public struct TOTPCircularTimer: View {
     @ObservedObject var viewModel: TOTPCircularTimerViewModel
 
-    init(data: TOTPTimerData) {
+    public init(data: TOTPTimerData) {
         _viewModel = .init(wrappedValue: TOTPCircularTimerViewModel(data: data))
     }
 
-    var body: some View {
+    public var body: some View {
         ZStack {
             Circle()
                 .stroke(PassColor.textHint.toColor, style: StrokeStyle(lineWidth: 3))

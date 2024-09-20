@@ -70,6 +70,10 @@ private extension AutoFillUseCaseContainer {
     var userManager: any UserManagerProtocol {
         SharedServiceContainer.shared.userManager()
     }
+
+    var totpService: any TOTPServiceProtocol {
+        SharedServiceContainer.shared.totpService()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -114,7 +118,7 @@ extension AutoFillUseCaseContainer {
     var generateAuthorizationCredential: Factory<any GenerateAuthorizationCredentialUseCase> {
         self { GenerateAuthorizationCredential(itemRepository: self.itemRepository,
                                                resolvePasskeyChallenge: self.resolvePasskeyChallenge,
-                                               totpService: SharedServiceContainer.shared.totpService()) }
+                                               totpService: self.totpService) }
     }
 
     var completePasskeyRegistration: Factory<any CompletePasskeyRegistrationUseCase> {
@@ -130,9 +134,10 @@ extension AutoFillUseCaseContainer {
                                 completeAutoFill: self.completeAutoFill()) }
     }
 
-    var autoFillPassword: Factory<any AutoFillPasswordUseCase> {
-        self { AutoFillPassword(itemRepository: self.itemRepository,
-                                completeAutoFill: self.completeAutoFill()) }
+    var autoFillCredentials: Factory<any AutoFillCredentialsUseCase> {
+        self { AutoFillCredentials(itemRepository: self.itemRepository,
+                                   totpService: self.totpService,
+                                   completeAutoFill: self.completeAutoFill()) }
     }
 
     var autoFillPasskey: Factory<any AutoFillPasskeyUseCase> {
@@ -140,9 +145,10 @@ extension AutoFillUseCaseContainer {
                                completeAutoFill: self.completeAutoFill()) }
     }
 
-    var associateUrlAndAutoFillPassword: Factory<any AssociateUrlAndAutoFillPasswordUseCase> {
-        self { AssociateUrlAndAutoFillPassword(itemRepository: self.itemRepository,
-                                               completeAutoFill: self.completeAutoFill()) }
+    var associateUrlAndAutoFill: Factory<any AssociateUrlAndAutoFillUseCase> {
+        self { AssociateUrlAndAutoFill(itemRepository: self.itemRepository,
+                                       totpService: self.totpService,
+                                       completeAutoFill: self.completeAutoFill()) }
     }
 
     var cancelAutoFill: Factory<any CancelAutoFillUseCase> {

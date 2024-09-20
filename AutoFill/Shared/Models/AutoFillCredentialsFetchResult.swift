@@ -1,5 +1,5 @@
 //
-// AutoFillCredentials.swift
+// AutoFillCredentialsFetchResult.swift
 // Proton Pass - Created on 07/07/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,12 +22,12 @@ import Client
 import Entities
 import Foundation
 
-protocol AutoFillCredentials: Equatable, Sendable {
+protocol AutoFillCredentialsFetchResult: Equatable, Sendable {
     var userId: String { get }
     var vaults: [Vault] { get }
 }
 
-struct CredentialsFetchResult: AutoFillCredentials {
+struct CredentialsFetchResult: AutoFillCredentialsFetchResult {
     let userId: String
     let vaults: [Vault]
     let searchableItems: [SearchableItem]
@@ -35,7 +35,7 @@ struct CredentialsFetchResult: AutoFillCredentials {
     let notMatchedItems: [ItemUiModel]
 }
 
-struct CredentialsForPasskeyCreation: AutoFillCredentials {
+struct CredentialsForPasskeyCreation: AutoFillCredentialsFetchResult {
     let userId: String
     let vaults: [Vault]
     let searchableItems: [SearchableItem]

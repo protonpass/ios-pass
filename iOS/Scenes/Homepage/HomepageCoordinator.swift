@@ -1051,7 +1051,7 @@ extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let plan = try await accessRepository.getPlan()
+                let plan = try await accessRepository.getPlan(userId: nil)
                 if plan.isFreeUser {
                     startUpsellingFlow(configuration: .default)
                 } else {
@@ -1130,7 +1130,7 @@ extension HomepageCoordinator {
         Task { [weak self] in
             guard let self,
                   await loginMethod.isManualLogIn() else { return }
-            if let access = try? await accessRepository.getAccess().access,
+            if let access = try? await accessRepository.getAccess(userId: nil).access,
                access.waitingNewUserInvites > 0 {
                 // New user just registered after an invitation
                 presentAwaitAccessConfirmationView()
@@ -1255,7 +1255,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
             do {
                 showLoadingHud()
 
-                let plan = try await accessRepository.getPlan()
+                let plan = try await accessRepository.getPlan(userId: nil)
                 guard let trialEnd = plan.trialEnd else { return }
                 let trialEndDate = Date(timeIntervalSince1970: TimeInterval(trialEnd))
                 let daysLeft = Calendar.current.numberOfDaysBetween(trialEndDate, and: .now)

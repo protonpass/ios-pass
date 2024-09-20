@@ -22,6 +22,7 @@
 
 import DesignSystem
 import Entities
+import Screens
 import SwiftUI
 
 struct AuthenticatorView: View {
@@ -54,16 +55,12 @@ private extension AuthenticatorView {
 
     func itemsList(items: [AuthenticatorItem]) -> some View {
         ForEach(items) { item in
-            itemRow(for: item)
-                .roundedEditableSection()
+            AuthenticatorRow(thumbnailView: { ItemSquircleThumbnail(data: item.icon, size: .large) },
+                             uri: item.uri,
+                             title: item.title,
+                             totpManager: SharedServiceContainer.shared.totpManager(),
+                             onCopyTotpToken: { viewModel.copyTotpToken($0) })
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
-    }
-
-    func itemRow(for item: AuthenticatorItem) -> some View {
-        AuthenticatorRow(thumbnailView: { ItemSquircleThumbnail(data: item.icon, size: .large) },
-                         uri: item.uri,
-                         title: item.title,
-                         onCopyTotpToken: { viewModel.copyTotpToken($0) })
-            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
