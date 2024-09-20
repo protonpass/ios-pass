@@ -24,7 +24,6 @@ import Entities
 import Foundation
 
 protocol AssociateUrlAndAutoFillUseCase: Sendable {
-    @MainActor
     func execute(item: any ItemIdentifiable,
                  mode: CredentialsMode,
                  urls: [URL],
@@ -33,7 +32,6 @@ protocol AssociateUrlAndAutoFillUseCase: Sendable {
 }
 
 extension AssociateUrlAndAutoFillUseCase {
-    @MainActor
     func callAsFunction(item: any ItemIdentifiable,
                         mode: CredentialsMode,
                         urls: [URL],
