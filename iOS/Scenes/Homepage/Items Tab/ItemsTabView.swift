@@ -33,7 +33,6 @@ struct ItemsTabView: View {
     @Namespace private var animationNamespace
     @State private var searchMode: SearchMode?
 
-    @State private var showingTrashAliasAlert = false
     @State private var aliasToTrash: (any ItemTypeIdentifiable)?
 
     var body: some View {
@@ -150,9 +149,10 @@ struct ItemsTabView: View {
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
                 viewModel.continueFullSyncIfNeeded()
+                ItemContextMenu.aliasSyncEnabled = viewModel.aliasSyncEnabled
             }
             .if(viewModel.aliasSyncEnabled) {
-                $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
+                $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
                                                     enabled: aliasToTrash?.aliasEnabled ?? false,
                                                     disableAction: {
                                                         if let aliasToTrash {
@@ -279,10 +279,7 @@ struct ItemsTabView: View {
                                          isTrashed: isTrashed,
                                          isEditable: isEditable,
                                          onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
-                                         onAliasTrash: {
-                                             aliasToTrash = item
-                                             showingTrashAliasAlert.toggle()
-                                         },
+                                         onAliasTrash: { aliasToTrash = item },
                                          handler: viewModel.itemContextMenuHandler)
                 }
                 .padding(.horizontal)
