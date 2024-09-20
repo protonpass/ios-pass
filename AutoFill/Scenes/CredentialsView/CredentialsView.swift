@@ -280,20 +280,30 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
+                    let user = viewModel.getUser(for: item)
                     Group {
                         switch viewModel.mode {
                         case .passwords:
                             GenericCredentialItemRow(item: item,
-                                                     user: viewModel.getUser(for: item),
+                                                     user: user,
                                                      selectItem: { viewModel.select(item: $0) })
+
                         case .oneTimeCodes:
                             if let item = item as? ItemUiModel,
                                let totpUri = item.totpUri {
-                                AuthenticatorRow(thumbnailView: { EmptyView() },
+                                let title = if let emailWithoutDomain = user?.emailWithoutDomain {
+                                    item.itemTitle + " • \(emailWithoutDomain)"
+                                } else {
+                                    item.itemTitle
+                                }
+                                AuthenticatorRow(thumbnailView: {
+                                                     ItemSquircleThumbnail(data: item.thumbnailData())
+                                                 },
                                                  uri: totpUri,
-                                                 title: item.itemTitle,
+                                                 title: title,
                                                  totpManager: SharedServiceContainer.shared.totpManager(),
                                                  onCopyTotpToken: { _ in viewModel.select(item: item) })
+                                    .padding(.top, DesignConstant.sectionPadding / 2)
                             }
                         }
                     }
