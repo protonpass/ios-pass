@@ -27,13 +27,13 @@ public extension ItemContent {
         let note: String
         var url: String?
         var isAlias = false
-        var hasTotpUri = false
+        var totpUri: String?
 
         switch contentData {
         case let .login(data):
             note = data.authIdentifier
             url = data.urls.first
-            hasTotpUri = !data.totpUri.isEmpty
+            totpUri = data.totpUri
 
         case .alias:
             note = item.aliasEmail ?? ""
@@ -58,7 +58,7 @@ public extension ItemContent {
                      description: note,
                      url: url,
                      isAlias: isAlias,
-                     hasTotpUri: hasTotpUri,
+                     totpUri: totpUri,
                      lastUseTime: item.lastUseTime ?? 0,
                      modifyTime: item.modifyTime,
                      state: item.itemState,

@@ -49,7 +49,7 @@ struct CredentialsView: View {
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .alert("Associate URL?",
-               isPresented: $viewModel.isShowingConfirmationAlert,
+               isPresented: $viewModel.notMatchedItemInformation.mappedToBool(),
                actions: {
                    if let information = viewModel.notMatchedItemInformation {
                        Button(action: {
@@ -87,7 +87,6 @@ struct CredentialsView: View {
 }
 
 private extension CredentialsView {
-    @ViewBuilder
     var stateViews: some View {
         VStack(spacing: 0) {
             if viewModel.state != .loading {
@@ -114,7 +113,7 @@ private extension CredentialsView {
                        viewModel.notMatchedItems.isEmpty {
                         VStack {
                             Spacer()
-                            Text("You currently have no login items")
+                            Text(viewModel.mode.emptyMessage)
                                 .multilineTextAlignment(.center)
                                 .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding()
@@ -281,11 +280,35 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    GenericCredentialItemRow(item: item,
-                                             user: viewModel.getUser(for: item),
-                                             selectItem: { viewModel.select(item: $0) })
-                        .plainListRow()
-                        .padding(.horizontal)
+                    let user = viewModel.getUser(for: item)
+                    Group {
+                        switch viewModel.mode {
+                        case .passwords:
+                            GenericCredentialItemRow(item: item,
+                                                     user: user,
+                                                     selectItem: { viewModel.select(item: $0) })
+
+                        case .oneTimeCodes:
+                            if let item = item as? ItemUiModel,
+                               let totpUri = item.totpUri {
+                                let title = if let emailWithoutDomain = user?.emailWithoutDomain {
+                                    item.itemTitle + " • \(emailWithoutDomain)"
+                                } else {
+                                    item.itemTitle
+                                }
+                                AuthenticatorRow(thumbnailView: {
+                                                     ItemSquircleThumbnail(data: item.thumbnailData())
+                                                 },
+                                                 uri: totpUri,
+                                                 title: title,
+                                                 totpManager: SharedServiceContainer.shared.totpManager(),
+                                                 onCopyTotpToken: { _ in viewModel.select(item: item) })
+                                    .padding(.top, DesignConstant.sectionPadding / 2)
+                            }
+                        }
+                    }
+                    .plainListRow()
+                    .padding(.horizontal)
                 }
             }, header: {
                 Text(headerTitle)
@@ -388,5 +411,16 @@ private struct CredentialsSkeletonView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .shimmering()
+    }
+}
+
+private extension CredentialsMode {
+    var emptyMessage: LocalizedStringKey {
+        switch self {
+        case .passwords:
+            "You currently have no login items"
+        case .oneTimeCodes:
+            "You currently have no login items with 2FA secret key (TOTP)"
+        }
     }
 }

@@ -50,7 +50,7 @@ public final class UpgradeChecker: UpgradeCheckerProtocol {
 
 public extension UpgradeChecker {
     func aliasLimitation() async throws -> AliasLimitation? {
-        let plan = try await accessRepository.getPlan()
+        let plan = try await accessRepository.getPlan(userId: nil)
         if let aliasLimit = plan.aliasLimit {
             return .init(count: counter.getAliasCount(), limit: aliasLimit)
         }
@@ -58,7 +58,7 @@ public extension UpgradeChecker {
     }
 
     func canCreateMoreVaults() async throws -> Bool {
-        let plan = try await accessRepository.getPlan()
+        let plan = try await accessRepository.getPlan(userId: nil)
         if let vaultLimit = plan.vaultLimit {
             let vaultCount = counter.getVaultCount()
             return vaultCount < vaultLimit
@@ -67,13 +67,13 @@ public extension UpgradeChecker {
     }
 
     func canHaveMoreLoginsWith2FA() async throws -> Bool {
-        let plan = try await accessRepository.getPlan()
+        let plan = try await accessRepository.getPlan(userId: nil)
         guard let totpLimit = plan.totpLimit else { return true }
         return counter.getTOTPCount() < totpLimit
     }
 
     func canShowTOTPToken(creationDate: Int64) async throws -> Bool {
-        let plan = try await accessRepository.getPlan()
+        let plan = try await accessRepository.getPlan(userId: nil)
         guard let totpLimit = plan.totpLimit else { return true }
 
         if let threshold = try await totpChecker.totpCreationDateThreshold(numberOfTotp: totpLimit) {
@@ -83,7 +83,7 @@ public extension UpgradeChecker {
     }
 
     func isFreeUser() async throws -> Bool {
-        let plan = try await accessRepository.getPlan()
+        let plan = try await accessRepository.getPlan(userId: nil)
         return plan.isFreeUser
     }
 }

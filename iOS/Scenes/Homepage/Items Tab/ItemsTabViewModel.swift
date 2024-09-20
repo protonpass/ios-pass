@@ -247,7 +247,7 @@ private extension ItemsTabViewModel {
                 var shouldShow = true
                 switch banner {
                 case .trial:
-                    let plan = try await accessRepository.getPlan()
+                    let plan = try await accessRepository.getPlan(userId: nil)
                     shouldShow = plan.isInTrial
 
                 case .autofill:

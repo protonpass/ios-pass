@@ -132,7 +132,8 @@ private extension CredentialProviderCoordinator {
         let users = try await getUserUiModels()
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
-            handleShowAllLoginsMode(users: users,
+            handleShowAllLoginsMode(mode: .passwords,
+                                    users: users,
                                     identifiers: identifiers,
                                     passkeyRequestParams: requestParams)
 
@@ -147,10 +148,17 @@ private extension CredentialProviderCoordinator {
 
         case let .passkeyRegistration(request):
             handlePasskeyRegistration(users: users, request: request)
+
+        case let .showOneTimeCodes(identifiers):
+            handleShowAllLoginsMode(mode: .oneTimeCodes,
+                                    users: users,
+                                    identifiers: identifiers,
+                                    passkeyRequestParams: nil)
         }
     }
 
-    func handleShowAllLoginsMode(users: [UserUiModel],
+    func handleShowAllLoginsMode(mode: CredentialsMode,
+                                 users: [UserUiModel],
                                  identifiers: [ASCredentialServiceIdentifier],
                                  passkeyRequestParams: (any PasskeyRequestParametersProtocol)?) {
         guard let context else { return }
@@ -160,38 +168,21 @@ private extension CredentialProviderCoordinator {
             return
         }
 
-        let onCancel: () -> Void = { [weak self] in
-            guard let self else { return }
-            cancelAutoFill(reason: .userCanceled, context: context)
+        var identifiers = identifiers
+        #if DEBUG
+        /// As of iOS 18.0, the list of service identifiers when autofilling one-time code
+        /// is always empty even when iOS could detect the OTP form
+        /// So we mock it for testing purpose
+        if identifiers.isEmpty, case .oneTimeCodes = mode {
+            identifiers.append(.init(identifier: "https://autofilth.lol", type: .URL))
         }
+        #endif
 
-        let onSelectUser: ([UserUiModel]) -> Void = { [weak self] users in
-            guard let self else { return }
-            presentSelectUserActionSheet(users)
-        }
-
-        let onLogOut: () -> Void = { [weak self] in
-            guard let self, let userId = userManager.activeUserId else {
-                return
-            }
-            logOut(userId: userId)
-        }
-
-        let onCreate: (LoginCreationInfo) -> Void = { [weak self] info in
-            Task { [weak self] in
-                guard let self else { return }
-                await showCreateNewItem(info)
-            }
-        }
-
-        let viewModel = CredentialsViewModel(users: users,
+        let viewModel = CredentialsViewModel(mode: mode,
+                                             users: users,
                                              serviceIdentifiers: identifiers,
                                              passkeyRequestParams: passkeyRequestParams,
                                              context: context,
-                                             onCancel: onCancel,
-                                             onSelectUser: onSelectUser,
-                                             onLogOut: onLogOut,
-                                             onCreate: onCreate,
                                              userForNewItemSubject: userForNewItemSubject)
         viewModel.delegate = self
         credentialsViewModel = viewModel
@@ -251,39 +242,11 @@ private extension CredentialProviderCoordinator {
     func handlePasskeyRegistration(users: [UserUiModel],
                                    request: PasskeyCredentialRequest) {
         guard let context else { return }
-
-        let onCancel: () -> Void = { [weak self] in
-            guard let self else { return }
-            cancelAutoFill(reason: .userCanceled, context: context)
-        }
-
-        let onSelectUser: ([UserUiModel]) -> Void = { [weak self] users in
-            guard let self else { return }
-            presentSelectUserActionSheet(users)
-        }
-
-        let onLogOut: () -> Void = { [weak self] in
-            guard let self, let userId = userManager.activeUserId else {
-                return
-            }
-            logOut(userId: userId)
-        }
-
-        let onCreate: (LoginCreationInfo) -> Void = { [weak self] info in
-            Task { [weak self] in
-                guard let self else { return }
-                await showCreateNewItem(info)
-            }
-        }
-
         let viewModel = PasskeyCredentialsViewModel(users: users,
                                                     request: request,
                                                     context: context,
-                                                    onCreate: onCreate,
-                                                    onSelectUser: onSelectUser,
-                                                    onCancel: onCancel,
-                                                    onLogOut: onLogOut,
                                                     userForNewItemSubject: userForNewItemSubject)
+        viewModel.delegate = self
         let view = PasskeyCredentialsView(viewModel: viewModel)
         showView(view)
     }
@@ -553,28 +516,6 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
     }
 }
 
-// MARK: - CredentialsViewModelDelegate
-
-extension CredentialProviderCoordinator: CredentialsViewModelDelegate {
-    func credentialsViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                        delegate: any SortTypeListViewModelDelegate) {
-        guard let rootViewController else {
-            return
-        }
-        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
-        viewModel.delegate = delegate
-        let view = SortTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, dismissible: true)
-    }
-}
-
 // MARK: - CreateEditItemViewModelDelegate
 
 extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
@@ -650,5 +591,49 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 
     func createEditLoginViewModelWantsToGeneratePassword(_ delegate: any GeneratePasswordViewModelDelegate) {
         showGeneratePasswordView(delegate: delegate)
+    }
+}
+
+extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
+    func autoFillViewModelWantsToCreateNewItem(_ info: LoginCreationInfo) {
+        Task { [weak self] in
+            guard let self else { return }
+            await showCreateNewItem(info)
+        }
+    }
+
+    func autoFillViewModelWantsToSelectUser(_ users: [Entities.UserUiModel]) {
+        presentSelectUserActionSheet(users)
+    }
+
+    func autoFillViewModelWantsToCancel() {
+        if let context {
+            cancelAutoFill(reason: .userCanceled, context: context)
+        } else {
+            assertionFailure("AutoFill context should not be nil")
+        }
+    }
+
+    func autoFillViewModelWantsToLogOut() {
+        guard let userId = userManager.activeUserId else { return }
+        logOut(userId: userId)
+    }
+
+    func autoFillViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                     delegate: any SortTypeListViewModelDelegate) {
+        guard let rootViewController else {
+            return
+        }
+        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
+        viewModel.delegate = delegate
+        let view = SortTypeListView(viewModel: viewModel)
+        let viewController = UIHostingController(rootView: view)
+
+        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
+        viewController.setDetentType(.custom(CGFloat(customHeight)),
+                                     parentViewController: rootViewController)
+
+        viewController.sheetPresentationController?.prefersGrabberVisible = true
+        present(viewController, dismissible: true)
     }
 }

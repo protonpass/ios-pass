@@ -230,7 +230,7 @@ private extension AccountViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                plan = try await accessRepository.refreshAccess().access.plan
+                plan = try await accessRepository.refreshAccess(userId: nil).access.plan
             } catch {
                 logger.error(error)
             }

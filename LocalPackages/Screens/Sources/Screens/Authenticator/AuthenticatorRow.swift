@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import DesignSystem
 import Entities
@@ -27,17 +28,18 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 @MainActor
-final class AuthenticatorRowViewModel: ObservableObject {
+private final class AuthenticatorRowViewModel: ObservableObject {
     @Published private(set) var state = TOTPState.empty
 
-    private let totpManager = resolve(\SharedServiceContainer.totpManager)
+    private let totpManager: any TOTPManagerProtocol
     private var cancellable = Set<AnyCancellable>()
 
     var code: String? {
         totpManager.totpData?.code
     }
 
-    init() {
+    init(totpManager: any TOTPManagerProtocol) {
+        self.totpManager = totpManager
         totpManager.currentState
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newState in
@@ -53,24 +55,26 @@ final class AuthenticatorRowViewModel: ObservableObject {
     }
 }
 
-struct AuthenticatorRow<ThumbnailView: View>: View {
-    @StateObject private var viewModel = AuthenticatorRowViewModel()
+public struct AuthenticatorRow<ThumbnailView: View>: View {
+    @StateObject private var viewModel: AuthenticatorRowViewModel
     private let thumbnailView: ThumbnailView
     private let uri: String
     private let title: String
     private let onCopyTotpToken: (String) -> Void
 
-    init(@ViewBuilder thumbnailView: () -> ThumbnailView,
-         uri: String,
-         title: String,
-         onCopyTotpToken: @escaping (String) -> Void) {
+    public init(@ViewBuilder thumbnailView: () -> ThumbnailView,
+                uri: String,
+                title: String,
+                totpManager: any TOTPManagerProtocol,
+                onCopyTotpToken: @escaping (String) -> Void) {
+        _viewModel = .init(wrappedValue: .init(totpManager: totpManager))
         self.onCopyTotpToken = onCopyTotpToken
         self.uri = uri
         self.thumbnailView = thumbnailView()
         self.title = title
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack {
                 Spacer()
@@ -114,7 +118,8 @@ struct AuthenticatorRow<ThumbnailView: View>: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(.rect)
-        .padding(.horizontal)
+        .padding(DesignConstant.sectionPadding / 2)
+        .roundedEditableSection()
         .onAppear {
             viewModel.bind(uri: uri)
         }

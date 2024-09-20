@@ -65,7 +65,7 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
             let userId = try await userManager.getActiveUserId()
             try await aliasRepository.enableSlAliasSync(userId: userId,
                                                         defaultShareID: selectedVault?.vault.shareId)
-            try await accessRepository.refreshAccess()
+            try await accessRepository.refreshAccess(userId: userId)
             return true
         } catch {
             logger.error(error)
@@ -81,7 +81,7 @@ private extension SimpleLoginAliasActivationViewModel {
             guard let self else {
                 return
             }
-            userAliasSyncData = try? await accessRepository.getAccess().access.userData
+            userAliasSyncData = try? await accessRepository.getAccess(userId: nil).access.userData
             vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
             if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {
                 guard let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) else {
