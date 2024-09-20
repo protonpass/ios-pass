@@ -118,7 +118,8 @@ public struct AuthenticatorRow<ThumbnailView: View>: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(.rect)
-        .padding(.horizontal)
+        .padding(DesignConstant.sectionPadding / 2)
+        .roundedEditableSection()
         .onAppear {
             viewModel.bind(uri: uri)
         }
