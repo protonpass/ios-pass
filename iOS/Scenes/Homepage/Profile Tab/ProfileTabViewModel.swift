@@ -180,7 +180,7 @@ extension ProfileTabViewModel {
 
     func refreshPlan() async {
         do {
-            let access = try await accessRepository.refreshAccess().access
+            let access = try await accessRepository.refreshAccess(userId: nil).access
             plan = access.plan
             userAliasSyncData = access.userData
         } catch {

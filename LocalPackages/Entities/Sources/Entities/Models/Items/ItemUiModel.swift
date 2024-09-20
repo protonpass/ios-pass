@@ -31,11 +31,13 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
     public let url: String?
     public let isAlias: Bool
     public let isAliasEnabled: Bool
-    public let hasTotpUri: Bool
+    public let totpUri: String?
     public let lastUseTime: Int64
     public let modifyTime: Int64
     public let state: ItemState
     public let pinned: Bool
+
+    public var hasTotpUri: Bool { totpUri?.isEmpty == false }
 
     public init(itemId: String,
                 shareId: String,
@@ -46,7 +48,7 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
                 description: String,
                 url: String? = nil,
                 isAlias: Bool,
-                hasTotpUri: Bool,
+                totpUri: String?,
                 lastUseTime: Int64,
                 modifyTime: Int64,
                 state: ItemState,
@@ -61,7 +63,7 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
         self.description = description
         self.url = url
         self.isAlias = isAlias
-        self.hasTotpUri = hasTotpUri
+        self.totpUri = totpUri
         self.lastUseTime = lastUseTime
         self.modifyTime = modifyTime
         self.state = state

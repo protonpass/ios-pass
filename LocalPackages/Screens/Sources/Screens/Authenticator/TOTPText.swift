@@ -21,10 +21,12 @@
 import DesignSystem
 import SwiftUI
 
-struct TOTPText: View {
+public struct TOTPText: View {
     private let texts: [Text]
 
-    init(code: String, textColor: UIColor = PassColor.textNorm, font: Font = .callout) {
+    public init(code: String,
+                textColor: UIColor = PassColor.textNorm,
+                font: Font = .callout) {
         let segments = Array(code).chunked(into: 3).map { String($0) }
         var texts = [Text]()
 

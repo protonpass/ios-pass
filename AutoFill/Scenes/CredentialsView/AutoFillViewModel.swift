@@ -18,23 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import AuthenticationServices
 import Combine
 import Core
 import Entities
 import Factory
 import Foundation
 import Macro
+import Screens
 
 @MainActor
-class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
+protocol AutoFillViewModelDelegate: AnyObject {
+    func autoFillViewModelWantsToCreateNewItem(_ info: LoginCreationInfo)
+    func autoFillViewModelWantsToSelectUser(_ users: [UserUiModel])
+    func autoFillViewModelWantsToCancel()
+    func autoFillViewModelWantsToLogOut()
+    func autoFillViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
+                                                     delegate: any SortTypeListViewModelDelegate)
+}
+
+@MainActor
+class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     @Published private(set) var results: [T] = []
     @Published var selectedUser: UserUiModel?
     var cancellables = Set<AnyCancellable>()
 
-    private let onCreate: (LoginCreationInfo) -> Void
-    private let onSelectUser: ([UserUiModel]) -> Void
-    private let onCancel: () -> Void
-    private let onLogOut: () -> Void
     private let shareIdToUserManager: any ShareIdToUserManagerProtocol
     private let userForNewItemSubject: UserForNewItemSubject
 
@@ -43,6 +51,11 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
     @LazyInjected(\SharedServiceContainer.eventSynchronizer) private var eventSynchronizer
     @LazyInjected(\SharedToolingContainer.logger) var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) var router
+    @LazyInjected(\SharedUseCasesContainer.canEditItem) var canEditItem
+    @LazyInjected(\AutoFillUseCaseContainer.associateUrlAndAutoFill) var associateUrlAndAutoFill
+
+    weak var delegate: (any AutoFillViewModelDelegate)?
+    private(set) weak var context: ASCredentialProviderExtensionContext?
 
     var isFreeUser: Bool {
         selectedUser?.plan.isFreeUser == true
@@ -70,16 +83,10 @@ class AutoFillViewModel<T: AutoFillCredentials>: ObservableObject {
         results.flatMap(\.vaults).deduplicated
     }
 
-    init(onCreate: @escaping (LoginCreationInfo) -> Void,
-         onSelectUser: @escaping ([UserUiModel]) -> Void,
-         onCancel: @escaping () -> Void,
-         onLogOut: @escaping () -> Void,
+    init(context: ASCredentialProviderExtensionContext?,
          users: [UserUiModel],
          userForNewItemSubject: UserForNewItemSubject) {
-        self.onCreate = onCreate
-        self.onSelectUser = onSelectUser
-        self.onCancel = onCancel
-        self.onLogOut = onLogOut
+        self.context = context
         self.users = users
         self.userForNewItemSubject = userForNewItemSubject
         shareIdToUserManager = ShareIdToUserManager(users: users)
@@ -172,7 +179,8 @@ extension AutoFillViewModel {
             guard let vaults = getVaults(userId: userId) else {
                 throw PassError.vault(.vaultsNotFound(userId: userId))
             }
-            onCreate(generateLoginCreationInfo(userId: userId, vaults: vaults))
+            let info = generateLoginCreationInfo(userId: userId, vaults: vaults)
+            delegate?.autoFillViewModelWantsToCreateNewItem(info)
         } catch {
             handle(error)
         }
@@ -182,7 +190,7 @@ extension AutoFillViewModel {
     // because SwiftUI's confirmationDialog (action sheet) as well as alerts
     // don't inherit colorScheme from its parent view
     func presentSelectUserActionSheet() {
-        onSelectUser(users)
+        delegate?.autoFillViewModelWantsToSelectUser(users)
     }
 
     func getUser(for item: any ItemIdentifiable) -> UserUiModel? {
@@ -213,11 +221,11 @@ extension AutoFillViewModel {
 
     func handleAuthenticationFailure() {
         logger.error("Failed to locally authenticate. Logging out.")
-        onLogOut()
+        delegate?.autoFillViewModelWantsToLogOut()
     }
 
     func handleCancel() {
-        onCancel()
+        delegate?.autoFillViewModelWantsToCancel()
     }
 
     func upgrade() {
