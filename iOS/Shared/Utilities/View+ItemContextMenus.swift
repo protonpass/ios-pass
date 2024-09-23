@@ -27,7 +27,10 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 // swiftlint:disable enum_case_associated_values_count function_parameter_count
+@MainActor
 enum ItemContextMenu {
+    static var aliasSyncEnabled = false
+
     case login(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
                onCopyEmail: () -> Void,
@@ -127,7 +130,7 @@ enum ItemContextMenu {
                                       icon: IconProvider.squares,
                                       action: onCopyAlias))
 
-            if isFeatureFlagEnables(flag: FeatureFlagType.passSimpleLoginAliasesSync) {
+            if Self.aliasSyncEnabled {
                 if item.aliasEnabled {
                     firstOptions.append(.init(title: "Disable alias",
                                               icon: PassIcon.aliasSlash.toImage,
@@ -251,10 +254,6 @@ enum ItemContextMenu {
 
             return sections
         }
-    }
-
-    private func isFeatureFlagEnables(flag: any FeatureFlagTypeProtocol) -> Bool {
-        SharedUseCasesContainer.shared.getFeatureFlagStatus().execute(for: flag)
     }
 }
 
