@@ -248,6 +248,9 @@ struct ItemsTabView: View {
                 Text(headerTitle)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(10)
+                    .background(.ultraThinMaterial)
             })
         }
     }
@@ -287,7 +290,7 @@ struct ItemsTabView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .animation(.default, value: isSelected)
         })
-        .padding(.horizontal, 16)
+//        .padding(.horizontal, 16)
         .frame(height: 64)
         .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                                     item: item,
@@ -406,14 +409,25 @@ private struct ItemListView<Content: View>: View {
     }
 
     var body: some View {
-        List {
-            content()
-            Spacer()
-                .frame(height: safeAreaInsets.bottom)
-                .plainListRow()
+        ScrollView {
+            LazyVStack(pinnedViews: [.sectionHeaders]) {
+                content()
+                Spacer()
+                    .frame(height: safeAreaInsets.bottom)
+                    .plainListRow()
+            }
         }
         .listStyle(.plain)
         .scrollIndicatorsHidden(!showScrollIndicators)
         .refreshable(action: onRefresh)
+//        List {
+//            content()
+//            Spacer()
+//                .frame(height: safeAreaInsets.bottom)
+//                .plainListRow()
+//        }
+//        .listStyle(.plain)
+//        .scrollIndicatorsHidden(!showScrollIndicators)
+//        .refreshable(action: onRefresh)
     }
 }
