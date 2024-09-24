@@ -88,13 +88,20 @@ private extension SharedUseCasesContainer {
     var syncEventLoop: any SyncEventLoopProtocol {
         SharedServiceContainer.shared.syncEventLoop()
     }
+
+    var keychain: any KeychainProtocol {
+        SharedToolingContainer.shared.keychain()
+    }
 }
 
 // MARK: App
 
 extension SharedUseCasesContainer {
     var setUpBeforeLaunching: Factory<any SetUpBeforeLaunchingUseCase> {
-        self { SetUpBeforeLaunching(userManager: self.userManager,
+        self { SetUpBeforeLaunching(keychain: self.keychain,
+                                    databaseService: SharedServiceContainer.shared.databaseService(),
+                                    symmetricKeyProvider: self.symmetricKeyProvider,
+                                    userManager: self.userManager,
                                     prefererencesManager: self.preferencesManager,
                                     authManager: SharedDataContainer.shared.credentialProvider(),
                                     applyMigration: self.applyAppMigration()) }
@@ -117,7 +124,7 @@ extension SharedUseCasesContainer {
     }
 
     var authenticateBiometrically: Factory<any AuthenticateBiometricallyUseCase> {
-        self { AuthenticateBiometrically(keychainService: SharedToolingContainer.shared.keychain()) }
+        self { AuthenticateBiometrically(keychainService: self.keychain) }
     }
 
     var getLocalAuthenticationMethods: Factory<any GetLocalAuthenticationMethodsUseCase> {
@@ -419,7 +426,7 @@ extension SharedUseCasesContainer {
                                  apiManager: self.apiManager,
                                  authManager: self.authManager,
                                  credentialManager: SharedServiceContainer.shared.credentialManager(),
-                                 keychain: SharedToolingContainer.shared.keychain()) }
+                                 keychain: self.keychain) }
     }
 }
 
