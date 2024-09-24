@@ -20,6 +20,9 @@
 //
 
 import Client
+import Core
+import CoreData
+import CryptoKit
 import Foundation
 import UIKit
 
@@ -39,15 +42,24 @@ public extension SetUpBeforeLaunchingUseCase {
 }
 
 public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
+    private let keychain: any KeychainProtocol
+    private let databaseService: any DatabaseServiceProtocol
+    private let symmetricKeyProvider: any SymmetricKeyProvider
     private let userManager: any UserManagerProtocol
     private let prefererencesManager: any PreferencesManagerProtocol
     private let authManager: any AuthManagerProtocol
     private let applyMigration: any ApplyAppMigrationUseCase
 
-    public init(userManager: any UserManagerProtocol,
+    public init(keychain: any KeychainProtocol,
+                databaseService: any DatabaseServiceProtocol,
+                symmetricKeyProvider: any SymmetricKeyProvider,
+                userManager: any UserManagerProtocol,
                 prefererencesManager: any PreferencesManagerProtocol,
                 authManager: any AuthManagerProtocol,
                 applyMigration: any ApplyAppMigrationUseCase) {
+        self.keychain = keychain
+        self.databaseService = databaseService
+        self.symmetricKeyProvider = symmetricKeyProvider
         self.userManager = userManager
         self.prefererencesManager = prefererencesManager
         self.authManager = authManager
@@ -57,23 +69,57 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
     /// Order matters, `UserManager` needs to be set up before `PrefererencesManager`
     /// because `PrefererencesManager` depends on `UserManager`
     public func execute(rootContainer: RootContainer) async throws {
-        try await userManager.setUp()
-        try await prefererencesManager.setUp()
-        try await applyMigration()
-        authManager.setUp()
+        do {
+            try await userManager.setUp()
+            try await prefererencesManager.setUp()
+            try await applyMigration()
+            authManager.setUp()
 
-        await MainActor.run {
-            let theme = prefererencesManager.sharedPreferences.unwrapped().theme
-            switch rootContainer {
-            case let .window(window):
-                window.overrideUserInterfaceStyle = theme.userInterfaceStyle
-            case let .viewController(rootViewController):
-                if let rootViewController {
-                    rootViewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
-                } else {
-                    assertionFailure("rootViewController should not be nil")
+            await MainActor.run {
+                let theme = prefererencesManager.sharedPreferences.unwrapped().theme
+                switch rootContainer {
+                case let .window(window):
+                    window.overrideUserInterfaceStyle = theme.userInterfaceStyle
+                case let .viewController(rootViewController):
+                    if let rootViewController {
+                        rootViewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
+                    } else {
+                        assertionFailure("rootViewController should not be nil")
+                    }
                 }
             }
+        } catch {
+            if error is CryptoKitError {
+                /*
+                   Something is crypgraphically wrong when setting up the app
+                  A lot of users encounter `CryptoKitError error 3` when migrating to iOS 18,
+                  also probably to a new device.
+                  We workaround by rotating the symmetric key (which may be broken after the device migration process)
+                 and delete all local data in keychain and databse as a result
+                   */
+
+                // Rotate the symmetric key by removing it from keychain
+                // and let the SymmetricKeyProvider recreate it
+                try? keychain.removeOrError(forKey: kLegacySymmetricKey)
+                try? keychain.removeOrError(forKey: kSymmetricKey)
+                await (symmetricKeyProvider as? SymmetricKeyProviderImpl)?.clearCache()
+
+                // Other cleanups
+                try? keychain.removeOrError(forKey: AuthManager.storageKey)
+                try? keychain.removeOrError(forKey: kSharedPreferencesKey)
+
+                let container = databaseService.getContainer()
+                let managedObjectContext = container.viewContext
+                for entity in container.persistentStoreCoordinator.managedObjectModel.entities {
+                    if let name = entity.name {
+                        let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: name)
+                        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+                        _ = try? managedObjectContext.execute(batchDeleteRequest)
+                    }
+                }
+            }
+
+            throw error
         }
     }
 }

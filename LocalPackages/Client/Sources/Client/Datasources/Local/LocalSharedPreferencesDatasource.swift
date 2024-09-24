@@ -23,7 +23,7 @@ import Core
 import Entities
 import Foundation
 
-private let kSharedPreferencesKey = "SharedPreferences"
+public let kSharedPreferencesKey = "SharedPreferences"
 
 // sourcery: AutoMockable
 /// Store symmetrically encrypted `SharedPreferences` in keychain
