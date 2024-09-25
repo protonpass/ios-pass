@@ -127,7 +127,7 @@ struct AliasDetailView: View {
             .onTapGesture { viewModel.copyAliasEmail() }
             .layoutPriority(1)
 
-            if viewModel.isSimpleLoginAliasSyncActive {
+            if viewModel.aliasSyncEnabled {
                 Group {
                     if viewModel.togglingAliasStatus {
                         ProgressView()
