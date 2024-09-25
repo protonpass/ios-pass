@@ -315,7 +315,13 @@ struct ItemsTabView: View {
                                          isTrashed: isTrashed,
                                          isEditable: isEditable,
                                          onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
-                                         onAliasTrash: { aliasToTrash = item },
+                                         onAliasTrash: {
+                                             if viewModel.aliasSyncEnabled {
+                                                 aliasToTrash = item
+                                             } else {
+                                                 viewModel.itemContextMenuHandler.trash(item)
+                                             }
+                                         },
                                          handler: viewModel.itemContextMenuHandler)
                 }
                 .padding(.horizontal)
