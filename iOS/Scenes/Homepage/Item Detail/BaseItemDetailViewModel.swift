@@ -79,6 +79,10 @@ class BaseItemDetailViewModel: ObservableObject {
         return canUserPerformActionOnVault(for: vault.vault)
     }
 
+    var aliasSyncEnabled: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
     weak var delegate: (any ItemDetailViewModelDelegate)?
 
     init(isShownAsSheet: Bool,
