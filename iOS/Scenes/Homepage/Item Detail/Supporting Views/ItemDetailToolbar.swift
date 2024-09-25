@@ -90,7 +90,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         Divider()
                         Label("Move to Trash", image: IconProvider.trash)
                             .buttonEmbeded(action: {
-                                if viewModel.itemContent.isAlias {
+                                if viewModel.aliasSyncEnabled, viewModel.itemContent.isAlias {
                                     viewModel.showingTrashAliasAlert.toggle()
                                 } else {
                                     viewModel.moveToTrash()
