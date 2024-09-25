@@ -41,14 +41,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
-    var isSimpleLoginAliasSyncActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
-    }
-
-    var aliasSyncEnabled: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
-    }
-
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
