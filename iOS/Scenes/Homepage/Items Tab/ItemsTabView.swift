@@ -27,6 +27,10 @@ import Screens
 import SwiftUI
 import TipKit
 
+// swiftlint:disable:next todo
+// TODO: Remove later on after using the same UI component to render item list
+private let kListThreshold = 500
+
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
@@ -188,15 +192,32 @@ struct ItemsTabView: View {
 
     func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
         ItemListView(safeAreaInsets: safeAreaInsets,
+                     mode: result.numberOfItems > kListThreshold ? .lazyVStack : .list,
                      content: {
-                         section(for: result.today, headerTitle: #localized("Today"))
-                         section(for: result.yesterday, headerTitle: #localized("Yesterday"))
-                         section(for: result.last7Days, headerTitle: #localized("Last week"))
-                         section(for: result.last14Days, headerTitle: #localized("Last two weeks"))
-                         section(for: result.last30Days, headerTitle: #localized("Last 30 days"))
-                         section(for: result.last60Days, headerTitle: #localized("Last 60 days"))
-                         section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
-                         section(for: result.others, headerTitle: #localized("More than 90 days"))
+                         section(for: result.today,
+                                 headerTitle: #localized("Today"),
+                                 totalItemsCount: result.numberOfItems)
+                         section(for: result.yesterday,
+                                 headerTitle: #localized("Yesterday"),
+                                 totalItemsCount: result.numberOfItems)
+                         section(for: result.last7Days,
+                                 headerTitle: #localized("Last week"),
+                                 totalItemsCount: result.numberOfItems)
+                         section(for: result.last14Days,
+                                 headerTitle: #localized("Last two weeks"),
+                                 totalItemsCount: result.numberOfItems)
+                         section(for: result.last30Days,
+                                 headerTitle: #localized("Last 30 days"),
+                                 totalItemsCount: result.numberOfItems)
+                         section(for: result.last60Days,
+                                 headerTitle: #localized("Last 60 days"),
+                                 totalItemsCount: result.numberOfItems)
+                         section(for: result.last90Days,
+                                 headerTitle: #localized("Last 90 days"),
+                                 totalItemsCount: result.numberOfItems)
+                         section(for: result.others,
+                                 headerTitle: #localized("More than 90 days"),
+                                 totalItemsCount: result.numberOfItems)
                      },
                      onRefresh: viewModel.forceSyncIfNotEditMode)
     }
@@ -206,9 +227,12 @@ struct ItemsTabView: View {
         ScrollViewReader { proxy in
             ItemListView(safeAreaInsets: safeAreaInsets,
                          showScrollIndicators: false,
+                         mode: result.numberOfItems > kListThreshold ? .lazyVStack : .list,
                          content: {
                              ForEach(result.buckets, id: \.letter) { bucket in
-                                 section(for: bucket.items, headerTitle: bucket.letter.character)
+                                 section(for: bucket.items,
+                                         headerTitle: bucket.letter.character,
+                                         totalItemsCount: result.numberOfItems)
                                      .id(bucket.letter.character)
                              }
                          },
@@ -224,22 +248,28 @@ struct ItemsTabView: View {
 
     func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
         ItemListView(safeAreaInsets: safeAreaInsets,
+                     mode: result.numberOfItems > kListThreshold ? .lazyVStack : .list,
                      content: {
                          ForEach(result.buckets, id: \.monthYear) { bucket in
-                             section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+                             section(for: bucket.items,
+                                     headerTitle: bucket.monthYear.relativeString,
+                                     totalItemsCount: result.numberOfItems)
                          }
                      },
                      onRefresh: viewModel.forceSyncIfNotEditMode)
     }
 
     @ViewBuilder
-    func section(for items: [ItemUiModel], headerTitle: String) -> some View {
+    func section(for items: [ItemUiModel],
+                 headerTitle: String,
+                 totalItemsCount: Int) -> some View {
+        let isListMode = totalItemsCount <= kListThreshold
         if items.isEmpty {
             EmptyView()
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    itemRow(for: item)
+                    itemRow(for: item, isListMode: isListMode)
                         .listRowSeparator(.hidden)
                         .listRowInsets(.init(top: 4, leading: -10, bottom: 4, trailing: -10))
                         .listRowBackground(Color.clear)
@@ -249,14 +279,17 @@ struct ItemsTabView: View {
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(10)
-                    .background(.ultraThinMaterial)
+                    .padding(.horizontal, isListMode ? 0 : 20)
+                    .padding(.vertical, isListMode ? 0 : 4)
+                    .if(!isListMode) {
+                        $0.background(.ultraThinMaterial)
+                    }
             })
         }
     }
 
     @ViewBuilder
-    func itemRow(for item: ItemUiModel) -> some View {
+    func itemRow(for item: ItemUiModel, isListMode: Bool) -> some View {
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         let isEditable = viewModel.isEditable(item)
         let isSelected = viewModel.isSelected(item)
@@ -290,7 +323,9 @@ struct ItemsTabView: View {
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .animation(.default, value: isSelected)
         })
-//        .padding(.horizontal, 16)
+        .if(isListMode) {
+            $0.padding(.horizontal, 16)
+        }
         .frame(height: 64)
         .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                                     item: item,
@@ -393,41 +428,52 @@ private extension ItemsTabView {
 }
 
 private struct ItemListView<Content: View>: View {
+    enum Mode {
+        case list, lazyVStack
+    }
+
     let safeAreaInsets: EdgeInsets
     let showScrollIndicators: Bool
+    let mode: Mode
     let content: () -> Content
     let onRefresh: @Sendable () async -> Void
 
     init(safeAreaInsets: EdgeInsets,
          showScrollIndicators: Bool = true,
+         mode: Mode,
          @ViewBuilder content: @escaping () -> Content,
          onRefresh: @Sendable @escaping () async -> Void) {
         self.safeAreaInsets = safeAreaInsets
         self.showScrollIndicators = showScrollIndicators
+        self.mode = mode
         self.content = content
         self.onRefresh = onRefresh
     }
 
     var body: some View {
-        ScrollView {
-            LazyVStack(pinnedViews: [.sectionHeaders]) {
+        switch mode {
+        case .list:
+            List {
                 content()
                 Spacer()
                     .frame(height: safeAreaInsets.bottom)
                     .plainListRow()
             }
+            .listStyle(.plain)
+            .scrollIndicatorsHidden(!showScrollIndicators)
+            .refreshable(action: onRefresh)
+
+        case .lazyVStack:
+            ScrollView {
+                LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                    content()
+                    Spacer()
+                        .frame(height: safeAreaInsets.bottom)
+                        .plainListRow()
+                }
+            }
+            .scrollIndicatorsHidden(!showScrollIndicators)
+            .refreshable(action: onRefresh)
         }
-        .listStyle(.plain)
-        .scrollIndicatorsHidden(!showScrollIndicators)
-        .refreshable(action: onRefresh)
-//        List {
-//            content()
-//            Spacer()
-//                .frame(height: safeAreaInsets.bottom)
-//                .plainListRow()
-//        }
-//        .listStyle(.plain)
-//        .scrollIndicatorsHidden(!showScrollIndicators)
-//        .refreshable(action: onRefresh)
     }
 }
