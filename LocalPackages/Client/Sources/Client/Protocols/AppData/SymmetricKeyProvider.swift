@@ -26,8 +26,8 @@ import Entities
 import Foundation
 import ProtonCoreKeymaker
 
-private let kLegacySymmetricKey = "symmetricKey"
-private let kSymmetricKey = "SymmetricKey"
+public let kLegacySymmetricKey = "symmetricKey"
+public let kSymmetricKey = "SymmetricKey"
 
 // sourcery: AutoMockable
 public protocol SymmetricKeyProvider: Sendable {
@@ -59,6 +59,10 @@ public extension SymmetricKeyProviderImpl {
                                                                  mainKeyProvider: mainKeyProvider)
         cachedKey = key
         return key
+    }
+
+    func clearCache() {
+        cachedKey = nil
     }
 }
 
