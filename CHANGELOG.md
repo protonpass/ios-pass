@@ -1,3 +1,19 @@
+# Version 1.13.0
+Features:
+- Autofill now supports all logged-in accounts
+- Tinted icons support for iOS 18
+
+Improvements:
+- Bulk pin/unpin for items
+- Email or username can now be entered when creating login items
+- New toggle in Settings to always display the username field
+
+Others:
+- Core library upgraded from 25.3.4 to 26.1.2
+- Fixed mailbox selection not highlighting
+- Resolved CryptoKit issue on iOS 18
+- Bulk alias enable/disable (feature flag controlled)
+
 # Version 1.12.3
 Features:
 - Support for multiple accounts (behind feature flags)
