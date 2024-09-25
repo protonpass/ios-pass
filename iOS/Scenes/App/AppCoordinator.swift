@@ -211,6 +211,9 @@ final class AppCoordinator {
             return true
         } catch {
             appStateObserver.updateAppState(.loggedOut(.failedToSetUpAppCoordinator(error)))
+            // When running into set up error, we delete all data locally
+            // So we try our best effort to set up everything again here in clean state
+            try? await setUpBeforeLaunching(rootContainer: .window(window))
             return false
         }
     }
