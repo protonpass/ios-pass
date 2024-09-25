@@ -70,7 +70,7 @@ struct ItemSwipeModifier: ViewModifier {
                     .tint(PassColor.signalDanger.toColor)
                 } else {
                     Button(action: {
-                        if item.type == .alias {
+                        if aliasSyncEnabled, item.type == .alias {
                             showingTrashAliasAlert.toggle()
                         } else {
                             itemContextMenuHandler.trash(item)
