@@ -184,9 +184,23 @@ private extension CredentialsView {
     func itemList(matchedItems: [ItemUiModel],
                   notMatchedItems: [ItemUiModel]) -> some View {
         ScrollViewReader { proxy in
-            List {
-                matchedItemsSection(matchedItems)
-                notMatchedItemsSection(notMatchedItems)
+            Group {
+                // swiftlint:disable:next todo
+                // TODO: Remove later on after using the same UI component to render item list
+                let isListMode = matchedItems.count + notMatchedItems.count <= 500
+                if isListMode {
+                    List {
+                        matchedItemsSection(matchedItems, isListMode: isListMode)
+                        notMatchedItemsSection(notMatchedItems, isListMode: isListMode)
+                    }
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+                            matchedItemsSection(matchedItems, isListMode: isListMode)
+                            notMatchedItemsSection(notMatchedItems, isListMode: isListMode)
+                        }
+                    }
+                }
             }
             .listStyle(.plain)
             .refreshable { await viewModel.sync(ignoreError: false) }
@@ -205,7 +219,7 @@ private extension CredentialsView {
     }
 
     @ViewBuilder
-    func matchedItemsSection(_ items: [ItemUiModel]) -> some View {
+    func matchedItemsSection(_ items: [ItemUiModel], isListMode: Bool) -> some View {
         let sectionTitle = #localized("Suggestions for %@", viewModel.domain)
         if items.isEmpty {
             Section(content: {
@@ -222,6 +236,7 @@ private extension CredentialsView {
             })
         } else {
             section(for: items,
+                    isListMode: isListMode,
                     headerTitle: sectionTitle,
                     headerColor: PassColor.textNorm,
                     headerFontWeight: .bold)
@@ -229,7 +244,7 @@ private extension CredentialsView {
     }
 
     @ViewBuilder
-    func notMatchedItemsSection(_ items: [ItemUiModel]) -> some View {
+    func notMatchedItemsSection(_ items: [ItemUiModel], isListMode: Bool) -> some View {
         if !items.isEmpty {
             HStack {
                 Text("Other items")
@@ -247,7 +262,7 @@ private extension CredentialsView {
             }
             .plainListRow()
             .padding([.top, .horizontal])
-            sortableSections(for: items)
+            sortableSections(for: items, isListMode: isListMode)
         }
     }
 
@@ -272,6 +287,7 @@ private extension CredentialsView {
 private extension CredentialsView {
     @ViewBuilder
     func section(for items: [some CredentialItem],
+                 isListMode: Bool,
                  headerTitle: String,
                  headerColor: UIColor = PassColor.textWeak,
                  headerFontWeight: Font.Weight = .regular) -> some View {
@@ -315,49 +331,75 @@ private extension CredentialsView {
                     .font(.callout)
                     .fontWeight(headerFontWeight)
                     .foregroundStyle(headerColor.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, isListMode ? 0 : 20)
+                    .padding(.vertical, isListMode ? 0 : 4)
+                    .if(!isListMode) {
+                        $0.background(.ultraThinMaterial)
+                    }
             })
         }
     }
 
     @ViewBuilder
-    func sortableSections(for items: [some CredentialItem]) -> some View {
+    func sortableSections(for items: [some CredentialItem], isListMode: Bool) -> some View {
         switch viewModel.selectedSortType {
         case .mostRecent:
-            sections(for: items.mostRecentSortResult())
+            sections(for: items.mostRecentSortResult(), isListMode: isListMode)
         case .alphabeticalAsc:
-            sections(for: items.alphabeticalSortResult(direction: .ascending))
+            sections(for: items.alphabeticalSortResult(direction: .ascending), isListMode: isListMode)
         case .alphabeticalDesc:
-            sections(for: items.alphabeticalSortResult(direction: .descending))
+            sections(for: items.alphabeticalSortResult(direction: .descending), isListMode: isListMode)
         case .newestToOldest:
-            sections(for: items.monthYearSortResult(direction: .descending))
+            sections(for: items.monthYearSortResult(direction: .descending), isListMode: isListMode)
         case .oldestToNewest:
-            sections(for: items.monthYearSortResult(direction: .ascending))
+            sections(for: items.monthYearSortResult(direction: .ascending), isListMode: isListMode)
         }
     }
 
-    func sections(for result: MostRecentSortResult<some CredentialItem>) -> some View {
+    func sections(for result: MostRecentSortResult<some CredentialItem>, isListMode: Bool) -> some View {
         Group {
-            section(for: result.today, headerTitle: #localized("Today"))
-            section(for: result.yesterday, headerTitle: #localized("Yesterday"))
-            section(for: result.last7Days, headerTitle: #localized("Last week"))
-            section(for: result.last14Days, headerTitle: #localized("Last two weeks"))
-            section(for: result.last30Days, headerTitle: #localized("Last 30 days"))
-            section(for: result.last60Days, headerTitle: #localized("Last 60 days"))
-            section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
-            section(for: result.others, headerTitle: #localized("More than 90 days"))
+            section(for: result.today,
+                    isListMode: isListMode,
+                    headerTitle: #localized("Today"))
+            section(for: result.yesterday,
+                    isListMode: isListMode,
+                    headerTitle: #localized("Yesterday"))
+            section(for: result.last7Days,
+                    isListMode: isListMode,
+                    headerTitle: #localized("Last week"))
+            section(for: result.last14Days,
+                    isListMode: isListMode,
+                    headerTitle: #localized("Last two weeks"))
+            section(for: result.last30Days,
+                    isListMode: isListMode,
+                    headerTitle: #localized("Last 30 days"))
+            section(for: result.last60Days,
+                    isListMode: isListMode,
+                    headerTitle: #localized("Last 60 days"))
+            section(for: result.last90Days,
+                    isListMode: isListMode,
+                    headerTitle: #localized("Last 90 days"))
+            section(for: result.others,
+                    isListMode: isListMode,
+                    headerTitle: #localized("More than 90 days"))
         }
     }
 
-    func sections(for result: AlphabeticalSortResult<some CredentialItem>) -> some View {
+    func sections(for result: AlphabeticalSortResult<some CredentialItem>,
+                  isListMode: Bool) -> some View {
         ForEach(result.buckets, id: \.letter) { bucket in
-            section(for: bucket.items, headerTitle: bucket.letter.character)
+            section(for: bucket.items, isListMode: isListMode, headerTitle: bucket.letter.character)
                 .id(bucket.letter.character)
         }
     }
 
-    func sections(for result: MonthYearSortResult<some CredentialItem>) -> some View {
+    func sections(for result: MonthYearSortResult<some CredentialItem>,
+                  isListMode: Bool) -> some View {
         ForEach(result.buckets, id: \.monthYear) { bucket in
-            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
+            section(for: bucket.items,
+                    isListMode: isListMode,
+                    headerTitle: bucket.monthYear.relativeString)
         }
     }
 }
