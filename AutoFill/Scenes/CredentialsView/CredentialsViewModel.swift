@@ -222,7 +222,8 @@ extension CredentialsViewModel {
         }
     }
 
-    func select(item: any ItemIdentifiable) {
+    func select(item: any ItemIdentifiable,
+                skipUrlAssociationCheck: Bool = false) {
         assert(!results.isEmpty, "Credentials are not fetched")
 
         Task { [weak self] in
@@ -232,9 +233,11 @@ extension CredentialsViewModel {
             do {
                 if let passkeyRequestParams {
                     try await handlePasskeySelection(for: item,
-                                                     params: passkeyRequestParams)
+                                                     params: passkeyRequestParams,
+                                                     skipUrlAssociationCheck: skipUrlAssociationCheck)
                 } else {
-                    try await handlePasswordSelection(for: item)
+                    try await handlePasswordSelection(for: item,
+                                                      skipUrlAssociationCheck: skipUrlAssociationCheck)
                 }
             } catch {
                 logger.error(error)
@@ -245,10 +248,11 @@ extension CredentialsViewModel {
 }
 
 private extension CredentialsViewModel {
-    func handlePasswordSelection(for item: any ItemIdentifiable) async throws {
+    func handlePasswordSelection(for item: any ItemIdentifiable,
+                                 skipUrlAssociationCheck: Bool) async throws {
         guard let context else { return }
         // Check if given URL is valid and user has edit right before proposing "associate & autofill"
-        if notMatchedItemInformation == nil,
+        if !skipUrlAssociationCheck,
            canEditItem(vaults: results.flatMap(\.vaults), item: item),
            let schemeAndHost = urls.first?.schemeAndHost,
            !schemeAndHost.isEmpty,
@@ -267,7 +271,8 @@ private extension CredentialsViewModel {
     }
 
     func handlePasskeySelection(for item: any ItemIdentifiable,
-                                params: any PasskeyRequestParametersProtocol) async throws {
+                                params: any PasskeyRequestParametersProtocol,
+                                skipUrlAssociationCheck: Bool) async throws {
         guard let context else { return }
         guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                         itemId: item.itemId),
@@ -277,7 +282,7 @@ private extension CredentialsViewModel {
 
         guard !loginData.passkeys.isEmpty else {
             // Fallback to password autofill when no passkeys
-            try await handlePasswordSelection(for: item)
+            try await handlePasswordSelection(for: item, skipUrlAssociationCheck: skipUrlAssociationCheck)
             return
         }
 
