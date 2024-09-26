@@ -19,19 +19,19 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct Mailbox: Decodable, Hashable, Equatable, Sendable, Identifiable {
-    public let mailboxID: String
+    public let mailboxID: Int
     public let email: String
     public let verified: Bool
     public let isDefault: Bool
 
-    public init(mailboxID: String, email: String, verified: Bool, isDefault: Bool) {
+    public init(mailboxID: Int, email: String, verified: Bool, isDefault: Bool) {
         self.mailboxID = mailboxID
         self.email = email
         self.verified = verified
         self.isDefault = isDefault
     }
 
-    public var id: String {
+    public var id: Int {
         mailboxID
     }
 }

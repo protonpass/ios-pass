@@ -22,9 +22,9 @@ import Entities
 import ProtonCoreNetworking
 
 public struct UpdateAliasMailboxRequest: Sendable, Encodable {
-    let defaultMailboxID: String
+    let defaultMailboxID: Int
 
-    public init(defaultMailboxID: String) {
+    public init(defaultMailboxID: Int) {
         self.defaultMailboxID = defaultMailboxID
     }
 
