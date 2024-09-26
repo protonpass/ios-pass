@@ -56,6 +56,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     }
 
     @Published var showingPermanentDeletionAlert = false
+    @Published private(set) var aliasSyncEnabled = false
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -91,8 +92,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-
-    lazy var aliasSyncEnabled = getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
 
     init() {
         setUp()
@@ -212,6 +211,15 @@ private extension ItemsTabViewModel {
                         handle(error: error)
                     }
                 }
+            }
+            .store(in: &cancellables)
+
+        userManager
+            .currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                aliasSyncEnabled = getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
             }
             .store(in: &cancellables)
     }
