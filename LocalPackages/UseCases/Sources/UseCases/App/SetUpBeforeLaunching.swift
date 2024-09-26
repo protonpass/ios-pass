@@ -89,7 +89,7 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
                 }
             }
         } catch {
-            if error is CryptoKitError {
+            if error is CryptoKitError || error is DecodingError {
                 /*
                    Something is crypgraphically wrong when setting up the app
                   A lot of users encounter `CryptoKitError error 3` when migrating to iOS 18,
