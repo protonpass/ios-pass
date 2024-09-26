@@ -59,7 +59,7 @@ struct CredentialsView: View {
                        })
 
                        Button(action: {
-                           viewModel.select(item: information.item)
+                           viewModel.select(item: information.item, skipUrlAssociationCheck: true)
                        }, label: {
                            Text("Just autofill")
                        })
@@ -187,7 +187,7 @@ private extension CredentialsView {
             Group {
                 // swiftlint:disable:next todo
                 // TODO: Remove later on after using the same UI component to render item list
-                let isListMode = matchedItems.count + notMatchedItems.count <= 500
+                let isListMode = matchedItems.count + notMatchedItems.count <= 200
                 if isListMode {
                     List {
                         matchedItemsSection(matchedItems, isListMode: isListMode)
@@ -202,6 +202,7 @@ private extension CredentialsView {
                     }
                 }
             }
+            .padding(.top)
             .listStyle(.plain)
             .refreshable { await viewModel.sync(ignoreError: false) }
             .animation(.default, value: matchedItems.hashValue)
