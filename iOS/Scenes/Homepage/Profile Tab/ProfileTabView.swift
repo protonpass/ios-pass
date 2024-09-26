@@ -361,7 +361,7 @@ struct ProfileTabView: View {
     }
 
     private var aliasesSection: some View {
-        TextOptionRow(title: #localized("Aliases"), action: { viewModel.showAliasSyncConfiguration() })
+        TextOptionRow(title: #localized("Alias management"), action: { viewModel.showAliasSyncConfiguration() })
             .frame(height: 75)
             .roundedEditableSection()
             .padding(.horizontal)
