@@ -153,7 +153,6 @@ struct ItemsTabView: View {
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
                 viewModel.continueFullSyncIfNeeded()
-                ItemContextMenu.aliasSyncEnabled = viewModel.aliasSyncEnabled
             }
             .if(viewModel.aliasSyncEnabled) {
                 $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
@@ -314,6 +313,7 @@ struct ItemsTabView: View {
                     view.itemContextMenu(item: item,
                                          isTrashed: isTrashed,
                                          isEditable: isEditable,
+                                         aliasSyncEnabled: viewModel.aliasSyncEnabled,
                                          onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
                                          onAliasTrash: {
                                              if viewModel.aliasSyncEnabled {
