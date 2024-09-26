@@ -22,6 +22,7 @@
 
 // periphery:ignore:all
 
+import Client
 import ProtonCoreFeatureFlags
 
 // sourcery: AutoMockable
@@ -41,17 +42,26 @@ public extension GetFeatureFlagStatusUseCase {
 }
 
 public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
+    private let userManager: any UserManagerProtocol
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
 
-    public init(repository: any FeatureFlagsRepositoryProtocol) {
+    public init(userManager: any UserManagerProtocol,
+                repository: any FeatureFlagsRepositoryProtocol) {
+        self.userManager = userManager
         featureFlagsRepository = repository
     }
 
     public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
-        featureFlagsRepository.isEnabled(flag, reloadValue: true)
+        if let userId = userManager.activeUserId {
+            featureFlagsRepository.setUserId(userId)
+        }
+        return featureFlagsRepository.isEnabled(flag, reloadValue: true)
     }
 
     public func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
-        featureFlagsRepository.isEnabled(flag, reloadValue: true)
+        if let userId = userManager.activeUserId {
+            featureFlagsRepository.setUserId(userId)
+        }
+        return featureFlagsRepository.isEnabled(flag, reloadValue: true)
     }
 }
