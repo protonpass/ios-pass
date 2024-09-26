@@ -97651,6 +97651,16 @@
         }
       }
     },
+    "Send logs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send logs"
+          }
+        }
+      }
+    },
     "Sentinel description" : {
       "comment" : "Description of the sentinel feature.",
       "localizations" : {
