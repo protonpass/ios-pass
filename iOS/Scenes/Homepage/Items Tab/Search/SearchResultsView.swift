@@ -112,6 +112,7 @@ struct SearchResultsView: View {
                 .itemContextMenu(item: item,
                                  isTrashed: viewModel.isTrash,
                                  isEditable: isEditable,
+                                 aliasSyncEnabled: viewModel.aliasSyncEnabled,
                                  onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
                                  onAliasTrash: {
                                      aliasToTrash = item
