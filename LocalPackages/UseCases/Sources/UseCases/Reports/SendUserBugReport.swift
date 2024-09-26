@@ -69,23 +69,19 @@ public extension SendUserBugReportUseCase {
 
 public final class SendUserBugReport: SendUserBugReportUseCase {
     private let reportRepository: any ReportRepositoryProtocol
-    private let extractLogsToFile: any ExtractLogsToFileUseCase
-    private let getLogEntries: any GetLogEntriesUseCase
+    private let createLogsFile: any CreateLogsFileUseCase
 
     /**
      Initializes a new instance of `SendUserBugReport` with the specified dependencies.
 
      - Parameters:
        - reportRepository: The repository responsible for sending the bug report.
-       - extractLogsToFile: The use case responsible for extracting logs to a file.
-       - getLogEntries: The use case responsible for retrieving log entries.
+       - createLogsFile: The use case responsible for extracting logs to a file.
      */
     public init(reportRepository: any ReportRepositoryProtocol,
-                extractLogsToFile: any ExtractLogsToFileUseCase,
-                getLogEntries: any GetLogEntriesUseCase) {
+                createLogsFile: any CreateLogsFileUseCase) {
         self.reportRepository = reportRepository
-        self.extractLogsToFile = extractLogsToFile
-        self.getLogEntries = getLogEntries
+        self.createLogsFile = createLogsFile
     }
 
     /**
@@ -106,10 +102,10 @@ public final class SendUserBugReport: SendUserBugReportUseCase {
         var logs = [String: URL]()
 
         if shouldSendLogs {
-            if let hostAppEntries = await createLogsFile(for: .hostApp) {
+            if let hostAppEntries = try await createLogsFile(for: .hostApp) {
                 logs[ReportFileKey.hostApp.rawValue] = hostAppEntries
             }
-            if let autofillEntries = await createLogsFile(for: .autoFillExtension) {
+            if let autofillEntries = try await createLogsFile(for: .autoFillExtension) {
                 logs[ReportFileKey.autofill.rawValue] = autofillEntries
             }
         }
@@ -117,16 +113,5 @@ public final class SendUserBugReport: SendUserBugReportUseCase {
             logs = logs.merging(otherLogContent) { _, new in new }
         }
         return try await reportRepository.sendBug(with: title, and: description, optional: logs)
-    }
-}
-
-private extension SendUserBugReport {
-    func createLogsFile(for module: PassModule) async -> URL? {
-        guard let entries = try? await getLogEntries(for: module),
-              let logFileUrl = try? await extractLogsToFile(for: entries,
-                                                            in: module.exportLogFileName) else {
-            return nil
-        }
-        return logFileUrl
     }
 }

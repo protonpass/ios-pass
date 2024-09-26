@@ -117,8 +117,7 @@ private extension UseCasesContainer {
 extension UseCasesContainer {
     var sendUserBugReport: Factory<any SendUserBugReportUseCase> {
         self { SendUserBugReport(reportRepository: RepositoryContainer.shared.reportRepository(),
-                                 extractLogsToFile: self.extractLogsToFile(),
-                                 getLogEntries: self.getLogEntries()) }
+                                 createLogsFile: self.createLogsFile()) }
     }
 }
 
@@ -135,6 +134,11 @@ extension UseCasesContainer {
                                  .specificLogManager(.autoFillExtension),
                              shareLogManager: SharedToolingContainer.shared
                                  .specificLogManager(.shareExtension)) }
+    }
+
+    var createLogsFile: Factory<any CreateLogsFileUseCase> {
+        self { CreateLogsFile(extractLogsToFile: self.extractLogsToFile(),
+                              getLogEntries: self.getLogEntries()) }
     }
 }
 
