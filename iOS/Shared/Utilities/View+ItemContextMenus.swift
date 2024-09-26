@@ -29,8 +29,6 @@ import SwiftUI
 // swiftlint:disable enum_case_associated_values_count function_parameter_count
 @MainActor
 enum ItemContextMenu {
-    static var aliasSyncEnabled = false
-
     case login(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
                onCopyEmail: () -> Void,
@@ -43,6 +41,7 @@ enum ItemContextMenu {
 
     case alias(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
+               aliasSyncEnabled: Bool,
                onCopyAlias: () -> Void,
                onToggleAliasStatus: (Bool) -> Void,
                onEdit: () -> Void,
@@ -118,6 +117,7 @@ enum ItemContextMenu {
 
         case let .alias(item,
                         isEditable,
+                        aliasSyncEnabled,
                         onCopyAlias,
                         onToggleAliasStatus,
                         onEdit,
@@ -130,7 +130,7 @@ enum ItemContextMenu {
                                       icon: IconProvider.squares,
                                       action: onCopyAlias))
 
-            if Self.aliasSyncEnabled {
+            if aliasSyncEnabled {
                 if item.aliasEnabled {
                     firstOptions.append(.init(title: "Disable alias",
                                               icon: PassIcon.aliasSlash.toImage,
@@ -355,6 +355,7 @@ extension View {
     func itemContextMenu(item: any PinnableItemTypeIdentifiable,
                          isTrashed: Bool,
                          isEditable: Bool,
+                         aliasSyncEnabled: Bool,
                          onPermanentlyDelete: @escaping () -> Void,
                          onAliasTrash: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
@@ -378,6 +379,7 @@ extension View {
             case .alias:
                 itemContextMenu(.alias(item: item,
                                        isEditable: isEditable,
+                                       aliasSyncEnabled: aliasSyncEnabled,
                                        onCopyAlias: { handler.copyAlias(item) },
                                        onToggleAliasStatus: { enabled in
                                            handler.toggleAliasStatus(item, enabled: enabled)
