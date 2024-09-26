@@ -111,6 +111,21 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     func showSimpleLoginAliasesActivation() {
         router.present(for: .simpleLoginSyncActivation)
     }
+
+    func setDefaultMailBox(mailbox: Mailbox) {
+        guard !mailboxes.isEmpty,
+              aliasSettings?.defaultMailboxID != mailbox.mailboxID else {
+            return
+        }
+//        defaultMailbox = mailbox
+        selectedMailboxTask?.cancel()
+        selectedMailboxTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await updateMailbox(mailbox: mailbox)
+        }
+    }
 }
 
 private extension AliasSyncConfigurationViewModel {
@@ -156,25 +171,25 @@ private extension AliasSyncConfigurationViewModel {
             }
             .store(in: &cancellables)
 
-        $defaultMailbox
-            .receive(on: DispatchQueue.main)
-            .compactMap { $0 }
-            .removeDuplicates()
-            .sink { [weak self] mailbox in
-                guard let self,
-                      !mailboxes.isEmpty,
-                      aliasSettings?.defaultMailboxID != mailbox.mailboxID else {
-                    return
-                }
-                selectedMailboxTask?.cancel()
-                selectedMailboxTask = Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await updateMailbox()
-                }
-            }
-            .store(in: &cancellables)
+//        $defaultMailbox
+//            .receive(on: DispatchQueue.main)
+//            .compactMap { $0 }
+//            .removeDuplicates()
+//            .sink { [weak self] mailbox in
+//                guard let self,
+//                      !mailboxes.isEmpty,
+//                      aliasSettings?.defaultMailboxID != mailbox.mailboxID else {
+//                    return
+//                }
+//                selectedMailboxTask?.cancel()
+//                selectedMailboxTask = Task { [weak self] in
+//                    guard let self else {
+//                        return
+//                    }
+//                    await updateMailbox()
+//                }
+//            }
+//            .store(in: &cancellables)
     }
 
     func updateVault() async {
@@ -203,17 +218,19 @@ private extension AliasSyncConfigurationViewModel {
         }
     }
 
-    func updateMailbox() async {
-        guard let defaultMailbox else {
-            return
-        }
+    func updateMailbox(mailbox: Mailbox) async {
+//        guard let defaultMailbox else {
+//            return
+//        }
         defer { loading = false }
         do {
             loading = true
             let userId = try await userManager.getActiveUserId()
-            let request = UpdateAliasMailboxRequest(defaultMailboxID: defaultMailbox.mailboxID)
+            let request = UpdateAliasMailboxRequest(defaultMailboxID: mailbox.mailboxID)
             aliasSettings = try await aliasRepository.updateAliasDefaultMailbox(userId: userId,
                                                                                 request: request)
+            defaultMailbox = mailbox
+
         } catch {
             handle(error: error)
         }

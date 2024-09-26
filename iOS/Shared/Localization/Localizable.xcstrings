@@ -10750,6 +10750,9 @@
         }
       }
     },
+    "+ Add" : {
+
+    },
     "2FA limit reached" : {
       "localizations" : {
         "be" : {
@@ -11709,6 +11712,9 @@
           }
         }
       }
+    },
+    "21 aliases" : {
+
     },
     "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." : {
       "localizations" : {
@@ -18118,6 +18124,9 @@
         }
       }
     },
+    "Alias management" : {
+
+    },
     "Alias of login item \"%@\"" : {
       "localizations" : {
         "be" : {
@@ -19373,6 +19382,9 @@
           }
         }
       }
+    },
+    "All aliases using the mailbox %@ will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:" : {
+
     },
     "All current breaches will be marked as resolved. In case of future data breaches, you'll be notified." : {
       "localizations" : {
@@ -38221,6 +38233,9 @@
         }
       }
     },
+    "Default" : {
+
+    },
     "Default browser" : {
       "comment" : "Settings page",
       "localizations" : {
@@ -38979,6 +38994,9 @@
           }
         }
       }
+    },
+    "Delete mailbox" : {
+
     },
     "Delete permanently" : {
       "localizations" : {
@@ -66925,6 +66943,15 @@
         }
       }
     },
+    "Mailbox" : {
+
+    },
+    "mailbox action menu" : {
+
+    },
+    "Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc." : {
+
+    },
     "Mailboxes" : {
       "localizations" : {
         "be" : {
@@ -67072,6 +67099,9 @@
           }
         }
       }
+    },
+    "Make Default" : {
+
     },
     "Manage access" : {
       "localizations" : {
@@ -111351,6 +111381,12 @@
         }
       }
     },
+    "Transfer aliases" : {
+
+    },
+    "Transfer and delete mailbox" : {
+
+    },
     "Transfer ownership" : {
       "comment" : "Vault sharing: manage members",
       "localizations" : {
@@ -115195,6 +115231,9 @@
           }
         }
       }
+    },
+    "Unverified mailbox" : {
+
     },
     "Update vault" : {
       "comment" : "The title for the save button when editing vault",
