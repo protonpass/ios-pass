@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Screens
 import SwiftUI
 
 struct ItemsForTextInsertionView: View {
@@ -30,20 +31,80 @@ struct ItemsForTextInsertionView: View {
     }
 
     var body: some View {
-        VStack(spacing: 0) {
-            SearchBar(query: $viewModel.query,
-                      isFocused: $isFocusedOnSearchBar,
-                      placeholder: viewModel.searchBarPlaceholder,
-                      onCancel: { viewModel.handleCancel() })
+        ZStack {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+            stateViews
+        }
+        .task {
+            await viewModel.fetchItems()
+            await viewModel.sync(ignoreError: true)
+        }
+        .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
+                             onFailure: { _ in viewModel.handleAuthenticationFailure() })
+    }
+}
 
-            TableView()
-            Button(action: {
-                viewModel.insert(.random())
-            }, label: {
-                Text(verbatim: "Insert random text")
-            })
+private extension ItemsForTextInsertionView {
+    var stateViews: some View {
+        VStack(spacing: 0) {
+            if viewModel.state != .loading {
+                SearchBar(query: $viewModel.query,
+                          isFocused: $isFocusedOnSearchBar,
+                          placeholder: viewModel.searchBarPlaceholder,
+                          onCancel: { viewModel.handleCancel() })
+            }
+            switch viewModel.state {
+            case .idle:
+                if viewModel.users.count > 1 {
+                    UserAccountSelectionMenu(selectedUser: $viewModel.selectedUser,
+                                             users: viewModel.users)
+                        .padding(.horizontal)
+                }
+
+                if viewModel.isFreeUser {
+                    MainVaultsOnlyBanner(onTap: { viewModel.upgrade() })
+                        .padding([.horizontal, .top])
+                }
+
+                if !viewModel.results.isEmpty {
+                    if viewModel.items.isEmpty {
+                        VStack {
+                            Spacer()
+                            Text(verbatim: "Empty")
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                                .padding()
+                            Spacer()
+                        }
+                    } else {
+                        List {
+                            ForEach(viewModel.items) { item in
+                                Button(action: {
+                                    viewModel.insert(item.title)
+                                }, label: {
+                                    Text(item.title)
+                                })
+                            }
+                        }
+                    }
+                }
+            case .searching:
+                ProgressView()
+            case let .searchResults(results):
+                EmptyView()
+            case .loading:
+                CredentialsSkeletonView()
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: { Task { await viewModel.fetchItems() } })
+            }
 
             Spacer()
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.state)
+        .animation(.default, value: viewModel.selectedUser)
+        .animation(.default, value: viewModel.results)
     }
 }

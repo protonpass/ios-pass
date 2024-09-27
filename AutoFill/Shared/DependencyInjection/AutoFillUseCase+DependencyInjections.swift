@@ -100,6 +100,14 @@ extension AutoFillUseCaseContainer {
                                 logManager: self.logManager) }
     }
 
+    var fetchItemsForTextInsertion: Factory<any FetchItemsForTextInsertionUseCase> {
+        self { FetchItemsForTextInsertion(symmetricKeyProvider: self.symmetricKeyProvider,
+                                          accessRepository: self.accessRepository,
+                                          itemRepository: self.itemRepository,
+                                          shareRepository: self.shareRepository,
+                                          logManager: self.logManager) }
+    }
+
     var getItemsForPasskeyCreation: Factory<any GetItemsForPasskeyCreationUseCase> {
         self { GetItemsForPasskeyCreation(symmetricKeyProvider: self.symmetricKeyProvider,
                                           shareRepository: self.shareRepository,

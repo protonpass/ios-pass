@@ -104,7 +104,7 @@ private extension CredentialsView {
                 }
 
                 if viewModel.isFreeUser {
-                    mainVaultsOnlyMessage
+                    MainVaultsOnlyBanner(onTap: { viewModel.upgrade() })
                         .padding([.horizontal, .top])
                 }
 
@@ -405,9 +405,28 @@ private extension CredentialsView {
     }
 }
 
+struct MainVaultsOnlyBanner: View {
+    let onTap: () -> Void
+
+    var body: some View {
+        ZStack {
+            Text("Your plan only allows to use items from your first 2 vaults for autofill purposes.")
+                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                Text(verbatim: " ") +
+                Text("Upgrade now")
+                .underline(color: PassColor.interactionNormMajor1.toColor)
+                .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
+        }
+        .padding()
+        .background(PassColor.interactionNormMinor1.toColor)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .onTapGesture(perform: onTap)
+    }
+}
+
 // MARK: SkeletonView
 
-private struct CredentialsSkeletonView: View {
+struct CredentialsSkeletonView: View {
     var body: some View {
         VStack {
             HStack {
