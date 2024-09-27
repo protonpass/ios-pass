@@ -97,7 +97,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
             let result = try await (fetchDomains, fetchedMailboxes)
 
             domains = result.0
-            mailboxes = result.1.filter(\.verified)
+            mailboxes = result.1
             defaultDomain = domains.first { $0.id == aliasSettings?.defaultAliasDomain }
             defaultMailbox = mailboxes.first { $0.id == aliasSettings?.defaultMailboxID } ?? mailboxes.first
         } catch {
@@ -117,7 +117,6 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
               aliasSettings?.defaultMailboxID != mailbox.mailboxID else {
             return
         }
-//        defaultMailbox = mailbox
         selectedMailboxTask?.cancel()
         selectedMailboxTask = Task { [weak self] in
             guard let self else {
@@ -219,9 +218,6 @@ private extension AliasSyncConfigurationViewModel {
     }
 
     func updateMailbox(mailbox: Mailbox) async {
-//        guard let defaultMailbox else {
-//            return
-//        }
         defer { loading = false }
         do {
             loading = true
