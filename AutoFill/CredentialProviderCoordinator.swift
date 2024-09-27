@@ -154,6 +154,9 @@ private extension CredentialProviderCoordinator {
                                     users: users,
                                     identifiers: identifiers,
                                     passkeyRequestParams: nil)
+
+        case .arbitraryTextInsertion:
+            handleArbitraryTextInsertion(users: users)
         }
     }
 
@@ -249,6 +252,15 @@ private extension CredentialProviderCoordinator {
         viewModel.delegate = self
         let view = PasskeyCredentialsView(viewModel: viewModel)
         showView(view)
+    }
+
+    func handleArbitraryTextInsertion(users: [UserUiModel]) {
+        guard let context else { return }
+        let viewModel = ItemsForTextInsertionViewModel(context: context,
+                                                       users: users,
+                                                       userForNewItemSubject: userForNewItemSubject)
+        viewModel.delegate = self
+        showView(ItemsForTextInsertionView(viewModel: viewModel))
     }
 }
 

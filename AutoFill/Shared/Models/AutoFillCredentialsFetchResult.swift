@@ -41,3 +41,5 @@ struct CredentialsForPasskeyCreation: AutoFillCredentialsFetchResult {
     let searchableItems: [SearchableItem]
     let items: [ItemUiModel]
 }
+
+typealias ItemsForTextInsertion = CredentialsForPasskeyCreation
