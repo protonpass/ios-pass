@@ -60,6 +60,10 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
     override func prepareOneTimeCodeCredentialList(for serviceIdentifiers: [ASCredentialServiceIdentifier]) {
         coordinator.setUpAndStart(mode: .showOneTimeCodes(serviceIdentifiers))
     }
+
+    override func prepareInterfaceForUserChoosingTextToInsert() {
+        coordinator.setUpAndStart(mode: .arbitraryTextInsertion)
+    }
 }
 
 /* Other callbacks are superseded by these new callbacks on iOS 17 in the below extension */

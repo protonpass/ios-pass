@@ -101,6 +101,8 @@
 		3552A28B29EC89EF00ABDB6E /* ItemSquircleThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355AA32829E9E3C500C20F5F /* ItemSquircleThumbnail.swift */; };
 		3552A28D29EC8B5200ABDB6E /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */; };
 		3552A28E29EC8B5600ABDB6E /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */; };
+		3552D0C72CA6D579004156D8 /* ItemsForTextInsertionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552D0C62CA6D579004156D8 /* ItemsForTextInsertionView.swift */; };
+		3552D0C92CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552D0C82CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift */; };
 		3552F48E28D3467100547146 /* AliasDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48D28D3467100547146 /* AliasDetailView.swift */; };
 		3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */; };
 		35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */; };
@@ -704,6 +706,8 @@
 		3551BC6029A505940048CE07 /* AdvancedOptionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedOptionsSection.swift; sourceTree = "<group>"; };
 		3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFavIconsSection.swift; sourceTree = "<group>"; };
 		3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Extensions.swift"; sourceTree = "<group>"; };
+		3552D0C62CA6D579004156D8 /* ItemsForTextInsertionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsForTextInsertionView.swift; sourceTree = "<group>"; };
+		3552D0C82CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsForTextInsertionViewModel.swift; sourceTree = "<group>"; };
 		3552F48D28D3467100547146 /* AliasDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailView.swift; sourceTree = "<group>"; };
 		3552F48F28D3469E00547146 /* AliasDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailViewModel.swift; sourceTree = "<group>"; };
 		35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCountView.swift; sourceTree = "<group>"; };
@@ -1297,6 +1301,15 @@
 				354E9A9D2A44430D00AD2B9A /* View+LocalAuthentication.swift */,
 			);
 			path = LocalAuthentication;
+			sourceTree = "<group>";
+		};
+		3552D0C52CA6D55D004156D8 /* ItemsForTextInsertionView */ = {
+			isa = PBXGroup;
+			children = (
+				3552D0C62CA6D579004156D8 /* ItemsForTextInsertionView.swift */,
+				3552D0C82CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift */,
+			);
+			path = ItemsForTextInsertionView;
 			sourceTree = "<group>";
 		};
 		3555800C28F04CFF009C3B88 /* BuildConfigs */ = {
@@ -2232,6 +2245,7 @@
 			children = (
 				5BFFB4FB2A56D09900C2D1F9 /* CredentialsView */,
 				5BD4A9062B10E3CE00C44C08 /* ExtensionSettings */,
+				3552D0C52CA6D55D004156D8 /* ItemsForTextInsertionView */,
 				5BD4A9052B10E3BB00C44C08 /* LockedCredential */,
 				3570E04C2B8E06D8005B8186 /* Passkey */,
 			);
@@ -2965,6 +2979,7 @@
 				3577746F2B8FD71D0087A275 /* FetchCredentials.swift in Sources */,
 				359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */,
 				359A90342B90D01C00A50138 /* SelectPasskeyViewModel.swift in Sources */,
+				3552D0C92CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
 				5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */,
 				35AC9A5D2A0BDB7D00FBCEEC /* EditCustomFieldSections.swift in Sources */,
@@ -3013,6 +3028,7 @@
 				354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */,
 				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,
 				359A90302B90C58300A50138 /* AutoFillPasskey.swift in Sources */,
+				3552D0C72CA6D579004156D8 /* ItemsForTextInsertionView.swift in Sources */,
 				352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */,
 				354B24762A77DA7B0060EDF7 /* AutoFillUseCase+DependencyInjections.swift in Sources */,
 				3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */,
