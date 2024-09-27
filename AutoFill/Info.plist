@@ -24,6 +24,8 @@
 				<true/>
 				<key>ProvidesOneTimeCodes</key>
 				<true/>
+				<key>ProvidesTextToInsert</key>
+				<false/>
 			</dict>
 		</dict>
 		<key>NSExtensionMainStoryboard</key>
