@@ -19383,7 +19383,7 @@
         }
       }
     },
-    "All aliases using the mailbox %@ will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:" : {
+    "All aliases using the mailbox **%@** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:" : {
 
     },
     "All current breaches will be marked as resolved. In case of future data breaches, you'll be notified." : {
