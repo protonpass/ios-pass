@@ -36,8 +36,8 @@ final class SendUserBugReportTests: XCTestCase {
         extractToFileMock = ExtractLogsToFileUseCaseMock()
         getLogsMock = GetLogEntriesUseCaseMock()
         sut = SendUserBugReport(reportRepository: repositoryMock,
-                                extractLogsToFile: extractToFileMock,
-        getLogEntries: getLogsMock)
+                                createLogsFile: CreateLogsFile(extractLogsToFile: extractToFileMock,
+                                                               getLogEntries: getLogsMock))
     }
 
     func testSendBugReport() async throws {
