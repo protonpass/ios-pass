@@ -36,7 +36,9 @@ public final class CanEditItem: CanEditItemUseCase {
     public init() {}
 
     public func execute(vaults: [Vault], item: any ItemIdentifiable) -> Bool {
-        let editableSharedIds = vaults.filter(\.canEdit).map(\.shareId)
-        return editableSharedIds.contains { $0 == item.shareId }
+        for vault in vaults where vault.shareId == item.shareId {
+            return vault.canEdit
+        }
+        return false
     }
 }
