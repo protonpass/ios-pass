@@ -23,12 +23,14 @@ public struct Mailbox: Decodable, Hashable, Equatable, Sendable, Identifiable {
     public let email: String
     public let verified: Bool
     public let isDefault: Bool
+    public let aliasCount: Int
 
-    public init(mailboxID: Int, email: String, verified: Bool, isDefault: Bool) {
+    public init(mailboxID: Int, email: String, verified: Bool, isDefault: Bool, aliasCount: Int) {
         self.mailboxID = mailboxID
         self.email = email
         self.verified = verified
         self.isDefault = isDefault
+        self.aliasCount = aliasCount
     }
 
     public var id: Int {
