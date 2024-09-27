@@ -1,7 +1,7 @@
 //
-// CanEditItem.swift
-// Proton Pass - Created on 08/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ResendMailboxVerificationEmailEndpoint.swift
+// Proton Pass - Created on 27/09/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,28 +17,21 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Entities
 import Foundation
+import ProtonCoreNetworking
 
-public protocol CanEditItemUseCase: Sendable {
-    func execute(vaults: [Vault], item: any ItemIdentifiable) -> Bool
-}
+struct ResendMailboxVerificationEmailEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    // TODO: change response
+    typealias Response = GetMailboxResponse
 
-public extension CanEditItemUseCase {
-    func callAsFunction(vaults: [Vault], item: any ItemIdentifiable) -> Bool {
-        execute(vaults: vaults, item: item)
-    }
-}
+    var debugDescription: String
+    var path: String
 
-public final class CanEditItem: CanEditItemUseCase {
-    public init() {}
-
-    public func execute(vaults: [Vault], item: any ItemIdentifiable) -> Bool {
-        for vault in vaults where vault.shareId == item.shareId {
-            return vault.canEdit
-        }
-        return false
+    init(mailboxID: String) {
+        debugDescription = "Get list of alias mailboxes"
+        path = "/pass/v1/user/alias/mailbox/\(mailboxID)/verify"
     }
 }
