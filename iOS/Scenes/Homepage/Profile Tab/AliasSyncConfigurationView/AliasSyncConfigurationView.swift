@@ -39,7 +39,7 @@ struct AliasSyncConfigurationView: View {
 
     @State private var sheetState: AliasSyncConfigurationSheetState?
 
-    @State private var mailbox: Mailbox?
+    @State private var mailboxToDelete: Mailbox?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -61,7 +61,7 @@ struct AliasSyncConfigurationView: View {
                                               setDefault: { mailbox in
                                                   viewModel.setDefaultMailBox(mailbox: mailbox)
                                               },
-                                              delete: {})
+                                              delete: { mailboxToDelete = $0 })
                         }
                     }
                     .padding(DesignConstant.sectionPadding)
@@ -115,7 +115,7 @@ struct AliasSyncConfigurationView: View {
                 .presentationDetents(presentationDetents(for: state))
                 .presentationDragIndicator(.visible)
         }
-        .optionalSheet(binding: $mailbox) { mailbox in
+        .optionalSheet(binding: $mailboxToDelete) { mailbox in
             MailboxDeletionView(mailbox: mailbox,
                                 otherMailboxes: viewModel.mailboxes.filter { $0 != viewModel.defaultMailbox })
                 .presentationDetents([.medium])
@@ -189,7 +189,7 @@ private struct MailboxElementRow: View {
     let mailBox: Mailbox
     let isDefault: Bool
     let setDefault: (Mailbox) -> Void
-    let delete: () -> Void
+    let delete: (Mailbox) -> Void
 
     var body: some View {
         HStack {
@@ -225,7 +225,7 @@ private struct MailboxElementRow: View {
 
                 Label(title: { Text("Delete") },
                       icon: { Image(uiImage: IconProvider.trash) })
-                    .buttonEmbeded { delete() }
+                    .buttonEmbeded { delete(mailBox) }
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: PassColor.textWeak,
@@ -387,43 +387,57 @@ private struct MailboxDeletionView: View {
     @State private var selectedTransferMailbox: Mailbox?
 
     var body: some View {
-        VStack {
-            Text("Delete mailbox")
-                .foregroundStyle(PassColor.textNorm.toColor)
-            Text("All aliases using the mailbox \(mailbox.email) will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:")
-                .foregroundStyle(PassColor.textNorm.toColor)
-
-            Toggle(isOn: $wantToTransferAliases) {
-                Text("Transfer aliases")
+        VStack(spacing: DesignConstant.sectionPadding) {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                Text("Delete mailbox")
                     .foregroundStyle(PassColor.textNorm.toColor)
-            }
-            .toggleStyle(SwitchToggleStyle.pass)
+                    .fontWeight(.semibold)
 
-            Divider().hidden(!wantToTransferAliases)
-
-            HStack {
-                Text("Mailbox")
+                Text("All aliases using the mailbox **\(mailbox.email)** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:")
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
 
-                Spacer()
-                Picker("Mailbox", selection: $selectedTransferMailbox) {
-                    ForEach(otherMailboxes) { mailbox in
-                        Text(mailbox.email)
-                    }
+                Toggle(isOn: $wantToTransferAliases) {
+                    Text("Transfer aliases")
+                        .foregroundStyle(PassColor.textNorm.toColor)
                 }
+                .toggleStyle(SwitchToggleStyle.pass)
+
+                Divider().hidden(!wantToTransferAliases)
+
+                HStack {
+                    Text("Mailbox")
+                        .foregroundStyle(PassColor.textNorm.toColor)
+
+                    Spacer()
+                    Picker("Mailbox", selection: $selectedTransferMailbox) {
+                        ForEach( /* otherMailboxes */ [
+                            Mailbox(mailboxID: 1, email: "test@test.com", verified: true, isDefault: false),
+                            Mailbox(mailboxID: 2, email: "test2@test.com", verified: true, isDefault: false)
+                        ]) { mailbox in
+                            Text(mailbox.email)
+                        }
+                    }
+                }.hidden(!wantToTransferAliases)
             }
+
+            Spacer()
 
             CapsuleTextButton(title: wantToTransferAliases ? #localized("Transfer and delete mailbox") :
                 #localized("Delete mailbox"),
                 titleColor: PassColor.interactionNormMinor1,
                 backgroundColor: PassColor.signalDanger,
+                height: 48,
                 action: {})
 
             CapsuleTextButton(title: #localized("Cancel"),
                               titleColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1,
+                              height: 48,
                               action: { dismiss() })
         }
+        .padding(24)
     }
 
 //    func row(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
