@@ -22,6 +22,7 @@
 
 import DesignSystem
 import Entities
+import Factory
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -36,6 +37,7 @@ private enum AliasSyncConfigurationSheetState {
 struct AliasSyncConfigurationView: View {
     @StateObject private var viewModel = AliasSyncConfigurationViewModel()
     @Environment(\.dismiss) private var dismiss
+    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
 
     @State private var sheetState: AliasSyncConfigurationSheetState?
 
@@ -61,7 +63,8 @@ struct AliasSyncConfigurationView: View {
                                               setDefault: { mailbox in
                                                   viewModel.setDefaultMailBox(mailbox: mailbox)
                                               },
-                                              delete: { mailboxToDelete = $0 })
+                                              delete: { mailboxToDelete = $0 },
+                                              verify: { _ in })
                         }
                     }
                     .padding(DesignConstant.sectionPadding)
@@ -84,7 +87,7 @@ struct AliasSyncConfigurationView: View {
                         .padding(.horizontal, 16)
                         .background(PassColor.interactionNormMinor1.toColor)
                         .clipShape(Capsule())
-                        .buttonEmbeded(role: nil, action: {})
+                        .buttonEmbeded(role: nil, action: { router.present(sheet: .addCustomEmail(nil)) })
                 }
             }
 
@@ -117,12 +120,14 @@ struct AliasSyncConfigurationView: View {
         }
         .optionalSheet(binding: $mailboxToDelete) { mailbox in
             MailboxDeletionView(mailbox: mailbox,
-                                otherMailboxes: viewModel.mailboxes.filter { $0 != viewModel.defaultMailbox })
+                                otherMailboxes: viewModel.mailboxes
+                                    .filter { $0 != viewModel.defaultMailbox && $0.verified })
                 .presentationDetents([.medium])
                 .presentationDragIndicator(.hidden)
         }
         .showSpinner(viewModel.loading)
-        .navigationStackEmbeded()
+        .sheetDestinations(sheetDestination: $router.presentedSheet)
+        .navigationStackEmbeded($router.path)
         .alert("Error occurred",
                isPresented: $viewModel.error.mappedToBool(),
                actions: {
@@ -190,6 +195,7 @@ private struct MailboxElementRow: View {
     let isDefault: Bool
     let setDefault: (Mailbox) -> Void
     let delete: (Mailbox) -> Void
+    let verify: (Mailbox) -> Void
 
     var body: some View {
         HStack {
@@ -208,7 +214,7 @@ private struct MailboxElementRow: View {
                             .background(PassColor.interactionNormMajor2.toColor)
                             .clipShape(Capsule())
                     }
-                    Text(mailBox.verified ? "21 aliases" : "Unverified mailbox")
+                    Text(mailBox.verified ? "\(mailBox.aliasCount) aliases" : "Unverified mailbox")
                         .font(.footnote)
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
@@ -217,9 +223,15 @@ private struct MailboxElementRow: View {
             Spacer()
 
             Menu(content: {
-                Label(title: { Text("Make Default") },
-                      icon: { Image(uiImage: IconProvider.star) })
-                    .buttonEmbeded { setDefault(mailBox) }
+                if mailBox.verified {
+                    Label(title: { Text("Make Default") },
+                          icon: { Image(uiImage: IconProvider.star) })
+                        .buttonEmbeded { setDefault(mailBox) }
+                } else {
+                    Label(title: { Text("Verify") },
+                          icon: { Image(uiImage: IconProvider.star) })
+                        .buttonEmbeded { verify(mailBox) }
+                }
 
                 Divider()
 
@@ -386,6 +398,12 @@ private struct MailboxDeletionView: View {
     @State private var wantToTransferAliases = true
     @State private var selectedTransferMailbox: Mailbox?
 
+    init(mailbox: Mailbox, otherMailboxes: [Mailbox]) {
+        self.mailbox = mailbox
+        self.otherMailboxes = otherMailboxes
+        selectedTransferMailbox = otherMailboxes.first
+    }
+
     var body: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             VStack(spacing: DesignConstant.sectionPadding) {
@@ -404,22 +422,56 @@ private struct MailboxDeletionView: View {
                 }
                 .toggleStyle(SwitchToggleStyle.pass)
 
-                Divider().hidden(!wantToTransferAliases)
+                Group {
+                    Divider()
+                    HStack {
+                        Text("Mailbox")
+                            .foregroundStyle(PassColor.textNorm.toColor)
 
-                HStack {
-                    Text("Mailbox")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                        Spacer()
 
-                    Spacer()
-                    Picker("Mailbox", selection: $selectedTransferMailbox) {
-                        ForEach( /* otherMailboxes */ [
-                            Mailbox(mailboxID: 1, email: "test@test.com", verified: true, isDefault: false),
-                            Mailbox(mailboxID: 2, email: "test2@test.com", verified: true, isDefault: false)
-                        ]) { mailbox in
-                            Text(mailbox.email)
+                        Picker("Mailbox", selection: $selectedTransferMailbox) {
+                            ForEach(otherMailboxes) { mailbox in
+                                Text(mailbox.email)
+                                    .tag(mailbox)
+                                    .fontWeight(.bold)
+                            }
                         }
+                        .labelsHidden()
+                        .padding(4)
+                        .tint(PassColor.textNorm.toColor)
+                        .background(PassColor.interactionNormMinor1.toColor)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                 }.hidden(!wantToTransferAliases)
+
+//                HStack {
+                ////                    Text("Mailbox")
+                ////                        .foregroundStyle(PassColor.textNorm.toColor)
+                ////                        .background(.red)
+                ////
+                ////                    Spacer()
+                ////                    Picker("Mailbox", selection: $selectedTransferMailbox) {
+                ////                        ForEach(otherMailboxes) { mailbox in
+                ////                            Text(mailbox.email)
+//                    ////                                .tag(mailbox)
+                ////                                .fontWeight(.bold)
+                ////                        }
+                ////                    }
+                ////
+                ////                    .accentColor(PassColor.textNorm.toColor)
+//
+//                    Section {
+//                        Picker("Mailbox", selection: $selectedTransferMailbox) {
+//                            ForEach(otherMailboxes) {
+//                                Text($0.email)
+//                            }
+//                        }
+//                    }
+//
+                ////                    .padding(10)
+                ////                    .background(PassColor.interactionNormMinor1.toColor)
+//                }.hidden(!wantToTransferAliases)
             }
 
             Spacer()
@@ -439,30 +491,4 @@ private struct MailboxDeletionView: View {
         }
         .padding(24)
     }
-
-//    func row(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
-//        HStack {
-//            Text(title)
-//                .foregroundStyle(PassColor.textNorm.toColor)
-//                .frame(maxWidth: .infinity, alignment: .leading)
-//
-//            Spacer()
-//
-//            if isSelected {
-//                Image(uiImage: IconProvider.checkmark)
-//                    .resizable()
-//                    .scaledToFit()
-//                    .foregroundStyle(PassColor.interactionNorm.toColor)
-//                    .frame(maxHeight: 20)
-//            }
-//        }
-//        .frame(maxWidth: .infinity)
-//        .frame(height: OptionRowHeight.compact.value)
-//        .contentShape(.rect)
-//        .animation(.default, value: isSelected)
-//        .buttonEmbeded {
-//            action()
-//            dismiss()
-//        }
-//    }
 }
