@@ -23,6 +23,7 @@
 import Client
 import Combine
 import Core
+import DesignSystem
 import Entities
 import Factory
 import Macro
@@ -43,6 +44,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     @Published private(set) var mailboxes: [Mailbox] = []
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
     @Published private(set) var pendingSyncDisabledAliases = 0
+    private(set) var plan: Plan?
 
     @Published private(set) var loading = false
     @Published private(set) var showSyncSection = false
@@ -63,7 +65,13 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 
     private var cancellables = Set<AnyCancellable>()
 
+    var canManageAliases: Bool {
+        plan?.manageAlias ?? false
+    }
+
     init() {
+        let access = accessRepository.access.value?.access
+        plan = access?.plan
         setUp()
     }
 
@@ -125,6 +133,39 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
             await updateMailbox(mailbox: mailbox)
         }
     }
+
+    func upsell() {
+        router
+            .present(for: .upselling(UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                                title: #localized("Manage your aliases"),
+                                                                description: UpsellEntry
+                                                                    .aliasManagement
+                                                                    .description,
+                                                                upsellElements: UpsellEntry
+                                                                    .aliasManagement
+                                                                    .upsellElements,
+                                                                ctaTitle: #localized("Get Pass Unlimited"))))
+    }
+
+    func delete(mailbox: Mailbox, transferMailboxId: Int?) {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer { loading = false }
+
+            do {
+                loading = true
+                let userId = try await userManager.getActiveUserId()
+                try await aliasRepository.deleteMailbox(userId: userId,
+                                                        mailboxID: mailbox.mailboxID,
+                                                        transferMailboxID: transferMailboxId)
+//                mailboxes = mailboxes.filter { $0.mailboxID != mailbox.mailboxID }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
 }
 
 private extension AliasSyncConfigurationViewModel {
@@ -170,25 +211,22 @@ private extension AliasSyncConfigurationViewModel {
             }
             .store(in: &cancellables)
 
-//        $defaultMailbox
-//            .receive(on: DispatchQueue.main)
-//            .compactMap { $0 }
-//            .removeDuplicates()
-//            .sink { [weak self] mailbox in
-//                guard let self,
-//                      !mailboxes.isEmpty,
-//                      aliasSettings?.defaultMailboxID != mailbox.mailboxID else {
-//                    return
-//                }
-//                selectedMailboxTask?.cancel()
-//                selectedMailboxTask = Task { [weak self] in
-//                    guard let self else {
-//                        return
-//                    }
-//                    await updateMailbox()
-//                }
-//            }
-//            .store(in: &cancellables)
+        aliasRepository.mailboxUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    do {
+                        let userId = try await userManager.getActiveUserId()
+                        mailboxes = try await aliasRepository.getAllAliasMailboxes(userId: userId)
+                    } catch {
+                        handle(error: error)
+                    }
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func updateVault() async {

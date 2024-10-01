@@ -35,6 +35,8 @@ extension UpsellEntry {
         case .darkWebMonitorBreach:
             // swiftlint:disable:next line_length
             #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.")
+        case .aliasManagement:
+            #localized("Advanced alias management is available with Pass Unlimited. Upgrade for immediate access.")
         }
     }
 
@@ -56,6 +58,10 @@ extension UpsellEntry {
         case .darkWebMonitorNoBreach:
             upsellElements.append(UpsellElement(icon: PassIcon.shield2,
                                                 title: #localized("Dark Web Monitoring"),
+                                                color: PassColor.interactionNormMajor2))
+        case .aliasManagement:
+            upsellElements.append(UpsellElement(icon: IconProvider.mailbox,
+                                                title: #localized("Advanced alias management"),
                                                 color: PassColor.interactionNormMajor2))
         default:
             break
