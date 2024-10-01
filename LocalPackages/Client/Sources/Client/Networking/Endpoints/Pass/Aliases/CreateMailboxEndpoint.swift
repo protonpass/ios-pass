@@ -32,7 +32,7 @@ public struct CreateMailboxRequest: Encodable, Sendable {
     public init(email: String) {
         self.email = email
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case email = "Email"
     }

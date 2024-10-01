@@ -930,6 +930,9 @@
         }
       }
     },
+    "%lld aliases" : {
+
+    },
     "%lld aliases disabled" : {
       "localizations" : {
         "be" : {
@@ -11713,9 +11716,6 @@
         }
       }
     },
-    "21 aliases" : {
-
-    },
     "A log is a type of file that shows us the actions you took that led to an error. We'll only ever use them to help our engineers fix bugs." : {
       "localizations" : {
         "be" : {
@@ -13774,6 +13774,9 @@
         }
       }
     },
+    "Add mailbox" : {
+
+    },
     "Add more" : {
       "localizations" : {
         "be" : {
@@ -14888,6 +14891,12 @@
           }
         }
       }
+    },
+    "Advanced alias management" : {
+
+    },
+    "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access." : {
+
     },
     "Advanced options" : {
       "localizations" : {
@@ -53069,6 +53078,9 @@
         }
       }
     },
+    "Get Pass Unlimited" : {
+
+    },
     "Go back" : {
       "comment" : "accessibility",
       "localizations" : {
@@ -67582,6 +67594,9 @@
           }
         }
       }
+    },
+    "Manage your aliases" : {
+
     },
     "Mark as resolved" : {
       "localizations" : {
@@ -84628,6 +84643,9 @@
         }
       }
     },
+    "Premium domain" : {
+
+    },
     "Preparing..." : {
       "localizations" : {
         "be" : {
@@ -86227,6 +86245,9 @@
           }
         }
       }
+    },
+    "Public domain" : {
+
     },
     "Quickly pick a login item from suggestions above the keyboard" : {
       "localizations" : {
@@ -129287,6 +129308,9 @@
           }
         }
       }
+    },
+    "Your domain" : {
+
     },
     "Your email address was leaked in %lld breaches" : {
       "localizations" : {

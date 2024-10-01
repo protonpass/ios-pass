@@ -18,10 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import Combine
 import Core
 import Entities
 
 public protocol AliasRepositoryProtocol: Sendable {
+    var mailboxUpdated: PassthroughSubject<Void, Never> { get }
+
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
     @discardableResult
@@ -43,6 +46,11 @@ public protocol AliasRepositoryProtocol: Sendable {
         -> AliasSettings
     func getAllAliasDomains(userId: String) async throws -> [Domain]
     func getAllAliasMailboxes(userId: String) async throws -> [Mailbox]
+
+    func createMailbox(userId: String, email: String) async throws -> Mailbox
+    func deleteMailbox(userId: String, mailboxID: Int, transferMailboxID: Int?) async throws
+    func verifyMailbox(userId: String, mailboxID: Int, code: String) async throws -> Mailbox
+    func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
 }
 
 public extension AliasRepositoryProtocol {
@@ -55,6 +63,8 @@ public extension AliasRepositoryProtocol {
 public actor AliasRepository: AliasRepositoryProtocol {
     private let remoteDatasource: any RemoteAliasDatasourceProtocol
     private let userManager: any UserManagerProtocol
+
+    public nonisolated let mailboxUpdated: PassthroughSubject<Void, Never> = .init()
 
     public init(remoteDatasource: any RemoteAliasDatasourceProtocol,
                 userManager: any UserManagerProtocol) {
@@ -121,5 +131,36 @@ public extension AliasRepository {
 
     func getAllAliasMailboxes(userId: String) async throws -> [Mailbox] {
         try await remoteDatasource.getAllAliasMailboxes(userId: userId)
+    }
+
+    func createMailbox(userId: String, email: String) async throws -> Mailbox {
+        let request = CreateMailboxRequest(email: email)
+        let mailbox = try await remoteDatasource.createMailbox(userId: userId, request: request)
+        mailboxUpdated.send(())
+        return mailbox
+    }
+
+    func deleteMailbox(userId: String, mailboxID: Int, transferMailboxID: Int?) async throws {
+        let id: String? = if let transferMailboxID {
+            "\(transferMailboxID)"
+        } else {
+            nil
+        }
+
+        let request = DeleteMailboxRequest(transferMailboxID: id)
+        try await remoteDatasource.deleteMailbox(userId: userId, mailboxID: mailboxID, request: request)
+        mailboxUpdated.send(())
+    }
+
+    func verifyMailbox(userId: String, mailboxID: Int, code: String) async throws -> Mailbox {
+        let request = VerifyMailboxRequest(code: code)
+        let mailbox = try await remoteDatasource.verifyMailbox(userId: userId, mailboxID: mailboxID,
+                                                               request: request)
+        mailboxUpdated.send(())
+        return mailbox
+    }
+
+    func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox {
+        try await remoteDatasource.resendMailboxVerificationEmail(userId: userId, mailboxID: mailboxID)
     }
 }
