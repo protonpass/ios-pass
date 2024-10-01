@@ -66,7 +66,7 @@ struct ItemSearchResultView: View, Equatable {
         .contentShape(.rect)
     }
 
-    static func == (lhs: ItemSearchResultView, rhs: ItemSearchResultView) -> Bool {
+    nonisolated static func == (lhs: ItemSearchResultView, rhs: ItemSearchResultView) -> Bool {
         lhs.result == rhs.result // or whatever is equal
     }
 }
