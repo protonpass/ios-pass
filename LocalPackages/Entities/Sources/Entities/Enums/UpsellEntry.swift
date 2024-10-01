@@ -27,4 +27,5 @@ public enum UpsellEntry {
     case darkWebMonitorNoBreach
     case darkWebMonitorBreach
     case secureLink
+    case aliasManagement
 }

@@ -49,14 +49,46 @@ enum GeneralRouterDestination: Hashable {
     case darkWebMonitorHome(UserBreaches)
 }
 
+enum ValidationEmailType: Hashable {
+    case customEmail(CustomEmail?)
+    case mailbox(Mailbox?)
+
+    var email: String? {
+        switch self {
+        case let .customEmail(data):
+            data?.email
+        case let .mailbox(data):
+            data?.email
+        }
+    }
+
+    var isNotEmpty: Bool {
+        switch self {
+        case let .customEmail(data):
+            data != nil
+        case let .mailbox(data):
+            data != nil
+        }
+    }
+
+    var isMailbox: Bool {
+        switch self {
+        case .customEmail:
+            false
+        case .mailbox:
+            true
+        }
+    }
+}
+
 enum GeneralSheetDestination: Identifiable, Hashable {
-    case addCustomEmail(CustomEmail?)
+    case addEmail(ValidationEmailType)
     case breachDetail(Breach)
 
     var id: String {
         switch self {
-        case .addCustomEmail:
-            "addCustomEmail"
+        case .addEmail:
+            "addEmail"
         case .breachDetail:
             "breachDetail"
         }
@@ -100,8 +132,8 @@ extension View {
     func sheetDestinations(sheetDestination: Binding<GeneralSheetDestination?>) -> some View {
         sheet(item: sheetDestination) { destination in
             switch destination {
-            case let .addCustomEmail(email):
-                AddCustomEmailView(viewModel: .init(email: email))
+            case let .addEmail(type):
+                AddCustomEmailView(viewModel: .init(validationType: type))
             case let .breachDetail(breach):
                 BreachDetailView(breach: breach)
             }

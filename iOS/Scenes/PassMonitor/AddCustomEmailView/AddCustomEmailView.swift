@@ -119,7 +119,8 @@ struct AddCustomEmailView: View {
                    }
                })
         .onAppear { focused = true }
-        .navigationTitle(viewModel.isVerificationMode ? "Confirm your email" : "Custom email monitoring")
+        .navigationTitle(viewModel.isVerificationMode ? "Confirm your email" : viewModel
+            .isMailbox ? "Add mailbox" : "Custom email monitoring")
         .navigationStackEmbeded()
     }
 }

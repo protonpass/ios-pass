@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="23G93" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -7,6 +7,7 @@
         <attribute name="displayName" attributeType="String"/>
         <attribute name="hideUpgrade" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="internalName" attributeType="String"/>
+        <attribute name="manageAlias" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="minVersionUpgrade" optional="YES" attributeType="String"/>
         <attribute name="monitorAliases" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="monitorProtonAddress" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>

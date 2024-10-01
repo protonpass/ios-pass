@@ -30,7 +30,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     @Published var email = ""
     @Published var code = ""
     @Published private(set) var finishedVerification = false
-    @Published private var customEmail: CustomEmail?
+//    @Published private var customEmail: CustomEmail?
     @Published private(set) var verificationError: (any Error)?
 
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
@@ -39,36 +39,63 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     private let getAllCustomEmails = resolve(\UseCasesContainer.getAllCustomEmails)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let logger = resolve(\SharedToolingContainer.logger)
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+
+    @Published private var type: ValidationEmailType
 
     var canContinue: Bool {
-        if customEmail != nil {
+        if type.isNotEmpty {
             !code.isEmpty
         } else {
             !email.isEmpty && email.isValidEmail()
         }
+//        if customEmail != nil {
+//            !code.isEmpty
+//        } else {
+//            !email.isEmpty && email.isValidEmail()
+//        }
     }
 
     var isVerificationMode: Bool {
-        customEmail != nil
+        type.isNotEmpty
+//        customEmail != nil
     }
 
-    init(email: CustomEmail?) {
-        customEmail = email
-        self.email = email?.email ?? ""
+    var isMailbox: Bool {
+        type.isMailbox
+    }
+
+//    init(email: CustomEmail?) {
+//        customEmail = email
+//        self.email = email?.email ?? ""
+//    }
+
+    init(validationType: ValidationEmailType) {
+        type = validationType
+        email = type.email ?? ""
     }
 
     func nextStep() {
-        if customEmail != nil {
+        if type.isNotEmpty {
             verifyCode()
         } else {
-            addCustomEmail()
+            addCustomType()
         }
+//        if customEmail != nil {
+//            verifyCode()
+//        } else {
+//            addCustomEmail()
+//        }
     }
 
     func sendVerificationCode() {
-        guard let customEmail else {
+        guard type.isNotEmpty else {
             return
         }
+//        guard let customEmail else {
+//            return
+//        }
         Task { [weak self] in
             guard let self else {
                 return
@@ -76,8 +103,23 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                try await passMonitorRepository.resendEmailVerification(email: customEmail)
-                let message = #localized("New verification code sent")
+                let message: String
+
+                switch type {
+                case let .customEmail(customEmail):
+                    guard let customEmail else {
+                        return
+                    }
+                    try await passMonitorRepository.resendEmailVerification(email: customEmail)
+                case let .mailbox(mailbox):
+                    guard let mailbox else {
+                        return
+                    }
+                    let userId = try await userManager.getActiveUserId()
+                    try await aliasRepository.resendMailboxVerificationEmail(userId: userId,
+                                                                             mailboxID: mailbox.mailboxID)
+                }
+                message = #localized("New verification code sent")
                 router.display(element: .successMessage(message))
             } catch {
                 handle(error: error)
@@ -86,9 +128,12 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     }
 
     func verifyCode() {
-        guard let customEmail, !code.isEmpty else {
+        guard type.isNotEmpty, !code.isEmpty else {
             return
         }
+//        guard let customEmail, !code.isEmpty else {
+//            return
+//        }
         Task { [weak self] in
             guard let self else {
                 return
@@ -96,10 +141,26 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                try await verifyCustomEmail(email: customEmail, code: code)
+                switch type {
+                case let .customEmail(customEmail):
+                    guard let customEmail else {
+                        return
+                    }
+                    try await verifyCustomEmail(email: customEmail, code: code)
+
+                case let .mailbox(mailbox):
+                    guard let mailbox else {
+                        return
+                    }
+                    let userId = try await userManager.getActiveUserId()
+                    try await aliasRepository.verifyMailbox(userId: userId,
+                                                            mailboxID: mailbox.mailboxID,
+                                                            code: code)
+                }
                 finishedVerification = true
             } catch {
-                if let apiError = error.asPassApiError,
+                if case .customEmail = type,
+                   let apiError = error.asPassApiError,
                    case .notAllowed = apiError {
                     // Custom email is removed or too many failed verifications
                     if let customEmails = try? await getAllCustomEmails() {
@@ -113,7 +174,25 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
         }
     }
 
-    func addCustomEmail() {
+//    func addCustomEmail() {
+//        guard email.isValidEmail() else {
+//            return
+//        }
+//        Task { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            defer { router.display(element: .globalLoading(shouldShow: false)) }
+//            do {
+//                router.display(element: .globalLoading(shouldShow: true))
+//                customEmail = try await addCustomEmailToMonitoring(email: email.lowercased())
+//            } catch {
+//                handle(error: error)
+//            }
+//        }
+//    }
+
+    func addCustomType() {
         guard email.isValidEmail() else {
             return
         }
@@ -124,7 +203,17 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
             defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
                 router.display(element: .globalLoading(shouldShow: true))
-                customEmail = try await addCustomEmailToMonitoring(email: email.lowercased())
+                let lowercasedEmail = email.lowercased()
+                switch type {
+                case .customEmail:
+                    let customEmail = try await addCustomEmailToMonitoring(email: lowercasedEmail)
+                    type = .customEmail(customEmail)
+                case .mailbox:
+                    let userId = try await userManager.getActiveUserId()
+                    let mailbox = try await aliasRepository.createMailbox(userId: userId, email: lowercasedEmail)
+                    type = .mailbox(mailbox)
+                }
+
             } catch {
                 handle(error: error)
             }
