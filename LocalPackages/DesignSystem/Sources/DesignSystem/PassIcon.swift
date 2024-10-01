@@ -55,6 +55,7 @@ public extension PassIcon {
     static let passPlus = Self.icon(named: "PassPlus")
     static let shield2 = Self.icon(named: "Shield2")
     static let passSubscriptionBadge = Self.icon(named: "PassSubscriptionBadge")
+    static let passSubscriptionUnlimited = Self.icon(named: "PassSubscriptionUnlimited")
     static let lightning = Self.icon(named: "Lightning")
     static let breachShieldResolved = Self.icon(named: "BreachShieldResolved")
     static let breachShieldUnresolved = Self.icon(named: "BreachShieldUnresolved")

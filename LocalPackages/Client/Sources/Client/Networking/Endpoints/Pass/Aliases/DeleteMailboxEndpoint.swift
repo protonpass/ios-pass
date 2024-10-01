@@ -22,10 +22,10 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-//TODO: should the request be optional or the variable
+// TODO: should the request be optional or the variable
 public struct DeleteMailboxRequest: Encodable, Sendable {
     let transferMailboxID: String?
-    
+
     public init(transferMailboxID: String?) {
         self.transferMailboxID = transferMailboxID
     }
@@ -44,7 +44,7 @@ struct DeleteMailboxEndpoint: Endpoint {
     var method: HTTPMethod
     var body: DeleteMailboxRequest?
 
-    init(mailboxID: String, request: DeleteMailboxRequest?) {
+    init(mailboxID: String, request: DeleteMailboxRequest) {
         debugDescription = "Get list of alias mailboxes"
         path = "/pass/v1/user/alias/mailbox/\(mailboxID)"
         method = .delete
