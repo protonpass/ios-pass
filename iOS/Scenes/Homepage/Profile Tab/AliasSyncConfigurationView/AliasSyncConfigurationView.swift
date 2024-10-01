@@ -70,6 +70,7 @@ struct AliasSyncConfigurationView: View {
                     .padding(DesignConstant.sectionPadding)
                     .roundedEditableSection()
 
+                    // swiftlint:disable:next line_length
                     Text("Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc.")
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .font(.footnote)
@@ -474,6 +475,7 @@ private struct MailboxDeletionView: View {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .fontWeight(.semibold)
 
+                // swiftlint:disable:next line_length
                 Text("All aliases using the mailbox **\(mailbox.email)** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .multilineTextAlignment(.center)
@@ -501,7 +503,6 @@ private struct MailboxDeletionView: View {
                                         .fontWeight(.bold)
                                 }
                             }
-//                            .labelsHidden()
                             .padding(4)
                             .tint(PassColor.textNorm.toColor)
                             .background(PassColor.interactionNormMinor1.toColor)
@@ -509,33 +510,6 @@ private struct MailboxDeletionView: View {
                         }
                     }.hidden(!wantToTransferAliases)
                 }
-//                HStack {
-                ////                    Text("Mailbox")
-                ////                        .foregroundStyle(PassColor.textNorm.toColor)
-                ////                        .background(.red)
-                ////
-                ////                    Spacer()
-                ////                    Picker("Mailbox", selection: $selectedTransferMailbox) {
-                ////                        ForEach(otherMailboxes) { mailbox in
-                ////                            Text(mailbox.email)
-//                    ////                                .tag(mailbox)
-                ////                                .fontWeight(.bold)
-                ////                        }
-                ////                    }
-                ////
-                ////                    .accentColor(PassColor.textNorm.toColor)
-//
-//                    Section {
-//                        Picker("Mailbox", selection: $selectedTransferMailbox) {
-//                            ForEach(otherMailboxes) {
-//                                Text($0.email)
-//                            }
-//                        }
-//                    }
-//
-                ////                    .padding(10)
-                ////                    .background(PassColor.interactionNormMinor1.toColor)
-//                }.hidden(!wantToTransferAliases)
             }
 
             Spacer()

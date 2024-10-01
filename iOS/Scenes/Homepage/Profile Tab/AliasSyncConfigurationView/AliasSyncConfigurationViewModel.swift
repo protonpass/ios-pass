@@ -264,7 +264,6 @@ private extension AliasSyncConfigurationViewModel {
             aliasSettings = try await aliasRepository.updateAliasDefaultMailbox(userId: userId,
                                                                                 request: request)
             defaultMailbox = mailbox
-
         } catch {
             handle(error: error)
         }
