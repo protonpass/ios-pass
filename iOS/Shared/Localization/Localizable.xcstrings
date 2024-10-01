@@ -931,7 +931,26 @@
       }
     },
     "%lld aliases" : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld aliases"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld aliases disabled" : {
       "localizations" : {
@@ -10754,7 +10773,14 @@
       }
     },
     "+ Add" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+ Add"
+          }
+        }
+      }
     },
     "2FA limit reached" : {
       "localizations" : {
@@ -13775,7 +13801,14 @@
       }
     },
     "Add mailbox" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add mailbox"
+          }
+        }
+      }
     },
     "Add more" : {
       "localizations" : {
@@ -14893,10 +14926,24 @@
       }
     },
     "Advanced alias management" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced alias management"
+          }
+        }
+      }
     },
     "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access."
+          }
+        }
+      }
     },
     "Advanced options" : {
       "localizations" : {
@@ -18134,7 +18181,14 @@
       }
     },
     "Alias management" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias management"
+          }
+        }
+      }
     },
     "Alias of login item \"%@\"" : {
       "localizations" : {
@@ -19393,7 +19447,14 @@
       }
     },
     "All aliases using the mailbox **%@** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All aliases using the mailbox **%@** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:"
+          }
+        }
+      }
     },
     "All current breaches will be marked as resolved. In case of future data breaches, you'll be notified." : {
       "localizations" : {
@@ -38243,7 +38304,14 @@
       }
     },
     "Default" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default"
+          }
+        }
+      }
     },
     "Default browser" : {
       "comment" : "Settings page",
@@ -39005,7 +39073,14 @@
       }
     },
     "Delete mailbox" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete mailbox"
+          }
+        }
+      }
     },
     "Delete permanently" : {
       "localizations" : {
@@ -53079,7 +53154,14 @@
       }
     },
     "Get Pass Unlimited" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Pass Unlimited"
+          }
+        }
+      }
     },
     "Go back" : {
       "comment" : "accessibility",
@@ -66956,13 +67038,34 @@
       }
     },
     "Mailbox" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox"
+          }
+        }
+      }
     },
     "mailbox action menu" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "mailbox action menu"
+          }
+        }
+      }
     },
     "Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc."
+          }
+        }
+      }
     },
     "Mailboxes" : {
       "localizations" : {
@@ -67113,7 +67216,14 @@
       }
     },
     "Make Default" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make Default"
+          }
+        }
+      }
     },
     "Manage access" : {
       "localizations" : {
@@ -67596,7 +67706,14 @@
       }
     },
     "Manage your aliases" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage your aliases"
+          }
+        }
+      }
     },
     "Mark as resolved" : {
       "localizations" : {
@@ -84644,7 +84761,14 @@
       }
     },
     "Premium domain" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium domain"
+          }
+        }
+      }
     },
     "Preparing..." : {
       "localizations" : {
@@ -86247,7 +86371,14 @@
       }
     },
     "Public domain" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public domain"
+          }
+        }
+      }
     },
     "Quickly pick a login item from suggestions above the keyboard" : {
       "localizations" : {
@@ -111413,10 +111544,24 @@
       }
     },
     "Transfer aliases" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer aliases"
+          }
+        }
+      }
     },
     "Transfer and delete mailbox" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer and delete mailbox"
+          }
+        }
+      }
     },
     "Transfer ownership" : {
       "comment" : "Vault sharing: manage members",
@@ -115264,7 +115409,14 @@
       }
     },
     "Unverified mailbox" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified mailbox"
+          }
+        }
+      }
     },
     "Update vault" : {
       "comment" : "The title for the save button when editing vault",
@@ -129310,7 +129462,14 @@
       }
     },
     "Your domain" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your domain"
+          }
+        }
+      }
     },
     "Your email address was leaked in %lld breaches" : {
       "localizations" : {
