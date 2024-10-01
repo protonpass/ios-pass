@@ -22,7 +22,6 @@ import Entities
 import Foundation
 import ProtonCoreNetworking
 
-// TODO: should the request be optional or the variable
 public struct DeleteMailboxRequest: Encodable, Sendable {
     let transferMailboxID: String?
 

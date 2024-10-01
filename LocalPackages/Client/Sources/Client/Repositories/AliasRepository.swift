@@ -154,7 +154,8 @@ public extension AliasRepository {
 
     func verifyMailbox(userId: String, mailboxID: Int, code: String) async throws -> Mailbox {
         let request = VerifyMailboxRequest(code: code)
-        let mailbox = try await remoteDatasource.verifyMailbox(userId: userId, mailboxID: mailboxID,
+        let mailbox = try await remoteDatasource.verifyMailbox(userId: userId,
+                                                               mailboxID: mailboxID,
                                                                request: request)
         mailboxUpdated.send(())
         return mailbox
