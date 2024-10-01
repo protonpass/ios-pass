@@ -28,7 +28,7 @@ public struct VerifyMailboxRequest: Encodable, Sendable {
     public init(code: String) {
         self.code = code
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case code = "Code"
     }
