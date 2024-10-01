@@ -171,6 +171,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.breachShieldResolved
         _ = PassIcon.breachShieldUnresolved
         _ = PassIcon.securityEmptyState
+        _ = PassIcon.passSubscriptionUnlimited
 
         expectation.fulfill()
         wait(for: [expectation], timeout: 5.0)
