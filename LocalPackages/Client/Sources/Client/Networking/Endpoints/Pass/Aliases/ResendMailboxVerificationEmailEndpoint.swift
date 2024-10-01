@@ -24,7 +24,6 @@ import ProtonCoreNetworking
 
 struct ResendMailboxVerificationEmailEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    // TODO: change response
     typealias Response = GetMailboxResponse
 
     var debugDescription: String
