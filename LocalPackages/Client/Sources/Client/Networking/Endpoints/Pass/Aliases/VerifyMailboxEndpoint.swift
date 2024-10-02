@@ -44,7 +44,7 @@ struct VerifyMailboxEndpoint: Endpoint {
     var body: VerifyMailboxRequest?
 
     init(mailboxID: String, request: VerifyMailboxRequest) {
-        debugDescription = "Get list of alias mailboxes"
+        debugDescription = "Verify an alias mailbox"
         path = "/pass/v1/user/alias/mailbox/\(mailboxID)/verify"
         method = .post
         body = request
