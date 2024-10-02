@@ -21,4 +21,18 @@
 public struct Alias: Decodable, Sendable {
     public let email: String
     public let mailboxes: [AliasLinkedMailbox]
+    public let availableMailboxes: [AliasLinkedMailbox]
+    public let note: String?
+    public let stats: AliasStats
+}
+
+public struct AliasStats: Decodable, Sendable, Equatable {
+    // Count of emails forwarded through this alias in the last 14 days
+    public let forwardedEmails: Int
+
+    // Count of emails replied to in the last 14 days
+    public let repliedEmails: Int
+
+    // Count of emails blocked in the last 14 days
+    public let blockedEmails: Int
 }
