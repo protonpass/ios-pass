@@ -44,7 +44,7 @@ struct DeleteMailboxEndpoint: Endpoint {
     var body: DeleteMailboxRequest?
 
     init(mailboxID: String, request: DeleteMailboxRequest) {
-        debugDescription = "Get list of alias mailboxes"
+        debugDescription = "Delete an alias mailbox"
         path = "/pass/v1/user/alias/mailbox/\(mailboxID)"
         method = .delete
         body = request
