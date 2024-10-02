@@ -51,6 +51,24 @@ public protocol AliasRepositoryProtocol: Sendable {
     func deleteMailbox(userId: String, mailboxID: Int, transferMailboxID: Int?) async throws
     func verifyMailbox(userId: String, mailboxID: Int, code: String) async throws -> Mailbox
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
+
+    func getContacts(userId: String,
+                          shareId: String,
+                          itemId: String,
+                          lastContactId: String?) async throws -> GetAliasContactsResponse
+    func createContact(userId: String,
+                            shareId: String,
+                            itemId: String,
+                            request: CreateAContactRequest) async throws -> AliasContact
+    func getContactInfos(userId: String,
+                              shareId: String,
+                              itemId: String,
+                              contactId: String) async throws -> AliasContact
+    func updateContact(userId: String,
+                            shareId: String,
+                            itemId: String,
+                            contactId: String,
+                            blocked: Bool) async throws -> AliasContact
 }
 
 public extension AliasRepositoryProtocol {
@@ -163,5 +181,52 @@ public extension AliasRepository {
 
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox {
         try await remoteDatasource.resendMailboxVerificationEmail(userId: userId, mailboxID: mailboxID)
+    }
+}
+
+// MARK: - Contacts
+
+public extension AliasRepository {
+    func getContacts(userId: String,
+                     shareId: String,
+                     itemId: String,
+                     lastContactId: String?) async throws -> GetAliasContactsResponse {
+        try await remoteDatasource.getAliasContacts(userId: userId,
+                                                    shareId: shareId,
+                                                    itemId: itemId,
+                                                    lastContactId: lastContactId)
+    }
+    
+    func createContact(userId: String,
+                       shareId: String,
+                       itemId: String,
+                       request: CreateAContactRequest) async throws -> AliasContact {
+        try await remoteDatasource.createAliasContact(userId: userId,
+                                                      shareId: shareId,
+                                                      itemId: itemId,
+                                                      request: request)
+    }
+    
+    func getContactInfos(userId: String,
+                         shareId: String,
+                         itemId: String,
+                         contactId: String) async throws -> AliasContact {
+        try await remoteDatasource.getAliasContactInfos(userId: userId,
+                                                        shareId: shareId,
+                                                        itemId: itemId,
+                                                        contactId: contactId)
+    }
+    
+    func updateContact(userId: String,
+                       shareId: String,
+                       itemId: String,
+                       contactId: String,
+                       blocked: Bool) async throws -> AliasContact {
+        let request = UpdateContactRequest(blocked: blocked)
+        return try await remoteDatasource.updateAliasContact(userId: userId,
+                                                             shareId: shareId,
+                                                             itemId: itemId,
+                                                             contactId: contactId,
+                                                             request: request)
     }
 }
