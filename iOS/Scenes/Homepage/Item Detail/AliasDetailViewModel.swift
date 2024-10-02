@@ -33,6 +33,9 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var aliasEmail = ""
     @Published private(set) var name = ""
     @Published private(set) var note = ""
+    @Published private(set) var slNote: String?
+    @Published private(set) var stats: AliasStats?
+
     @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?
     @Published private(set) var aliasEnabled = false
@@ -62,6 +65,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                                                               itemId: itemContent.item.itemID)
                 aliasEmail = alias.email
                 mailboxes = alias.mailboxes
+                slNote = alias.note
+                stats = alias.stats
                 aliasEnabled = itemContent.item.isAliasEnabled
                 logger.info("Get alias detail successfully \(itemContent.debugDescription)")
             } catch {

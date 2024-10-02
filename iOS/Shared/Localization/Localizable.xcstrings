@@ -2948,6 +2948,16 @@
         }
       }
     },
+    "%lld forwards • %lld replies • %lld blocks" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld forwards • %2$lld replies • %3$lld blocks"
+          }
+        }
+      }
+    },
     "%lld hour(s)" : {
       "localizations" : {
         "be" : {
@@ -12543,6 +12553,9 @@
           }
         }
       }
+    },
+    "Activity in last two weeks" : {
+
     },
     "Add" : {
       "localizations" : {
@@ -73644,6 +73657,9 @@
           }
         }
       }
+    },
+    "Note • SimpleLogin" : {
+
     },
     "Note content copied" : {
       "localizations" : {
