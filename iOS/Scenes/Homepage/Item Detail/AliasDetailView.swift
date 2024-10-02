@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -65,7 +67,20 @@ struct AliasDetailView: View {
 
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
-                                          vault: viewModel.vault?.vault)
+                                          vault: viewModel.vault?.vault,
+                                          title: #localized("Note"),
+                                          note: viewModel.itemContent.note)
+                    }
+
+                    if let note = viewModel.slNote {
+                        NoteDetailSection(itemContent: viewModel.itemContent,
+                                          vault: viewModel.vault?.vault,
+                                          title: #localized("Note • SimpleLogin"),
+                                          note: note)
+                    }
+
+                    if let stats = viewModel.stats {
+                        statsRow(stats: stats)
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
@@ -81,6 +96,8 @@ struct AliasDetailView: View {
                 .padding()
             }
             .animation(.default, value: viewModel.moreInfoSectionExpanded)
+            .animation(.default, value: viewModel.slNote)
+            .animation(.default, value: viewModel.stats)
             .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
@@ -198,5 +215,26 @@ struct AliasDetailView: View {
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.mailboxes)
+    }
+
+    @ViewBuilder
+    private func statsRow(stats: AliasStats) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.chartLine, color: iconTintColor)
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Activity in last two weeks")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("\(stats.forwardedEmails) forwards • \(stats.repliedEmails) replies • \(stats.blockedEmails) blocks")
+                    .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(.rect)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection()
     }
 }
