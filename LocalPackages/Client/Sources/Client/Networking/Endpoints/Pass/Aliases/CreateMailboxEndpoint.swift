@@ -48,7 +48,7 @@ struct CreateMailboxEndpoint: Endpoint {
     var body: CreateMailboxRequest?
 
     init(request: CreateMailboxRequest) {
-        debugDescription = "Get list of alias mailboxes"
+        debugDescription = "Create an alias mailbox"
         path = "/pass/v1/user/alias/mailbox"
         method = .post
         body = request
