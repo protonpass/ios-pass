@@ -30,7 +30,7 @@ struct ResendMailboxVerificationEmailEndpoint: Endpoint {
     var path: String
 
     init(mailboxID: String) {
-        debugDescription = "Get list of alias mailboxes"
+        debugDescription = "Resend alias mailbox verification email"
         path = "/pass/v1/user/alias/mailbox/\(mailboxID)/verify"
     }
 }
