@@ -18,10 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct AliasContact: Decodable, Sendable {
+public struct AliasContact: Decodable, Sendable, Equatable, Hashable, Identifiable {
     // Should not rename to "id" otherwise decode process breaks
     public let ID: Int
     public let blocked: Bool
     public let reverseAlias: Bool
     public let email: Bool
+
+    public init(ID: Int, blocked: Bool, reverseAlias: Bool, email: Bool) {
+        self.ID = ID
+        self.blocked = blocked
+        self.reverseAlias = reverseAlias
+        self.email = email
+    }
+
+    public var id: Int {
+        // swiftformat:disable:next redundantSelf
+        self.ID
+    }
 }

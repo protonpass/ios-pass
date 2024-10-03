@@ -203,7 +203,9 @@ public extension RemoteAliasDatasource {
                             itemId: String,
                             contactId: String,
                             request: UpdateContactRequest) async throws -> AliasContact {
-        let endpoint = UpdateContactEndpoint(shareId: shareId, itemId: itemId, contactId: contactId,
+        let endpoint = UpdateContactEndpoint(shareId: shareId,
+                                             itemId: itemId,
+                                             contactId: contactId,
                                              request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.contact

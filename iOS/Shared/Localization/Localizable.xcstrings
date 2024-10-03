@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "?" : {
+
+    },
     "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds." : {
       "comment" : "First placeholder is the 6-digit code. The 2nd one is the number of second remaining.",
       "localizations" : {
@@ -10792,6 +10795,9 @@
         }
       }
     },
+    "0 forwarded, 0 sent in the last 14 days." : {
+
+    },
     "2FA limit reached" : {
       "localizations" : {
         "be" : {
@@ -17589,6 +17595,9 @@
         }
       }
     },
+    "Alias contacts" : {
+
+    },
     "Alias copied" : {
       "localizations" : {
         "be" : {
@@ -23864,6 +23873,12 @@
           }
         }
       }
+    },
+    "Block contact" : {
+
+    },
+    "Blocked" : {
+
     },
     "Breach detail action menu" : {
       "localizations" : {
@@ -30668,6 +30683,9 @@
         }
       }
     },
+    "Contact created 3 months ago." : {
+
+    },
     "Contact details" : {
       "localizations" : {
         "be" : {
@@ -30827,6 +30845,9 @@
           }
         }
       }
+    },
+    "Contacts" : {
+
     },
     "Continue" : {
       "localizations" : {
@@ -31467,6 +31488,9 @@
           }
         }
       }
+    },
+    "Copy address" : {
+
     },
     "Copy alias address" : {
       "localizations" : {
@@ -34972,6 +34996,9 @@
         }
       }
     },
+    "Create contact" : {
+
+    },
     "Create login" : {
       "comment" : "AutoFill extension",
       "localizations" : {
@@ -35612,6 +35639,9 @@
           }
         }
       }
+    },
+    "creation" : {
+
     },
     "Credit card created" : {
       "localizations" : {
@@ -47887,6 +47917,9 @@
         }
       }
     },
+    "explanation" : {
+
+    },
     "Extra password" : {
       "localizations" : {
         "be" : {
@@ -50960,6 +50993,9 @@
           }
         }
       }
+    },
+    "Forwarding addresses" : {
+
     },
     "Forwarding to" : {
       "localizations" : {
@@ -71641,6 +71677,9 @@
           }
         }
       }
+    },
+    "No Activity in the last 14 days." : {
+
     },
     "No aliases" : {
       "localizations" : {
@@ -97849,6 +97888,9 @@
         }
       }
     },
+    "Send email" : {
+
+    },
     "Send logs" : {
       "localizations" : {
         "en" : {
@@ -107553,6 +107595,9 @@
         }
       }
     },
+    "Test@test.com" : {
+
+    },
     "Text" : {
       "comment" : "Custom fields",
       "localizations" : {
@@ -110903,6 +110948,9 @@
         }
       }
     },
+    "To keep your personal email address hidden, you can create an alias contact that masks your address." : {
+
+    },
     "Today" : {
       "localizations" : {
         "be" : {
@@ -113342,6 +113390,9 @@
           }
         }
       }
+    },
+    "Unblock contact" : {
+
     },
     "Underscores" : {
       "localizations" : {

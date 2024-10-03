@@ -564,6 +564,8 @@ extension HomepageCoordinator {
                     present(SimpleLoginAliasActivationView())
                 case .aliasesSyncConfiguration:
                     present(AliasSyncConfigurationView())
+                case let .contacts(contacts):
+                    present(AliasContactsView(viewModel: .init(contacts: contacts)))
                 }
             }
             .store(in: &cancellables)
