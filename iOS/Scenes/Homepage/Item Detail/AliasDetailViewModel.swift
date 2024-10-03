@@ -35,6 +35,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var note = ""
     @Published private(set) var slNote: String?
     @Published private(set) var stats: AliasStats?
+    @Published private(set) var contacts: GetAliasContactsResponse?
 
     @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?
@@ -76,6 +77,19 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         }
     }
 
+    func loadContact() async {
+        do {
+            let userId = try await userManager.getActiveUserId()
+            contacts = try await aliasRepository.getContacts(userId: userId,
+                                                             shareId: itemContent.shareId,
+                                                             itemId: itemContent.item.itemID,
+                                                             lastContactId: nil)
+        } catch {
+            logger.error(error)
+            self.error = error
+        }
+    }
+
     func toggleAliasState() {
         setAliasStatus(enabled: !aliasEnabled)
     }
@@ -97,6 +111,13 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     func copyMailboxEmail(_ email: String) {
         copyToClipboard(text: email, message: #localized("Email address copied"))
+    }
+
+    func showContacts() {
+        guard let contacts else {
+            return
+        }
+        router.present(for: .contacts(contacts))
     }
 }
 
