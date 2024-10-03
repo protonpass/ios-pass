@@ -1,6 +1,7 @@
 //
-// AliasContact.swift
-// Proton Pass - Created on 02/10/2024.
+//  
+// AliasContactsViewModel.swift
+// Proton Pass - Created on 03/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,23 +18,19 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-public struct AliasContact: Decodable, Sendable, Equatable, Hashable, Identifiable {
-    // Should not rename to "id" otherwise decode process breaks
-    public let ID: Int
-    public let blocked: Bool
-    public let reverseAlias: Bool
-    public let email: Bool
+import Foundation
 
-    public init(ID: Int, blocked: Bool, reverseAlias: Bool, email: Bool) {
-        self.ID = ID
-        self.blocked = blocked
-        self.reverseAlias = reverseAlias
-        self.email = email
+@MainActor
+final class AliasContactsViewModel: ObservableObject, Sendable {
+        
+    init() {
+        setUp()
     }
+}
 
-    public var id: Int {
-        // swiftformat:disable:next redundantSelf
-        self.ID
+private extension AliasContactsViewModel {
+    func setUp() {
     }
 }

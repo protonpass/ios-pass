@@ -53,22 +53,22 @@ public protocol AliasRepositoryProtocol: Sendable {
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
 
     func getContacts(userId: String,
-                          shareId: String,
-                          itemId: String,
-                          lastContactId: String?) async throws -> GetAliasContactsResponse
+                     shareId: String,
+                     itemId: String,
+                     lastContactId: String?) async throws -> GetAliasContactsResponse
     func createContact(userId: String,
-                            shareId: String,
-                            itemId: String,
-                            request: CreateAContactRequest) async throws -> AliasContact
+                       shareId: String,
+                       itemId: String,
+                       request: CreateAContactRequest) async throws -> AliasContact
     func getContactInfos(userId: String,
-                              shareId: String,
-                              itemId: String,
-                              contactId: String) async throws -> AliasContact
+                         shareId: String,
+                         itemId: String,
+                         contactId: String) async throws -> AliasContact
     func updateContact(userId: String,
-                            shareId: String,
-                            itemId: String,
-                            contactId: String,
-                            blocked: Bool) async throws -> AliasContact
+                       shareId: String,
+                       itemId: String,
+                       contactId: String,
+                       blocked: Bool) async throws -> AliasContact
 }
 
 public extension AliasRepositoryProtocol {
@@ -200,7 +200,7 @@ public extension AliasRepository {
                                                     itemId: itemId,
                                                     lastContactId: lastContactId)
     }
-    
+
     func createContact(userId: String,
                        shareId: String,
                        itemId: String,
@@ -210,7 +210,7 @@ public extension AliasRepository {
                                                       itemId: itemId,
                                                       request: request)
     }
-    
+
     func getContactInfos(userId: String,
                          shareId: String,
                          itemId: String,
@@ -220,7 +220,7 @@ public extension AliasRepository {
                                                         itemId: itemId,
                                                         contactId: contactId)
     }
-    
+
     func updateContact(userId: String,
                        shareId: String,
                        itemId: String,

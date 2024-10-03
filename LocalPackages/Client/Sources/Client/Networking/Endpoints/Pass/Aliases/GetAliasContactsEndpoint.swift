@@ -29,7 +29,7 @@ public struct GetAliasContactsQuery: Sendable {
     }
 }
 
-public struct GetAliasContactsResponse: Decodable, Sendable {
+public struct GetAliasContactsResponse: Decodable, Sendable, Equatable, Hashable {
     public let contacts: [AliasContact]
     public let total: Int
 }

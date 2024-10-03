@@ -490,6 +490,8 @@
 		5B8D20B12AA751AF00457CA3 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20B02AA751AF00457CA3 /* MBProgressHUD */; };
 		5B8D20BE2AA7639E00457CA3 /* fusion in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20BD2AA7639E00457CA3 /* fusion */; };
 		5B92AB372C91C69E007365FC /* AliasTrashAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */; };
+		5BA09B802CAE94D0000001B7 /* AliasContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B7F2CAE94D0000001B7 /* AliasContactsViewModel.swift */; };
+		5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B7E2CAE94D0000001B7 /* AliasContactsView.swift */; };
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
 		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
 		5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
@@ -969,6 +971,8 @@
 		5B8D20A22AA7499400457CA3 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = LocalPackages/Core; sourceTree = "<group>"; };
 		5B8D20A92AA74B4700457CA3 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = LocalPackages/DesignSystem; sourceTree = "<group>"; };
 		5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasTrashAlertModifier.swift; sourceTree = "<group>"; };
+		5BA09B7E2CAE94D0000001B7 /* AliasContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsView.swift; sourceTree = "<group>"; };
+		5BA09B7F2CAE94D0000001B7 /* AliasContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsViewModel.swift; sourceTree = "<group>"; };
 		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
 		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
 		5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpsellingViewConfiguration+Extensions.swift"; sourceTree = "<group>"; };
@@ -1710,6 +1714,7 @@
 		35E5070B286FB57800A3F6EA /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				5BA09B7D2CAE947E000001B7 /* Contacts */,
 				5B1453DE2A727EDC0048B022 /* AcceptRejectInviteView */,
 				35E5070C286FB58800A3F6EA /* App */,
 				5B87CC8C2BA4AE6E00258D70 /* Authenticator */,
@@ -2119,6 +2124,15 @@
 				5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */,
 			);
 			path = Authenticator;
+			sourceTree = "<group>";
+		};
+		5BA09B7D2CAE947E000001B7 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				5BA09B7E2CAE94D0000001B7 /* AliasContactsView.swift */,
+				5BA09B7F2CAE94D0000001B7 /* AliasContactsViewModel.swift */,
+			);
+			path = Contacts;
 			sourceTree = "<group>";
 		};
 		5BAD39612AF52B31009FD5A3 /* ShareOrCreateNewVaultView */ = {
@@ -3209,6 +3223,8 @@
 				3545731F2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
+				5BA09B802CAE94D0000001B7 /* AliasContactsViewModel.swift in Sources */,
+				5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
