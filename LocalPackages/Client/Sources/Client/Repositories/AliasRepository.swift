@@ -146,7 +146,11 @@ public extension AliasRepository {
     func getAllAliasDomains(userId: String) async throws -> [Domain] {
         try await remoteDatasource.getAllAliasDomains(userId: userId)
     }
+}
 
+// MARK: - Mailboxes
+
+public extension AliasRepository {
     func getAllAliasMailboxes(userId: String) async throws -> [Mailbox] {
         try await remoteDatasource.getAllAliasMailboxes(userId: userId)
     }
