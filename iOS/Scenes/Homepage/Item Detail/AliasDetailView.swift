@@ -79,6 +79,15 @@ struct AliasDetailView: View {
                                           note: note)
                     }
 
+                    contactRow
+
+                    Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.footnote)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .padding(.top, 8)
+                        .padding(.bottom, DesignConstant.sectionPadding)
+
                     if let stats = viewModel.stats {
                         statsRow(stats: stats)
                     }
@@ -103,17 +112,20 @@ struct AliasDetailView: View {
             }
         }
         .itemDetailSetUp(viewModel)
-        .onFirstAppear(perform: viewModel.getAlias)
+        .task {
+            await viewModel.loadContact()
+        }
+        .onFirstAppear {
+            viewModel.getAlias()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                animate = true
+            }
+        }
         .if(viewModel.aliasSyncEnabled) {
             $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $viewModel.showingTrashAliasAlert,
                                                 enabled: viewModel.aliasEnabled,
                                                 disableAction: { viewModel.disableAlias() },
                                                 trashAction: { viewModel.moveToTrash() }))
-        }
-        .onFirstAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                animate = true
-            }
         }
     }
 
@@ -217,7 +229,6 @@ struct AliasDetailView: View {
         .animation(.default, value: viewModel.mailboxes)
     }
 
-    @ViewBuilder
     private func statsRow(stats: AliasStats) -> some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.chartLine, color: iconTintColor)
@@ -230,11 +241,40 @@ struct AliasDetailView: View {
                 Text("\(stats.forwardedEmails) forwards • \(stats.repliedEmails) replies • \(stats.blockedEmails) blocks")
                     .sectionContentText()
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(.rect)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
+    }
+
+    private var contactRow: some View {
+        Button(action: { viewModel.showContacts() }) {
+            HStack(spacing: DesignConstant.sectionPadding) {
+                ItemDetailSectionIcon(icon: IconProvider.chartLine, color: iconTintColor)
+                Text("Contacts")
+                    .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(.rect)
+                    .padding(.vertical, 24)
+
+                if let contacts = viewModel.contacts, !contacts.contacts.isEmpty {
+                    Text(verbatim: "\(contacts.total)")
+                        .fontWeight(.medium)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 11)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .background(PassColor.backgroundMedium.toColor)
+                        .clipShape(Capsule())
+                }
+
+                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                      width: 20)
+            }
+            .padding(DesignConstant.sectionPadding)
+            .roundedDetailSection()
+        }
+        .animation(.default, value: viewModel.contacts)
+        .buttonStyle(.plain)
     }
 }
