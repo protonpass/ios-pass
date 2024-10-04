@@ -256,7 +256,7 @@ struct AliasDetailView: View {
                     .sectionContentText()
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .contentShape(.rect)
-                    .padding(.vertical, 24)
+                    .padding(.vertical, 8)
 
                 if let contacts = viewModel.contacts, !contacts.contacts.isEmpty {
                     Text(verbatim: "\(contacts.total)")

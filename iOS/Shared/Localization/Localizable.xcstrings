@@ -35640,9 +35640,6 @@
         }
       }
     },
-    "creation" : {
-
-    },
     "Credit card created" : {
       "localizations" : {
         "be" : {
@@ -70882,6 +70879,9 @@
           }
         }
       }
+    },
+    "Name for contact detail" : {
+
     },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
@@ -107594,9 +107594,6 @@
           }
         }
       }
-    },
-    "Test@test.com" : {
-
     },
     "Text" : {
       "comment" : "Custom fields",
