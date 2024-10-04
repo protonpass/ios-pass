@@ -107,7 +107,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case addAccount
     case simpleLoginSyncActivation
     case aliasesSyncConfiguration
-    case contacts(GetAliasContactsResponse)
+    case contacts(ItemContent, GetAliasContactsResponse)
 }
 
 enum GenericDestination {

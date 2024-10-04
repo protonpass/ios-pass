@@ -117,7 +117,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         guard let contacts else {
             return
         }
-        router.present(for: .contacts(contacts))
+        router.present(for: .contacts(itemContent, contacts))
     }
 }
 
