@@ -24,6 +24,7 @@ import Entities
 
 public protocol AliasRepositoryProtocol: Sendable {
     var mailboxUpdated: PassthroughSubject<Void, Never> { get }
+    var contactsUpdated: PassthroughSubject<Void, Never> { get }
 
     func getAliasOptions(shareId: String) async throws -> AliasOptions
     func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
@@ -83,6 +84,7 @@ public actor AliasRepository: AliasRepositoryProtocol {
     private let userManager: any UserManagerProtocol
 
     public nonisolated let mailboxUpdated: PassthroughSubject<Void, Never> = .init()
+    public nonisolated let contactsUpdated: PassthroughSubject<Void, Never> = .init()
 
     public init(remoteDatasource: any RemoteAliasDatasourceProtocol,
                 userManager: any UserManagerProtocol) {
@@ -205,10 +207,12 @@ public extension AliasRepository {
                        shareId: String,
                        itemId: String,
                        request: CreateAContactRequest) async throws -> AliasContact {
-        try await remoteDatasource.createAliasContact(userId: userId,
-                                                      shareId: shareId,
-                                                      itemId: itemId,
-                                                      request: request)
+        let contact = try await remoteDatasource.createAliasContact(userId: userId,
+                                                                    shareId: shareId,
+                                                                    itemId: itemId,
+                                                                    request: request)
+        contactsUpdated.send(())
+        return contact
     }
 
     func getContactInfos(userId: String,
@@ -227,10 +231,12 @@ public extension AliasRepository {
                        contactId: String,
                        blocked: Bool) async throws -> AliasContact {
         let request = UpdateContactRequest(blocked: blocked)
-        return try await remoteDatasource.updateAliasContact(userId: userId,
-                                                             shareId: shareId,
-                                                             itemId: itemId,
-                                                             contactId: contactId,
-                                                             request: request)
+        let contact = try await remoteDatasource.updateAliasContact(userId: userId,
+                                                                    shareId: shareId,
+                                                                    itemId: itemId,
+                                                                    contactId: contactId,
+                                                                    request: request)
+        contactsUpdated.send(())
+        return contact
     }
 }

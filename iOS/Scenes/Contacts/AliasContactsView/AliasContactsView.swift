@@ -135,13 +135,15 @@ private extension AliasContactsView {
     func itemRow(for contact: AliasContact) -> some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
             HStack {
-                Text(verbatim: "test@test.com" /* contact.email */ )
+                Text(verbatim: contact.email)
                     .foregroundStyle(PassColor.textNorm.toColor)
 
                 Spacer()
 
                 if !contact.blocked {
-                    Button {} label: {
+                    Button {
+                        viewModel.openMail(emailTo: contact.email)
+                    } label: {
                         Image(uiImage: IconProvider.paperPlane)
                             .foregroundStyle(PassColor.textWeak.toColor)
                     }
@@ -151,21 +153,29 @@ private extension AliasContactsView {
                 Menu(content: {
                     if !contact.blocked {
                         Label(title: { Text("Send email") }, icon: { Image(uiImage: IconProvider.paperPlane) })
-                            .buttonEmbeded {}
+                            .buttonEmbeded {
+                                viewModel.openMail(emailTo: contact.email)
+                            }
                     }
 
                     Label(title: { Text("Copy address") }, icon: { Image(uiImage: IconProvider.squares) })
-                        .buttonEmbeded {}
+                        .buttonEmbeded {
+                            viewModel.copyContact(contact)
+                        }
 
                     Divider()
 
                     Label(title: { Text(contact.actionTitle) },
                           icon: { Image(uiImage: IconProvider.crossCircle) })
-                        .buttonEmbeded {}
+                        .buttonEmbeded {
+                            viewModel.toggleContactState(contact)
+                        }
 
                     Label(title: { Text("Delete") },
                           icon: { Image(uiImage: IconProvider.trash) })
-                        .buttonEmbeded {}
+                        .buttonEmbeded {
+                            viewModel.delete(contact: contact)
+                        }
                 }, label: {
                     IconProvider.threeDotsVertical
                         .foregroundStyle(PassColor.textWeak.toColor)

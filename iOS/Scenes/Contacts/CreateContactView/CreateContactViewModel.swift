@@ -61,8 +61,10 @@ final class CreateContactViewModel: ObservableObject, Sendable {
                 loading = true
                 let userId = try await userManager.getActiveUserId()
                 let request = CreateAContactRequest(email: email, name: name.nilIfEmpty)
-                try await aliasRepository.createContact(userId: userId, shareId: itemIds.shareId,
-                                                        itemId: itemIds.itemId, request: request)
+                try await aliasRepository.createContact(userId: userId,
+                                                        shareId: itemIds.shareId,
+                                                        itemId: itemIds.itemId,
+                                                        request: request)
                 finishedSaving = true
             } catch {
                 creationError = error
