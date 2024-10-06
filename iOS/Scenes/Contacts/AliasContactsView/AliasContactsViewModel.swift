@@ -48,6 +48,12 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     private let item: ItemContent
 
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
+
+    private var cancellables = Set<AnyCancellable>()
 
     var itemIds: IDs {
         IDs(shareId: item.shareId, itemId: item.itemId)
@@ -57,6 +63,44 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
         self.contacts = contacts
         self.item = item
         setUp()
+//        parseContacts()
+    }
+
+    func copyContact(_ contact: AliasContact) {
+        router.action(.copyToClipboard(text: contact.email, message: #localized("Contact copied")))
+    }
+
+    // https://stackoverflow.com/questions/71260260/what-method-do-i-call-to-open-the-ios-mail-app-with-swiftui
+    func openMail(emailTo: String) {
+        // TODO: need to add the name
+        if let url = URL(string: "mailto:\("Eric plop")<\(emailTo)>"),
+
+           UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+    }
+
+    func delete(contact: AliasContact) {
+        //TODO: add deletion for contact
+    }
+
+    func toggleContactState(_ contact: AliasContact) {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                _ = try await aliasRepository.updateContact(userId: userId,
+                                                            shareId: item.shareId,
+                                                            itemId: item.itemId,
+                                                            contactId: "\(contact.ID)",
+                                                            blocked: !contact.blocked)
+                try await reloadContact()
+            } catch {
+                handle(error)
+            }
+        }
     }
 }
 
@@ -69,7 +113,30 @@ private extension AliasContactsViewModel {
                 showExplanation = true
             }
         }
-//        parseContacts()
+
+        aliasRepository.contactsUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self else {
+                    return
+                }
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    try? await reloadContact()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func reloadContact() async throws {
+        let userId = try await userManager.getActiveUserId()
+        contacts = try await aliasRepository.getContacts(userId: userId,
+                                                         shareId: item.shareId,
+                                                         itemId: item.itemId,
+                                                         lastContactId: nil)
+        parseContacts()
     }
 
     func parseContacts() {
@@ -85,5 +152,10 @@ private extension AliasContactsViewModel {
         }
 
         contactsInfos = AliasContactsModel(activeContacts: activeContacts, blockContacts: blockContacts)
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
