@@ -24,6 +24,9 @@ import Client
 import Combine
 import Entities
 import Factory
+import Foundation
+import Macro
+import UIKit
 
 struct AliasContactsModel {
     let activeContacts: [AliasContact]
