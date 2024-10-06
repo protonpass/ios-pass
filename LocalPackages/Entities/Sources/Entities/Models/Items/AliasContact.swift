@@ -23,9 +23,9 @@ public struct AliasContact: Decodable, Sendable, Equatable, Hashable, Identifiab
     public let ID: Int
     public let blocked: Bool
     public let reverseAlias: Bool
-    public let email: Bool
+    public let email: String
 
-    public init(ID: Int, blocked: Bool, reverseAlias: Bool, email: Bool) {
+    public init(ID: Int, blocked: Bool, reverseAlias: Bool, email: String) {
         self.ID = ID
         self.blocked = blocked
         self.reverseAlias = reverseAlias

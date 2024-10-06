@@ -67,7 +67,7 @@ struct CreateContactView: View {
         .alert("Error occurred",
                isPresented: $showErrorAlert,
                actions: {
-            Button{ viewModel.creationError = nil } label: {
+                   Button { viewModel.creationError = nil } label: {
                        Text("OK")
                    }
                },
