@@ -304,7 +304,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otomatik Doldurma eklentisi günlükleri"
+            "value" : "Otomatik Doldurma eklentisi günlüğü"
           }
         },
         "uk" : {
@@ -2225,7 +2225,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eklenti günlüklerini paylaş"
+            "value" : "Eklenti günlüğünü paylaş"
           }
         },
         "uk" : {
