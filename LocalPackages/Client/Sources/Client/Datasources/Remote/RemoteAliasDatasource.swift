@@ -62,6 +62,10 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
                             itemId: String,
                             contactId: String,
                             request: UpdateContactRequest) async throws -> AliasContact
+    func deleteContact(userId: String,
+                       shareId: String,
+                       itemId: String,
+                       contactId: String) async throws
 }
 
 public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
@@ -209,5 +213,15 @@ public extension RemoteAliasDatasource {
                                              request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.contact
+    }
+
+    func deleteContact(userId: String,
+                       shareId: String,
+                       itemId: String,
+                       contactId: String) async throws {
+        let endpoint = DeleteContactEndpoint(shareId: shareId,
+                                             itemId: itemId,
+                                             contactId: contactId)
+        try await exec(userId: userId, endpoint: endpoint)
     }
 }
