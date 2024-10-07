@@ -70,6 +70,11 @@ public protocol AliasRepositoryProtocol: Sendable {
                        itemId: String,
                        contactId: String,
                        blocked: Bool) async throws -> AliasContact
+
+    func deleteContact(userId: String,
+                       shareId: String,
+                       itemId: String,
+                       contactId: String) async throws
 }
 
 public extension AliasRepositoryProtocol {
@@ -238,5 +243,13 @@ public extension AliasRepository {
                                                                     request: request)
         contactsUpdated.send(())
         return contact
+    }
+
+    func deleteContact(userId: String,
+                       shareId: String,
+                       itemId: String,
+                       contactId: String) async throws {
+        try await remoteDatasource.deleteContact(userId: userId, shareId: shareId, itemId: itemId,
+                                                 contactId: contactId)
     }
 }
