@@ -44,7 +44,12 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
+    var isAdvancedAliasManagementActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passAdvancedAliasManagementV1)
+    }
+    
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
@@ -78,6 +83,9 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func loadContact() async {
+        guard isAdvancedAliasManagementActive else {
+            return
+        }
         do {
             let userId = try await userManager.getActiveUserId()
             contacts = try await aliasRepository.getContacts(userId: userId,
@@ -85,8 +93,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                                                              itemId: itemContent.item.itemID,
                                                              lastContactId: nil)
         } catch {
-            logger.error(error)
-            self.error = error
+            handle(error)
         }
     }
 
