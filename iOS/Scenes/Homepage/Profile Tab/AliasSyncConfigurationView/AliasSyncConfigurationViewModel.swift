@@ -73,7 +73,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     var canManageAliases: Bool {
         plan?.manageAlias ?? false
     }
-    
+
     var shouldUpsell: Bool {
         !canManageAliases && isAdvancedAliasManagementActive
     }
