@@ -103,7 +103,7 @@ private extension AliasContactsView {
 
 private extension AliasContactsView {
     var contactList: some View {
-        LazyVStack {
+        LazyVStack(spacing: 25) {
             if !viewModel.contactsInfos.activeContacts.isEmpty {
                 Section {
                     ForEach(viewModel.contactsInfos.activeContacts) { contact in
