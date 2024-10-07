@@ -88,7 +88,21 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     }
 
     func delete(contact: AliasContact) {
-        // TODO: add deletion for contact
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                _ = try await aliasRepository.deleteContact(userId: userId,
+                                                            shareId: item.shareId,
+                                                            itemId: item.itemId,
+                                                            contactId: "\(contact.ID)")
+                try await reloadContact()
+            } catch {
+                handle(error)
+            }
+        }
     }
 
     func toggleContactState(_ contact: AliasContact) {
