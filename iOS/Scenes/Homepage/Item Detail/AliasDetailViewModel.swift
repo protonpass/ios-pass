@@ -44,12 +44,11 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAdvancedAliasManagementV1)
     }
-    
+
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""

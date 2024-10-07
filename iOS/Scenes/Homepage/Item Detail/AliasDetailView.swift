@@ -73,16 +73,18 @@ struct AliasDetailView: View {
                     }
 
                     if viewModel.isAdvancedAliasManagementActive {
-                        contactRow
-                        
-                        Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .font(.footnote)
-                            .foregroundStyle(PassColor.textWeak.toColor)
-                            .padding(.top, 8)
-                            .padding(.bottom, DesignConstant.sectionPadding)
-                        
-                        
+                        if viewModel.contacts != nil {
+                            contactRow
+
+                            // swiftlint:disable:next line_length
+                            Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.footnote)
+                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .padding(.top, 8)
+                                .padding(.bottom, DesignConstant.sectionPadding)
+                        }
+
                         if let stats = viewModel.stats {
                             statsRow(stats: stats)
                         }
@@ -103,6 +105,7 @@ struct AliasDetailView: View {
             .animation(.default, value: viewModel.moreInfoSectionExpanded)
             .animation(.default, value: viewModel.slNote)
             .animation(.default, value: viewModel.stats)
+            .animation(.default, value: viewModel.contacts)
             .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
