@@ -56,7 +56,7 @@ public protocol AliasRepositoryProtocol: Sendable {
     func getContacts(userId: String,
                      shareId: String,
                      itemId: String,
-                     lastContactId: String?) async throws -> GetAliasContactsResponse
+                     lastContactId: String?) async throws -> PaginatedAliasContacts
     func createContact(userId: String,
                        shareId: String,
                        itemId: String,
@@ -196,7 +196,7 @@ public extension AliasRepository {
     func getContacts(userId: String,
                      shareId: String,
                      itemId: String,
-                     lastContactId: String?) async throws -> GetAliasContactsResponse {
+                     lastContactId: String?) async throws -> PaginatedAliasContacts {
         try await remoteDatasource.getAliasContacts(userId: userId,
                                                     shareId: shareId,
                                                     itemId: itemId,
