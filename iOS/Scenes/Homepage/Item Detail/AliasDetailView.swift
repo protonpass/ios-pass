@@ -37,19 +37,12 @@ struct AliasDetailView: View {
     }
 
     var body: some View {
-        if let error = viewModel.error {
-            RetryableErrorView(errorMessage: error.localizedDescription) {
-                viewModel.refresh()
-            }
-            .padding()
-        } else {
-            if viewModel.isShownAsSheet {
-                NavigationStack {
-                    realBody
-                }
-            } else {
+        if viewModel.isShownAsSheet {
+            NavigationStack {
                 realBody
             }
+        } else {
+            realBody
         }
     }
 
@@ -79,17 +72,20 @@ struct AliasDetailView: View {
                                           note: note)
                     }
 
-                    contactRow
-
-                    Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .font(.footnote)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .padding(.top, 8)
-                        .padding(.bottom, DesignConstant.sectionPadding)
-
-                    if let stats = viewModel.stats {
-                        statsRow(stats: stats)
+                    if viewModel.isAdvancedAliasManagementActive {
+                        contactRow
+                        
+                        Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .font(.footnote)
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .padding(.top, 8)
+                            .padding(.bottom, DesignConstant.sectionPadding)
+                        
+                        
+                        if let stats = viewModel.stats {
+                            statsRow(stats: stats)
+                        }
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
@@ -189,38 +185,45 @@ struct AliasDetailView: View {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Forwarding to")
-                    .sectionTitleText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                if let mailboxes = viewModel.mailboxes {
-                    ForEach(mailboxes, id: \.ID) { mailbox in
-                        Text(mailbox.email)
-                            .sectionContentText()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .contentShape(.rect)
-                            .contextMenu {
-                                Button(action: {
-                                    viewModel.copyMailboxEmail(mailbox.email)
-                                }, label: {
-                                    Text("Copy")
-                                })
-
-                                Button(action: {
-                                    viewModel.showLarge(.text(mailbox.email))
-                                }, label: {
-                                    Text("Show large")
-                                })
-                            }
+                if let error = viewModel.error {
+                    RetryableErrorCellView(errorMessage: error.localizedDescription,
+                                           textColor: PassColor.textNorm.toColor) {
+                        viewModel.refresh()
                     }
                 } else {
-                    Group {
-                        SkeletonBlock(tintColor: iconTintColor)
-                        SkeletonBlock(tintColor: iconTintColor)
-                        SkeletonBlock(tintColor: iconTintColor)
+                    Text("Forwarding to")
+                        .sectionTitleText()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    if let mailboxes = viewModel.mailboxes {
+                        ForEach(mailboxes, id: \.ID) { mailbox in
+                            Text(mailbox.email)
+                                .sectionContentText()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .contentShape(.rect)
+                                .contextMenu {
+                                    Button(action: {
+                                        viewModel.copyMailboxEmail(mailbox.email)
+                                    }, label: {
+                                        Text("Copy")
+                                    })
+
+                                    Button(action: {
+                                        viewModel.showLarge(.text(mailbox.email))
+                                    }, label: {
+                                        Text("Show large")
+                                    })
+                                }
+                        }
+                    } else {
+                        Group {
+                            SkeletonBlock(tintColor: iconTintColor)
+                            SkeletonBlock(tintColor: iconTintColor)
+                            SkeletonBlock(tintColor: iconTintColor)
+                        }
+                        .clipShape(Capsule())
+                        .shimmering(active: animate)
                     }
-                    .clipShape(Capsule())
-                    .shimmering(active: animate)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
