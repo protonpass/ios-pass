@@ -1070,13 +1070,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld alias deshabilitado"
+                  "value" : "%lld alias desactivado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld alias deshabilitados"
+                  "value" : "%lld alias disactivados"
                 }
               }
             }
@@ -1542,13 +1542,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld alias habilitado"
+                  "value" : "%lld alias activado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld alias habilitados"
+                  "value" : "%lld alias activados"
                 }
               }
             }
@@ -5852,13 +5852,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elemento anclado correctamente"
+                  "value" : "%lld elemento anclado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementos anclados correctamente"
+                  "value" : "%lld elementos anclados"
                 }
               }
             }
@@ -5870,13 +5870,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elemento anclado con éxito"
+                  "value" : "%lld elemento anclado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementos anclados con éxito"
+                  "value" : "%lld elementos anclados"
                 }
               }
             }
@@ -6288,13 +6288,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elemento desanclado correctamente"
+                  "value" : "%lld elemento desanclado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementos desanclados correctamente"
+                  "value" : "%lld elementos desanclados"
                 }
               }
             }
@@ -6306,13 +6306,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elemento desanclado con éxito"
+                  "value" : "%lld elemento desanclado"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementos desanclados con éxito"
+                  "value" : "%lld elementos desanclados"
                 }
               }
             }
@@ -21367,7 +21367,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Weet u zeker dat u de volgende sectie \"%@ \" wilt verwijderen?"
+            "value" : "Weet u zeker dat u de volgende sectie \"%@\" wilt verwijderen?"
           }
         },
         "pl" : {
@@ -22475,6 +22475,12 @@
             "value" : "Prílohy"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Priponke"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23249,7 +23255,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cópia automática do código 2FA requer bloqueio biométrico ou código PIN a ser configurado"
+            "value" : "Cópia automática do código A2F requer bloqueio biométrico ou código PIN a ser configurado"
           }
         },
         "ro" : {
@@ -43715,7 +43721,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activar alias"
+            "value" : "Activar el alias"
           }
         },
         "es-419" : {
@@ -46663,7 +46669,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "İzlemeye katılmamış"
+            "value" : "İzlemeye katılmayan"
           }
         },
         "uk" : {
@@ -55394,7 +55400,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocultar número do seguro social"
+            "value" : "Ocultar CPF"
           }
         },
         "ro" : {
@@ -57942,7 +57948,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Etkin olmayan iki adımlı doğrulama"
+            "value" : "İki adımlı doğrulama etkin olmayan"
           }
         },
         "uk" : {
@@ -93176,6 +93182,12 @@
             "value" : "Snímka obrazovky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posnetek zaslona"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93705,7 +93717,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Cari dalam %lld akun"
+                  "value" : "Cari di %lld akun"
                 }
               }
             }
@@ -94304,6 +94316,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contenuti ricercabili"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "検索可能な内容"
           }
         },
         "ka" : {
@@ -95116,6 +95134,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bezpečné odkazy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varne povezave"
           }
         },
         "sv" : {
@@ -96790,7 +96814,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seleccionar cuenta"
+            "value" : "Seleccionar la cuenta"
           }
         },
         "es-419" : {
@@ -97653,10 +97677,160 @@
     },
     "Send logs" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адправіць журналы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odeslat logy"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send logfiler"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protokolle senden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποστολή αρχείων καταγραφής"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Send logs"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar los registros"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar los registros"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lähetä lokit"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer les journaux"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirim catatan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia log"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログを送信"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჟურნალის გაგზავნა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그 전송"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send logger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logbestanden versturen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyślij logi"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar registos"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trimitere jurnale"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odoslať záznamy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pošlji dnevnike"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skicka loggar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Günlüğü gönder"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надіслати журнали"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gửi nhật ký"
           }
         }
       }
@@ -102652,7 +102826,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostar número do seguro social"
+            "value" : "Mostar CPF"
           }
         },
         "ro" : {
@@ -103677,7 +103851,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Número do seguro social"
+            "value" : "CPF"
           }
         },
         "ro" : {
@@ -106217,6 +106391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Synchronizovať aliasy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinhroniziranje vzdevkov"
           }
         },
         "sv" : {
@@ -114228,7 +114408,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Çevrim içi varlığınızı korumak için gelişmiş güvenlik özellikleri ile ayrıntılı günlüklere erişin."
+            "value" : "Çevrim içi varlığınızı korumak için gelişmiş güvenlik özellikleri ile ayrıntılı günlük kayıtlarına erişin."
           }
         },
         "uk" : {
@@ -117542,7 +117722,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 로그인에 쓰임"
+                  "value" : "%lld개 로그인에 사용됨"
                 }
               }
             }
@@ -127264,16 +127444,112 @@
     },
     "You currently have no login items with 2FA secret key (TOTP)" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У цяперашні час у вас адсутнічаюць элементы ўваходу з сакрэтнымі ключамі 2ФА (TOTP)"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V současné době nemáte žádné přihlašovací položky s klíčem 2FA secret (TOTP)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har i øjeblikket ingen login-elementer med 2FA hemmelig nøgle (TOTP)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προς το παρόν δεν έχετε στοιχεία σύνδεσης με μυστικό κλειδί 2FA (TOTP)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You currently have no login items with 2FA secret key (TOTP)"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualmente no tienes elementos de inicio de sesión con clave secreta 2FA (TOTP)."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualmente no tiene elementos de inicio de sesión con clave secreta 2FA (TOTP)."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vous n'avez actuellement aucun élément de connexion avec une clé secrète A2F (TOTP)."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda saat ini tidak memiliki item entri masuk dengan kunci rahasia 2FA (TOTP)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al momento non hai elementi di accesso con chiave segreta 2FA (TOTP)"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ამჟამად 2FA საიდუმლო გასაღების (TOTP) მქონე შესვლის დეტალები არ გაგაჩნიათ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA 시크릿 키(TOTP)의 로그인 항목이 없습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har for øyeblikket ingen påloggingselementer med 2FA hemmelig nøkkel (TOTP)"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie masz danych logowania z kluczem uwierzytelniającym (TOTP)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No momento, você não tem itens de login com chave secreta 2FA (TOTP)"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Momentan nu aveți articole de autentificare cu cheia secretă A2F (TOTP)."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V súčasnosti nemáte žiadne prihlasovacie položky s tajným kľúčom 2FA (TOTP)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İki adımlı gizli anahtar (tek kullanımlık parola) kullanan bir oturum açma kaydınız yok"
           }
         }
       }
@@ -128157,7 +128433,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Você precisa mudar para %@ para gerenciá-lo"
+            "value" : "Você precisa alterar para %@ para gerenciá-lo"
           }
         },
         "ro" : {
