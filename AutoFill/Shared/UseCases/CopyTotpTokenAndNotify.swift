@@ -59,8 +59,7 @@ final class CopyTotpTokenAndNotify: @unchecked Sendable, CopyTotpTokenAndNotifyU
 
     @MainActor
     func execute(itemContent: ItemContent) async throws {
-        guard #unavailable(iOS 18),
-              getSharedPreferences().automaticallyCopyTotpCode,
+        guard getSharedPreferences().automaticallyCopyTotpCode,
               getSharedPreferences().localAuthenticationMethod != .none else {
             // Not opted in
             return
