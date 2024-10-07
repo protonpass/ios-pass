@@ -29,14 +29,15 @@ public struct GetAliasContactsQuery: Sendable {
     }
 }
 
-public struct GetAliasContactsResponse: Decodable, Sendable, Equatable, Hashable {
+public struct PaginatedAliasContacts: Decodable, Sendable, Equatable, Hashable {
     public let contacts: [AliasContact]
     public let total: Int
+    public let lastID: Int
 }
 
 struct GetAliasContactsEndpoint: Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = GetAliasContactsResponse
+    typealias Response = PaginatedAliasContacts
 
     var debugDescription: String
     var path: String

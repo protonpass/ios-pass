@@ -33,8 +33,12 @@ struct AliasContactsModel {
     let blockContacts: [AliasContact]
 
     static var `default`: AliasContactsModel {
-        AliasContactsModel(activeContacts: [AliasContact(ID: 1, blocked: false, reverseAlias: true, email: true)],
-                           blockContacts: [AliasContact(ID: 2, blocked: true, reverseAlias: false, email: false)])
+        AliasContactsModel(activeContacts: [AliasContact(ID: 1, name: "John Doe", blocked: false,
+                                                         reverseAlias: "reveal@example.com",
+                                                         email: "email@example.com")],
+                           blockContacts: [AliasContact(ID: 2, name: "Jane Doe", blocked: true,
+                                                        reverseAlias: "reveal2@example.com",
+                                                        email: "email2@example.com")])
     }
 }
 
@@ -47,7 +51,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
         contacts.contacts.isEmpty
     }
 
-    private var contacts: GetAliasContactsResponse
+    private var contacts: PaginatedAliasContacts
     private let item: ItemContent
 
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
@@ -62,7 +66,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
         IDs(shareId: item.shareId, itemId: item.itemId)
     }
 
-    init(item: ItemContent, contacts: GetAliasContactsResponse) {
+    init(item: ItemContent, contacts: PaginatedAliasContacts) {
         self.contacts = contacts
         self.item = item
         setUp()
@@ -84,7 +88,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     }
 
     func delete(contact: AliasContact) {
-        //TODO: add deletion for contact
+        // TODO: add deletion for contact
     }
 
     func toggleContactState(_ contact: AliasContact) {

@@ -35,7 +35,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var note = ""
     @Published private(set) var slNote: String?
     @Published private(set) var stats: AliasStats?
-    @Published private(set) var contacts: GetAliasContactsResponse?
+    @Published private(set) var contacts: PaginatedAliasContacts?
 
     @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?

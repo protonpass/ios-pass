@@ -21,12 +21,14 @@
 public struct AliasContact: Decodable, Sendable, Equatable, Hashable, Identifiable {
     // Should not rename to "id" otherwise decode process breaks
     public let ID: Int
+    public let name: String?
     public let blocked: Bool
-    public let reverseAlias: Bool
+    public let reverseAlias: String
     public let email: String
 
-    public init(ID: Int, blocked: Bool, reverseAlias: Bool, email: String) {
+    public init(ID: Int, name: String?, blocked: Bool, reverseAlias: String, email: String) {
         self.ID = ID
+        self.name = name
         self.blocked = blocked
         self.reverseAlias = reverseAlias
         self.email = email
