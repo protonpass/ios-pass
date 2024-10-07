@@ -60,6 +60,7 @@ struct AliasSyncConfigurationView: View {
                         ForEach(viewModel.mailboxes) { mailbox in
                             MailboxElementRow(mailBox: mailbox,
                                               isDefault: mailbox == viewModel.defaultMailbox,
+                                              showMenu: viewModel.isAdvancedAliasManagementActive,
                                               setDefault: { mailbox in
                                                   viewModel.setDefaultMailBox(mailbox: mailbox)
                                               },
@@ -81,22 +82,24 @@ struct AliasSyncConfigurationView: View {
                 HStack {
                     sectionHeader("Mailboxes")
                     Spacer()
-                    Text(#localized("+ Add"))
-                        .font(.callout)
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                        .frame(height: 40)
-                        .padding(.horizontal, 16)
-                        .background(PassColor.interactionNormMinor1.toColor)
-                        .clipShape(Capsule())
-                        .buttonEmbeded(role: nil,
-                                       action: {
-                                           viewModel.canManageAliases ? router
-                                               .present(sheet: .addEmail(.mailbox(nil))) :
-                                               viewModel.upsell()
-                                       })
+                    if viewModel.isAdvancedAliasManagementActive {
+                        Text(#localized("+ Add"))
+                            .font(.callout)
+                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                            .frame(height: 40)
+                            .padding(.horizontal, 16)
+                            .background(PassColor.interactionNormMinor1.toColor)
+                            .clipShape(Capsule())
+                            .buttonEmbeded(role: nil,
+                                           action: {
+                                               viewModel.canManageAliases ? router
+                                                   .present(sheet: .addEmail(.mailbox(nil))) :
+                                                   viewModel.upsell()
+                                           })
 
-                    if !viewModel.canManageAliases {
-                        passPlusBadge
+                        if !viewModel.canManageAliases {
+                            passPlusBadge
+                        }
                     }
                 }
             }
@@ -192,7 +195,7 @@ private extension AliasSyncConfigurationView {
                                  selected: $viewModel.defaultDomain,
                                  selections: viewModel.domains,
                                  optional: true,
-                                 shouldUpsell: !viewModel.canManageAliases)
+                                 shouldUpsell: viewModel.shouldUpsell)
         case .mailbox:
             GenericSelectionView(title: "Default mailbox for aliases",
                                  selected: $viewModel.defaultMailbox,
@@ -222,6 +225,7 @@ private extension AliasSyncConfigurationView {
 private struct MailboxElementRow: View {
     let mailBox: Mailbox
     let isDefault: Bool
+    let showMenu: Bool
     let setDefault: (Mailbox) -> Void
     let delete: (Mailbox) -> Void
     let verify: (Mailbox) -> Void
@@ -251,29 +255,31 @@ private struct MailboxElementRow: View {
 
             Spacer()
 
-            Menu(content: {
-                if !mailBox.isDefault {
-                    if mailBox.verified {
-                        Label(title: { Text("Make Default") },
-                              icon: { Image(uiImage: IconProvider.star) })
-                            .buttonEmbeded { setDefault(mailBox) }
-                    } else {
-                        Label(title: { Text("Verify") },
-                              icon: { Image(uiImage: IconProvider.star) })
-                            .buttonEmbeded { verify(mailBox) }
-                    }
+            if showMenu {
+                Menu(content: {
+                    if !mailBox.isDefault {
+                        if mailBox.verified {
+                            Label(title: { Text("Make Default") },
+                                  icon: { Image(uiImage: IconProvider.star) })
+                                .buttonEmbeded { setDefault(mailBox) }
+                        } else {
+                            Label(title: { Text("Verify") },
+                                  icon: { Image(uiImage: IconProvider.star) })
+                                .buttonEmbeded { verify(mailBox) }
+                        }
 
-                    Divider()
-                }
-                Label(title: { Text("Delete") },
-                      icon: { Image(uiImage: IconProvider.trash) })
-                    .buttonEmbeded { delete(mailBox) }
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: PassColor.textWeak,
-                             backgroundColor: .clear,
-                             accessibilityLabel: "mailbox action menu")
-            })
+                        Divider()
+                    }
+                    Label(title: { Text("Delete") },
+                          icon: { Image(uiImage: IconProvider.trash) })
+                        .buttonEmbeded { delete(mailBox) }
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: PassColor.textWeak,
+                                 backgroundColor: .clear,
+                                 accessibilityLabel: "mailbox action menu")
+                })
+            }
         }
     }
 }
