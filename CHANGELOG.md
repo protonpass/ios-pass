@@ -1,3 +1,6 @@
+# Version 1.13.1
+One-time verification codes autofill (iOS 18)
+
 # Version 1.13.0
 Features:
 - Autofill now supports all logged-in accounts
