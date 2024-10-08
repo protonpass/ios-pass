@@ -24,6 +24,7 @@ import Screens
 import SwiftUI
 
 struct ItemsForTextInsertionView: View {
+    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: ItemsForTextInsertionViewModel
     @FocusState private var isFocusedOnSearchBar
 
@@ -43,6 +44,12 @@ struct ItemsForTextInsertionView: View {
         }
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
+        .optionalSheet(binding: $viewModel.selectedItem) { selectedItem in
+            ItemDetailView(itemContent: selectedItem.item,
+                           vault: selectedItem.vault,
+                           onSelect: { viewModel.autofill($0) })
+                .environment(\.colorScheme, colorScheme)
+        }
     }
 }
 
@@ -50,10 +57,19 @@ private extension ItemsForTextInsertionView {
     var stateViews: some View {
         VStack(spacing: 0) {
             if viewModel.state != .loading {
-                SearchBar(query: $viewModel.query,
-                          isFocused: $isFocusedOnSearchBar,
-                          placeholder: viewModel.searchBarPlaceholder,
-                          onCancel: { viewModel.handleCancel() })
+                HStack(spacing: 0) {
+                    CircleButton(icon: IconProvider.cross,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Close",
+                                 action: { viewModel.handleCancel() })
+                    SearchBar(query: $viewModel.query,
+                              isFocused: $isFocusedOnSearchBar,
+                              placeholder: viewModel.searchBarPlaceholder,
+                              onCancel: { /* Not applicable */ },
+                              hideCancel: true)
+                }
+                .padding(.horizontal)
             }
             switch viewModel.state {
             case .idle:
