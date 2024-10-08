@@ -29,6 +29,7 @@ extension UserUiModel {
               plan: .init(type: .random(),
                           internalName: .random(),
                           displayName: .random(),
-                          hideUpgrade: .random()))
+                          hideUpgrade: .random(),
+                          manageAlias: false))
     }
 }

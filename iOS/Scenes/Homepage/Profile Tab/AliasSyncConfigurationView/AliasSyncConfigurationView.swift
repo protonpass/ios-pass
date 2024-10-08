@@ -22,6 +22,7 @@
 
 import DesignSystem
 import Entities
+import Factory
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -36,11 +37,14 @@ private enum AliasSyncConfigurationSheetState {
 struct AliasSyncConfigurationView: View {
     @StateObject private var viewModel = AliasSyncConfigurationViewModel()
     @Environment(\.dismiss) private var dismiss
+    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
 
     @State private var sheetState: AliasSyncConfigurationSheetState?
 
+    @State private var mailboxToDelete: Mailbox?
+
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 24) {
             Section {
                 SynchroElementRow(title: "Default domain for aliases",
                                   content: viewModel.defaultDomain?.domain,
@@ -51,12 +55,60 @@ struct AliasSyncConfigurationView: View {
             }
 
             Section {
-                SynchroElementRow(title: "Default mailbox for aliases",
-                                  content: viewModel.defaultMailbox?.email,
-                                  loaded: !viewModel.mailboxes.isEmpty,
-                                  action: { sheetState = .mailbox })
+                VStack(spacing: DesignConstant.sectionPadding) {
+                    LazyVStack {
+                        if viewModel.loading {
+                            VStack {
+                                Group {
+                                    SkeletonBlock(tintColor: PassColor.textWeak)
+                                    SkeletonBlock(tintColor: PassColor.textWeak)
+                                }
+                                .clipShape(Capsule())
+                                .shimmering(active: true)
+                            }
+                        } else {
+                            ForEach(viewModel.mailboxes) { mailbox in
+                                MailboxElementRow(mailBox: mailbox,
+                                                  isDefault: mailbox == viewModel.defaultMailbox,
+                                                  showMenu: viewModel.isAdvancedAliasManagementActive,
+                                                  setDefault: { mailbox in
+                                                      viewModel.setDefaultMailBox(mailbox: mailbox)
+                                                  },
+                                                  delete: { mailboxToDelete = $0 },
+                                                  verify: { router.present(sheet: .addEmail(.mailbox($0))) })
+                            }
+                        }
+                    }
+                    .padding(DesignConstant.sectionPadding)
+                    .roundedEditableSection()
+
+                    // swiftlint:disable:next line_length
+                    Text("Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc.")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .font(.footnote)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .padding(.bottom, DesignConstant.sectionPadding)
+                }
             } header: {
-                sectionHeader("Mailboxes")
+                HStack {
+                    sectionHeader("Mailboxes")
+                    Spacer()
+                    if viewModel.isAdvancedAliasManagementActive {
+                        CapsuleLabelButton(icon: IconProvider.plus,
+                                           title: #localized("Add"),
+                                           titleColor: PassColor.interactionNormMajor2,
+                                           backgroundColor: PassColor.interactionNormMinor1,
+                                           maxWidth: nil) {
+                            viewModel.canManageAliases ? router
+                                .present(sheet: .addEmail(.mailbox(nil))) :
+                                viewModel.upsell()
+                        }
+
+                        if !viewModel.canManageAliases {
+                            passPlusBadge
+                        }
+                    }
+                }
             }
 
             if viewModel.showSyncSection {
@@ -76,6 +128,7 @@ struct AliasSyncConfigurationView: View {
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.showSyncSection)
         .navigationTitle("Aliases")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
@@ -86,8 +139,26 @@ struct AliasSyncConfigurationView: View {
                 .presentationDetents(presentationDetents(for: state))
                 .presentationDragIndicator(.visible)
         }
+        .optionalSheet(binding: $mailboxToDelete) { mailbox in
+            MailboxDeletionView(mailbox: mailbox,
+                                otherMailboxes: viewModel.mailboxes
+                                    .filter { $0.mailboxID != mailbox.mailboxID && $0.verified
+                                    }) { mailbox, transferId in
+                viewModel.delete(mailbox: mailbox, transferMailboxId: transferId)
+            }
+            .presentationDetents([.medium])
+            .presentationDragIndicator(.hidden)
+        }
         .showSpinner(viewModel.loading)
-        .navigationStackEmbeded()
+        .sheetDestinations(sheetDestination: $router.presentedSheet)
+        .navigationStackEmbeded($router.path)
+        .onChange(of: viewModel.defaultDomain) { domain in
+            guard let domain, domain.isPremium, !viewModel.canManageAliases else {
+                return
+            }
+            viewModel.defaultDomain = nil
+            viewModel.upsell()
+        }
         .alert("Error occurred",
                isPresented: $viewModel.error.mappedToBool(),
                actions: {
@@ -108,6 +179,13 @@ struct AliasSyncConfigurationView: View {
             await viewModel.loadData()
         }
     }
+
+    var passPlusBadge: some View {
+        Image(uiImage: PassIcon.passSubscriptionUnlimited)
+            .resizable()
+            .scaledToFit()
+            .frame(height: 24)
+    }
 }
 
 private extension AliasSyncConfigurationView {
@@ -124,12 +202,14 @@ private extension AliasSyncConfigurationView {
             GenericSelectionView(title: "Default domain for aliases",
                                  selected: $viewModel.defaultDomain,
                                  selections: viewModel.domains,
-                                 optional: true)
+                                 optional: true,
+                                 shouldUpsell: viewModel.shouldUpsell)
         case .mailbox:
             GenericSelectionView(title: "Default mailbox for aliases",
                                  selected: $viewModel.defaultMailbox,
                                  selections: viewModel.mailboxes,
-                                 optional: false)
+                                 optional: false,
+                                 shouldUpsell: false)
         case .vault:
             VaultSelectionView(selectedVault: $viewModel.selectedVault,
                                vaults: viewModel.vaults)
@@ -147,6 +227,68 @@ private extension AliasSyncConfigurationView {
             OptionRowHeight.medium.value * CGFloat(viewModel.vaults.count) + 50
         }
         return [.height(customHeight), .large]
+    }
+}
+
+private struct MailboxElementRow: View {
+    let mailBox: Mailbox
+    let isDefault: Bool
+    let showMenu: Bool
+    let setDefault: (Mailbox) -> Void
+    let delete: (Mailbox) -> Void
+    let verify: (Mailbox) -> Void
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                Text(mailBox.email)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                HStack(spacing: 8) {
+                    if isDefault {
+                        Text("Default")
+                            .font(.footnote)
+                            .foregroundStyle(PassColor.interactionNormMinor1.toColor)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 4)
+                            .background(PassColor.interactionNormMajor2.toColor)
+                            .clipShape(Capsule())
+                    }
+                    Text(mailBox.verified ? "\(mailBox.aliasCount) aliases" : "Unverified mailbox")
+                        .font(.footnote)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                }
+            }
+
+            Spacer()
+
+            if showMenu {
+                Menu(content: {
+                    if !mailBox.isDefault {
+                        if mailBox.verified {
+                            Label(title: { Text("Make default") },
+                                  icon: { Image(uiImage: IconProvider.star) })
+                                .buttonEmbeded { setDefault(mailBox) }
+                        } else {
+                            Label(title: { Text("Verify") },
+                                  icon: { Image(uiImage: IconProvider.star) })
+                                .buttonEmbeded { verify(mailBox) }
+                        }
+
+                        Divider()
+                    }
+                    Label(title: { Text("Delete") },
+                          icon: { Image(uiImage: IconProvider.trash) })
+                        .buttonEmbeded { delete(mailBox) }
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: PassColor.textWeak,
+                                 backgroundColor: .clear,
+                                 accessibilityLabel: "Mailbox action menu")
+                })
+            }
+        }
     }
 }
 
@@ -209,17 +351,32 @@ private extension AliasSyncConfigurationView {
 
 private protocol TitleRepresentable {
     var title: String { get }
+    var subtitle: String? { get }
 }
 
 extension Mailbox: TitleRepresentable {
     var title: String {
         email
     }
+
+    var subtitle: String? {
+        nil
+    }
 }
 
 extension Domain: TitleRepresentable {
     var title: String {
         domain
+    }
+
+    var subtitle: String? {
+        if isCustom {
+            #localized("Your domain")
+        } else if isPremium {
+            #localized("Premium domain")
+        } else {
+            #localized("Public domain")
+        }
     }
 }
 
@@ -229,6 +386,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
     @Binding var selected: Selection?
     let selections: [Selection]
     let optional: Bool
+    let shouldUpsell: Bool
 
     var body: some View {
         NavigationStack {
@@ -236,6 +394,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
                 LazyVStack(spacing: 0) {
                     if optional {
                         row(title: #localized("Not selected"),
+                            subtitle: nil,
                             isSelected: selected == nil,
                             action: { selected = nil })
 
@@ -244,6 +403,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
 
                     ForEach(selections) { element in
                         row(title: element.title,
+                            subtitle: element.subtitle,
                             isSelected: selected == element,
                             action: { selected = element })
 
@@ -266,12 +426,19 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
         }
     }
 
-    func row(title: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
+    func row(title: String, subtitle: String?, isSelected: Bool, action: @escaping () -> Void) -> some View {
         HStack {
-            Text(title)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .leading)
+            VStack {
+                Text(title)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
+                if let subtitle {
+                    Text(subtitle)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
             Spacer()
 
             if isSelected {
@@ -280,6 +447,13 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
                     .scaledToFit()
                     .foregroundStyle(PassColor.interactionNorm.toColor)
                     .frame(maxHeight: 20)
+            }
+
+            if shouldUpsell {
+                Image(uiImage: PassIcon.passSubscriptionUnlimited)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 24)
             }
         }
         .frame(maxWidth: .infinity)
@@ -290,5 +464,92 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
             action()
             dismiss()
         }
+    }
+}
+
+private struct MailboxDeletionView: View {
+    @Environment(\.dismiss) private var dismiss
+    private let mailbox: Mailbox
+    private let otherMailboxes: [Mailbox]
+    private let delete: (Mailbox, Int?) -> Void
+    @State private var wantToTransferAliases = true
+    @State private var selectedTransferMailbox: Mailbox?
+
+    init(mailbox: Mailbox, otherMailboxes: [Mailbox], delete: @escaping (Mailbox, Int?) -> Void) {
+        self.mailbox = mailbox
+        self.otherMailboxes = otherMailboxes
+        self.delete = delete
+        _selectedTransferMailbox = .init(initialValue: otherMailboxes.first)
+    }
+
+    var body: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                Text("Delete mailbox")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .fontWeight(.semibold)
+
+                // swiftlint:disable:next line_length
+                Text("All aliases using the mailbox **\(mailbox.email)** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+
+                if !otherMailboxes.isEmpty {
+                    Toggle(isOn: $wantToTransferAliases) {
+                        Text("Transfer aliases")
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                    }
+                    .toggleStyle(SwitchToggleStyle.pass)
+
+                    Group {
+                        Divider()
+                        HStack {
+                            Text("To mailbox")
+                                .foregroundStyle(PassColor.textNorm.toColor)
+
+                            Spacer()
+
+                            Picker("Mailbox", selection: $selectedTransferMailbox) {
+                                ForEach(otherMailboxes) { mailbox in
+                                    Text(mailbox.email)
+                                        .tag(mailbox)
+                                        .fontWeight(.bold)
+                                }
+                            }
+                            .padding(4)
+                            .tint(PassColor.textNorm.toColor)
+                            .background(PassColor.interactionNormMinor1.toColor)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                        }
+                    }.hidden(!wantToTransferAliases)
+                }
+            }
+
+            Spacer()
+
+            CapsuleTextButton(title: wantToTransferAliases ? #localized("Transfer and delete mailbox") :
+                #localized("Delete mailbox"),
+                titleColor: PassColor.interactionNormMinor1,
+                backgroundColor: PassColor.signalDanger,
+                height: 48,
+                action: {
+                    if wantToTransferAliases, let transferId = selectedTransferMailbox?.mailboxID {
+                        delete(mailbox, transferId)
+                    } else {
+                        delete(mailbox, nil)
+                    }
+                    dismiss()
+                })
+
+            CapsuleTextButton(title: #localized("Cancel"),
+                              titleColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              height: 48,
+                              action: { dismiss() })
+        }
+        .animation(.default, value: wantToTransferAliases)
+        .padding(24)
+        .background(PassColor.backgroundWeak.toColor)
     }
 }

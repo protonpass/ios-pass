@@ -391,7 +391,7 @@ private extension DarkWebMonitorHomeView {
                                  backgroundColor: PassColor.interactionNormMinor1,
                                  accessibilityLabel: "Add custom email address",
                                  type: .small,
-                                 action: { router.present(sheet: .addCustomEmail(nil)) })
+                                 action: { router.present(sheet: .addEmail(.customEmail(nil))) })
                 case .error:
                     EmptyView()
                 }
@@ -434,7 +434,7 @@ private extension DarkWebMonitorHomeView {
                 Menu(content: {
                     Label(title: { Text("Verify") },
                           icon: { Image(uiImage: IconProvider.paperPlane) })
-                        .buttonEmbeded { router.present(sheet: .addCustomEmail(email)) }
+                        .buttonEmbeded { router.present(sheet: .addEmail(.customEmail(email))) }
 
                     Label(title: { Text("Remove") },
                           icon: { Image(uiImage: IconProvider.trash) })
@@ -484,7 +484,7 @@ private extension DarkWebMonitorHomeView {
                               backgroundColor: PassColor.interactionNormMinor1) {
                 Task {
                     if let customEmail = await viewModel.addCustomEmail(email: email.email) {
-                        router.present(sheet: .addCustomEmail(customEmail))
+                        router.present(sheet: .addEmail(.customEmail(customEmail)))
                         addTelemetryEvent(with: .monitorAddCustomEmailFromSuggestion)
                     }
                 }

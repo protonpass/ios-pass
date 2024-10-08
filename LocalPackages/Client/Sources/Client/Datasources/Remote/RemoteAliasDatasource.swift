@@ -40,6 +40,10 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
         -> AliasSettings
     func getAllAliasDomains(userId: String) async throws -> [Domain]
     func getAllAliasMailboxes(userId: String) async throws -> [Mailbox]
+    func createMailbox(userId: String, request: CreateMailboxRequest) async throws -> Mailbox
+    func deleteMailbox(userId: String, mailboxID: Int, request: DeleteMailboxRequest) async throws
+    func verifyMailbox(userId: String, mailboxID: Int, request: VerifyMailboxRequest) async throws -> Mailbox
+    func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
 }
 
 public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
@@ -119,5 +123,28 @@ public extension RemoteAliasDatasource {
         let endpoint = GetAllMailboxesEndpoint()
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.mailboxes
+    }
+
+    func createMailbox(userId: String, request: CreateMailboxRequest) async throws -> Mailbox {
+        let endpoint = CreateMailboxEndpoint(request: request)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.mailbox
+    }
+
+    func deleteMailbox(userId: String, mailboxID: Int, request: DeleteMailboxRequest) async throws {
+        let endpoint = DeleteMailboxEndpoint(mailboxID: "\(mailboxID)", request: request)
+        _ = try await exec(userId: userId, endpoint: endpoint)
+    }
+
+    func verifyMailbox(userId: String, mailboxID: Int, request: VerifyMailboxRequest) async throws -> Mailbox {
+        let endpoint = VerifyMailboxEndpoint(mailboxID: "\(mailboxID)", request: request)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.mailbox
+    }
+
+    func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox {
+        let endpoint = ResendMailboxVerificationEmailEndpoint(mailboxID: "\(mailboxID)")
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.mailbox
     }
 }
