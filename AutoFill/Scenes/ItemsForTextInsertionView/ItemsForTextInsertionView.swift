@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
@@ -78,14 +79,11 @@ private extension ItemsForTextInsertionView {
                             Spacer()
                         }
                     } else {
-                        List {
-                            ForEach(viewModel.items) { item in
-                                Button(action: {
-                                    viewModel.insert(item.title)
-                                }, label: {
-                                    Text(item.title)
-                                })
-                            }
+                        TableView(sections: [.init(title: "A", items: viewModel.items)],
+                                  showIndexTitles: false) { item in
+                            GenericCredentialItemRow(item: item,
+                                                     user: nil,
+                                                     selectItem: { viewModel.select($0) })
                         }
                     }
                 }

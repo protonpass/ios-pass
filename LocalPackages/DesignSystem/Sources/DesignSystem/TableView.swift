@@ -21,10 +21,97 @@
 
 import SwiftUI
 
-public struct TableView: View {
-    public init() {}
+private let kCellId = "cell"
 
-    public var body: some View {
-        Text(verbatim: "")
+public typealias HashableSendable = Hashable & Sendable
+
+public final class PassDiffableDataSource<Section: HashableSendable, Item: HashableSendable>:
+    UITableViewDiffableDataSource<Section, Item> {
+    var sectionIndexTitles: [String]?
+
+    override public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        sectionIndexTitles
+    }
+}
+
+public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresentable {
+    public struct Section {
+        let title: String
+        let items: [Item]
+
+        public init(title: String, items: [Item]) {
+            self.title = title
+            self.items = items
+        }
+    }
+
+    let sections: [Section]
+    let showIndexTitles: Bool
+    let itemCell: (Item) -> ItemCell
+
+    public init(sections: [Section],
+                showIndexTitles: Bool,
+                itemCell: @escaping (Item) -> ItemCell) {
+        self.sections = sections
+        self.showIndexTitles = showIndexTitles
+        self.itemCell = itemCell
+    }
+
+    public func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    public func makeUIView(context: Context) -> UITableView {
+        let tableView = UITableView()
+        tableView.sectionIndexColor = PassColor.interactionNorm
+        tableView.backgroundColor = .clear
+        tableView.separatorColor = .clear
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellId)
+        context.coordinator.configureDataSource(for: tableView)
+        return tableView
+    }
+
+    public func updateUIView(_ tableView: UITableView, context: Context) {
+        context.coordinator.updateTable(with: sections)
+    }
+
+    public final class Coordinator: NSObject {
+        var parent: TableView
+        var dataSource: PassDiffableDataSource<String, Item>!
+
+        init(_ parent: TableView) {
+            self.parent = parent
+        }
+
+        func configureDataSource(for tableView: UITableView) {
+            dataSource = PassDiffableDataSource<String,
+                Item>(tableView: tableView) { tableView, indexPath, item -> UITableViewCell? in
+                    let cell = tableView.dequeueReusableCell(withIdentifier: kCellId, for: indexPath)
+                    cell.backgroundColor = .clear
+                    cell.contentView.backgroundColor = .clear
+                    cell.contentConfiguration = UIHostingConfiguration {
+                        self.parent.itemCell(item)
+                    }
+                    // A combination of minSize and magins to remove the vertical padding
+                    .minSize(width: 0, height: 0)
+                    .margins(.vertical, 0)
+                    return cell
+                }
+            dataSource.defaultRowAnimation = .fade
+        }
+
+        func updateTable(with sections: [Section]) {
+            var snapshot = NSDiffableDataSourceSnapshot<String, Item>()
+            snapshot.appendSections(sections.map(\.title))
+            for section in sections {
+                snapshot.appendItems(section.items, toSection: section.title)
+            }
+            if parent.showIndexTitles {
+                dataSource.sectionIndexTitles = sections.compactMap { $0.title.first?.uppercased() }
+            } else {
+                dataSource.sectionIndexTitles = nil
+            }
+            dataSource.apply(snapshot, animatingDifferences: true)
+        }
     }
 }

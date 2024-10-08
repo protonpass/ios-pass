@@ -100,8 +100,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
 }
 
 extension ItemsForTextInsertionViewModel {
-    func insert(_ text: String) {
-        guard #available(iOS 18, *) else { return }
-        context?.completeRequest(withTextToInsert: text)
+    func select(_ item: any ItemIdentifiable) {
+        print(#function)
     }
 }
