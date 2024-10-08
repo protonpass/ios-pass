@@ -10772,16 +10772,6 @@
         }
       }
     },
-    "+ Add" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+ Add"
-          }
-        }
-      }
-    },
     "2FA limit reached" : {
       "localizations" : {
         "be" : {
@@ -12860,6 +12850,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thêm mã bảo mật 2FA"
+          }
+        }
+      }
+    },
+    "Add a custom section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a custom section"
           }
         }
       }
@@ -19447,6 +19447,7 @@
       }
     },
     "All aliases using the mailbox **%@** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:" : {
+      "comment" : "Placeholder is the email address of the mailbox",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -67053,12 +67054,13 @@
         }
       }
     },
-    "mailbox action menu" : {
+    "Mailbox action menu" : {
+      "comment" : "Accessibility label for mailbox action button",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "mailbox action menu"
+            "value" : "Mailbox action menu"
           }
         }
       }
@@ -67221,12 +67223,12 @@
         }
       }
     },
-    "Make Default" : {
+    "Make default" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Make Default"
+            "value" : "Make default"
           }
         }
       }
@@ -111063,6 +111065,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Để tương tác với các kho lưu trữ khác, bạn cần phải nâng cấp tài khoản của mình."
+          }
+        }
+      }
+    },
+    "To mailbox" : {
+      "comment" : "Title next to picker to choose mailbox to transfer alias ",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To mailbox"
           }
         }
       }

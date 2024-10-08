@@ -56,16 +56,27 @@ struct AliasSyncConfigurationView: View {
 
             Section {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    VStack {
-                        ForEach(viewModel.mailboxes) { mailbox in
-                            MailboxElementRow(mailBox: mailbox,
-                                              isDefault: mailbox == viewModel.defaultMailbox,
-                                              showMenu: viewModel.isAdvancedAliasManagementActive,
-                                              setDefault: { mailbox in
-                                                  viewModel.setDefaultMailBox(mailbox: mailbox)
-                                              },
-                                              delete: { mailboxToDelete = $0 },
-                                              verify: { router.present(sheet: .addEmail(.mailbox($0))) })
+                    LazyVStack {
+                        if viewModel.loading {
+                            VStack {
+                                Group {
+                                    SkeletonBlock(tintColor: PassColor.textWeak)
+                                    SkeletonBlock(tintColor: PassColor.textWeak)
+                                }
+                                .clipShape(Capsule())
+                                .shimmering(active: true)
+                            }
+                        } else {
+                            ForEach(viewModel.mailboxes) { mailbox in
+                                MailboxElementRow(mailBox: mailbox,
+                                                  isDefault: mailbox == viewModel.defaultMailbox,
+                                                  showMenu: viewModel.isAdvancedAliasManagementActive,
+                                                  setDefault: { mailbox in
+                                                      viewModel.setDefaultMailBox(mailbox: mailbox)
+                                                  },
+                                                  delete: { mailboxToDelete = $0 },
+                                                  verify: { router.present(sheet: .addEmail(.mailbox($0))) })
+                            }
                         }
                     }
                     .padding(DesignConstant.sectionPadding)
@@ -83,19 +94,15 @@ struct AliasSyncConfigurationView: View {
                     sectionHeader("Mailboxes")
                     Spacer()
                     if viewModel.isAdvancedAliasManagementActive {
-                        Text(#localized("+ Add"))
-                            .font(.callout)
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                            .frame(height: 40)
-                            .padding(.horizontal, 16)
-                            .background(PassColor.interactionNormMinor1.toColor)
-                            .clipShape(Capsule())
-                            .buttonEmbeded(role: nil,
-                                           action: {
-                                               viewModel.canManageAliases ? router
-                                                   .present(sheet: .addEmail(.mailbox(nil))) :
-                                                   viewModel.upsell()
-                                           })
+                        CapsuleLabelButton(icon: IconProvider.plus,
+                                           title: #localized("Add"),
+                                           titleColor: PassColor.interactionNormMajor2,
+                                           backgroundColor: PassColor.interactionNormMinor1,
+                                           maxWidth: nil) {
+                            viewModel.canManageAliases ? router
+                                .present(sheet: .addEmail(.mailbox(nil))) :
+                                viewModel.upsell()
+                        }
 
                         if !viewModel.canManageAliases {
                             passPlusBadge
@@ -121,6 +128,7 @@ struct AliasSyncConfigurationView: View {
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.showSyncSection)
         .navigationTitle("Aliases")
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
@@ -239,7 +247,7 @@ private struct MailboxElementRow: View {
 
                 HStack(spacing: 8) {
                     if isDefault {
-                        Text(#localized("Default"))
+                        Text("Default")
                             .font(.footnote)
                             .foregroundStyle(PassColor.interactionNormMinor1.toColor)
                             .padding(.horizontal, 10)
@@ -259,7 +267,7 @@ private struct MailboxElementRow: View {
                 Menu(content: {
                     if !mailBox.isDefault {
                         if mailBox.verified {
-                            Label(title: { Text("Make Default") },
+                            Label(title: { Text("Make default") },
                                   icon: { Image(uiImage: IconProvider.star) })
                                 .buttonEmbeded { setDefault(mailBox) }
                         } else {
@@ -277,7 +285,7 @@ private struct MailboxElementRow: View {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.textWeak,
                                  backgroundColor: .clear,
-                                 accessibilityLabel: "mailbox action menu")
+                                 accessibilityLabel: "Mailbox action menu")
                 })
             }
         }
@@ -497,7 +505,7 @@ private struct MailboxDeletionView: View {
                     Group {
                         Divider()
                         HStack {
-                            Text("Mailbox")
+                            Text("To mailbox")
                                 .foregroundStyle(PassColor.textNorm.toColor)
 
                             Spacer()
@@ -540,6 +548,8 @@ private struct MailboxDeletionView: View {
                               height: 48,
                               action: { dismiss() })
         }
+        .animation(.default, value: wantToTransferAliases)
         .padding(24)
+        .background(PassColor.backgroundWeak.toColor)
     }
 }
