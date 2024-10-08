@@ -930,6 +930,28 @@
         }
       }
     },
+    "%lld aliases" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliases"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld aliases disabled" : {
       "localizations" : {
         "be" : {
@@ -12832,6 +12854,16 @@
         }
       }
     },
+    "Add a custom section" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add a custom section"
+          }
+        }
+      }
+    },
     "Add a prefix" : {
       "localizations" : {
         "be" : {
@@ -13764,6 +13796,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thêm thông tin đăng nhập cho một ừng dụng hoặc một trang web"
+          }
+        }
+      }
+    },
+    "Add mailbox" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add mailbox"
           }
         }
       }
@@ -14879,6 +14921,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chương trình bảo vệ tài khoản nâng cao"
+          }
+        }
+      }
+    },
+    "Advanced alias management" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced alias management"
+          }
+        }
+      }
+    },
+    "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access."
           }
         }
       }
@@ -18118,6 +18180,16 @@
         }
       }
     },
+    "Alias management" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias management"
+          }
+        }
+      }
+    },
     "Alias of login item \"%@\"" : {
       "localizations" : {
         "be" : {
@@ -19370,6 +19442,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tất cả"
+          }
+        }
+      }
+    },
+    "All aliases using the mailbox **%@** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:" : {
+      "comment" : "Placeholder is the email address of the mailbox",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All aliases using the mailbox **%@** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:"
           }
         }
       }
@@ -38227,6 +38310,16 @@
         }
       }
     },
+    "Default" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default"
+          }
+        }
+      }
+    },
     "Default browser" : {
       "comment" : "Settings page",
       "localizations" : {
@@ -38982,6 +39075,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa tài khoản"
+          }
+        }
+      }
+    },
+    "Delete mailbox" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete mailbox"
           }
         }
       }
@@ -53057,6 +53160,16 @@
         }
       }
     },
+    "Get Pass Unlimited" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Pass Unlimited"
+          }
+        }
+      }
+    },
     "Go back" : {
       "comment" : "accessibility",
       "localizations" : {
@@ -66931,6 +67044,37 @@
         }
       }
     },
+    "Mailbox" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox"
+          }
+        }
+      }
+    },
+    "Mailbox action menu" : {
+      "comment" : "Accessibility label for mailbox action button",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox action menu"
+          }
+        }
+      }
+    },
+    "Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc."
+          }
+        }
+      }
+    },
     "Mailboxes" : {
       "localizations" : {
         "be" : {
@@ -67075,6 +67219,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поштові скриньки"
+          }
+        }
+      }
+    },
+    "Make default" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make default"
           }
         }
       }
@@ -67555,6 +67709,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quản lý gói đăng ký"
+          }
+        }
+      }
+    },
+    "Manage your aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manage your aliases"
           }
         }
       }
@@ -84604,6 +84768,16 @@
         }
       }
     },
+    "Premium domain" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium domain"
+          }
+        }
+      }
+    },
     "Preparing..." : {
       "localizations" : {
         "be" : {
@@ -86200,6 +86374,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel"
+          }
+        }
+      }
+    },
+    "Public domain" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public domain"
           }
         }
       }
@@ -110885,6 +111069,17 @@
         }
       }
     },
+    "To mailbox" : {
+      "comment" : "Title next to picker to choose mailbox to transfer alias ",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To mailbox"
+          }
+        }
+      }
+    },
     "Today" : {
       "localizations" : {
         "be" : {
@@ -111537,6 +111732,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã kích hoạt Touch ID"
+          }
+        }
+      }
+    },
+    "Transfer aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer aliases"
+          }
+        }
+      }
+    },
+    "Transfer and delete mailbox" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer and delete mailbox"
           }
         }
       }
@@ -115382,6 +115597,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các tùy chọn cho mục địa chỉ email chưa được xác minh"
+          }
+        }
+      }
+    },
+    "Unverified mailbox" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified mailbox"
           }
         }
       }
@@ -129521,6 +129746,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Phiên bản ứng dụng này hiện không còn được hỗ trợ. Vui lòng nâng cấp đến phiên bản mới nhất."
+          }
+        }
+      }
+    },
+    "Your domain" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your domain"
           }
         }
       }

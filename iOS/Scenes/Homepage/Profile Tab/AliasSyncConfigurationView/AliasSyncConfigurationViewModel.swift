@@ -23,6 +23,7 @@
 import Client
 import Combine
 import Core
+import DesignSystem
 import Entities
 import Factory
 import Macro
@@ -43,6 +44,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     @Published private(set) var mailboxes: [Mailbox] = []
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
     @Published private(set) var pendingSyncDisabledAliases = 0
+    private(set) var plan: Plan?
 
     @Published private(set) var loading = false
     @Published private(set) var showSyncSection = false
@@ -55,15 +57,30 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private var selectedVaultTask: Task<Void, Never>?
     private var selectedDomainTask: Task<Void, Never>?
     private var selectedMailboxTask: Task<Void, Never>?
     private var aliasSettings: AliasSettings?
 
+    var isAdvancedAliasManagementActive: Bool {
+        getFeatureFlagStatus(with: FeatureFlagType.passAdvancedAliasManagementV1)
+    }
+
     private var cancellables = Set<AnyCancellable>()
 
+    var canManageAliases: Bool {
+        plan?.manageAlias ?? false
+    }
+
+    var shouldUpsell: Bool {
+        !canManageAliases && isAdvancedAliasManagementActive
+    }
+
     init() {
+        let access = accessRepository.access.value?.access
+        plan = access?.plan
         setUp()
     }
 
@@ -97,7 +114,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
             let result = try await (fetchDomains, fetchedMailboxes)
 
             domains = result.0
-            mailboxes = result.1.filter(\.verified)
+            mailboxes = result.1
             defaultDomain = domains.first { $0.id == aliasSettings?.defaultAliasDomain }
             defaultMailbox = mailboxes.first { $0.id == aliasSettings?.defaultMailboxID } ?? mailboxes.first
         } catch {
@@ -110,6 +127,49 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 
     func showSimpleLoginAliasesActivation() {
         router.present(for: .simpleLoginSyncActivation)
+    }
+
+    func setDefaultMailBox(mailbox: Mailbox) {
+        guard !mailboxes.isEmpty,
+              aliasSettings?.defaultMailboxID != mailbox.mailboxID else {
+            return
+        }
+        selectedMailboxTask?.cancel()
+        selectedMailboxTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await updateDefaultMailbox(mailbox: mailbox)
+        }
+    }
+
+    func upsell() {
+        let config = UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                title: #localized("Manage your aliases"),
+                                                description: UpsellEntry.aliasManagement.description,
+                                                upsellElements: UpsellEntry.aliasManagement.upsellElements,
+                                                ctaTitle: #localized("Get Pass Unlimited"))
+        router
+            .present(for: .upselling(config))
+    }
+
+    func delete(mailbox: Mailbox, transferMailboxId: Int?) {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer { loading = false }
+
+            do {
+                loading = true
+                let userId = try await userManager.getActiveUserId()
+                try await aliasRepository.deleteMailbox(userId: userId,
+                                                        mailboxID: mailbox.mailboxID,
+                                                        transferMailboxID: transferMailboxId)
+            } catch {
+                handle(error: error)
+            }
+        }
     }
 }
 
@@ -156,22 +216,19 @@ private extension AliasSyncConfigurationViewModel {
             }
             .store(in: &cancellables)
 
-        $defaultMailbox
+        aliasRepository.mailboxUpdated
             .receive(on: DispatchQueue.main)
-            .compactMap { $0 }
-            .removeDuplicates()
-            .sink { [weak self] mailbox in
-                guard let self,
-                      !mailboxes.isEmpty,
-                      aliasSettings?.defaultMailboxID != mailbox.mailboxID else {
-                    return
-                }
-                selectedMailboxTask?.cancel()
-                selectedMailboxTask = Task { [weak self] in
+            .sink { [weak self] in
+                Task { [weak self] in
                     guard let self else {
                         return
                     }
-                    await updateMailbox()
+                    do {
+                        let userId = try await userManager.getActiveUserId()
+                        mailboxes = try await aliasRepository.getAllAliasMailboxes(userId: userId)
+                    } catch {
+                        handle(error: error)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -203,17 +260,15 @@ private extension AliasSyncConfigurationViewModel {
         }
     }
 
-    func updateMailbox() async {
-        guard let defaultMailbox else {
-            return
-        }
+    func updateDefaultMailbox(mailbox: Mailbox) async {
         defer { loading = false }
         do {
             loading = true
             let userId = try await userManager.getActiveUserId()
-            let request = UpdateAliasMailboxRequest(defaultMailboxID: defaultMailbox.mailboxID)
+            let request = UpdateAliasMailboxRequest(defaultMailboxID: mailbox.mailboxID)
             aliasSettings = try await aliasRepository.updateAliasDefaultMailbox(userId: userId,
                                                                                 request: request)
+            defaultMailbox = mailbox
         } catch {
             handle(error: error)
         }
