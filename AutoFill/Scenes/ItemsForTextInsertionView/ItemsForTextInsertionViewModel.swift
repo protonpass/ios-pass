@@ -46,13 +46,22 @@ enum ItemsForTextInsertionViewState: Equatable {
     }
 }
 
+struct SelectedItem {
+    let item: ItemContent
+    let vault: Vault?
+}
+
 @MainActor
 final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsertion> {
     @Published private(set) var state = CredentialsViewState.loading
     @Published var query = ""
+    @Published var selectedItem: SelectedItem?
 
     @LazyInjected(\AutoFillUseCaseContainer.fetchItemsForTextInsertion)
     private var fetchItemsForTextInsertion
+
+    @LazyInjected(\SharedRepositoryContainer.itemRepository)
+    private var itemRepository
 
     private var searchableItems: [SearchableItem] {
         if let selectedUser {
@@ -68,6 +77,14 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         } else {
             getAllObjects(\.items)
         }
+    }
+
+    var itemCount: ItemCount {
+        .init(items: items)
+    }
+
+    private var vaults: [Vault] {
+        results.flatMap(\.vaults)
     }
 
     override func getVaults(userId: String) -> [Vault]? {
@@ -101,6 +118,22 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
 
 extension ItemsForTextInsertionViewModel {
     func select(_ item: any ItemIdentifiable) {
-        print(#function)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                             itemId: item.itemId) {
+                    selectedItem = .init(item: itemContent,
+                                         vault: vaults.first(where: { $0.shareId == item.shareId }))
+                }
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func autofill(_ text: String) {
+        guard #available(iOS 18, *) else { return }
+        context?.completeRequest(withTextToInsert: text)
     }
 }
