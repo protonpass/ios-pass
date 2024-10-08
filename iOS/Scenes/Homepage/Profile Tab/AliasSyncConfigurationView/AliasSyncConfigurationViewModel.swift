@@ -139,21 +139,18 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
-            await updateMailbox(mailbox: mailbox)
+            await updateDefaultMailbox(mailbox: mailbox)
         }
     }
 
     func upsell() {
+        let config = UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                title: #localized("Manage your aliases"),
+                                                description: UpsellEntry.aliasManagement.description,
+                                                upsellElements: UpsellEntry.aliasManagement.upsellElements,
+                                                ctaTitle: #localized("Get Pass Unlimited"))
         router
-            .present(for: .upselling(UpsellingViewConfiguration(icon: PassIcon.passPlus,
-                                                                title: #localized("Manage your aliases"),
-                                                                description: UpsellEntry
-                                                                    .aliasManagement
-                                                                    .description,
-                                                                upsellElements: UpsellEntry
-                                                                    .aliasManagement
-                                                                    .upsellElements,
-                                                                ctaTitle: #localized("Get Pass Unlimited"))))
+            .present(for: .upselling(config))
     }
 
     func delete(mailbox: Mailbox, transferMailboxId: Int?) {
@@ -169,7 +166,6 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
                 try await aliasRepository.deleteMailbox(userId: userId,
                                                         mailboxID: mailbox.mailboxID,
                                                         transferMailboxID: transferMailboxId)
-//                mailboxes = mailboxes.filter { $0.mailboxID != mailbox.mailboxID }
             } catch {
                 handle(error: error)
             }
@@ -264,7 +260,7 @@ private extension AliasSyncConfigurationViewModel {
         }
     }
 
-    func updateMailbox(mailbox: Mailbox) async {
+    func updateDefaultMailbox(mailbox: Mailbox) async {
         defer { loading = false }
         do {
             loading = true
