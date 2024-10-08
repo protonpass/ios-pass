@@ -81,10 +81,10 @@ extension Int64 {
 
 struct ItemDetailHistorySection: View {
     private let item: ItemContent
-    let action: () -> Void
+    let action: (() -> Void)?
 
     init(itemContent: ItemContent,
-         action: @escaping () -> Void) {
+         action: (() -> Void)?) {
         item = itemContent
         self.action = action
     }
@@ -99,11 +99,13 @@ struct ItemDetailHistorySection: View {
 
             infoRow(title: "Created", infos: item.creationDate, icon: IconProvider.bolt)
 
-            CapsuleTextButton(title: #localized("View item history"),
-                              titleColor: item.contentData.type.normMajor2Color,
-                              backgroundColor: item.contentData.type.normMinor1Color,
-                              action: action)
-                .padding(.horizontal, DesignConstant.sectionPadding)
+            if let action {
+                CapsuleTextButton(title: #localized("View item history"),
+                                  titleColor: item.contentData.type.normMajor2Color,
+                                  backgroundColor: item.contentData.type.normMinor1Color,
+                                  action: action)
+                    .padding(.horizontal, DesignConstant.sectionPadding)
+            }
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
