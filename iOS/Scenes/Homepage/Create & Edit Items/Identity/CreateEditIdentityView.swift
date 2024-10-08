@@ -157,7 +157,7 @@ private extension CreateEditIdentityView {
 
             if viewModel.canAddMoreCustomFields {
                 CapsuleLabelButton(icon: IconProvider.plus,
-                                   title: "Add a custom section",
+                                   title: #localized("Add a custom section"),
                                    titleColor: viewModel.itemContentType().normMajor2Color,
                                    backgroundColor: viewModel.itemContentType().normMinor1Color,
                                    height: 55) {
@@ -220,7 +220,7 @@ private extension CreateEditIdentityView {
 
     func addMoreButton(_ action: @escaping () -> Void) -> some View {
         CapsuleLabelButton(icon: IconProvider.plus,
-                           title: "Add more",
+                           title: #localized("Add more"),
                            titleColor: viewModel.itemContentType().normMajor2Color,
                            backgroundColor: viewModel.itemContentType().normMinor1Color,
                            fontWeight: .medium,
