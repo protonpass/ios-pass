@@ -101,9 +101,11 @@ private extension OneTimeCodeIdentity {
     @available(iOS 18.0, *)
     func toASOneTimeCodeCredentialIdentity() throws -> ASOneTimeCodeCredentialIdentity {
         let identifier = ASCredentialServiceIdentifier(identifier: url, type: .URL)
-        return try .init(serviceIdentifier: identifier,
-                         label: username,
-                         recordIdentifier: ids.serializeBase64())
+        let identity = try ASOneTimeCodeCredentialIdentity(serviceIdentifier: identifier,
+                                                           label: username,
+                                                           recordIdentifier: ids.serializeBase64())
+        identity.rank = Int(lastUseTime)
+        return identity
     }
 }
 
