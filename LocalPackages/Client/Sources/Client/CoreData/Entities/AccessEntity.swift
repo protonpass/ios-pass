@@ -53,6 +53,7 @@ extension AccessEntity {
     @NSManaged var defaultShareID: String?
     @NSManaged var aliasSyncEnabled: Bool
     @NSManaged var pendingAliasToSync: Int64
+    @NSManaged var manageAlias: Bool
 }
 
 extension AccessEntity {
@@ -61,6 +62,7 @@ extension AccessEntity {
                         internalName: internalName,
                         displayName: displayName,
                         hideUpgrade: hideUpgrade,
+                        manageAlias: manageAlias,
                         trialEnd: trialEnd == -1 ? nil : Int(trialEnd),
                         vaultLimit: vaultLimit == -1 ? nil : Int(vaultLimit),
                         aliasLimit: aliasLimit == -1 ? nil : Int(aliasLimit),
@@ -92,6 +94,7 @@ extension AccessEntity {
         totpLimit = Int64(plan.totpLimit ?? -1)
         trialEnd = Int64(plan.trialEnd ?? -1)
         vaultLimit = Int64(plan.vaultLimit ?? -1)
+        manageAlias = plan.manageAlias
         monitorProtonAddress = monitor.protonAddress
         monitorAliases = monitor.aliases
         pendingInvites = Int64(access.pendingInvites)

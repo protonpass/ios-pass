@@ -1,6 +1,6 @@
 //
-// UpsellEntry.swift
-// Proton Pass - Created on 17/06/2024.
+// ResendMailboxVerificationEmailEndpoint.swift
+// Proton Pass - Created on 27/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,14 +18,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
+import ProtonCoreNetworking
 
-public enum UpsellEntry {
-    case generic
-    case missing2fa
-    case sentinel
-    case darkWebMonitorNoBreach
-    case darkWebMonitorBreach
-    case secureLink
-    case aliasManagement
+struct ResendMailboxVerificationEmailEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetMailboxResponse
+
+    var debugDescription: String
+    var path: String
+
+    init(mailboxID: String) {
+        debugDescription = "Resend alias mailbox verification email"
+        path = "/pass/v1/user/alias/mailbox/\(mailboxID)/verify"
+    }
 }
