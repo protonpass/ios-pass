@@ -194,7 +194,8 @@ extension AutoFillViewModel {
     }
 
     /// When getting user for UI display, we only return user when logged in with multiple accounts
-    /// and no particular account is selected. This way we only display the user next to the item title when in "all accounts" view mode.
+    /// and no particular account is selected. This way we only display the user next to the item title when in
+    /// "all accounts" view mode.
     /// Otherwise, always return a user for making API requests base on `userID`
     func getUser(for item: any ItemIdentifiable, forUiDisplay: Bool) -> UserUiModel? {
         if forUiDisplay, users.count > 1, selectedUser == nil { return nil }
