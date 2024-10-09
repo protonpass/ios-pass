@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "?"
+          }
+        }
+      }
+    },
     "\"%1$@\" is copied to clipboard. Expiring in %2$lld seconds." : {
       "comment" : "First placeholder is the 6-digit code. The 2nd one is the number of second remaining.",
       "localizations" : {
@@ -2944,6 +2954,26 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "%lld forwarded, %lld replies, %lld blocked in the last 14 days." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld forwarded, %2$lld replies, %3$lld blocked in the last 14 days."
+          }
+        }
+      }
+    },
+    "%lld forwards • %lld replies • %lld blocks" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld forwards • %2$lld replies • %3$lld blocks"
           }
         }
       }
@@ -7132,6 +7162,28 @@
         }
       }
     },
+    "%lld months" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld month"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld months"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld other logins use this password" : {
       "localizations" : {
         "be" : {
@@ -10772,6 +10824,28 @@
         }
       }
     },
+    "%lld years" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld year"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "new",
+                  "value" : "%lld years"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "2FA limit reached" : {
       "localizations" : {
         "be" : {
@@ -12530,6 +12604,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bật"
+          }
+        }
+      }
+    },
+    "Activity in last two weeks" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activity in last two weeks"
           }
         }
       }
@@ -17572,6 +17656,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bí danh không thể bắt đầu bằng dấu chấm"
+          }
+        }
+      }
+    },
+    "Alias contacts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias contacts"
           }
         }
       }
@@ -23855,6 +23949,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ngày sinh"
+          }
+        }
+      }
+    },
+    "Block contact" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Block contact"
+          }
+        }
+      }
+    },
+    "Blocked" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blocked"
           }
         }
       }
@@ -30662,6 +30776,26 @@
         }
       }
     },
+    "Contact copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact copied"
+          }
+        }
+      }
+    },
+    "Contact created %@ ago." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact created %@ ago."
+          }
+        }
+      }
+    },
     "Contact details" : {
       "localizations" : {
         "be" : {
@@ -30818,6 +30952,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thông tin liên lạc"
+          }
+        }
+      }
+    },
+    "Contacts" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacts"
           }
         }
       }
@@ -31458,6 +31602,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sao chép mã 2FA"
+          }
+        }
+      }
+    },
+    "Copy address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy address"
           }
         }
       }
@@ -34962,6 +35116,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tạo một danh tính"
+          }
+        }
+      }
+    },
+    "Create contact" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create contact"
           }
         }
       }
@@ -45674,6 +45838,16 @@
         }
       }
     },
+    "Enter name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter name"
+          }
+        }
+      }
+    },
     "Enter new name for « %@ »" : {
       "comment" : "Message shown when editing custom field's title. Placeholder is the old title.",
       "localizations" : {
@@ -45991,6 +46165,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chọn một mã PIN"
+          }
+        }
+      }
+    },
+    "Enter the address you want to email." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter the address you want to email."
           }
         }
       }
@@ -50955,6 +51139,16 @@
         }
       }
     },
+    "Forwarding addresses" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forwarding addresses"
+          }
+        }
+      }
+    },
     "Forwarding to" : {
       "localizations" : {
         "be" : {
@@ -53968,6 +54162,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trung tâm trợ giúp"
+          }
+        }
+      }
+    },
+    "Here’s how it works:" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Here’s how it works:"
           }
         }
       }
@@ -70842,6 +71046,16 @@
         }
       }
     },
+    "Name for contact detail" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name for contact detail"
+          }
+        }
+      }
+    },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
       "localizations" : {
@@ -71633,6 +71847,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tiếp theo"
+          }
+        }
+      }
+    },
+    "No activity in the last 14 days." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No activity in the last 14 days."
           }
         }
       }
@@ -73649,6 +73873,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ghi chú"
+          }
+        }
+      }
+    },
+    "Note • SimpleLogin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note • SimpleLogin"
           }
         }
       }
@@ -97859,6 +98093,16 @@
         }
       }
     },
+    "Send email" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send email"
+          }
+        }
+      }
+    },
     "Send logs" : {
       "localizations" : {
         "be" : {
@@ -98015,6 +98259,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gửi nhật ký"
+          }
+        }
+      }
+    },
+    "Sender name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sender name"
           }
         }
       }
@@ -111069,6 +111323,16 @@
         }
       }
     },
+    "To keep your personal email address hidden, you can create an alias contact that masks your address." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To keep your personal email address hidden, you can create an alias contact that masks your address."
+          }
+        }
+      }
+    },
     "To mailbox" : {
       "comment" : "Title next to picker to choose mailbox to transfer alias ",
       "localizations" : {
@@ -113516,6 +113780,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nhập lại mã PIN của bạn để xác nhận"
+          }
+        }
+      }
+    },
+    "Unblock contact" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unblock contact"
           }
         }
       }
@@ -124662,6 +124936,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Khi di chuyển nội dung giữa các kho lưu trữ, chúng tôi chỉ giữ lại 50 phiên bản gần nhất của từng nội dung."
+          }
+        }
+      }
+    },
+    "When sending an email from this alias, the email will have '%@ <%@>' as sender." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "When sending an email from this alias, the email will have '%1$@ <%2$@>' as sender."
           }
         }
       }

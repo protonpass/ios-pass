@@ -35,6 +35,7 @@ public protocol AliasRepositoryProtocol: Sendable {
 
     func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws
+    func updateSlAliasName(userId: String, shareId: String, itemId: String, name: String?) async throws
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
@@ -69,7 +70,7 @@ public protocol AliasRepositoryProtocol: Sendable {
                        shareId: String,
                        itemId: String,
                        contactId: String,
-                       blocked: Bool) async throws -> AliasContact
+                       blocked: Bool) async throws -> LightAliasContact
 
     func deleteContact(userId: String,
                        shareId: String,
@@ -127,6 +128,14 @@ public extension AliasRepository {
 
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws {
         try await remoteDatasource.enableSlAliasSync(userId: userId, defaultShareID: defaultShareID)
+    }
+
+    func updateSlAliasName(userId: String, shareId: String, itemId: String, name: String?) async throws {
+        let request = UpdateAliasSlNameRequest(name: name)
+        try await remoteDatasource.updateSlAliasName(userId: userId,
+                                                     shareId: shareId,
+                                                     itemId: itemId,
+                                                     request: request)
     }
 
     func getPendingAliasesToSync(userId: String,
@@ -234,7 +243,7 @@ public extension AliasRepository {
                        shareId: String,
                        itemId: String,
                        contactId: String,
-                       blocked: Bool) async throws -> AliasContact {
+                       blocked: Bool) async throws -> LightAliasContact {
         let request = UpdateContactRequest(blocked: blocked)
         let contact = try await remoteDatasource.updateAliasContact(userId: userId,
                                                                     shareId: shareId,
@@ -249,7 +258,9 @@ public extension AliasRepository {
                        shareId: String,
                        itemId: String,
                        contactId: String) async throws {
-        try await remoteDatasource.deleteContact(userId: userId, shareId: shareId, itemId: itemId,
+        try await remoteDatasource.deleteContact(userId: userId,
+                                                 shareId: shareId,
+                                                 itemId: itemId,
                                                  contactId: contactId)
     }
 }

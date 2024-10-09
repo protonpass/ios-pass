@@ -30,9 +30,7 @@ struct SettingsView: View {
 
     var body: some View {
         realBody
-            .if(viewModel.isShownAsSheet) { view in
-                view.navigationStackEmbeded()
-            }
+            .navigationStackEmbeded()
     }
 }
 
