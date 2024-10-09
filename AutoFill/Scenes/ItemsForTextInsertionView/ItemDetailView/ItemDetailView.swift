@@ -57,7 +57,7 @@ struct ItemDetailView: View {
             case .creditCard:
                 CreditCardDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
             case .identity:
-                IdentityDetailView(itemContent: itemContent, onSelect: onSelect)
+                IdentityDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
             case .login:
                 LoginDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
             case .note:
