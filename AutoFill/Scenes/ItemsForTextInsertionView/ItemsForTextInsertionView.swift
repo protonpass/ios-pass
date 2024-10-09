@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -96,12 +98,7 @@ private extension ItemsForTextInsertionView {
                             Spacer()
                         }
                     } else {
-                        TableView(sections: [.init(title: "A", items: viewModel.items)],
-                                  showIndexTitles: false) { item in
-                            GenericCredentialItemRow(item: item,
-                                                     user: nil,
-                                                     selectItem: { viewModel.select($0) })
-                        }
+                        itemList
                     }
                 }
             case .searching:
@@ -121,5 +118,36 @@ private extension ItemsForTextInsertionView {
         .animation(.default, value: viewModel.state)
         .animation(.default, value: viewModel.selectedUser)
         .animation(.default, value: viewModel.results)
+    }
+}
+
+private extension ItemsForTextInsertionView {
+    @ViewBuilder
+    var itemList: some View {
+        let sections: [TableView<ItemUiModel, GenericCredentialItemRow>.Section] = {
+            switch viewModel.selectedSortType {
+            case .mostRecent:
+                let results = viewModel.items.mostRecentSortResult()
+                return [
+                    .init(title: #localized("Today"), items: results.today),
+                    .init(title: #localized("Yesterday"), items: results.yesterday),
+                    .init(title: #localized("Last week"), items: results.last7Days),
+                    .init(title: #localized("Last two weeks"), items: results.last14Days),
+                    .init(title: #localized("Last 30 days"), items: results.last30Days),
+                    .init(title: #localized("Last 60 days"), items: results.last60Days),
+                    .init(title: #localized("Last 90 days"), items: results.last90Days),
+                    .init(title: #localized("More than 90 days"), items: results.others)
+                ]
+            default:
+                return []
+            }
+        }()
+        TableView(sections: sections,
+                  showIndexTitles: viewModel.selectedSortType.isAlphabetical) { item in
+            GenericCredentialItemRow(item: item,
+                                     user: nil,
+                                     selectItem: { viewModel.select($0) })
+        }
+        .padding(.top)
     }
 }

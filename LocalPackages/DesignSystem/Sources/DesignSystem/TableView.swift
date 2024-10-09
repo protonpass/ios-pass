@@ -27,10 +27,20 @@ public typealias HashableSendable = Hashable & Sendable
 
 public final class PassDiffableDataSource<Section: HashableSendable, Item: HashableSendable>:
     UITableViewDiffableDataSource<Section, Item> {
-    var sectionIndexTitles: [String]?
+    var sectionTitles: [String]?
+    var showIndexTitles = false
 
     override public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        sectionIndexTitles
+        if showIndexTitles {
+            sectionTitles?.compactMap { $0.first?.uppercased() }
+        } else {
+            nil
+        }
+    }
+
+    override public func tableView(_ tableView: UITableView,
+                                   titleForHeaderInSection section: Int) -> String? {
+        sectionTitles?[safeIndex: section]
     }
 }
 
@@ -106,11 +116,8 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
             for section in sections {
                 snapshot.appendItems(section.items, toSection: section.title)
             }
-            if parent.showIndexTitles {
-                dataSource.sectionIndexTitles = sections.compactMap { $0.title.first?.uppercased() }
-            } else {
-                dataSource.sectionIndexTitles = nil
-            }
+            dataSource.sectionTitles = sections.map(\.title)
+            dataSource.showIndexTitles = parent.showIndexTitles
             dataSource.apply(snapshot, animatingDifferences: true)
         }
     }
