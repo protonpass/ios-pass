@@ -38,10 +38,12 @@ struct ItemDetailView: View {
                         .font(.title.bold())
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                        .padding(.bottom, DesignConstant.sectionPadding)
                 } else {
                     ItemDetailTitleView(itemContent: itemContent,
                                         vault: vault,
                                         shouldShowVault: true)
+                        .padding(.bottom, 40)
                 }
             }
             .onTapGesture {
