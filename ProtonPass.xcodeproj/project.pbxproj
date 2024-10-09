@@ -28,6 +28,7 @@
 		352352B72B91DEC900603B91 /* ItemSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352352B52B91DEB400603B91 /* ItemSearchResultView.swift */; };
 		3524A4592CB67F78001EC572 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3524A4582CB67F78001EC572 /* BaseItemDetailViewModel.swift */; };
 		3524A45A2CB68B7F001EC572 /* TOTPRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C0D1C62B20B567005D48A6 /* TOTPRow.swift */; };
+		3524A45B2CB69E6A001EC572 /* CustomFieldSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35703F272A279B950088C287 /* CustomFieldSections.swift */; };
 		35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4F2927B55D002F5B84 /* FullScreenView.swift */; };
 		352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */; };
 		352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BC28E2DCB5000630E2 /* CredentialsView.swift */; };
@@ -2998,6 +2999,7 @@
 				350134FD2C9C505B008D803A /* AutoFillCredentials.swift in Sources */,
 				35951DCE2B8CCC48006616BE /* GenerateAuthorizationCredential.swift in Sources */,
 				35AC9A6E2A0C34A200FBCEEC /* CustomFieldEditionCoordinator.swift in Sources */,
+				3524A45B2CB69E6A001EC572 /* CustomFieldSections.swift in Sources */,
 				5BFFB5052A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift in Sources */,
 				5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */,
 				3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */,

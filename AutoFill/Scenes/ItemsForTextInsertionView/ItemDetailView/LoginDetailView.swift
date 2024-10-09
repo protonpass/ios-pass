@@ -46,6 +46,13 @@ struct LoginDetailView: View {
         VStack {
             passkeysSection
             usernamePassword2FaSection
+            urlsSection
+            CustomFieldSections(itemContentType: viewModel.type,
+                                uiModels: viewModel.customFieldUiModels,
+                                isFreeUser: viewModel.isFreeUser,
+                                onSelectHiddenText: { onSelect($0) },
+                                onSelectTotpToken: { onSelect($0) },
+                                onUpgrade: { viewModel.upgrade() })
         }
         .optionalSheet(binding: $selectedPasskey) { passkey in
             PasskeyDetailView(passkey: passkey,
@@ -70,7 +77,6 @@ private extension LoginDetailView {
                 PasskeyDetailRow(passkey: passkey,
                                  onTapUsername: { onSelect($0) },
                                  onTap: { selectedPasskey = passkey })
-                    .padding(.bottom, 8)
             }
         }
     }
@@ -253,5 +259,34 @@ private extension LoginDetailView {
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+}
+
+private extension LoginDetailView {
+    var urlsSection: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.earth, color: tintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Website")
+                    .sectionTitleText()
+
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(viewModel.urls, id: \.self) { url in
+                        Text(url)
+                            .foregroundStyle(viewModel.type.normMajor2Color.toColor)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(2)
+                            .onTapGesture {
+                                onSelect(url)
+                            }
+                    }
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .animation(.default, value: viewModel.urls)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection()
     }
 }
