@@ -58,7 +58,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             guard let self else { return }
             do {
                 let alias =
-                    try await aliasRepository.getAliasDetails(shareId: itemContent.shareId,
+                    try await aliasRepository.getAliasDetails(userId: nil,
+                                                              shareId: itemContent.shareId,
                                                               itemId: itemContent.item.itemID)
                 aliasEmail = alias.email
                 mailboxes = alias.mailboxes

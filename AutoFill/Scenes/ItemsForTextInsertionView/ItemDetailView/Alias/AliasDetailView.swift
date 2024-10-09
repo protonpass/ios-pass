@@ -1,0 +1,124 @@
+//
+// AliasDetailView.swift
+// Proton Pass - Created on 09/10/2024.
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Pass.
+//
+// Proton Pass is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Pass is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+
+import DesignSystem
+import Entities
+import ProtonCoreUIFoundations
+import Screens
+import SwiftUI
+
+struct AliasDetailView: View {
+    @StateObject private var viewModel: AliasDetailViewModel
+    @State private var animate = false
+    let onSelect: (String) -> Void
+
+    var tintColor: UIColor {
+        viewModel.type.normColor
+    }
+
+    init(userId: String?,
+         itemContent: ItemContent,
+         onSelect: @escaping (String) -> Void) {
+        _viewModel = .init(wrappedValue: .init(userId: userId,
+                                               itemContent: itemContent))
+        self.onSelect = onSelect
+    }
+
+    var body: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            aliasRow
+            PassSectionDivider()
+            mailboxesRow
+        }
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedDetailSection()
+        .animation(.default, value: viewModel.mailboxes)
+        .task { await viewModel.fetchMailboxes() }
+    }
+}
+
+private extension AliasDetailView {
+    var aliasRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.user, color: tintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(viewModel.enabled ? "Alias address" : "Alias address (disabled)")
+                    .sectionTitleText()
+
+                Text(viewModel.email)
+                    .sectionContentText()
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+            .onTapGesture { onSelect(viewModel.email) }
+            .layoutPriority(1)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+
+    var mailboxesRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.forward, color: tintColor)
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Forwarding to")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                if let error = viewModel.mailboxesError {
+                    HStack {
+                        Text(error.localizedDescription)
+                            .font(.callout)
+                            .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Spacer()
+                        RetryButton(tintColor: tintColor) {
+                            Task {
+                                await viewModel.fetchMailboxes()
+                            }
+                        }
+                    }
+                } else if let mailboxes = viewModel.mailboxes {
+                    ForEach(mailboxes, id: \.ID) { mailbox in
+                        Text(mailbox.email)
+                            .sectionContentText()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                onSelect(mailbox.email)
+                            }
+                    }
+                } else {
+                    Group {
+                        SkeletonBlock(tintColor: tintColor)
+                        SkeletonBlock(tintColor: tintColor)
+                        SkeletonBlock(tintColor: tintColor)
+                    }
+                    .clipShape(Capsule())
+                    .shimmering(active: animate)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.mailboxes)
+    }
+}

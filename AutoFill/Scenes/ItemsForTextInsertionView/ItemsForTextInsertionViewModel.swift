@@ -47,6 +47,7 @@ enum ItemsForTextInsertionViewState: Equatable {
 }
 
 struct SelectedItem {
+    let userId: String?
     let item: ItemContent
     let vault: Vault?
 }
@@ -123,7 +124,9 @@ extension ItemsForTextInsertionViewModel {
             do {
                 if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                              itemId: item.itemId) {
-                    selectedItem = .init(item: itemContent,
+                    let user = getUser(for: item, forUiDisplay: false)
+                    selectedItem = .init(userId: user?.id,
+                                         item: itemContent,
                                          vault: vaults.first(where: { $0.shareId == item.shareId }))
                 }
             } catch {

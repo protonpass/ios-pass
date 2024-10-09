@@ -29,13 +29,13 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     @Published private var aliasItem: SymmetricallyEncryptedItem?
     @Published var selectedAlias: SelectedItem?
 
-    var email = ""
-    var username = ""
-    var password = ""
-    var urls: [String] = []
-    var totpUri = ""
-    var passkeys = [Passkey]()
-    var passwordStrength: PasswordStrength?
+    private(set) var email = ""
+    private(set) var username = ""
+    private(set) var password = ""
+    private(set) var urls: [String] = []
+    private(set) var totpUri = ""
+    private(set) var passkeys = [Passkey]()
+    private(set) var passwordStrength: PasswordStrength?
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -80,7 +80,7 @@ extension LoginDetailViewModel {
                 if let alias = try await itemRepository.getItemContent(shareId: aliasItem.shareId,
                                                                        itemId: aliasItem.itemId) {
                     let vault = try await shareRepository.getVault(shareId: alias.shareId)
-                    selectedAlias = .init(item: alias, vault: vault)
+                    selectedAlias = .init(userId: userId, item: alias, vault: vault)
                 }
             } catch {
                 handle(error)
