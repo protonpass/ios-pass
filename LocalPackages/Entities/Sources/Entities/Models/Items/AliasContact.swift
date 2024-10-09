@@ -18,6 +18,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+public struct LightAliasContact: Decodable, Sendable, Equatable, Hashable, Identifiable {
+    // Should not rename to "id" otherwise decode process breaks
+    public let ID: Int
+    public let name: String?
+    public let blocked: Bool
+    public let reverseAlias: String
+    public let email: String
+    public let createTime: Int
+
+    public init(ID: Int,
+                name: String?,
+                blocked: Bool,
+                reverseAlias: String,
+                email: String,
+                createTime: Int) {
+        self.ID = ID
+        self.name = name
+        self.blocked = blocked
+        self.reverseAlias = reverseAlias
+        self.email = email
+        self.createTime = createTime
+    }
+
+    public var id: Int {
+        // swiftformat:disable:next redundantSelf
+        self.ID
+    }
+}
+
 public struct AliasContact: Decodable, Sendable, Equatable, Hashable, Identifiable {
     // Should not rename to "id" otherwise decode process breaks
     public let ID: Int
@@ -25,17 +54,37 @@ public struct AliasContact: Decodable, Sendable, Equatable, Hashable, Identifiab
     public let blocked: Bool
     public let reverseAlias: String
     public let email: String
+    public let createTime: Int
+    public let repliedEmails: Int
+    public let forwardedEmails: Int
+    public let blockedEmails: Int
 
-    public init(ID: Int, name: String?, blocked: Bool, reverseAlias: String, email: String) {
+    public init(ID: Int,
+                name: String?,
+                blocked: Bool,
+                reverseAlias: String,
+                email: String,
+                createTime: Int,
+                repliedEmails: Int,
+                forwardedEmails: Int,
+                blockedEmails: Int) {
         self.ID = ID
         self.name = name
         self.blocked = blocked
         self.reverseAlias = reverseAlias
         self.email = email
+        self.createTime = createTime
+        self.repliedEmails = repliedEmails
+        self.forwardedEmails = forwardedEmails
+        self.blockedEmails = blockedEmails
     }
 
     public var id: Int {
         // swiftformat:disable:next redundantSelf
         self.ID
+    }
+
+    public var noActivity: Bool {
+        repliedEmails == 0 && forwardedEmails == 0 && blockedEmails == 0
     }
 }
