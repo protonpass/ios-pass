@@ -66,7 +66,10 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     private var itemRepository
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent
+    var sortType = SortType.mostRecent
+
+    @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
+    var filterOption = ItemTypeFilterOption.all
 
     private var searchableItems: [SearchableItem] {
         if let selectedUser {
