@@ -1,5 +1,5 @@
 //
-// BaseItemDetailViewModel.swift
+// TOTPTokenState.swift
 // Proton Pass - Created on 09/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -17,23 +17,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Factory
-import Foundation
-
-@MainActor
-class BaseItemDetailViewModel: ObservableObject {
-    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
-    @LazyInjected(\SharedToolingContainer.logger) private var logger
-
-    init() {}
-
-    func handle(_ error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
-    }
-
-    func upgrade() {
-        router.present(for: .upgradeFlow)
-    }
+public enum TOTPTokenState {
+    case loading
+    case allowed
+    case notAllowed
 }

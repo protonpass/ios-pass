@@ -95,28 +95,42 @@ private extension LoginDetailView {
 
             passwordRow
 
-//                switch viewModel.totpTokenState {
-//                case .loading:
-//                    EmptyView()
-//
-//                case .notAllowed:
-//                    PassSectionDivider()
-//                    totpNotAllowedRow
-//
-//                case .allowed:
-//                    if viewModel.totpUri.isEmpty {
-//                        EmptyView()
-//                    } else {
-//                        PassSectionDivider()
-//                        TOTPRow(uri: viewModel.totpUri,
-//                                tintColor: iconTintColor,
-//                                onCopyTotpToken: { viewModel.copyTotpToken($0) })
-//                    }
-//                }
+            switch viewModel.totpTokenState {
+            case .loading:
+                EmptyView()
+
+            case .notAllowed:
+                PassSectionDivider()
+                totpNotAllowedRow
+
+            case .allowed:
+                if viewModel.totpUri.isEmpty {
+                    EmptyView()
+                } else {
+                    PassSectionDivider()
+                    TOTPRow(uri: viewModel.totpUri,
+                            tintColor: tintColor,
+                            onCopyTotpToken: { onSelect($0) })
+                }
+            }
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
-//            .animation(.default, value: viewModel.totpTokenState)
+        .animation(.default, value: viewModel.totpTokenState)
+    }
+
+    var totpNotAllowedRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.lock, color: tintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("2FA limit reached")
+                    .sectionTitleText()
+                UpgradeButtonLite { viewModel.upgrade() }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
     var emptyEmailOrUsernameRow: some View {
