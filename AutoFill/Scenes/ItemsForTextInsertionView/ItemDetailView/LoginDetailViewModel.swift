@@ -24,9 +24,11 @@ import Foundation
 import UseCases
 
 @MainActor
-final class LoginDetailViewModel: ObservableObject {
+final class LoginDetailViewModel: BaseItemDetailViewModel {
+    @Published private var aliasItem: SymmetricallyEncryptedItem?
+    @Published var selectedAlias: SelectedItem?
+
     let type: ItemContentType
-    var isAlias = false
     var email = ""
     var username = ""
     var password = ""
@@ -36,13 +38,20 @@ final class LoginDetailViewModel: ObservableObject {
     var passwordStrength: PasswordStrength?
 
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
+    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
 
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
     }
 
+    var isAlias: Bool {
+        aliasItem != nil
+    }
+
     init(itemContent: ItemContent) {
         type = itemContent.type
+        super.init()
         if case let .login(data) = itemContent.contentData {
             passkeys = data.passkeys
             email = data.email
@@ -52,7 +61,7 @@ final class LoginDetailViewModel: ObservableObject {
             urls = data.urls
             totpUri = data.totpUri
 //            totpManager.bind(uri: data.totpUri)
-//            getAliasItem(email: data.email)
+            getAliasItem(email: data.email)
 
 //            if !data.totpUri.isEmpty {
 //                checkTotpState()
@@ -61,6 +70,37 @@ final class LoginDetailViewModel: ObservableObject {
 //            }
         } else {
             fatalError("Expecting login type")
+        }
+    }
+}
+
+extension LoginDetailViewModel {
+    func viewAlias() {
+        guard let aliasItem else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if let alias = try await itemRepository.getItemContent(shareId: aliasItem.shareId,
+                                                                       itemId: aliasItem.itemId) {
+                    let vault = try await shareRepository.getVault(shareId: alias.shareId)
+                    selectedAlias = .init(item: alias, vault: vault)
+                }
+            } catch {
+                handle(error)
+            }
+        }
+    }
+}
+
+private extension LoginDetailViewModel {
+    func getAliasItem(email: String) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                aliasItem = try await itemRepository.getAliasItem(email: email)
+            } catch {
+                handle(error)
+            }
         }
     }
 }
