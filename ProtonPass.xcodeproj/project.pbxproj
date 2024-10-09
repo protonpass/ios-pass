@@ -204,6 +204,9 @@
 		35706C302CB66616009F438E /* CreditCardDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35706C2F2CB66616009F438E /* CreditCardDetailView.swift */; };
 		35706C322CB6663C009F438E /* IdentityDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35706C312CB6663C009F438E /* IdentityDetailView.swift */; };
 		35706C342CB6669A009F438E /* AliasDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35706C332CB6669A009F438E /* AliasDetailView.swift */; };
+		35706C362CB66CF1009F438E /* LoginDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35706C352CB66CF1009F438E /* LoginDetailViewModel.swift */; };
+		35706C372CB67287009F438E /* PasskeyDetailRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1F022B88AEB800561950 /* PasskeyDetailRow.swift */; };
+		35706C382CB673F0009F438E /* PasskeyDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356A1EFD2B889D9900561950 /* PasskeyDetailView.swift */; };
 		3570D20329C1F14D00805445 /* SearchResultChips.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20229C1F14D00805445 /* SearchResultChips.swift */; };
 		3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570D20629C20A7E00805445 /* SearchResultsView.swift */; };
 		3570E04E2B8E06F5005B8186 /* PasskeyCredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E04D2B8E06F5005B8186 /* PasskeyCredentialsView.swift */; };
@@ -804,6 +807,7 @@
 		35706C2F2CB66616009F438E /* CreditCardDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardDetailView.swift; sourceTree = "<group>"; };
 		35706C312CB6663C009F438E /* IdentityDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailView.swift; sourceTree = "<group>"; };
 		35706C332CB6669A009F438E /* AliasDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailView.swift; sourceTree = "<group>"; };
+		35706C352CB66CF1009F438E /* LoginDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginDetailViewModel.swift; sourceTree = "<group>"; };
 		3570D20229C1F14D00805445 /* SearchResultChips.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultChips.swift; sourceTree = "<group>"; };
 		3570D20629C20A7E00805445 /* SearchResultsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsView.swift; sourceTree = "<group>"; };
 		3570E04D2B8E06F5005B8186 /* PasskeyCredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsView.swift; sourceTree = "<group>"; };
@@ -1524,6 +1528,7 @@
 				35706C2F2CB66616009F438E /* CreditCardDetailView.swift */,
 				35706C312CB6663C009F438E /* IdentityDetailView.swift */,
 				35706C2B2CB665DD009F438E /* LoginDetailView.swift */,
+				35706C352CB66CF1009F438E /* LoginDetailViewModel.swift */,
 				35706C2D2CB665FB009F438E /* NoteDetailView.swift */,
 			);
 			path = ItemDetailView;
@@ -2998,6 +3003,7 @@
 				5BF35D6F2B21FB2D00D3E297 /* Pinnable+Extensions.swift in Sources */,
 				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,
 				355792DA29E7FB85001198DA /* VaultLabel.swift in Sources */,
+				35706C372CB67287009F438E /* PasskeyDetailRow.swift in Sources */,
 				5BFFB4FD2A56D0C000C2D1F9 /* CredentialSearchResultView.swift in Sources */,
 				3597F0D32CB5D6F400384874 /* ItemDetailTitleView.swift in Sources */,
 				354E9AAC2A44699E00AD2B9A /* LocalAuthenticationViewModel.swift in Sources */,
@@ -3047,6 +3053,7 @@
 				355751F82907FC8D00268116 /* LockedCredentialViewModel.swift in Sources */,
 				354E9AA22A44435E00AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				3570E04E2B8E06F5005B8186 /* PasskeyCredentialsView.swift in Sources */,
+				35706C362CB66CF1009F438E /* LoginDetailViewModel.swift in Sources */,
 				35AC9A5A2A0BD22F00FBCEEC /* CustomFieldTypesView.swift in Sources */,
 				35706C302CB66616009F438E /* CreditCardDetailView.swift in Sources */,
 				5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */,
@@ -3054,6 +3061,7 @@
 				354E9AA82A4459C700AD2B9A /* PinAuthenticationView.swift in Sources */,
 				35492E41293E084E00BDE231 /* GeneratePasswordViewModel.swift in Sources */,
 				35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */,
+				35706C382CB673F0009F438E /* PasskeyDetailView.swift in Sources */,
 				5B1F5CE92A5EAD0900A6C3ED /* WrappedCodeScannerView.swift in Sources */,
 				356AC2B22C91918F00F9B1CD /* AutoFillViewModel.swift in Sources */,
 				5BD4A9002B10C4A000C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */,
