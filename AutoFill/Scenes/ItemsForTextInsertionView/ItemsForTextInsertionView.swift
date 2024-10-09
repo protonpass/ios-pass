@@ -30,6 +30,10 @@ struct ItemsForTextInsertionView: View {
     @StateObject private var viewModel: ItemsForTextInsertionViewModel
     @FocusState private var isFocusedOnSearchBar
 
+    private var highlighted: Bool {
+        viewModel.filterOption != .all
+    }
+
     init(viewModel: ItemsForTextInsertionViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -66,11 +70,23 @@ private extension ItemsForTextInsertionView {
                                  backgroundColor: PassColor.interactionNormMinor1,
                                  accessibilityLabel: "Close",
                                  action: { viewModel.handleCancel() })
+
                     SearchBar(query: $viewModel.query,
                               isFocused: $isFocusedOnSearchBar,
                               placeholder: viewModel.searchBarPlaceholder,
                               onCancel: { /* Not applicable */ },
                               hideCancel: true)
+
+                    Menu(content: {
+                        filterOptions
+                        sortOptions
+                    }, label: {
+                        CircleButton(icon: IconProvider.threeDotsVertical,
+                                     iconColor: highlighted ? PassColor.textInvert : PassColor
+                                         .interactionNormMajor2,
+                                     backgroundColor: highlighted ? PassColor.interactionNormMajor2 : .clear,
+                                     accessibilityLabel: "Items filtering and sort menu")
+                    })
                 }
                 .padding(.horizontal)
             }
@@ -123,11 +139,89 @@ private extension ItemsForTextInsertionView {
 
 private extension ItemsForTextInsertionView {
     @ViewBuilder
+    var sortOptions: some View {
+        let sortType = viewModel.sortType
+        Menu(content: {
+            ForEach(SortType.allCases, id: \.self) { type in
+                Button(action: {
+                    viewModel.sortType = type
+                }, label: {
+                    HStack {
+                        Text(type.title)
+                        Spacer()
+                        if type == sortType {
+                            Image(systemName: "checkmark")
+                        }
+                    }
+                })
+            }
+        }, label: {
+            Label(title: {
+                if #available(iOS 17, *) {
+                    Button(action: {}, label: {
+                        Text("Sort By")
+                        Text(verbatim: sortType.title)
+                    })
+                } else {
+                    Text(verbatim: sortType.title)
+                }
+            }, icon: {
+                Image(uiImage: IconProvider.arrowDownArrowUp)
+            })
+        })
+    }
+
+    @ViewBuilder
+    var filterOptions: some View {
+        let filterOption = viewModel.filterOption
+        let itemCount = viewModel.itemCount
+        Menu(content: {
+            ForEach(ItemTypeFilterOption.allCases, id: \.self) { option in
+                let uiModel = option.uiModel(from: itemCount)
+                Button(action: {
+                    viewModel.filterOption = option
+                }, label: {
+                    Label(title: {
+                        text(for: uiModel)
+                    }, icon: {
+                        if option == filterOption {
+                            Image(systemName: "checkmark")
+                        }
+                    })
+                })
+                // swiftformat:disable:next isEmpty
+                .disabled(uiModel.count == 0) // swiftlint:disable:this empty_count
+            }
+        }, label: {
+            Label(title: {
+                if #available(iOS 17, *) {
+                    // Use Button to trick SwiftUI into rendering option with title and subtitle
+                    Button(action: {}, label: {
+                        Text("Show")
+                        text(for: filterOption.uiModel(from: itemCount))
+                    })
+                } else {
+                    text(for: filterOption.uiModel(from: itemCount))
+                }
+            }, icon: {
+                Image(uiImage: highlighted ? PassIcon.filterFilled : IconProvider.filter)
+            })
+        })
+    }
+
+    func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
+        Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
+    }
+}
+
+private extension ItemsForTextInsertionView {
+    @ViewBuilder
     var itemList: some View {
+        let items = viewModel.items
         let sections: [TableView<ItemUiModel, GenericCredentialItemRow>.Section] = {
-            switch viewModel.selectedSortType {
+            switch viewModel.sortType {
             case .mostRecent:
-                let results = viewModel.items.mostRecentSortResult()
+                let results = items.mostRecentSortResult()
                 return [
                     .init(title: #localized("Today"), items: results.today),
                     .init(title: #localized("Yesterday"), items: results.yesterday),
@@ -138,12 +232,23 @@ private extension ItemsForTextInsertionView {
                     .init(title: #localized("Last 90 days"), items: results.last90Days),
                     .init(title: #localized("More than 90 days"), items: results.others)
                 ]
-            default:
-                return []
+            case .alphabeticalAsc:
+                let results = items.alphabeticalSortResult(direction: .ascending)
+                return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
+            case .alphabeticalDesc:
+                let results = items.alphabeticalSortResult(direction: .descending)
+                return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
+            case .newestToOldest:
+                let results = items.monthYearSortResult(direction: .descending)
+                return results.buckets.map { .init(title: $0.monthYear.relativeString,
+                                                   items: $0.items) }
+            case .oldestToNewest:
+                let results = items.monthYearSortResult(direction: .ascending)
+                return results.buckets.map { .init(title: $0.monthYear.relativeString,
+                                                   items: $0.items) }
             }
         }()
-        TableView(sections: sections,
-                  showIndexTitles: viewModel.selectedSortType.isAlphabetical) { item in
+        TableView(sections: sections) { item in
             GenericCredentialItemRow(item: item,
                                      user: nil,
                                      selectItem: { viewModel.select($0) })
