@@ -32,12 +32,34 @@ struct ItemDetailView: View {
 
     var body: some View {
         VStack {
-            ItemDetailTitleView(itemContent: itemContent,
-                                vault: vault,
-                                shouldShowVault: true)
-                .onTapGesture {
-                    onSelect(itemContent.title)
+            Group {
+                if case .note = itemContent.type {
+                    Text(itemContent.title)
+                        .font(.title.bold())
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                } else {
+                    ItemDetailTitleView(itemContent: itemContent,
+                                        vault: vault,
+                                        shouldShowVault: true)
                 }
+            }
+            .onTapGesture {
+                onSelect(itemContent.title)
+            }
+
+            switch itemContent.type {
+            case .alias:
+                AliasDetailView(itemContent: itemContent, onSelect: onSelect)
+            case .creditCard:
+                CreditCardDetailView(itemContent: itemContent, onSelect: onSelect)
+            case .identity:
+                IdentityDetailView(itemContent: itemContent, onSelect: onSelect)
+            case .login:
+                LoginDetailView(itemContent: itemContent, onSelect: onSelect)
+            case .note:
+                NoteDetailView(itemContent: itemContent, onSelect: onSelect)
+            }
 
             ItemDetailHistorySection(itemContent: itemContent, action: nil)
 
