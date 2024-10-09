@@ -26,6 +26,7 @@ import Foundation
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
 
+    let userId: String?
     let itemContent: ItemContent
     let customFieldUiModels: [CustomFieldUiModel]
 
@@ -37,7 +38,9 @@ class BaseItemDetailViewModel: ObservableObject {
         itemContent.type
     }
 
-    init(itemContent: ItemContent) {
+    init(userId: String?,
+         itemContent: ItemContent) {
+        self.userId = userId
         self.itemContent = itemContent
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         bindValues()

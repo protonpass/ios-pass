@@ -183,7 +183,8 @@ extension CreateEditAliasViewModel {
 
                 if case let .edit(itemContent) = mode {
                     let alias =
-                        try await aliasRepository.getAliasDetails(shareId: shareId,
+                        try await aliasRepository.getAliasDetails(userId: nil,
+                                                                  shareId: shareId,
                                                                   itemId: itemContent.item.itemID)
                     aliasEmail = alias.email
                     self.alias = alias
@@ -205,7 +206,7 @@ extension CreateEditAliasViewModel {
 
 private extension CreateEditAliasViewModel {
     func getAliasOptions(shareId: String) async throws -> AliasOptions {
-        try await aliasRepository.getAliasOptions(shareId: shareId)
+        try await aliasRepository.getAliasOptions(userId: nil, shareId: shareId)
     }
 
     func changeMailboxes(shareId: String,
