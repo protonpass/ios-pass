@@ -33,17 +33,14 @@ struct AliasContactsModel {
     let blockContacts: [AliasContact]
 
     static var `default`: AliasContactsModel {
-        AliasContactsModel(activeContacts: [AliasContact(ID: 1, name: "John Doe", blocked: false,
-                                                         reverseAlias: "reveal@example.com",
-                                                         email: "email@example.com")],
-                           blockContacts: [AliasContact(ID: 2, name: "Jane Doe", blocked: true,
-                                                        reverseAlias: "reveal2@example.com",
-                                                        email: "email2@example.com")])
+        AliasContactsModel(activeContacts: [], blockContacts: [])
     }
 }
 
 @MainActor
 final class AliasContactsViewModel: ObservableObject, Sendable {
+    @Published var aliasName = ""
+    @Published private(set) var displayName = ""
     @Published private(set) var showExplanation = false
     @Published private(set) var contactsInfos = AliasContactsModel.default
 
@@ -52,7 +49,9 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     }
 
     private var contacts: PaginatedAliasContacts
-    private let item: ItemContent
+    private var previousName = ""
+    private(set) var alias: Alias
+    private let infos: ContactsInfos
 
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
@@ -63,14 +62,18 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     private var cancellables = Set<AnyCancellable>()
 
     var itemIds: IDs {
-        IDs(shareId: item.shareId, itemId: item.itemId)
+        IDs(shareId: infos.shareId, itemId: infos.itemId)
     }
 
-    init(item: ItemContent, contacts: PaginatedAliasContacts) {
-        self.contacts = contacts
-        self.item = item
+    init(infos: ContactsInfos) {
+        contacts = infos.contacts
+        self.infos = infos
+        alias = infos.alias
+        aliasName = alias.name ?? ""
+        displayName = alias.displayName
+        previousName = aliasName
         setUp()
-//        parseContacts()
+        parseContacts()
     }
 
     func copyContact(_ contact: AliasContact) {
@@ -79,9 +82,12 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
 
     // https://stackoverflow.com/questions/71260260/what-method-do-i-call-to-open-the-ios-mail-app-with-swiftui
     func openMail(emailTo: String) {
-        // TODO: need to add the name
-        if let url = URL(string: "mailto:\("Eric plop")<\(emailTo)>"),
-
+        let url = if let name = infos.alias.name {
+            "\(name)<\(emailTo)>"
+        } else {
+            emailTo
+        }
+        if let url = URL(string: "mailto:\(url)"),
            UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
@@ -95,8 +101,8 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
             do {
                 let userId = try await userManager.getActiveUserId()
                 _ = try await aliasRepository.deleteContact(userId: userId,
-                                                            shareId: item.shareId,
-                                                            itemId: item.itemId,
+                                                            shareId: infos.shareId,
+                                                            itemId: infos.itemId,
                                                             contactId: "\(contact.ID)")
                 try await reloadContact()
             } catch {
@@ -113,15 +119,70 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
             do {
                 let userId = try await userManager.getActiveUserId()
                 _ = try await aliasRepository.updateContact(userId: userId,
-                                                            shareId: item.shareId,
-                                                            itemId: item.itemId,
+                                                            shareId: infos.shareId,
+                                                            itemId: infos.itemId,
                                                             contactId: "\(contact.ID)",
                                                             blocked: !contact.blocked)
                 try await reloadContact()
+            } catch {}
+        }
+    }
+
+    func updateAliasName() {
+        guard previousName != aliasName else {
+            return
+        }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                try await aliasRepository.updateSlAliasName(userId: userId,
+                                                            shareId: infos.shareId,
+                                                            itemId: infos.itemId,
+                                                            name: aliasName.nilIfEmpty)
+                previousName = aliasName
             } catch {
+                aliasName = previousName
                 handle(error)
             }
         }
+    }
+
+    func timeSinceCreation(from timestamp: Int) -> String {
+        // Convert timestamp (in seconds) to Date
+        let creationDate = Date(timeIntervalSince1970: TimeInterval(timestamp))
+
+        let currentDate = Date()
+
+        // Define the calendar and components
+        let calendar = Calendar.current
+
+        // Calculate the difference between the two dates
+        let components = calendar.dateComponents([.year, .month, .day], from: creationDate, to: currentDate)
+
+        // Localized string components
+        let yearsString = if let years = components.year {
+            #localized("%lld years", years)
+        } else {
+            ""
+        }
+        let monthsString = if let months = components.month {
+            #localized("%lld months", months)
+        } else {
+            ""
+        }
+
+        let daysString = if let days = components.day {
+            #localized("%lld day(s)", days)
+        } else {
+            ""
+        }
+
+        let timeComponents = [yearsString, monthsString, daysString].filter { !$0.isEmpty }.joined(separator: ", ")
+
+        return #localized("Contact created %@ ago.", timeComponents)
     }
 }
 
@@ -154,8 +215,8 @@ private extension AliasContactsViewModel {
     func reloadContact() async throws {
         let userId = try await userManager.getActiveUserId()
         contacts = try await aliasRepository.getContacts(userId: userId,
-                                                         shareId: item.shareId,
-                                                         itemId: item.itemId,
+                                                         shareId: infos.shareId,
+                                                         itemId: infos.itemId,
                                                          lastContactId: nil)
         parseContacts()
     }

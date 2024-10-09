@@ -37,11 +37,7 @@ struct LogInDetailView: View {
     }
 
     var body: some View {
-        if viewModel.isShownAsSheet {
-            NavigationStack {
-                realBody
-            }
-        } else {
+        NavigationStack {
             realBody
         }
     }
