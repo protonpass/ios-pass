@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Entities
+import Factory
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -29,6 +30,7 @@ struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
     @State private var animate = false
+    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
 
@@ -37,13 +39,9 @@ struct AliasDetailView: View {
     }
 
     var body: some View {
-        if viewModel.isShownAsSheet {
-            NavigationStack {
-                realBody
-            }
-        } else {
-            realBody
-        }
+        realBody
+            .routingProvided
+            .navigationStackEmbeded($router.path)
     }
 
     private var realBody: some View {
@@ -65,7 +63,7 @@ struct AliasDetailView: View {
                                           note: viewModel.itemContent.note)
                     }
 
-                    if let note = viewModel.slNote {
+                    if let note = viewModel.aliasInfos?.note {
                         NoteDetailSection(itemContent: viewModel.itemContent,
                                           vault: viewModel.vault?.vault,
                                           title: #localized("Note • SimpleLogin"),
@@ -85,7 +83,7 @@ struct AliasDetailView: View {
                                 .padding(.bottom, DesignConstant.sectionPadding)
                         }
 
-                        if let stats = viewModel.stats {
+                        if let stats = viewModel.aliasInfos?.stats {
                             statsRow(stats: stats)
                         }
                     }
@@ -103,8 +101,7 @@ struct AliasDetailView: View {
                 .padding()
             }
             .animation(.default, value: viewModel.moreInfoSectionExpanded)
-            .animation(.default, value: viewModel.slNote)
-            .animation(.default, value: viewModel.stats)
+            .animation(.default, value: viewModel.aliasInfos)
             .animation(.default, value: viewModel.contacts)
             .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
@@ -136,7 +133,7 @@ struct AliasDetailView: View {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
-        .animation(.default, value: viewModel.mailboxes)
+        .animation(.default, value: viewModel.aliasInfos)
     }
 
     private var aliasRow: some View {
@@ -198,7 +195,7 @@ struct AliasDetailView: View {
                         .sectionTitleText()
                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                    if let mailboxes = viewModel.mailboxes {
+                    if let mailboxes = viewModel.aliasInfos?.mailboxes {
                         ForEach(mailboxes, id: \.ID) { mailbox in
                             Text(mailbox.email)
                                 .sectionContentText()
@@ -232,7 +229,7 @@ struct AliasDetailView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.mailboxes)
+        .animation(.default, value: viewModel.aliasInfos)
     }
 
     private func statsRow(stats: AliasStats) -> some View {
@@ -244,6 +241,7 @@ struct AliasDetailView: View {
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
 
+                // swiftlint:disable:next line_length
                 Text("\(stats.forwardedEmails) forwards • \(stats.repliedEmails) replies • \(stats.blockedEmails) blocks")
                     .sectionContentText()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -255,7 +253,10 @@ struct AliasDetailView: View {
     }
 
     private var contactRow: some View {
-        Button(action: { viewModel.showContacts() }) {
+        Button {
+            guard let infos = viewModel.getContactsInfos() else { return }
+            router.navigate(to: .contacts(infos))
+        } label: {
             HStack(spacing: DesignConstant.sectionPadding) {
                 ItemDetailSectionIcon(icon: IconProvider.chartLine, color: iconTintColor)
                 Text("Contacts")

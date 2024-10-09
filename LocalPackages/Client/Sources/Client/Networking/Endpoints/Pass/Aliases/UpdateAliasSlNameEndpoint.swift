@@ -1,6 +1,6 @@
 //
-// UpdateContactEndpoint.swift
-// Proton Pass - Created on 02/10/2024.
+// UpdateAliasSlNameEndpoint.swift
+// Proton Pass - Created on 08/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,36 +19,33 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Foundation
 import ProtonCoreNetworking
 
-public struct UpdateContactRequest: Sendable, Encodable {
-    public let blocked: Bool
+public struct UpdateAliasSlNameRequest: Encodable, Sendable {
+    let name: String?
 
-    public init(blocked: Bool) {
-        self.blocked = blocked
+    public init(name: String?) {
+        self.name = name
     }
 
     enum CodingKeys: String, CodingKey {
-        case blocked = "Blocked"
+        case name = "Name"
     }
 }
 
-public struct CreateALigthContactResponse: Decodable, Sendable {
-    public let contact: LightAliasContact
-}
-
-struct UpdateContactEndpoint: Endpoint {
-    typealias Body = UpdateContactRequest
-    typealias Response = CreateALigthContactResponse
+struct UpdateAliasSlNameEndpoint: Endpoint {
+    typealias Body = UpdateAliasSlNameRequest
+    typealias Response = CodeOnlyResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
-    var body: UpdateContactRequest?
+    var body: UpdateAliasSlNameRequest?
 
-    init(shareId: String, itemId: String, contactId: String, request: UpdateContactRequest) {
-        debugDescription = "Update an alias contact"
-        path = "/pass/v1/share/\(shareId)/alias/\(itemId)/contact/\(contactId)/blocked"
+    init(shareId: String, itemId: String, request: UpdateAliasSlNameRequest) {
+        debugDescription = "Change alias name in SL"
+        path = "/pass/v1/share/\(shareId)/alias/\(itemId)/name"
         method = .put
         body = request
     }

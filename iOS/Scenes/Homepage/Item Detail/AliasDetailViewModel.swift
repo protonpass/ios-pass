@@ -33,11 +33,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var aliasEmail = ""
     @Published private(set) var name = ""
     @Published private(set) var note = ""
-    @Published private(set) var slNote: String?
-    @Published private(set) var stats: AliasStats?
+    @Published private(set) var aliasInfos: Alias?
     @Published private(set) var contacts: PaginatedAliasContacts?
-
-    @Published private(set) var mailboxes: [AliasLinkedMailbox]?
     @Published private(set) var error: (any Error)?
     @Published private(set) var aliasEnabled = false
     @Published private(set) var togglingAliasStatus = false
@@ -69,9 +66,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                     try await aliasRepository.getAliasDetails(shareId: itemContent.shareId,
                                                               itemId: itemContent.item.itemID)
                 aliasEmail = alias.email
-                mailboxes = alias.mailboxes
-                slNote = alias.note
-                stats = alias.stats
+                aliasInfos = alias
                 aliasEnabled = itemContent.item.isAliasEnabled
                 logger.info("Get alias detail successfully \(itemContent.debugDescription)")
             } catch {
@@ -105,7 +100,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     override func refresh() {
-        mailboxes = nil
+        aliasInfos = nil
         error = nil
         super.refresh()
         getAlias()
@@ -119,11 +114,12 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         copyToClipboard(text: email, message: #localized("Email address copied"))
     }
 
-    func showContacts() {
-        guard let contacts else {
-            return
-        }
-        router.present(for: .contacts(itemContent, contacts))
+    func getContactsInfos() -> ContactsInfos? {
+        guard let contacts, let aliasInfos else { return nil }
+        return ContactsInfos(itemId: itemContent.itemId,
+                             shareId: itemContent.shareId,
+                             alias: aliasInfos,
+                             contacts: contacts)
     }
 }
 

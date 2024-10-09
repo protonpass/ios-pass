@@ -31,6 +31,10 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
 
     func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws
+    func updateSlAliasName(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           request: UpdateAliasSlNameRequest) async throws
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
@@ -61,7 +65,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
                             shareId: String,
                             itemId: String,
                             contactId: String,
-                            request: UpdateContactRequest) async throws -> AliasContact
+                            request: UpdateContactRequest) async throws -> LightAliasContact
     func deleteContact(userId: String,
                        shareId: String,
                        itemId: String,
@@ -104,6 +108,14 @@ public extension RemoteAliasDatasource {
 
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws {
         let endpoint = EnableSLAliasSyncEndpoint(request: EnableSLAliasSyncRequest(defaultShareID: defaultShareID))
+        _ = try await exec(userId: userId, endpoint: endpoint)
+    }
+
+    func updateSlAliasName(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           request: UpdateAliasSlNameRequest) async throws {
+        let endpoint = UpdateAliasSlNameEndpoint(shareId: shareId, itemId: itemId, request: request)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
@@ -206,7 +218,7 @@ public extension RemoteAliasDatasource {
                             shareId: String,
                             itemId: String,
                             contactId: String,
-                            request: UpdateContactRequest) async throws -> AliasContact {
+                            request: UpdateContactRequest) async throws -> LightAliasContact {
         let endpoint = UpdateContactEndpoint(shareId: shareId,
                                              itemId: itemId,
                                              contactId: contactId,
@@ -222,6 +234,6 @@ public extension RemoteAliasDatasource {
         let endpoint = DeleteContactEndpoint(shareId: shareId,
                                              itemId: itemId,
                                              contactId: contactId)
-        try await exec(userId: userId, endpoint: endpoint)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }
