@@ -29,7 +29,6 @@ struct LoginDetailView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: LoginDetailViewModel
     @State private var selectedPasskey: Passkey?
-    @State private var showAlias = false
     @State private var showPassword = false
     let onSelect: (String) -> Void
 
@@ -44,7 +43,7 @@ struct LoginDetailView: View {
     }
 
     var body: some View {
-        Group {
+        VStack {
             passkeysSection
             usernamePassword2FaSection
         }
@@ -52,6 +51,12 @@ struct LoginDetailView: View {
             PasskeyDetailView(passkey: passkey,
                               onTapUsername: { onSelect($0) })
                 .presentationDetents([.height(380)])
+                .environment(\.colorScheme, colorScheme)
+        }
+        .optionalSheet(binding: $viewModel.selectedAlias) { alias in
+            ItemDetailView(itemContent: alias.item,
+                           vault: alias.vault,
+                           onSelect: onSelect)
                 .environment(\.colorScheme, colorScheme)
         }
     }
@@ -147,7 +152,7 @@ private extension LoginDetailView {
                         .sectionContentText()
 
                     if viewModel.isAlias {
-                        Button { showAlias.toggle() } label: {
+                        Button { viewModel.viewAlias() } label: {
                             Text("View alias")
                                 .font(.callout)
                                 .foregroundStyle(viewModel.type.normMajor2Color.toColor)
