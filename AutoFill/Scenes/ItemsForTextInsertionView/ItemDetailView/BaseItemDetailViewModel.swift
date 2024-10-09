@@ -18,16 +18,49 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Factory
 import Foundation
 
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
+    @Published private(set) var isFreeUser = false
+
+    let itemContent: ItemContent
+    let customFieldUiModels: [CustomFieldUiModel]
+
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
 
-    init() {}
+    var type: ItemContentType {
+        itemContent.type
+    }
 
+    init(itemContent: ItemContent) {
+        self.itemContent = itemContent
+        customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+        bindValues()
+    }
+
+    /// To be overidden by subclasses
+    func bindValues() {}
+}
+
+private extension BaseItemDetailViewModel {
+    func checkIfFreeUser() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                isFreeUser = try await upgradeChecker.isFreeUser()
+            } catch {
+                handle(error)
+            }
+        }
+    }
+}
+
+extension BaseItemDetailViewModel {
     func handle(_ error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
