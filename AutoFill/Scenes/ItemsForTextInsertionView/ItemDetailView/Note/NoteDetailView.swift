@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Entities
 import SwiftUI
 
@@ -26,6 +27,15 @@ struct NoteDetailView: View {
     let onSelect: (String) -> Void
 
     var body: some View {
-        Text(verbatim: "Note")
+        if itemContent.note.isEmpty {
+            Text("Empty note")
+                .placeholderText()
+                .frame(maxWidth: .infinity, alignment: .leading)
+        } else {
+            TextView(.constant(itemContent.note))
+                .autoDetectDataTypes(.all)
+                .isEditable(false)
+                .tint(ItemContentType.note.normMajor2Color.toColor)
+        }
     }
 }
