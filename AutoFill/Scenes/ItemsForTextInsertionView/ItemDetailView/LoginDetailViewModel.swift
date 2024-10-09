@@ -29,7 +29,6 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     @Published private var aliasItem: SymmetricallyEncryptedItem?
     @Published var selectedAlias: SelectedItem?
 
-    private let itemContent: ItemContent
     var email = ""
     var username = ""
     var password = ""
@@ -41,11 +40,6 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-
-    var type: ItemContentType {
-        itemContent.type
-    }
 
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
@@ -55,9 +49,7 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
         aliasItem != nil
     }
 
-    init(itemContent: ItemContent) {
-        self.itemContent = itemContent
-        super.init()
+    override func bindValues() {
         if case let .login(data) = itemContent.contentData {
             passkeys = data.passkeys
             email = data.email
