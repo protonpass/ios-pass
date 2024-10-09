@@ -29,6 +29,7 @@
 		3524A4592CB67F78001EC572 /* BaseItemDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3524A4582CB67F78001EC572 /* BaseItemDetailViewModel.swift */; };
 		3524A45A2CB68B7F001EC572 /* TOTPRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C0D1C62B20B567005D48A6 /* TOTPRow.swift */; };
 		3524A45B2CB69E6A001EC572 /* CustomFieldSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35703F272A279B950088C287 /* CustomFieldSections.swift */; };
+		3524A4622CB6A1B2001EC572 /* AliasDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3524A4612CB6A1B2001EC572 /* AliasDetailViewModel.swift */; };
 		35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35283E4F2927B55D002F5B84 /* FullScreenView.swift */; };
 		352866BB28E2D134000630E2 /* CredentialProviderCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */; };
 		352866BD28E2DCB5000630E2 /* CredentialsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352866BC28E2DCB5000630E2 /* CredentialsView.swift */; };
@@ -668,6 +669,7 @@
 		35219D7E2AE1C38D00868F78 /* ShareInvitee+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareInvitee+Extensions.swift"; sourceTree = "<group>"; };
 		352352B52B91DEB400603B91 /* ItemSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSearchResultView.swift; sourceTree = "<group>"; };
 		3524A4582CB67F78001EC572 /* BaseItemDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseItemDetailViewModel.swift; sourceTree = "<group>"; };
+		3524A4612CB6A1B2001EC572 /* AliasDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDetailViewModel.swift; sourceTree = "<group>"; };
 		35283E4F2927B55D002F5B84 /* FullScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenView.swift; sourceTree = "<group>"; };
 		352866BA28E2D134000630E2 /* CredentialProviderCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderCoordinator.swift; sourceTree = "<group>"; };
 		352866BC28E2DCB5000630E2 /* CredentialsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsView.swift; sourceTree = "<group>"; };
@@ -1186,6 +1188,48 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		3524A45C2CB6A174001EC572 /* Alias */ = {
+			isa = PBXGroup;
+			children = (
+				35706C332CB6669A009F438E /* AliasDetailView.swift */,
+				3524A4612CB6A1B2001EC572 /* AliasDetailViewModel.swift */,
+			);
+			path = Alias;
+			sourceTree = "<group>";
+		};
+		3524A45D2CB6A17D001EC572 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				35706C2B2CB665DD009F438E /* LoginDetailView.swift */,
+				35706C352CB66CF1009F438E /* LoginDetailViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		3524A45E2CB6A189001EC572 /* Credit card */ = {
+			isa = PBXGroup;
+			children = (
+				35706C2F2CB66616009F438E /* CreditCardDetailView.swift */,
+			);
+			path = "Credit card";
+			sourceTree = "<group>";
+		};
+		3524A45F2CB6A196001EC572 /* Identity */ = {
+			isa = PBXGroup;
+			children = (
+				35706C312CB6663C009F438E /* IdentityDetailView.swift */,
+			);
+			path = Identity;
+			sourceTree = "<group>";
+		};
+		3524A4602CB6A1A0001EC572 /* Note */ = {
+			isa = PBXGroup;
+			children = (
+				35706C2D2CB665FB009F438E /* NoteDetailView.swift */,
+			);
+			path = Note;
+			sourceTree = "<group>";
+		};
 		353739DF29EAE84000A3255E /* QA Features */ = {
 			isa = PBXGroup;
 			children = (
@@ -1529,12 +1573,11 @@
 			children = (
 				3597F0CF2CB5D19F00384874 /* ItemDetailView.swift */,
 				3524A4582CB67F78001EC572 /* BaseItemDetailViewModel.swift */,
-				35706C332CB6669A009F438E /* AliasDetailView.swift */,
-				35706C2F2CB66616009F438E /* CreditCardDetailView.swift */,
-				35706C312CB6663C009F438E /* IdentityDetailView.swift */,
-				35706C2B2CB665DD009F438E /* LoginDetailView.swift */,
-				35706C352CB66CF1009F438E /* LoginDetailViewModel.swift */,
-				35706C2D2CB665FB009F438E /* NoteDetailView.swift */,
+				3524A45C2CB6A174001EC572 /* Alias */,
+				3524A45E2CB6A189001EC572 /* Credit card */,
+				3524A45F2CB6A196001EC572 /* Identity */,
+				3524A45D2CB6A17D001EC572 /* Login */,
+				3524A4602CB6A1A0001EC572 /* Note */,
 			);
 			path = ItemDetailView;
 			sourceTree = "<group>";
@@ -3040,6 +3083,7 @@
 				359A90322B90CFF100A50138 /* SelectPasskeyView.swift in Sources */,
 				356A1F052B88C56800561950 /* AutoFillMode.swift in Sources */,
 				3524A4592CB67F78001EC572 /* BaseItemDetailViewModel.swift in Sources */,
+				3524A4622CB6A1B2001EC572 /* AliasDetailViewModel.swift in Sources */,
 				35706C2E2CB665FB009F438E /* NoteDetailView.swift in Sources */,
 				3559BAA22A5B32600020E172 /* Browser+Extensions.swift in Sources */,
 				3597F0D12CB5D4CC00384874 /* ItemDetailHistorySection.swift in Sources */,
