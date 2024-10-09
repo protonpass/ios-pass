@@ -55,7 +55,7 @@ struct ItemDetailView: View {
             case .alias:
                 AliasDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
             case .creditCard:
-                CreditCardDetailView(itemContent: itemContent, onSelect: onSelect)
+                CreditCardDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
             case .identity:
                 IdentityDetailView(itemContent: itemContent, onSelect: onSelect)
             case .login:
