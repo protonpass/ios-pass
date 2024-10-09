@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import Entities
 import Factory
 import SwiftUI
@@ -63,6 +64,9 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
+
+    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
+    var selectedSortType = SortType.mostRecent
 
     private var searchableItems: [SearchableItem] {
         if let selectedUser {
