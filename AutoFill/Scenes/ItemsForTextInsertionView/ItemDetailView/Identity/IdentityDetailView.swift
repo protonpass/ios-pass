@@ -18,14 +18,132 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Entities
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct IdentityDetailView: View {
-    let itemContent: ItemContent
+    @StateObject private var viewModel: IdentityDetailViewModel
+    @State private var showSocialSecurityNumber = false
     let onSelect: (String) -> Void
 
+    init(userId: String?,
+         itemContent: ItemContent,
+         onSelect: @escaping (String) -> Void) {
+        _viewModel = .init(wrappedValue: .init(userId: userId, itemContent: itemContent))
+        self.onSelect = onSelect
+    }
+
     var body: some View {
-        Text(verbatim: "Identity")
+        VStack(spacing: 0) {
+            ForEach(viewModel.sections) { section in
+                if !section.isEmpty {
+                    view(for: section)
+                }
+            }
+
+            ForEach(viewModel.extraSections) {
+                view(for: $0)
+            }
+        }
+    }
+}
+
+private extension IdentityDetailView {
+    func view(for section: IdentityDetailSection) -> some View {
+        Section {
+            VStack(spacing: DesignConstant.sectionPadding) {
+                ForEach(section.rows) { row in
+                    if let value = row.value, !value.isEmpty {
+                        HStack(spacing: DesignConstant.sectionPadding) {
+                            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                                Text(row.title)
+                                    .sectionTitleText()
+
+                                let showPlainText = !row.isSocialSecurityNumber ||
+                                    (row.isSocialSecurityNumber && showSocialSecurityNumber)
+                                Text(showPlainText ? value : String(repeating: "•", count: 12))
+                                    .sectionContentText()
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .contentShape(.rect)
+                            .onTapGesture {
+                                if let value = row.value {
+                                    onSelect(value)
+                                }
+                            }
+
+                            if row.isSocialSecurityNumber {
+                                toggleSSNVisibilityButton
+                            }
+                        }
+                        .padding(.horizontal, DesignConstant.sectionPadding)
+
+                        if row == section.rows.last, section.customFields.isEmpty {
+                            EmptyView()
+                        } else {
+                            PassSectionDivider()
+                        }
+                    }
+                }
+
+                CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                                    uiModels: section.customFields,
+                                    isFreeUser: viewModel.isFreeUser,
+                                    isASection: false,
+                                    showIcon: false,
+                                    onSelectHiddenText: { onSelect($0) },
+                                    onSelectTotpToken: { onSelect($0) },
+                                    onUpgrade: { viewModel.upgrade() })
+            }
+            .padding(.vertical, DesignConstant.sectionPadding)
+            .roundedDetailSection()
+        } header: {
+            Text(section.title)
+                .foregroundStyle(PassColor.textWeak.toColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical, DesignConstant.sectionPadding)
+        }
+    }
+
+    func view(for section: CustomSection) -> some View {
+        Section {
+            if section.content.isEmpty {
+                Text("Empty section")
+                    .font(.callout.italic())
+                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            } else {
+                CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                                    uiModels: section.content.map(\.toCustomFieldUiModel),
+                                    isFreeUser: viewModel.isFreeUser,
+                                    showIcon: false,
+                                    onSelectHiddenText: { onSelect($0) },
+                                    onSelectTotpToken: { onSelect($0) },
+                                    onUpgrade: { viewModel.upgrade() })
+            }
+        } header: {
+            sectionHeader(title: section.title)
+        }
+    }
+
+    func sectionHeader(title: String) -> some View {
+        Text(title)
+            .foregroundStyle(PassColor.textWeak.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.top, DesignConstant.sectionPadding)
+            .padding(.vertical, DesignConstant.sectionPadding)
+    }
+
+    var toggleSSNVisibilityButton: some View {
+        CircleButton(icon: showSocialSecurityNumber ? IconProvider.eyeSlash : IconProvider.eye,
+                     iconColor: viewModel.itemContent.type.normMajor2Color,
+                     backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                     accessibilityLabel: showSocialSecurityNumber ?
+                         "Hide social security number" : "Show social security number",
+                     action: { showSocialSecurityNumber.toggle() })
+            .fixedSize(horizontal: true, vertical: true)
+            .animationsDisabled()
     }
 }

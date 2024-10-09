@@ -1,7 +1,6 @@
 //
-//
 // IdentityDetailViewModel.swift
-// Proton Pass - Created on 27/05/2024.
+// Proton Pass - Created on 09/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,19 +17,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Combine
-import Core
 import Entities
-import Factory
+import Foundation
 import Macro
-import SwiftUI
-import UIKit
 
 @MainActor
 final class IdentityDetailViewModel: BaseItemDetailViewModel {
-    @Published private(set) var title = ""
     @Published private var identity: IdentityData?
 
     var extraPersonalDetails: [CustomFieldUiModel] {
@@ -53,12 +46,6 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         identity?.extraSections ?? []
     }
 
-    override func bindValues() {
-        super.bindValues()
-        title = itemContent.name
-        identity = itemContent.identityItem
-    }
-
     var sections: [IdentityDetailSection] {
         [
             personalDetailsSection,
@@ -66,6 +53,10 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
             contactDetailsSection,
             workDetailsSection
         ]
+    }
+
+    override func bindValues() {
+        identity = itemContent.identityItem
     }
 }
 
@@ -130,21 +121,5 @@ private extension IdentityDetailViewModel {
                   .init(title: IdentityFields.workEmail.title, value: identity?.workEmail)
               ],
               customFields: extraWorkDetails)
-    }
-}
-
-extension IdentityDetailViewModel {
-    func copyToClipboard(_ row: IdentityDetailRow) {
-        if let value = row.value {
-            copyToClipboard(text: value, message: #localized("%@ copied", row.title))
-        }
-    }
-
-    func copyTotpToken(_ token: String) {
-        copyToClipboard(text: token, message: #localized("TOTP copied"))
-    }
-
-    func copyHiddenText(_ text: String) {
-        copyToClipboard(text: text, message: #localized("Hidden text copied"))
     }
 }
