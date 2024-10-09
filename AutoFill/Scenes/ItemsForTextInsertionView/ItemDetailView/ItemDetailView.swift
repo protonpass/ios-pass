@@ -26,6 +26,7 @@ import SwiftUI
 struct ItemDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var expandedMoreInfo = false
+    let userId: String?
     let itemContent: ItemContent
     let vault: Vault?
     let onSelect: (String) -> Void
@@ -52,13 +53,13 @@ struct ItemDetailView: View {
 
             switch itemContent.type {
             case .alias:
-                AliasDetailView(itemContent: itemContent, onSelect: onSelect)
+                AliasDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
             case .creditCard:
                 CreditCardDetailView(itemContent: itemContent, onSelect: onSelect)
             case .identity:
                 IdentityDetailView(itemContent: itemContent, onSelect: onSelect)
             case .login:
-                LoginDetailView(itemContent: itemContent, onSelect: onSelect)
+                LoginDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
             case .note:
                 NoteDetailView(itemContent: itemContent, onSelect: onSelect)
             }

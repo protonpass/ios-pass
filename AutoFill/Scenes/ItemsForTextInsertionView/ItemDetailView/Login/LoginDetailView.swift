@@ -36,9 +36,11 @@ struct LoginDetailView: View {
         viewModel.type.normColor
     }
 
-    init(itemContent: ItemContent,
+    init(userId: String?,
+         itemContent: ItemContent,
          onSelect: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(itemContent: itemContent))
+        _viewModel = .init(wrappedValue: .init(userId: userId,
+                                               itemContent: itemContent))
         self.onSelect = onSelect
     }
 
@@ -61,7 +63,8 @@ struct LoginDetailView: View {
                 .environment(\.colorScheme, colorScheme)
         }
         .optionalSheet(binding: $viewModel.selectedAlias) { alias in
-            ItemDetailView(itemContent: alias.item,
+            ItemDetailView(userId: alias.userId,
+                           itemContent: alias.item,
                            vault: alias.vault,
                            onSelect: onSelect)
                 .environment(\.colorScheme, colorScheme)

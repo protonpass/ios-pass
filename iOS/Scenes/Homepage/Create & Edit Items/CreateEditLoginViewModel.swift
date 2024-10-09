@@ -273,7 +273,8 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             do {
                 loading = true
                 if aliasOptions == nil {
-                    aliasOptions = try await aliasRepository.getAliasOptions(shareId: selectedVault.shareId)
+                    aliasOptions = try await aliasRepository.getAliasOptions(userId: nil,
+                                                                             shareId: selectedVault.shareId)
                 }
                 if let aliasOptions,
                    let firstSuffix = aliasOptions.suffixes.first,
