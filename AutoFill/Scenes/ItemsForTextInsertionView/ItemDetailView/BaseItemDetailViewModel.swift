@@ -32,4 +32,8 @@ class BaseItemDetailViewModel: ObservableObject {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }
+
+    func upgrade() {
+        router.present(for: .upgradeFlow)
+    }
 }

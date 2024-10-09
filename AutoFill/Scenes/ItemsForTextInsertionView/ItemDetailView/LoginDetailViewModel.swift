@@ -25,10 +25,11 @@ import UseCases
 
 @MainActor
 final class LoginDetailViewModel: BaseItemDetailViewModel {
+    @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private var aliasItem: SymmetricallyEncryptedItem?
     @Published var selectedAlias: SelectedItem?
 
-    let type: ItemContentType
+    private let itemContent: ItemContent
     var email = ""
     var username = ""
     var password = ""
@@ -40,6 +41,11 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+
+    var type: ItemContentType {
+        itemContent.type
+    }
 
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
@@ -50,7 +56,7 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     }
 
     init(itemContent: ItemContent) {
-        type = itemContent.type
+        self.itemContent = itemContent
         super.init()
         if case let .login(data) = itemContent.contentData {
             passkeys = data.passkeys
@@ -60,14 +66,13 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
             totpUri = data.totpUri
-//            totpManager.bind(uri: data.totpUri)
             getAliasItem(email: data.email)
 
-//            if !data.totpUri.isEmpty {
-//                checkTotpState()
-//            } else {
-//                totpTokenState = .allowed
-//            }
+            if !data.totpUri.isEmpty {
+                checkTotpState()
+            } else {
+                totpTokenState = .allowed
+            }
         } else {
             fatalError("Expecting login type")
         }
@@ -98,6 +103,21 @@ private extension LoginDetailViewModel {
             guard let self else { return }
             do {
                 aliasItem = try await itemRepository.getAliasItem(email: email)
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func checkTotpState() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
+                    totpTokenState = .allowed
+                } else {
+                    totpTokenState = .notAllowed
+                }
             } catch {
                 handle(error)
             }
