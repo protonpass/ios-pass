@@ -22,11 +22,6 @@
 import Entities
 import XCTest
 
-private struct DummyItem: ItemIdentifiable, Hashable, Equatable {
-    let itemId: String
-    let shareId: String
-}
-
 final class LocalSearchEntryDatasourceTests: XCTestCase {
     var sut: LocalSearchEntryDatasourceProtocol!
 
