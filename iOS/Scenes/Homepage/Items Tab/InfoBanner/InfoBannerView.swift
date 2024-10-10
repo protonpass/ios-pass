@@ -56,7 +56,6 @@ private extension InfoBannerView {
                     .minimumScaleFactor(0.75)
                     .font(.body.weight(.bold))
                     .lineLimit(2)
-                    .frame(maxHeight: .infinity)
 
                 Text(banner.detail.description)
                     .minimumScaleFactor(0.75)
@@ -70,7 +69,6 @@ private extension InfoBannerView {
                 }
             }
             .foregroundStyle(banner.detail.foregroundColor)
-            .padding(.vertical, 16)
 
             Spacer()
 
@@ -90,29 +88,41 @@ private extension InfoBannerView {
             Image(systemName: "xmark")
                 .resizable()
                 .frame(width: 12, height: 12)
-                .padding()
+                .padding(.horizontal)
                 .scaledToFit()
-                .foregroundStyle(PassColor.textInvert.toColor)
+                .foregroundStyle(banner.detail.closeButtonColor)
         }
     }
 }
 
 private extension InfoBannerView {
+    @ViewBuilder
     func ctaButtonView(ctaTitle: String) -> some View {
-        Button(action: action) {
-            Label {
-                Text(ctaTitle)
-                    .minimumScaleFactor(0.75)
-                    .font(.caption2.weight(.semibold))
-            } icon: {
-                Image(systemName: "chevron.right")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxHeight: 10)
-            }.labelStyle(.rightIcon)
+        switch banner.detail.typeOfCtaButton {
+        case .text:
+            Button(action: action) {
+                Label {
+                    Text(ctaTitle)
+                        .minimumScaleFactor(0.75)
+                        .font(.caption2.weight(.semibold))
+                } icon: {
+                    Image(systemName: "chevron.right")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 10)
+                }.labelStyle(.rightIcon)
+            }
+            .buttonStyle(.plain)
+            .frame(maxHeight: 17)
+        case let .capsule(titleColor, backgroundColor):
+            CapsuleTextButton(title: ctaTitle,
+                              titleColor: titleColor,
+                              backgroundColor: backgroundColor,
+                              height: 28,
+                              maxWidth: nil) {
+                action()
+            }
         }
-        .buttonStyle(.plain)
-        .frame(maxHeight: 17)
     }
 }
 
