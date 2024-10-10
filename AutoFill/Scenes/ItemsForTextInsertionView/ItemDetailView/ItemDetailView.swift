@@ -26,49 +26,47 @@ import SwiftUI
 struct ItemDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var expandedMoreInfo = false
-    let userId: String?
-    let itemContent: ItemContent
-    let vault: Vault?
+    let item: SelectedItem
     let onSelect: (String) -> Void
 
     var body: some View {
         VStack {
             Group {
-                if case .note = itemContent.type {
-                    Text(itemContent.title)
+                if case .note = item.content.type {
+                    Text(item.content.title)
                         .font(.title.bold())
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                         .padding(.bottom, DesignConstant.sectionPadding)
                 } else {
-                    ItemDetailTitleView(itemContent: itemContent,
-                                        vault: vault,
+                    ItemDetailTitleView(itemContent: item.content,
+                                        vault: item.vault,
                                         shouldShowVault: true)
                         .padding(.bottom, 40)
                 }
             }
             .onTapGesture {
-                onSelect(itemContent.title)
+                onSelect(item.content.title)
             }
 
-            switch itemContent.type {
+            switch item.content.type {
             case .alias:
-                AliasDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
+                AliasDetailView(item: item, onSelect: onSelect)
             case .creditCard:
-                CreditCardDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
+                CreditCardDetailView(item: item, onSelect: onSelect)
             case .identity:
-                IdentityDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
+                IdentityDetailView(item: item, onSelect: onSelect)
             case .login:
-                LoginDetailView(userId: userId, itemContent: itemContent, onSelect: onSelect)
+                LoginDetailView(item: item, onSelect: onSelect)
             case .note:
-                NoteDetailView(itemContent: itemContent, onSelect: onSelect)
+                NoteDetailView(itemContent: item.content, onSelect: onSelect)
             }
 
-            ItemDetailHistorySection(itemContent: itemContent, action: nil)
+            ItemDetailHistorySection(itemContent: item.content, action: nil)
 
             ItemDetailMoreInfoSection(isExpanded: $expandedMoreInfo,
-                                      itemContent: itemContent,
-                                      vault: vault,
+                                      itemContent: item.content,
+                                      vault: item.vault,
                                       onCopy: nil)
                 .padding(.top, 24)
         }
@@ -76,8 +74,8 @@ struct ItemDetailView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 CircleButton(icon: IconProvider.chevronDown,
-                             iconColor: itemContent.type.normMajor2Color,
-                             backgroundColor: itemContent.type.normMinor1Color,
+                             iconColor: item.content.type.normMajor2Color,
+                             backgroundColor: item.content.type.normMinor1Color,
                              accessibilityLabel: "Close",
                              action: dismiss.callAsFunction)
             }
