@@ -33,6 +33,8 @@ struct NoteDetailView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
         } else {
             TextView(.constant(itemContent.note))
+                // swiftlint:disable:next deprecated_foregroundcolor_modifier
+                .foregroundColor(PassColor.textNorm)
                 .autoDetectDataTypes(.all)
                 .isEditable(false)
                 .tint(ItemContentType.note.normMajor2Color.toColor)

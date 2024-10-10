@@ -29,10 +29,6 @@ struct ItemsForTextInsertionView: View {
     @StateObject private var viewModel: ItemsForTextInsertionViewModel
     @FocusState private var isFocusedOnSearchBar
 
-    private var highlighted: Bool {
-        viewModel.filterOption != .all
-    }
-
     init(viewModel: ItemsForTextInsertionViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
@@ -80,11 +76,22 @@ private extension ItemsForTextInsertionView {
                     Menu(content: {
                         filterOptions
                         sortOptions
+                        if viewModel.resettable {
+                            Button(action: { viewModel.resetFilters() },
+                                   label: {
+                                       Label(title: {
+                                           Text("Reset filters")
+                                       }, icon: {
+                                           IconProvider.crossCircle
+                                       })
+                                   })
+                        }
                     }, label: {
                         CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: highlighted ? PassColor.textInvert : PassColor
+                                     iconColor: viewModel.highlighted ? PassColor.textInvert : PassColor
                                          .interactionNormMajor2,
-                                     backgroundColor: highlighted ? PassColor.interactionNormMajor2 : .clear,
+                                     backgroundColor: viewModel.highlighted ? PassColor
+                                         .interactionNormMajor2 : .clear,
                                      accessibilityLabel: "Items filtering and sort menu")
                     })
                 }
@@ -114,9 +121,11 @@ private extension ItemsForTextInsertionView {
                             Spacer()
                         }
                     } else {
-                        TableView(sections: viewModel.sections) { item in
+                        TableView(sections: viewModel.sections,
+                                  id: viewModel.selectedUser?.hashValue) { item in
                             GenericCredentialItemRow(item: item,
-                                                     user: nil,
+                                                     user: viewModel.getUser(for: item,
+                                                                             forUiDisplay: true),
                                                      selectItem: { viewModel.select($0) })
                         }
                         .padding(.top)
@@ -209,7 +218,7 @@ private extension ItemsForTextInsertionView {
                     text(for: filterOption.uiModel(from: itemCount))
                 }
             }, icon: {
-                Image(uiImage: highlighted ? PassIcon.filterFilled : IconProvider.filter)
+                Image(uiImage: viewModel.highlighted ? PassIcon.filterFilled : IconProvider.filter)
             })
         })
     }

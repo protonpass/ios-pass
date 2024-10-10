@@ -213,7 +213,9 @@ extension AutoFillViewModel {
     /// "all accounts" view mode.
     /// Otherwise, always return a user for making API requests base on `userID`
     func getUser(for item: any ItemIdentifiable, forUiDisplay: Bool) -> UserUiModel? {
-        if forUiDisplay, users.count > 1, selectedUser == nil { return nil }
+        if forUiDisplay, users.count > 1, selectedUser != nil {
+            return nil
+        }
         do {
             return try shareIdToUserManager.getUser(for: item)
         } catch {
