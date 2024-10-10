@@ -91,7 +91,7 @@ struct PasskeyCredentialsView: View {
 private extension PasskeyCredentialsView {
     func row(for item: any CredentialItem) -> some View {
         GenericCredentialItemRow(item: item,
-                                 user: viewModel.getUser(for: item, forUiDisplay: true),
+                                 user: viewModel.getUserForUiDisplay(for: item),
                                  selectItem: { viewModel.selectedItem = $0 })
     }
 }

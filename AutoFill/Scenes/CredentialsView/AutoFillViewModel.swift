@@ -208,20 +208,18 @@ extension AutoFillViewModel {
         delegate?.autoFillViewModelWantsToSelectUser(users)
     }
 
-    /// When getting user for UI display, we only return user when logged in with multiple accounts
-    /// and no particular account is selected. This way we only display the user next to the item title when in
-    /// "all accounts" view mode.
-    /// Otherwise, always return a user for making API requests base on `userID`
-    func getUser(for item: any ItemIdentifiable, forUiDisplay: Bool) -> UserUiModel? {
-        if forUiDisplay, users.count > 1, selectedUser != nil {
-            return nil
-        }
+    func getUserForUiDisplay(for item: any ItemIdentifiable) -> UserUiModel? {
+        guard users.count > 1, selectedUser == nil else { return nil }
         do {
             return try shareIdToUserManager.getUser(for: item)
         } catch {
             handle(error)
             return nil
         }
+    }
+
+    func getUser(for item: any ItemIdentifiable) throws -> UserUiModel {
+        try shareIdToUserManager.getUser(for: item)
     }
 
     func getAllObjects<Object: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<T, [Object]>)

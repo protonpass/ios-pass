@@ -47,10 +47,7 @@ struct ItemsForTextInsertionView: View {
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .optionalSheet(binding: $viewModel.selectedItem) { selectedItem in
-            ItemDetailView(userId: selectedItem.userId,
-                           itemContent: selectedItem.item,
-                           vault: selectedItem.vault,
-                           onSelect: { viewModel.autofill($0) })
+            ItemDetailView(item: selectedItem, onSelect: { viewModel.autofill($0) })
                 .environment(\.colorScheme, colorScheme)
         }
     }
@@ -124,8 +121,7 @@ private extension ItemsForTextInsertionView {
                         TableView(sections: viewModel.sections,
                                   id: viewModel.selectedUser?.hashValue) { item in
                             GenericCredentialItemRow(item: item,
-                                                     user: viewModel.getUser(for: item,
-                                                                             forUiDisplay: true),
+                                                     user: viewModel.getUserForUiDisplay(for: item),
                                                      selectItem: { viewModel.select($0) })
                         }
                         .padding(.top)

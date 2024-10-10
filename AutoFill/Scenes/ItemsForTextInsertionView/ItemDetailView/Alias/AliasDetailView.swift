@@ -33,11 +33,9 @@ struct AliasDetailView: View {
         viewModel.type.normColor
     }
 
-    init(userId: String?,
-         itemContent: ItemContent,
+    init(item: SelectedItem,
          onSelect: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(userId: userId,
-                                               itemContent: itemContent))
+        _viewModel = .init(wrappedValue: .init(item: item))
         self.onSelect = onSelect
     }
 

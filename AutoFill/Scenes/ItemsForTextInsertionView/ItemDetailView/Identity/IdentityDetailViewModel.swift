@@ -56,7 +56,7 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
     }
 
     override func bindValues() {
-        identity = itemContent.identityItem
+        identity = item.content.identityItem
     }
 }
 

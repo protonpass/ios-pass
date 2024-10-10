@@ -35,7 +35,7 @@ final class CreditCardDetailViewModel: BaseItemDetailViewModel {
     }
 
     override func bindValues() {
-        if case let .creditCard(data) = itemContent.contentData {
+        if case let .creditCard(data) = item.content.contentData {
             cardholderName = data.cardholderName
             cardNumber = data.number
             verificationNumber = data.verificationNumber

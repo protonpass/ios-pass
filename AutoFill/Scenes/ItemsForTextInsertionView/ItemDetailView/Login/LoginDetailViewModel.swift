@@ -50,7 +50,7 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     }
 
     override func bindValues() {
-        if case let .login(data) = itemContent.contentData {
+        if case let .login(data) = item.content.contentData {
             passkeys = data.passkeys
             email = data.email
             username = data.username
@@ -78,9 +78,9 @@ extension LoginDetailViewModel {
             guard let self else { return }
             do {
                 if let alias = try await itemRepository.getItemContent(shareId: aliasItem.shareId,
-                                                                       itemId: aliasItem.itemId) {
-                    let vault = try await shareRepository.getVault(shareId: alias.shareId)
-                    selectedAlias = .init(userId: userId, item: alias, vault: vault)
+                                                                       itemId: aliasItem.itemId),
+                    let vault = try await shareRepository.getVault(shareId: alias.shareId) {
+                    selectedAlias = .init(userId: item.userId, content: alias, vault: vault)
                 }
             } catch {
                 handle(error)
@@ -105,7 +105,7 @@ private extension LoginDetailViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                if try await upgradeChecker.canShowTOTPToken(creationDate: itemContent.item.createTime) {
+                if try await upgradeChecker.canShowTOTPToken(creationDate: item.content.item.createTime) {
                     totpTokenState = .allowed
                 } else {
                     totpTokenState = .notAllowed
