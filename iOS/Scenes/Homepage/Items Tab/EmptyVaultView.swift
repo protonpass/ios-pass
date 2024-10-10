@@ -72,7 +72,7 @@ private extension EmptyVaultView {
         case .alias, .creditCard, .login, .note:
             true
         case .identity:
-            getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1)
+            getFeatureFlagStatus(for: FeatureFlagType.passIdentityV1)
         }
     }
 }

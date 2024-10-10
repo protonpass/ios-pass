@@ -125,11 +125,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
     var isSecureLinkActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+        getFeatureFlagStatus(for: FeatureFlagType.passPublicLinkV1)
     }
 
     var isSimpleLoginAliasSyncActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+        getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
     }
 
     var showAliasSyncExplanation: Int? {
