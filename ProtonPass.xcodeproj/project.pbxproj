@@ -320,6 +320,7 @@
 		357E13FF2A1BBDE2001B5791 /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
 		35805D0A2BD8E39300288CC0 /* MonitorExcludedEmailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */; };
 		358152032C57C3EB0054F755 /* CredentialsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358152022C57C3EB0054F755 /* CredentialsSection.swift */; };
+		3583AE472CB7BA8E00A57A31 /* SelectedItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3583AE462CB7BA8E00A57A31 /* SelectedItem.swift */; };
 		35855AB62A0A6BF80091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855C112AC8743F00794DB4 /* UseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 35855C102AC8743F00794DB4 /* UseCases */; };
@@ -853,6 +854,7 @@
 		357ED8C42AC1C6F20019A0E9 /* Macro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Macro; path = LocalPackages/Macro; sourceTree = "<group>"; };
 		35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorExcludedEmailView.swift; sourceTree = "<group>"; };
 		358152022C57C3EB0054F755 /* CredentialsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsSection.swift; sourceTree = "<group>"; };
+		3583AE462CB7BA8E00A57A31 /* SelectedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedItem.swift; sourceTree = "<group>"; };
 		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
 		3585DE512B591035008AFD9F /* ImportExportWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportWebView.swift; sourceTree = "<group>"; };
 		3586478129F825E0003487B1 /* TelemetryEventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventsSection.swift; sourceTree = "<group>"; };
@@ -2487,6 +2489,7 @@
 				5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */,
 				356A1F062B88C59C00561950 /* Passkey.swift */,
 				35FD55A12C9072DC00805584 /* LoginCreationInfo.swift */,
+				3583AE462CB7BA8E00A57A31 /* SelectedItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3063,6 +3066,7 @@
 				3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */,
 				3562BC30299542D6003FCB13 /* ItemContentType+Extensions.swift in Sources */,
 				3577746D2B8F24670087A275 /* CreateAndAssociatePasskey.swift in Sources */,
+				3583AE472CB7BA8E00A57A31 /* SelectedItem.swift in Sources */,
 				5BF35D6F2B21FB2D00D3E297 /* Pinnable+Extensions.swift in Sources */,
 				3524A46A2CB6B6C8001EC572 /* IdentityDetailData.swift in Sources */,
 				3561C9F829E6E3E000D6E518 /* VaultRow.swift in Sources */,
