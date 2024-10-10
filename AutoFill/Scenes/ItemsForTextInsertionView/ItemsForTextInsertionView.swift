@@ -20,7 +20,6 @@
 
 import DesignSystem
 import Entities
-import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -46,6 +45,7 @@ struct ItemsForTextInsertionView: View {
         }
         .task {
             await viewModel.fetchItems()
+            viewModel.filterAndSortItems()
             await viewModel.sync(ignoreError: true)
         }
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
@@ -104,7 +104,7 @@ private extension ItemsForTextInsertionView {
                 }
 
                 if !viewModel.results.isEmpty {
-                    if viewModel.items.isEmpty {
+                    if viewModel.sections.allSatisfy(\.items.isEmpty) {
                         VStack {
                             Spacer()
                             Text(verbatim: "Empty")
@@ -114,7 +114,12 @@ private extension ItemsForTextInsertionView {
                             Spacer()
                         }
                     } else {
-                        itemList
+                        TableView(sections: viewModel.sections) { item in
+                            GenericCredentialItemRow(item: item,
+                                                     user: nil,
+                                                     selectItem: { viewModel.select($0) })
+                        }
+                        .padding(.top)
                     }
                 }
             case .searching:
@@ -211,48 +216,5 @@ private extension ItemsForTextInsertionView {
 
     func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
         Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
-    }
-}
-
-private extension ItemsForTextInsertionView {
-    @ViewBuilder
-    var itemList: some View {
-        let items = viewModel.items
-        let sections: [TableView<ItemUiModel, GenericCredentialItemRow>.Section] = {
-            switch viewModel.sortType {
-            case .mostRecent:
-                let results = items.mostRecentSortResult()
-                return [
-                    .init(title: #localized("Today"), items: results.today),
-                    .init(title: #localized("Yesterday"), items: results.yesterday),
-                    .init(title: #localized("Last week"), items: results.last7Days),
-                    .init(title: #localized("Last two weeks"), items: results.last14Days),
-                    .init(title: #localized("Last 30 days"), items: results.last30Days),
-                    .init(title: #localized("Last 60 days"), items: results.last60Days),
-                    .init(title: #localized("Last 90 days"), items: results.last90Days),
-                    .init(title: #localized("More than 90 days"), items: results.others)
-                ]
-            case .alphabeticalAsc:
-                let results = items.alphabeticalSortResult(direction: .ascending)
-                return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
-            case .alphabeticalDesc:
-                let results = items.alphabeticalSortResult(direction: .descending)
-                return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
-            case .newestToOldest:
-                let results = items.monthYearSortResult(direction: .descending)
-                return results.buckets.map { .init(title: $0.monthYear.relativeString,
-                                                   items: $0.items) }
-            case .oldestToNewest:
-                let results = items.monthYearSortResult(direction: .ascending)
-                return results.buckets.map { .init(title: $0.monthYear.relativeString,
-                                                   items: $0.items) }
-            }
-        }()
-        TableView(sections: sections) { item in
-            GenericCredentialItemRow(item: item,
-                                     user: nil,
-                                     selectItem: { viewModel.select($0) })
-        }
-        .padding(.top)
     }
 }

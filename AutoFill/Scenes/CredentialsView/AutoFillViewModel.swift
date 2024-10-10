@@ -40,7 +40,17 @@ protocol AutoFillViewModelDelegate: AnyObject {
 @MainActor
 class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     @Published private(set) var results: [T] = []
-    @Published var selectedUser: UserUiModel?
+
+    @Published var selectedUser: UserUiModel? {
+        didSet {
+            selectedUserUpdated.send(())
+        }
+    }
+
+    // Triggered in `didSet` block to workaround @Published's behavior
+    // of sinking when the value is not yet updated
+    let selectedUserUpdated = PassthroughSubject<Void, Never>()
+
     var cancellables = Set<AnyCancellable>()
 
     private let shareIdToUserManager: any ShareIdToUserManagerProtocol
@@ -90,6 +100,11 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         self.users = users
         self.userForNewItemSubject = userForNewItemSubject
         shareIdToUserManager = ShareIdToUserManager(users: users)
+        setUp()
+    }
+
+    /// Set up after initialization, `super` must be called when overidding
+    func setUp() {
         if users.count == 1 {
             selectedUser = users.first
         }

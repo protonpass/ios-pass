@@ -48,7 +48,9 @@ struct LoginDetailView: View {
         VStack {
             passkeysSection
             usernamePassword2FaSection
-            urlsSection
+            if !viewModel.urls.isEmpty {
+                urlsSection
+            }
             CustomFieldSections(itemContentType: viewModel.type,
                                 uiModels: viewModel.customFieldUiModels,
                                 isFreeUser: viewModel.isFreeUser,
