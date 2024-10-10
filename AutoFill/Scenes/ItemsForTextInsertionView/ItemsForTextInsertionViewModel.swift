@@ -19,9 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Combine
 import Core
+import DesignSystem
 import Entities
 import Factory
+import Macro
 import SwiftUI
 
 enum ItemsForTextInsertionViewState: Equatable {
@@ -47,14 +50,10 @@ enum ItemsForTextInsertionViewState: Equatable {
     }
 }
 
-struct SelectedItem {
-    let userId: String?
-    let item: ItemContent
-    let vault: Vault?
-}
-
 @MainActor
 final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsertion> {
+    @Published private(set) var sections = [TableView<ItemUiModel, GenericCredentialItemRow>.Section]()
+    @Published private(set) var itemCount: ItemCount = .zero
     @Published private(set) var state = CredentialsViewState.loading
     @Published var query = ""
     @Published var selectedItem: SelectedItem?
@@ -65,8 +64,13 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
 
+    private let sortTypeUpdated = PassthroughSubject<Void, Never>()
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var sortType = SortType.mostRecent
+    var sortType = SortType.mostRecent {
+        didSet {
+            sortTypeUpdated.send(())
+        }
+    }
 
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
     var filterOption = ItemTypeFilterOption.all
@@ -79,20 +83,18 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         }
     }
 
-    var items: [ItemUiModel] {
-        if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.items ?? []
-        } else {
-            getAllObjects(\.items)
-        }
-    }
-
-    var itemCount: ItemCount {
-        .init(items: items)
-    }
-
     private var vaults: [Vault] {
         results.flatMap(\.vaults)
+    }
+
+    override func setUp() {
+        super.setUp()
+        Publishers.Merge(selectedUserUpdated, sortTypeUpdated)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                filterAndSortItems()
+            }
+            .store(in: &cancellables)
     }
 
     override func getVaults(userId: String) -> [Vault]? {
@@ -125,6 +127,51 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
 }
 
 extension ItemsForTextInsertionViewModel {
+    func filterAndSortItems() {
+        defer { state = .idle }
+        state = .loading
+
+        let items = if let selectedUser {
+            results.first { $0.userId == selectedUser.id }?.items ?? []
+        } else {
+            getAllObjects(\.items)
+        }
+
+        let sections: [TableView<ItemUiModel, GenericCredentialItemRow>.Section] = {
+            switch sortType {
+            case .mostRecent:
+                let results = items.mostRecentSortResult()
+                return [
+                    .init(title: #localized("Today"), items: results.today),
+                    .init(title: #localized("Yesterday"), items: results.yesterday),
+                    .init(title: #localized("Last week"), items: results.last7Days),
+                    .init(title: #localized("Last two weeks"), items: results.last14Days),
+                    .init(title: #localized("Last 30 days"), items: results.last30Days),
+                    .init(title: #localized("Last 60 days"), items: results.last60Days),
+                    .init(title: #localized("Last 90 days"), items: results.last90Days),
+                    .init(title: #localized("More than 90 days"), items: results.others)
+                ]
+            case .alphabeticalAsc:
+                let results = items.alphabeticalSortResult(direction: .ascending)
+                return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
+            case .alphabeticalDesc:
+                let results = items.alphabeticalSortResult(direction: .descending)
+                return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
+            case .newestToOldest:
+                let results = items.monthYearSortResult(direction: .descending)
+                return results.buckets.map { .init(title: $0.monthYear.relativeString,
+                                                   items: $0.items) }
+            case .oldestToNewest:
+                let results = items.monthYearSortResult(direction: .ascending)
+                return results.buckets.map { .init(title: $0.monthYear.relativeString,
+                                                   items: $0.items) }
+            }
+        }()
+
+        itemCount = .init(items: items)
+        self.sections = sections.filter { !$0.items.isEmpty }
+    }
+
     func select(_ item: any ItemIdentifiable) {
         Task { [weak self] in
             guard let self else { return }
