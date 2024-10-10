@@ -196,11 +196,12 @@ extension ItemsForTextInsertionViewModel {
             guard let self else { return }
             do {
                 if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
-                                                                             itemId: item.itemId) {
-                    let user = getUser(for: item, forUiDisplay: false)
-                    selectedItem = .init(userId: user?.id,
-                                         item: itemContent,
-                                         vault: vaults.first(where: { $0.shareId == item.shareId }))
+                                                                             itemId: item.itemId),
+                    let vault = vaults.first(where: { $0.shareId == item.shareId }) {
+                    let user = try getUser(for: item)
+                    selectedItem = .init(userId: user.id,
+                                         content: itemContent,
+                                         vault: vault)
                 }
             } catch {
                 handle(error)

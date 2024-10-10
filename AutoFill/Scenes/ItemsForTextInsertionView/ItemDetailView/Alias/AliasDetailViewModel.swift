@@ -33,8 +33,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel {
     private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
 
     override func bindValues() {
-        email = itemContent.item.aliasEmail ?? ""
-        enabled = itemContent.item.isAliasEnabled
+        email = item.content.item.aliasEmail ?? ""
+        enabled = item.content.item.isAliasEnabled
     }
 }
 
@@ -42,9 +42,9 @@ extension AliasDetailViewModel {
     func fetchMailboxes() async {
         mailboxesError = nil
         do {
-            let details = try await aliasRepository.getAliasDetails(userId: userId,
-                                                                    shareId: itemContent.shareId,
-                                                                    itemId: itemContent.itemId)
+            let details = try await aliasRepository.getAliasDetails(userId: item.userId,
+                                                                    shareId: item.content.shareId,
+                                                                    itemId: item.content.itemId)
             mailboxes = details.mailboxes
         } catch {
             mailboxesError = error
