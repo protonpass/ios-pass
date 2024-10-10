@@ -29,7 +29,7 @@ public protocol LocalShareDatasourceProtocol: Sendable {
     func removeAllShares(userId: String) async throws
 }
 
-public final class LocalShareDatasource: LocalDatasource, LocalShareDatasourceProtocol {}
+public final class LocalShareDatasource: LocalDatasource, LocalShareDatasourceProtocol, @unchecked Sendable {}
 
 public extension LocalShareDatasource {
     func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare? {

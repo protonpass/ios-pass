@@ -37,7 +37,7 @@ public protocol LocalUserDataDatasourceProtocol: Sendable {
     func removeAll() async throws
 }
 
-public final class LocalUserDataDatasource: LocalDatasource, LocalUserDataDatasourceProtocol {
+public final class LocalUserDataDatasource: LocalDatasource, LocalUserDataDatasourceProtocol, @unchecked Sendable {
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,

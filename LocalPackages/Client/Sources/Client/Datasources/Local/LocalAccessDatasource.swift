@@ -29,7 +29,7 @@ public protocol LocalAccessDatasourceProtocol: Sendable {
     func removeAccess(userId: String) async throws
 }
 
-public final class LocalAccessDatasource: LocalDatasource, LocalAccessDatasourceProtocol {}
+public final class LocalAccessDatasource: LocalDatasource, LocalAccessDatasourceProtocol, @unchecked Sendable {}
 
 public extension LocalAccessDatasource {
     func getAccess(userId: String) async throws -> UserAccess? {
