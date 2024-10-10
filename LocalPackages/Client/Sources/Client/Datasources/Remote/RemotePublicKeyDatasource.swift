@@ -24,7 +24,8 @@ public protocol RemotePublicKeyDatasourceProtocol: Sendable {
     func getPublicKeys(userId: String, email: String) async throws -> [PublicKey]
 }
 
-public final class RemotePublicKeyDatasource: RemoteDatasource, RemotePublicKeyDatasourceProtocol {}
+public final class RemotePublicKeyDatasource: RemoteDatasource, RemotePublicKeyDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemotePublicKeyDatasource {
     func getPublicKeys(userId: String, email: String) async throws -> [PublicKey] {
