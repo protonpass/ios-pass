@@ -46,7 +46,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
 }
 
-public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
+public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteAliasDatasource {
     func getAliasOptions(userId: String, shareId: String) async throws -> AliasOptions {

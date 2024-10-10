@@ -42,7 +42,7 @@ public protocol RemoteShareDatasourceProtocol: Sendable {
                                 request: TransferOwnershipVaultRequest) async throws -> Bool
 }
 
-public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol {}
+public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteShareDatasource {
     func getShares(userId: String) async throws -> [Share] {
