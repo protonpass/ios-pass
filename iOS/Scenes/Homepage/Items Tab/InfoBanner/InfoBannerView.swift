@@ -31,12 +31,13 @@ struct InfoBannerView: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             informationDisplayView
-                .padding(.horizontal, 25)
+                .padding(.horizontal, 16)
                 .padding(.vertical, 5)
             if !banner.isInvite {
                 closeButtonView
             }
         }
+
         .frame(height: Self.height)
         .background(banner.detail.backgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
@@ -79,6 +80,7 @@ private extension InfoBannerView {
                     .frame(maxHeight: 64)
             }
         }
+        .frame(maxHeight: .infinity)
     }
 }
 
@@ -88,10 +90,11 @@ private extension InfoBannerView {
             Image(systemName: "xmark")
                 .resizable()
                 .frame(width: 12, height: 12)
-                .padding(.horizontal)
                 .scaledToFit()
                 .foregroundStyle(banner.detail.closeButtonColor)
         }
+        .padding(10)
+        .buttonStyle(.plain)
     }
 }
 
