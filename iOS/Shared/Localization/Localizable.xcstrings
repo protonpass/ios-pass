@@ -46093,6 +46093,16 @@
         }
       }
     },
+    "Enable SimpleLogin sync" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable SimpleLogin sync"
+          }
+        }
+      }
+    },
     "Enable Touch ID" : {
       "localizations" : {
         "be" : {
@@ -130785,6 +130795,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn không có nội dung đăng nhập nào không được theo dõi"
+          }
+        }
+      }
+    },
+    "You have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?"
           }
         }
       }

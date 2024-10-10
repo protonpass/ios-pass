@@ -95,7 +95,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
         vaultsManager.attach(to: self, storeIn: &cancellables)
         actionsDisabled = currentSelectedItems.value.isEmpty
 
-        let aliasSyncEnabled = getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+        let aliasSyncEnabled = getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
         currentSelectedItems
             .receive(on: DispatchQueue.main)
             .sink { [weak self] items in
