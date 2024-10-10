@@ -31,7 +31,8 @@ public protocol LocalShareKeyDatasourceProtocol: Sendable {
     func removeAllKeys(userId: String) async throws
 }
 
-public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDatasourceProtocol {}
+public final class LocalShareKeyDatasource: LocalDatasource, LocalShareKeyDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension LocalShareKeyDatasource {
     func getKeys(shareId: String) async throws -> [SymmetricallyEncryptedShareKey] {
