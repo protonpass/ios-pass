@@ -28,6 +28,7 @@ public typealias HashableSendable = Hashable & Sendable
 public final class PassDiffableDataSource<Section: HashableSendable, Item: HashableSendable>:
     UITableViewDiffableDataSource<Section, Item> {
     var sectionTitles: [String]?
+    var lastId: Int?
 
     override public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         if let sectionTitles, sectionTitles.allSatisfy({ $0.count == 1 }) {
@@ -57,8 +58,21 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
     let sections: [Section]
     let itemCell: (Item) -> ItemCell
 
-    public init(sections: [Section], itemCell: @escaping (Item) -> ItemCell) {
+    /// Set `id` to force refreshing the table because relying on `UITableViewDiffableDataSource`
+    /// is not enough in some cases, e.g 2 snapshots may be completely different but the first visible items are
+    /// the same
+    ///
+    /// Practical example:
+    /// When listing all items,  switching between `All accounts` and precise account might result
+    /// in the same visible first items but we want to render the items differently (show or not show user's email)
+    /// So we need to force refresh the UI even though visible items stay unchanged.
+    let id: Int?
+
+    public init(sections: [Section],
+                id: Int?,
+                itemCell: @escaping (Item) -> ItemCell) {
         self.sections = sections
+        self.id = id
         self.itemCell = itemCell
     }
 
@@ -77,7 +91,7 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
     }
 
     public func updateUIView(_ tableView: UITableView, context: Context) {
-        context.coordinator.updateTable(with: sections)
+        context.coordinator.updateTable(with: sections, id: id)
     }
 
     public final class Coordinator: NSObject {
@@ -105,13 +119,20 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
             dataSource.defaultRowAnimation = .fade
         }
 
-        func updateTable(with sections: [Section]) {
+        func updateTable(with sections: [Section], id: Int?) {
             var snapshot = NSDiffableDataSourceSnapshot<String, Item>()
+            if dataSource.lastId != id {
+                // Force refresh by providing an empty snapshot
+                dataSource.apply(snapshot, animatingDifferences: false)
+            }
+
             snapshot.appendSections(sections.map(\.title))
             for section in sections {
                 snapshot.appendItems(section.items, toSection: section.title)
             }
+
             dataSource.sectionTitles = sections.map(\.title)
+            dataSource.lastId = id
             dataSource.apply(snapshot, animatingDifferences: true)
         }
     }
