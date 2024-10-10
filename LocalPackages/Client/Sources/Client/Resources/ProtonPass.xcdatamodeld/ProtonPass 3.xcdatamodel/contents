@@ -75,6 +75,18 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="ItemTextAutoFillEntity" representedClassName="ItemTextAutoFillEntity" syncable="YES">
+        <attribute name="itemID" attributeType="String"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="time" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userID" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="itemID"/>
+                <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="OrganizationEntity" representedClassName="OrganizationEntity" syncable="YES">
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
