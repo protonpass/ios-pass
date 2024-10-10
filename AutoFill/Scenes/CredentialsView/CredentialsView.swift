@@ -131,8 +131,7 @@ private extension CredentialsView {
                     NoSearchResultsInAllVaultView(query: viewModel.query)
                 } else {
                     CredentialSearchResultView(results: results,
-                                               getUser: { viewModel.getUser(for: $0,
-                                                                            forUiDisplay: true) },
+                                               getUser: { viewModel.getUserForUiDisplay(for: $0) },
                                                selectedSortType: $viewModel.selectedSortType,
                                                sortAction: { viewModel.presentSortTypeList() },
                                                selectItem: { viewModel.select(item: $0) })
@@ -298,7 +297,7 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    let user = viewModel.getUser(for: item, forUiDisplay: true)
+                    let user = viewModel.getUserForUiDisplay(for: item)
                     Group {
                         switch viewModel.mode {
                         case .passwords:

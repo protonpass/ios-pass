@@ -21,7 +21,7 @@
 import Entities
 
 struct SelectedItem {
-    let userId: String?
-    let item: ItemContent
-    let vault: Vault?
+    let userId: String
+    let content: ItemContent
+    let vault: Vault
 }

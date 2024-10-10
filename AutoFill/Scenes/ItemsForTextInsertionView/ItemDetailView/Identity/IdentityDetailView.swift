@@ -28,10 +28,9 @@ struct IdentityDetailView: View {
     @State private var showSocialSecurityNumber = false
     let onSelect: (String) -> Void
 
-    init(userId: String?,
-         itemContent: ItemContent,
+    init(item: SelectedItem,
          onSelect: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(userId: userId, itemContent: itemContent))
+        _viewModel = .init(wrappedValue: .init(item: item))
         self.onSelect = onSelect
     }
 
@@ -88,7 +87,7 @@ private extension IdentityDetailView {
                     }
                 }
 
-                CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                CustomFieldSections(itemContentType: viewModel.item.content.type,
                                     uiModels: section.customFields,
                                     isFreeUser: viewModel.isFreeUser,
                                     isASection: false,
@@ -115,7 +114,7 @@ private extension IdentityDetailView {
                     .adaptiveForegroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                CustomFieldSections(itemContentType: viewModel.itemContent.type,
+                CustomFieldSections(itemContentType: viewModel.item.content.type,
                                     uiModels: section.content.map(\.toCustomFieldUiModel),
                                     isFreeUser: viewModel.isFreeUser,
                                     showIcon: false,
@@ -138,8 +137,8 @@ private extension IdentityDetailView {
 
     var toggleSSNVisibilityButton: some View {
         CircleButton(icon: showSocialSecurityNumber ? IconProvider.eyeSlash : IconProvider.eye,
-                     iconColor: viewModel.itemContent.type.normMajor2Color,
-                     backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                     iconColor: viewModel.item.content.type.normMajor2Color,
+                     backgroundColor: viewModel.item.content.type.normMinor2Color,
                      accessibilityLabel: showSocialSecurityNumber ?
                          "Hide social security number" : "Show social security number",
                      action: { showSocialSecurityNumber.toggle() })

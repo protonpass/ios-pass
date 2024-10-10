@@ -34,10 +34,9 @@ struct CreditCardDetailView: View {
 
     private var tintColor: UIColor { viewModel.type.normColor }
 
-    init(userId: String?,
-         itemContent: ItemContent,
+    init(item: SelectedItem,
          onSelect: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(userId: userId, itemContent: itemContent))
+        _viewModel = .init(wrappedValue: .init(item: item))
         self.onSelect = onSelect
     }
 
@@ -118,8 +117,8 @@ private extension CreditCardDetailView {
 
             if shouldShowOptions {
                 CircleButton(icon: showCardNumber ? IconProvider.eyeSlash : IconProvider.eye,
-                             iconColor: viewModel.itemContent.type.normMajor2Color,
-                             backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                             iconColor: viewModel.item.content.type.normMajor2Color,
+                             backgroundColor: viewModel.item.content.type.normMinor2Color,
                              accessibilityLabel: showCardNumber ? "Hide card number" : "Show card number",
                              action: { showCardNumber.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
@@ -160,8 +159,8 @@ private extension CreditCardDetailView {
 
             if shouldShowOptions {
                 CircleButton(icon: showVerificationNumber ? IconProvider.eyeSlash : IconProvider.eye,
-                             iconColor: viewModel.itemContent.type.normMajor2Color,
-                             backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                             iconColor: viewModel.item.content.type.normMajor2Color,
+                             backgroundColor: viewModel.item.content.type.normMinor2Color,
                              accessibilityLabel: showVerificationNumber ? "Hide security code" :
                                  "Show security code",
                              action: { showVerificationNumber.toggle() })
@@ -197,8 +196,8 @@ private extension CreditCardDetailView {
 
             if shouldShowOptions {
                 CircleButton(icon: showPIN ? IconProvider.eyeSlash : IconProvider.eye,
-                             iconColor: viewModel.itemContent.type.normMajor2Color,
-                             backgroundColor: viewModel.itemContent.type.normMinor2Color,
+                             iconColor: viewModel.item.content.type.normMajor2Color,
+                             backgroundColor: viewModel.item.content.type.normMinor2Color,
                              accessibilityLabel: showPIN ? "Hide pin" : "Show pin",
                              action: { showPIN.toggle() })
                     .fixedSize(horizontal: true, vertical: true)
