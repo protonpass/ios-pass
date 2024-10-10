@@ -288,7 +288,7 @@ private extension ItemsTabViewModel {
             if getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync),
                !preferencesManager.appPreferences.unwrapped().dismissedCustomDomainExplanation,
                let number = try await checkPendingAliases() {
-                banners.append(.slSync(10))
+                banners.append(.slSync(number))
             }
 
             return banners
