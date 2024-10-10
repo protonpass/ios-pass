@@ -45,8 +45,8 @@ public final class PassDiffableDataSource<Section: HashableSendable, Item: Hasha
 
 public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresentable {
     public struct Section {
-        let title: String
-        let items: [Item]
+        public let title: String
+        public let items: [Item]
 
         public init(title: String, items: [Item]) {
             self.title = title
