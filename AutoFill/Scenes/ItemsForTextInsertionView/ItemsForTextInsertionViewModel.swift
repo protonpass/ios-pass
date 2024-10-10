@@ -72,8 +72,13 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         }
     }
 
+    private let filterOptionUpdated = PassthroughSubject<Void, Never>()
     @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
-    var filterOption = ItemTypeFilterOption.all
+    var filterOption = ItemTypeFilterOption.all {
+        didSet {
+            filterOptionUpdated.send(())
+        }
+    }
 
     private var searchableItems: [SearchableItem] {
         if let selectedUser {
@@ -87,9 +92,17 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         results.flatMap(\.vaults)
     }
 
+    var highlighted: Bool {
+        filterOption != .all
+    }
+
+    var resettable: Bool {
+        filterOption != .all || sortType != .mostRecent
+    }
+
     override func setUp() {
         super.setUp()
-        Publishers.Merge(selectedUserUpdated, sortTypeUpdated)
+        Publishers.Merge3(selectedUserUpdated, sortTypeUpdated, filterOptionUpdated)
             .sink { [weak self] _ in
                 guard let self else { return }
                 filterAndSortItems()
@@ -131,16 +144,22 @@ extension ItemsForTextInsertionViewModel {
         defer { state = .idle }
         state = .loading
 
-        let items = if let selectedUser {
+        let allItems = if let selectedUser {
             results.first { $0.userId == selectedUser.id }?.items ?? []
         } else {
             getAllObjects(\.items)
         }
 
+        let filteredItems = if case let .precise(type) = filterOption {
+            allItems.filter { $0.type == type }
+        } else {
+            allItems
+        }
+
         let sections: [TableView<ItemUiModel, GenericCredentialItemRow>.Section] = {
             switch sortType {
             case .mostRecent:
-                let results = items.mostRecentSortResult()
+                let results = filteredItems.mostRecentSortResult()
                 return [
                     .init(title: #localized("Today"), items: results.today),
                     .init(title: #localized("Yesterday"), items: results.yesterday),
@@ -152,23 +171,23 @@ extension ItemsForTextInsertionViewModel {
                     .init(title: #localized("More than 90 days"), items: results.others)
                 ]
             case .alphabeticalAsc:
-                let results = items.alphabeticalSortResult(direction: .ascending)
+                let results = filteredItems.alphabeticalSortResult(direction: .ascending)
                 return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
             case .alphabeticalDesc:
-                let results = items.alphabeticalSortResult(direction: .descending)
+                let results = filteredItems.alphabeticalSortResult(direction: .descending)
                 return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
             case .newestToOldest:
-                let results = items.monthYearSortResult(direction: .descending)
+                let results = filteredItems.monthYearSortResult(direction: .descending)
                 return results.buckets.map { .init(title: $0.monthYear.relativeString,
                                                    items: $0.items) }
             case .oldestToNewest:
-                let results = items.monthYearSortResult(direction: .ascending)
+                let results = filteredItems.monthYearSortResult(direction: .ascending)
                 return results.buckets.map { .init(title: $0.monthYear.relativeString,
                                                    items: $0.items) }
             }
         }()
 
-        itemCount = .init(items: items)
+        itemCount = .init(items: allItems)
         self.sections = sections.filter { !$0.items.isEmpty }
     }
 
@@ -187,6 +206,11 @@ extension ItemsForTextInsertionViewModel {
                 handle(error)
             }
         }
+    }
+
+    func resetFilters() {
+        filterOption = .all
+        sortType = .mostRecent
     }
 
     func autofill(_ text: String) {
