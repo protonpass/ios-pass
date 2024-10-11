@@ -82,8 +82,8 @@ private extension TotpLoginsView {
             SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: "Find login to update",
-                      onCancel: { viewModel.clearSearch() },
-                      hideCancel: true)
+                      cancelMode: .never,
+                      onCancel: { viewModel.clearSearch() })
 
             if !viewModel.results.isEmpty {
                 HStack {
