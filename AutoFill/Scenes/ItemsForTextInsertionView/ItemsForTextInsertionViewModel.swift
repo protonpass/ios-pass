@@ -50,7 +50,24 @@ enum ItemsForTextInsertionViewState: Equatable {
     }
 }
 
-typealias ItemsForTextInsertionSection = TableView<ItemUiModel, GenericCredentialItemRow, Text>.Section
+// Wrap UI models inside an enum to support displaying the same items
+// in both history and normal sections.
+// Because `UITableViewDiffableDataSource` relies on the hash value of the item to show or hide
+enum ItemForTextInsertion: Hashable {
+    case history(ItemUiModel)
+    case normal(ItemUiModel)
+
+    var uiModel: ItemUiModel {
+        switch self {
+        case let .history(uiModel):
+            uiModel
+        case let .normal(uiModel):
+            uiModel
+        }
+    }
+}
+
+typealias ItemsForTextInsertionSection = TableView<ItemForTextInsertion, GenericCredentialItemRow, Text>.Section
 
 @MainActor
 final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsertion> {
@@ -158,10 +175,18 @@ extension ItemsForTextInsertionViewModel {
         defer { state = .idle }
         state = .loading
 
-        let allItems = if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.items ?? []
+        let history: [ItemUiModel]
+        let allItems: [ItemUiModel]
+        if let selectedUser {
+            let result = results.first { $0.userId == selectedUser.id }
+            history = result?.history.map(\.value) ?? []
+            allItems = result?.items ?? []
         } else {
-            getAllObjects(\.items)
+            history = Array(getAllObjects(\.history)
+                .sorted(by: { $0.time > $1.time })
+                .map(\.value)
+                .prefix(Constants.textAutoFillHistoryLimit))
+            allItems = getAllObjects(\.items)
         }
 
         let filteredItems = if case let .precise(type) = filterOption {
@@ -170,36 +195,65 @@ extension ItemsForTextInsertionViewModel {
             allItems
         }
 
-        let sections: [ItemsForTextInsertionSection] = {
+        var sections: [ItemsForTextInsertionSection] = {
             switch sortType {
             case .mostRecent:
                 let results = filteredItems.mostRecentSortResult()
                 return [
-                    .init(title: #localized("Today"), items: results.today),
-                    .init(title: #localized("Yesterday"), items: results.yesterday),
-                    .init(title: #localized("Last week"), items: results.last7Days),
-                    .init(title: #localized("Last two weeks"), items: results.last14Days),
-                    .init(title: #localized("Last 30 days"), items: results.last30Days),
-                    .init(title: #localized("Last 60 days"), items: results.last60Days),
-                    .init(title: #localized("Last 90 days"), items: results.last90Days),
-                    .init(title: #localized("More than 90 days"), items: results.others)
+                    .init(title: #localized("Today"),
+                          items: results.today.map { ItemForTextInsertion.normal($0) }),
+                    .init(title: #localized("Yesterday"),
+                          items: results.yesterday.map { ItemForTextInsertion.normal($0) }),
+                    .init(title: #localized("Last week"),
+                          items: results.last7Days.map { ItemForTextInsertion.normal($0) }),
+                    .init(title: #localized("Last two weeks"),
+                          items: results.last14Days.map { ItemForTextInsertion.normal($0) }),
+                    .init(title: #localized("Last 30 days"),
+                          items: results.last30Days.map { ItemForTextInsertion.normal($0) }),
+                    .init(title: #localized("Last 60 days"),
+                          items: results.last60Days.map { ItemForTextInsertion.normal($0) }),
+                    .init(title: #localized("Last 90 days"),
+                          items: results.last90Days.map { ItemForTextInsertion.normal($0) }),
+                    .init(title: #localized("More than 90 days"),
+                          items: results.others.map { ItemForTextInsertion.normal($0) })
                 ]
+
             case .alphabeticalAsc:
                 let results = filteredItems.alphabeticalSortResult(direction: .ascending)
-                return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
+                return results.buckets.map { bucket in
+                    .init(title: bucket.letter.character,
+                          items: bucket.items.map { ItemForTextInsertion.normal($0) })
+                }
+
             case .alphabeticalDesc:
                 let results = filteredItems.alphabeticalSortResult(direction: .descending)
-                return results.buckets.map { .init(title: $0.letter.character, items: $0.items) }
+                return results.buckets.map { bucket in
+                    .init(title: bucket.letter.character,
+                          items: bucket.items.map { ItemForTextInsertion.normal($0) })
+                }
+
             case .newestToOldest:
                 let results = filteredItems.monthYearSortResult(direction: .descending)
-                return results.buckets.map { .init(title: $0.monthYear.relativeString,
-                                                   items: $0.items) }
+                return results.buckets.map { bucket in
+                    .init(title: bucket.monthYear.relativeString,
+                          items: bucket.items.map { ItemForTextInsertion.normal($0) })
+                }
+
             case .oldestToNewest:
                 let results = filteredItems.monthYearSortResult(direction: .ascending)
-                return results.buckets.map { .init(title: $0.monthYear.relativeString,
-                                                   items: $0.items) }
+                return results.buckets.map { bucket in
+                    .init(title: bucket.monthYear.relativeString,
+                          items: bucket.items.map { ItemForTextInsertion.normal($0) })
+                }
             }
         }()
+
+        // Only show history section when not filtering by item types
+        if filterOption == .all, !history.isEmpty {
+            sections.insert(.init(title: "History",
+                                  items: history.map { ItemForTextInsertion.history($0) }),
+                            at: 0)
+        }
 
         itemCount = .init(items: allItems)
         self.sections = sections.filter { !$0.items.isEmpty }

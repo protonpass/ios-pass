@@ -42,4 +42,10 @@ struct CredentialsForPasskeyCreation: AutoFillCredentialsFetchResult {
     let items: [ItemUiModel]
 }
 
-typealias ItemsForTextInsertion = CredentialsForPasskeyCreation
+struct ItemsForTextInsertion: AutoFillCredentialsFetchResult {
+    let userId: String
+    let vaults: [Vault]
+    let history: [HistoryItemUiModel]
+    let searchableItems: [SearchableItem]
+    let items: [ItemUiModel]
+}
