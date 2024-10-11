@@ -23,13 +23,12 @@ import Entities
 import SwiftUI
 
 public struct SortTypeButton: View {
+    @Environment(\.colorScheme) private var colorScheme
     @Binding var selectedSortType: SortType
-    let action: () -> Void
+    @State private var showSortTypeList = false
 
-    public init(selectedSortType: Binding<SortType>,
-                action: @escaping () -> Void) {
+    public init(selectedSortType: Binding<SortType>) {
         _selectedSortType = selectedSortType
-        self.action = action
     }
 
     public var body: some View {
@@ -50,7 +49,13 @@ public struct SortTypeButton: View {
                 }
             }, label: sortTypeLabel)
         } else {
-            Button(action: action, label: sortTypeLabel)
+            Button(action: { showSortTypeList.toggle() }, label: sortTypeLabel)
+                .sheet(isPresented: $showSortTypeList) {
+                    SortTypeListView(selectedSortType: $selectedSortType)
+                        .environment(\.colorScheme, colorScheme)
+                        .presentationDetents([.height(OptionRowHeight.compact
+                                .value * CGFloat(SortType.allCases.count) + 60)])
+                }
         }
     }
 

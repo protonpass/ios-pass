@@ -24,34 +24,12 @@ import DesignSystem
 import Entities
 import SwiftUI
 
-@MainActor
-public protocol SortTypeListViewModelDelegate: AnyObject {
-    func sortTypeListViewDidSelect(_ sortType: SortType)
-}
-
-@MainActor
-public final class SortTypeListViewModel: ObservableObject, DeinitPrintable, Sendable {
-    deinit { print(deinitMessage) }
-
-    @Published var selectedSortType: SortType {
-        didSet {
-            delegate?.sortTypeListViewDidSelect(selectedSortType)
-        }
-    }
-
-    public weak var delegate: SortTypeListViewModelDelegate?
-
-    public init(sortType: SortType) {
-        selectedSortType = sortType
-    }
-}
-
 public struct SortTypeListView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel: SortTypeListViewModel
+    @Binding var selectedSortType: SortType
 
-    public init(viewModel: SortTypeListViewModel) {
-        _viewModel = .init(wrappedValue: viewModel)
+    public init(selectedSortType: Binding<SortType>) {
+        _selectedSortType = selectedSortType
     }
 
     public var body: some View {
@@ -59,17 +37,17 @@ public struct SortTypeListView: View {
             VStack(alignment: .center, spacing: 0) {
                 ForEach(SortType.allCases, id: \.self) { type in
                     SelectableOptionRow(action: {
-                                            viewModel.selectedSortType = type
+                                            selectedSortType = type
                                             dismiss()
                                         },
                                         height: .compact,
                                         content: {
                                             Text(type.title)
-                                                .foregroundStyle((type == viewModel.selectedSortType ?
+                                                .foregroundStyle((type == selectedSortType ?
                                                         PassColor.interactionNormMajor2 : PassColor
                                                         .textNorm).toColor)
                                         },
-                                        isSelected: type == viewModel.selectedSortType)
+                                        isSelected: type == selectedSortType)
 
                     PassDivider()
                 }

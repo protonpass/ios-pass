@@ -60,6 +60,7 @@ struct SearchView: View {
             SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: viewModel.searchBarPlaceholder,
+                      cancelMode: .always,
                       onCancel: { searchMode = nil })
                 .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
                                        in: animationNamespace)
@@ -114,8 +115,7 @@ struct SearchView: View {
                                   isTrash: viewModel.isTrash,
                                   safeAreaInsets: safeAreaInsets,
                                   onScroll: { isFocusedOnSearchBar = false },
-                                  onSelectItem: { viewModel.viewDetail(of: $0) },
-                                  onSelectSortType: { viewModel.presentSortTypeList() })
+                                  onSelectItem: { viewModel.viewDetail(of: $0) })
 
             default:
                 // Impossible cases

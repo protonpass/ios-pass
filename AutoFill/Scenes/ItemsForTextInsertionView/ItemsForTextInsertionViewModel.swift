@@ -27,29 +27,6 @@ import Factory
 import Macro
 import SwiftUI
 
-enum ItemsForTextInsertionViewState: Equatable {
-    /// Empty search query
-    case idle
-    case searching
-    case searchResults([ItemSearchResult])
-    case loading
-    case error(any Error)
-
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case let (.error(lhsError), .error(rhsError)):
-            lhsError.localizedDescription == rhsError.localizedDescription
-        case (.idle, .idle),
-             (.loading, .loading),
-             (.searching, .searching),
-             (.searchResults, .searchResults):
-            true
-        default:
-            false
-        }
-    }
-}
-
 // Wrap UI models inside an enum to support displaying the same items
 // in both history and normal sections.
 // Because `UITableViewDiffableDataSource` relies on the hash value of the item to show or hide

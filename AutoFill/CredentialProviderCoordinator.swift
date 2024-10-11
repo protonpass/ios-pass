@@ -630,22 +630,4 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
         guard let userId = userManager.activeUserId else { return }
         logOut(userId: userId)
     }
-
-    func autoFillViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: any SortTypeListViewModelDelegate) {
-        guard let rootViewController else {
-            return
-        }
-        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
-        viewModel.delegate = delegate
-        let view = SortTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, dismissible: true)
-    }
 }

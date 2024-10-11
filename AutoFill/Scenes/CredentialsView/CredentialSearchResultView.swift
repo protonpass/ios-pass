@@ -29,7 +29,6 @@ struct CredentialSearchResultView: View, Equatable {
     let results: [ItemSearchResult]
     let getUser: (any ItemIdentifiable) -> UserUiModel?
     @Binding var selectedSortType: SortType
-    let sortAction: () -> Void
     let selectItem: (any TitledItemIdentifiable) -> Void
 
     var body: some View {
@@ -57,8 +56,7 @@ private extension CredentialSearchResultView {
 
             Spacer()
 
-            SortTypeButton(selectedSortType: $selectedSortType,
-                           action: sortAction)
+            SortTypeButton(selectedSortType: $selectedSortType)
         }
         .padding([.bottom, .horizontal])
     }

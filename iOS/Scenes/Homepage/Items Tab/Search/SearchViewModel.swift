@@ -282,10 +282,6 @@ extension SearchViewModel {
         }
     }
 
-    func presentSortTypeList() {
-        router.navigate(to: .sortTypeList(selectedSortType: selectedSortType, delegate: self))
-    }
-
     func searchInAllVaults() {
         guard searchMode != .pinned else {
             return
@@ -338,14 +334,6 @@ private extension SearchViewModel {
         }
 
         addTelemetryEvent(with: .searchTriggered)
-    }
-}
-
-// MARK: - SortTypeListViewModelDelegate
-
-extension SearchViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortType) {
-        selectedSortType = sortType
     }
 }
 

@@ -112,7 +112,6 @@ enum SheetDestination: Equatable, Hashable, Sendable {
 enum GenericDestination {
     case presentView(view: any View, dismissible: Bool)
     case itemDetail(view: any View, asSheet: Bool)
-    case sortTypeList(selectedSortType: SortType, delegate: any SortTypeListViewModelDelegate)
 }
 
 enum UIElementDisplay: Sendable {

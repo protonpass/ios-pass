@@ -93,6 +93,7 @@ private extension CredentialsView {
                 SearchBar(query: $viewModel.query,
                           isFocused: $isFocusedOnSearchBar,
                           placeholder: viewModel.searchBarPlaceholder,
+                          cancelMode: .always,
                           onCancel: { viewModel.handleCancel() })
             }
             switch viewModel.state {
@@ -133,7 +134,6 @@ private extension CredentialsView {
                     CredentialSearchResultView(results: results,
                                                getUser: { viewModel.getUserForUiDisplay(for: $0) },
                                                selectedSortType: $viewModel.selectedSortType,
-                                               sortAction: { viewModel.presentSortTypeList() },
                                                selectItem: { viewModel.select(item: $0) })
                 }
             case .loading:
@@ -258,28 +258,12 @@ private extension CredentialsView {
 
                 Spacer()
 
-                SortTypeButton(selectedSortType: $viewModel.selectedSortType,
-                               action: { viewModel.presentSortTypeList() })
+                SortTypeButton(selectedSortType: $viewModel.selectedSortType)
             }
             .plainListRow()
             .padding([.top, .horizontal])
             sortableSections(for: items, isListMode: isListMode)
         }
-    }
-
-    var mainVaultsOnlyMessage: some View {
-        ZStack {
-            Text("Your plan only allows to use items from your first 2 vaults for autofill purposes.")
-                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
-                Text(verbatim: " ") +
-                Text("Upgrade now")
-                .underline(color: PassColor.interactionNormMajor1.toColor)
-                .adaptiveForegroundStyle(PassColor.interactionNormMajor1.toColor)
-        }
-        .padding()
-        .background(PassColor.interactionNormMinor1.toColor)
-        .clipShape(RoundedRectangle(cornerRadius: 16))
-        .onTapGesture(perform: viewModel.upgrade)
     }
 }
 
