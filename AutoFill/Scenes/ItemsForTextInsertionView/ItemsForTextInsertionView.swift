@@ -119,13 +119,7 @@ private extension ItemsForTextInsertionView {
                             Spacer()
                         }
                     } else {
-                        TableView(sections: viewModel.sections,
-                                  id: viewModel.selectedUser?.hashValue) { item in
-                            GenericCredentialItemRow(item: item,
-                                                     user: viewModel.getUserForUiDisplay(for: item),
-                                                     selectItem: { viewModel.select($0) })
-                        }
-                        .padding(.top)
+                        itemList
                     }
                 }
             case .searching:
@@ -222,5 +216,21 @@ private extension ItemsForTextInsertionView {
 
     func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
         Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
+    }
+}
+
+private extension ItemsForTextInsertionView {
+    var itemList: some View {
+        TableView(sections: viewModel.sections,
+                  id: viewModel.selectedUser?.hashValue,
+                  itemView: { item in
+                      GenericCredentialItemRow(item: item,
+                                               user: viewModel.getUserForUiDisplay(for: item),
+                                               selectItem: { viewModel.select($0) })
+                  },
+                  headerView: { _ in
+                      nil
+                  })
+                  .padding(.top)
     }
 }
