@@ -43,6 +43,7 @@ class BaseItemDetailViewModel: ObservableObject {
         self.selectedTextStream = selectedTextStream
         customFieldUiModels = item.content.customFields.map { .init(customField: $0) }
         bindValues()
+        checkIfFreeUser()
     }
 
     /// To be overidden by subclasses
@@ -54,7 +55,7 @@ private extension BaseItemDetailViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser()
+                isFreeUser = try await upgradeChecker.isFreeUser(userId: item.userId)
             } catch {
                 handle(error)
             }

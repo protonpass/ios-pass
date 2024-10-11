@@ -315,7 +315,7 @@ private extension BaseItemDetailViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser()
+                isFreeUser = try await upgradeChecker.isFreeUser(userId: nil)
             } catch {
                 handle(error)
             }

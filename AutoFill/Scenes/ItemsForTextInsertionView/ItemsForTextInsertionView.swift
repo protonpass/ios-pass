@@ -122,12 +122,24 @@ private extension ItemsForTextInsertionView {
                         itemList
                     }
                 }
+
             case .searching:
                 ProgressView()
+
             case let .searchResults(results):
-                EmptyView()
+                if results.isEmpty {
+                    NoSearchResultsInAllVaultView(query: viewModel.query)
+                } else {
+                    CredentialSearchResultView(results: results,
+                                               getUser: { viewModel.getUserForUiDisplay(for: $0) },
+                                               selectedSortType: $viewModel.selectedSortType,
+                                               sortAction: { viewModel.presentSortTypeList() },
+                                               selectItem: { viewModel.select($0) })
+                }
+
             case .loading:
                 CredentialsSkeletonView()
+
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
                                    onRetry: { Task { await viewModel.fetchItems() } })
@@ -145,11 +157,11 @@ private extension ItemsForTextInsertionView {
 private extension ItemsForTextInsertionView {
     @ViewBuilder
     var sortOptions: some View {
-        let sortType = viewModel.sortType
+        let sortType = viewModel.selectedSortType
         Menu(content: {
             ForEach(SortType.allCases, id: \.self) { type in
                 Button(action: {
-                    viewModel.sortType = type
+                    viewModel.selectedSortType = type
                 }, label: {
                     HStack {
                         Text(type.title)

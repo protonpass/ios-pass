@@ -180,7 +180,7 @@ private extension PassMonitorViewModel {
                 return
             }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser()
+                isFreeUser = try await upgradeChecker.isFreeUser(userId: nil)
                 isSentinelActive = await getSentinelStatus()
             } catch {
                 handle(error: error)
