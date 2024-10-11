@@ -330,6 +330,7 @@
 		358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68252A68067B006E720F /* SetPINCodeViewModel.swift */; };
 		358FB6DD2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */; };
 		3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590A3382A9F9C2600622F45 /* View+Extensions.swift */; };
+		3593245C2CB9012F00A7D33B /* SelectedText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3593245B2CB9012F00A7D33B /* SelectedText.swift */; };
 		35951DCE2B8CCC48006616BE /* GenerateAuthorizationCredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */; };
 		35951DD02B8D226A006616BE /* ASCredentialRequest+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35951DCF2B8D226A006616BE /* ASCredentialRequest+Extensions.swift */; };
 		3597F0D02CB5D19F00384874 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3597F0CF2CB5D19F00384874 /* ItemDetailView.swift */; };
@@ -861,6 +862,7 @@
 		358C68252A68067B006E720F /* SetPINCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeViewModel.swift; sourceTree = "<group>"; };
 		358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSwitcherSection.swift; sourceTree = "<group>"; };
 		3590A3382A9F9C2600622F45 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
+		3593245B2CB9012F00A7D33B /* SelectedText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedText.swift; sourceTree = "<group>"; };
 		35951DCD2B8CCC48006616BE /* GenerateAuthorizationCredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenerateAuthorizationCredential.swift; sourceTree = "<group>"; };
 		35951DCF2B8D226A006616BE /* ASCredentialRequest+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ASCredentialRequest+Extensions.swift"; sourceTree = "<group>"; };
 		3597F0CF2CB5D19F00384874 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
@@ -2490,6 +2492,7 @@
 				356A1F062B88C59C00561950 /* Passkey.swift */,
 				35FD55A12C9072DC00805584 /* LoginCreationInfo.swift */,
 				3583AE462CB7BA8E00A57A31 /* SelectedItem.swift */,
+				3593245B2CB9012F00A7D33B /* SelectedText.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3062,6 +3065,7 @@
 				3524A45B2CB69E6A001EC572 /* CustomFieldSections.swift in Sources */,
 				5BFFB5052A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift in Sources */,
 				5BFFB5002A57FE8E00C2D1F9 /* GenericCredentialItemRow.swift in Sources */,
+				3593245C2CB9012F00A7D33B /* SelectedText.swift in Sources */,
 				3551BC6229A506D50048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */,
 				3562BC30299542D6003FCB13 /* ItemContentType+Extensions.swift in Sources */,

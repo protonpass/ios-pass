@@ -64,6 +64,9 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
 
+    @LazyInjected(\SharedRepositoryContainer.localItemTextAutoFillDatasource)
+    private var localItemTextAutoFillDatasource
+
     private let sortTypeUpdated = PassthroughSubject<Void, Never>()
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var sortType = SortType.mostRecent {
@@ -100,12 +103,21 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         filterOption != .all || sortType != .mostRecent
     }
 
+    let selectedTextStream = SelectedTextStream()
+
     override func setUp() {
         super.setUp()
         Publishers.Merge3(selectedUserUpdated, sortTypeUpdated, filterOptionUpdated)
             .sink { [weak self] _ in
                 guard let self else { return }
                 filterAndSortItems()
+            }
+            .store(in: &cancellables)
+
+        selectedTextStream
+            .sink { [weak self] text in
+                guard let self else { return }
+                autofill(text)
             }
             .store(in: &cancellables)
     }
@@ -214,8 +226,19 @@ extension ItemsForTextInsertionViewModel {
         sortType = .mostRecent
     }
 
-    func autofill(_ text: String) {
+    func autofill(_ text: SelectedText) {
         guard #available(iOS 18, *) else { return }
-        context?.completeRequest(withTextToInsert: text)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                await context?.completeRequest(withTextToInsert: text.value)
+                let user = try getUser(for: text.item)
+                try await localItemTextAutoFillDatasource.upsert(item: text.item,
+                                                                 userId: user.id,
+                                                                 date: .now)
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }

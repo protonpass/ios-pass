@@ -1,6 +1,6 @@
 //
-// NoteDetailView.swift
-// Proton Pass - Created on 09/10/2024.
+// SelectedText.swift
+// Proton Pass - Created on 11/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,25 +18,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
+import Combine
 import Entities
-import SwiftUI
+import Foundation
 
-struct NoteDetailView: View {
-    let note: String
-
-    var body: some View {
-        if note.isEmpty {
-            Text("Empty note")
-                .placeholderText()
-                .frame(maxWidth: .infinity, alignment: .leading)
-        } else {
-            TextView(.constant(note))
-                // swiftlint:disable:next deprecated_foregroundcolor_modifier
-                .foregroundColor(PassColor.textNorm)
-                .autoDetectDataTypes(.all)
-                .isEditable(false)
-                .tint(ItemContentType.note.normMajor2Color.toColor)
-        }
-    }
+struct SelectedText: Sendable {
+    let value: String
+    let item: any ItemIdentifiable
 }
+
+typealias SelectedTextStream = PassthroughSubject<SelectedText, Never>

@@ -47,7 +47,8 @@ struct ItemsForTextInsertionView: View {
         .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .optionalSheet(binding: $viewModel.selectedItem) { selectedItem in
-            ItemDetailView(item: selectedItem, onSelect: { viewModel.autofill($0) })
+            ItemDetailView(item: selectedItem,
+                           selectedTextStream: viewModel.selectedTextStream)
                 .environment(\.colorScheme, colorScheme)
         }
     }
