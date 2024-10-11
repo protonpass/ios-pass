@@ -44,11 +44,15 @@ public final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
 }
 
 public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIViewRepresentable {
-    public struct Section: Hashable {
+    public struct Section: Hashable, Equatable {
+        public let id: AnyHashable
         public let title: String
         public let items: [Item]
 
-        public init(title: String, items: [Item]) {
+        public init(id: AnyHashable,
+                    title: String,
+                    items: [Item]) {
+            self.id = id
             self.title = title
             self.items = items
         }
