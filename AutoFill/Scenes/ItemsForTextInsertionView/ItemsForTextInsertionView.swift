@@ -228,9 +228,36 @@ private extension ItemsForTextInsertionView {
                                                user: viewModel.getUserForUiDisplay(for: item.uiModel),
                                                selectItem: { viewModel.select($0) })
                   },
-                  headerView: { _ in
-                      nil
+                  headerView: { sectionIndex in
+                      if let section = viewModel.sections[safeIndex: sectionIndex],
+                         section.id.hashValue == ItemsForTextInsertionSectionType.history.hashValue {
+                          TextInsertionHistoryHeaderView {
+                              viewModel.clearHistory()
+                          }
+                      } else {
+                          nil
+                      }
                   })
                   .padding(.top)
+    }
+}
+
+struct TextInsertionHistoryHeaderView: View {
+    let onClear: () -> Void
+
+    var body: some View {
+        HStack {
+            Text("Recents")
+                .font(.callout.bold())
+                .foregroundStyle(PassColor.textNorm.toColor)
+            Spacer()
+            Button(action: onClear) {
+                Text("Clear")
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .underline(color: PassColor.textWeak.toColor)
+            }
+        }
     }
 }

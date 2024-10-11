@@ -39,7 +39,7 @@ protocol AutoFillViewModelDelegate: AnyObject {
 
 @MainActor
 class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
-    @Published private(set) var results: [T] = []
+    @Published var results: [T] = []
 
     @Published var selectedUser: UserUiModel? {
         didSet {
