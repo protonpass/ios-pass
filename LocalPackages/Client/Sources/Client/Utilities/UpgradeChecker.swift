@@ -31,7 +31,7 @@ public protocol UpgradeCheckerProtocol: AnyObject, Sendable {
     func canCreateMoreVaults() async throws -> Bool
     func canHaveMoreLoginsWith2FA() async throws -> Bool
     func canShowTOTPToken(creationDate: Int64) async throws -> Bool
-    func isFreeUser() async throws -> Bool
+    func isFreeUser(userId: String?) async throws -> Bool
 }
 
 public final class UpgradeChecker: UpgradeCheckerProtocol {
@@ -82,8 +82,8 @@ public extension UpgradeChecker {
         return true
     }
 
-    func isFreeUser() async throws -> Bool {
-        let plan = try await accessRepository.getPlan(userId: nil)
+    func isFreeUser(userId: String?) async throws -> Bool {
+        let plan = try await accessRepository.getPlan(userId: userId)
         return plan.isFreeUser
     }
 }
