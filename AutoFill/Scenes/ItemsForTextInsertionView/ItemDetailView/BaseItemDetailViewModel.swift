@@ -27,6 +27,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
 
     let item: SelectedItem
+    let selectedTextStream: SelectedTextStream
     let customFieldUiModels: [CustomFieldUiModel]
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
@@ -37,8 +38,9 @@ class BaseItemDetailViewModel: ObservableObject {
         item.content.type
     }
 
-    init(item: SelectedItem) {
+    init(item: SelectedItem, selectedTextStream: SelectedTextStream) {
         self.item = item
+        self.selectedTextStream = selectedTextStream
         customFieldUiModels = item.content.customFields.map { .init(customField: $0) }
         bindValues()
     }
@@ -61,6 +63,10 @@ private extension BaseItemDetailViewModel {
 }
 
 extension BaseItemDetailViewModel {
+    func autofill(_ text: String) {
+        selectedTextStream.send(.init(value: text, item: item.content))
+    }
+
     func handle(_ error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
