@@ -224,8 +224,8 @@ private extension ItemsForTextInsertionView {
         TableView(sections: viewModel.sections,
                   id: viewModel.selectedUser?.hashValue,
                   itemView: { item in
-                      GenericCredentialItemRow(item: item,
-                                               user: viewModel.getUserForUiDisplay(for: item),
+                      GenericCredentialItemRow(item: item.uiModel,
+                                               user: viewModel.getUserForUiDisplay(for: item.uiModel),
                                                selectItem: { viewModel.select($0) })
                   },
                   headerView: { _ in
