@@ -26,6 +26,7 @@ import Factory
 import Foundation
 import Macro
 import Screens
+import SwiftUI
 
 @MainActor
 protocol AutoFillViewModelDelegate: AnyObject {
@@ -66,6 +67,15 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     weak var delegate: (any AutoFillViewModelDelegate)?
     private(set) weak var context: ASCredentialProviderExtensionContext?
+
+    let sortTypeUpdated = PassthroughSubject<Void, Never>()
+
+    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
+    var selectedSortType = SortType.mostRecent {
+        didSet {
+            sortTypeUpdated.send(())
+        }
+    }
 
     var isFreeUser: Bool {
         selectedUser?.plan.isFreeUser == true
@@ -208,6 +218,11 @@ extension AutoFillViewModel {
         delegate?.autoFillViewModelWantsToSelectUser(users)
     }
 
+    func presentSortTypeList() {
+        delegate?.autoFillViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
+                                                              delegate: self)
+    }
+
     func getUserForUiDisplay(for item: any ItemIdentifiable) -> UserUiModel? {
         guard users.count > 1, selectedUser == nil else { return nil }
         do {
@@ -254,5 +269,13 @@ extension AutoFillViewModel {
     func handle(_ error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
+    }
+}
+
+// MARK: - SortTypeListViewModelDelegate
+
+extension AutoFillViewModel: SortTypeListViewModelDelegate {
+    func sortTypeListViewDidSelect(_ sortType: SortType) {
+        selectedSortType = sortType
     }
 }
