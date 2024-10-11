@@ -27,14 +27,11 @@ private let kCellId = "cell"
 public final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
     UITableViewDiffableDataSource<Section, Item> {
     var sectionTitles: [String]?
+    var showSectionIndexTitles = false
     var lastId: Int?
 
     override public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
-        if let sectionTitles, sectionTitles.allSatisfy({ $0.count == 1 }) {
-            sectionTitles
-        } else {
-            nil
-        }
+        showSectionIndexTitles ? sectionTitles : nil
     }
 
     override public func tableView(_ tableView: UITableView,
@@ -45,20 +42,21 @@ public final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
 
 public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIViewRepresentable {
     public struct Section: Hashable, Equatable {
-        public let id: AnyHashable
+        public let type: AnyHashable
         public let title: String
         public let items: [Item]
 
-        public init(id: AnyHashable,
+        public init(type: AnyHashable,
                     title: String,
                     items: [Item]) {
-            self.id = id
+            self.type = type
             self.title = title
             self.items = items
         }
     }
 
     let sections: [Section]
+    let showSectionIndexTitles: Bool
     let itemView: (Item) -> ItemView
     /// Custom header view, pass `nil` to use the default text header
     let headerView: (_ sectionIndex: Int) -> HeaderView?
@@ -74,10 +72,12 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
     let id: Int?
 
     public init(sections: [Section],
+                showSectionIndexTitles: Bool,
                 id: Int?,
                 itemView: @escaping (Item) -> ItemView,
                 headerView: @escaping (_ sectionIndex: Int) -> HeaderView?) {
         self.sections = sections
+        self.showSectionIndexTitles = showSectionIndexTitles
         self.id = id
         self.itemView = itemView
         self.headerView = headerView
@@ -99,7 +99,9 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
     }
 
     public func updateUIView(_ tableView: UITableView, context: Context) {
-        context.coordinator.updateTable(with: sections, id: id)
+        context.coordinator.updateTable(with: sections,
+                                        showSectionIndexTitles: showSectionIndexTitles,
+                                        id: id)
     }
 
     public final class Coordinator: NSObject, UITableViewDelegate {
@@ -137,7 +139,9 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
             dataSource.defaultRowAnimation = .fade
         }
 
-        func updateTable(with sections: [Section], id: Int?) {
+        func updateTable(with sections: [Section],
+                         showSectionIndexTitles: Bool,
+                         id: Int?) {
             var snapshot = NSDiffableDataSourceSnapshot<String, Item>()
             if dataSource.lastId != id {
                 // Force refresh by providing an empty snapshot
@@ -150,6 +154,7 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
             }
 
             dataSource.sectionTitles = sections.map(\.title)
+            dataSource.showSectionIndexTitles = showSectionIndexTitles
             dataSource.lastId = id
             dataSource.apply(snapshot, animatingDifferences: true)
         }
