@@ -130,8 +130,8 @@ private extension ItemsForTextInsertionView {
                     NoSearchResultsInAllVaultView(query: viewModel.query)
                 } else {
                     CredentialSearchResultView(results: results,
-                                               getUser: { viewModel.getUserForUiDisplay(for: $0) },
                                                selectedSortType: $viewModel.selectedSortType,
+                                               getUser: { viewModel.getUserForUiDisplay(for: $0) },
                                                selectItem: { viewModel.select($0) })
                 }
 
@@ -232,6 +232,7 @@ private extension ItemsForTextInsertionView {
 private extension ItemsForTextInsertionView {
     var itemList: some View {
         TableView(sections: viewModel.sections,
+                  showSectionIndexTitles: viewModel.selectedSortType.isAlphabetical,
                   id: viewModel.selectedUser?.hashValue,
                   itemView: { item in
                       GenericCredentialItemRow(item: item.uiModel,
@@ -240,7 +241,7 @@ private extension ItemsForTextInsertionView {
                   },
                   headerView: { sectionIndex in
                       if let section = viewModel.sections[safeIndex: sectionIndex],
-                         section.id.hashValue == ItemsForTextInsertionSectionType.history.hashValue {
+                         section.type.hashValue == ItemsForTextInsertionSectionType.history.hashValue {
                           TextInsertionHistoryHeaderView {
                               viewModel.clearHistory()
                           }
