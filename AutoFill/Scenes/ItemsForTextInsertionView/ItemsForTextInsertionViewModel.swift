@@ -67,7 +67,12 @@ enum ItemForTextInsertion: Hashable {
     }
 }
 
-typealias ItemsForTextInsertionSection = TableView<ItemForTextInsertion, GenericCredentialItemRow, Text>.Section
+enum ItemsForTextInsertionSectionType: Hashable {
+    case history, normal
+}
+
+typealias ItemsForTextInsertionSection =
+    TableView<ItemForTextInsertion, GenericCredentialItemRow, TextInsertionHistoryHeaderView>.Section
 
 @MainActor
 final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsertion> {
@@ -84,7 +89,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     private var itemRepository
 
     @LazyInjected(\SharedRepositoryContainer.localItemTextAutoFillDatasource)
-    private var localItemTextAutoFillDatasource
+    private var itemTextAutoFillDatasource
 
     private let sortTypeUpdated = PassthroughSubject<Void, Never>()
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
@@ -95,7 +100,6 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     }
 
     private let filterOptionUpdated = PassthroughSubject<Void, Never>()
-    @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
     var filterOption = ItemTypeFilterOption.all {
         didSet {
             filterOptionUpdated.send(())
@@ -200,49 +204,61 @@ extension ItemsForTextInsertionViewModel {
             case .mostRecent:
                 let results = filteredItems.mostRecentSortResult()
                 return [
-                    .init(title: #localized("Today"),
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: #localized("Today"),
                           items: results.today.map { ItemForTextInsertion.normal($0) }),
-                    .init(title: #localized("Yesterday"),
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: #localized("Yesterday"),
                           items: results.yesterday.map { ItemForTextInsertion.normal($0) }),
-                    .init(title: #localized("Last week"),
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: #localized("Last week"),
                           items: results.last7Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(title: #localized("Last two weeks"),
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: #localized("Last two weeks"),
                           items: results.last14Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(title: #localized("Last 30 days"),
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: #localized("Last 30 days"),
                           items: results.last30Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(title: #localized("Last 60 days"),
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: #localized("Last 60 days"),
                           items: results.last60Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(title: #localized("Last 90 days"),
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: #localized("Last 90 days"),
                           items: results.last90Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(title: #localized("More than 90 days"),
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: #localized("More than 90 days"),
                           items: results.others.map { ItemForTextInsertion.normal($0) })
                 ]
 
             case .alphabeticalAsc:
                 let results = filteredItems.alphabeticalSortResult(direction: .ascending)
                 return results.buckets.map { bucket in
-                    .init(title: bucket.letter.character,
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: bucket.letter.character,
                           items: bucket.items.map { ItemForTextInsertion.normal($0) })
                 }
 
             case .alphabeticalDesc:
                 let results = filteredItems.alphabeticalSortResult(direction: .descending)
                 return results.buckets.map { bucket in
-                    .init(title: bucket.letter.character,
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: bucket.letter.character,
                           items: bucket.items.map { ItemForTextInsertion.normal($0) })
                 }
 
             case .newestToOldest:
                 let results = filteredItems.monthYearSortResult(direction: .descending)
                 return results.buckets.map { bucket in
-                    .init(title: bucket.monthYear.relativeString,
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: bucket.monthYear.relativeString,
                           items: bucket.items.map { ItemForTextInsertion.normal($0) })
                 }
 
             case .oldestToNewest:
                 let results = filteredItems.monthYearSortResult(direction: .ascending)
                 return results.buckets.map { bucket in
-                    .init(title: bucket.monthYear.relativeString,
+                    .init(id: ItemsForTextInsertionSectionType.normal,
+                          title: bucket.monthYear.relativeString,
                           items: bucket.items.map { ItemForTextInsertion.normal($0) })
                 }
             }
@@ -250,7 +266,8 @@ extension ItemsForTextInsertionViewModel {
 
         // Only show history section when not filtering by item types
         if filterOption == .all, !history.isEmpty {
-            sections.insert(.init(title: "History",
+            sections.insert(.init(id: ItemsForTextInsertionSectionType.history,
+                                  title: "History",
                                   items: history.map { ItemForTextInsertion.history($0) }),
                             at: 0)
         }
@@ -289,11 +306,28 @@ extension ItemsForTextInsertionViewModel {
             do {
                 await context?.completeRequest(withTextToInsert: text.value)
                 let user = try getUser(for: text.item)
-                try await localItemTextAutoFillDatasource.upsert(item: text.item,
-                                                                 userId: user.id,
-                                                                 date: .now)
+                try await itemTextAutoFillDatasource.upsert(item: text.item,
+                                                            userId: user.id,
+                                                            date: .now)
             } catch {
                 logger.error(error)
+            }
+        }
+    }
+
+    func clearHistory() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await itemTextAutoFillDatasource.removeAll()
+                results = results.map { ItemsForTextInsertion(userId: $0.userId,
+                                                              vaults: $0.vaults,
+                                                              history: [],
+                                                              searchableItems: $0.searchableItems,
+                                                              items: $0.items) }
+                filterAndSortItems()
+            } catch {
+                handle(error)
             }
         }
     }
