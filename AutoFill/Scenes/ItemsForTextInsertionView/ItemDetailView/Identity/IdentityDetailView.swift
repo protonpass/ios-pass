@@ -26,12 +26,9 @@ import SwiftUI
 struct IdentityDetailView: View {
     @StateObject private var viewModel: IdentityDetailViewModel
     @State private var showSocialSecurityNumber = false
-    let onSelect: (String) -> Void
 
-    init(item: SelectedItem,
-         onSelect: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(item: item))
-        self.onSelect = onSelect
+    init(_ viewModel: IdentityDetailViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -69,7 +66,7 @@ private extension IdentityDetailView {
                             .contentShape(.rect)
                             .onTapGesture {
                                 if let value = row.value {
-                                    onSelect(value)
+                                    viewModel.autofill(value)
                                 }
                             }
 
@@ -92,8 +89,8 @@ private extension IdentityDetailView {
                                     isFreeUser: viewModel.isFreeUser,
                                     isASection: false,
                                     showIcon: false,
-                                    onSelectHiddenText: { onSelect($0) },
-                                    onSelectTotpToken: { onSelect($0) },
+                                    onSelectHiddenText: { viewModel.autofill($0) },
+                                    onSelectTotpToken: { viewModel.autofill($0) },
                                     onUpgrade: { viewModel.upgrade() })
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -118,8 +115,8 @@ private extension IdentityDetailView {
                                     uiModels: section.content.map(\.toCustomFieldUiModel),
                                     isFreeUser: viewModel.isFreeUser,
                                     showIcon: false,
-                                    onSelectHiddenText: { onSelect($0) },
-                                    onSelectTotpToken: { onSelect($0) },
+                                    onSelectHiddenText: { viewModel.autofill($0) },
+                                    onSelectTotpToken: { viewModel.autofill($0) },
                                     onUpgrade: { viewModel.upgrade() })
             }
         } header: {

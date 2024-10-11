@@ -27,7 +27,7 @@ struct ItemDetailView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var expandedMoreInfo = false
     let item: SelectedItem
-    let onSelect: (String) -> Void
+    let selectedTextStream: SelectedTextStream
 
     var body: some View {
         VStack {
@@ -46,20 +46,21 @@ struct ItemDetailView: View {
                 }
             }
             .onTapGesture {
-                onSelect(item.content.title)
+                selectedTextStream.send(.init(value: item.content.title,
+                                              item: item.content))
             }
 
             switch item.content.type {
             case .alias:
-                AliasDetailView(item: item, onSelect: onSelect)
+                AliasDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .creditCard:
-                CreditCardDetailView(item: item, onSelect: onSelect)
+                CreditCardDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .identity:
-                IdentityDetailView(item: item, onSelect: onSelect)
+                IdentityDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .login:
-                LoginDetailView(item: item, onSelect: onSelect)
+                LoginDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .note:
-                NoteDetailView(itemContent: item.content, onSelect: onSelect)
+                NoteDetailView(note: item.content.note)
             }
 
             ItemDetailHistorySection(itemContent: item.content, action: nil)

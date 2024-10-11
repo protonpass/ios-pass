@@ -23,16 +23,15 @@ import Entities
 import SwiftUI
 
 struct NoteDetailView: View {
-    let itemContent: ItemContent
-    let onSelect: (String) -> Void
+    let note: String
 
     var body: some View {
-        if itemContent.note.isEmpty {
+        if note.isEmpty {
             Text("Empty note")
                 .placeholderText()
                 .frame(maxWidth: .infinity, alignment: .leading)
         } else {
-            TextView(.constant(itemContent.note))
+            TextView(.constant(note))
                 // swiftlint:disable:next deprecated_foregroundcolor_modifier
                 .foregroundColor(PassColor.textNorm)
                 .autoDetectDataTypes(.all)

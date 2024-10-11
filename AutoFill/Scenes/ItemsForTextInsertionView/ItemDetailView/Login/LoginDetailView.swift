@@ -30,16 +30,13 @@ struct LoginDetailView: View {
     @StateObject private var viewModel: LoginDetailViewModel
     @State private var selectedPasskey: Passkey?
     @State private var showPassword = false
-    let onSelect: (String) -> Void
 
     private var tintColor: UIColor {
         viewModel.type.normColor
     }
 
-    init(item: SelectedItem,
-         onSelect: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(item: item))
-        self.onSelect = onSelect
+    init(_ viewModel: LoginDetailViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -52,18 +49,19 @@ struct LoginDetailView: View {
             CustomFieldSections(itemContentType: viewModel.type,
                                 uiModels: viewModel.customFieldUiModels,
                                 isFreeUser: viewModel.isFreeUser,
-                                onSelectHiddenText: { onSelect($0) },
-                                onSelectTotpToken: { onSelect($0) },
+                                onSelectHiddenText: { viewModel.autofill($0) },
+                                onSelectTotpToken: { viewModel.autofill($0) },
                                 onUpgrade: { viewModel.upgrade() })
         }
         .optionalSheet(binding: $selectedPasskey) { passkey in
             PasskeyDetailView(passkey: passkey,
-                              onTapUsername: { onSelect($0) })
+                              onTapUsername: { viewModel.autofill($0) })
                 .presentationDetents([.height(380)])
                 .environment(\.colorScheme, colorScheme)
         }
         .optionalSheet(binding: $viewModel.selectedAlias) { alias in
-            ItemDetailView(item: alias, onSelect: onSelect)
+            ItemDetailView(item: alias,
+                           selectedTextStream: viewModel.selectedTextStream)
                 .environment(\.colorScheme, colorScheme)
         }
     }
@@ -75,7 +73,7 @@ private extension LoginDetailView {
         if !viewModel.passkeys.isEmpty {
             ForEach(viewModel.passkeys, id: \.keyID) { passkey in
                 PasskeyDetailRow(passkey: passkey,
-                                 onTapUsername: { onSelect($0) },
+                                 onTapUsername: { viewModel.autofill($0) },
                                  onTap: { selectedPasskey = passkey })
             }
         }
@@ -116,7 +114,7 @@ private extension LoginDetailView {
                     PassSectionDivider()
                     TOTPRow(uri: viewModel.totpUri,
                             tintColor: tintColor,
-                            onCopyTotpToken: { onSelect($0) })
+                            onCopyTotpToken: { viewModel.autofill($0) })
                 }
             }
         }
@@ -184,7 +182,7 @@ private extension LoginDetailView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
-            .onTapGesture { onSelect(viewModel.email) }
+            .onTapGesture { viewModel.autofill(viewModel.email) }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -207,7 +205,7 @@ private extension LoginDetailView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
-            .onTapGesture { onSelect(viewModel.username) }
+            .onTapGesture { viewModel.autofill(viewModel.username) }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
     }
@@ -242,7 +240,7 @@ private extension LoginDetailView {
             .contentShape(.rect)
             .onTapGesture {
                 if !viewModel.password.isEmpty {
-                    onSelect(viewModel.password)
+                    viewModel.autofill(viewModel.password)
                 }
             }
 
@@ -278,7 +276,7 @@ private extension LoginDetailView {
                             .multilineTextAlignment(.leading)
                             .lineLimit(2)
                             .onTapGesture {
-                                onSelect(url)
+                                viewModel.autofill(url)
                             }
                     }
                 }
