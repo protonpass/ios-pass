@@ -50,9 +50,11 @@ enum ItemsForTextInsertionViewState: Equatable {
     }
 }
 
+typealias ItemsForTextInsertionSection = TableView<ItemUiModel, GenericCredentialItemRow, Text>.Section
+
 @MainActor
 final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsertion> {
-    @Published private(set) var sections = [TableView<ItemUiModel, GenericCredentialItemRow>.Section]()
+    @Published private(set) var sections = [ItemsForTextInsertionSection]()
     @Published private(set) var itemCount: ItemCount = .zero
     @Published private(set) var state = CredentialsViewState.loading
     @Published var query = ""
@@ -168,7 +170,7 @@ extension ItemsForTextInsertionViewModel {
             allItems
         }
 
-        let sections: [TableView<ItemUiModel, GenericCredentialItemRow>.Section] = {
+        let sections: [ItemsForTextInsertionSection] = {
             switch sortType {
             case .mostRecent:
                 let results = filteredItems.mostRecentSortResult()
