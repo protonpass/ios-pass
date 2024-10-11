@@ -21,11 +21,10 @@
 
 import SwiftUI
 
+private let kHeaderId = "header"
 private let kCellId = "cell"
 
-public typealias HashableSendable = Hashable & Sendable
-
-public final class PassDiffableDataSource<Section: HashableSendable, Item: HashableSendable>:
+public final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
     UITableViewDiffableDataSource<Section, Item> {
     var sectionTitles: [String]?
     var lastId: Int?
@@ -44,8 +43,8 @@ public final class PassDiffableDataSource<Section: HashableSendable, Item: Hasha
     }
 }
 
-public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresentable {
-    public struct Section {
+public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIViewRepresentable {
+    public struct Section: Hashable {
         public let title: String
         public let items: [Item]
 
@@ -56,7 +55,9 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
     }
 
     let sections: [Section]
-    let itemCell: (Item) -> ItemCell
+    let itemView: (Item) -> ItemView
+    /// Custom header view, pass `nil` to use the default text header
+    let headerView: (_ sectionIndex: Int) -> HeaderView?
 
     /// Set `id` to force refreshing the table because relying on `UITableViewDiffableDataSource`
     /// is not enough in some cases, e.g 2 snapshots may be completely different but the first visible items are
@@ -70,10 +71,12 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
 
     public init(sections: [Section],
                 id: Int?,
-                itemCell: @escaping (Item) -> ItemCell) {
+                itemView: @escaping (Item) -> ItemView,
+                headerView: @escaping (_ sectionIndex: Int) -> HeaderView?) {
         self.sections = sections
         self.id = id
-        self.itemCell = itemCell
+        self.itemView = itemView
+        self.headerView = headerView
     }
 
     public func makeCoordinator() -> Coordinator {
@@ -86,6 +89,7 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
         tableView.backgroundColor = .clear
         tableView.separatorColor = .clear
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellId)
+        tableView.delegate = context.coordinator
         context.coordinator.configureDataSource(for: tableView)
         return tableView
     }
@@ -94,12 +98,22 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
         context.coordinator.updateTable(with: sections, id: id)
     }
 
-    public final class Coordinator: NSObject {
+    public final class Coordinator: NSObject, UITableViewDelegate {
         var parent: TableView
         var dataSource: PassDiffableDataSource<String, Item>!
 
         init(_ parent: TableView) {
             self.parent = parent
+        }
+
+        public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+            guard let headerView = parent.headerView(section) else { return nil }
+            let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: kHeaderId)
+                ?? UITableViewHeaderFooterView(reuseIdentifier: kHeaderId)
+            view.contentConfiguration = UIHostingConfiguration {
+                headerView
+            }
+            return view
         }
 
         func configureDataSource(for tableView: UITableView) {
@@ -109,7 +123,7 @@ public struct TableView<Item: HashableSendable, ItemCell: View>: UIViewRepresent
                     cell.backgroundColor = .clear
                     cell.contentView.backgroundColor = .clear
                     cell.contentConfiguration = UIHostingConfiguration {
-                        self.parent.itemCell(item)
+                        self.parent.itemView(item)
                     }
                     // A combination of minSize and magins to remove the vertical padding
                     .minSize(width: 0, height: 0)
