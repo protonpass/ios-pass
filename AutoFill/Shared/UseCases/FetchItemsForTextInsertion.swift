@@ -36,17 +36,20 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
     private let accessRepository: any AccessRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
+    private let textAutoFillDatasource: any LocalItemTextAutoFillDatasourceProtocol
     private let logger: Logger
 
     init(symmetricKeyProvider: any SymmetricKeyProvider,
          accessRepository: any AccessRepositoryProtocol,
          itemRepository: any ItemRepositoryProtocol,
          shareRepository: any ShareRepositoryProtocol,
+         textAutoFillDatasource: any LocalItemTextAutoFillDatasourceProtocol,
          logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.accessRepository = accessRepository
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
+        self.textAutoFillDatasource = textAutoFillDatasource
         logger = .init(manager: logManager)
     }
 
@@ -55,9 +58,14 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
         async let getPlan = accessRepository.getPlan(userId: userId)
         async let getVaults = shareRepository.getVaults(userId: userId)
         async let getEncryptedItems = itemRepository.getItems(userId: userId, state: .active)
+        async let getHistory = textAutoFillDatasource.getItems(userId: userId,
+                                                               count: Constants.textAutoFillHistoryLimit)
 
-        let (symmetricKey, plan, vaults, encryptedItems) = try await (getSymmetricKey, getPlan, getVaults,
-                                                                      getEncryptedItems)
+        let (symmetricKey,
+             plan,
+             vaults,
+             encryptedItems,
+             history) = try await (getSymmetricKey, getPlan, getVaults, getEncryptedItems, getHistory)
 
         let applicableVaults = if plan.isFreeUser {
             vaults.twoOldestVaults.allVaults
@@ -78,9 +86,17 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
 
         let searchableItems = itemContents.map { SearchableItem(from: $0, allVaults: applicableVaults) }
         let items = itemContents.map(\.toItemUiModel)
+        let historyItems: [HistoryItemUiModel] = history.compactMap { item in
+            guard let uiModel = items.first(where: { $0.shareId == item.shareId && $0.itemId == item.itemId })
+            else {
+                return nil
+            }
+            return .init(time: item.timestamp, value: uiModel)
+        }
 
         return .init(userId: userId,
                      vaults: applicableVaults,
+                     history: historyItems,
                      searchableItems: searchableItems,
                      items: items)
     }

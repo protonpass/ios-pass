@@ -74,6 +74,10 @@ private extension AutoFillUseCaseContainer {
     var totpService: any TOTPServiceProtocol {
         SharedServiceContainer.shared.totpService()
     }
+
+    var itemTextAutoFillDatasource: any LocalItemTextAutoFillDatasourceProtocol {
+        SharedRepositoryContainer.shared.localItemTextAutoFillDatasource()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -105,6 +109,7 @@ extension AutoFillUseCaseContainer {
                                           accessRepository: self.accessRepository,
                                           itemRepository: self.itemRepository,
                                           shareRepository: self.shareRepository,
+                                          textAutoFillDatasource: self.itemTextAutoFillDatasource,
                                           logManager: self.logManager) }
     }
 
