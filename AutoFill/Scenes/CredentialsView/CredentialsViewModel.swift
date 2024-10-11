@@ -72,9 +72,6 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var selectPasskeySheetInformation: SelectPasskeySheetInformation?
 
-    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent
-
     private var lastTask: Task<Void, Never>?
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
@@ -195,11 +192,6 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
 // MARK: - Public actions
 
 extension CredentialsViewModel {
-    func presentSortTypeList() {
-        delegate?.autoFillViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
-                                                              delegate: self)
-    }
-
     func associateAndAutofill(item: any ItemIdentifiable) {
         Task { [weak self] in
             guard let self, let context else {
@@ -349,13 +341,5 @@ private extension CredentialsViewModel {
                 doSearch(term: term)
             }
             .store(in: &cancellables)
-    }
-}
-
-// MARK: - SortTypeListViewModelDelegate
-
-extension CredentialsViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortType) {
-        selectedSortType = sortType
     }
 }

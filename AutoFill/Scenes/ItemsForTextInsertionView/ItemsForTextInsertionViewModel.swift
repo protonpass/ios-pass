@@ -91,14 +91,6 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     @LazyInjected(\SharedRepositoryContainer.localItemTextAutoFillDatasource)
     private var itemTextAutoFillDatasource
 
-    private let sortTypeUpdated = PassthroughSubject<Void, Never>()
-    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var sortType = SortType.mostRecent {
-        didSet {
-            sortTypeUpdated.send(())
-        }
-    }
-
     private let filterOptionUpdated = PassthroughSubject<Void, Never>()
     var filterOption = ItemTypeFilterOption.all {
         didSet {
@@ -106,6 +98,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         }
     }
 
+    private var searchTask: Task<Void, Never>?
     private var searchableItems: [SearchableItem] {
         if let selectedUser {
             results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
@@ -123,7 +116,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     }
 
     var resettable: Bool {
-        filterOption != .all || sortType != .mostRecent
+        filterOption != .all || selectedSortType != .mostRecent
     }
 
     let selectedTextStream = SelectedTextStream()
@@ -141,6 +134,18 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
             .sink { [weak self] text in
                 guard let self else { return }
                 autofill(text)
+            }
+            .store(in: &cancellables)
+
+        $query
+            .debounce(for: 0.4, scheduler: DispatchQueue.main)
+            .removeDuplicates()
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] term in
+                guard let self else { return }
+                doSearch(term: term)
             }
             .store(in: &cancellables)
     }
@@ -174,6 +179,36 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     }
 }
 
+private extension ItemsForTextInsertionViewModel {
+    func doSearch(term: String) {
+        guard state != .searching else { return }
+        guard !term.isEmpty else {
+            state = .idle
+            return
+        }
+
+        searchTask?.cancel()
+        searchTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            let hashedTerm = term.sha256
+            logger.trace("Searching for term \(hashedTerm)")
+            state = .searching
+            let searchResults = searchableItems.result(for: term)
+            if Task.isCancelled {
+                return
+            }
+            state = .searchResults(searchResults)
+            if searchResults.isEmpty {
+                logger.trace("No results for term \(hashedTerm)")
+            } else {
+                logger.trace("Found results for term \(hashedTerm)")
+            }
+        }
+    }
+}
+
 extension ItemsForTextInsertionViewModel {
     func filterAndSortItems() {
         defer { state = .idle }
@@ -200,7 +235,7 @@ extension ItemsForTextInsertionViewModel {
         }
 
         var sections: [ItemsForTextInsertionSection] = {
-            switch sortType {
+            switch selectedSortType {
             case .mostRecent:
                 let results = filteredItems.mostRecentSortResult()
                 return [
@@ -296,7 +331,7 @@ extension ItemsForTextInsertionViewModel {
 
     func resetFilters() {
         filterOption = .all
-        sortType = .mostRecent
+        selectedSortType = .mostRecent
     }
 
     func autofill(_ text: SelectedText) {
