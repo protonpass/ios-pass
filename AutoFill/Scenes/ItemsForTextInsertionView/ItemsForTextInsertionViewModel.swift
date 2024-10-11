@@ -216,28 +216,28 @@ extension ItemsForTextInsertionViewModel {
             case .mostRecent:
                 let results = filteredItems.mostRecentSortResult()
                 return [
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: #localized("Today"),
                           items: results.today.map { ItemForTextInsertion.normal($0) }),
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: #localized("Yesterday"),
                           items: results.yesterday.map { ItemForTextInsertion.normal($0) }),
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: #localized("Last week"),
                           items: results.last7Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: #localized("Last two weeks"),
                           items: results.last14Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: #localized("Last 30 days"),
                           items: results.last30Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: #localized("Last 60 days"),
                           items: results.last60Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: #localized("Last 90 days"),
                           items: results.last90Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: #localized("More than 90 days"),
                           items: results.others.map { ItemForTextInsertion.normal($0) })
                 ]
@@ -245,7 +245,7 @@ extension ItemsForTextInsertionViewModel {
             case .alphabeticalAsc:
                 let results = filteredItems.alphabeticalSortResult(direction: .ascending)
                 return results.buckets.map { bucket in
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: bucket.letter.character,
                           items: bucket.items.map { ItemForTextInsertion.normal($0) })
                 }
@@ -253,7 +253,7 @@ extension ItemsForTextInsertionViewModel {
             case .alphabeticalDesc:
                 let results = filteredItems.alphabeticalSortResult(direction: .descending)
                 return results.buckets.map { bucket in
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: bucket.letter.character,
                           items: bucket.items.map { ItemForTextInsertion.normal($0) })
                 }
@@ -261,7 +261,7 @@ extension ItemsForTextInsertionViewModel {
             case .newestToOldest:
                 let results = filteredItems.monthYearSortResult(direction: .descending)
                 return results.buckets.map { bucket in
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: bucket.monthYear.relativeString,
                           items: bucket.items.map { ItemForTextInsertion.normal($0) })
                 }
@@ -269,7 +269,7 @@ extension ItemsForTextInsertionViewModel {
             case .oldestToNewest:
                 let results = filteredItems.monthYearSortResult(direction: .ascending)
                 return results.buckets.map { bucket in
-                    .init(id: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.normal,
                           title: bucket.monthYear.relativeString,
                           items: bucket.items.map { ItemForTextInsertion.normal($0) })
                 }
@@ -278,8 +278,8 @@ extension ItemsForTextInsertionViewModel {
 
         // Only show history section when not filtering by item types
         if filterOption == .all, !history.isEmpty {
-            sections.insert(.init(id: ItemsForTextInsertionSectionType.history,
-                                  title: "History",
+            sections.insert(.init(type: ItemsForTextInsertionSectionType.history,
+                                  title: "",
                                   items: history.map { ItemForTextInsertion.history($0) }),
                             at: 0)
         }

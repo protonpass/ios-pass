@@ -132,8 +132,8 @@ private extension CredentialsView {
                     NoSearchResultsInAllVaultView(query: viewModel.query)
                 } else {
                     CredentialSearchResultView(results: results,
-                                               getUser: { viewModel.getUserForUiDisplay(for: $0) },
                                                selectedSortType: $viewModel.selectedSortType,
+                                               getUser: { viewModel.getUserForUiDisplay(for: $0) },
                                                selectItem: { viewModel.select(item: $0) })
                 }
             case .loading:
