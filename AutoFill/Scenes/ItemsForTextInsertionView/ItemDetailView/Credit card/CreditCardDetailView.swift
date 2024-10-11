@@ -30,14 +30,11 @@ struct CreditCardDetailView: View {
     @State private var showCardNumber = false
     @State private var showVerificationNumber = false
     @State private var showPIN = false
-    let onSelect: (String) -> Void
 
     private var tintColor: UIColor { viewModel.type.normColor }
 
-    init(item: SelectedItem,
-         onSelect: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(item: item))
-        self.onSelect = onSelect
+    init(_ viewModel: CreditCardDetailViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -79,7 +76,7 @@ private extension CreditCardDetailView {
             .contentShape(.rect)
             .onTapGesture {
                 if !viewModel.isFreeUser, !viewModel.cardholderName.isEmpty {
-                    onSelect(viewModel.cardholderName)
+                    viewModel.autofill(viewModel.cardholderName)
                 }
             }
         }
@@ -109,7 +106,7 @@ private extension CreditCardDetailView {
             .contentShape(.rect)
             .onTapGesture {
                 if !viewModel.isFreeUser, !viewModel.cardNumber.isEmpty {
-                    onSelect(viewModel.cardNumber)
+                    viewModel.autofill(viewModel.cardNumber)
                 }
             }
 
@@ -150,7 +147,7 @@ private extension CreditCardDetailView {
             .contentShape(.rect)
             .onTapGesture {
                 if !viewModel.isFreeUser, !viewModel.verificationNumber.isEmpty {
-                    onSelect(viewModel.verificationNumber)
+                    viewModel.autofill(viewModel.verificationNumber)
                 }
             }
             .animation(.default, value: showVerificationNumber)
@@ -226,7 +223,7 @@ private extension CreditCardDetailView {
             .contentShape(.rect)
             .onTapGesture {
                 if !viewModel.isFreeUser, !viewModel.expirationDate.isEmpty {
-                    onSelect(viewModel.expirationDate)
+                    viewModel.autofill(viewModel.expirationDate)
                 }
             }
         }

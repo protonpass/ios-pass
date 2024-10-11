@@ -27,16 +27,13 @@ import SwiftUI
 struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @State private var animate = false
-    let onSelect: (String) -> Void
 
     var tintColor: UIColor {
         viewModel.type.normColor
     }
 
-    init(item: SelectedItem,
-         onSelect: @escaping (String) -> Void) {
-        _viewModel = .init(wrappedValue: .init(item: item))
-        self.onSelect = onSelect
+    init(_ viewModel: AliasDetailViewModel) {
+        _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -66,7 +63,7 @@ private extension AliasDetailView {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .contentShape(.rect)
-            .onTapGesture { onSelect(viewModel.email) }
+            .onTapGesture { viewModel.autofill(viewModel.email) }
             .layoutPriority(1)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
@@ -101,7 +98,7 @@ private extension AliasDetailView {
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .contentShape(.rect)
                             .onTapGesture {
-                                onSelect(mailbox.email)
+                                viewModel.autofill(mailbox.email)
                             }
                     }
                 } else {
