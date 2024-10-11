@@ -68,8 +68,7 @@ private extension ItemsForTextInsertionView {
                     SearchBar(query: $viewModel.query,
                               isFocused: $isFocusedOnSearchBar,
                               placeholder: viewModel.searchBarPlaceholder,
-                              onCancel: { /* Not applicable */ },
-                              hideCancel: true)
+                              cancelMode: .never)
 
                     Menu(content: {
                         filterOptions
@@ -133,7 +132,6 @@ private extension ItemsForTextInsertionView {
                     CredentialSearchResultView(results: results,
                                                getUser: { viewModel.getUserForUiDisplay(for: $0) },
                                                selectedSortType: $viewModel.selectedSortType,
-                                               sortAction: { viewModel.presentSortTypeList() },
                                                selectItem: { viewModel.select($0) })
                 }
 

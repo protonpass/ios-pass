@@ -34,8 +34,6 @@ protocol AutoFillViewModelDelegate: AnyObject {
     func autoFillViewModelWantsToSelectUser(_ users: [UserUiModel])
     func autoFillViewModelWantsToCancel()
     func autoFillViewModelWantsToLogOut()
-    func autoFillViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: any SortTypeListViewModelDelegate)
 }
 
 @MainActor
@@ -218,11 +216,6 @@ extension AutoFillViewModel {
         delegate?.autoFillViewModelWantsToSelectUser(users)
     }
 
-    func presentSortTypeList() {
-        delegate?.autoFillViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
-                                                              delegate: self)
-    }
-
     func getUserForUiDisplay(for item: any ItemIdentifiable) -> UserUiModel? {
         guard users.count > 1, selectedUser == nil else { return nil }
         do {
@@ -269,13 +262,5 @@ extension AutoFillViewModel {
     func handle(_ error: any Error) {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
-    }
-}
-
-// MARK: - SortTypeListViewModelDelegate
-
-extension AutoFillViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortType) {
-        selectedSortType = sortType
     }
 }

@@ -468,8 +468,6 @@ extension HomepageCoordinator {
                     createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissible)
                 case let .itemDetail(view, asSheet):
                     itemDetailCoordinatorWantsToPresent(view: view, asSheet: asSheet)
-                case let .sortTypeList(selectedSortType, delegate):
-                    presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
                 }
             }
             .store(in: &cancellables)
@@ -747,21 +745,6 @@ extension HomepageCoordinator {
                 handle(error: error)
             }
         }
-    }
-
-    func presentSortTypeList(selectedSortType: SortType,
-                             delegate: any SortTypeListViewModelDelegate) {
-        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
-        viewModel.delegate = delegate
-        let view = SortTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
     }
 
     func presentCreateEditVaultView(mode: VaultMode) {
