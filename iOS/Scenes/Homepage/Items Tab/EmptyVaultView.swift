@@ -28,7 +28,6 @@ struct EmptyVaultView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
     private let canCreateItems: Bool
     private let onCreate: (ItemContentType) -> Void
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     init(canCreateItems: Bool,
          onCreate: @escaping (ItemContentType) -> Void) {

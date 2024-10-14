@@ -28,6 +28,7 @@ private let kChipHeight: CGFloat = 56
 
 struct ItemCountView: View {
     @StateObject private var vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    let onSelect: (ItemContentType) -> Void
 
     var body: some View {
         switch vaultsManager.state {
@@ -39,11 +40,21 @@ struct ItemCountView: View {
             let itemCount = ItemCount(items: allItems)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ItemContentTypeCountView(type: .login, count: itemCount.login)
-                    ItemContentTypeCountView(type: .alias, count: itemCount.alias)
-                    ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCard)
-                    ItemContentTypeCountView(type: .note, count: itemCount.note)
-                    ItemContentTypeCountView(type: .identity, count: itemCount.identity)
+                    ItemContentTypeCountView(type: .login,
+                                             count: itemCount.login,
+                                             onSelect: onSelect)
+                    ItemContentTypeCountView(type: .alias,
+                                             count: itemCount.alias,
+                                             onSelect: onSelect)
+                    ItemContentTypeCountView(type: .creditCard,
+                                             count: itemCount.creditCard,
+                                             onSelect: onSelect)
+                    ItemContentTypeCountView(type: .note,
+                                             count: itemCount.note,
+                                             onSelect: onSelect)
+                    ItemContentTypeCountView(type: .identity,
+                                             count: itemCount.identity,
+                                             onSelect: onSelect)
                 }
                 .padding(.horizontal)
             }
@@ -72,6 +83,7 @@ struct ItemCountView: View {
 private struct ItemContentTypeCountView: View {
     let type: ItemContentType
     let count: Int
+    let onSelect: (ItemContentType) -> Void
 
     var body: some View {
         HStack {
@@ -92,5 +104,11 @@ private struct ItemContentTypeCountView: View {
         .frame(height: kChipHeight)
         .frame(minWidth: 103)
         .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm.toColor, lineWidth: 1))
+        .contentShape(.rect)
+        .onTapGesture {
+            if count > 0 { // swiftlint:disable:this empty_count
+                onSelect(type)
+            }
+        }
     }
 }

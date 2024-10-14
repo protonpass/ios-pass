@@ -52,6 +52,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let getAuthMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -203,6 +204,10 @@ extension ProfileTabViewModel {
 
     func handleEnableAutoFillAction() {
         openAutoFillSettings()
+    }
+
+    func handleItemTypeSelection(_ type: ItemContentType) {
+        itemTypeSelection.send(type)
     }
 
     func toggleFallbackToPasscode() {
