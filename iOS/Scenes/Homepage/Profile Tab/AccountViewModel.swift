@@ -67,10 +67,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     var username: String { userManager.currentActiveUser.value?.user.email ?? "" }
 
-    var extraPasswordSupported: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAccessKeyV1)
-    }
-
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
         setup()

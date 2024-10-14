@@ -38,16 +38,8 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
 
-    var isSecureLinkActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passPublicLinkV1)
-    }
-
     var sheetHeight: CGFloat {
-        if vault.vault.shared {
-            isSecureLinkActive ? 290 : 200
-        } else {
-            isSecureLinkActive ? 400 : 310
-        }
+        vault.vault.shared ? 290 : 400
     }
 
     init(vault: VaultListUiModel, itemContent: ItemContent) {

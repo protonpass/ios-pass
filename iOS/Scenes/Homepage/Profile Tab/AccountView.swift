@@ -156,16 +156,14 @@ struct AccountView: View {
                               .padding(.vertical)
                 }
 
-                if viewModel.extraPasswordSupported {
-                    if viewModel.extraPasswordEnabled {
-                        extraPasswordEnabledRow
-                    } else {
-                        extraPasswordDisabledRow
-                    }
-                    // swiftlint:disable:next line_length
-                    Text(verbatim: "The extra password will be required to use Pass. It acts as an additional password on top of your Proton password.")
-                        .sectionTitleText()
+                if viewModel.extraPasswordEnabled {
+                    extraPasswordEnabledRow
+                } else {
+                    extraPasswordDisabledRow
                 }
+                // swiftlint:disable:next line_length
+                Text(verbatim: "The extra password will be required to use Pass. It acts as an additional password on top of your Proton password.")
+                    .sectionTitleText()
 
                 OptionRow(action: { viewModel.signOut() },
                           height: .tall,
