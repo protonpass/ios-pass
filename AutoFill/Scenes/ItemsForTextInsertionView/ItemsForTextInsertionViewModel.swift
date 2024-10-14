@@ -28,24 +28,24 @@ import Macro
 import SwiftUI
 
 // Wrap UI models inside an enum to support displaying the same items
-// in both history and normal sections.
+// in both history and regular sections.
 // Because `UITableViewDiffableDataSource` relies on the hash value of the item to show or hide
 enum ItemForTextInsertion: Hashable {
     case history(ItemUiModel)
-    case normal(ItemUiModel)
+    case regular(ItemUiModel)
 
     var uiModel: ItemUiModel {
         switch self {
         case let .history(uiModel):
             uiModel
-        case let .normal(uiModel):
+        case let .regular(uiModel):
             uiModel
         }
     }
 }
 
 enum ItemsForTextInsertionSectionType: Hashable {
-    case history, normal
+    case history, regular
 }
 
 typealias ItemsForTextInsertionSection =
@@ -216,62 +216,62 @@ extension ItemsForTextInsertionViewModel {
             case .mostRecent:
                 let results = filteredItems.mostRecentSortResult()
                 return [
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: #localized("Today"),
-                          items: results.today.map { ItemForTextInsertion.normal($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                          items: results.today.map { ItemForTextInsertion.regular($0) }),
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: #localized("Yesterday"),
-                          items: results.yesterday.map { ItemForTextInsertion.normal($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                          items: results.yesterday.map { ItemForTextInsertion.regular($0) }),
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: #localized("Last week"),
-                          items: results.last7Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                          items: results.last7Days.map { ItemForTextInsertion.regular($0) }),
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: #localized("Last two weeks"),
-                          items: results.last14Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                          items: results.last14Days.map { ItemForTextInsertion.regular($0) }),
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: #localized("Last 30 days"),
-                          items: results.last30Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                          items: results.last30Days.map { ItemForTextInsertion.regular($0) }),
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: #localized("Last 60 days"),
-                          items: results.last60Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                          items: results.last60Days.map { ItemForTextInsertion.regular($0) }),
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: #localized("Last 90 days"),
-                          items: results.last90Days.map { ItemForTextInsertion.normal($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                          items: results.last90Days.map { ItemForTextInsertion.regular($0) }),
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: #localized("More than 90 days"),
-                          items: results.others.map { ItemForTextInsertion.normal($0) })
+                          items: results.others.map { ItemForTextInsertion.regular($0) })
                 ]
 
             case .alphabeticalAsc:
                 let results = filteredItems.alphabeticalSortResult(direction: .ascending)
                 return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: bucket.letter.character,
-                          items: bucket.items.map { ItemForTextInsertion.normal($0) })
+                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
                 }
 
             case .alphabeticalDesc:
                 let results = filteredItems.alphabeticalSortResult(direction: .descending)
                 return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: bucket.letter.character,
-                          items: bucket.items.map { ItemForTextInsertion.normal($0) })
+                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
                 }
 
             case .newestToOldest:
                 let results = filteredItems.monthYearSortResult(direction: .descending)
                 return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: bucket.monthYear.relativeString,
-                          items: bucket.items.map { ItemForTextInsertion.normal($0) })
+                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
                 }
 
             case .oldestToNewest:
                 let results = filteredItems.monthYearSortResult(direction: .ascending)
                 return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.normal,
+                    .init(type: ItemsForTextInsertionSectionType.regular,
                           title: bucket.monthYear.relativeString,
-                          items: bucket.items.map { ItemForTextInsertion.normal($0) })
+                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
                 }
             }
         }()

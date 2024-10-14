@@ -157,7 +157,6 @@ private extension CredentialsView {
                                   }
                               })
                               .padding(.horizontal)
-                              .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: viewModel.state)
