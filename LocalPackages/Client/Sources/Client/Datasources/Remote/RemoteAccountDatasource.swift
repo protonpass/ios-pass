@@ -25,7 +25,8 @@ public protocol RemoteAccountDatasourceProtocol: Sendable {
     func getAccountRecoveryInfo(userId: String) async throws -> AccountRecovery?
 }
 
-public final class RemoteAccountDatasource: RemoteDatasource, RemoteAccountDatasourceProtocol {}
+public final class RemoteAccountDatasource: RemoteDatasource, RemoteAccountDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteAccountDatasource {
     func getAccountRecoveryInfo(userId: String) async throws -> AccountRecovery? {

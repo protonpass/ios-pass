@@ -27,7 +27,8 @@ public protocol LocalSpotlightVaultDatasourceProtocol: Sendable {
     func removeAll(for userId: String) async throws
 }
 
-public final class LocalSpotlightVaultDatasource: LocalDatasource, LocalSpotlightVaultDatasourceProtocol {}
+public final class LocalSpotlightVaultDatasource: LocalDatasource, LocalSpotlightVaultDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension LocalSpotlightVaultDatasource {
     func getIds(for userId: String) async throws -> [ShareID] {
