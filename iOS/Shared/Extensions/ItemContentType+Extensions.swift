@@ -160,6 +160,21 @@ extension ItemContentType {
         }
     }
 
+    var filterMessage: String {
+        switch self {
+        case .login:
+            #localized("Filtered by logins")
+        case .alias:
+            #localized("Filtered by aliases")
+        case .note:
+            #localized("Filtered by notes")
+        case .creditCard:
+            #localized("Filtered by credit cards")
+        case .identity:
+            #localized("Filtered by identities")
+        }
+    }
+
     var createItemTitle: String {
         switch self {
         case .login:

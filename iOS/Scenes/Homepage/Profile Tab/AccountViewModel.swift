@@ -49,7 +49,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager) // To remove after Dynaplans
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let doDisableExtraPassword = resolve(\UseCasesContainer.disableExtraPassword)
 

@@ -188,6 +188,7 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let monitorStateStream = resolve(\DataStreamContainer.monitorStateStream)
+    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let userDefaults: UserDefaults = .standard
     weak var homepageTabBarControllerDelegate: (any HomepageTabBarControllerDelegate)?
@@ -210,6 +211,14 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
                 guard let self else { return }
                 passMonitorViewController?.tabBarItem.image = state.icon(selected: false)
                 passMonitorViewController?.tabBarItem.selectedImage = state.icon(selected: true)
+            }
+            .store(in: &cancellables)
+
+        itemTypeSelection
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                select(tab: .items)
             }
             .store(in: &cancellables)
     }

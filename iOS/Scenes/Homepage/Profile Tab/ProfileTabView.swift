@@ -158,7 +158,7 @@ struct ProfileTabView: View {
             Text("Items")
                 .profileSectionTitle()
                 .padding(.horizontal)
-            ItemCountView()
+            ItemCountView { viewModel.handleItemTypeSelection($0) }
         }
     }
 
