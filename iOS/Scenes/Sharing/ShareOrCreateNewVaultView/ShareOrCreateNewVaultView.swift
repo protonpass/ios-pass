@@ -36,7 +36,7 @@ struct ShareOrCreateNewVaultView: View {
 
             Spacer()
 
-            if viewModel.isSecureLinkActive, !viewModel.itemContent.isAlias {
+            if !viewModel.itemContent.isAlias {
                 secureLink
             }
 

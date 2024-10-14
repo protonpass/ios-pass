@@ -79,10 +79,8 @@ struct ProfileTabView: View {
                         .padding(.vertical)
                 }
 
-                if viewModel.isSecureLinkActive {
-                    secureLinkSection
-                        .padding(.top)
-                }
+                secureLinkSection
+                    .padding(.top)
 
                 settingsSection
                     .padding(.vertical)
