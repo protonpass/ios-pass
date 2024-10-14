@@ -41,7 +41,7 @@ extension FactoryModifying {
     /// Overload of `onArg(_:factory:)`  to make it more flexible
     /// by taking `arg` as `any RawRepresentable<String>` instead of `String`
     @discardableResult
-    func onArg(_ arg: any RawRepresentable<String>, factory: @escaping (P) -> T) -> Self {
+    func onArg(_ arg: any RawRepresentable<String>, factory: @escaping @Sendable (P) -> T) -> Self {
         onArg(arg.rawValue, factory: factory)
     }
 }
