@@ -65,10 +65,6 @@ struct ProfileTabView: View {
 
                 itemCountSection
 
-                if let pendingAliasToSync = viewModel.showAliasSyncExplanation {
-                    aliasSyncExplanation(pendingAliasToSync)
-                }
-
                 securitySection
                     .padding(.vertical)
 
@@ -109,7 +105,6 @@ struct ProfileTabView: View {
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
             .animation(.default, value: viewModel.localAuthenticationMethod)
             .animation(.default, value: viewModel.accountDetails)
-            .animation(.default, value: viewModel.showAliasSyncExplanation)
         }
     }
 
@@ -405,14 +400,6 @@ struct ProfileTabView: View {
         }
         .roundedEditableSection()
         .padding(.horizontal)
-    }
-
-    private func aliasSyncExplanation(_ missingAliases: Int) -> some View {
-        AliasSyncExplanationView(missingAliases: missingAliases,
-                                 dimissAction: { viewModel.dismissAliasesSyncExplanation() },
-                                 enableAliasSyncAction: {
-                                     viewModel.showSimpleLoginAliasesActivation()
-                                 }).padding(.horizontal)
     }
 }
 
