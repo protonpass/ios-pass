@@ -30,7 +30,8 @@ public protocol LocalOrganizationDatasourceProtocol: Sendable {
     func removeOrganization(userId: String) async throws
 }
 
-public final class LocalOrganizationDatasource: LocalDatasource, LocalOrganizationDatasourceProtocol {}
+public final class LocalOrganizationDatasource: LocalDatasource, LocalOrganizationDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension LocalOrganizationDatasource {
     func getOrganization(userId: String) async throws -> Organization? {

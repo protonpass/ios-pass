@@ -25,7 +25,7 @@ public protocol RemoteAccessDatasourceProtocol: Sendable {
     func updatePassMonitorState(userId: String, request: UpdateMonitorStateRequest) async throws -> Access.Monitor
 }
 
-public final class RemoteAccessDatasource: RemoteDatasource, RemoteAccessDatasourceProtocol {}
+public final class RemoteAccessDatasource: RemoteDatasource, RemoteAccessDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteAccessDatasource {
     func getAccess(userId: String) async throws -> Access {

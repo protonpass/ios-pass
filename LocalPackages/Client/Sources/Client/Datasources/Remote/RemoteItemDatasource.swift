@@ -63,7 +63,7 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
     func toggleAliasStatus(userId: String, shareId: String, itemId: String, enabled: Bool) async throws -> Item
 }
 
-public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol {}
+public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteItemDatasource {
     func getItems(userId: String,

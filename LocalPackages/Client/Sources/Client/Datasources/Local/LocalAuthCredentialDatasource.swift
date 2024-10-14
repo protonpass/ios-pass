@@ -34,7 +34,8 @@ public protocol LocalAuthCredentialDatasourceProtocol: Sendable {
     func removeAllCredentials(userId: String) async throws
 }
 
-public final class LocalAuthCredentialDatasource: LocalDatasource, LocalAuthCredentialDatasourceProtocol {
+public final class LocalAuthCredentialDatasource: LocalDatasource, LocalAuthCredentialDatasourceProtocol,
+    @unchecked Sendable {
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,

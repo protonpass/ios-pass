@@ -39,7 +39,7 @@ struct CredentialSearchResultView: View, Equatable {
         }
     }
 
-    static func == (lhs: CredentialSearchResultView, rhs: CredentialSearchResultView) -> Bool {
+    nonisolated static func == (lhs: CredentialSearchResultView, rhs: CredentialSearchResultView) -> Bool {
         lhs.results == rhs.results && lhs.selectedSortType == rhs.selectedSortType
     }
 }

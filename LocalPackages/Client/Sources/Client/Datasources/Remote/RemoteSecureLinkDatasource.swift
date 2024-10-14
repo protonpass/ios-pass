@@ -32,7 +32,8 @@ public protocol RemoteSecureLinkDatasourceProtocol: Sendable {
     func deleteAllInactiveLinks(userId: String) async throws
 }
 
-public final class RemoteSecureLinkDatasource: RemoteDatasource, RemoteSecureLinkDatasourceProtocol {}
+public final class RemoteSecureLinkDatasource: RemoteDatasource, RemoteSecureLinkDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteSecureLinkDatasource {
     func createLink(userId: String, configuration: SecureLinkCreationConfiguration) async throws -> NewSecureLink {

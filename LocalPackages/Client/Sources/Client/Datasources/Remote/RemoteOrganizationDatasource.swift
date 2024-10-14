@@ -26,7 +26,8 @@ public protocol RemoteOrganizationDatasourceProtocol: Sendable {
     func getOrganization(userId: String) async throws -> Organization?
 }
 
-public final class RemoteOrganizationDatasource: RemoteDatasource, RemoteOrganizationDatasourceProtocol {}
+public final class RemoteOrganizationDatasource: RemoteDatasource, RemoteOrganizationDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteOrganizationDatasource {
     func getOrganization(userId: String) async throws -> Organization? {

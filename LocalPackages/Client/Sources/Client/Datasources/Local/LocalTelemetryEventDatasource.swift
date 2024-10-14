@@ -36,7 +36,8 @@ public protocol LocalTelemetryEventDatasourceProtocol: Sendable {
     func removeAllEvents(userId: String) async throws
 }
 
-public final class LocalTelemetryEventDatasource: LocalDatasource, LocalTelemetryEventDatasourceProtocol {}
+public final class LocalTelemetryEventDatasource: LocalDatasource, LocalTelemetryEventDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension LocalTelemetryEventDatasource {
     func getOldestEvents(count: Int, userId: String) async throws -> [TelemetryEvent] {
