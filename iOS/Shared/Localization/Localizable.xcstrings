@@ -286,6 +286,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" is gekopieerd naar het klembord. Verloopt in %2$lld second."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" is gekopieerd naar het klembord. Verloopt in %2$lld seconden."
+                }
+              }
+            }
+          }
+        },
         "pl" : {
           "variations" : {
             "plural" : {
@@ -932,6 +950,102 @@
     },
     "%lld aliases" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданім"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псеўданімаў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasů"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasů"
+                }
+              }
+            }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasser"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ψευδώνυμο"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ψευδώνυμα"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -945,6 +1059,312 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld aliases"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasta"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ფსევდონიმი"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 별칭"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliaser"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliassen"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasów"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasów"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliases"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasuri"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld de aliasuri"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliasov"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld takma ad"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld takma ad"
                 }
               }
             }
@@ -12856,10 +13276,124 @@
     },
     "Add a custom section" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадаць карыстальніцкі раздзел"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidat vlastní sekci"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj en brugerdefineret sektion"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add a custom section"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añade una sección personalizada"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añada una sección personalizada"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää mukautettu osio"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une section personnalisée"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambahkan bagian khusus"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi una sezione personalizzata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მორგებული განყოფილების დამატება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "커스텀 섹션 추가"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til en tilpasset seksjon"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voeg een aangepaste sectie toe"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj niestandardową sekcję"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar um campo personalizado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adăugare secțiune proprie"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridať vlastnú sekciu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lägg till en anpassad sektion"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir özel bölüm ekle"
           }
         }
       }
@@ -13035,7 +13569,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Přidejte vlastní e-mailovou adresu"
+            "value" : "Přidat vlastní e-mailovou adresu"
           }
         },
         "da" : {
@@ -13355,7 +13889,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Přidejte e-mail nebo uživatelské jméno"
+            "value" : "Přidat e-mail nebo uživatelské jméno"
           }
         },
         "da" : {
@@ -13802,10 +14336,124 @@
     },
     "Add mailbox" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадаць паштовую скрыню"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidat e-mailovou schránku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilføj postkasse"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add mailbox"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un buzón"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää postilaatikko"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter une messagerie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambahkan kotak surat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi una cassetta mail"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის დამატება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함 추가"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til postboks"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postvak toevoegen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj skrzynkę pocztową"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adăugare cont e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridať poštovú schránku"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lägg till brevlåda"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta kutusu ekle"
           }
         }
       }
@@ -14927,20 +15575,230 @@
     },
     "Advanced alias management" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пашыранае кіраванне псеўданімамі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokročilá správa aliasů"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanceret administration af alias"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced alias management"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestión avanzada de alias"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestión avanzada de alias"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edistynyt aliashallinta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestion avancée des alias"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengelolaan alias bertingkat lanjut"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestione avanzata degli alias"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფსევდონიმების დამატებითი მართვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "향상된 별칭 관리"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avansert aliasadministrasjon"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaawansowane zarządzanie aliasami"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerenciamento avançado de alias"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestionare avansată aliasuri"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozšírená správa aliasov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avancerad hantering av alias"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelişmiş takma ad yönetimi"
           }
         }
       }
     },
     "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пашыранае кіраванне псеўданімамі даступна з Pass Unlimited. Палепшыце, каб атрымаць доступ да гэтай функцыі."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokročilá správa aliasů je k dispozici v Pass Unlimited. Navyšte pro okamžitý přístup."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avanceret alias-administration er tilgængelig med Pass Unlimited. Opgrader for øjeblikkelig adgang."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La gestión avanzada de alias está disponible con Pass Unlimited. Actualice para obtener acceso inmediato."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La gestión avanzada de alias está disponible con Pass Unlimited. Actualice para obtener acceso inmediato."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edistynyt aliashallinta on saatavilla Pass Unlimitedillä. Päivitä tilauksesi käyttääksesi sitä heti."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Unlimited permet la gestion avancée des alias. Améliorez votre abonnement pour en profiter immédiatemment."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengelolaan alias bertingkat lanjut tersedia dengan Pass Unlimited. Tingkatkan untuk akses segera."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La gestione avanzata degli alias è disponibile con Pass Unlimited. Esegui l'upgrade per l'accesso immediato."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "향상된 별칭 관리가 Pass Unlimited에서 지원됩니다. 무제한 접근을 위해 업그레이드하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avansert aliasadministrasjon er tilgjengelig med Pass Unlimited. Oppgrader for umiddelbar tilgang."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaawansowane zarządzanie aliasami jest dostępne w planie Pass Unlimited. Ulepsz konto, aby uzyskać natychmiastowy dostęp."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O gerenciamento avançado de alias está disponível com o Pass Unlimited. Faça o upgrade para obter acesso imediato."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestionarea avansată a aliasurilor este disponibilă cu Pass Unlimited. Treceți la alt plan pentru acces imediat."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozšírená správa aliasov je k dispozícii v pláne Pass Unlimited. Upgradujte a získajte okamžitý prístup."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avancerad hantering av alias är tillgängligt med Pass Unlimited. Uppgradera för omedelbar åtkomst."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelişmiş takma ad yönetimi Pass Unlimited ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
           }
         }
       }
@@ -18182,10 +19040,130 @@
     },
     "Alias management" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кіраванне псеўданімамі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Správa aliasů"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias-administration"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαχείρισης ψευδωνύμων"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias management"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administración de los alias"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administración de los alias"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliashallinta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestion des alias"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengelolaan alias"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestione degli alias"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფსევდონიმების მართვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "별칭 관리"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasadministrasjon"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasbeheer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zarządzanie aliasami"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerenciamento de alias"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestionare aliasuri"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Správa aliasov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliashantering"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takma ad yönetimi"
           }
         }
       }
@@ -18231,13 +19209,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias del elemento de inicio de sesión \"%@\""
+            "value" : "Alias del elemento de inicio de sesión «%@»"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alias del elemento de inicio de sesión \"%@\""
+            "value" : "Alias del elemento de inicio de sesión «%@»"
           }
         },
         "fi" : {
@@ -19449,10 +20427,112 @@
     "All aliases using the mailbox **%@** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:" : {
       "comment" : "Placeholder is the email address of the mailbox",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усе псеўданімы, якія выкарыстоўваюць паштовую скрыню **%@**, таксама будуць выдалены. Перанясіце гэтыя псеўданімы ў іншую паштовую скрыню, каб працягваць атрымліваць электронныя лісты:"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Všechny aliasy používající e-mailovou schránku **%@** budou rovněž smazány. Chcete-li nadále přijímat e-maily, přeneste tyto aliasy do jiné e-mailové schránky:"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle aliasser, der bruger postkassen **%@** vil også blive slettet. Hvis du vil fortsætte med at modtage e-mails, skal du overføre disse aliasser til en anden postkasse:"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "All aliases using the mailbox **%@** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "También se eliminarán todos los alias que utilicen el buzón **%@**. Para seguir recibiendo correos electrónicos, transfiera estos alias a un buzón diferente:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "También se eliminarán todos los alias que usen el buzón **%@**. Para seguir recibiendo correos electrónicos, transfiera estos alias a un buzón diferente:"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaikki postilaatikkoa **%@** käyttävät aliakset poistetaan myös. Jos haluat jatkaa sähköpostien vastaanottamista, siirrä nämä aliakset toiseen postilaatikkoon:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les alias utilisant la messagerie **%@** seront également supprimés. Pour continuer à recevoir des e-mails, transférez ces alias vers une autre messagerie :"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semua alias menggunakan kotak masuk **%@** juga akan dihapus. Untuk tetap menerima email, transfer alias berikut ke kotak masuk yang berbeda:"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verranno eliminati anche tutti gli alias che utilizzano la casella di posta **%@**. Per continuare a ricevere email trasferisci questi alias in una casella di posta diversa:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함 **%@**을(를) 사용하는 모든 별칭이 삭제됩니다. 이메일을 계속 수신하려면 다른 메일함으로 별칭을 전환하세요:"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle aliaser som bruker postboksen **%@** vil også bli slettet. Hvis du vil fortsette å motta e-post, flytter du disse aliasene til en annen postboks:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wszystkie aliasy używające skrzynki pocztowej **%@** zostaną również usunięte. Aby nadal otrzymywać wiadomości, przenieś te aliasy do innej skrzynki pocztowej:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os alíases que usam a caixa de correio **%@** também serão excluídos. Para você continuar recebendo e-mails, transfira esses alíases para uma caixa de correio diferente:"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toate aliasurile care utilizează adresa de e-mail **%@** vor fi șterse. Pentru a continua să primiți e-mailuri, transferați aceste aliasuri către alt cont de e-mail:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Všetky aliasy používajúce poštovú schránku **%@** budú tiež vymazané. Ak chcete naďalej prijímať emaily, presuňte tieto aliasy do inej schránky:"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alla alias som använder brevlådan **%@** kommer också att tas bort. För att fortsätta ta emot e-post, överför dessa alias till en annan brevlåda:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**%@** e-posta kutusunu kullanan tüm takma adlar da silinecek. E-posta almayı sürdürmek için bu takma adları farklı bir e-posta kutusuna aktarın:"
           }
         }
       }
@@ -20940,7 +22020,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrar siempre el nombre de usuario"
+            "value" : "Mostrar siempre el campo del nombre de usuario"
           }
         },
         "es-419" : {
@@ -30451,6 +31531,12 @@
             "value" : "Bekreft Proton-passordet ditt"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het Proton-wachtwoord mag niet leeg zijn"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35808,7 +36894,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La tarjeta de crédito ha sido movida a la papelera."
+            "value" : "Se ha movido la tarjeta de crédito a la papelera."
           }
         },
         "es-419" : {
@@ -37774,6 +38860,12 @@
             "value" : "Tilpasset seksjon"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aangepaste sectie"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -38312,10 +39404,160 @@
     },
     "Default" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прадвызначаны"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Výchozí"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προεπιλεγμένο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Default"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por defecto"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por defecto"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oletus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Par défaut"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bawaan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predefinito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "既定"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგულისხმევი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaard"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domyślny"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Padrão"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Implicit"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predvolená"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privzeto"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Типовий"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mặc định"
           }
         }
       }
@@ -39081,10 +40323,118 @@
     },
     "Delete mailbox" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдаліць паштовую скрыню"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smazat e-mailovou schránku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slet postkasse"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delete mailbox"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar el buzón"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar el buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poista postilaatikko"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer la messagerie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus kotak masuk"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina la casella email"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის წაშლა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함 삭제"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slett postboks"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń skrzynkę pocztową"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluir caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ștergere cont e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vymazať schránku"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort brevlåda"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta kutusunu sil"
           }
         }
       }
@@ -40011,6 +41361,12 @@
             "value" : "Vypnúť alias"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onemogoči vzdevek"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40072,7 +41428,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desactivar alias"
+            "value" : "Desactivar los alias"
           }
         },
         "es-419" : {
@@ -40121,6 +41477,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deaktiver aliaser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliassen uitschakelen"
           }
         },
         "pl" : {
@@ -43737,6 +45099,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktiver alias"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias inschakelen"
           }
         },
         "pl" : {
@@ -48287,6 +49655,12 @@
             "value" : "Ekstra passord for Proton Pass"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extra wachtwoord voor Proton Pass"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52144,6 +53518,12 @@
             "value" : "Generer sikker kobling"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beveiligde link genereren"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53162,10 +54542,124 @@
     },
     "Get Pass Unlimited" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Атрымаць Pass Unlimited"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Získejte Pass Unlimited"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få Proton Unlimited"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Get Pass Unlimited"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtén Pass Unlimited"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtenga Pass Unlimited"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hanki Pass Unlimited"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je choisis Pass Unlimited"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dapatkan Pass Unlimited"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ottieni Pass Unlimited"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიიღეთ Pass Unlimited"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Unlimited 구매"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Få Pass Unlimited"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kies Pass Unlimited"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uzyskaj plan Pass Unlimited"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obter o Pass Unlimited"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luați Pass Unlimited"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Získajte Pass Unlimited"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skaffa Proton Unlimited"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Unlimited edinin"
           }
         }
       }
@@ -60521,7 +62015,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El elemento ha sido movido a la caja fuerte &quot;%@&quot;."
+            "value" : "Se ha movido el elemento a la caja fuerte «%@»."
           }
         },
         "es-419" : {
@@ -60843,7 +62337,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elemento desanclado con éxito"
+            "value" : "Se ha desanclado el elemento."
           }
         },
         "es-419" : {
@@ -65181,6 +66675,12 @@
             "value" : "Koblingen utløper etter"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Link verloopt na"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67046,10 +68546,160 @@
     },
     "Mailbox" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паштовая скрыня"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mailová schránka"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postkasse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postfach"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Θυρίδα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mailbox"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buzón"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postilaatikko"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Messagerie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kotak Surat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casella di posta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受信トレイ"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postboks"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skrzynka pocztowa"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Căsuță poștală"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poštová schránka"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poštni predal"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brevlåda"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Posta kutusu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поштова скринька"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hộp thư"
           }
         }
       }
@@ -67057,20 +68707,224 @@
     "Mailbox action menu" : {
       "comment" : "Accessibility label for mailbox action button",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Меню дзеянняў паштовай скрыні"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nabídka akcí e-mailové schránky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handlingsmenu for postkasse"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mailbox action menu"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menú de acciones del buzón"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menú de acciones del buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postilaatikon toimintovalikko"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu d'action de la messagerie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu tindakan kotak masuk"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu azioni della casella email"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის ქმედების მენიუ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함 동작 매뉴"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handlingsmeny for postboks"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu akcji skrzynki pocztowej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu de ação da caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meniu acțiuni cont e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponuka akcií poštovej schránky"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta kutusu işlemleri menüsü"
           }
         }
       }
     },
     "Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паштовая скрыня - гэта месца, куды перасылаюцца электронныя лісты, якія адпраўлены на псеўданім. Гэта ваша звычайная паштовая скрыня такая, як напрыклад Gmail, Outlook, Proton Mail і г.д."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do e-mailové schránky se přeposílají e-maily odeslané na alias. Je to vaše obvyklá e-mailová schránka, např. Gmail, Outlook, Proton Mail atd."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postkasse er der, hvor e-mails sendt til et alias videresendes til. Det er din sædvanlige postkasse, f.eks. Gmail, Outlook, Proton Mail osv."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mailbox is where emails sent to an alias are forwarded to. It's your usual mailbox, e.g. Gmail, Outlook, Proton Mail, etc."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El buzón de correo es el lugar al que se reenvían los correos electrónicos enviados a un alias. Es el buzón de correo habitual, por ejemplo, Gmail, Outlook, Proton Mail, etc."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El buzón es el lugar al que se reenvían los correos electrónicos enviados a un alias. Es el buzón habitual, por ejemplo, Gmail, Outlook, Proton Mail, etc."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postilaatikko on paikka, johon aliakselle lähetetyt sähköpostit ohjataan. Se on tuttu postilaatikkosi, esim. Gmail, Outlook, Proton Mail jne."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La boîte de réception est l'endroit où les e-mails envoyés à un alias sont redirigés. C'est votre messagerie habituelle, par exemple Gmail, Outlook, Proton Mail, etc."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kotak surat adalah tempat di mana email yang dikirim ke alias diteruskan. Ini adalah kotak surat yang biasa Anda gunakan, misalnya Gmail, Outlook, Proton Mail, dll."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La casella di posta è il luogo a cui vengono inoltrate le email inviate a un alias. È la tua solita casella di posta, ad es. Gmail, Outlook, Proton Mail, ecc."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함은 별칭으로 전송된 이메일이 전달되는 공간입니다. Gmail, Outlook, Proton Mail 등과 같은 일반적인 메일함입니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postboks er der e-poster sendt til et alias videresendes til. Det er din vanlige postboks, for eksempel Gmail, Outlook, Proton Mail, osv."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skrzynka pocztowa to miejsce, do którego przekierowane są wiadomości wysłane do aliasu. Jest to zwykła skrzynka pocztowa, np. Gmail, Outlook, Proton Mail itp."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A caixa de correio é para onde os e-mails enviados para um alias são encaminhados. É a sua caixa de correio normal, por exemplo, Gmail, Outlook, Proton Mail, etc."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contul de e-mail este locul unde sunt redirecționate mesajele trimise către un alias. Este contul de e-mail obișnuit, de ex. Gmail, Outlook, Proton Mail etc."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do poštovej schránky sa preposielajú emaily odoslané na alias. Je to vaša bežná poštová schránka, napr. Gmail, Outlook, Proton Mail atď."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brevlåda är dit e-post som skickas till ett alias vidarebefordras till. Det är din vanliga brevlåda, t.ex. Gmail, Outlook, Proton Mail, etc."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta kutusu, bir takma ada gönderilen e-postaların yönlendirildiği yerdir. Gmail, Outlook, Proton Mail gibi normal e-posta kutunuzdur."
           }
         }
       }
@@ -67225,10 +69079,130 @@
     },
     "Make default" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зрабіць прадвызначаным"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavit jako výchozí"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brug som standard"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ορισμός ως προεπιλογή"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Make default"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establecer por defecto"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Establecer por defecto"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aseta oletukseksi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Définir par défaut"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jadikan bawaan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rendi predefinito"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგულისხმებად მონიშვნა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본값으로 설정"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angi som standard"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaard maken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustaw jako domyślną"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tornar padrão"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setare ca implicită"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastaviť ako predvolené"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gör standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan yap"
           }
         }
       }
@@ -67715,10 +69689,118 @@
     },
     "Manage your aliases" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кіраванне вашымі псеўданімамі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Správa aliasů"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrer dine aliasser"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Manage your aliases"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestiona tus alias"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestione sus alias"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hallitse aliaksiasi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gérer vos alias"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kelola alias Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestisci i tuoi alias"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მართეთ თქვენი ფსევდონიმები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내 별칭 관리"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Administrer aliasene dine"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zarządzaj aliasami"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerencie seus aliases"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gestionați-vă aliasurile"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spravujte svoje aliasy"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hantera dina alias"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takma ad yönetimi"
           }
         }
       }
@@ -70822,6 +72904,12 @@
             "value" : "Presunúť do koša"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premakni v smeti"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -71727,6 +73815,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ingen aliaser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen aliassen"
           }
         },
         "pl" : {
@@ -75975,6 +78069,12 @@
             "value" : "Kun en gratis Proton Pass-konto er tillatt"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slechts één gratis Proton Pass account is toegestaan"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76442,6 +78542,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Åpne alias"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias openen"
           }
         },
         "pl" : {
@@ -79493,6 +81599,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Passordet ble endret"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wachtwoord gewijzigd"
           }
         },
         "pl" : {
@@ -84770,10 +86882,118 @@
     },
     "Premium domain" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прэміяльны дамен"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prémiová doména"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium domæne"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Premium domain"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio premium"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio premium"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium-verkkotunnus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domaines premium"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domain premium"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio Premium"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფასიანი დომენი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "프리미엄 도메인"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium-domene"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domena premium"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domínio premium"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domeniu premium"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prémiová doména"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premiumdomän"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ücretli etki alanı"
           }
         }
       }
@@ -85349,6 +87569,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beskytt Proton Pass med et ekstra passord."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bescherm Proton Pass met een extra wachtwoord."
           }
         },
         "pl" : {
@@ -86281,6 +88507,12 @@
             "value" : "Proton-passord"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton wachtwoord"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86380,10 +88612,118 @@
     },
     "Public domain" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Публічны дамен"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veřejná doména"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offentligt domæne"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Public domain"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio público"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio público"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Julkinen verkkotunnus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domaine public"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domain publik"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dominio Pubblico"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საყოველთაო კუთვნილება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공개 도메인"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offentlig domene"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domena publiczna"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domínio público"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domeniu public"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verejná doména"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Offentlig domän"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herkese açık etki alanı"
           }
         }
       }
@@ -93342,6 +95682,12 @@
             "value" : "Skjermbilde"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schermafbeelding"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94832,6 +97178,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Andre telefonnummer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tweede telefoonnummer"
           }
         },
         "pl" : {
@@ -97049,6 +99401,12 @@
             "value" : "Velg konto"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account selecteren"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97501,6 +99859,12 @@
             "value" : "Velg årsak"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selecteer een reden"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97523,6 +99887,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyberte dôvod"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite razlog"
           }
         },
         "sv" : {
@@ -98906,6 +101276,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Angi ekstra passord for Proton Pass"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stel extra wachtwoord voor Proton Pass in"
           }
         },
         "pl" : {
@@ -103618,6 +105994,12 @@
             "value" : "Logget på som %@"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingelogd als %@"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103746,6 +106128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin-aliaser vil bli importert til dette hvelvet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin aliassen worden geïmporteerd in deze kluis."
           }
         },
         "pl" : {
@@ -103906,6 +106294,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin synchronizácia"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinhronizacija SimpleLogin"
           }
         },
         "sv" : {
@@ -108806,6 +111200,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "De kluis van het item wordt momenteel gedeeld met %lld gebruiker"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "De kluis van het item wordt momenteel gedeeld met %lld gebruikers"
+                }
+              }
+            }
+          }
+        },
         "pl" : {
           "variations" : {
             "plural" : {
@@ -111072,10 +113484,118 @@
     "To mailbox" : {
       "comment" : "Title next to picker to choose mailbox to transfer alias ",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У паштовую скрыню"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do e-mailové schránky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Til postkasse"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "To mailbox"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al buzón"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postilaatikkoon"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vers la messagerie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ke kotak surat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alla casella email"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთში"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함으로"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Til postboks"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do skrzynki pocztowej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para a caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Către contul de e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do poštovej schránky"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Till brevlåda"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta kutusuna"
           }
         }
       }
@@ -111738,20 +114258,236 @@
     },
     "Transfer aliases" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перадаць псеўданімы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přenos aliasů"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overfør aliasser"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transfer aliases"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferir los alias"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferir los alias"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siirrä aliaksia"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transférer les alias"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer alias"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trasferisci alias"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფსევდონიმების გადაცემა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "별칭 이동"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overfør aliaser"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przenieś aliasy"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferir aliases"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferare aliasuri"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presunúť aliasy"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Överför alias"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takma adları aktar"
           }
         }
       }
     },
     "Transfer and delete mailbox" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перадаць і выдаліць паштовую скрыню"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přenos a smazání e-mailové schránky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overfør og slet postkasse"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Transfer and delete mailbox"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferir y eliminar buzón de correo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferir y eliminar el buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siirrä ja poista postilaatikko"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transférer et supprimer la messagerie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer dan hapus kotak surat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trasferisci ed elimina la casella email"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის გადაცემა და წაშლა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이동 및 메일함 삭제"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overfør og slett postboks"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przenieś i usuń skrzynkę pocztową"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferir e excluir a caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transferare și ștergere cont e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presunúť a vymazať poštovú schránku"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Överför och ta bort brevlåda"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktar ve e-posta kutusunu sil"
           }
         }
       }
@@ -115603,10 +118339,118 @@
     },
     "Unverified mailbox" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неправераная паштовая скрыня"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neověřená e-mailová schránka"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubekræftet postkasse"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unverified mailbox"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El buzón no está verificado."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buzón sin verificar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vahvistamaton postilaatikko"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La messagerie n'est pas vérifiée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kotak masuk tidak diverifikasi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casella email non verificata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეუმოწმებელი საფოსტო ყუთი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인되지 않은 메일함"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubekreftet postboks"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niezweryfikowana skrzynka pocztowa"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caixa de correio não verificada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cont de e-mail neverificat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neoverená poštová schránka"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ej verifierad brevlåda"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta kutusu doğrulanmamış"
           }
         }
       }
@@ -116526,7 +119370,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upgradovať na pridanie vlastných sekcií"
+            "value" : "Upgradovať pre pridanie vlastných sekcií"
           }
         },
         "sl" : {
@@ -125715,7 +128559,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chybné dodatočné heslo"
+            "value" : "Nesprávne dodatočné heslo"
           }
         },
         "sv" : {
@@ -125857,7 +128701,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chybné Proton heslo"
+            "value" : "Nesprávne Proton heslo"
           }
         },
         "sv" : {
@@ -127711,6 +130555,12 @@
             "value" : "Actualmente no tiene elementos de inicio de sesión con clave secreta 2FA (TOTP)."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinulla ei ole salaisia 2FA-avaimia (TOTP) käyttäviä kirjautumiskohteita"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -128670,7 +131520,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aby ste to mohli spravovať, musíte prepnúť na %@"
+            "value" : "Pre správu prepnite na %@"
           }
         },
         "sl" : {
@@ -129752,10 +132602,124 @@
     },
     "Your domain" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш дамен"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaše doména"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit domæne"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your domain"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu dominio"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Su dominio"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verkkotunnuksesi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre domaine"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domain Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tuo dominio"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი დომენი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나의 도메인"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ditt domene"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uw domein"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twoja domena"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seu domínio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domeniul meu"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaša doména"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Din domän"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etki alanınız"
           }
         }
       }
@@ -130381,7 +133345,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vaša emailová adresa unikla najmenej v 1 prípade porušenia ochrany osobných údajov."
+            "value" : "Vaša emailová adresa unikla najmenej v jednom prípade porušenia ochrany osobných údajov."
           }
         },
         "sl" : {
@@ -130701,7 +133665,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vaše informácie boli súčasťou úniku údajov a boli nájdené dňa **%@**"
+            "value" : "Vaše informácie boli nájdené pri úniku informácií **%@**"
           }
         },
         "sl" : {
@@ -130861,7 +133825,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pri porušení ochrany osobných údajov došlo k úniku vašich osobných údajov z online služby. Ak chcete zobraziť všetky podrobnosti a získať odporúčané opatrenia, aktualizujte si ich."
+            "value" : "Vaše osobné údaje unikli online službe počas úniku informacií. Ak chcete zobraziť všetky podrobnosti a získať odporúčané opatrenia, prejdite na vyšší tarif."
           }
         },
         "sl" : {
