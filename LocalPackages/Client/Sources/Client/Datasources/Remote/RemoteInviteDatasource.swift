@@ -26,7 +26,7 @@ public protocol RemoteInviteDatasourceProtocol: Sendable {
     func rejectInvite(userId: String, inviteToken: String) async throws -> Bool
 }
 
-public final class RemoteInviteDatasource: RemoteDatasource, RemoteInviteDatasourceProtocol {}
+public final class RemoteInviteDatasource: RemoteDatasource, RemoteInviteDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteInviteDatasource {
     func getPendingInvitesForUser(userId: String) async throws -> [UserInvite] {
