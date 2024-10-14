@@ -507,5 +507,3 @@ private extension UserData {
     var email: String { user.email ?? "?" }
     var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
 }
-
-// swiftlint:enable cyclomatic_complexity
