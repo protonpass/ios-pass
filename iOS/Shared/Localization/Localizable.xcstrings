@@ -43022,6 +43022,9 @@
         }
       }
     },
+    "Email this address and it will appear to be sent from %@." : {
+
+    },
     "Empty" : {
       "localizations" : {
         "be" : {
@@ -86422,6 +86425,9 @@
           }
         }
       }
+    },
+    "Proton Pass will generate a forwarding address (also referred to as reverse alias)." : {
+
     },
     "Proton password" : {
       "localizations" : {
