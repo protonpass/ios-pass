@@ -35,7 +35,6 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
 
     var sheetHeight: CGFloat {
