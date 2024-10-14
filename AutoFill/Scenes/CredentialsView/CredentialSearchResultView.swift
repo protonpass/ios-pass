@@ -55,7 +55,6 @@ struct CredentialSearchResultView: View {
                   headerView: { _ in
                       nil
                   })
-                  .fixedSize(horizontal: false, vertical: false)
                   .task {
                       viewModel.filterAndSortItems(selectedSortType)
                   }
