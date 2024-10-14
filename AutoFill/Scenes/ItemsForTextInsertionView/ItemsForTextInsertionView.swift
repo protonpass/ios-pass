@@ -70,29 +70,32 @@ private extension ItemsForTextInsertionView {
                               placeholder: viewModel.searchBarPlaceholder,
                               cancelMode: .never)
 
-                    Menu(content: {
-                        filterOptions
-                        sortOptions
-                        if viewModel.resettable {
-                            Button(action: { viewModel.resetFilters() },
-                                   label: {
-                                       Label(title: {
-                                           Text("Reset filters")
-                                       }, icon: {
-                                           IconProvider.crossCircle
+                    if viewModel.query.isEmpty {
+                        Menu(content: {
+                            filterOptions
+                            sortOptions
+                            if viewModel.resettable {
+                                Button(action: { viewModel.resetFilters() },
+                                       label: {
+                                           Label(title: {
+                                               Text("Reset filters")
+                                           }, icon: {
+                                               IconProvider.crossCircle
+                                           })
                                        })
-                                   })
-                        }
-                    }, label: {
-                        CircleButton(icon: IconProvider.threeDotsVertical,
-                                     iconColor: viewModel.highlighted ? PassColor.textInvert : PassColor
-                                         .interactionNormMajor2,
-                                     backgroundColor: viewModel.highlighted ? PassColor
-                                         .interactionNormMajor2 : .clear,
-                                     accessibilityLabel: "Items filtering and sort menu")
-                    })
+                            }
+                        }, label: {
+                            CircleButton(icon: IconProvider.threeDotsVertical,
+                                         iconColor: viewModel.highlighted ? PassColor.textInvert : PassColor
+                                             .interactionNormMajor2,
+                                         backgroundColor: viewModel.highlighted ? PassColor
+                                             .interactionNormMajor2 : .clear,
+                                         accessibilityLabel: "Items filtering and sort menu")
+                        })
+                    }
                 }
                 .padding(.horizontal)
+                .animation(.default, value: viewModel.query.isEmpty)
             }
             switch viewModel.state {
             case .idle:
