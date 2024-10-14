@@ -118,10 +118,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
-    var isSecureLinkActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passPublicLinkV1)
-    }
-
     var isSimpleLoginAliasSyncActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
     }
