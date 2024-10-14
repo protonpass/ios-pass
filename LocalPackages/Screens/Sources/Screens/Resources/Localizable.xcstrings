@@ -823,6 +823,12 @@
             "value" : "Hesap ekle"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додати обліковий запис"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1366,7 +1372,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Všetky účty (%lld)"
+                  "value" : "Všetky účty (%lld)fa\n"
                 }
               },
               "other" : {
@@ -2627,6 +2633,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Standard SimpleLogin-hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaard SimpleLogin kluis"
           }
         },
         "pl" : {
@@ -6734,6 +6746,12 @@
             "value" : "Bytt til"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wissel naar"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7608,25 +7626,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld aliasy, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                  "value" : "Zistili sme, že máte %lld aliasy, ktoré sa nachádzajú v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sa nachádzajú v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld alias, ktorý je prítomný v SimpleLogin, ale chýba v Proton Pass. Chcete ho naimportovať?"
+                  "value" : "Zistili sme, že máte %lld alias, ktorý je prítomný sa nachádza v SimpleLogin, ale chýba v Proton Pass. Chcete ho naimportovať?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sa nachádzajú v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
                 }
               }
             }
