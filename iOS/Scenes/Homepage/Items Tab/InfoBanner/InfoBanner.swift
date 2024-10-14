@@ -79,7 +79,7 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
         case let .slSync(missingAliases):
             .init(title: #localized("Enable SimpleLogin sync"),
                   // swiftlint:disable:next line_length
-                  description: #localized("You have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?",
+                  description: #localized("We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?",
                                           missingAliases),
                   icon: PassIcon.slSyncIcon,
                   ctaTitle: #localized("Sync aliases"),
