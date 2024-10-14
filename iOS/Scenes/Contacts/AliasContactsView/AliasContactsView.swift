@@ -282,7 +282,7 @@ private extension AliasContactsView {
         //        }
         //        return [.height(customHeight), .large]
         //    }
-        [ /* .height(customHeight), */ .large]
+        [.medium, .large]
     }
 }
 
@@ -338,49 +338,123 @@ struct AliasContactsEmptyView: View {
     }
 }
 
+enum ContactCreationSteps: String, CaseIterable {
+    case first = "1"
+    case second = "2"
+    case third = "3"
+
+    func title(_ element: String? = nil) -> String {
+        switch self {
+        case .first:
+            return #localized("Enter the address you want to email.")
+        case .second:
+            return #localized("Proton Pass will generate a forwarding address (also referred to as reverse alias).")
+        case .third:
+            guard let element else {
+                return ""
+            }
+            return #localized("Email this address and it will appear to be sent from %@.", element)
+        }
+    }
+
+    @ViewBuilder
+    func descriptionSubview(info: String? = nil) -> some View {
+        switch self {
+        case .first:
+            Text("first")
+        case .third:
+            Text("Test")
+        default:
+            EmptyView()
+        }
+    }
+}
+
 struct AliasExplanationView: View {
     var body: some View {
         GeometryReader { proxy in
-            VStack {
-                ZStack {
-                    GradientView()
-//                    RadialGradient(gradient: Gradient(colors: [
-//                        Color(red: 91 / 255, green: 83 / 255, blue: 237 / 255),
-//                        Color(red: 146 / 255, green: 81 / 255, blue: 235 / 255)
-//                    ]), center: .bottom, startRadius: 100, endRadius: 100)
-                    ZStack(alignment: .topTrailing) {
-                        Rectangle().fill(Color(red: 237 / 255, green: 192 / 255, blue: 101 / 255))
+            ScrollView {
+                VStack {
+                    ZStack {
+                        GradientView()
+                        //                    RadialGradient(gradient: Gradient(colors: [
+                        //                        Color(red: 91 / 255, green: 83 / 255, blue: 237 / 255),
+                        //                        Color(red: 146 / 255, green: 81 / 255, blue: 235 / 255)
+                        //                    ]), center: .bottom, startRadius: 100, endRadius: 100)
+                        ZStack(alignment: .topTrailing) {
+                            Rectangle().fill(Color(red: 237 / 255, green: 192 / 255, blue: 101 / 255))
 
-                        Image(uiImage: PassIcon.stamp)
-                            .ignoresSafeArea()
+                            Image(uiImage: PassIcon.stamp)
+                                .ignoresSafeArea()
+                        }
+                        .offset(x: -proxy.size.width / 2, y: 100)
+                        .rotationEffect(.degrees(-10))
+                        .frame(width: 600, height: 312)
                     }
-                    .offset(x: -proxy.size.width / 2, y: 100)
-                    .rotationEffect(.degrees(-10))
-                    .frame(width: 600, height: 312)
+                    .frame(height: 178)
+                    .clipped()
+
+                    Text("Alias contacts")
+                        .font(.title)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                    // swiftlint:disable:next line_length
+                    Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                    Text("Here’s how it works:")
+                        .foregroundStyle(PassColor.textNorm.toColor)
+
+                    ForEach(ContactCreationSteps.allCases, id: \.self) { step in
+                        ContactStepView(step: step, email: step == .third ? "test@test.com" : nil)
+                    }
+//
+//                HStack(alignment: .center) {
+//                    // swiftlint:disable:next todo
+//                    // TODO: add numbers
+//                    Text("13")
+//                      .padding()
+//                      .background(
+//                        Circle()
+//                          .stroke(circleColor, lineWidth: 4)
+//                          .padding(6)
+//                      )
+//                    Divider()
+//                }
+//
+//                Text("Enter the address you want to email.")
+//                    .foregroundStyle(PassColor.textNorm.toColor)
+
+                    Spacer()
                 }
-                .frame(height: 178)
-                .clipped()
+                /* .frame(maxWidth: .infinity) */
+            }
+        }
+    }
+}
 
-                Text("Alias contacts")
-                    .font(.title)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                // swiftlint:disable:next line_length
-                Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                Text("Here’s how it works:")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+struct ContactStepView: View {
+    let step: ContactCreationSteps
+    let email: String?
 
-                HStack(alignment: .center) {
-                    // swiftlint:disable:next todo
-                    // TODO: add numbers
-                    Divider()
-                }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack {
+                // swiftlint:disable:next todo
+                // TODO: add numbers
+                Text(step.rawValue)
+                    .foregroundStyle(PassColor.aliasInteractionNormMajor2.toColor)
+                    .padding()
+                    .background(Circle()
+                        .stroke(PassColor.aliasInteractionNormMinor1.toColor, lineWidth: 1))
+                PassDivider()
+            }
 
-                Text("Enter the address you want to email.")
-                    .foregroundStyle(PassColor.textNorm.toColor)
+            Text(step.title(email))
+                .foregroundStyle(PassColor.textNorm.toColor)
 
-                Spacer()
-            }.frame(maxWidth: .infinity)
+            step.descriptionSubview(info: email)
+//            if let view = step.descriptionSubview(info: email) {
+//                view
+//            }
         }
     }
 }
