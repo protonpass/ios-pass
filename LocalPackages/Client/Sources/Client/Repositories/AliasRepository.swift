@@ -54,6 +54,14 @@ public protocol AliasRepositoryProtocol: Sendable {
 }
 
 public extension AliasRepositoryProtocol {
+    func getAliasOptions(shareId: String) async throws -> AliasOptions {
+        try await getAliasOptions(userId: nil, shareId: shareId)
+    }
+
+    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
+        try await getAliasDetails(userId: nil, shareId: shareId, itemId: itemId)
+    }
+
     func getPendingAliasesToSync(userId: String,
                                  since: String?) async throws -> PaginatedPendingAliases {
         try await getPendingAliasesToSync(userId: userId, since: since, pageSize: Constants.Utils.defaultPageSize)
