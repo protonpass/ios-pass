@@ -40,7 +40,7 @@ extension ItemTextAutoFillEntity {
 }
 
 extension ItemTextAutoFillEntity {
-    func toItemTextAutoFill() -> ItemTextAutoFill {
+    var toItemTextAutoFill: ItemTextAutoFill {
         .init(shareId: shareID,
               itemId: itemID,
               timestamp: TimeInterval(time),
