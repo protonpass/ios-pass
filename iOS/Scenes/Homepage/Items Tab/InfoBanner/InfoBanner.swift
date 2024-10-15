@@ -86,7 +86,8 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                   backgroundColor: PassColor.aliasInteractionNormMinor1.toColor,
                   foregroundColor: PassColor.textNorm.toColor,
                   closeButtonColor: PassColor.textNorm.toColor,
-                  typeOfCtaButton: .capsule(PassColor.textInvert, PassColor.aliasInteractionNormMajor2))
+                  typeOfCtaButton: .capsule(buttonTitle: PassColor.textInvert,
+                                            buttonBackground: PassColor.aliasInteractionNormMajor2))
         }
     }
 
@@ -103,7 +104,7 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
 
 enum CtaButtonType {
     case text
-    case capsule(UIColor, UIColor)
+    case capsule(buttonTitle: UIColor, buttonBackground: UIColor)
 }
 
 struct InfoBannerDetail {
