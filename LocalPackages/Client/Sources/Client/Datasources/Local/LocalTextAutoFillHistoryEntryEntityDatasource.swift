@@ -1,5 +1,5 @@
 //
-// LocalItemTextAutoFillDatasource.swift
+// LocalTextAutoFillHistoryEntryEntityDatasource.swift
 // Proton Pass - Created on 10/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,29 +22,30 @@
 import CoreData
 import Entities
 
-public protocol LocalItemTextAutoFillDatasourceProtocol: Sendable {
-    func getMostRecentItems(userId: String, count: Int) async throws -> [ItemTextAutoFill]
+// swiftlint:disable:next type_name
+public protocol LocalTextAutoFillHistoryEntryDatasourceProtocol: Sendable {
+    func getMostRecentEntries(userId: String, count: Int) async throws -> [TextAutoFillHistoryEntry]
     func upsert(item: any ItemIdentifiable, userId: String, date: Date) async throws
     func removeAll() async throws
 }
 
-public final class LocalItemTextAutoFillDatasource:
-    LocalDatasource, LocalItemTextAutoFillDatasourceProtocol, @unchecked Sendable {}
+public final class LocalTextAutoFillHistoryEntryDatasource:
+    LocalDatasource, LocalTextAutoFillHistoryEntryDatasourceProtocol, @unchecked Sendable {}
 
-public extension LocalItemTextAutoFillDatasource {
-    func getMostRecentItems(userId: String, count: Int) async throws -> [ItemTextAutoFill] {
+public extension LocalTextAutoFillHistoryEntryDatasource {
+    func getMostRecentEntries(userId: String, count: Int) async throws -> [TextAutoFillHistoryEntry] {
         let context = newTaskContext(type: .fetch)
-        let request = ItemTextAutoFillEntity.fetchRequest()
+        let request = TextAutoFillHistoryEntryEntity.fetchRequest()
         request.predicate = .init(format: "userID = %@", userId)
         request.sortDescriptors = [.init(key: "time", ascending: false)]
         request.fetchLimit = count
         let entities = try await execute(fetchRequest: request, context: context)
-        return entities.map(\.toItemTextAutoFill)
+        return entities.map(\.toTextAutoFillHistoryEntry)
     }
 
     func upsert(item: any ItemIdentifiable, userId: String, date: Date) async throws {
         try await upsert([item],
-                         entityType: ItemTextAutoFillEntity.self,
+                         entityType: TextAutoFillHistoryEntryEntity.self,
                          fetchPredicate: NSPredicate(format: "itemID == %@ AND shareID == %@",
                                                      item.itemId,
                                                      item.shareId),
@@ -58,7 +59,7 @@ public extension LocalItemTextAutoFillDatasource {
 
     func removeAll() async throws {
         let context = newTaskContext(type: .delete)
-        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "ItemTextAutoFillEntity")
+        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "TextAutoFillHistoryEntryEntity")
         try await execute(batchDeleteRequest: .init(fetchRequest: request),
                           context: context)
     }

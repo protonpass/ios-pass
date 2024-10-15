@@ -37,20 +37,20 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
     private let accessRepository: any AccessRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let shareRepository: any ShareRepositoryProtocol
-    private let textAutoFillDatasource: any LocalItemTextAutoFillDatasourceProtocol
+    private let textAutoFillHistoryEntryDatasource: any LocalTextAutoFillHistoryEntryDatasourceProtocol
     private let logger: Logger
 
     init(symmetricKeyProvider: any SymmetricKeyProvider,
          accessRepository: any AccessRepositoryProtocol,
          itemRepository: any ItemRepositoryProtocol,
          shareRepository: any ShareRepositoryProtocol,
-         textAutoFillDatasource: any LocalItemTextAutoFillDatasourceProtocol,
+         textAutoFillHistoryEntryDatasource: any LocalTextAutoFillHistoryEntryDatasourceProtocol,
          logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.accessRepository = accessRepository
         self.itemRepository = itemRepository
         self.shareRepository = shareRepository
-        self.textAutoFillDatasource = textAutoFillDatasource
+        self.textAutoFillHistoryEntryDatasource = textAutoFillHistoryEntryDatasource
         logger = .init(manager: logManager)
     }
 
@@ -59,8 +59,9 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
         async let getPlan = accessRepository.getPlan(userId: userId)
         async let getVaults = shareRepository.getVaults(userId: userId)
         async let getEncryptedItems = itemRepository.getItems(userId: userId, state: .active)
-        async let getHistory = textAutoFillDatasource.getMostRecentItems(userId: userId,
-                                                                         count: Constants.textAutoFillHistoryLimit)
+        async let getHistory =
+            textAutoFillHistoryEntryDatasource.getMostRecentEntries(userId: userId,
+                                                                    count: Constants.textAutoFillHistoryLimit)
 
         let (symmetricKey,
              plan,
