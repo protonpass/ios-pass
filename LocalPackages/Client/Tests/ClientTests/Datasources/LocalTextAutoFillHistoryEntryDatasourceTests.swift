@@ -1,5 +1,5 @@
 //
-// LocalItemTextAutoFillDatasourceTests.swift
+// LocalTextAutoFillHistoryEntryDatasourceTests.swift
 // Proton Pass - Created on 10/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -26,11 +26,11 @@ import Foundation
 import Testing
 
 @Suite(.tags(.localDatasource))
-struct LocalItemTextAutoFillDatasourceTests {
-    let sut: any LocalItemTextAutoFillDatasourceProtocol
+struct LocalTextAutoFillHistoryEntryDatasourceTests {
+    let sut: any LocalTextAutoFillHistoryEntryDatasourceProtocol
 
     init() {
-        sut = LocalItemTextAutoFillDatasource(databaseService: DatabaseService(inMemory: true))
+        sut = LocalTextAutoFillHistoryEntryDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
     @Test("Get items by userID, sorted by time descending")
@@ -45,8 +45,8 @@ struct LocalItemTextAutoFillDatasourceTests {
         }
 
         // When
-        let itemsForUser1 = try await sut.getMostRecentItems(userId: userId1, count: 3)
-        let itemsForUser2 = try await sut.getMostRecentItems(userId: userId2, count: 4)
+        let itemsForUser1 = try await sut.getMostRecentEntries(userId: userId1, count: 3)
+        let itemsForUser2 = try await sut.getMostRecentEntries(userId: userId2, count: 4)
 
         // Then
         #expect(itemsForUser1.count == 3)
@@ -65,7 +65,7 @@ struct LocalItemTextAutoFillDatasourceTests {
 
         // When
         try await sut.upsert(item: item, userId: userId, date: date)
-        let items = try await sut.getMostRecentItems(userId: userId, count: 10)
+        let items = try await sut.getMostRecentEntries(userId: userId, count: 10)
         let updatedItem = try #require(items.first)
 
         // Then
@@ -88,8 +88,8 @@ struct LocalItemTextAutoFillDatasourceTests {
 
         // When
         try await sut.removeAll()
-        let items1 = try await sut.getMostRecentItems(userId: userId1, count: 100)
-        let items2 = try await sut.getMostRecentItems(userId: userId2, count: 100)
+        let items1 = try await sut.getMostRecentEntries(userId: userId1, count: 100)
+        let items2 = try await sut.getMostRecentEntries(userId: userId2, count: 100)
 
         // Then
         #expect(items1.isEmpty)
@@ -97,13 +97,13 @@ struct LocalItemTextAutoFillDatasourceTests {
     }
 }
 
-private extension LocalItemTextAutoFillDatasourceProtocol {
+private extension LocalTextAutoFillHistoryEntryDatasourceProtocol {
     @discardableResult
     func givenInsertedEntry(itemID: String = .random(),
                             shareID: String = .random(),
                             userID: String = .random(),
                             time: Int64 = .random(in: 1_000_000...2_000_000))
-    async throws -> ItemTextAutoFill {
+    async throws -> TextAutoFillHistoryEntry {
         let item = DummyItemIdentifiable(itemId: itemID, shareId: shareID)
         let date = Date(timeIntervalSince1970: TimeInterval(time))
         try await upsert(item: item, userId: userID, date: date)

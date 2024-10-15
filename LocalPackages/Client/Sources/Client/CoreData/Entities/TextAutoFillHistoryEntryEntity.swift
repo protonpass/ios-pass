@@ -1,5 +1,5 @@
 //
-// ItemTextAutoFillEntity.swift
+// TextAutoFillHistoryEntryEntity.swift
 // Proton Pass - Created on 10/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,15 +22,15 @@
 import CoreData
 import Entities
 
-@objc(ItemTextAutoFillEntity)
-final class ItemTextAutoFillEntity: NSManagedObject {}
+@objc(TextAutoFillHistoryEntryEntity)
+final class TextAutoFillHistoryEntryEntity: NSManagedObject {}
 
-extension ItemTextAutoFillEntity: Identifiable {}
+extension TextAutoFillHistoryEntryEntity: Identifiable {}
 
-extension ItemTextAutoFillEntity {
+extension TextAutoFillHistoryEntryEntity {
     @nonobjc
-    public class func fetchRequest() -> NSFetchRequest<ItemTextAutoFillEntity> {
-        NSFetchRequest<ItemTextAutoFillEntity>(entityName: "ItemTextAutoFillEntity")
+    public class func fetchRequest() -> NSFetchRequest<TextAutoFillHistoryEntryEntity> {
+        NSFetchRequest<TextAutoFillHistoryEntryEntity>(entityName: "TextAutoFillHistoryEntryEntity")
     }
 
     @NSManaged var itemID: String
@@ -39,8 +39,8 @@ extension ItemTextAutoFillEntity {
     @NSManaged var userID: String
 }
 
-extension ItemTextAutoFillEntity {
-    var toItemTextAutoFill: ItemTextAutoFill {
+extension TextAutoFillHistoryEntryEntity {
+    var toTextAutoFillHistoryEntry: TextAutoFillHistoryEntry {
         .init(shareId: shareID,
               itemId: itemID,
               timestamp: TimeInterval(time),
