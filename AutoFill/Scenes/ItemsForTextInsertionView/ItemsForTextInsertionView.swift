@@ -71,27 +71,15 @@ private extension ItemsForTextInsertionView {
                               cancelMode: .never)
 
                     if viewModel.query.isEmpty {
-                        Menu(content: {
-                            filterOptions
-                            sortOptions
-                            if viewModel.resettable {
-                                Button(action: { viewModel.resetFilters() },
-                                       label: {
-                                           Label(title: {
-                                               Text("Reset filters")
-                                           }, icon: {
-                                               IconProvider.crossCircle
-                                           })
-                                       })
-                            }
-                        }, label: {
-                            CircleButton(icon: IconProvider.threeDotsVertical,
-                                         iconColor: viewModel.highlighted ? PassColor.textInvert : PassColor
-                                             .interactionNormMajor2,
-                                         backgroundColor: viewModel.highlighted ? PassColor
-                                             .interactionNormMajor2 : .clear,
-                                         accessibilityLabel: "Items filtering and sort menu")
-                        })
+                        SortFilterItemsMenu(options: [
+                            .filter(viewModel.filterOption,
+                                    viewModel.itemCount) { viewModel.filterOption = $0 },
+                            .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
+                            .resetFilters { viewModel.resetFilters() }
+                        ],
+                        highlighted: viewModel.highlighted,
+                        selectable: false,
+                        resettable: viewModel.resettable)
                     }
                 }
                 .padding(.horizontal)
@@ -152,83 +140,6 @@ private extension ItemsForTextInsertionView {
         .animation(.default, value: viewModel.state)
         .animation(.default, value: viewModel.selectedUser)
         .animation(.default, value: viewModel.results)
-    }
-}
-
-private extension ItemsForTextInsertionView {
-    @ViewBuilder
-    var sortOptions: some View {
-        let sortType = viewModel.selectedSortType
-        Menu(content: {
-            ForEach(SortType.allCases, id: \.self) { type in
-                Button(action: {
-                    viewModel.selectedSortType = type
-                }, label: {
-                    HStack {
-                        Text(type.title)
-                        Spacer()
-                        if type == sortType {
-                            Image(systemName: "checkmark")
-                        }
-                    }
-                })
-            }
-        }, label: {
-            Label(title: {
-                if #available(iOS 17, *) {
-                    Button(action: {}, label: {
-                        Text("Sort By")
-                        Text(verbatim: sortType.title)
-                    })
-                } else {
-                    Text(verbatim: sortType.title)
-                }
-            }, icon: {
-                Image(uiImage: IconProvider.arrowDownArrowUp)
-            })
-        })
-    }
-
-    @ViewBuilder
-    var filterOptions: some View {
-        let filterOption = viewModel.filterOption
-        let itemCount = viewModel.itemCount
-        Menu(content: {
-            ForEach(ItemTypeFilterOption.allCases, id: \.self) { option in
-                let uiModel = option.uiModel(from: itemCount)
-                Button(action: {
-                    viewModel.filterOption = option
-                }, label: {
-                    Label(title: {
-                        text(for: uiModel)
-                    }, icon: {
-                        if option == filterOption {
-                            Image(systemName: "checkmark")
-                        }
-                    })
-                })
-                // swiftformat:disable:next isEmpty
-                .disabled(uiModel.count == 0) // swiftlint:disable:this empty_count
-            }
-        }, label: {
-            Label(title: {
-                if #available(iOS 17, *) {
-                    // Use Button to trick SwiftUI into rendering option with title and subtitle
-                    Button(action: {}, label: {
-                        Text("Show")
-                        text(for: filterOption.uiModel(from: itemCount))
-                    })
-                } else {
-                    text(for: filterOption.uiModel(from: itemCount))
-                }
-            }, icon: {
-                Image(uiImage: viewModel.highlighted ? PassIcon.filterFilled : IconProvider.filter)
-            })
-        })
-    }
-
-    func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {
-        Text(verbatim: "\(uiModel.title) (\(uiModel.count))")
     }
 }
 
