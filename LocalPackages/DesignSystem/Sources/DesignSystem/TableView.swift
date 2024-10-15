@@ -40,6 +40,23 @@ public final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
     }
 }
 
+public struct TableViewConfiguration {
+    let showSectionIndexTitles: Bool
+    let sectionIndexColor: UIColor
+    let backgroundColor: UIColor
+    let separatorColor: UIColor
+
+    public init(showSectionIndexTitles: Bool = false,
+                sectionIndexColor: UIColor = PassColor.interactionNorm,
+                backgroundColor: UIColor = .clear,
+                separatorColor: UIColor = .clear) {
+        self.showSectionIndexTitles = showSectionIndexTitles
+        self.sectionIndexColor = sectionIndexColor
+        self.backgroundColor = backgroundColor
+        self.separatorColor = separatorColor
+    }
+}
+
 public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIViewRepresentable {
     public struct Section: Hashable, Equatable {
         public let type: AnyHashable
@@ -56,7 +73,7 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
     }
 
     let sections: [Section]
-    let showSectionIndexTitles: Bool
+    let configuration: TableViewConfiguration
     let itemView: (Item) -> ItemView
     /// Custom header view, pass `nil` to use the default text header
     let headerView: (_ sectionIndex: Int) -> HeaderView?
@@ -72,12 +89,12 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
     let id: Int?
 
     public init(sections: [Section],
-                showSectionIndexTitles: Bool,
+                configuration: TableViewConfiguration,
                 id: Int?,
                 itemView: @escaping (Item) -> ItemView,
                 headerView: @escaping (_ sectionIndex: Int) -> HeaderView?) {
         self.sections = sections
-        self.showSectionIndexTitles = showSectionIndexTitles
+        self.configuration = configuration
         self.id = id
         self.itemView = itemView
         self.headerView = headerView
@@ -89,9 +106,9 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
 
     public func makeUIView(context: Context) -> UITableView {
         let tableView = UITableView()
-        tableView.sectionIndexColor = PassColor.interactionNorm
-        tableView.backgroundColor = .clear
-        tableView.separatorColor = .clear
+        tableView.sectionIndexColor = configuration.sectionIndexColor
+        tableView.backgroundColor = configuration.backgroundColor
+        tableView.separatorColor = configuration.separatorColor
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellId)
         tableView.delegate = context.coordinator
         context.coordinator.configureDataSource(for: tableView)
@@ -100,7 +117,7 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
 
     public func updateUIView(_ tableView: UITableView, context: Context) {
         context.coordinator.updateTable(with: sections,
-                                        showSectionIndexTitles: showSectionIndexTitles,
+                                        showSectionIndexTitles: configuration.showSectionIndexTitles,
                                         id: id)
     }
 
@@ -148,12 +165,13 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
                 dataSource.apply(snapshot, animatingDifferences: false)
             }
 
-            snapshot.appendSections(sections.map(\.title))
+            let sectionTitles = sections.map(\.title)
+            snapshot.appendSections(sectionTitles)
             for section in sections {
                 snapshot.appendItems(section.items, toSection: section.title)
             }
 
-            dataSource.sectionTitles = sections.map(\.title)
+            dataSource.sectionTitles = sectionTitles
             dataSource.showSectionIndexTitles = showSectionIndexTitles
             dataSource.lastId = id
             dataSource.apply(snapshot, animatingDifferences: true)
