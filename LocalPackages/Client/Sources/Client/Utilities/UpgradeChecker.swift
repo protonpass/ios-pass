@@ -34,6 +34,12 @@ public protocol UpgradeCheckerProtocol: AnyObject, Sendable {
     func isFreeUser(userId: String?) async throws -> Bool
 }
 
+public extension UpgradeCheckerProtocol {
+    func isFreeUser() async throws -> Bool {
+        try await isFreeUser(userId: nil)
+    }
+}
+
 public final class UpgradeChecker: UpgradeCheckerProtocol {
     private let accessRepository: any AccessRepositoryProtocol
     private let counter: any LimitationCounterProtocol

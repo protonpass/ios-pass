@@ -62,7 +62,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
         Task { [weak self] in
             guard let self else { return }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser(userId: nil)
+                isFreeUser = try await upgradeChecker.isFreeUser()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
