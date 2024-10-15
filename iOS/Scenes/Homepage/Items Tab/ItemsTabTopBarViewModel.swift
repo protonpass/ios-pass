@@ -74,6 +74,7 @@ enum ExtraBulkActionOption {
     }
 }
 
+@MainActor
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
@@ -83,12 +84,40 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     @Published private(set) var actionsDisabled = true
     @Published private(set) var extraOptions: [ExtraBulkActionOption] = []
 
+    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
+    var selectedSortType = SortType.mostRecent
+
     var selectedItemsCount: Int {
         currentSelectedItems.value.count
     }
 
     var vaultSelection: VaultSelection {
         vaultsManager.vaultSelection
+    }
+
+    var highlighted: Bool {
+        vaultsManager.filterOption != .all
+    }
+
+    var selectable: Bool {
+        switch vaultsManager.vaultSelection {
+        case .all, .trash:
+            true
+        case let .precise(vault):
+            vault.canEdit
+        }
+    }
+
+    var resettable: Bool {
+        vaultsManager.filterOption != .all || selectedSortType != .mostRecent
+    }
+
+    var selectedFilterOption: ItemTypeFilterOption {
+        vaultsManager.filterOption
+    }
+
+    var itemCount: ItemCount {
+        vaultsManager.itemCount
     }
 
     init() {
@@ -126,5 +155,14 @@ final class ItemsTabTopBarViewModel: ObservableObject {
 extension ItemsTabTopBarViewModel {
     func deselectAllItems() {
         currentSelectedItems.send([])
+    }
+
+    func update(_ filterOption: ItemTypeFilterOption) {
+        vaultsManager.updateItemTypeFilterOption(filterOption)
+    }
+
+    func resetFilters() {
+        vaultsManager.updateItemTypeFilterOption(.all)
+        selectedSortType = .mostRecent
     }
 }
