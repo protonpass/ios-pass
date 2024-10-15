@@ -237,7 +237,7 @@ private extension BaseCreateEditItemViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser(userId: nil)
+                isFreeUser = try await upgradeChecker.isFreeUser()
                 canAddMoreCustomFields = !isFreeUser
                 canScanDocuments = DocScanner.isSupported
             } catch {

@@ -94,7 +94,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         Task { [weak self] in
             guard let self else { return }
             do {
-                isFreeUser = try await upgradeChecker.isFreeUser(userId: nil)
+                isFreeUser = try await upgradeChecker.isFreeUser()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
