@@ -125,32 +125,16 @@ private final class CredentialSearchResultViewModel: ObservableObject {
                           items: results.others)
                 ]
 
-            case .alphabeticalAsc:
-                let results = results.alphabeticalSortResult(direction: .ascending)
+            case .alphabeticalAsc, .alphabeticalDesc:
+                let results = results.alphabeticalSortResult(direction: sortType.sortDirection)
                 return results.buckets.map { bucket in
                     .init(type: type,
                           title: bucket.letter.character,
                           items: bucket.items)
                 }
 
-            case .alphabeticalDesc:
-                let results = results.alphabeticalSortResult(direction: .descending)
-                return results.buckets.map { bucket in
-                    .init(type: type,
-                          title: bucket.letter.character,
-                          items: bucket.items)
-                }
-
-            case .newestToOldest:
-                let results = results.monthYearSortResult(direction: .descending)
-                return results.buckets.map { bucket in
-                    .init(type: type,
-                          title: bucket.monthYear.relativeString,
-                          items: bucket.items)
-                }
-
-            case .oldestToNewest:
-                let results = results.monthYearSortResult(direction: .ascending)
+            case .newestToOldest, .oldestToNewest:
+                let results = results.monthYearSortResult(direction: sortType.sortDirection)
                 return results.buckets.map { bucket in
                     .init(type: type,
                           title: bucket.monthYear.relativeString,

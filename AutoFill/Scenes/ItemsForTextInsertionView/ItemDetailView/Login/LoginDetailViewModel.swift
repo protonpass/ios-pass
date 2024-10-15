@@ -37,9 +37,9 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     private(set) var passkeys = [Passkey]()
     private(set) var passwordStrength: PasswordStrength?
 
-    private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
-    private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+    @LazyInjected(\SharedUseCasesContainer.getPasswordStrength) private var getPasswordStrength
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
