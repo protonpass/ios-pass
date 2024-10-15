@@ -21,7 +21,12 @@
 
 import Entities
 
-struct DummyItemIdentifiable: ItemIdentifiable, Hashable, Equatable {
-    let itemId: String
-    let shareId: String
+public struct DummyItemIdentifiable: ItemIdentifiable, Hashable, Equatable {
+    public let itemId: String
+    public let shareId: String
+
+    public init(itemId: String, shareId: String) {
+        self.itemId = itemId
+        self.shareId = shareId
+    }
 }
