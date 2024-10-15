@@ -45,7 +45,7 @@ struct CredentialSearchResultView: View {
         headerView
 
         TableView(sections: viewModel.sections,
-                  showSectionIndexTitles: selectedSortType.isAlphabetical,
+                  configuration: .init(showSectionIndexTitles: selectedSortType.isAlphabetical),
                   id: nil,
                   itemView: { item in
                       GenericCredentialItemRow(item: item,
