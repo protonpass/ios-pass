@@ -1,5 +1,5 @@
 //
-// ItemTextAutoFill.swift
+// TextAutoFillHistoryEntry.swift
 // Proton Pass - Created on 10/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct ItemTextAutoFill: Sendable, Equatable, ItemIdentifiable {
+public struct TextAutoFillHistoryEntry: Sendable, Equatable, ItemIdentifiable {
     public let shareId: String
     public let itemId: String
     public let timestamp: TimeInterval
