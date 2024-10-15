@@ -21,6 +21,7 @@
 
 @testable import Client
 import Entities
+import EntitiesMocks
 import Foundation
 import Testing
 
@@ -103,7 +104,7 @@ private extension LocalItemTextAutoFillDatasourceProtocol {
                             userID: String = .random(),
                             time: Int64 = .random(in: 1_000_000...2_000_000))
     async throws -> ItemTextAutoFill {
-        let item = DummyItem(itemId: itemID, shareId: shareID)
+        let item = DummyItemIdentifiable(itemId: itemID, shareId: shareID)
         let date = Date(timeIntervalSince1970: TimeInterval(time))
         try await upsert(item: item, userId: userID, date: date)
         return .init(shareId: item.shareId,
