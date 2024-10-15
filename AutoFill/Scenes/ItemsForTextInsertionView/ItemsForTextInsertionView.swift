@@ -235,7 +235,7 @@ private extension ItemsForTextInsertionView {
 private extension ItemsForTextInsertionView {
     var itemList: some View {
         TableView(sections: viewModel.sections,
-                  showSectionIndexTitles: viewModel.selectedSortType.isAlphabetical,
+                  configuration: .init(showSectionIndexTitles: viewModel.selectedSortType.isAlphabetical),
                   id: viewModel.selectedUser?.hashValue,
                   itemView: { item in
                       GenericCredentialItemRow(item: item.uiModel,
