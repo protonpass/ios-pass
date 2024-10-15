@@ -75,8 +75,8 @@ private extension AutoFillUseCaseContainer {
         SharedServiceContainer.shared.totpService()
     }
 
-    var itemTextAutoFillDatasource: any LocalItemTextAutoFillDatasourceProtocol {
-        SharedRepositoryContainer.shared.localItemTextAutoFillDatasource()
+    var localTextAutoFillHistoryEntryDatasource: any LocalTextAutoFillHistoryEntryDatasourceProtocol {
+        SharedRepositoryContainer.shared.localTextAutoFillHistoryEntryDatasource()
     }
 }
 
@@ -105,12 +105,15 @@ extension AutoFillUseCaseContainer {
     }
 
     var fetchItemsForTextInsertion: Factory<any FetchItemsForTextInsertionUseCase> {
-        self { FetchItemsForTextInsertion(symmetricKeyProvider: self.symmetricKeyProvider,
-                                          accessRepository: self.accessRepository,
-                                          itemRepository: self.itemRepository,
-                                          shareRepository: self.shareRepository,
-                                          textAutoFillDatasource: self.itemTextAutoFillDatasource,
-                                          logManager: self.logManager) }
+        self {
+            FetchItemsForTextInsertion(symmetricKeyProvider: self.symmetricKeyProvider,
+                                       accessRepository: self.accessRepository,
+                                       itemRepository: self.itemRepository,
+                                       shareRepository: self.shareRepository,
+                                       textAutoFillHistoryEntryDatasource: self
+                                           .localTextAutoFillHistoryEntryDatasource,
+                                       logManager: self.logManager)
+        }
     }
 
     var getItemsForPasskeyCreation: Factory<any GetItemsForPasskeyCreationUseCase> {

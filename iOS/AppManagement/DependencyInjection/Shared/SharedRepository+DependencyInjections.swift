@@ -213,8 +213,8 @@ extension SharedRepositoryContainer {
         self { RemoteInviteDatasource(apiServicing: self.apiManager) }
     }
 
-    var localItemTextAutoFillDatasource: Factory<any LocalItemTextAutoFillDatasourceProtocol> {
-        self { LocalItemTextAutoFillDatasource(databaseService: self.databaseService) }
+    var localTextAutoFillHistoryEntryDatasource: Factory<any LocalTextAutoFillHistoryEntryDatasourceProtocol> {
+        self { LocalTextAutoFillHistoryEntryDatasource(databaseService: self.databaseService) }
     }
 }
 

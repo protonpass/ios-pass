@@ -65,8 +65,8 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     @LazyInjected(\SharedRepositoryContainer.itemRepository)
     private var itemRepository
 
-    @LazyInjected(\SharedRepositoryContainer.localItemTextAutoFillDatasource)
-    private var itemTextAutoFillDatasource
+    @LazyInjected(\SharedRepositoryContainer.localTextAutoFillHistoryEntryDatasource)
+    private var textAutoFillHistoryEntryDatasource
 
     private let filterOptionUpdated = PassthroughSubject<Void, Never>()
     var filterOption = ItemTypeFilterOption.all {
@@ -318,9 +318,9 @@ extension ItemsForTextInsertionViewModel {
             do {
                 await context?.completeRequest(withTextToInsert: text.value)
                 let user = try getUser(for: text.item)
-                try await itemTextAutoFillDatasource.upsert(item: text.item,
-                                                            userId: user.id,
-                                                            date: .now)
+                try await textAutoFillHistoryEntryDatasource.upsert(item: text.item,
+                                                                    userId: user.id,
+                                                                    date: .now)
             } catch {
                 logger.error(error)
             }
@@ -331,7 +331,7 @@ extension ItemsForTextInsertionViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                try await itemTextAutoFillDatasource.removeAll()
+                try await textAutoFillHistoryEntryDatasource.removeAll()
                 results = results.map { ItemsForTextInsertion(userId: $0.userId,
                                                               vaults: $0.vaults,
                                                               history: [],
