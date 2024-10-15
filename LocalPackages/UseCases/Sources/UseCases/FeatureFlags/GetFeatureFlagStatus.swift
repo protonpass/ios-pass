@@ -36,7 +36,7 @@ public extension GetFeatureFlagStatusUseCase {
         await execute(with: flag)
     }
 
-    func callAsFunction(with flag: any FeatureFlagTypeProtocol) -> Bool {
+    func callAsFunction(for flag: any FeatureFlagTypeProtocol) -> Bool {
         execute(for: flag)
     }
 }
