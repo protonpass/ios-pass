@@ -64,8 +64,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository)
-    private var aliasRepository: any AliasRepositoryProtocol
 
     @LazyInjected(\UseCasesContainer.checkFlagForMultiUsers) private var checkFlagForMultiUsers
 
@@ -273,10 +271,6 @@ extension ProfileTabViewModel {
 
     func showAliasSyncConfiguration() {
         router.present(for: .aliasesSyncConfiguration)
-    }
-
-    func showSimpleLoginAliasesActivation() {
-        router.present(for: .simpleLoginSyncActivation)
     }
 
     func showPrivacyPolicy() {
