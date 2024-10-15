@@ -58,8 +58,8 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
         async let getPlan = accessRepository.getPlan(userId: userId)
         async let getVaults = shareRepository.getVaults(userId: userId)
         async let getEncryptedItems = itemRepository.getItems(userId: userId, state: .active)
-        async let getHistory = textAutoFillDatasource.getItems(userId: userId,
-                                                               count: Constants.textAutoFillHistoryLimit)
+        async let getHistory = textAutoFillDatasource.getMostRecentItems(userId: userId,
+                                                                         count: Constants.textAutoFillHistoryLimit)
 
         let (symmetricKey,
              plan,
