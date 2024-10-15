@@ -29,7 +29,7 @@ public protocol LocalItemTextAutoFillDatasourceProtocol: Sendable {
 }
 
 public final class LocalItemTextAutoFillDatasource:
-    LocalDatasource, LocalItemTextAutoFillDatasourceProtocol {}
+    LocalDatasource, LocalItemTextAutoFillDatasourceProtocol, @unchecked Sendable {}
 
 public extension LocalItemTextAutoFillDatasource {
     func getMostRecentItems(userId: String, count: Int) async throws -> [ItemTextAutoFill] {
@@ -39,7 +39,7 @@ public extension LocalItemTextAutoFillDatasource {
         request.sortDescriptors = [.init(key: "time", ascending: false)]
         request.fetchLimit = count
         let entities = try await execute(fetchRequest: request, context: context)
-        return entities.map { $0.toItemTextAutoFill() }
+        return entities.map(\.toItemTextAutoFill)
     }
 
     func upsert(item: any ItemIdentifiable, userId: String, date: Date) async throws {
