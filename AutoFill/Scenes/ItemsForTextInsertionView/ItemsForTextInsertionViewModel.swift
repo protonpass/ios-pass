@@ -68,6 +68,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     @LazyInjected(\SharedRepositoryContainer.localTextAutoFillHistoryEntryDatasource)
     private var textAutoFillHistoryEntryDatasource
 
+    // Not using @Published because sinking on a @Published is triggered before the value is set
     private let filterOptionUpdated = PassthroughSubject<Void, Never>()
     var filterOption = ItemTypeFilterOption.all {
         didSet {
@@ -101,6 +102,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     override func setUp() {
         super.setUp()
         Publishers.Merge3(selectedUserUpdated, sortTypeUpdated, filterOptionUpdated)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
                 filterAndSortItems()
@@ -108,6 +110,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
             .store(in: &cancellables)
 
         selectedTextStream
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] text in
                 guard let self else { return }
                 autofill(text)
@@ -174,6 +177,7 @@ private extension ItemsForTextInsertionViewModel {
             state = .searching
             let searchResults = searchableItems.result(for: term)
             if Task.isCancelled {
+                state = .idle
                 return
             }
             state = .searchResults(searchResults)
@@ -200,8 +204,8 @@ extension ItemsForTextInsertionViewModel {
         } else {
             history = Array(getAllObjects(\.history)
                 .sorted(by: { $0.time > $1.time })
-                .map(\.value)
                 .prefix(Constants.textAutoFillHistoryLimit))
+                .map(\.value)
             allItems = getAllObjects(\.items)
         }
 
@@ -242,32 +246,16 @@ extension ItemsForTextInsertionViewModel {
                           items: results.others.map { ItemForTextInsertion.regular($0) })
                 ]
 
-            case .alphabeticalAsc:
-                let results = filteredItems.alphabeticalSortResult(direction: .ascending)
+            case .alphabeticalAsc, .alphabeticalDesc:
+                let results = filteredItems.alphabeticalSortResult(direction: self.selectedSortType.sortDirection)
                 return results.buckets.map { bucket in
                     .init(type: ItemsForTextInsertionSectionType.regular,
                           title: bucket.letter.character,
                           items: bucket.items.map { ItemForTextInsertion.regular($0) })
                 }
 
-            case .alphabeticalDesc:
-                let results = filteredItems.alphabeticalSortResult(direction: .descending)
-                return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: bucket.letter.character,
-                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
-                }
-
-            case .newestToOldest:
-                let results = filteredItems.monthYearSortResult(direction: .descending)
-                return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: bucket.monthYear.relativeString,
-                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
-                }
-
-            case .oldestToNewest:
-                let results = filteredItems.monthYearSortResult(direction: .ascending)
+            case .newestToOldest, .oldestToNewest:
+                let results = filteredItems.monthYearSortResult(direction: self.selectedSortType.sortDirection)
                 return results.buckets.map { bucket in
                     .init(type: ItemsForTextInsertionSectionType.regular,
                           title: bucket.monthYear.relativeString,
@@ -275,7 +263,6 @@ extension ItemsForTextInsertionViewModel {
                 }
             }
         }()
-
         // Only show history section when not filtering by item types
         if filterOption == .all, !history.isEmpty {
             sections.insert(.init(type: ItemsForTextInsertionSectionType.history,
