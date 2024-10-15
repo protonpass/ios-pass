@@ -20,6 +20,7 @@
 
 import Client
 import Core
+import Entities
 
 protocol FetchItemsForTextInsertionUseCase: Sendable {
     func execute(userId: String) async throws -> ItemsForTextInsertion
@@ -84,14 +85,20 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
             try $0.getItemContent(symmetricKey: symmetricKey)
         }
 
-        let searchableItems = itemContents.map { SearchableItem(from: $0, allVaults: applicableVaults) }
-        let items = itemContents.map(\.toItemUiModel)
-        let historyItems: [HistoryItemUiModel] = history.compactMap { item in
-            guard let uiModel = items.first(where: { $0.shareId == item.shareId && $0.itemId == item.itemId })
-            else {
-                return nil
+        var searchableItems = [SearchableItem]()
+        var items = [ItemUiModel]()
+        var historyItems = [HistoryItemUiModel]()
+
+        for item in applicableEncryptedItems {
+            let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
+            searchableItems.append(.init(from: itemContent, allVaults: applicableVaults))
+
+            let uiModel = itemContent.toItemUiModel
+            items.append(uiModel)
+            if let historyItem = history
+                .first(where: { $0.shareId == uiModel.shareId && $0.itemId == uiModel.itemId }) {
+                historyItems.append(.init(time: historyItem.timestamp, value: uiModel))
             }
-            return .init(time: item.timestamp, value: uiModel)
         }
 
         return .init(userId: userId,
