@@ -23,7 +23,7 @@ import CoreData
 import Entities
 
 public protocol LocalItemTextAutoFillDatasourceProtocol: Sendable {
-    func getItems(userId: String, count: Int) async throws -> [ItemTextAutoFill]
+    func getMostRecentItems(userId: String, count: Int) async throws -> [ItemTextAutoFill]
     func upsert(item: any ItemIdentifiable, userId: String, date: Date) async throws
     func removeAll() async throws
 }
@@ -32,7 +32,7 @@ public final class LocalItemTextAutoFillDatasource:
     LocalDatasource, LocalItemTextAutoFillDatasourceProtocol {}
 
 public extension LocalItemTextAutoFillDatasource {
-    func getItems(userId: String, count: Int) async throws -> [ItemTextAutoFill] {
+    func getMostRecentItems(userId: String, count: Int) async throws -> [ItemTextAutoFill] {
         let context = newTaskContext(type: .fetch)
         let request = ItemTextAutoFillEntity.fetchRequest()
         request.predicate = .init(format: "userID = %@", userId)
