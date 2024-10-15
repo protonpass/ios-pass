@@ -1,6 +1,6 @@
 //
-// DummyItem.swift
-// Proton Pass - Created on 10/10/2024.
+// DummyItemIdentifiable.swift
+// Proton Pass - Created on 15/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,7 +21,7 @@
 
 import Entities
 
-struct DummyItem: ItemIdentifiable, Hashable, Equatable {
+struct DummyItemIdentifiable: ItemIdentifiable, Hashable, Equatable {
     let itemId: String
     let shareId: String
 }
