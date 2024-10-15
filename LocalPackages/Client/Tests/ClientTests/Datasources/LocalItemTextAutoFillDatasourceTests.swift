@@ -45,8 +45,8 @@ struct LocalItemTextAutoFillDatasourceTests {
         }
 
         // When
-        let itemsForUser1 = try await sut.getItems(userId: userId1, count: 3)
-        let itemsForUser2 = try await sut.getItems(userId: userId2, count: 4)
+        let itemsForUser1 = try await sut.getMostRecentItems(userId: userId1, count: 3)
+        let itemsForUser2 = try await sut.getMostRecentItems(userId: userId2, count: 4)
 
         // Then
         #expect(itemsForUser1.count == 3)
@@ -65,7 +65,7 @@ struct LocalItemTextAutoFillDatasourceTests {
 
         // When
         try await sut.upsert(item: item, userId: userId, date: date)
-        let items = try await sut.getItems(userId: userId, count: 10)
+        let items = try await sut.getMostRecentItems(userId: userId, count: 10)
         let updatedItem = try #require(items.first)
 
         // Then
@@ -88,8 +88,8 @@ struct LocalItemTextAutoFillDatasourceTests {
 
         // When
         try await sut.removeAll()
-        let items1 = try await sut.getItems(userId: userId1, count: 100)
-        let items2 = try await sut.getItems(userId: userId2, count: 100)
+        let items1 = try await sut.getMostRecentItems(userId: userId1, count: 100)
+        let items2 = try await sut.getMostRecentItems(userId: userId2, count: 100)
 
         // Then
         #expect(items1.isEmpty)
