@@ -82,6 +82,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository)
+    private var aliasRepository: any AliasRepositoryProtocol
+    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -219,7 +222,19 @@ private extension ItemsTabViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                aliasSyncEnabled = getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+                aliasSyncEnabled = getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
+            }
+            .store(in: &cancellables)
+
+        accessRepository.access
+            .receive(on: DispatchQueue.main)
+            .compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] userAccess in
+                guard let self else { return }
+                if userAccess.access.userData.aliasSyncEnabled {
+                    banners.removeAll { $0.isSlSync }
+                }
             }
             .store(in: &cancellables)
     }
@@ -269,11 +284,45 @@ private extension ItemsTabViewModel {
                     banners.append(banner)
                 }
             }
+
+            if getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync),
+               !preferencesManager.appPreferences.unwrapped().dismissedAliasesSyncExplanation,
+               let number = try await checkPendingAliases() {
+                banners.append(.slSync(number))
+            }
+
             return banners
         } catch {
             handle(error: error)
             return []
         }
+    }
+
+    func dismissAliasesSyncExplanation() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await preferencesManager.updateAppPreferences(\.dismissedAliasesSyncExplanation,
+                                                                  value: true)
+                banners.removeAll { $0.isSlSync }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func showSimpleLoginAliasesActivation() {
+        router.present(for: .simpleLoginSyncActivation)
+    }
+
+    func checkPendingAliases() async throws -> Int? {
+        guard let userData = accessRepository.access.value?.access.userData,
+              !userData.aliasSyncEnabled else {
+            return nil
+        }
+        let userId = try await userManager.getActiveUserId()
+        let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
+        return number > 0 ? number : nil
     }
 
     func selectOrDeselect(_ item: ItemUiModel) {
@@ -431,6 +480,9 @@ extension ItemsTabViewModel {
             return
         }
         banners.removeAll(where: { $0 == banner })
+        if banner.isSlSync {
+            dismissAliasesSyncExplanation()
+        }
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -454,6 +506,8 @@ extension ItemsTabViewModel {
             if let firstInvite = invites.first {
                 router.present(for: .acceptRejectInvite(firstInvite))
             }
+        case .slSync:
+            showSimpleLoginAliasesActivation()
         }
     }
 

@@ -39,7 +39,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
 
     var isSecureLinkActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+        getFeatureFlagStatus(for: FeatureFlagType.passPublicLinkV1)
     }
 
     var sheetHeight: CGFloat {

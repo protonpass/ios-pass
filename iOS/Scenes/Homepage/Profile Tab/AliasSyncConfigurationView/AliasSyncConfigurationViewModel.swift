@@ -65,7 +65,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     private var aliasSettings: AliasSettings?
 
     var isAdvancedAliasManagementActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passAdvancedAliasManagementV1)
+        getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
     }
 
     private var cancellables = Set<AnyCancellable>()
