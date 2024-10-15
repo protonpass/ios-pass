@@ -80,7 +80,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var aliasSyncEnabled: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
+        getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
     }
 
     weak var delegate: (any ItemDetailViewModelDelegate)?

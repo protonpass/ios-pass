@@ -44,7 +44,7 @@ struct ItemCountView: View {
                     ItemContentTypeCountView(type: .alias, count: itemCount.alias)
                     ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCard)
                     ItemContentTypeCountView(type: .note, count: itemCount.note)
-                    if getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1) {
+                    if getFeatureFlagStatus(for: FeatureFlagType.passIdentityV1) {
                         ItemContentTypeCountView(type: .identity, count: itemCount.identity)
                     }
                 }

@@ -60,7 +60,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     var isIdentityActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passIdentityV1)
+        getFeatureFlagStatus(for: FeatureFlagType.passIdentityV1)
     }
 
     var shouldShowMoreButton: Bool {

@@ -64,8 +64,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository)
-    private var aliasRepository: any AliasRepositoryProtocol
 
     @LazyInjected(\UseCasesContainer.checkFlagForMultiUsers) private var checkFlagForMultiUsers
 
@@ -84,10 +82,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
     @Published private(set) var plan: Plan?
     @Published private(set) var secureLinks: [SecureLink]?
-    @Published private(set) var dismissedAliasesSyncExplanation = false
-    @Published private(set) var userAliasSyncData: UserAliasSyncData?
-
-    @Published private var pendingSyncDisabledAliases: Int?
 
     // Accounts management
     @Published private var currentActiveUser: UserData?
@@ -125,33 +119,21 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
     var isSecureLinkActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passPublicLinkV1)
+        getFeatureFlagStatus(for: FeatureFlagType.passPublicLinkV1)
     }
 
     var isSimpleLoginAliasSyncActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passSimpleLoginAliasesSync)
-    }
-
-    var showAliasSyncExplanation: Int? {
-        guard isSimpleLoginAliasSyncActive,
-              !dismissedAliasesSyncExplanation
-        else {
-            return nil
-        }
-        return pendingSyncDisabledAliases
+        getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
         let access = accessRepository.access.value?.access
         plan = access?.plan
-        userAliasSyncData = access?.userData
         let securitySettingsCoordinator = SecuritySettingsCoordinator()
         securitySettingsCoordinator.delegate = childCoordinatorDelegate
         self.securitySettingsCoordinator = securitySettingsCoordinator
 
         let preferences = getSharedPreferences()
-        dismissedAliasesSyncExplanation = preferencesManager.appPreferences.unwrapped()
-            .dismissedCustomDomainExplanation
         appLockTime = preferences.appLockTime
         fallbackToPasscode = preferences.fallbackToPasscode
         quickTypeBar = preferences.quickTypeBar
@@ -182,7 +164,6 @@ extension ProfileTabViewModel {
         do {
             let access = try await accessRepository.refreshAccess(userId: nil).access
             plan = access.plan
-            userAliasSyncData = access.userData
         } catch {
             logger.error(error)
         }
@@ -292,10 +273,6 @@ extension ProfileTabViewModel {
         router.present(for: .aliasesSyncConfiguration)
     }
 
-    func showSimpleLoginAliasesActivation() {
-        router.present(for: .simpleLoginSyncActivation)
-    }
-
     func showPrivacyPolicy() {
         router.navigate(to: .urlPage(urlString: ProtonLink.privacyPolicy))
     }
@@ -345,19 +322,6 @@ extension ProfileTabViewModel {
     func signOut(account: AccountCellDetail) {
         router.action(.signOut(userId: account.id))
     }
-
-    func dismissAliasesSyncExplanation() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                try await preferencesManager.updateAppPreferences(\.dismissedAliasesSyncExplanation,
-                                                                  value: true)
-                dismissedAliasesSyncExplanation = true
-            } catch {
-                handle(error: error)
-            }
-        }
-    }
 }
 
 // MARK: - Secure link
@@ -383,7 +347,6 @@ extension ProfileTabViewModel {
 // MARK: - Private APIs
 
 private extension ProfileTabViewModel {
-    // swiftlint:disable cyclomatic_complexity
     func setUp() {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
@@ -473,19 +436,6 @@ private extension ProfileTabViewModel {
                       let currentActiveUser,
                       currentActiveUser.userId == userAccess.userId else { return }
                 plan = userAccess.access.plan
-                userAliasSyncData = userAccess.access.userData
-            }
-            .store(in: &cancellables)
-
-        $userAliasSyncData
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await checkPendingAliases()
-                }
             }
             .store(in: &cancellables)
     }
@@ -515,20 +465,6 @@ private extension ProfileTabViewModel {
             }
         case .pin:
             localAuthenticationMethod = .pin
-        }
-    }
-
-    func checkPendingAliases() async {
-        do {
-            let userId = try await userManager.getActiveUserId()
-            if let userAliasSyncData, userAliasSyncData.aliasSyncEnabled {
-                pendingSyncDisabledAliases = nil
-            } else {
-                let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
-                pendingSyncDisabledAliases = number > 0 ? number : nil
-            }
-        } catch {
-            handle(error: error)
         }
     }
 
@@ -565,5 +501,3 @@ private extension UserData {
     var email: String { user.email ?? "?" }
     var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "?" }
 }
-
-// swiftlint:enable cyclomatic_complexity
