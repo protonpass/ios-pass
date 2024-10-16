@@ -54,17 +54,40 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var showMoreButton = true
     let onSelect: (ItemType) -> Void
 
-    private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let logger = resolve(\SharedToolingContainer.logger)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
-    var shouldShowMoreButton: Bool {
-        !UIDevice.current.isIpad
+    @MainActor
+    enum Mode {
+        case hostApp, autoFillExtension
+
+        var supportedTypes: [ItemType] {
+            switch self {
+            case .hostApp:
+                ItemType.allCases
+            case .autoFillExtension:
+                [.login, .alias]
+            }
+        }
+
+        var shouldShowMoreButton: Bool {
+            switch self {
+            case .hostApp:
+                !UIDevice.current.isIpad
+            case .autoFillExtension:
+                false
+            }
+        }
     }
+
+    let mode: Mode
 
     weak var uiSheetPresentationController: UISheetPresentationController?
 
-    init(onSelect: @escaping (ItemType) -> Void) {
+    init(mode: Mode,
+         onSelect: @escaping (ItemType) -> Void) {
+        self.mode = mode
         self.onSelect = onSelect
         super.init()
         Task { [weak self] in

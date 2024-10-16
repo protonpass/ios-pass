@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -28,6 +29,7 @@ struct ItemsForTextInsertionView: View {
     @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: ItemsForTextInsertionViewModel
     @FocusState private var isFocusedOnSearchBar
+    @State private var showItemTypeList = false
 
     init(viewModel: ItemsForTextInsertionViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -50,6 +52,18 @@ struct ItemsForTextInsertionView: View {
             ItemDetailView(item: selectedItem,
                            selectedTextStream: viewModel.selectedTextStream)
                 .environment(\.colorScheme, colorScheme)
+        }
+        .sheet(isPresented: $showItemTypeList) {
+            ItemTypeListView(viewModel: .init(mode: .autoFillExtension,
+                                              onSelect: { _ in
+                                                  if viewModel.shouldAskForUserWhenCreatingNewItem {
+                                                      viewModel.presentSelectUserActionSheet()
+                                                  } else {
+                                                      viewModel.createNewItem(userId: nil)
+                                                  }
+                                              }))
+                                              .presentationDetents([.height(200)])
+                                              .environment(\.colorScheme, colorScheme)
         }
     }
 }
@@ -112,6 +126,17 @@ private extension ItemsForTextInsertionView {
                         itemList
                     }
                 }
+
+                HStack {
+                    CapsuleLabelButton(icon: IconProvider.plus,
+                                       title: #localized("Create"),
+                                       titleColor: PassColor.interactionNormMajor2,
+                                       backgroundColor: PassColor.interactionNormMinor1,
+                                       maxWidth: nil,
+                                       action: { showItemTypeList.toggle() })
+                    Spacer()
+                }
+                .padding([.horizontal, .top])
 
             case .searching:
                 ProgressView()
