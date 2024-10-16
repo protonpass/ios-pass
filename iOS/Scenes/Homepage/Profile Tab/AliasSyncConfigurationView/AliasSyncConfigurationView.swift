@@ -338,7 +338,7 @@ private struct SynchroElementRow: View {
 private extension AliasSyncConfigurationView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor1,
                          backgroundColor: PassColor.interactionNormMinor1,

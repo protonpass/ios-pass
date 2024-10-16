@@ -210,6 +210,10 @@ extension ProfileTabViewModel {
         itemTypeSelection.send(type)
     }
 
+    func showLoginsWith2fa() {
+        router.present(for: .loginsWith2fa)
+    }
+
     func toggleFallbackToPasscode() {
         Task { [weak self] in
             guard let self else { return }

@@ -50,7 +50,7 @@ struct LogsView: View {
                             .foregroundStyle(.secondary)
                     }
                     .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
+                        ToolbarItem(placement: .topBarLeading) {
                             dismissButton
                         }
                     }
@@ -90,7 +90,7 @@ struct LogsView: View {
             }
             .frame(maxHeight: .infinity)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     dismissButton
                 }
 

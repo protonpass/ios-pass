@@ -99,7 +99,7 @@ struct GeneratePasswordView: View {
             .animation(.default, value: viewModel.password)
             .animation(.default, value: viewModel.isShowingAdvancedOptions)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     // Hidden gimmick button to make the navigation title centered properly
                     CircleButton(icon: IconProvider.arrowsRotate,
                                  iconColor: PassColor.interactionNormMajor1,

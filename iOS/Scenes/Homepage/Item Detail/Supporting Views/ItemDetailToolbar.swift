@@ -33,7 +33,7 @@ struct ItemDetailToolbar: ToolbarContent {
     }
 
     var body: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: itemContentType.normMajor2Color,
                          backgroundColor: itemContentType.normMinor1Color,

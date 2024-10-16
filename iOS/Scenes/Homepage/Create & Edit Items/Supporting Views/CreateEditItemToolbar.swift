@@ -40,7 +40,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let onSave: () -> Void
 
     var body: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: itemContentType.normMajor2Color,
                          backgroundColor: itemContentType.normMinor1Color,

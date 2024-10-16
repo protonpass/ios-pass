@@ -63,6 +63,7 @@ struct ItemCountView: View {
                                                      iconTint: PassColor.passwordInteractionNorm,
                                                      iconBackground: PassColor.passwordInteractionNormMinor1),
                                 value: itemCount.loginWith2fa,
+                                maxValue: plan?.totpLimit,
                                 onSelect: { onSelectLoginsWith2fa() })
                 }
                 .padding(.horizontal)

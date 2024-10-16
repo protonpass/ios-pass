@@ -562,6 +562,8 @@ extension HomepageCoordinator {
                     present(SimpleLoginAliasActivationView())
                 case .aliasesSyncConfiguration:
                     present(AliasSyncConfigurationView())
+                case .loginsWith2fa:
+                    presentLoginsWith2faView()
                 }
             }
             .store(in: &cancellables)
@@ -875,6 +877,11 @@ extension HomepageCoordinator {
             present(viewController)
         }
         dismissTopMostViewController(completion: presentCreateSecureLinkView)
+    }
+
+    func presentLoginsWith2faView() {
+        let items = vaultsManager.getAllActiveAndTrashedItems().filter { $0.totpUri?.isEmpty == false }
+        present(LoginsWith2faView(viewModel: .init(items: items)))
     }
 
     func handleFailedLocalAuthentication(_ errorMessage: String?) {

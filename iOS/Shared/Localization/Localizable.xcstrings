@@ -68444,6 +68444,17 @@
         }
       }
     },
+    "Logins with 2FA" : {
+      "comment" : "Title of the page that lists only login items that have 2FA set up",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logins with 2FA"
+          }
+        }
+      }
+    },
     "Logs" : {
       "localizations" : {
         "be" : {
