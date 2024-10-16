@@ -240,7 +240,7 @@ private extension UserPermissionView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             DisablableCapsuleTextButton(title: #localized("Continue"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,

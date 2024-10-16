@@ -239,7 +239,7 @@ private extension UserEmailView {
             }
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             if viewModel.isChecking {
                 ProgressView()
             } else {

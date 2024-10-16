@@ -502,7 +502,14 @@ private extension ProfileTabViewModel {
 
 private extension UserData {
     var userId: String { user.ID }
-    var displayName: String { user.displayName ?? user.name ?? "" }
+    var displayName: String {
+        if user.displayName?.isEmpty == true {
+            user.name ?? ""
+        } else {
+            user.displayName ?? user.name ?? ""
+        }
+    }
+
     var email: String { user.email ?? "" }
     var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "" }
 }

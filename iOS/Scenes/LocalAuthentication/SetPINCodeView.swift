@@ -82,7 +82,7 @@ private extension SetPINCodeView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             DisablableCapsuleTextButton(title: viewModel.state.actionTitle,
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,

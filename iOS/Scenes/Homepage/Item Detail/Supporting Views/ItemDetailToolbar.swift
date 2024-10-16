@@ -42,7 +42,7 @@ struct ItemDetailToolbar: ToolbarContent {
             }
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             switch viewModel.itemContent.item.itemState {
             case .active:
                 HStack(spacing: 0) {

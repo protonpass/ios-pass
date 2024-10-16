@@ -233,7 +233,7 @@ struct AccountView: View {
                          accessibilityLabel: viewModel.isShownAsSheet ? "Close" : "Go back",
                          action: { viewModel.goBack() })
         }
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             if viewModel.plan?.hideUpgrade == false {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),

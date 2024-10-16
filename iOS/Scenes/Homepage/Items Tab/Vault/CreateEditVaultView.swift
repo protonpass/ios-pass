@@ -80,7 +80,7 @@ struct CreateEditVaultView: View {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             if viewModel.canCreateOrEdit {
                 DisablableCapsuleTextButton(title: viewModel.saveButtonTitle,
                                             titleColor: PassColor.textInvert,

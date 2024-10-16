@@ -104,7 +104,7 @@ private extension BugReportView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             CapsuleTextButton(title: #localized("Send"),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNorm) {

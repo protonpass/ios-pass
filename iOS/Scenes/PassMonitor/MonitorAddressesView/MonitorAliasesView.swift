@@ -159,7 +159,7 @@ private extension MonitorAliasesView {
         }
 
         if let access = viewModel.access {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {
                     ToggleMonitorButton(monitored: access.monitor.aliases,
                                         action: { viewModel.toggleMonitor() })

@@ -71,7 +71,7 @@ private extension SimpleLoginAliasActivationView {
                 dismiss()
             }
         }
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             DisablableCapsuleTextButton(title: #localized("Confirm"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
