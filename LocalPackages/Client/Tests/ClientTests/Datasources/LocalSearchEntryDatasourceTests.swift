@@ -20,12 +20,8 @@
 
 @testable import Client
 import Entities
+import EntitiesMocks
 import XCTest
-
-private struct DummyItem: ItemIdentifiable, Hashable, Equatable {
-    let itemId: String
-    let shareId: String
-}
 
 final class LocalSearchEntryDatasourceTests: XCTestCase {
     var sut: LocalSearchEntryDatasourceProtocol!
@@ -174,7 +170,7 @@ private extension LocalSearchEntryDatasourceProtocol {
                             shareID: String = .random(),
                             userID: String = .random(),
                             time: Int64 = .random(in: 1_000_000...2_000_000)) async throws -> SearchEntry {
-        let item = DummyItem(itemId: itemID, shareId: shareID)
+        let item = DummyItemIdentifiable(itemId: itemID, shareId: shareID)
         let date = Date(timeIntervalSince1970: TimeInterval(time))
         try await upsert(item: item, userId: userID, date: date)
         return .init(item: item, date: date)

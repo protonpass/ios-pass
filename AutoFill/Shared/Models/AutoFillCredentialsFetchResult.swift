@@ -41,3 +41,11 @@ struct CredentialsForPasskeyCreation: AutoFillCredentialsFetchResult {
     let searchableItems: [SearchableItem]
     let items: [ItemUiModel]
 }
+
+struct ItemsForTextInsertion: AutoFillCredentialsFetchResult {
+    let userId: String
+    let vaults: [Vault]
+    let history: [HistoryItemUiModel]
+    let searchableItems: [SearchableItem]
+    let items: [ItemUiModel]
+}
