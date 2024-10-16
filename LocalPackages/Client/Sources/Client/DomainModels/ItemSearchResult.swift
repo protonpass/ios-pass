@@ -91,6 +91,9 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
     public let aliasEnabled: Bool
     public let highlightableTitle: any HighlightableText
     public let highlightableDetail: [any HighlightableText]
+    // `totpUri` to conform to ItemTypeIdentifiable protocol
+    // but always nil because not applicable to search results
+    public var totpUri: String?
     public let url: String?
     public let vault: Vault?
     public let lastUseTime: Int64

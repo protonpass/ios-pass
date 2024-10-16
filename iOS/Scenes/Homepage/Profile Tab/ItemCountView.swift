@@ -22,13 +22,16 @@ import Client
 import DesignSystem
 import Entities
 import Factory
+import ProtonCoreUIFoundations
 import SwiftUI
 
 private let kChipHeight: CGFloat = 56
 
 struct ItemCountView: View {
     @StateObject private var vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    let onSelect: (ItemContentType) -> Void
+    let plan: Plan?
+    let onSelectItemType: (ItemContentType) -> Void
+    let onSelectLoginsWith2fa: () -> Void
 
     var body: some View {
         switch vaultsManager.state {
@@ -40,21 +43,27 @@ struct ItemCountView: View {
             let itemCount = ItemCount(items: allItems)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ItemContentTypeCountView(type: .login,
-                                             count: itemCount.login,
-                                             onSelect: onSelect)
-                    ItemContentTypeCountView(type: .alias,
-                                             count: itemCount.alias,
-                                             onSelect: onSelect)
-                    ItemContentTypeCountView(type: .creditCard,
-                                             count: itemCount.creditCard,
-                                             onSelect: onSelect)
-                    ItemContentTypeCountView(type: .note,
-                                             count: itemCount.note,
-                                             onSelect: onSelect)
-                    ItemContentTypeCountView(type: .identity,
-                                             count: itemCount.identity,
-                                             onSelect: onSelect)
+                    CounterChip(configuration: ItemContentType.login.toConfiguration,
+                                value: itemCount.login,
+                                onSelect: { onSelectItemType(.login) })
+                    CounterChip(configuration: ItemContentType.alias.toConfiguration,
+                                value: itemCount.alias,
+                                maxValue: plan?.aliasLimit,
+                                onSelect: { onSelectItemType(.alias) })
+                    CounterChip(configuration: ItemContentType.creditCard.toConfiguration,
+                                value: itemCount.creditCard,
+                                onSelect: { onSelectItemType(.creditCard) })
+                    CounterChip(configuration: ItemContentType.note.toConfiguration,
+                                value: itemCount.note,
+                                onSelect: { onSelectItemType(.note) })
+                    CounterChip(configuration: ItemContentType.identity.toConfiguration,
+                                value: itemCount.identity,
+                                onSelect: { onSelectItemType(.identity) })
+                    CounterChip(configuration: .init(icon: IconProvider.lock,
+                                                     iconTint: PassColor.passwordInteractionNorm,
+                                                     iconBackground: PassColor.passwordInteractionNormMinor1),
+                                value: itemCount.loginWith2fa,
+                                onSelect: { onSelectLoginsWith2fa() })
                 }
                 .padding(.horizontal)
             }
@@ -80,23 +89,39 @@ struct ItemCountView: View {
     }
 }
 
-private struct ItemContentTypeCountView: View {
-    let type: ItemContentType
-    let count: Int
-    let onSelect: (ItemContentType) -> Void
+private struct CounterChip: View {
+    let configuration: Configuration
+    let value: Int
+    var maxValue: Int?
+    let onSelect: () -> Void
+
+    struct Configuration {
+        let icon: UIImage
+        let iconTint: UIColor
+        let iconBackground: UIColor
+    }
 
     var body: some View {
         HStack {
-            CircleButton(icon: type.regularIcon,
-                         iconColor: type.normColor,
-                         backgroundColor: type.normMinor1Color,
+            CircleButton(icon: configuration.icon,
+                         iconColor: configuration.iconTint,
+                         backgroundColor: configuration.iconBackground,
                          type: .small)
 
             Spacer()
 
-            Text(verbatim: "\(count)")
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
+            if let maxValue {
+                Text(verbatim: "\(value)")
+                    .fontWeight(.bold)
+                    .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                    Text(verbatim: "/\(maxValue)")
+                    .fontWeight(.bold)
+                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+            } else {
+                Text(verbatim: "\(value)")
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
 
             Spacer()
         }
@@ -106,9 +131,15 @@ private struct ItemContentTypeCountView: View {
         .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm.toColor, lineWidth: 1))
         .contentShape(.rect)
         .onTapGesture {
-            if count > 0 { // swiftlint:disable:this empty_count
-                onSelect(type)
+            if value > 0 {
+                onSelect()
             }
         }
+    }
+}
+
+private extension ItemContentType {
+    var toConfiguration: CounterChip.Configuration {
+        .init(icon: regularIcon, iconTint: normColor, iconBackground: normMinor1Color)
     }
 }

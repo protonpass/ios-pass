@@ -34,6 +34,9 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let name: String
     public let note: String
     public let url: String?
+    // `totpUri` to conform to ItemTypeIdentifiable protocol
+    // but always nil because not applicable to search results
+    public var totpUri: String?
     public let hasTotpUri: Bool
     public let requiredExtras: [String] // E.g: Username for login items
     public let optionalExtras: [String] // E.g: URLs for login items
