@@ -271,18 +271,12 @@ private extension AliasContactsView {
     }
 
     func presentationDetents(for state: AliasContactsSheetState) -> Set<PresentationDetent> {
-        //        let customHeight: CGFloat = switch state {
-        //        case .domain:
-        //            // +1 for "Not selected" option
-        //            OptionRowHeight.compact.value * CGFloat(viewModel.domains.count + 1) + 50
-        //        case .mailbox:
-        //            OptionRowHeight.compact.value * CGFloat(viewModel.mailboxes.count) + 50
-        //        case .vault:
-        //            OptionRowHeight.medium.value * CGFloat(viewModel.vaults.count) + 50
-        //        }
-        //        return [.height(customHeight), .large]
-        //    }
-        [.medium, .large]
+        switch state {
+        case .creation:
+            [.large]
+        case .explanation:
+            [.medium, .large]
+        }
     }
 }
 
