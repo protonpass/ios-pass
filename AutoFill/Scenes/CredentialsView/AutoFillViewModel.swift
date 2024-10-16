@@ -205,7 +205,7 @@ extension AutoFillViewModel {
 
     func getAllObjects<Object: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<T, [Object]>)
         -> [Object] {
-        let uniqueShareIds = uniqueVaults.map(\.shareId)
+        let uniqueShareIds = Set(uniqueVaults.map(\.shareId))
         return results
             .flatMap { $0[keyPath: keyPath] }
             .filter { uniqueShareIds.contains($0.shareId) }
