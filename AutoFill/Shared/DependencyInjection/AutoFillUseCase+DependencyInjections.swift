@@ -74,6 +74,10 @@ private extension AutoFillUseCaseContainer {
     var totpService: any TOTPServiceProtocol {
         SharedServiceContainer.shared.totpService()
     }
+
+    var localTextAutoFillHistoryEntryDatasource: any LocalTextAutoFillHistoryEntryDatasourceProtocol {
+        SharedRepositoryContainer.shared.localTextAutoFillHistoryEntryDatasource()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -98,6 +102,18 @@ extension AutoFillUseCaseContainer {
                                 matchUrls: self.matchUrls,
                                 mapServiceIdentifierToURL: self.mapServiceIdentifierToURL(),
                                 logManager: self.logManager) }
+    }
+
+    var fetchItemsForTextInsertion: Factory<any FetchItemsForTextInsertionUseCase> {
+        self {
+            FetchItemsForTextInsertion(symmetricKeyProvider: self.symmetricKeyProvider,
+                                       accessRepository: self.accessRepository,
+                                       itemRepository: self.itemRepository,
+                                       shareRepository: self.shareRepository,
+                                       textAutoFillHistoryEntryDatasource: self
+                                           .localTextAutoFillHistoryEntryDatasource,
+                                       logManager: self.logManager)
+        }
     }
 
     var getItemsForPasskeyCreation: Factory<any GetItemsForPasskeyCreationUseCase> {
