@@ -57,11 +57,6 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
-
-    var isIdentityActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passIdentityV1)
-    }
 
     var shouldShowMoreButton: Bool {
         !UIDevice.current.isIpad

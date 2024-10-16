@@ -52,6 +52,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let getAuthMethods = resolve(\SharedUseCasesContainer.getLocalAuthenticationMethods)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -117,10 +118,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var currentUserTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
-
-    var isSecureLinkActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passPublicLinkV1)
-    }
 
     var isSimpleLoginAliasSyncActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
@@ -207,6 +204,14 @@ extension ProfileTabViewModel {
 
     func handleEnableAutoFillAction() {
         openAutoFillSettings()
+    }
+
+    func handleItemTypeSelection(_ type: ItemContentType) {
+        itemTypeSelection.send(type)
+    }
+
+    func showLoginsWith2fa() {
+        router.present(for: .loginsWith2fa)
     }
 
     func toggleFallbackToPasscode() {
@@ -497,7 +502,14 @@ private extension ProfileTabViewModel {
 
 private extension UserData {
     var userId: String { user.ID }
-    var displayName: String { user.displayName ?? user.name ?? "" }
+    var displayName: String {
+        if user.displayName?.isEmpty == true {
+            user.name ?? ""
+        } else {
+            user.displayName ?? user.name ?? ""
+        }
+    }
+
     var email: String { user.email ?? "" }
     var initial: String { user.name?.first?.uppercased() ?? user.email?.first?.uppercased() ?? "" }
 }

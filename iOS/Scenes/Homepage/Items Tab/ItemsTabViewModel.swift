@@ -87,6 +87,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var inviteRefreshTask: Task<Void, Never>?
@@ -235,6 +236,15 @@ private extension ItemsTabViewModel {
                 if userAccess.access.userData.aliasSyncEnabled {
                     banners.removeAll { $0.isSlSync }
                 }
+            }
+            .store(in: &cancellables)
+
+        itemTypeSelection
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] type in
+                guard let self else { return }
+                vaultsManager.select(.all, filterOption: .precise(type))
+                router.display(element: .infosMessage(type.filterMessage))
             }
             .store(in: &cancellables)
     }

@@ -208,7 +208,7 @@ private extension ItemHistoryView {
 private extension ItemHistoryView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.chevronDown,
                          iconColor: viewModel.item.contentData.type.normMajor2Color,
                          backgroundColor: viewModel.item.contentData.type.normMinor1Color,

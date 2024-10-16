@@ -73,7 +73,7 @@ struct ExtensionSettingsView: View {
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplication)
             .navigationTitle("AutoFill")
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     CircleButton(icon: IconProvider.cross,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,
