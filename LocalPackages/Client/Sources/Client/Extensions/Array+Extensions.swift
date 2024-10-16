@@ -29,6 +29,10 @@ public struct WritableOldestVaults {
         WritableOldestVaults(owned: nil, other: nil)
     }
 
+    public var allVaults: [Vault] {
+        [owned, other].compactMap { $0 }
+    }
+
     public func isOneOf(shareId: String) -> Bool {
         shareId == owned?.shareId || shareId == other?.shareId
     }

@@ -35,7 +35,6 @@ struct SearchResultsView: View {
     let safeAreaInsets: EdgeInsets
     let onScroll: () -> Void
     let onSelectItem: (ItemSearchResult) -> Void
-    let onSelectSortType: () -> Void
 
     @State private var showingTrashAliasAlert = false
     @State private var aliasToTrash: (any ItemTypeIdentifiable)?
@@ -48,8 +47,7 @@ struct SearchResultsView: View {
          isTrash: Bool,
          safeAreaInsets: EdgeInsets,
          onScroll: @escaping () -> Void,
-         onSelectItem: @escaping (ItemSearchResult) -> Void,
-         onSelectSortType: @escaping () -> Void) {
+         onSelectItem: @escaping (ItemSearchResult) -> Void) {
         _viewModel = .init(wrappedValue: .init(itemContextMenuHandler: itemContextMenuHandler,
                                                itemCount: itemCount,
                                                results: results,
@@ -59,7 +57,6 @@ struct SearchResultsView: View {
         self.safeAreaInsets = safeAreaInsets
         self.onScroll = onScroll
         self.onSelectItem = onSelectItem
-        self.onSelectSortType = onSelectSortType
     }
 
     var body: some View {
@@ -152,7 +149,7 @@ private extension SearchResultsView {
 
             Spacer()
 
-            SortTypeButton(selectedSortType: $selectedSortType, action: onSelectSortType)
+            SortTypeButton(selectedSortType: $selectedSortType)
         }
         .padding()
         .animationsDisabled()

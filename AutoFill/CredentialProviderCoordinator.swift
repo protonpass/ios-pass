@@ -154,6 +154,9 @@ private extension CredentialProviderCoordinator {
                                     users: users,
                                     identifiers: identifiers,
                                     passkeyRequestParams: nil)
+
+        case .arbitraryTextInsertion:
+            handleArbitraryTextInsertion(users: users)
         }
     }
 
@@ -249,6 +252,15 @@ private extension CredentialProviderCoordinator {
         viewModel.delegate = self
         let view = PasskeyCredentialsView(viewModel: viewModel)
         showView(view)
+    }
+
+    func handleArbitraryTextInsertion(users: [UserUiModel]) {
+        guard let context else { return }
+        let viewModel = ItemsForTextInsertionViewModel(context: context,
+                                                       users: users,
+                                                       userForNewItemSubject: userForNewItemSubject)
+        viewModel.delegate = self
+        showView(ItemsForTextInsertionView(viewModel: viewModel))
     }
 }
 
@@ -617,23 +629,5 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
     func autoFillViewModelWantsToLogOut() {
         guard let userId = userManager.activeUserId else { return }
         logOut(userId: userId)
-    }
-
-    func autoFillViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: any SortTypeListViewModelDelegate) {
-        guard let rootViewController else {
-            return
-        }
-        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
-        viewModel.delegate = delegate
-        let view = SortTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, dismissible: true)
     }
 }

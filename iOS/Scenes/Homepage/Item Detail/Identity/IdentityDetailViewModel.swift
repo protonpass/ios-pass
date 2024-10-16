@@ -28,38 +28,6 @@ import Macro
 import SwiftUI
 import UIKit
 
-extension IdentityDetailViewModel {
-    struct Section: Identifiable {
-        let title: String
-        let rows: [Row]
-        let customFields: [CustomFieldUiModel]
-
-        var id: String {
-            title
-        }
-
-        init(title: String, rows: [Row], customFields: [CustomFieldUiModel]) {
-            self.title = title
-            self.rows = rows.filter { $0.value?.isEmpty == false }
-            self.customFields = customFields
-        }
-
-        var isEmpty: Bool {
-            rows.isEmpty && customFields.isEmpty
-        }
-    }
-
-    struct Row: Identifiable, Equatable {
-        let title: String
-        let value: String?
-        var isSocialSecurityNumber = false
-
-        var id: String {
-            title + (value ?? "")
-        }
-    }
-}
-
 @MainActor
 final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var title = ""
@@ -91,7 +59,7 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         identity = itemContent.identityItem
     }
 
-    var sections: [Section] {
+    var sections: [IdentityDetailSection] {
         [
             personalDetailsSection,
             addressDetailsSection,
@@ -102,7 +70,7 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
 }
 
 private extension IdentityDetailViewModel {
-    var personalDetailsSection: Section {
+    var personalDetailsSection: IdentityDetailSection {
         .init(title: #localized("Personal details"),
               rows: [
                   .init(title: IdentityFields.firstName.title, value: identity?.firstName),
@@ -117,7 +85,7 @@ private extension IdentityDetailViewModel {
               customFields: extraPersonalDetails)
     }
 
-    var addressDetailsSection: Section {
+    var addressDetailsSection: IdentityDetailSection {
         .init(title: #localized("Address details"),
               rows: [
                   .init(title: IdentityFields.organization.title, value: identity?.organization),
@@ -132,7 +100,7 @@ private extension IdentityDetailViewModel {
               customFields: extraAddressDetails)
     }
 
-    var contactDetailsSection: Section {
+    var contactDetailsSection: IdentityDetailSection {
         .init(title: #localized("Contact details"),
               rows: [
                   .init(title: IdentityFields.socialSecurityNumber.title,
@@ -152,7 +120,7 @@ private extension IdentityDetailViewModel {
               customFields: extraContactDetails)
     }
 
-    var workDetailsSection: Section {
+    var workDetailsSection: IdentityDetailSection {
         .init(title: #localized("Work details"),
               rows: [
                   .init(title: IdentityFields.company.title, value: identity?.company),
@@ -166,7 +134,7 @@ private extension IdentityDetailViewModel {
 }
 
 extension IdentityDetailViewModel {
-    func copyToClipboard(_ row: Row) {
+    func copyToClipboard(_ row: IdentityDetailRow) {
         if let value = row.value {
             copyToClipboard(text: value, message: #localized("%@ copied", row.title))
         }

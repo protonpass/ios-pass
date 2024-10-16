@@ -30,14 +30,15 @@ public enum SortType: Int, CaseIterable, Equatable {
         }
     }
 
-    public var sortDirection: SortDirection? {
+    public var sortDirection: SortDirection {
         switch self {
-        case .alphabeticalAsc:
-            .ascending
-        case .alphabeticalDesc:
-            .descending
-        default:
-            nil
+        case .mostRecent:
+            assertionFailure("Not applicable")
+            return .ascending
+        case .alphabeticalAsc, .oldestToNewest:
+            return .ascending
+        case .alphabeticalDesc, .newestToOldest:
+            return .descending
         }
     }
 }

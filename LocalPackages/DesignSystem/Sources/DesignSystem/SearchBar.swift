@@ -26,19 +26,34 @@ public struct SearchBar: View {
     @Binding var query: String
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
-    let onCancel: () -> Void
-    var hideCancel = false
+    let cancelMode: CancelMode
+    let onCancel: (() -> Void)?
+
+    public enum CancelMode {
+        case never, always, queryNotEmpty
+
+        func shouldShow(query: String) -> Bool {
+            switch self {
+            case .never:
+                false
+            case .always:
+                true
+            case .queryNotEmpty:
+                !query.isEmpty
+            }
+        }
+    }
 
     public init(query: Binding<String>,
                 isFocused: FocusState<Bool>.Binding,
                 placeholder: String,
-                onCancel: @escaping () -> Void,
-                hideCancel: Bool = false) {
+                cancelMode: CancelMode,
+                onCancel: (() -> Void)? = nil) {
         _query = query
         self.isFocused = isFocused
         self.placeholder = placeholder
+        self.cancelMode = cancelMode
         self.onCancel = onCancel
-        self.hideCancel = hideCancel
     }
 
     public var body: some View {
@@ -76,7 +91,7 @@ public struct SearchBar: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .contentShape(.rect)
-            if !hideCancel || (hideCancel && !query.isEmpty) {
+            if let onCancel, cancelMode.shouldShow(query: query) {
                 Button(action: onCancel) {
                     Text("Cancel", bundle: .module)
                         .fontWeight(.semibold)

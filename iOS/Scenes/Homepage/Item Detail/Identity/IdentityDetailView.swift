@@ -86,7 +86,7 @@ private extension IdentityDetailView {
 }
 
 private extension IdentityDetailView {
-    func view(for section: IdentityDetailViewModel.Section) -> some View {
+    func view(for section: IdentityDetailSection) -> some View {
         Section {
             VStack(spacing: DesignConstant.sectionPadding) {
                 ForEach(section.rows) { row in

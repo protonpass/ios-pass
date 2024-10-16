@@ -30,12 +30,12 @@ struct ItemDetailMoreInfoSection: View {
     @Binding var isExpanded: Bool
     private let item: ItemContent
     private let vault: Vault?
-    let onCopy: (_ text: String, _ bannerMessage: String) -> Void
+    let onCopy: ((_ text: String, _ bannerMessage: String) -> Void)?
 
     init(isExpanded: Binding<Bool>,
          itemContent: ItemContent,
          vault: Vault?,
-         onCopy: @escaping (_ text: String, _ bannerMessage: String) -> Void) {
+         onCopy: ((_ text: String, _ bannerMessage: String) -> Void)?) {
         _isExpanded = isExpanded
         item = itemContent
         self.vault = vault
@@ -107,7 +107,9 @@ private extension ItemDetailMoreInfoSection {
                 .if(copyMessage) { view, copyMessage in
                     view.textSelection(.enabled)
                         .onTapGesture {
-                            onCopy(value, copyMessage)
+                            if let onCopy {
+                                onCopy(value, copyMessage)
+                            }
                         }
                 }
         }
