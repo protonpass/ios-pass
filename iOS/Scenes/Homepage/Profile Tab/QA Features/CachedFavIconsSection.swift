@@ -84,7 +84,7 @@ struct CachedFavIconsView: View {
         }
         .navigationTitle(Text(verbatim: "Cached fav icons"))
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Button { viewModel.emptyCache() } label: {
                     Label(title: {
                         Text(verbatim: "Empty cache")

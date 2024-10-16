@@ -40,7 +40,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let onSave: () -> Void
 
     var body: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: itemContentType.normMajor2Color,
                          backgroundColor: itemContentType.normMinor1Color,
@@ -50,7 +50,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                 .disabled(isSaving)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             Group {
                 if shouldUpgrade {
                     UpgradeButton(backgroundColor: itemContentType.normMajor1Color,

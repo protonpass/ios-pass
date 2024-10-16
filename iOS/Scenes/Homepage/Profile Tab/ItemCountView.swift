@@ -22,31 +22,49 @@ import Client
 import DesignSystem
 import Entities
 import Factory
+import ProtonCoreUIFoundations
 import SwiftUI
 
 private let kChipHeight: CGFloat = 56
 
 struct ItemCountView: View {
     @StateObject private var vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    let plan: Plan?
+    let onSelectItemType: (ItemContentType) -> Void
+    let onSelectLoginsWith2fa: () -> Void
 
     var body: some View {
         switch vaultsManager.state {
         case .loading:
             skeleton
         case let .loaded(vaults, trashedItems):
-            let activeItems = vaults.map(\.items).reduce(into: []) { $0 += $1 }
+            let activeItems = vaults.flatMap(\.items)
             let allItems = activeItems + trashedItems
             let itemCount = ItemCount(items: allItems)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ItemContentTypeCountView(type: .login, count: itemCount.login)
-                    ItemContentTypeCountView(type: .alias, count: itemCount.alias)
-                    ItemContentTypeCountView(type: .creditCard, count: itemCount.creditCard)
-                    ItemContentTypeCountView(type: .note, count: itemCount.note)
-                    if getFeatureFlagStatus(for: FeatureFlagType.passIdentityV1) {
-                        ItemContentTypeCountView(type: .identity, count: itemCount.identity)
-                    }
+                    CounterChip(configuration: ItemContentType.login.toConfiguration,
+                                value: itemCount.login,
+                                onSelect: { onSelectItemType(.login) })
+                    CounterChip(configuration: ItemContentType.alias.toConfiguration,
+                                value: itemCount.alias,
+                                maxValue: plan?.aliasLimit,
+                                onSelect: { onSelectItemType(.alias) })
+                    CounterChip(configuration: ItemContentType.creditCard.toConfiguration,
+                                value: itemCount.creditCard,
+                                onSelect: { onSelectItemType(.creditCard) })
+                    CounterChip(configuration: ItemContentType.note.toConfiguration,
+                                value: itemCount.note,
+                                onSelect: { onSelectItemType(.note) })
+                    CounterChip(configuration: ItemContentType.identity.toConfiguration,
+                                value: itemCount.identity,
+                                onSelect: { onSelectItemType(.identity) })
+                    CounterChip(configuration: .init(icon: IconProvider.lock,
+                                                     iconTint: PassColor.passwordInteractionNorm,
+                                                     iconBackground: PassColor.passwordInteractionNormMinor1),
+                                value: itemCount.loginWith2fa,
+                                maxValue: plan?.totpLimit,
+                                onSelect: { onSelectLoginsWith2fa() })
                 }
                 .padding(.horizontal)
             }
@@ -72,22 +90,39 @@ struct ItemCountView: View {
     }
 }
 
-private struct ItemContentTypeCountView: View {
-    let type: ItemContentType
-    let count: Int
+private struct CounterChip: View {
+    let configuration: Configuration
+    let value: Int
+    var maxValue: Int?
+    let onSelect: () -> Void
+
+    struct Configuration {
+        let icon: UIImage
+        let iconTint: UIColor
+        let iconBackground: UIColor
+    }
 
     var body: some View {
         HStack {
-            CircleButton(icon: type.regularIcon,
-                         iconColor: type.normColor,
-                         backgroundColor: type.normMinor1Color,
+            CircleButton(icon: configuration.icon,
+                         iconColor: configuration.iconTint,
+                         backgroundColor: configuration.iconBackground,
                          type: .small)
 
             Spacer()
 
-            Text(verbatim: "\(count)")
-                .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
+            if let maxValue {
+                Text(verbatim: "\(value)")
+                    .fontWeight(.bold)
+                    .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                    Text(verbatim: "/\(maxValue)")
+                    .fontWeight(.bold)
+                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+            } else {
+                Text(verbatim: "\(value)")
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
 
             Spacer()
         }
@@ -95,5 +130,17 @@ private struct ItemContentTypeCountView: View {
         .frame(height: kChipHeight)
         .frame(minWidth: 103)
         .overlay(Capsule().strokeBorder(PassColor.inputBorderNorm.toColor, lineWidth: 1))
+        .contentShape(.rect)
+        .onTapGesture {
+            if value > 0 {
+                onSelect()
+            }
+        }
+    }
+}
+
+private extension ItemContentType {
+    var toConfiguration: CounterChip.Configuration {
+        .init(icon: regularIcon, iconTint: normColor, iconBackground: normMinor1Color)
     }
 }

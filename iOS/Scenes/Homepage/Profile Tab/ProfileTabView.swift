@@ -79,10 +79,8 @@ struct ProfileTabView: View {
                         .padding(.vertical)
                 }
 
-                if viewModel.isSecureLinkActive {
-                    secureLinkSection
-                        .padding(.top)
-                }
+                secureLinkSection
+                    .padding(.top)
 
                 settingsSection
                     .padding(.vertical)
@@ -110,7 +108,7 @@ struct ProfileTabView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             if viewModel.plan?.hideUpgrade == false {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),
@@ -160,7 +158,9 @@ struct ProfileTabView: View {
             Text("Items")
                 .profileSectionTitle()
                 .padding(.horizontal)
-            ItemCountView()
+            ItemCountView(plan: viewModel.plan,
+                          onSelectItemType: { viewModel.handleItemTypeSelection($0) },
+                          onSelectLoginsWith2fa: { viewModel.showLoginsWith2fa() })
         }
     }
 

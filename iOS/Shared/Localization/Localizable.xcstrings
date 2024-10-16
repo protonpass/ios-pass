@@ -51384,6 +51384,56 @@
         }
       }
     },
+    "Filtered by aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtered by aliases"
+          }
+        }
+      }
+    },
+    "Filtered by credit cards" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtered by credit cards"
+          }
+        }
+      }
+    },
+    "Filtered by identities" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtered by identities"
+          }
+        }
+      }
+    },
+    "Filtered by logins" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtered by logins"
+          }
+        }
+      }
+    },
+    "Filtered by notes" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtered by notes"
+          }
+        }
+      }
+    },
     "Find an alias, login, or note" : {
       "comment" : "Search page",
       "localizations" : {
@@ -68390,6 +68440,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đăng nhập"
+          }
+        }
+      }
+    },
+    "Logins with 2FA" : {
+      "comment" : "Title of the page that lists only login items that have 2FA set up",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logins with 2FA"
           }
         }
       }

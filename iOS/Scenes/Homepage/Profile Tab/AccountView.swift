@@ -156,16 +156,14 @@ struct AccountView: View {
                               .padding(.vertical)
                 }
 
-                if viewModel.extraPasswordSupported {
-                    if viewModel.extraPasswordEnabled {
-                        extraPasswordEnabledRow
-                    } else {
-                        extraPasswordDisabledRow
-                    }
-                    // swiftlint:disable:next line_length
-                    Text(verbatim: "The extra password will be required to use Pass. It acts as an additional password on top of your Proton password.")
-                        .sectionTitleText()
+                if viewModel.extraPasswordEnabled {
+                    extraPasswordEnabledRow
+                } else {
+                    extraPasswordDisabledRow
                 }
+                // swiftlint:disable:next line_length
+                Text(verbatim: "The extra password will be required to use Pass. It acts as an additional password on top of your Proton password.")
+                    .sectionTitleText()
 
                 OptionRow(action: { viewModel.signOut() },
                           height: .tall,
@@ -228,14 +226,14 @@ struct AccountView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: viewModel.isShownAsSheet ? IconProvider.chevronDown : IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
                          accessibilityLabel: viewModel.isShownAsSheet ? "Close" : "Go back",
                          action: { viewModel.goBack() })
         }
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             if viewModel.plan?.hideUpgrade == false {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),

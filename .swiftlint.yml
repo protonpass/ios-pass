@@ -238,6 +238,16 @@ custom_rules:
     name: "Deprecated foregroundColor modifier"
     message: "Prefer foregroundStyle over deprecated foregroundColor"
     regex: "(foregroundColor\\()"
+  
+  deprecated_navigationbarleading:
+    name: "Deprecated navigationBarLeading"
+    message: "Prefer topBarLeading over deprecated navigationBarLeading"
+    regex: "\\.navigationBarLeading"
+  
+  deprecated_navigationbartrailing:
+    name: "Deprecated navigationBarTrailing"
+    message: "Prefer topBarTrailing over deprecated navigationBarTrailing"
+    regex: "\\.navigationBarTrailing"
 
   nil_if_empty:
     name: "Nil if empty"
