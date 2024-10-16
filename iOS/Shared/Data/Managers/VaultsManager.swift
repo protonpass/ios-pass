@@ -305,8 +305,8 @@ extension VaultsManager {
     }
 
     func select(_ selection: VaultSelection, filterOption: ItemTypeFilterOption? = nil) {
-        vaultSelection = selection
         pendingItemTypeFilterOption = filterOption
+        vaultSelection = selection
 
         Task { [weak self] in
             guard let self else { return }
