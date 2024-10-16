@@ -160,7 +160,7 @@ struct ProfileTabView: View {
                 .padding(.horizontal)
             ItemCountView(plan: viewModel.plan,
                           onSelectItemType: { viewModel.handleItemTypeSelection($0) },
-                          onSelectLoginsWith2fa: {})
+                          onSelectLoginsWith2fa: { viewModel.showLoginsWith2fa() })
         }
     }
 

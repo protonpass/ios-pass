@@ -1,6 +1,6 @@
 //
-// MonitorAllAliasesView.swift
-// Proton Pass - Created on 25/04/2024.
+// LoginsWith2faView.swift
+// Proton Pass - Created on 16/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,47 +20,42 @@
 
 import DesignSystem
 import Entities
-import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
-@MainActor
-struct MonitorAllAliasesView: View {
+struct LoginsWith2faView: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var router: PathRouter
-    let infos: [AliasMonitorInfo]
-    let monitored: Bool
+    let viewModel: LoginsWith2faViewModel
 
     var body: some View {
-        LazyVStack {
-            ForEach(infos) { info in
-                if monitored {
-                    MonitorIncludedEmailView(address: info, action: { select(info) })
-                        .padding(.bottom)
-                } else {
-                    MonitorExcludedEmailView(address: info, action: { select(info) })
-                        .padding(.bottom)
+        ZStack {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+            LazyVStack(spacing: 0) {
+                ForEach(viewModel.items) { item in
+                    Button {
+                        viewModel.select(item)
+                    } label: {
+                        GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
+                                       title: item.title,
+                                       description: item.description)
+                    }
+                    .buttonStyle(.plain)
                 }
             }
+            .padding(.horizontal)
+            .scrollViewEmbeded()
         }
-        .padding(.horizontal)
-        .scrollViewEmbeded()
-        .background(PassColor.backgroundNorm.toColor)
+        .navigationTitle("Logins with 2FA")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                CircleButton(icon: IconProvider.chevronLeft,
+                CircleButton(icon: IconProvider.cross,
                              iconColor: PassColor.interactionNormMajor2,
                              backgroundColor: PassColor.interactionNormMinor1,
                              accessibilityLabel: "Close",
                              action: dismiss.callAsFunction)
             }
         }
-        .navigationBarTitleDisplayMode(.large)
-        .navigationTitle(monitored ? "Monitored" : "Excluded from monitoring")
-        .navigationBarBackButtonHidden()
-    }
-
-    func select(_ info: AliasMonitorInfo) {
-        router.navigate(to: .breachDetail(.alias(info)))
+        .navigationStackEmbeded()
     }
 }
