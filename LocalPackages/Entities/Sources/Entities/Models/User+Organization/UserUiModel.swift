@@ -36,7 +36,7 @@ public struct UserUiModel: Sendable, Identifiable, Hashable {
     }
 
     public var displayNameAndEmail: String {
-        if let displayName {
+        if let displayName, !displayName.isEmpty {
             if let email {
                 return "\(displayName) (\(email))"
             }

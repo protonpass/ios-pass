@@ -90,6 +90,7 @@ private extension LoginItemsView {
         SearchBar(query: $viewModel.query,
                   isFocused: $isFocused,
                   placeholder: searchBarPlaceholder,
+                  cancelMode: .always,
                   onCancel: onCancel)
     }
 

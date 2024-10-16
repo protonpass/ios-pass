@@ -179,6 +179,18 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="TextAutoFillHistoryEntryEntity" representedClassName="TextAutoFillHistoryEntryEntity" syncable="YES">
+        <attribute name="itemID" attributeType="String"/>
+        <attribute name="shareID" attributeType="String"/>
+        <attribute name="time" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="userID" optional="YES" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="itemID"/>
+                <constraint value="shareID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="UserPreferencesEntity" representedClassName="UserPreferencesEntity" syncable="YES">
         <attribute name="encryptedContent" attributeType="Binary"/>
         <attribute name="userID" attributeType="String"/>

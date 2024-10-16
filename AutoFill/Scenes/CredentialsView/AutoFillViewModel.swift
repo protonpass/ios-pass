@@ -26,6 +26,7 @@ import Factory
 import Foundation
 import Macro
 import Screens
+import SwiftUI
 
 @MainActor
 protocol AutoFillViewModelDelegate: AnyObject {
@@ -33,14 +34,22 @@ protocol AutoFillViewModelDelegate: AnyObject {
     func autoFillViewModelWantsToSelectUser(_ users: [UserUiModel])
     func autoFillViewModelWantsToCancel()
     func autoFillViewModelWantsToLogOut()
-    func autoFillViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: any SortTypeListViewModelDelegate)
 }
 
 @MainActor
 class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
-    @Published private(set) var results: [T] = []
-    @Published var selectedUser: UserUiModel?
+    @Published var results: [T] = []
+
+    @Published var selectedUser: UserUiModel? {
+        didSet {
+            selectedUserUpdated.send(())
+        }
+    }
+
+    // Triggered in `didSet` block to workaround @Published's behavior
+    // of sinking when the value is not yet updated
+    let selectedUserUpdated = PassthroughSubject<Void, Never>()
+
     var cancellables = Set<AnyCancellable>()
 
     private let shareIdToUserManager: any ShareIdToUserManagerProtocol
@@ -56,6 +65,15 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     weak var delegate: (any AutoFillViewModelDelegate)?
     private(set) weak var context: ASCredentialProviderExtensionContext?
+
+    let sortTypeUpdated = PassthroughSubject<Void, Never>()
+
+    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
+    var selectedSortType = SortType.mostRecent {
+        didSet {
+            sortTypeUpdated.send(())
+        }
+    }
 
     var isFreeUser: Bool {
         selectedUser?.plan.isFreeUser == true
@@ -90,6 +108,11 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         self.users = users
         self.userForNewItemSubject = userForNewItemSubject
         shareIdToUserManager = ShareIdToUserManager(users: users)
+        setUp()
+    }
+
+    /// Set up after initialization, `super` must be called when overidding
+    func setUp() {
         if users.count == 1 {
             selectedUser = users.first
         }
@@ -193,7 +216,7 @@ extension AutoFillViewModel {
         delegate?.autoFillViewModelWantsToSelectUser(users)
     }
 
-    func getUser(for item: any ItemIdentifiable) -> UserUiModel? {
+    func getUserForUiDisplay(for item: any ItemIdentifiable) -> UserUiModel? {
         guard users.count > 1, selectedUser == nil else { return nil }
         do {
             return try shareIdToUserManager.getUser(for: item)
@@ -201,6 +224,10 @@ extension AutoFillViewModel {
             handle(error)
             return nil
         }
+    }
+
+    func getUser(for item: any ItemIdentifiable) throws -> UserUiModel {
+        try shareIdToUserManager.getUser(for: item)
     }
 
     func getAllObjects<Object: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<T, [Object]>)

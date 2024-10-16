@@ -572,14 +572,6 @@ private extension ItemsTabViewModel {
     }
 }
 
-// MARK: - SortTypeListViewModelDelegate
-
-extension ItemsTabViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortType) {
-        selectedSortType = sortType
-    }
-}
-
 // MARK: - SyncEventLoopPullToRefreshDelegate
 
 extension ItemsTabViewModel: SyncEventLoopPullToRefreshDelegate {
