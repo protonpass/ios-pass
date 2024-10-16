@@ -28,7 +28,6 @@ struct EmptyVaultView: View {
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
     private let canCreateItems: Bool
     private let onCreate: (ItemContentType) -> Void
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     init(canCreateItems: Bool,
          onCreate: @escaping (ItemContentType) -> Void) {
@@ -69,10 +68,10 @@ struct EmptyVaultView: View {
 private extension EmptyVaultView {
     func isSupported(_ type: ItemContentType) -> Bool {
         switch type {
-        case .alias, .creditCard, .login, .note:
+        case .alias, .creditCard, .identity, .login, .note:
             true
-        case .identity:
-            getFeatureFlagStatus(for: FeatureFlagType.passIdentityV1)
+        @unknown default:
+            false
         }
     }
 }

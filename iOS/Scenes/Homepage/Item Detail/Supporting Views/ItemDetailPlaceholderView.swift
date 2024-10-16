@@ -41,7 +41,7 @@ struct ItemDetailPlaceholderView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor1,
                          backgroundColor: PassColor.interactionNormMinor2,
