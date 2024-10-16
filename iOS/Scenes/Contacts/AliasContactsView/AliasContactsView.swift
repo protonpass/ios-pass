@@ -266,7 +266,7 @@ private extension AliasContactsView {
         case .creation:
             CreateContactView(viewModel: .init(itemIds: viewModel.itemIds))
         case .explanation:
-            AliasExplanationView()
+            AliasExplanationView(email: viewModel.displayName)
         }
     }
 
@@ -355,9 +355,74 @@ enum ContactCreationSteps: String, CaseIterable {
     func descriptionSubview(info: String? = nil) -> some View {
         switch self {
         case .first:
-            Text("first")
+            VStack(alignment: .leading, spacing: 0) {
+                HStack {
+                    CircleButton(icon: IconProvider.cross,
+                                 iconColor: PassColor.aliasInteractionNormMajor2,
+                                 backgroundColor: PassColor.aliasInteractionNormMinor1,
+                                 accessibilityLabel: "Close",
+                                 action: {})
+                    Spacer()
+                    CapsuleTextButton(title: #localized("Save"),
+                                      titleColor: PassColor.textInvert,
+                                      backgroundColor: PassColor.aliasInteractionNormMajor1,
+                                      maxWidth: nil,
+                                      action: {})
+                }
+                Text("Create contact")
+                    .font(.title)
+                    .padding(.vertical, 16)
+
+                Text("recipient_address@proton.me")
+                    .padding(.top, 16)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
+            .padding(16)
+            .background(ZStack {
+                PassColor.inputBorderNorm.toColor
+                LinearGradient(gradient:
+                    Gradient(colors: [
+                        Color(red: 255 / 255, green: 255 / 255, blue: 255 / 255, opacity: 0.05),
+                        Color(red: 255 / 255, green: 255 / 255, blue: 255 / 255, opacity: 0)
+                    ]),
+                    startPoint: .leading,
+                    endPoint: .trailing)
+            })
+            .cornerRadius(12)
+            .overlay(RoundedRectangle(cornerRadius: 12)
+                .stroke(PassColor.backgroundWeak.toColor, lineWidth: 1))
         case .third:
-            Text("Test")
+            VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 0) {
+                            Text("From")
+                                .fontWeight(.semibold)
+                            Text("To")
+                                .fontWeight(.semibold)
+                        }.foregroundStyle(PassColor.textInvert.toColor)
+
+                        VStack(alignment: .leading, spacing: 0) {
+                            Label("From your alias <\(info ?? "your.alias@domain.com")>",
+                                  image: IconProvider.lockFilled)
+                                .lineLimit(1)
+                            Text("Your recipient")
+                        }.foregroundStyle(PassColor.textInvert.toColor)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    Image(uiImage: PassIcon.halfButtons)
+                        .padding(.top, 16)
+                }
+                .padding(.leading, 18)
+                .padding(.top, 12)
+                .overlay(CustomBorderShape(cornerRadius: 12)
+                    .stroke(PassColor.backgroundWeak.toColor, lineWidth: 1))
+                .padding(.leading, 16)
+                .padding(.top, 16)
+                .frame(maxWidth: .infinity)
+            }
+            .background(.white)
+            .cornerRadius(12)
         default:
             EmptyView()
         }
@@ -365,62 +430,52 @@ enum ContactCreationSteps: String, CaseIterable {
 }
 
 struct AliasExplanationView: View {
+    let email: String
+
     var body: some View {
         GeometryReader { proxy in
             ScrollView {
                 VStack {
                     ZStack {
-                        GradientView()
-                        //                    RadialGradient(gradient: Gradient(colors: [
-                        //                        Color(red: 91 / 255, green: 83 / 255, blue: 237 / 255),
-                        //                        Color(red: 146 / 255, green: 81 / 255, blue: 235 / 255)
-                        //                    ]), center: .bottom, startRadius: 100, endRadius: 100)
-                        ZStack(alignment: .topTrailing) {
-                            Rectangle().fill(Color(red: 237 / 255, green: 192 / 255, blue: 101 / 255))
+                        GradientBackgroundView()
 
-                            Image(uiImage: PassIcon.stamp)
-                                .ignoresSafeArea()
-                        }
-                        .offset(x: -proxy.size.width / 2, y: 100)
-                        .rotationEffect(.degrees(-10))
-                        .frame(width: 600, height: 312)
+                        Rectangle().fill(Color(red: 237 / 255, green: 192 / 255, blue: 101 / 255))
+                            .overlay {
+                                HStack {
+                                    Spacer()
+                                    Image(uiImage: PassIcon.stamp)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(height: 150)
+                                        .offset(x: 50)
+                                }
+                                .edgesIgnoringSafeArea(.all)
+                            }
+                            .rotationEffect(.degrees(-10))
+                            .offset(x: -proxy.size.width / 2, y: 75)
                     }
                     .frame(height: 178)
                     .clipped()
 
-                    Text("Alias contacts")
-                        .font(.title)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                    // swiftlint:disable:next line_length
-                    Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                    Text("Here’s how it works:")
-                        .foregroundStyle(PassColor.textNorm.toColor)
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("Alias contacts")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                        Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                        Text("Here’s how it works:")
+                            .foregroundStyle(PassColor.textNorm.toColor)
 
-                    ForEach(ContactCreationSteps.allCases, id: \.self) { step in
-                        ContactStepView(step: step, email: step == .third ? "test@test.com" : nil)
-                    }
-//
-//                HStack(alignment: .center) {
-//                    // swiftlint:disable:next todo
-//                    // TODO: add numbers
-//                    Text("13")
-//                      .padding()
-//                      .background(
-//                        Circle()
-//                          .stroke(circleColor, lineWidth: 4)
-//                          .padding(6)
-//                      )
-//                    Divider()
-//                }
-//
-//                Text("Enter the address you want to email.")
-//                    .foregroundStyle(PassColor.textNorm.toColor)
+                        ForEach(ContactCreationSteps.allCases, id: \.self) { step in
+                            ContactStepView(step: step, email: step == .third ? email : nil)
+                        }
+                    }.padding()
 
                     Spacer()
-                }
-                /* .frame(maxWidth: .infinity) */
-            }
+                }.frame(maxWidth: .infinity)
+
+            }.frame(maxWidth: .infinity)
         }
     }
 }
@@ -430,30 +485,145 @@ struct ContactStepView: View {
     let email: String?
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                // swiftlint:disable:next todo
-                // TODO: add numbers
+        VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 10) {
                 Text(step.rawValue)
                     .foregroundStyle(PassColor.aliasInteractionNormMajor2.toColor)
-                    .padding()
+                    .fontWeight(.medium)
+                    .padding(10)
                     .background(Circle()
-                        .stroke(PassColor.aliasInteractionNormMinor1.toColor, lineWidth: 1))
-                PassDivider()
-            }
+                        .stroke(PassColor.aliasInteractionNormMajor2.toColor, lineWidth: 1))
+                VStack {
+                    Divider()
+                }
+            }.padding(.top, 10)
 
             Text(step.title(email))
                 .foregroundStyle(PassColor.textNorm.toColor)
 
             step.descriptionSubview(info: email)
-//            if let view = step.descriptionSubview(info: email) {
-//                view
-//            }
         }
     }
 }
 
-struct GradientView: View {
+struct CustomBorderShape: Shape {
+    var cornerRadius: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+
+        // Start at top-left corner, but account for corner radius
+        path.move(to: CGPoint(x: 0, y: cornerRadius))
+
+        // Leading border
+        path.addLine(to: CGPoint(x: 0, y: rect.height))
+
+        // Back to top-left corner and create a curve for the top-left corner radius
+        path.move(to: CGPoint(x: 0, y: cornerRadius))
+        path.addArc(center: CGPoint(x: cornerRadius, y: cornerRadius),
+                    radius: cornerRadius,
+                    startAngle: .degrees(180),
+                    endAngle: .degrees(270),
+                    clockwise: false)
+
+        // Top border
+        path.addLine(to: CGPoint(x: rect.width, y: 0))
+
+        return path
+    }
+}
+
+// struct AliasExplanationView: View {
+//    var body: some View {
+//        GeometryReader { proxy in
+//            ScrollView {
+//                VStack {
+//                    ZStack {
+//                        GradientView()
+//                        //                    RadialGradient(gradient: Gradient(colors: [
+//                        //                        Color(red: 91 / 255, green: 83 / 255, blue: 237 / 255),
+//                        //                        Color(red: 146 / 255, green: 81 / 255, blue: 235 / 255)
+//                        //                    ]), center: .bottom, startRadius: 100, endRadius: 100)
+//                        ZStack(alignment: .topTrailing) {
+//                            Rectangle().fill(Color(red: 237 / 255, green: 192 / 255, blue: 101 / 255))
+//
+//                            Image(uiImage: PassIcon.stamp)
+//                                .ignoresSafeArea()
+//                        }
+//                        .offset(x: -proxy.size.width / 2, y: 100)
+//                        .rotationEffect(.degrees(-10))
+//                        .frame(width: 600, height: 312)
+//                    }
+//                    .frame(height: 178)
+//                    .clipped()
+//
+//                    Text("Alias contacts")
+//                        .font(.title)
+//                        .foregroundStyle(PassColor.textNorm.toColor)
+//                    // swiftlint:disable:next line_length
+//                    Text("To keep your personal email address hidden, you can create an alias contact that masks
+//                    your address.")
+//                        .foregroundStyle(PassColor.textNorm.toColor)
+//                    Text("Here’s how it works:")
+//                        .foregroundStyle(PassColor.textNorm.toColor)
+//
+//                    ForEach(ContactCreationSteps.allCases, id: \.self) { step in
+//                        ContactStepView(step: step, email: step == .third ? "test@test.com" : nil)
+//                    }
+////
+////                HStack(alignment: .center) {
+////                    // swiftlint:disable:next todo
+////                    // TODO: add numbers
+////                    Text("13")
+////                      .padding()
+////                      .background(
+////                        Circle()
+////                          .stroke(circleColor, lineWidth: 4)
+////                          .padding(6)
+////                      )
+////                    Divider()
+////                }
+////
+////                Text("Enter the address you want to email.")
+////                    .foregroundStyle(PassColor.textNorm.toColor)
+//
+//                    Spacer()
+//                }
+//                /* .frame(maxWidth: .infinity) */
+//            }
+//        }
+//    }
+// }
+//
+// struct ContactStepView: View {
+//    let step: ContactCreationSteps
+//    let email: String?
+//
+//    var body: some View {
+//        VStack(alignment: .leading, spacing: 0) {
+//            HStack {
+//                // swiftlint:disable:next todo
+//                // TODO: add numbers
+//                Text(step.rawValue)
+//                    .foregroundStyle(PassColor.aliasInteractionNormMajor2.toColor)
+//                    .padding()
+//                    .background(Circle()
+//                        .stroke(PassColor.aliasInteractionNormMinor1.toColor, lineWidth: 1))
+//                PassDivider()
+//            }
+//
+//            Text(step.title(email))
+//                .foregroundStyle(PassColor.textNorm.toColor)
+//
+//            step.descriptionSubview(info: email)
+////            if let view = step.descriptionSubview(info: email) {
+////                view
+////            }
+//        }
+//    }
+// }
+
+struct GradientBackgroundView: View {
     var body: some View {
         ZStack {
             // 1. First Linear Gradient (essentially a solid color in this case)
