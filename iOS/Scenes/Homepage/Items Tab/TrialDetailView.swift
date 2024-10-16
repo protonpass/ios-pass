@@ -93,7 +93,7 @@ struct TrialDetailView: View {
             .foregroundStyle(PassColor.textNorm.toColor)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     CircleButton(icon: IconProvider.cross,
                                  iconColor: PassColor.interactionNormMajor2,
                                  backgroundColor: PassColor.interactionNormMinor1,

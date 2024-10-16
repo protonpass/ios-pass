@@ -79,7 +79,7 @@ private extension PasswordReusedView {
 private extension PasswordReusedView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.chevronDown,
                          iconColor: PassColor.loginInteractionNormMajor2,
                          backgroundColor: PassColor.loginInteractionNormMinor1,
