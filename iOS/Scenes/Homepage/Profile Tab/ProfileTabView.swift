@@ -158,7 +158,9 @@ struct ProfileTabView: View {
             Text("Items")
                 .profileSectionTitle()
                 .padding(.horizontal)
-            ItemCountView { viewModel.handleItemTypeSelection($0) }
+            ItemCountView(plan: viewModel.plan,
+                          onSelectItemType: { viewModel.handleItemTypeSelection($0) },
+                          onSelectLoginsWith2fa: {})
         }
     }
 
