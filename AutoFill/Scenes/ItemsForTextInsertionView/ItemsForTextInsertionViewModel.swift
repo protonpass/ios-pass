@@ -157,6 +157,10 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     override func changeToLoadedState() {
         state = .idle
     }
+
+    override func generateLoginCreationInfo(userId: String, vaults: [Vault]) -> LoginCreationInfo {
+        .init(userId: userId, vaults: vaults, url: nil, request: nil)
+    }
 }
 
 private extension ItemsForTextInsertionViewModel {

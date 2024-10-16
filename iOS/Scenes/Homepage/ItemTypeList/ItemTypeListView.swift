@@ -34,7 +34,7 @@ struct ItemTypeListView: View {
             ZStack(alignment: .bottom) {
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(ItemType.allCases, id: \.self) { type in
+                        ForEach(viewModel.mode.supportedTypes, id: \.self) { type in
                             if type != ItemType.allCases.first {
                                 PassDivider()
                                     .padding(.horizontal)
@@ -44,7 +44,7 @@ struct ItemTypeListView: View {
                         }
                     }
                 }
-                if viewModel.shouldShowMoreButton, viewModel.showMoreButton {
+                if viewModel.mode.shouldShowMoreButton, viewModel.showMoreButton {
                     Button { viewModel.showMore() } label: {
                         HStack {
                             Image(uiImage: IconProvider.chevronDown)
