@@ -122,12 +122,11 @@ private extension VaultsManager {
         guard case let .loaded(vaults, trashedItems) = state else { return }
         let items: [any ItemTypeIdentifiable] = switch vaultSelection {
         case .all:
-            vaults.map(\.items).reduce(into: []) { $0 += $1 }
+            vaults.flatMap(\.items)
         case let .precise(selectedVault):
             vaults
                 .filter { $0.vault.shareId == selectedVault.shareId }
-                .map(\.items)
-                .reduce(into: []) { $0 += $1 }
+                .flatMap(\.items)
         case .trash:
             trashedItems
         }
@@ -336,7 +335,7 @@ extension VaultsManager {
 
     func getAllActiveAndTrashedItems() -> [ItemUiModel] {
         guard case let .loaded(vaults, trashedItems) = state else { return [] }
-        let activeItems = vaults.map(\.items).reduce(into: []) { $0 += $1 }
+        let activeItems = vaults.flatMap(\.items)
         return activeItems + trashedItems
     }
 
@@ -404,12 +403,11 @@ extension VaultsManager {
         guard case let .loaded(vaults, trashedItems) = state else { return [] }
         let items: [ItemUiModel] = switch vaultSelection {
         case .all:
-            vaults.map(\.items).reduce(into: []) { $0 += $1 }
+            vaults.flatMap(\.items)
         case let .precise(selectedVault):
             vaults
                 .filter { $0.vault.shareId == selectedVault.shareId }
-                .map(\.items)
-                .reduce(into: []) { $0 += $1 }
+                .flatMap(\.items)
         case .trash:
             trashedItems
         }
