@@ -51312,6 +51312,12 @@
         }
       }
     },
+    "From" : {
+
+    },
+    "From your alias <%@>" : {
+
+    },
     "Full name" : {
       "localizations" : {
         "be" : {
@@ -87268,6 +87274,9 @@
         }
       }
     },
+    "recipient_address@proton.me" : {
+
+    },
     "Recommended actions" : {
       "localizations" : {
         "be" : {
@@ -111169,6 +111178,9 @@
         }
       }
     },
+    "To" : {
+
+    },
     "To interact with your other vaults, you need to upgrade your account." : {
       "localizations" : {
         "be" : {
@@ -131470,6 +131482,9 @@
           }
         }
       }
+    },
+    "Your recipient" : {
+
     },
     "Your session is expired" : {
       "localizations" : {
