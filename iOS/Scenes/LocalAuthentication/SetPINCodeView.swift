@@ -74,7 +74,7 @@ struct SetPINCodeView: View {
 private extension SetPINCodeView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,

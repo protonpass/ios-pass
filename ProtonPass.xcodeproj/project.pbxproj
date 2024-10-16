@@ -224,6 +224,8 @@
 		3570E0502B8E070F005B8186 /* PasskeyCredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */; };
 		3570E0522B8E15F4005B8186 /* CompletePasskeyRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */; };
 		3570E05C2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */; };
+		357101EE2CBFAC020073A291 /* LoginsWith2faView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357101ED2CBFAC020073A291 /* LoginsWith2faView.swift */; };
+		357101F02CBFB0A80073A291 /* LoginsWith2faViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357101EF2CBFB0A80073A291 /* LoginsWith2faViewModel.swift */; };
 		3571B59429BF1321008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59829BF1573008D4350 /* HighlightText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3571B59329BF1321008D4350 /* HighlightText.swift */; };
 		3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
@@ -834,6 +836,8 @@
 		3570E04F2B8E070F005B8186 /* PasskeyCredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasskeyCredentialsViewModel.swift; sourceTree = "<group>"; };
 		3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletePasskeyRegistration.swift; sourceTree = "<group>"; };
 		3570E05B2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetItemsForPasskeyCreation.swift; sourceTree = "<group>"; };
+		357101ED2CBFAC020073A291 /* LoginsWith2faView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginsWith2faView.swift; sourceTree = "<group>"; wrapsLines = 0; };
+		357101EF2CBFB0A80073A291 /* LoginsWith2faViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginsWith2faViewModel.swift; sourceTree = "<group>"; };
 		3571B59329BF1321008D4350 /* HighlightText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlightText.swift; sourceTree = "<group>"; };
 		3571B59E29BF7204008D4350 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3571B5A029BF7225008D4350 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -1515,6 +1519,8 @@
 				357ABEB12B188A30003D05C8 /* ItemsTabTopBarViewModel.swift */,
 				359EB8912A213A44009588A9 /* TrialDetailView.swift */,
 				5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */,
+				357101ED2CBFAC020073A291 /* LoginsWith2faView.swift */,
+				357101EF2CBFB0A80073A291 /* LoginsWith2faViewModel.swift */,
 				35F6D0C42A20A8D600C8E395 /* InfoBanner */,
 				354BB14728A27E8100F50040 /* Search */,
 				35661CB029B8BF76003BBAD6 /* Vault */,
@@ -3353,6 +3359,7 @@
 				5B7C7FC42C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift in Sources */,
 				5B5DBF132B68009D00F72F6C /* HomepageCoordinator+DeepLinks.swift in Sources */,
 				356EAF1E2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift in Sources */,
+				357101F02CBFB0A80073A291 /* LoginsWith2faViewModel.swift in Sources */,
 				35283E502927B55D002F5B84 /* FullScreenView.swift in Sources */,
 				355E92782A59D2D500C22703 /* Factory+Extensions.swift in Sources */,
 				5BF9F9562C183F0700EF0627 /* SecureLinkListView.swift in Sources */,
@@ -3527,6 +3534,7 @@
 				35B0F7892C0739D700A89E93 /* SecureLinkDetailViewModel.swift in Sources */,
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
+				357101EE2CBFAC020073A291 /* LoginsWith2faView.swift in Sources */,
 				5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URL+Extensions.swift in Sources */,
