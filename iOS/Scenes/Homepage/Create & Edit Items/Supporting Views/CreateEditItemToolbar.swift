@@ -50,7 +50,7 @@ struct CreateEditItemToolbar: ToolbarContent {
                 .disabled(isSaving)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             Group {
                 if shouldUpgrade {
                     UpgradeButton(backgroundColor: itemContentType.normMajor1Color,

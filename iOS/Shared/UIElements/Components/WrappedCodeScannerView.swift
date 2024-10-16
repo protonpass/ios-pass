@@ -56,7 +56,7 @@ struct WrappedCodeScannerView: View {
                                  action: dismiss.callAsFunction)
                 }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .topBarTrailing) {
                     Button(action: {
                         isGaleryPresented.toggle()
                     }, label: {

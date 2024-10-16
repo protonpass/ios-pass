@@ -64,7 +64,7 @@ private extension MonitorProtonAddressesView {
         }
 
         if let access = viewModel.access {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {
                     ToggleMonitorButton(monitored: access.monitor.protonAddress,
                                         action: { viewModel.toggleMonitor() })

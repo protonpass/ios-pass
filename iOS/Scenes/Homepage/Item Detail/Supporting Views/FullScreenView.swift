@@ -107,7 +107,7 @@ struct FullScreenView: View {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             Button(action: {
                 mode = mode.oppositeMode
             }, label: {

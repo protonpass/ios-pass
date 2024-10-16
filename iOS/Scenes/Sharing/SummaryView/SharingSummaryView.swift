@@ -173,7 +173,7 @@ private extension SharingSummaryView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             DisablableCapsuleTextButton(title: #localized("Share Vault"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,
