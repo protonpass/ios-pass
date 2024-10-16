@@ -222,7 +222,7 @@ private extension DetailMonitoredItemView {
         }
 
         if viewModel.state.isFetched {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {
                     if viewModel.isCustomEmail {
                         Button { viewModel.removeCustomMailFromMonitor() } label: {

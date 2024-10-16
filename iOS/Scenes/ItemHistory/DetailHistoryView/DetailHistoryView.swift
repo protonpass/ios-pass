@@ -133,7 +133,7 @@ private extension DetailHistoryView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             CapsuleLabelButton(icon: IconProvider.clockRotateLeft,
                                title: #localized("Restore"),
                                titleColor: viewModel.currentRevision.contentData.type.normMajor2Color,

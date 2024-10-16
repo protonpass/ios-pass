@@ -146,7 +146,7 @@ private extension EnableExtraPasswordView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             CapsuleTextButton(title: #localized("Continue"),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNormMajor1,
