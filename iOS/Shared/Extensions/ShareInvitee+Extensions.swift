@@ -27,7 +27,7 @@ extension ShareInvites {
     }
 }
 
-extension UserShareInfos: ShareInvitee {
+extension UserShareInfos: @retroactive ShareInvitee {
     public var email: String {
         userEmail
     }
@@ -57,7 +57,7 @@ extension UserShareInfos: ShareInvitee {
     }
 }
 
-extension ShareExistingUserInvite: ShareInvitee {
+extension ShareExistingUserInvite: @retroactive ShareInvitee {
     public var email: String {
         invitedEmail
     }

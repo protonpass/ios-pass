@@ -82,10 +82,6 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
 
         logger.debug("Decrypting \(applicableEncryptedItems.count) items for user \(userId)")
 
-        let itemContents = try applicableEncryptedItems.compactMap {
-            try $0.getItemContent(symmetricKey: symmetricKey)
-        }
-
         var searchableItems = [SearchableItem]()
         var items = [ItemUiModel]()
         var historyItems = [HistoryItemUiModel]()
