@@ -113,13 +113,12 @@ private extension AliasContactsView {
 private extension AliasContactsView {
     var senderName: some View {
         HStack {
-            VStack(spacing: 0) {
+            VStack(spacing: 8) {
                 Text("Sender name")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .contentShape(.rect)
-                    .padding(.vertical, 8)
 
                 TextField("Enter name", text: $viewModel.aliasName, onEditingChanged: { value in
                     guard !value else {
@@ -129,11 +128,12 @@ private extension AliasContactsView {
                 })
                 .autocorrectionDisabled()
             }
+            .padding(.horizontal, DesignConstant.sectionPadding)
 
             ItemDetailSectionIcon(icon: IconProvider.pen,
                                   width: 20)
         }
-        .padding(DesignConstant.sectionPadding)
+        .padding(10)
         .roundedDetailSection()
     }
 }

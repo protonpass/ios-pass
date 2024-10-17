@@ -200,7 +200,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
                                                 upsellElements: UpsellEntry.aliasManagement.upsellElements,
                                                 ctaTitle: #localized("Get Pass Unlimited"))
         router
-            .present(for: .upselling(config))
+            .present(for: .upselling(config, .none))
     }
 }
 
