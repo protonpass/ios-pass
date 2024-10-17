@@ -101,3 +101,5 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
 }
 
 extension Item: ItemFlagable {}
+
+extension Item: Pinnable {}

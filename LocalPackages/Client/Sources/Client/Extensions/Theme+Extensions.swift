@@ -23,7 +23,7 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-extension Theme: CustomStringConvertible {
+extension Theme: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .light:

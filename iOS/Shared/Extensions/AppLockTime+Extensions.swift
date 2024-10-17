@@ -22,7 +22,7 @@ import Entities
 import Foundation
 import Macro
 
-extension AppLockTime: CustomStringConvertible {
+extension AppLockTime: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .immediately:
