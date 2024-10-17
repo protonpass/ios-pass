@@ -488,8 +488,8 @@ extension HomepageCoordinator {
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
                     startUpgradeFlow()
-                case let .upselling(configuration):
-                    startUpsellingFlow(configuration: configuration)
+                case let .upselling(configuration, dismissal):
+                    startUpsellingFlow(configuration: configuration, dismissal: dismissal)
                 case let .vaultCreateEdit(vault: vault):
                     createEditVaultView(vault: vault)
                 case let .logView(module: module):
@@ -816,19 +816,31 @@ extension HomepageCoordinator {
         }
     }
 
-    func startUpsellingFlow(configuration: UpsellingViewConfiguration) {
-        dismissAllViewControllers(animated: true) { [weak self] in
-            guard let self else { return }
-            let view = UpsellingView(configuration: configuration) { [weak self] in
-                guard let self else {
-                    return
-                }
-                startUpgradeFlow()
+    func startUpsellingFlow(configuration: UpsellingViewConfiguration, dismissal: SheetDismissal) {
+        let view = UpsellingView(configuration: configuration) { [weak self] in
+            guard let self else {
+                return
+            }
+            startUpgradeFlow()
+        }
+
+        let completion: () -> Void = { [weak self] in
+            guard let self else {
+                return
             }
             let viewController = UIHostingController(rootView: view)
 
             viewController.sheetPresentationController?.prefersGrabberVisible = false
             present(viewController)
+        }
+
+        switch dismissal {
+        case .none:
+            present(view)
+        case .topMost:
+            dismissTopMostViewController(animated: true, completion: completion)
+        case .all:
+            dismissAllViewControllers(animated: true, completion: completion)
         }
     }
 
@@ -1053,7 +1065,7 @@ extension HomepageCoordinator {
             do {
                 let plan = try await accessRepository.getPlan(userId: nil)
                 if plan.isFreeUser {
-                    startUpsellingFlow(configuration: .default)
+                    startUpsellingFlow(configuration: .default, dismissal: .all)
                 } else {
                     let view = ItemHistoryView(viewModel: ItemHistoryViewModel(item: item))
                     present(view)

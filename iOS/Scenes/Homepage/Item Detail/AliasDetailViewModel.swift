@@ -42,8 +42,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
-    private var task: Task<Void, Error>?
-    
+    private var task: Task<Void, Never>?
+
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAdvancedAliasManagementV1)
     }
