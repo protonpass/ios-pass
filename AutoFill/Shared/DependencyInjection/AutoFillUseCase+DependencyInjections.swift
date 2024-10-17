@@ -181,6 +181,12 @@ extension AutoFillUseCaseContainer {
                                 resetFactory: self.resetFactory()) }
     }
 
+    var completeTextAutoFill: Factory<any CompleteTextAutoFillUseCase> {
+        self { CompleteTextAutoFill(userManager: self.userManager,
+                                    datasource: SharedRepositoryContainer.shared
+                                        .localTextAutoFillHistoryEntryDatasource()) }
+    }
+
     var completeConfiguration: Factory<any CompleteConfigurationUseCase> {
         self { CompleteConfiguration(resetFactory: self.resetFactory()) }
     }
