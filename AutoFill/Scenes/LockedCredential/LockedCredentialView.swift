@@ -32,27 +32,10 @@ struct LockedCredentialView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            PassColor.backgroundNorm.toColor
-                .localAuthentication(delayed: true,
-                                     onSuccess: { _ in viewModel.getAndReturnCredential() },
-                                     onFailure: { viewModel.handleAuthenticationFailure($0) })
-                .toolbar { toolbarContent }
-        }
-    }
-
-    @ToolbarContentBuilder
-    private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            CircleButton(icon: IconProvider.cross,
-                         iconColor: PassColor.interactionNormMajor2,
-                         backgroundColor: PassColor.interactionNormMinor1,
-                         accessibilityLabel: "Cancel",
-                         action: {
-                             Task {
-                                 await viewModel.handleCancellation()
-                             }
-                         })
-        }
+        PassColor.backgroundNorm.toColor
+            .localAuthentication(delayed: true,
+                                 logOutButtonMode: .topBarTrailing { viewModel.handleCancellation() },
+                                 onSuccess: { _ in viewModel.getAndReturnCredential() },
+                                 onFailure: { viewModel.handleAuthenticationFailure($0) })
     }
 }
