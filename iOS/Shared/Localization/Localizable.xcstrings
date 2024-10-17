@@ -3421,7 +3421,26 @@
       }
     },
     "%lld forwards" : {
-
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld forward"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld forwards"
+                }
+              }
+            }
+          }
+        }
+      }
     },
     "%lld hour(s)" : {
       "localizations" : {
@@ -7620,7 +7639,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "%lld months"
                 }
               }
@@ -11304,7 +11323,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "%lld years"
                 }
               }
