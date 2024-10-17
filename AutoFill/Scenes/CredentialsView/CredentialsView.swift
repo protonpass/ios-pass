@@ -46,7 +46,8 @@ struct CredentialsView: View {
             await viewModel.fetchItems()
             await viewModel.sync(ignoreError: true)
         }
-        .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
+        .localAuthentication(logOutButtonMode: .topBarTrailing { viewModel.handleCancel() },
+                             onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .alert("Associate URL?",
                isPresented: $viewModel.notMatchedItemInformation.mappedToBool(),
@@ -211,7 +212,7 @@ private extension CredentialsView {
                     HStack {
                         Spacer()
                         SectionIndexTitles(proxy: proxy,
-                                           direction: viewModel.selectedSortType.sortDirection ?? .ascending)
+                                           direction: viewModel.selectedSortType.sortDirection)
                     }
                 }
             }
