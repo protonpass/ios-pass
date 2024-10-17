@@ -26,7 +26,8 @@ public protocol RemoteUserSettingsDatasourceProtocol: Sendable {
     func desactivateSentinel(userId: String) async throws -> Bool
 }
 
-public final class RemoteUserSettingsDatasource: RemoteDatasource, RemoteUserSettingsDatasourceProtocol {}
+public final class RemoteUserSettingsDatasource: RemoteDatasource, RemoteUserSettingsDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteUserSettingsDatasource {
     func getUserSettings(userId: String) async throws -> UserSettings {

@@ -22,7 +22,8 @@ public protocol RemoteShareEventIDDatasourceProtocol: Sendable {
     func getLastEventId(userId: String, shareId: String) async throws -> String
 }
 
-public final class RemoteShareEventIDDatasource: RemoteDatasource, RemoteShareEventIDDatasourceProtocol {}
+public final class RemoteShareEventIDDatasource: RemoteDatasource, RemoteShareEventIDDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteShareEventIDDatasource {
     func getLastEventId(userId: String, shareId: String) async throws -> String {

@@ -57,14 +57,18 @@ public struct OneTimeCodeIdentity: Sendable {
     public let username: String
     /// Maps the `serviceIdentifier` property
     public let url: String
+    /// Maps the `rank` property
+    public let lastUseTime: Int64
 
     public init(shareId: String,
                 itemId: String,
                 username: String,
-                url: String) {
+                url: String,
+                lastUseTime: Int64) {
         ids = .init(shareId: shareId, itemId: itemId)
         self.username = username
         self.url = url
+        self.lastUseTime = lastUseTime
     }
 }
 

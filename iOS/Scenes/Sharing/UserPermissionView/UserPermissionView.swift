@@ -232,7 +232,7 @@ private extension UserPermissionView {
 private extension UserPermissionView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
@@ -240,7 +240,7 @@ private extension UserPermissionView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             DisablableCapsuleTextButton(title: #localized("Continue"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,

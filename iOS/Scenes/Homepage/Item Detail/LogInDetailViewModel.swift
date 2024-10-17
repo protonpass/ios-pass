@@ -27,12 +27,6 @@ import Macro
 import SwiftUI
 import UIKit
 
-enum TOTPTokenState {
-    case loading
-    case allowed
-    case notAllowed
-}
-
 @MainActor
 final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }

@@ -125,7 +125,7 @@ extension DetailHistoryView {
 private extension DetailHistoryView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.arrowLeft,
                          iconColor: viewModel.currentRevision.contentData.type.normMajor2Color,
                          backgroundColor: viewModel.currentRevision.contentData.type.normMinor1Color,
@@ -133,7 +133,7 @@ private extension DetailHistoryView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             CapsuleLabelButton(icon: IconProvider.clockRotateLeft,
                                title: #localized("Restore"),
                                titleColor: viewModel.currentRevision.contentData.type.normMajor2Color,

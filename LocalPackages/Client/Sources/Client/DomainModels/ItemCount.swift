@@ -24,6 +24,7 @@ import Foundation
 public struct ItemCount: Hashable, Equatable, Sendable {
     public let total: Int
     public let login: Int
+    public let loginWith2fa: Int
     public let alias: Int
     public let creditCard: Int
     public let note: Int
@@ -31,6 +32,7 @@ public struct ItemCount: Hashable, Equatable, Sendable {
 
     public static let zero = ItemCount(total: 0,
                                        login: 0,
+                                       loginWith2fa: 0,
                                        alias: 0,
                                        creditCard: 0,
                                        note: 0,
@@ -40,10 +42,34 @@ public struct ItemCount: Hashable, Equatable, Sendable {
 public extension ItemCount {
     init(items: [any ItemTypeIdentifiable]) {
         total = items.count
-        login = items.filter { $0.type == .login }.count
-        alias = items.filter { $0.type == .alias }.count
-        creditCard = items.filter { $0.type == .creditCard }.count
-        note = items.filter { $0.type == .note }.count
-        identity = items.filter { $0.type == .identity }.count
+        var login = 0
+        var loginWith2fa = 0
+        var alias = 0
+        var creditCard = 0
+        var note = 0
+        var identity = 0
+        for item in items {
+            switch item.type {
+            case .alias:
+                alias += 1
+            case .creditCard:
+                creditCard += 1
+            case .identity:
+                identity += 1
+            case .login:
+                login += 1
+                if item.totpUri?.isEmpty == false {
+                    loginWith2fa += 1
+                }
+            case .note:
+                note += 1
+            }
+        }
+        self.login = login
+        self.loginWith2fa = loginWith2fa
+        self.alias = alias
+        self.creditCard = creditCard
+        self.note = note
+        self.identity = identity
     }
 }

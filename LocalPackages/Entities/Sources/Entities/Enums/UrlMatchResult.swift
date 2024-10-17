@@ -32,4 +32,12 @@ public enum UrlMatchResult: Sendable, Equatable {
         }
         return 0
     }
+
+    public var isMatched: Bool {
+        if case .matched = self {
+            true
+        } else {
+            false
+        }
+    }
 }

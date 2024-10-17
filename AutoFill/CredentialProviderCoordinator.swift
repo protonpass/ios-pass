@@ -55,6 +55,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.indexAllLoginItems) private var indexAllLoginItems
     @LazyInjected(\AutoFillUseCaseContainer.checkAndAutoFill) private var checkAndAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completeAutoFill) private var completeAutoFill
+    @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill) private var completeTextAutoFill
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
@@ -80,6 +81,8 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var topMostViewController: UIViewController? {
         rootViewController?.topMostViewController
     }
+
+    private var mode: AutoFillMode?
 
     init(rootViewController: UIViewController, context: ASCredentialProviderExtensionContext) {
         SharedViewContainer.shared.register(rootViewController: rootViewController)
@@ -130,6 +133,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
 private extension CredentialProviderCoordinator {
     func start(mode: AutoFillMode) async throws {
         let users = try await getUserUiModels()
+        self.mode = mode
         switch mode {
         case let .showAllLogins(identifiers, requestParams):
             handleShowAllLoginsMode(mode: .passwords,
@@ -154,6 +158,9 @@ private extension CredentialProviderCoordinator {
                                     users: users,
                                     identifiers: identifiers,
                                     passkeyRequestParams: nil)
+
+        case .arbitraryTextInsertion:
+            handleArbitraryTextInsertion(users: users)
         }
     }
 
@@ -249,6 +256,15 @@ private extension CredentialProviderCoordinator {
         viewModel.delegate = self
         let view = PasskeyCredentialsView(viewModel: viewModel)
         showView(view)
+    }
+
+    func handleArbitraryTextInsertion(users: [UserUiModel]) {
+        guard let context else { return }
+        let viewModel = ItemsForTextInsertionViewModel(context: context,
+                                                       users: users,
+                                                       userForNewItemSubject: userForNewItemSubject)
+        viewModel.delegate = self
+        showView(ItemsForTextInsertionView(viewModel: viewModel))
     }
 }
 
@@ -424,32 +440,36 @@ private extension CredentialProviderCoordinator {
         showView(view)
     }
 
-    func showCreateNewItem(_ info: LoginCreationInfo) async {
+    func presentCreateLoginView(shareId: String,
+                                vaults: [Vault],
+                                url: URL?,
+                                request: PasskeyCredentialRequest?) {
         do {
-            let vaults = info.vaults
-            let lastCreateItemVault = vaults.first { $0.shareId == getUserPreferences().lastCreatedItemShareId }
-            let shareId = (lastCreateItemVault ?? vaults.oldestOwned)?.shareId ?? ""
-
-            let userId = info.userId
-            // Temporarily switch the on-memory active user and reload the vaults contents
-            // This is to work-around the fact that many of our repositories, use cases, view models
-            // still depend on the active user instead of dynamically take a userID
-            // especially when creating new login items we need to check some limitations
-            // (login with 2FA, custom fields...)
-            try await userManager.switchActiveUser(with: userId, onMemory: true)
-            try await vaultsManager.asyncRefresh(userId: userId)
-
-            let creationType = ItemCreationType.login(title: info.url?.host,
-                                                      url: info.url?.schemeAndHost,
+            let creationType = ItemCreationType.login(title: url?.host,
+                                                      url: url?.schemeAndHost,
                                                       autofill: true,
-                                                      passkeyCredentialRequest: info.request)
+                                                      passkeyCredentialRequest: request)
             let viewModel = try CreateEditLoginViewModel(mode: .create(shareId: shareId,
                                                                        type: creationType),
                                                          upgradeChecker: upgradeChecker,
                                                          vaults: vaults)
             viewModel.delegate = self
-            present(CreateEditLoginView(viewModel: viewModel),
-                    dismissBeforePresenting: true)
+            present(CreateEditLoginView(viewModel: viewModel), dismissBeforePresenting: true)
+            currentCreateEditItemViewModel = viewModel
+        } catch {
+            logger.error(error)
+            bannerManager.displayTopErrorMessage(error)
+        }
+    }
+
+    func presentCreateAliasView(shareId: String, vaults: [Vault]) {
+        do {
+            let viewModel = try CreateEditAliasViewModel(mode: .create(shareId: shareId,
+                                                                       type: .alias),
+                                                         upgradeChecker: upgradeChecker,
+                                                         vaults: vaults)
+            viewModel.delegate = self
+            present(CreateEditAliasView(viewModel: viewModel), dismissBeforePresenting: true)
             currentCreateEditItemViewModel = viewModel
         } catch {
             logger.error(error)
@@ -554,6 +574,13 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
                     }
                     if let response {
                         completePasskeyRegistration(response, context: context)
+                    } else if mode?.isArbitraryTextInsertion == true {
+                        let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                                  itemId: item.itemId)
+                        try await completeTextAutoFill(itemContent?.loginItem?.authIdentifier ?? "",
+                                                       context: context,
+                                                       userId: nil,
+                                                       item: item)
                     } else {
                         credentialsViewModel?.select(item: item)
                     }
@@ -563,8 +590,19 @@ extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
             }
 
         case .alias:
-            if let email = item.item.aliasEmail {
-                context?.completeRequest(withSelectedCredential: .init(user: email, password: ""))
+            Task { [weak self] in
+                guard let self,
+                      let context,
+                      mode?.isArbitraryTextInsertion == true,
+                      let email = item.item.aliasEmail else { return }
+                do {
+                    try await completeTextAutoFill(email,
+                                                   context: context,
+                                                   userId: nil,
+                                                   item: item)
+                } catch {
+                    logger.error(error)
+                }
             }
 
         default:
@@ -595,10 +633,35 @@ extension CredentialProviderCoordinator: CreateEditLoginViewModelDelegate {
 }
 
 extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
-    func autoFillViewModelWantsToCreateNewItem(_ info: LoginCreationInfo) {
+    func autoFillViewModelWantsToCreateNewItem(_ info: ItemCreationInfo) {
         Task { [weak self] in
             guard let self else { return }
-            await showCreateNewItem(info)
+            do {
+                let lastCreateItemVault = info.vaults
+                    .first { $0.shareId == self.getUserPreferences().lastCreatedItemShareId }
+                let shareId = (lastCreateItemVault ?? info.vaults.oldestOwned)?.shareId ?? ""
+
+                // Temporarily switch the on-memory active user and reload the vaults contents
+                // This is to work-around the fact that many of our repositories, use cases, view models
+                // still depend on the active user instead of dynamically take a userID
+                // especially when creating new login items we need to check some limitations
+                // (login with 2FA, custom fields...)
+                try await userManager.switchActiveUser(with: info.userId, onMemory: true)
+                try await vaultsManager.asyncRefresh(userId: info.userId)
+
+                switch info.data {
+                case let .login(url, passkeyCredentialRequest):
+                    presentCreateLoginView(shareId: shareId,
+                                           vaults: info.vaults,
+                                           url: url,
+                                           request: passkeyCredentialRequest)
+                case .alias:
+                    presentCreateAliasView(shareId: shareId, vaults: info.vaults)
+                }
+            } catch {
+                logger.error(error)
+                bannerManager.displayTopErrorMessage(error)
+            }
         }
     }
 
@@ -617,23 +680,5 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
     func autoFillViewModelWantsToLogOut() {
         guard let userId = userManager.activeUserId else { return }
         logOut(userId: userId)
-    }
-
-    func autoFillViewModelWantsToPresentSortTypeList(selectedSortType: SortType,
-                                                     delegate: any SortTypeListViewModelDelegate) {
-        guard let rootViewController else {
-            return
-        }
-        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
-        viewModel.delegate = delegate
-        let view = SortTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController, dismissible: true)
     }
 }

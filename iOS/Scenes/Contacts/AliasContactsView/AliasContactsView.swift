@@ -369,7 +369,7 @@ enum ContactCreationSteps: String, CaseIterable {
         }
     }
 
-    @ViewBuilder
+    @MainActor @ViewBuilder
     func descriptionSubview(info: String? = nil) -> some View {
         switch self {
         case .first:
