@@ -41,7 +41,7 @@ final class LoginsWith2faViewModel {
             do {
                 if let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                              itemId: item.itemId) {
-                    router.present(for: .itemDetail(itemContent))
+                    router.present(for: .itemDetail(itemContent, automaticDisplay: false))
                 } else {
                     throw PassError.itemNotFound(item)
                 }

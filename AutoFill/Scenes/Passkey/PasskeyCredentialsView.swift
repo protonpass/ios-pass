@@ -65,7 +65,8 @@ struct PasskeyCredentialsView: View {
             }
         }
         .showSpinner(viewModel.isCreatingPasskey)
-        .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
+        .localAuthentication(logOutButtonMode: .topBarTrailing { viewModel.handleCancel() },
+                             onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .alert("Create passkey",
                isPresented: $viewModel.isShowingAssociationConfirmation,
