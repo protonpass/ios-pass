@@ -46,7 +46,8 @@ struct ItemsForTextInsertionView: View {
             viewModel.filterAndSortItems()
             await viewModel.sync(ignoreError: true)
         }
-        .localAuthentication(onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
+        .localAuthentication(logOutButtonMode: .topBarTrailing { viewModel.handleCancel() },
+                             onSuccess: { _ in viewModel.handleAuthenticationSuccess() },
                              onFailure: { _ in viewModel.handleAuthenticationFailure() })
         .optionalSheet(binding: $viewModel.selectedItem) { selectedItem in
             ItemDetailView(item: selectedItem,

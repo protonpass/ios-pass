@@ -60,6 +60,7 @@ struct LocalAuthenticationModifier: ViewModifier {
     private let delayed: Bool
 
     private let manuallyAvoidKeyboard: Bool
+    private let logOutButtonMode: LocalAuthenticationView.LogOutButtonMode
 
     /// Authentication is started and awaiting for user's response (enterring PIN or biometrically authenticate)
     private let onAuth: (() -> Void)?
@@ -77,6 +78,7 @@ struct LocalAuthenticationModifier: ViewModifier {
 
     init(delayed: Bool,
          manuallyAvoidKeyboard: Bool,
+         logOutButtonMode: LocalAuthenticationView.LogOutButtonMode,
          onAuth: (() -> Void)?,
          onAuthSkipped: (() -> Void)?,
          onSuccess: ((LocalAuthenticationSuccessMode) -> Void)?,
@@ -87,6 +89,7 @@ struct LocalAuthenticationModifier: ViewModifier {
         _autolocker = .init(initialValue: .init(appLockTime: preferences.appLockTime))
         self.delayed = delayed
         self.manuallyAvoidKeyboard = manuallyAvoidKeyboard
+        self.logOutButtonMode = logOutButtonMode
         self.onAuth = onAuth
         self.onAuthSkipped = onAuthSkipped
         self.onSuccess = onSuccess
@@ -112,6 +115,7 @@ struct LocalAuthenticationModifier: ViewModifier {
                 LocalAuthenticationView(mode: method == .pin ? .pin : .biometric,
                                         delayed: delayed,
                                         manuallyAvoidKeyboard: manuallyAvoidKeyboard,
+                                        logOutButtonMode: logOutButtonMode,
                                         onAuth: { onAuth?() },
                                         onSuccess: handleSuccess,
                                         onFailure: onFailure)
@@ -184,12 +188,14 @@ extension View {
     @MainActor
     func localAuthentication(delayed: Bool = false,
                              manuallyAvoidKeyboard: Bool = false,
+                             logOutButtonMode: LocalAuthenticationView.LogOutButtonMode = .topRight,
                              onAuth: (() -> Void)? = nil,
                              onAuthSkipped: (() -> Void)? = nil,
                              onSuccess: ((LocalAuthenticationSuccessMode) -> Void)? = nil,
                              onFailure: @escaping (String?) -> Void) -> some View {
         modifier(LocalAuthenticationModifier(delayed: delayed,
                                              manuallyAvoidKeyboard: manuallyAvoidKeyboard,
+                                             logOutButtonMode: logOutButtonMode,
                                              onAuth: onAuth,
                                              onAuthSkipped: onAuthSkipped,
                                              onSuccess: onSuccess,

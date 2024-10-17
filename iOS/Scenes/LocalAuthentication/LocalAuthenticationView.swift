@@ -26,10 +26,25 @@ import SwiftUI
 /// Not to be used directly but via `localAuthentication` view modifier
 struct LocalAuthenticationView: View {
     @StateObject private var viewModel: LocalAuthenticationViewModel
+    private let logOutButtonMode: LogOutButtonMode
+
+    enum LogOutButtonMode {
+        case topBarTrailing(onClose: () -> Void)
+        case topRight
+
+        var isTopBarTrailing: Bool {
+            if case .topBarTrailing = self {
+                true
+            } else {
+                false
+            }
+        }
+    }
 
     init(mode: LocalAuthenticationViewModel.Mode,
          delayed: Bool = false,
          manuallyAvoidKeyboard: Bool = false,
+         logOutButtonMode: LogOutButtonMode = .topRight,
          onAuth: @escaping () -> Void,
          onSuccess: @escaping () async throws -> Void,
          onFailure: @escaping (String?) -> Void) {
@@ -39,6 +54,7 @@ struct LocalAuthenticationView: View {
                                                onAuth: onAuth,
                                                onSuccess: onSuccess,
                                                onFailure: onFailure))
+        self.logOutButtonMode = logOutButtonMode
     }
 
     var body: some View {
@@ -53,12 +69,41 @@ struct LocalAuthenticationView: View {
                 PinAuthenticationView(viewModel: viewModel)
             }
 
-            Button { viewModel.logOut() } label: {
-                Image(uiImage: IconProvider.arrowOutFromRectangle)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+            if case .topRight = logOutButtonMode {
+                logOutButton
                     .padding()
             }
-            .padding()
+        }
+        .if(logOutButtonMode.isTopBarTrailing) { view in
+            view
+                .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        CircleButton(icon: IconProvider.cross,
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: PassColor.interactionNormMinor1,
+                                     accessibilityLabel: "Cancel",
+                                     action: {
+                                         if case let .topBarTrailing(onClose) = logOutButtonMode {
+                                             onClose()
+                                         }
+                                     })
+                    }
+
+                    ToolbarItem(placement: .topBarTrailing) {
+                        logOutButton
+                    }
+                }
+                .navigationStackEmbeded()
+        }
+    }
+}
+
+private extension LocalAuthenticationView {
+    var logOutButton: some View {
+        Button { viewModel.logOut() } label: {
+            Image(uiImage: IconProvider.arrowOutFromRectangle)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .padding()
         }
     }
 }
