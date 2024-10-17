@@ -72,7 +72,7 @@ struct CreateEditVaultView: View {
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
@@ -80,7 +80,7 @@ struct CreateEditVaultView: View {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             if viewModel.canCreateOrEdit {
                 DisablableCapsuleTextButton(title: viewModel.saveButtonTitle,
                                             titleColor: PassColor.textInvert,

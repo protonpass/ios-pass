@@ -27,7 +27,8 @@ public protocol RemoteItemReadEventDatasourceProtocol: Sendable {
     func send(userId: String, events: [ItemReadEvent], shareId: String) async throws
 }
 
-public final class RemoteItemReadEventDatasource: RemoteDatasource, RemoteItemReadEventDatasourceProtocol {}
+public final class RemoteItemReadEventDatasource: RemoteDatasource, RemoteItemReadEventDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteItemReadEventDatasource {
     func send(userId: String, events: [ItemReadEvent], shareId: String) async throws {

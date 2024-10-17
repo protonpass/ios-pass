@@ -70,6 +70,17 @@ enum AutoFillMode {
 
     /// Users want to manually select an item to autofill 2FA code
     case showOneTimeCodes([ASCredentialServiceIdentifier])
+
+    /// Users want to manually pick an arbitrary field of any item types to autofill
+    case arbitraryTextInsertion
+
+    var isArbitraryTextInsertion: Bool {
+        if case .arbitraryTextInsertion = self {
+            true
+        } else {
+            false
+        }
+    }
 }
 
 enum CredentialsMode: Sendable {

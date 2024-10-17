@@ -22,7 +22,8 @@ public protocol RemoteTelemetryEventDatasourceProtocol: Sendable {
     func send(userId: String, events: [EventInfo]) async throws
 }
 
-public final class RemoteTelemetryEventDatasource: RemoteDatasource, RemoteTelemetryEventDatasourceProtocol {}
+public final class RemoteTelemetryEventDatasource: RemoteDatasource, RemoteTelemetryEventDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteTelemetryEventDatasource {
     func send(userId: String, events: [EventInfo]) async throws {

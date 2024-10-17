@@ -74,6 +74,10 @@ private extension AutoFillUseCaseContainer {
     var totpService: any TOTPServiceProtocol {
         SharedServiceContainer.shared.totpService()
     }
+
+    var localTextAutoFillHistoryEntryDatasource: any LocalTextAutoFillHistoryEntryDatasourceProtocol {
+        SharedRepositoryContainer.shared.localTextAutoFillHistoryEntryDatasource()
+    }
 }
 
 extension AutoFillUseCaseContainer {
@@ -98,6 +102,18 @@ extension AutoFillUseCaseContainer {
                                 matchUrls: self.matchUrls,
                                 mapServiceIdentifierToURL: self.mapServiceIdentifierToURL(),
                                 logManager: self.logManager) }
+    }
+
+    var fetchItemsForTextInsertion: Factory<any FetchItemsForTextInsertionUseCase> {
+        self {
+            FetchItemsForTextInsertion(symmetricKeyProvider: self.symmetricKeyProvider,
+                                       accessRepository: self.accessRepository,
+                                       itemRepository: self.itemRepository,
+                                       shareRepository: self.shareRepository,
+                                       textAutoFillHistoryEntryDatasource: self
+                                           .localTextAutoFillHistoryEntryDatasource,
+                                       logManager: self.logManager)
+        }
     }
 
     var getItemsForPasskeyCreation: Factory<any GetItemsForPasskeyCreationUseCase> {
@@ -163,6 +179,12 @@ extension AutoFillUseCaseContainer {
                                 copyTotpTokenAndNotify: self.copyTotpTokenAndNotify(),
                                 updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
                                 resetFactory: self.resetFactory()) }
+    }
+
+    var completeTextAutoFill: Factory<any CompleteTextAutoFillUseCase> {
+        self { CompleteTextAutoFill(userManager: self.userManager,
+                                    datasource: SharedRepositoryContainer.shared
+                                        .localTextAutoFillHistoryEntryDatasource()) }
     }
 
     var completeConfiguration: Factory<any CompleteConfigurationUseCase> {

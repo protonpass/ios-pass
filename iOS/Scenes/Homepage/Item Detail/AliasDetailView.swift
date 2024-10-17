@@ -243,7 +243,7 @@ struct AliasDetailView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 // swiftlint:disable:next line_length
-                Text("\(stats.forwardedEmails) forwards • \(stats.repliedEmails) replies • \(stats.blockedEmails) blocks")
+                Text("\(stats.forwardedEmailsTitle) • \(stats.repliedEmailsTitle) • \(stats.blockedEmailsTitle)")
                     .sectionContentText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -284,5 +284,19 @@ struct AliasDetailView: View {
         }
         .animation(.default, value: viewModel.contacts)
         .buttonStyle(.plain)
+    }
+}
+
+private extension AliasStats {
+    var forwardedEmailsTitle: String {
+        #localized("%lld forwards", forwardedEmails)
+    }
+
+    var repliedEmailsTitle: String {
+        #localized("%lld replies", repliedEmails)
+    }
+
+    var blockedEmailsTitle: String {
+        #localized("%lld blocks", blockedEmails)
     }
 }

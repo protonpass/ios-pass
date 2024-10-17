@@ -26,7 +26,8 @@ public protocol LocalPublicKeyDatasourceProtocol: Sendable {
     func insertPublicKeys(_ publicKeys: [PublicKey], email: String) async throws
 }
 
-public final class LocalPublicKeyDatasource: LocalDatasource, LocalPublicKeyDatasourceProtocol {}
+public final class LocalPublicKeyDatasource: LocalDatasource, LocalPublicKeyDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension LocalPublicKeyDatasource {
     func getPublicKeys(email: String) async throws -> [PublicKey] {

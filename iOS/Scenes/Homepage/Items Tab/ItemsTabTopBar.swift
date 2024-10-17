@@ -112,8 +112,15 @@ private extension ItemsTabTopBar {
                     .frame(maxWidth: .infinity)
             }
 
-            ItemsTabOptionsButton(isEditMode: $isEditMode)
-                .accessibilityLabel(Text("Items filter Menus"))
+            SortFilterItemsMenu(options: [
+                .selectItems { isEditMode.toggle() },
+                .filter(viewModel.selectedFilterOption, viewModel.itemCount, viewModel.update(_:)),
+                .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
+                .resetFilters { viewModel.resetFilters() }
+            ],
+            highlighted: viewModel.highlighted,
+            selectable: viewModel.selectable,
+            resettable: viewModel.resettable)
         }
         .padding(.horizontal)
     }

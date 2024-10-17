@@ -76,7 +76,7 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getItems(for items: [any ItemIdentifiable]) async throws -> [SymmetricallyEncryptedItem]
 }
 
-public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol {}
+public final class LocalItemDatasource: LocalDatasource, LocalItemDatasourceProtocol, @unchecked Sendable {}
 
 public extension LocalItemDatasource {
     func getAllItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {

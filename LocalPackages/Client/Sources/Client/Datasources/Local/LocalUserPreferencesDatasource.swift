@@ -33,7 +33,8 @@ public protocol LocalUserPreferencesDatasourceProtocol: Sendable {
     func removeAllPreferences() async throws
 }
 
-public final class LocalUserPreferencesDatasource: LocalDatasource, LocalUserPreferencesDatasourceProtocol {
+public final class LocalUserPreferencesDatasource: LocalDatasource, LocalUserPreferencesDatasourceProtocol,
+    @unchecked Sendable {
     private let symmetricKeyProvider: any SymmetricKeyProvider
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,

@@ -33,7 +33,8 @@ extension RemoteShareKeyDatasourceProtocol {
     }
 }
 
-public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol {}
+public final class RemoteShareKeyDatasource: RemoteDatasource, RemoteShareKeyDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteShareKeyDatasource {
     func getKeys(userId: String,

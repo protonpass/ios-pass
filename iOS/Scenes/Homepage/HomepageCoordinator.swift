@@ -468,8 +468,6 @@ extension HomepageCoordinator {
                     createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissible)
                 case let .itemDetail(view, asSheet):
                     itemDetailCoordinatorWantsToPresent(view: view, asSheet: asSheet)
-                case let .sortTypeList(selectedSortType, delegate):
-                    presentSortTypeList(selectedSortType: selectedSortType, delegate: delegate)
                 }
             }
             .store(in: &cancellables)
@@ -564,6 +562,8 @@ extension HomepageCoordinator {
                     present(SimpleLoginAliasActivationView())
                 case .aliasesSyncConfiguration:
                     present(AliasSyncConfigurationView())
+                case .loginsWith2fa:
+                    presentLoginsWith2faView()
                 }
             }
             .store(in: &cancellables)
@@ -749,21 +749,6 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentSortTypeList(selectedSortType: SortType,
-                             delegate: any SortTypeListViewModelDelegate) {
-        let viewModel = SortTypeListViewModel(sortType: selectedSortType)
-        viewModel.delegate = delegate
-        let view = SortTypeListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
-
-        let customHeight = Int(OptionRowHeight.compact.value) * SortType.allCases.count + 60
-        viewController.setDetentType(.custom(CGFloat(customHeight)),
-                                     parentViewController: rootViewController)
-
-        viewController.sheetPresentationController?.prefersGrabberVisible = true
-        present(viewController)
-    }
-
     func presentCreateEditVaultView(mode: VaultMode) {
         let viewModel = CreateEditVaultViewModel(mode: mode)
         viewModel.delegate = self
@@ -904,6 +889,11 @@ extension HomepageCoordinator {
             present(viewController)
         }
         dismissTopMostViewController(completion: presentCreateSecureLinkView)
+    }
+
+    func presentLoginsWith2faView() {
+        let items = vaultsManager.getAllActiveAndTrashedItems().filter { $0.totpUri?.isEmpty == false }
+        present(LoginsWith2faView(viewModel: .init(items: items)))
     }
 
     func handleFailedLocalAuthentication(_ errorMessage: String?) {

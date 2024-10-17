@@ -99,7 +99,7 @@ private struct FullNoteView: View {
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
+                ToolbarItem(placement: .topBarLeading) {
                     CircleButton(icon: IconProvider.chevronDown,
                                  iconColor: itemContent.type.normMajor1Color,
                                  backgroundColor: itemContent.type.normMinor2Color,

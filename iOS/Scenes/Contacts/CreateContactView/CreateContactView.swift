@@ -86,7 +86,7 @@ struct CreateContactView: View {
 private extension CreateContactView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.aliasInteractionNormMajor2,
                          backgroundColor: PassColor.aliasInteractionNormMinor1,
@@ -94,7 +94,7 @@ private extension CreateContactView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             DisablableCapsuleTextButton(title: #localized("Save"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,

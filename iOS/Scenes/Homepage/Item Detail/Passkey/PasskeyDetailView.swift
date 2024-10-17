@@ -28,6 +28,7 @@ import SwiftUI
 struct PasskeyDetailView: View {
     private let tintColor = ItemContentType.login.normColor
     let passkey: Passkey
+    var onTapUsername: ((String) -> Void)?
 
     var body: some View {
         ZStack {
@@ -72,6 +73,12 @@ private extension PasskeyDetailView {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
+        .contentShape(.rect)
+        .onTapGesture {
+            if let onTapUsername {
+                onTapUsername(passkey.userName)
+            }
+        }
     }
 }
 

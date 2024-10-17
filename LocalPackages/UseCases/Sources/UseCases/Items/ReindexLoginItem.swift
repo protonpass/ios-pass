@@ -75,29 +75,24 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
         // Then we insert updated credentials
         let givenUrls = identifiers.compactMap(mapServiceIdentifierToUrl.callAsFunction)
 
+        let getLastUseTime: (_ url: String) -> Int64 = { url -> Int64 in
+            let isMatched = givenUrls.contains { [weak self] givenUrl in
+                guard let self,
+                      let url = URL(string: url),
+                      let result = try? matchUrls(url, with: givenUrl) else {
+                    return false
+                }
+                return result.isMatched
+            }
+
+            return isMatched ?
+                Int64(lastUseTime.timeIntervalSince1970) : item.item.lastUseTime ?? 0
+        }
+
         var passwords = [CredentialIdentity]()
         if !data.authIdentifier.isEmpty, !data.password.isEmpty {
             passwords = data.urls.map { url -> CredentialIdentity in
-                let isMatched = givenUrls.map { givenUrl -> Bool in
-                    guard let url = URL(string: url),
-                          let result = try? matchUrls(url, with: givenUrl) else {
-                        return false
-                    }
-                    return switch result {
-                    case .matched:
-                        true
-                    case .notMatched:
-                        false
-                    }
-                }
-                .contains(true)
-
-                let lastUseTime = if isMatched {
-                    Int64(lastUseTime.timeIntervalSince1970)
-                } else {
-                    item.item.lastUseTime ?? 0
-                }
-
+                let lastUseTime = getLastUseTime(url)
                 return CredentialIdentity.password(.init(shareId: item.shareId,
                                                          itemId: item.itemId,
                                                          username: data.authIdentifier,
@@ -108,11 +103,13 @@ public final class ReindexLoginItem: ReindexLoginItemUseCase {
 
         var oneTimeCodes = [CredentialIdentity]()
         if !data.authIdentifier.isEmpty, !data.totpUri.isEmpty {
-            oneTimeCodes = data.urls.map {
-                CredentialIdentity.oneTimeCode(.init(shareId: item.shareId,
-                                                     itemId: item.itemId,
-                                                     username: data.authIdentifier,
-                                                     url: $0))
+            oneTimeCodes = data.urls.map { url -> CredentialIdentity in
+                let lastUseTime = getLastUseTime(url)
+                return CredentialIdentity.oneTimeCode(.init(shareId: item.shareId,
+                                                            itemId: item.itemId,
+                                                            username: data.authIdentifier,
+                                                            url: url,
+                                                            lastUseTime: lastUseTime))
             }
         }
 

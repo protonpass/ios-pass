@@ -72,6 +72,9 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 
     let vaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>(.initialization)
 
+    // The filter option after switching vaults
+    private var pendingItemTypeFilterOption: ItemTypeFilterOption?
+
     init() {
         setUp()
     }
@@ -106,11 +109,10 @@ private extension VaultsManager {
         $vaultSelection
             .dropFirst()
             .receive(on: DispatchQueue.main)
-            .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
-                // Reset back to filter "all" when switching vaults
-                filterOption = .all
+                filterOption = pendingItemTypeFilterOption ?? .all
+                pendingItemTypeFilterOption = nil
                 updateItemCount()
             }
             .store(in: &cancellables)
@@ -120,12 +122,11 @@ private extension VaultsManager {
         guard case let .loaded(vaults, trashedItems) = state else { return }
         let items: [any ItemTypeIdentifiable] = switch vaultSelection {
         case .all:
-            vaults.map(\.items).reduce(into: []) { $0 += $1 }
+            vaults.flatMap(\.items)
         case let .precise(selectedVault):
             vaults
                 .filter { $0.vault.shareId == selectedVault.shareId }
-                .map(\.items)
-                .reduce(into: []) { $0 += $1 }
+                .flatMap(\.items)
         case .trash:
             trashedItems
         }
@@ -303,7 +304,8 @@ extension VaultsManager {
         try await loadContents(userId: userId, for: vaults)
     }
 
-    func select(_ selection: VaultSelection) {
+    func select(_ selection: VaultSelection, filterOption: ItemTypeFilterOption? = nil) {
+        pendingItemTypeFilterOption = filterOption
         vaultSelection = selection
 
         Task { [weak self] in
@@ -329,6 +331,12 @@ extension VaultsManager {
         guard case let .loaded(vaults, _) = state else { return [] }
 
         return vaults.first { $0.vault.id == vault.id }?.items ?? []
+    }
+
+    func getAllActiveAndTrashedItems() -> [ItemUiModel] {
+        guard case let .loaded(vaults, trashedItems) = state else { return [] }
+        let activeItems = vaults.flatMap(\.items)
+        return activeItems + trashedItems
     }
 
     func getItemCount(for selection: VaultSelection) -> Int {
@@ -395,12 +403,11 @@ extension VaultsManager {
         guard case let .loaded(vaults, trashedItems) = state else { return [] }
         let items: [ItemUiModel] = switch vaultSelection {
         case .all:
-            vaults.map(\.items).reduce(into: []) { $0 += $1 }
+            vaults.flatMap(\.items)
         case let .precise(selectedVault):
             vaults
                 .filter { $0.vault.shareId == selectedVault.shareId }
-                .map(\.items)
-                .reduce(into: []) { $0 += $1 }
+                .flatMap(\.items)
         case .trash:
             trashedItems
         }

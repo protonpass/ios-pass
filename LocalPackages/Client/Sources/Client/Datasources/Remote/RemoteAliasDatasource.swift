@@ -72,7 +72,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
                        contactId: String) async throws
 }
 
-public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol {}
+public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteAliasDatasource {
     func getAliasOptions(userId: String, shareId: String) async throws -> AliasOptions {

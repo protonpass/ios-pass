@@ -50,6 +50,7 @@ public extension PassIcon {
     static let infoBannerAliases = Self.icon(named: "InfoBannerAliases")
     static let infoBannerAutoFill = Self.icon(named: "InfoBannerAutoFill")
     static let infoBannerPass = Self.icon(named: "InfoBannerPass")
+    static let slSyncIcon = Self.icon(named: "SlSyncIcon")
 
     static let inviteBannerIcon = Self.icon(named: "InviteBannerIcon")
     static let passPlus = Self.icon(named: "PassPlus")

@@ -45,7 +45,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private var task: Task<Void, Never>?
 
     var isAdvancedAliasManagementActive: Bool {
-        getFeatureFlagStatus(with: FeatureFlagType.passAdvancedAliasManagementV1)
+        getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
     }
 
     override func bindValues() {

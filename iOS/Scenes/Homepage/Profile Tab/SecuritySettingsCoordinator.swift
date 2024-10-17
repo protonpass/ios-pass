@@ -81,7 +81,6 @@ extension SecuritySettingsCoordinator {
 private extension SecuritySettingsCoordinator {
     func updateMethod(_ newMethod: LocalAuthenticationMethod) async throws {
         let currentMethod = preferences.localAuthenticationMethod
-        let authenticatingPolicy = preferences.localAuthenticationPolicy
         switch (currentMethod, newMethod) {
         case (.biometric, .biometric),
              (.none, .none),
