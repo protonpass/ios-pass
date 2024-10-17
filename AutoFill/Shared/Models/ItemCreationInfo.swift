@@ -1,5 +1,5 @@
 //
-// LoginCreationInfo.swift
+// ItemCreationInfo.swift
 // Proton Pass - Created on 10/09/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,9 +21,13 @@
 import Entities
 import Foundation
 
-struct LoginCreationInfo: Sendable {
+struct ItemCreationInfo: Sendable {
+    enum Data {
+        case login(URL?, PasskeyCredentialRequest?)
+        case alias
+    }
+
     let userId: String
     let vaults: [Vault]
-    let url: URL?
-    let request: PasskeyCredentialRequest?
+    let data: Data
 }
