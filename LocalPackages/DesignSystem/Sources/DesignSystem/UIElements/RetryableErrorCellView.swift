@@ -24,13 +24,16 @@ public struct RetryableErrorCellView: View {
     let errorMessage: String
     let textColor: Color
     let onRetry: () -> Void
+    let buttonColor: UIColor
 
     public init(errorMessage: String,
                 textColor: Color = PassColor.passwordInteractionNormMajor2.toColor,
+                buttonColor: UIColor = PassColor.interactionNormMajor2,
                 onRetry: @escaping () -> Void) {
         self.errorMessage = errorMessage
         self.textColor = textColor
         self.onRetry = onRetry
+        self.buttonColor = buttonColor
     }
 
     public var body: some View {
@@ -40,7 +43,7 @@ public struct RetryableErrorCellView: View {
                 .foregroundStyle(textColor)
                 .frame(maxWidth: .infinity, alignment: .leading)
             Spacer()
-            RetryButton { onRetry() }
+            RetryButton(tintColor: buttonColor) { onRetry() }
         }
     }
 }

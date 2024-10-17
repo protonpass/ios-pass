@@ -33,13 +33,13 @@ public struct UpdateContactRequest: Sendable, Encodable {
     }
 }
 
-public struct CreateALigthContactResponse: Decodable, Sendable {
+public struct CreateALightContactResponse: Decodable, Sendable {
     public let contact: LightAliasContact
 }
 
 struct UpdateContactEndpoint: Endpoint {
     typealias Body = UpdateContactRequest
-    typealias Response = CreateALigthContactResponse
+    typealias Response = CreateALightContactResponse
 
     var debugDescription: String
     var path: String
