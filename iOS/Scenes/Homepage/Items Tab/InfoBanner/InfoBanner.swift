@@ -28,7 +28,7 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
         [.trial, .autofill, .aliases]
     }
 
-    case trial, autofill, aliases, invite([UserInvite])
+    case trial, autofill, aliases, invite([UserInvite]), slSync(Int)
 
     var id: String {
         switch self {
@@ -40,6 +40,8 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
             "aliases"
         case .invite:
             "invite"
+        case .slSync:
+            "slSync"
         }
     }
 
@@ -74,6 +76,18 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                   ctaTitle: nil,
                   backgroundColor: PassColor.backgroundMedium.toColor,
                   foregroundColor: PassColor.textNorm.toColor)
+        case let .slSync(missingAliases):
+            .init(title: #localized("Enable SimpleLogin sync"),
+                  // swiftlint:disable:next line_length
+                  description: #localized("We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?",
+                                          missingAliases),
+                  icon: PassIcon.slSyncIcon,
+                  ctaTitle: #localized("Sync aliases"),
+                  backgroundColor: PassColor.aliasInteractionNormMinor1.toColor,
+                  foregroundColor: PassColor.textNorm.toColor,
+                  closeButtonColor: PassColor.textNorm.toColor,
+                  typeOfCtaButton: .capsule(buttonTitle: PassColor.textInvert,
+                                            buttonBackground: PassColor.aliasInteractionNormMajor2))
         }
     }
 
@@ -81,6 +95,16 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
         if case .invite = self { return true }
         return false
     }
+
+    var isSlSync: Bool {
+        if case .slSync = self { return true }
+        return false
+    }
+}
+
+enum CtaButtonType {
+    case text
+    case capsule(buttonTitle: UIColor, buttonBackground: UIColor)
 }
 
 struct InfoBannerDetail {
@@ -91,4 +115,24 @@ struct InfoBannerDetail {
     let ctaTitle: String?
     let backgroundColor: Color
     let foregroundColor: Color
+    let closeButtonColor: Color
+    let typeOfCtaButton: CtaButtonType
+
+    init(title: String,
+         description: String,
+         icon: UIImage?,
+         ctaTitle: String?,
+         backgroundColor: Color,
+         foregroundColor: Color,
+         closeButtonColor: Color = PassColor.textInvert.toColor,
+         typeOfCtaButton: CtaButtonType = .text) {
+        self.title = title
+        self.description = description
+        self.icon = icon
+        self.ctaTitle = ctaTitle
+        self.backgroundColor = backgroundColor
+        self.foregroundColor = foregroundColor
+        self.closeButtonColor = closeButtonColor
+        self.typeOfCtaButton = typeOfCtaButton
+    }
 }

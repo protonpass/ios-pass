@@ -29,33 +29,19 @@ enum ItemTypeFilterOption: Equatable, Hashable {
     case all
     case precise(ItemContentType)
 
-    static var isIdentityActive: Bool {
-        SharedUseCasesContainer.shared.getFeatureFlagStatus().execute(for: FeatureFlagType.passIdentityV1)
-    }
-
     static var allCases: [ItemTypeFilterOption] {
-        if isIdentityActive {
-            // We want to control the order of appearance so we construct the array manually
-            // instead of looping through "ItemContentType.allCases"
-            let allCases: [ItemTypeFilterOption] = [
-                .all,
-                .precise(.login),
-                .precise(.alias),
-                .precise(.creditCard),
-                .precise(.note),
-                .precise(.identity)
-            ]
-            assert(allCases.count == ItemContentType.allCases.count + 1, "Some type is missing")
-            return allCases
-        } else {
-            return [
-                .all,
-                .precise(.login),
-                .precise(.alias),
-                .precise(.creditCard),
-                .precise(.note)
-            ]
-        }
+        // We want to control the order of appearance so we construct the array manually
+        // instead of looping through "ItemContentType.allCases"
+        let allCases: [ItemTypeFilterOption] = [
+            .all,
+            .precise(.login),
+            .precise(.alias),
+            .precise(.creditCard),
+            .precise(.note),
+            .precise(.identity)
+        ]
+        assert(allCases.count == ItemContentType.allCases.count + 1, "Some type is missing")
+        return allCases
     }
 
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {

@@ -40,7 +40,8 @@ public protocol LocalItemReadEventDatasourceProtocol: Sendable {
     func removeEvents(userId: String) async throws
 }
 
-public final class LocalItemReadEventDatasource: LocalDatasource, LocalItemReadEventDatasourceProtocol {}
+public final class LocalItemReadEventDatasource: LocalDatasource, LocalItemReadEventDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension LocalItemReadEventDatasource {
     func insertEvent(_ event: ItemReadEvent,

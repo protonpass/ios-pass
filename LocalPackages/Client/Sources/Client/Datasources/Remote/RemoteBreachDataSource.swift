@@ -39,7 +39,7 @@ public protocol RemoteBreachDataSourceProtocol: Sendable {
     func toggleMonitoringFor(userId: String, email: CustomEmail, shouldMonitor: Bool) async throws -> CustomEmail
 }
 
-public final class RemoteBreachDataSource: RemoteDatasource, RemoteBreachDataSourceProtocol {}
+public final class RemoteBreachDataSource: RemoteDatasource, RemoteBreachDataSourceProtocol, @unchecked Sendable {}
 
 public extension RemoteBreachDataSource {
     func getAllBreachesForUser(userId: String) async throws -> UserBreaches {

@@ -40,7 +40,8 @@ public protocol LocalSearchEntryDatasourceProtocol: Sendable {
     func remove(item: any ItemIdentifiable) async throws
 }
 
-public final class LocalSearchEntryDatasource: LocalDatasource, LocalSearchEntryDatasourceProtocol {}
+public final class LocalSearchEntryDatasource: LocalDatasource, LocalSearchEntryDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension LocalSearchEntryDatasource {
     func getAllEntries(shareId: String) async throws -> [SearchEntry] {

@@ -43,7 +43,8 @@ public protocol RemoteShareInviteDatasourceProtocol: Sendable {
     func checkAddresses(userId: String, shareId: String, emails: [String]) async throws -> [String]
 }
 
-public final class RemoteShareInviteDatasource: RemoteDatasource, RemoteShareInviteDatasourceProtocol {}
+public final class RemoteShareInviteDatasource: RemoteDatasource, RemoteShareInviteDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteShareInviteDatasource {
     func getPendingInvites(userId: String, sharedId: String) async throws -> ShareInvites {

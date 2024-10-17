@@ -27,6 +27,7 @@ import SwiftUI
 struct PasskeyDetailRow: View {
     let passkey: Passkey
     var borderColor: UIColor = PassColor.inputBorderNorm
+    var onTapUsername: ((String) -> Void)?
     let onTap: () -> Void
 
     var body: some View {
@@ -44,6 +45,11 @@ struct PasskeyDetailRow: View {
 
                 Text(passkey.userName)
                     .sectionContentText()
+                    .onTapGesture {
+                        if let onTapUsername {
+                            onTapUsername(passkey.userName)
+                        }
+                    }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 

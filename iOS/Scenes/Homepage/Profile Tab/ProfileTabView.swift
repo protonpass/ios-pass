@@ -65,10 +65,6 @@ struct ProfileTabView: View {
 
                 itemCountSection
 
-                if let pendingAliasToSync = viewModel.showAliasSyncExplanation {
-                    aliasSyncExplanation(pendingAliasToSync)
-                }
-
                 securitySection
                     .padding(.vertical)
 
@@ -83,10 +79,8 @@ struct ProfileTabView: View {
                         .padding(.vertical)
                 }
 
-                if viewModel.isSecureLinkActive {
-                    secureLinkSection
-                        .padding(.top)
-                }
+                secureLinkSection
+                    .padding(.top)
 
                 settingsSection
                     .padding(.vertical)
@@ -109,13 +103,12 @@ struct ProfileTabView: View {
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
             .animation(.default, value: viewModel.localAuthenticationMethod)
             .animation(.default, value: viewModel.accountDetails)
-            .animation(.default, value: viewModel.showAliasSyncExplanation)
         }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             if viewModel.plan?.hideUpgrade == false {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),
@@ -165,7 +158,9 @@ struct ProfileTabView: View {
             Text("Items")
                 .profileSectionTitle()
                 .padding(.horizontal)
-            ItemCountView()
+            ItemCountView(plan: viewModel.plan,
+                          onSelectItemType: { viewModel.handleItemTypeSelection($0) },
+                          onSelectLoginsWith2fa: { viewModel.showLoginsWith2fa() })
         }
     }
 
@@ -405,14 +400,6 @@ struct ProfileTabView: View {
         }
         .roundedEditableSection()
         .padding(.horizontal)
-    }
-
-    private func aliasSyncExplanation(_ missingAliases: Int) -> some View {
-        AliasSyncExplanationView(missingAliases: missingAliases,
-                                 dimissAction: { viewModel.dismissAliasesSyncExplanation() },
-                                 enableAliasSyncAction: {
-                                     viewModel.showSimpleLoginAliasesActivation()
-                                 }).padding(.horizontal)
     }
 }
 

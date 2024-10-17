@@ -26,8 +26,8 @@ public protocol AliasRepositoryProtocol: Sendable {
     var mailboxUpdated: PassthroughSubject<Void, Never> { get }
     var contactsUpdated: PassthroughSubject<Void, Never> { get }
 
-    func getAliasOptions(shareId: String) async throws -> AliasOptions
-    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias
+    func getAliasOptions(userId: String?, shareId: String) async throws -> AliasOptions
+    func getAliasDetails(userId: String?, shareId: String, itemId: String) async throws -> Alias
     @discardableResult
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
 
@@ -79,6 +79,14 @@ public protocol AliasRepositoryProtocol: Sendable {
 }
 
 public extension AliasRepositoryProtocol {
+    func getAliasOptions(shareId: String) async throws -> AliasOptions {
+        try await getAliasOptions(userId: nil, shareId: shareId)
+    }
+
+    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
+        try await getAliasDetails(userId: nil, shareId: shareId, itemId: itemId)
+    }
+
     func getPendingAliasesToSync(userId: String,
                                  since: String?) async throws -> PaginatedPendingAliases {
         try await getPendingAliasesToSync(userId: userId, since: since, pageSize: Constants.Utils.defaultPageSize)
@@ -100,13 +108,21 @@ public actor AliasRepository: AliasRepositoryProtocol {
 }
 
 public extension AliasRepository {
-    func getAliasOptions(shareId: String) async throws -> AliasOptions {
-        let userId = try await userManager.getActiveUserId()
+    func getAliasOptions(userId: String?, shareId: String) async throws -> AliasOptions {
+        let userId = if let userId {
+            userId
+        } else {
+            try await userManager.getActiveUserId()
+        }
         return try await remoteDatasource.getAliasOptions(userId: userId, shareId: shareId)
     }
 
-    func getAliasDetails(shareId: String, itemId: String) async throws -> Alias {
-        let userId = try await userManager.getActiveUserId()
+    func getAliasDetails(userId: String?, shareId: String, itemId: String) async throws -> Alias {
+        let userId = if let userId {
+            userId
+        } else {
+            try await userManager.getActiveUserId()
+        }
         return try await remoteDatasource.getAliasDetails(userId: userId, shareId: shareId, itemId: itemId)
     }
 

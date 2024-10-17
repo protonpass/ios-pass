@@ -91,6 +91,14 @@ extension ItemContent: ItemIdentifiable {
 
 extension ItemContent: ItemTypeIdentifiable {
     public var type: ItemContentType { contentData.type }
+    public var totpUri: String? {
+        if case let .login(data) = contentData {
+            data.totpUri
+        } else {
+            nil
+        }
+    }
+
     public var aliasEmail: String? { item.aliasEmail }
     public var aliasEnabled: Bool { item.isAliasEnabled }
 }

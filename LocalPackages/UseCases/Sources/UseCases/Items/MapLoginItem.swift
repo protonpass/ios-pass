@@ -46,6 +46,7 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
         guard let data = itemContent.loginItem else {
             throw PassError.credentialProvider(.notLogInItem)
         }
+        let lastUseTime = itemContent.item.lastUseTime ?? 0
 
         // Decompose into password identities
         var passwords = [CredentialIdentity]()
@@ -55,7 +56,7 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
                                                   itemId: itemContent.item.itemID,
                                                   username: data.authIdentifier,
                                                   url: $0,
-                                                  lastUseTime: itemContent.item.lastUseTime ?? 0))
+                                                  lastUseTime: lastUseTime))
             }
         }
 
@@ -66,7 +67,8 @@ public final class MapLoginItem: Sendable, MapLoginItemUseCase {
                 CredentialIdentity.oneTimeCode(.init(shareId: itemContent.shareId,
                                                      itemId: itemContent.itemId,
                                                      username: data.authIdentifier,
-                                                     url: $0))
+                                                     url: $0,
+                                                     lastUseTime: lastUseTime))
             }
         }
 

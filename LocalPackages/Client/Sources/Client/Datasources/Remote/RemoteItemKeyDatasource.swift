@@ -25,7 +25,8 @@ public protocol RemoteItemKeyDatasourceProtocol: Sendable {
     func getLatestKey(userId: String, shareId: String, itemId: String) async throws -> ItemKey
 }
 
-public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol {}
+public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteItemKeyDatasource {
     func getLatestKey(userId: String, shareId: String, itemId: String) async throws -> ItemKey {

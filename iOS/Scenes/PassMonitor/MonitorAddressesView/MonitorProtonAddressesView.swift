@@ -55,7 +55,7 @@ struct MonitorProtonAddressesView: View {
 private extension MonitorProtonAddressesView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.interactionNormMajor2,
                          backgroundColor: PassColor.interactionNormMinor1,
@@ -64,7 +64,7 @@ private extension MonitorProtonAddressesView {
         }
 
         if let access = viewModel.access {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu(content: {
                     ToggleMonitorButton(monitored: access.monitor.protonAddress,
                                         action: { viewModel.toggleMonitor() })

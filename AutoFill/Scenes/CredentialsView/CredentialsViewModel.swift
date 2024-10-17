@@ -72,9 +72,6 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var selectPasskeySheetInformation: SelectPasskeySheetInformation?
 
-    @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent
-
     private var lastTask: Task<Void, Never>?
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
@@ -161,8 +158,8 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
         results.first { $0.userId == userId }?.vaults
     }
 
-    override func generateLoginCreationInfo(userId: String, vaults: [Vault]) -> LoginCreationInfo {
-        .init(userId: userId, vaults: vaults, url: urls.first, request: nil)
+    override func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
+        .init(userId: userId, vaults: vaults, data: .login(urls.first, nil))
     }
 
     override func isErrorState() -> Bool {
@@ -195,11 +192,6 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
 // MARK: - Public actions
 
 extension CredentialsViewModel {
-    func presentSortTypeList() {
-        delegate?.autoFillViewModelWantsToPresentSortTypeList(selectedSortType: selectedSortType,
-                                                              delegate: self)
-    }
-
     func associateAndAutofill(item: any ItemIdentifiable) {
         Task { [weak self] in
             guard let self, let context else {
@@ -349,13 +341,5 @@ private extension CredentialsViewModel {
                 doSearch(term: term)
             }
             .store(in: &cancellables)
-    }
-}
-
-// MARK: - SortTypeListViewModelDelegate
-
-extension CredentialsViewModel: SortTypeListViewModelDelegate {
-    func sortTypeListViewDidSelect(_ sortType: SortType) {
-        selectedSortType = sortType
     }
 }

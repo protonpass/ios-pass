@@ -47,7 +47,8 @@ public protocol RemoteFavIconDatasourceProtocol: Sendable {
     func fetchFavIcon(userId: String, for domain: String) async throws -> FavIconFetchResult
 }
 
-public final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatasourceProtocol {}
+public final class RemoteFavIconDatasource: RemoteDatasource, RemoteFavIconDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension RemoteFavIconDatasource {
     func fetchFavIcon(userId: String, for domain: String) async throws -> FavIconFetchResult {
