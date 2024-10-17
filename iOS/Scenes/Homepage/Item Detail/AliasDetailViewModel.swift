@@ -42,6 +42,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
+    private var task: Task<Void, Error>?
+    
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(with: FeatureFlagType.passAdvancedAliasManagementV1)
     }
@@ -104,6 +106,11 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         error = nil
         super.refresh()
         getAlias()
+        task?.cancel()
+        task = Task { [weak self] in
+            guard let self else { return }
+            await loadContact()
+        }
     }
 
     func copyAliasEmail() {
