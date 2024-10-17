@@ -283,7 +283,7 @@ private extension AliasContactsView {
 private extension AliasContactsView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.chevronLeft,
                          iconColor: PassColor.aliasInteractionNormMajor2,
                          backgroundColor: PassColor.aliasInteractionNormMinor1,
@@ -291,7 +291,7 @@ private extension AliasContactsView {
                          action: dismiss.callAsFunction)
         }
 
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             HStack {
                 CapsuleTextButton(title: #localized("Create contact"),
                                   titleColor: PassColor.textInvert,
