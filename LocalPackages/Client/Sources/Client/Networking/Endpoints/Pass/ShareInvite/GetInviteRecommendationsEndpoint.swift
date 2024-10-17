@@ -26,7 +26,7 @@ struct GetInviteRecommendationsResponse: Sendable, Decodable {
     let recommendation: InviteRecommendations
 }
 
-struct GetInviteRecommendationsEndpoint: Endpoint {
+struct GetInviteRecommendationsEndpoint: @unchecked Sendable, Endpoint {
     typealias Body = EmptyRequest
     typealias Response = GetInviteRecommendationsResponse
 

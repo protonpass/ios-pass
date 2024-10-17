@@ -25,22 +25,39 @@ import Macro
 import Screens
 import SwiftUI
 
-struct CredentialSearchResultView: View, Equatable {
-    let results: [ItemSearchResult]
-    let getUser: (any ItemIdentifiable) -> UserUiModel?
+struct CredentialSearchResultView: View {
+    @StateObject private var viewModel: CredentialSearchResultViewModel
     @Binding var selectedSortType: SortType
-    let sortAction: () -> Void
+    let getUser: (any ItemIdentifiable) -> UserUiModel?
     let selectItem: (any TitledItemIdentifiable) -> Void
 
-    var body: some View {
-        VStack(spacing: 0) {
-            headerView
-            searchListView
-        }
+    init(results: [ItemSearchResult],
+         selectedSortType: Binding<SortType>,
+         getUser: @escaping (any ItemIdentifiable) -> UserUiModel?,
+         selectItem: @escaping (any TitledItemIdentifiable) -> Void) {
+        _selectedSortType = selectedSortType
+        _viewModel = .init(wrappedValue: .init(results: results))
+        self.getUser = getUser
+        self.selectItem = selectItem
     }
 
-    static func == (lhs: CredentialSearchResultView, rhs: CredentialSearchResultView) -> Bool {
-        lhs.results == rhs.results && lhs.selectedSortType == rhs.selectedSortType
+    var body: some View {
+        headerView
+
+        TableView(sections: viewModel.sections,
+                  configuration: .init(showSectionIndexTitles: selectedSortType.isAlphabetical),
+                  id: nil,
+                  itemView: { item in
+                      GenericCredentialItemRow(item: item,
+                                               user: getUser(item),
+                                               selectItem: selectItem)
+                  },
+                  headerView: { _ in
+                      nil
+                  })
+                  .task {
+                      viewModel.filterAndSortItems(selectedSortType)
+                  }
     }
 }
 
@@ -51,102 +68,80 @@ private extension CredentialSearchResultView {
                 .font(.callout)
                 .fontWeight(.bold)
                 .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
-                Text(verbatim: " (\(results.count))")
+                Text(verbatim: " (\(viewModel.results.count))")
                 .font(.callout)
                 .adaptiveForegroundStyle(PassColor.textWeak.toColor)
 
             Spacer()
 
-            SortTypeButton(selectedSortType: $selectedSortType,
-                           action: sortAction)
+            SortTypeButton(selectedSortType: $selectedSortType)
         }
         .padding([.bottom, .horizontal])
     }
+}
 
-    @MainActor
-    var searchListView: some View {
-        ScrollViewReader { proxy in
-            List {
-                sortableSections(for: results)
-            }
-            .listStyle(.plain)
-            .animation(.default, value: results.count)
-            .overlay {
-                if selectedSortType.isAlphabetical {
-                    HStack {
-                        Spacer()
-                        SectionIndexTitles(proxy: proxy,
-                                           direction: selectedSortType.sortDirection ?? .ascending)
-                    }
+private typealias SearchResultSection = TableView<ItemSearchResult, GenericCredentialItemRow, Text>.Section
+
+@MainActor
+private final class CredentialSearchResultViewModel: ObservableObject {
+    @Published private(set) var sections: [SearchResultSection] = []
+
+    let results: [ItemSearchResult]
+
+    init(results: [ItemSearchResult]) {
+        self.results = results
+    }
+
+    func filterAndSortItems(_ sortType: SortType) {
+        let type = Int.max
+        let sections: [SearchResultSection] = {
+            switch sortType {
+            case .mostRecent:
+                let results = results.mostRecentSortResult()
+                return [
+                    .init(type: type,
+                          title: #localized("Today"),
+                          items: results.today),
+                    .init(type: type,
+                          title: #localized("Yesterday"),
+                          items: results.yesterday),
+                    .init(type: type,
+                          title: #localized("Last week"),
+                          items: results.last7Days),
+                    .init(type: type,
+                          title: #localized("Last two weeks"),
+                          items: results.last14Days),
+                    .init(type: type,
+                          title: #localized("Last 30 days"),
+                          items: results.last30Days),
+                    .init(type: type,
+                          title: #localized("Last 60 days"),
+                          items: results.last60Days),
+                    .init(type: type,
+                          title: #localized("Last 90 days"),
+                          items: results.last90Days),
+                    .init(type: type,
+                          title: #localized("More than 90 days"),
+                          items: results.others)
+                ]
+
+            case .alphabeticalAsc, .alphabeticalDesc:
+                let results = results.alphabeticalSortResult(direction: sortType.sortDirection)
+                return results.buckets.map { bucket in
+                    .init(type: type,
+                          title: bucket.letter.character,
+                          items: bucket.items)
+                }
+
+            case .newestToOldest, .oldestToNewest:
+                let results = results.monthYearSortResult(direction: sortType.sortDirection)
+                return results.buckets.map { bucket in
+                    .init(type: type,
+                          title: bucket.monthYear.relativeString,
+                          items: bucket.items)
                 }
             }
-        }
-    }
-
-    @ViewBuilder
-    func sortableSections(for items: [some CredentialItem]) -> some View {
-        switch selectedSortType {
-        case .mostRecent:
-            sections(for: items.mostRecentSortResult())
-        case .alphabeticalAsc:
-            sections(for: items.alphabeticalSortResult(direction: .ascending))
-        case .alphabeticalDesc:
-            sections(for: items.alphabeticalSortResult(direction: .descending))
-        case .newestToOldest:
-            sections(for: items.monthYearSortResult(direction: .descending))
-        case .oldestToNewest:
-            sections(for: items.monthYearSortResult(direction: .ascending))
-        }
-    }
-
-    func sections(for result: MostRecentSortResult<some CredentialItem>) -> some View {
-        Group {
-            section(for: result.today, headerTitle: #localized("Today"))
-            section(for: result.yesterday, headerTitle: #localized("Yesterday"))
-            section(for: result.last7Days, headerTitle: #localized("Last week"))
-            section(for: result.last14Days, headerTitle: #localized("Last two weeks"))
-            section(for: result.last30Days, headerTitle: #localized("Last 30 days"))
-            section(for: result.last60Days, headerTitle: #localized("Last 60 days"))
-            section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
-            section(for: result.others, headerTitle: #localized("More than 90 days"))
-        }
-    }
-
-    func sections(for result: AlphabeticalSortResult<some CredentialItem>) -> some View {
-        ForEach(result.buckets, id: \.letter) { bucket in
-            section(for: bucket.items, headerTitle: bucket.letter.character)
-                .id(bucket.letter.character)
-        }
-    }
-
-    func sections(for result: MonthYearSortResult<some CredentialItem>) -> some View {
-        ForEach(result.buckets, id: \.monthYear) { bucket in
-            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
-        }
-    }
-
-    @ViewBuilder
-    func section(for items: [some CredentialItem],
-                 headerTitle: String,
-                 headerColor: UIColor = PassColor.textWeak,
-                 headerFontWeight: Font.Weight = .regular) -> some View {
-        if items.isEmpty {
-            EmptyView()
-        } else {
-            Section(content: {
-                ForEach(items) { item in
-                    GenericCredentialItemRow(item: item,
-                                             user: getUser(item),
-                                             selectItem: selectItem)
-                        .plainListRow()
-                        .padding(.horizontal)
-                }
-            }, header: {
-                Text(headerTitle)
-                    .font(.callout)
-                    .fontWeight(headerFontWeight)
-                    .foregroundStyle(headerColor.toColor)
-            })
-        }
+        }()
+        self.sections = sections.filter { !$0.items.isEmpty }
     }
 }

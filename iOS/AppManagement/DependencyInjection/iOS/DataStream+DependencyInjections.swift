@@ -45,4 +45,8 @@ extension DataStreamContainer {
     var monitorStateStream: Factory<MonitorStateStream> {
         self { MonitorStateStream(.default) }
     }
+
+    var itemTypeSelection: Factory<PassthroughSubject<ItemContentType, Never>> {
+        self { .init() }
+    }
 }

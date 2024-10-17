@@ -63,7 +63,7 @@ struct SimpleLoginAliasActivationView: View {
 private extension SimpleLoginAliasActivationView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.interactionNormMajor1,
                          backgroundColor: PassColor.interactionNormMinor1,
@@ -71,7 +71,7 @@ private extension SimpleLoginAliasActivationView {
                 dismiss()
             }
         }
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .topBarTrailing) {
             DisablableCapsuleTextButton(title: #localized("Confirm"),
                                         titleColor: PassColor.textInvert,
                                         disableTitleColor: PassColor.textHint,

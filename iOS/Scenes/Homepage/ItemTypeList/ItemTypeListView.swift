@@ -34,19 +34,17 @@ struct ItemTypeListView: View {
             ZStack(alignment: .bottom) {
                 ScrollView {
                     VStack(spacing: 0) {
-                        ForEach(ItemType.allCases, id: \.self) { type in
-                            if type != .identity || viewModel.isIdentityActive {
-                                if type != ItemType.allCases.first {
-                                    PassDivider()
-                                        .padding(.horizontal)
-                                }
-                                itemRow(for: type)
+                        ForEach(viewModel.mode.supportedTypes, id: \.self) { type in
+                            if type != ItemType.allCases.first {
+                                PassDivider()
                                     .padding(.horizontal)
                             }
+                            itemRow(for: type)
+                                .padding(.horizontal)
                         }
                     }
                 }
-                if viewModel.shouldShowMoreButton, viewModel.showMoreButton {
+                if viewModel.mode.shouldShowMoreButton, viewModel.showMoreButton {
                     Button { viewModel.showMore() } label: {
                         HStack {
                             Image(uiImage: IconProvider.chevronDown)

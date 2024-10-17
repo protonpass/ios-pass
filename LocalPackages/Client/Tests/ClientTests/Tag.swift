@@ -1,6 +1,6 @@
 //
-// LoginCreationInfo.swift
-// Proton Pass - Created on 10/09/2024.
+// File.swift
+// Proton Pass - Created on 10/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,13 +17,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Entities
-import Foundation
+import Testing
 
-struct LoginCreationInfo: Sendable {
-    let userId: String
-    let vaults: [Vault]
-    let url: URL?
-    let request: PasskeyCredentialRequest?
+extension Tag {
+    @Tag static var localDatasource: Self
 }

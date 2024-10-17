@@ -32,7 +32,8 @@ public protocol LocalShareEventIDDatasourceProtocol: Sendable {
     func removeAllEntries(userId: String) async throws
 }
 
-public final class LocalShareEventIDDatasource: LocalDatasource, LocalShareEventIDDatasourceProtocol {}
+public final class LocalShareEventIDDatasource: LocalDatasource, LocalShareEventIDDatasourceProtocol,
+    @unchecked Sendable {}
 
 public extension LocalShareEventIDDatasource {
     func getLastEventId(userId: String, shareId: String) async throws -> String? {
