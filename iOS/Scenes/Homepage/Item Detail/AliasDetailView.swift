@@ -63,7 +63,7 @@ struct AliasDetailView: View {
                                           note: viewModel.itemContent.note)
                     }
 
-                    if let note = viewModel.aliasInfos?.note {
+                    if let note = viewModel.aliasInfos?.note, !note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
                                           vault: viewModel.vault?.vault,
                                           title: #localized("Note • SimpleLogin"),
