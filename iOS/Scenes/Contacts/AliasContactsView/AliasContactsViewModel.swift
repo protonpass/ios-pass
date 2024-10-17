@@ -22,10 +22,12 @@
 
 import Client
 import Combine
+import DesignSystem
 import Entities
 import Factory
 import Foundation
 import Macro
+import Screens
 import UIKit
 
 struct AliasContactsModel {
@@ -52,17 +54,23 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     private var previousName = ""
     private(set) var alias: Alias
     private let infos: ContactsInfos
+    @Published private(set) var plan: Plan?
 
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
 
     private var cancellables = Set<AnyCancellable>()
 
     var itemIds: IDs {
         IDs(shareId: infos.shareId, itemId: infos.itemId)
+    }
+
+    var canManageAliases: Bool {
+        plan?.manageAlias ?? false
     }
 
     init(infos: ContactsInfos) {
@@ -184,10 +192,23 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
 
         return #localized("Contact created %@ ago.", timeComponents)
     }
+
+    func upsell() {
+        let config = UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                title: #localized("Manage your aliases"),
+                                                description: UpsellEntry.aliasManagement.description,
+                                                upsellElements: UpsellEntry.aliasManagement.upsellElements,
+                                                ctaTitle: #localized("Get Pass Unlimited"))
+        router
+            .present(for: .upselling(config))
+    }
 }
 
 private extension AliasContactsViewModel {
     func setUp() {
+        let access = accessRepository.access.value?.access
+        plan = access?.plan
+
         if !preferencesManager.appPreferences.unwrapped().hasVisitedContactPage {
             Task { [weak self] in
                 guard let self else { return }
@@ -208,6 +229,18 @@ private extension AliasContactsViewModel {
                     }
                     try? await reloadContact()
                 }
+            }
+            .store(in: &cancellables)
+
+        accessRepository.access
+            .dropFirst()
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedAccess in
+                guard let self else {
+                    return
+                }
+                plan = updatedAccess.access.plan
             }
             .store(in: &cancellables)
     }
