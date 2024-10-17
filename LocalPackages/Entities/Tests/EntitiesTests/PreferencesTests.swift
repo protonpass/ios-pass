@@ -41,7 +41,8 @@ final class PreferencesTests: XCTestCase {
                                          dismissedCustomDomainExplanation:
                                             AppPreferences.default.dismissedCustomDomainExplanation,
                                          didMigratePreferences: AppPreferences.default.didMigratePreferences, 
-                                         dismissedAliasesSyncExplanation: AppPreferences.default.dismissedAliasesSyncExplanation)
+                                         dismissedAliasesSyncExplanation: AppPreferences.default.dismissedAliasesSyncExplanation,
+                                         hasVisitedContactPage: AppPreferences.default.hasVisitedContactPage)
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)
     }
 
