@@ -187,7 +187,8 @@ struct AliasDetailView: View {
             VStack(alignment: .leading, spacing: 8) {
                 if let error = viewModel.error {
                     RetryableErrorCellView(errorMessage: error.localizedDescription,
-                                           textColor: PassColor.textNorm.toColor) {
+                                           textColor: PassColor.signalDanger.toColor,
+                                           buttonColor: iconTintColor) {
                         viewModel.refresh()
                     }
                 } else {

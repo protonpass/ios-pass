@@ -67,6 +67,7 @@ final class CreateContactViewModel: ObservableObject, Sendable {
                                                         request: request)
                 finishedSaving = true
             } catch {
+                logger.error(error)
                 creationError = error
             }
         }

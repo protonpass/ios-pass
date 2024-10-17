@@ -56,7 +56,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func createAliasContact(userId: String,
                             shareId: String,
                             itemId: String,
-                            request: CreateAContactRequest) async throws -> AliasContact
+                            request: CreateAContactRequest) async throws -> LightAliasContact
     func getAliasContactInfos(userId: String,
                               shareId: String,
                               itemId: String,
@@ -199,7 +199,7 @@ public extension RemoteAliasDatasource {
     func createAliasContact(userId: String,
                             shareId: String,
                             itemId: String,
-                            request: CreateAContactRequest) async throws -> AliasContact {
+                            request: CreateAContactRequest) async throws -> LightAliasContact {
         let endpoint = CreateAContactEndpoint(shareId: shareId, itemId: itemId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.contact
