@@ -141,13 +141,13 @@ enum DeeplinkDestination: Sendable {
     case error(any Error)
 }
 
-final actor MainUIKitSwiftUIRouter: Sendable {
-    let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
+final class MainUIKitSwiftUIRouter: Sendable {
+    nonisolated let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     nonisolated let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
-    let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
-    let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
-    let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
-    let itemDestinations: PassthroughSubject<GenericDestination, Never> = .init()
+    nonisolated let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
+    nonisolated let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
+    nonisolated let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
+    nonisolated let itemDestinations: PassthroughSubject<GenericDestination, Never> = .init()
 
     @MainActor
     private var pendingDeeplinkDestination: DeeplinkDestination?
