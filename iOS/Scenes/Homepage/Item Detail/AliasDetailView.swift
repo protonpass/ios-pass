@@ -242,7 +242,6 @@ struct AliasDetailView: View {
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                // swiftlint:disable:next line_length
                 Text("\(stats.forwardedEmailsTitle) • \(stats.repliedEmailsTitle) • \(stats.blockedEmailsTitle)")
                     .sectionContentText()
                     .frame(maxWidth: .infinity, alignment: .leading)
