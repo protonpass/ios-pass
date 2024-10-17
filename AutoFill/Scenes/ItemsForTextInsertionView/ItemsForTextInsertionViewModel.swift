@@ -68,6 +68,9 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     @LazyInjected(\SharedRepositoryContainer.localTextAutoFillHistoryEntryDatasource)
     private var textAutoFillHistoryEntryDatasource
 
+    @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill)
+    private var completeTextAutoFill
+
     // Not using @Published because sinking on a @Published is triggered before the value is set
     private let filterOptionUpdated = PassthroughSubject<Void, Never>()
     var filterOption = ItemTypeFilterOption.all {
@@ -96,6 +99,8 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     var resettable: Bool {
         filterOption != .all || selectedSortType != .mostRecent
     }
+
+    var selectedItemType: ItemType?
 
     let selectedTextStream = SelectedTextStream()
 
@@ -158,8 +163,17 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         state = .idle
     }
 
-    override func generateLoginCreationInfo(userId: String, vaults: [Vault]) -> LoginCreationInfo {
-        .init(userId: userId, vaults: vaults, url: nil, request: nil)
+    override func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
+        switch selectedItemType {
+        case .login:
+            return .init(userId: userId, vaults: vaults, data: .login(nil, nil))
+        case .alias:
+            return .init(userId: userId, vaults: vaults, data: .alias)
+        default:
+            assertionFailure("Only logins and aliases could be created when text autofilling")
+            // Fallback to creating login
+            return .init(userId: userId, vaults: vaults, data: .login(nil, nil))
+        }
     }
 }
 
@@ -305,13 +319,13 @@ extension ItemsForTextInsertionViewModel {
     func autofill(_ text: SelectedText) {
         guard #available(iOS 18, *) else { return }
         Task { [weak self] in
-            guard let self else { return }
+            guard let self, let context else { return }
             do {
-                await context?.completeRequest(withTextToInsert: text.value)
                 let user = try getUser(for: text.item)
-                try await textAutoFillHistoryEntryDatasource.upsert(item: text.item,
-                                                                    userId: user.id,
-                                                                    date: .now)
+                try await completeTextAutoFill(text.value,
+                                               context: context,
+                                               userId: user.id,
+                                               item: text.item)
             } catch {
                 logger.error(error)
             }
