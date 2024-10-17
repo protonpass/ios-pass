@@ -22,14 +22,14 @@ import Client
 import Entities
 import Foundation
 
-extension ItemUiModel: ItemTypeIdentifiable, ItemThumbnailable {}
+extension ItemUiModel: @retroactive ItemTypeIdentifiable, @retroactive ItemThumbnailable {}
 
-extension ItemUiModel: DateSortable {
+extension ItemUiModel: @retroactive DateSortable {
     public var dateForSorting: Date {
         Date(timeIntervalSince1970: TimeInterval(max(lastUseTime, modifyTime)))
     }
 }
 
-extension ItemUiModel: AlphabeticalSortable {
+extension ItemUiModel: @retroactive AlphabeticalSortable {
     public var alphabeticalSortableString: String { title }
 }

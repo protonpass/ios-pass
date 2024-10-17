@@ -225,8 +225,8 @@ private extension SyncEventLoop {
         }
         fetchEventsTask = Task { [weak self] in
             defer {
-                fetchEventsTask?.cancel()
-                fetchEventsTask = nil
+                self?.fetchEventsTask?.cancel()
+                self?.fetchEventsTask = nil
             }
 
             guard let self else {

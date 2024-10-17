@@ -167,8 +167,9 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let passKeyManager: any PassKeyManagerProtocol
     private let logger: Logger
 
-    public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
-    public let itemsWereUpdated: CurrentValueSubject<Void, Never> = .init(())
+    public nonisolated let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> =
+        .init(nil)
+    public nonisolated let itemsWereUpdated: CurrentValueSubject<Void, Never> = .init(())
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol,
