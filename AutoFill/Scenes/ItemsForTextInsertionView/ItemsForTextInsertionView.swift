@@ -55,7 +55,8 @@ struct ItemsForTextInsertionView: View {
         }
         .sheet(isPresented: $showItemTypeList) {
             ItemTypeListView(viewModel: .init(mode: .autoFillExtension,
-                                              onSelect: { _ in
+                                              onSelect: { type in
+                                                  viewModel.selectedItemType = type
                                                   if viewModel.shouldAskForUserWhenCreatingNewItem {
                                                       viewModel.presentSelectUserActionSheet()
                                                   } else {
@@ -116,7 +117,7 @@ private extension ItemsForTextInsertionView {
                     if viewModel.sections.allSatisfy(\.items.isEmpty) {
                         VStack {
                             Spacer()
-                            Text(verbatim: "Empty")
+                            Text("Empty")
                                 .multilineTextAlignment(.center)
                                 .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding()

@@ -199,6 +199,7 @@
 		356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */; };
 		356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35A29D70C5000F03497 /* EditThemeView.swift */; };
 		356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */; };
+		356C55EC2CC0F3080085DC9C /* CompleteTextAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C55EB2CC0F3080085DC9C /* CompleteTextAutoFill.swift */; };
 		356CE7732A2289C80043DC62 /* BannersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356CE7722A2289C80043DC62 /* BannersSection.swift */; };
 		356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */; };
 		356EAF1C2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */; };
@@ -426,7 +427,7 @@
 		35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */; };
 		35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */; };
 		35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
-		35FD55A22C9072DC00805584 /* LoginCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FD55A12C9072DC00805584 /* LoginCreationInfo.swift */; };
+		35FD55A22C9072DC00805584 /* ItemCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */; };
 		5733D3FF2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */; };
 		5733D4012AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */; };
 		575D3C252AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 575D3C242AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore */; };
@@ -816,6 +817,7 @@
 		356BC35429D6D6AF00F03497 /* EditDefaultBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDefaultBrowserView.swift; sourceTree = "<group>"; };
 		356BC35A29D70C5000F03497 /* EditThemeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditThemeView.swift; sourceTree = "<group>"; };
 		356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClipboardExpirationView.swift; sourceTree = "<group>"; };
+		356C55EB2CC0F3080085DC9C /* CompleteTextAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteTextAutoFill.swift; sourceTree = "<group>"; };
 		356CE7722A2289C80043DC62 /* BannersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannersSection.swift; sourceTree = "<group>"; };
 		356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultAlertHandler.swift; sourceTree = "<group>"; };
 		356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorProtonAddressesView.swift; sourceTree = "<group>"; };
@@ -955,7 +957,7 @@
 		35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageCoordinator.swift; sourceTree = "<group>"; };
 		35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListView.swift; sourceTree = "<group>"; };
 		35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemRow.swift; sourceTree = "<group>"; };
-		35FD55A12C9072DC00805584 /* LoginCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginCreationInfo.swift; sourceTree = "<group>"; };
+		35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCreationInfo.swift; sourceTree = "<group>"; };
 		5B0939162C04DD250046F467 /* IdentityDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailView.swift; sourceTree = "<group>"; };
 		5B0939172C04DD250046F467 /* IdentityDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailViewModel.swift; sourceTree = "<group>"; };
 		5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedServices+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1339,6 +1341,7 @@
 				5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */,
 				3550F56F2B8A72410027BA2A /* CheckAndAutoFill.swift */,
 				354B247E2A77F2280060EDF7 /* CompleteAutoFill.swift */,
+				356C55EB2CC0F3080085DC9C /* CompleteTextAutoFill.swift */,
 				3560C2F02B99B46F00F35D7A /* CompleteConfiguration.swift */,
 				3570E0512B8E15F4005B8186 /* CompletePasskeyRegistration.swift */,
 				354B24772A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift */,
@@ -2500,7 +2503,7 @@
 				35C1E7152CB917AF009A40E9 /* HistoryItemUiModel.swift */,
 				5BFFB5042A58050300C2D1F9 /* UnmatchedItemAlertOptions.swift */,
 				356A1F062B88C59C00561950 /* Passkey.swift */,
-				35FD55A12C9072DC00805584 /* LoginCreationInfo.swift */,
+				35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */,
 				3583AE462CB7BA8E00A57A31 /* SelectedItem.swift */,
 				3593245B2CB9012F00A7D33B /* SelectedText.swift */,
 			);
@@ -3129,7 +3132,7 @@
 				3552D0CB2CA6ECAB004156D8 /* FetchItemsForTextInsertion.swift in Sources */,
 				5BD4A8FF2B10C48B00C44C08 /* View+Extensions.swift in Sources */,
 				354FBF632A02AE1F00A0B27D /* AliasLimitView.swift in Sources */,
-				35FD55A22C9072DC00805584 /* LoginCreationInfo.swift in Sources */,
+				35FD55A22C9072DC00805584 /* ItemCreationInfo.swift in Sources */,
 				5B1F5CED2A5ED7A600A6C3ED /* CustomFieldTypes.swift in Sources */,
 				357B162D2C87159A000073C8 /* CreateEditAliasView.swift in Sources */,
 				5BD4A8FA2B10C1B200C44C08 /* CancelAutoFill.swift in Sources */,
@@ -3164,6 +3167,7 @@
 				35492E3C293E06C600BDE231 /* CreateEditLoginView.swift in Sources */,
 				35492E3B293E06B100BDE231 /* BaseCreateEditItemViewModel.swift in Sources */,
 				350CF79D2A6FC4F2004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */,
+				356C55EC2CC0F3080085DC9C /* CompleteTextAutoFill.swift in Sources */,
 				3561C9F729E6E34400D6E518 /* VaultSelectorView.swift in Sources */,
 				355751F52907FB3200268116 /* LockedCredentialView.swift in Sources */,
 				3552273229DCB68200B9607E /* SectionIndexTitles.swift in Sources */,
