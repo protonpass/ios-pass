@@ -43023,7 +43023,14 @@
       }
     },
     "Email this address and it will appear to be sent from %@." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email this address and it will appear to be sent from %@."
+          }
+        }
+      }
     },
     "Empty" : {
       "localizations" : {
@@ -51313,10 +51320,24 @@
       }
     },
     "From" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From"
+          }
+        }
+      }
     },
     "From your alias <%@>" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "From your alias <%@>"
+          }
+        }
+      }
     },
     "Full name" : {
       "localizations" : {
@@ -86433,7 +86454,14 @@
       }
     },
     "Proton Pass will generate a forwarding address (also referred to as reverse alias)." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass will generate a forwarding address (also referred to as reverse alias)"
+          }
+        }
+      }
     },
     "Proton password" : {
       "localizations" : {
@@ -87275,7 +87303,15 @@
       }
     },
     "recipient_address@proton.me" : {
-
+      "comment" : "Email place holder description",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "recipient_address@proton.me"
+          }
+        }
+      }
     },
     "Recommended actions" : {
       "localizations" : {
@@ -111179,7 +111215,14 @@
       }
     },
     "To" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To"
+          }
+        }
+      }
     },
     "To interact with your other vaults, you need to upgrade your account." : {
       "localizations" : {
@@ -131484,7 +131527,14 @@
       }
     },
     "Your recipient" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your recipient"
+          }
+        }
+      }
     },
     "Your session is expired" : {
       "localizations" : {
