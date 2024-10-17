@@ -30,7 +30,7 @@ import SwiftUI
 
 @MainActor
 protocol AutoFillViewModelDelegate: AnyObject {
-    func autoFillViewModelWantsToCreateNewItem(_ info: LoginCreationInfo)
+    func autoFillViewModelWantsToCreateNewItem(_ info: ItemCreationInfo)
     func autoFillViewModelWantsToSelectUser(_ users: [UserUiModel])
     func autoFillViewModelWantsToCancel()
     func autoFillViewModelWantsToLogOut()
@@ -130,7 +130,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         fatalError("Must be overridden by subclasses")
     }
 
-    func generateLoginCreationInfo(userId: String, vaults: [Vault]) -> LoginCreationInfo {
+    func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
         fatalError("Must be overridden by subclasses")
     }
 
@@ -202,7 +202,7 @@ extension AutoFillViewModel {
             guard let vaults = getVaults(userId: userId) else {
                 throw PassError.vault(.vaultsNotFound(userId: userId))
             }
-            let info = generateLoginCreationInfo(userId: userId, vaults: vaults)
+            let info = generateItemCreationInfo(userId: userId, vaults: vaults)
             delegate?.autoFillViewModelWantsToCreateNewItem(info)
         } catch {
             handle(error)
