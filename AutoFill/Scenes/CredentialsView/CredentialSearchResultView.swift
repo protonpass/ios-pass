@@ -98,32 +98,11 @@ private final class CredentialSearchResultViewModel: ObservableObject {
             switch sortType {
             case .mostRecent:
                 let results = results.mostRecentSortResult()
-                return [
+                return results.buckets.map { bucket in
                     .init(type: type,
-                          title: #localized("Today"),
-                          items: results.today),
-                    .init(type: type,
-                          title: #localized("Yesterday"),
-                          items: results.yesterday),
-                    .init(type: type,
-                          title: #localized("Last week"),
-                          items: results.last7Days),
-                    .init(type: type,
-                          title: #localized("Last two weeks"),
-                          items: results.last14Days),
-                    .init(type: type,
-                          title: #localized("Last 30 days"),
-                          items: results.last30Days),
-                    .init(type: type,
-                          title: #localized("Last 60 days"),
-                          items: results.last60Days),
-                    .init(type: type,
-                          title: #localized("Last 90 days"),
-                          items: results.last90Days),
-                    .init(type: type,
-                          title: #localized("More than 90 days"),
-                          items: results.others)
-                ]
+                          title: bucket.type.title,
+                          items: bucket.items)
+                }
 
             case .alphabeticalAsc, .alphabeticalDesc:
                 let results = results.alphabeticalSortResult(direction: sortType.sortDirection)
