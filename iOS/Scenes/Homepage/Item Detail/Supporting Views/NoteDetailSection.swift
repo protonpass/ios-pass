@@ -31,10 +31,10 @@ struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
     let itemContent: ItemContent
     let vault: Vault?
-    let title: String
+    let title: LocalizedStringKey
     let note: String
 
-    init(itemContent: ItemContent, vault: Vault?, title: String = #localized("Note"), note: String? = nil) {
+    init(itemContent: ItemContent, vault: Vault?, title: LocalizedStringKey = "Note", note: String? = nil) {
         self.itemContent = itemContent
         self.vault = vault
         self.title = title
@@ -76,7 +76,7 @@ private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
     let itemContent: ItemContent
     let vault: Vault?
-    let title: String
+    let title: LocalizedStringKey
     let note: String
 
     var body: some View {
