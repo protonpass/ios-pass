@@ -45,13 +45,16 @@ public struct AppPreferences: Codable, Equatable, Sendable {
     // TODO: Introduced in april 2024, can be removed several months later
     public var didMigratePreferences: Bool
 
+    public var hasVisitedContactPage: Bool
+
     public init(onboarded: Bool,
                 telemetryThreshold: TimeInterval?,
                 createdItemsCount: Int,
                 dismissedBannerIds: [String],
                 dismissedCustomDomainExplanation: Bool,
                 didMigratePreferences: Bool,
-                dismissedAliasesSyncExplanation: Bool) {
+                dismissedAliasesSyncExplanation: Bool,
+                hasVisitedContactPage: Bool) {
         self.onboarded = onboarded
         self.telemetryThreshold = telemetryThreshold
         self.createdItemsCount = createdItemsCount
@@ -59,6 +62,7 @@ public struct AppPreferences: Codable, Equatable, Sendable {
         self.dismissedCustomDomainExplanation = dismissedCustomDomainExplanation
         self.didMigratePreferences = didMigratePreferences
         self.dismissedAliasesSyncExplanation = dismissedAliasesSyncExplanation
+        self.hasVisitedContactPage = hasVisitedContactPage
     }
 }
 
@@ -71,6 +75,7 @@ private extension AppPreferences {
         static let dismissedCustomDomainExplanation = false
         static let didMigratePreferences = false
         static let dismissedAliasesSyncExplanation = false
+        static let hasVisitedContactPage = false
     }
 
     enum CodingKeys: String, CodingKey {
@@ -81,6 +86,7 @@ private extension AppPreferences {
         case dismissedCustomDomainExplanation
         case didMigratePreferences
         case dismissedAliasesSyncExplanation
+        case hasVisitedContactPage
     }
 }
 
@@ -99,6 +105,9 @@ public extension AppPreferences {
         let dismissedAliasesSyncExplanation = try container.decodeIfPresent(Bool.self,
                                                                             forKey: .dismissedAliasesSyncExplanation)
 
+        let hasVisitedContactPage = try container.decodeIfPresent(Bool.self,
+                                                                  forKey: .hasVisitedContactPage)
+
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
                   createdItemsCount: createdItemsCount ?? Default.createdItemsCount,
@@ -107,7 +116,8 @@ public extension AppPreferences {
                       .dismissedCustomDomainExplanation,
                   didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences,
                   dismissedAliasesSyncExplanation: dismissedAliasesSyncExplanation ?? Default
-                      .dismissedAliasesSyncExplanation)
+                      .dismissedAliasesSyncExplanation,
+                  hasVisitedContactPage: hasVisitedContactPage ?? Default.hasVisitedContactPage)
     }
 }
 
@@ -119,6 +129,7 @@ extension AppPreferences: Defaultable {
               dismissedBannerIds: Default.dismissedBannerIds,
               dismissedCustomDomainExplanation: Default.dismissedCustomDomainExplanation,
               didMigratePreferences: Default.didMigratePreferences,
-              dismissedAliasesSyncExplanation: Default.dismissedAliasesSyncExplanation)
+              dismissedAliasesSyncExplanation: Default.dismissedAliasesSyncExplanation,
+              hasVisitedContactPage: Default.hasVisitedContactPage)
     }
 }
