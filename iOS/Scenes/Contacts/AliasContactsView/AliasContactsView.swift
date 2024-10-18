@@ -63,6 +63,9 @@ private extension AliasContactsView {
                 .padding(.top)
 
             senderName
+                .if(viewModel.aliasName.isEmpty) { view in
+                    view.padding(.bottom, DesignConstant.sectionPadding)
+                }
 
             if !viewModel.aliasName.isEmpty {
                 // swiftlint:disable:next line_length
@@ -86,6 +89,7 @@ private extension AliasContactsView {
         .animation(.default, value: viewModel.aliasName)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
+        .showSpinner(viewModel.loading)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
@@ -175,7 +179,7 @@ private extension AliasContactsView {
                     }
                 } header: {
                     Text("Forwarding addresses")
-                        .font(.callout)
+                        .font(.callout.bold())
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -454,7 +458,7 @@ private enum ContactCreationSteps: Hashable {
                         }.foregroundStyle(PassColor.textInvert.toColor)
 
                         VStack(alignment: .leading, spacing: 0) {
-                            Label("From your alias <\(info ?? "your.alias@domain.com")>",
+                            Label("From your alias <\(info)>",
                                   image: IconProvider.lockFilled)
                                 .lineLimit(1)
                             Text("Your recipient")
@@ -571,7 +575,7 @@ private struct ContactStepView: View {
     }
 }
 
-struct CustomBorderShape: Shape {
+private struct CustomBorderShape: Shape {
     var cornerRadius: CGFloat
 
     func path(in rect: CGRect) -> Path {

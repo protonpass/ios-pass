@@ -2328,6 +2328,7 @@
       }
     },
     "%lld blocks" : {
+        "comment" : "Number of email blocked",
       "localizations" : {
         "en" : {
           "variations" : {

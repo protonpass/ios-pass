@@ -46,6 +46,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     @Published private(set) var showExplanation = false
     @Published private(set) var contactsInfos = AliasContactsModel.default
     @Published private(set) var updatingName = false
+    @Published private(set) var loading = false
 
     var hasNoContact: Bool {
         contacts.contacts.isEmpty
@@ -107,7 +108,12 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
+            
+            defer {
+                loading = false
+            }
             do {
+                loading = true
                 let userId = try await userManager.getActiveUserId()
                 _ = try await aliasRepository.deleteContact(userId: userId,
                                                             shareId: infos.shareId,
@@ -125,7 +131,11 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
+            defer {
+                loading = false
+            }
             do {
+                loading = true
                 let userId = try await userManager.getActiveUserId()
                 _ = try await aliasRepository.updateContact(userId: userId,
                                                             shareId: infos.shareId,
