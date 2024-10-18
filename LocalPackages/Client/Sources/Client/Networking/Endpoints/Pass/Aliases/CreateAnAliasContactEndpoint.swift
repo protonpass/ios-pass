@@ -42,7 +42,7 @@ public struct CreateAContactResponse: Decodable, Sendable {
 
 struct CreateAContactEndpoint: Endpoint {
     typealias Body = CreateAContactRequest
-    typealias Response = CreateALightContactResponse
+    typealias Response = CreateALiteContactResponse
 
     var debugDescription: String
     var path: String

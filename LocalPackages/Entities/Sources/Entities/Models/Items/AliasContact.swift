@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct LightAliasContact: Decodable, Sendable, Equatable, Hashable, Identifiable {
+public struct AliasContactLite: Decodable, Sendable, Equatable, Hashable, Identifiable {
     // Should not rename to "id" otherwise decode process breaks
     public let ID: Int
     public let name: String?
@@ -85,6 +85,6 @@ public struct AliasContact: Decodable, Sendable, Equatable, Hashable, Identifiab
     }
 
     public var noActivity: Bool {
-        repliedEmails == 0 && forwardedEmails == 0 && blockedEmails == 0
+        repliedEmails + forwardedEmails + blockedEmails == 0
     }
 }
