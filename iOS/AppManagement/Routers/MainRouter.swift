@@ -21,7 +21,7 @@
 import Client
 @preconcurrency import Combine
 import Entities
-import ProtonCorePasswordChange
+@preconcurrency import ProtonCorePasswordChange
 import Screens
 import SwiftUI
 
@@ -57,8 +57,6 @@ enum SheetDismissal {
     case topMost
     case all
 }
-
-extension PasswordChangeModule.PasswordChangeMode: @unchecked Sendable {}
 
 enum SheetDestination: Equatable, Hashable, Sendable {
     case sharingFlow(SheetDismissal)

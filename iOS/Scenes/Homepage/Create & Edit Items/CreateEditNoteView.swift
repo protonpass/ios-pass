@@ -69,25 +69,27 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
     }
 
     final class Coordinator: CreateEditNoteContentUIViewDelegate {
-        var parent: CreateEditNoteContentView
+        let parent: CreateEditNoteContentView
 
         init(_ parent: CreateEditNoteContentView) {
             self.parent = parent
         }
 
+        @MainActor
         func titleUpdated(_ text: String) {
             parent.title = text
         }
 
+        @MainActor
         func contentUpdated(_ text: String) {
             parent.content = text
         }
     }
 }
 
-private protocol CreateEditNoteContentUIViewDelegate: AnyObject {
-    func titleUpdated(_ text: String)
-    func contentUpdated(_ text: String)
+private protocol CreateEditNoteContentUIViewDelegate: AnyObject, Sendable {
+    func titleUpdated(_ text: String) async
+    func contentUpdated(_ text: String) async
 }
 
 private final class CreateEditNoteContentUIView: UIView {
@@ -226,7 +228,9 @@ private extension CreateEditNoteContentUIView {
         titleTextField.setOnTextChangeListener { [weak self] in
             guard let self else { return }
             if let text = titleTextField.text {
-                delegate?.titleUpdated(text)
+                Task { @MainActor [weak self] in
+                    await self?.delegate?.titleUpdated(text)
+                }
             }
         }
     }
@@ -239,7 +243,9 @@ private extension CreateEditNoteContentUIView {
         var note = contentTextView.text ?? ""
         defer {
             contentTextView.text = note
-            delegate?.contentUpdated(note)
+            Task { @MainActor [weak self] in
+                await self?.delegate?.contentUpdated(note)
+            }
         }
         for (index, page) in document.scannedPages.enumerated() {
             note += page.text.reduce(into: "") { partialResult, next in
@@ -264,7 +270,9 @@ extension CreateEditNoteContentUIView: UITextFieldDelegate {
 extension CreateEditNoteContentUIView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         if let text = textView.text {
-            delegate?.contentUpdated(text)
+            Task { @MainActor [weak self] in
+                await self?.delegate?.contentUpdated(text)
+            }
         }
         updatePlaceholderVisibility()
     }

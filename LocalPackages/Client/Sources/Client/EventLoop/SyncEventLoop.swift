@@ -225,8 +225,10 @@ private extension SyncEventLoop {
         }
         fetchEventsTask = Task { [weak self] in
             defer {
+                // swiftlint:disable discouraged_optional_self
                 self?.fetchEventsTask?.cancel()
                 self?.fetchEventsTask = nil
+                // swiftlint:enable discouraged_optional_self
             }
 
             guard let self else {
