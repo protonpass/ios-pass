@@ -108,7 +108,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
-            
+
             defer {
                 loading = false
             }
