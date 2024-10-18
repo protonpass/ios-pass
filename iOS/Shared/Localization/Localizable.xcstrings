@@ -135202,6 +135202,16 @@
         }
       }
     },
+    "Your sender name was updated to %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your sender name was updated to %@"
+          }
+        }
+      }
+    },
     "Your session is expired" : {
       "localizations" : {
         "be" : {
