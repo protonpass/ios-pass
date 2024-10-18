@@ -26,7 +26,7 @@ public protocol MainKeyProvider: Sendable, AnyObject {
     var mainKey: MainKey? { get }
 }
 
-extension Keymaker: @unchecked Sendable, MainKeyProvider {}
+extension Keymaker: @unchecked @retroactive Sendable, MainKeyProvider {}
 
 extension Keymaker: AutoLocker {
     public var autolockerTimeout: LockTime {

@@ -82,7 +82,7 @@ extension ShareExistingUserInvite: @retroactive ShareInvitee {
     }
 }
 
-extension ShareNewUserInvite: ShareInvitee {
+extension ShareNewUserInvite: @retroactive ShareInvitee {
     public var email: String {
         invitedEmail
     }
