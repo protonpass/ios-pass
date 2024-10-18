@@ -110,60 +110,59 @@ final class ItemSortableTests: XCTestCase {
         // Yesterday
 
        let yesterday = sortResult.buckets[1]
-        XCTAssertEqual(yesterday?.type, .yesterday)
-        XCTAssertEqual(yesterday?.items.count, 3)
-        XCTAssertEqual(yesterday?.items[0], yesterday3)
-        XCTAssertEqual(yesterday?.items[1], yesterday2)
-        XCTAssertEqual(yesterday?.items[2], yesterday1)
+        XCTAssertEqual(yesterday.type, .yesterday)
+        XCTAssertEqual(yesterday.items.count, 3)
+        assertEqual(yesterday.items[0], yesterday3)
+        assertEqual(yesterday.items[1], yesterday2)
+        assertEqual(yesterday.items[2], yesterday1)
 
         // Last 7 days
         let last7Days = sortResult.buckets[2]
-        XCTAssertEqual(last7Days?.type, .last7Days)
-         XCTAssertEqual(last7Days?.items.count, 3)
-         XCTAssertEqual(last7Days?.items[0], last7Days2)
-         XCTAssertEqual(last7Days?.items[1], last7Days1)
-         XCTAssertEqual(last7Days?.items[2], last7Days3)
-        
+        XCTAssertEqual(last7Days.type, .last7Days)
+        XCTAssertEqual(last7Days.items.count, 3)
+        assertEqual(last7Days.items[0], last7Days2)
+        assertEqual(last7Days.items[1], last7Days1)
+        assertEqual(last7Days.items[2], last7Days3)
         
         // Last 14 days
         let last14Days = sortResult.buckets[3]
-        XCTAssertEqual(last14Days?.type, .last14Days)
-         XCTAssertEqual(last14Days?.items.count, 3)
-         XCTAssertEqual(last14Days?.items[0], last14Days2)
-         XCTAssertEqual(last14Days?.items[1], last14Days1)
-         XCTAssertEqual(last14Days?.items[2], last14Days3)
+        XCTAssertEqual(last14Days.type, .last14Days)
+        XCTAssertEqual(last14Days.items.count, 3)
+        assertEqual(last14Days.items[0], last14Days2)
+        assertEqual(last14Days.items[1], last14Days1)
+        assertEqual(last14Days.items[2], last14Days3)
 
         // Last 30 days
         let last30Days = sortResult.buckets[4]
-        XCTAssertEqual(last30Days?.type, .last30Days)
-         XCTAssertEqual(last30Days?.items.count, 3)
-         XCTAssertEqual(last30Days?.items[0], last30Days2)
-         XCTAssertEqual(last30Days?.items[1], last30Days1)
-         XCTAssertEqual(last30Days?.items[2], last30Days3)
+        XCTAssertEqual(last30Days.type, .last30Days)
+         XCTAssertEqual(last30Days.items.count, 3)
+        assertEqual(last30Days.items[0], last30Days2)
+        assertEqual(last30Days.items[1], last30Days1)
+        assertEqual(last30Days.items[2], last30Days3)
         
         // Last 60 days
         let last60Days = sortResult.buckets[5]
-        XCTAssertEqual(last60Days?.type, .last30Days)
-         XCTAssertEqual(last60Days?.items.count, 3)
-         XCTAssertEqual(last60Days?.items[0], last60Days3)
-         XCTAssertEqual(last60Days?.items[1], last60Days1)
-         XCTAssertEqual(last60Days?.items[2], last60Days2)
+        XCTAssertEqual(last60Days.type, .last60Days)
+        XCTAssertEqual(last60Days.items.count, 3)
+        assertEqual(last60Days.items[0], last60Days3)
+        assertEqual(last60Days.items[1], last60Days1)
+        assertEqual(last60Days.items[2], last60Days2)
         
         // Last 90 days
         let last90Days = sortResult.buckets[6]
-        XCTAssertEqual(last90Days?.type, .last90Days)
-         XCTAssertEqual(last90Days?.items.count, 3)
-         XCTAssertEqual(last90Days?.items[0], last90Days3)
-         XCTAssertEqual(last90Days?.items[1], last90Days2)
-         XCTAssertEqual(last90Days?.items[2], last90Days1)
+        XCTAssertEqual(last90Days.type, .last90Days)
+        XCTAssertEqual(last90Days.items.count, 3)
+        assertEqual(last90Days.items[0], last90Days3)
+        assertEqual(last90Days.items[1], last90Days2)
+        assertEqual(last90Days.items[2], last90Days1)
 
         // Others
         let others = sortResult.buckets[7]
-        XCTAssertEqual(others?.type, .others)
-         XCTAssertEqual(others?.items.count, 3)
-         XCTAssertEqual(others?.items[0], moreThan90Days3)
-         XCTAssertEqual(others?.items[1], moreThan90Days2)
-         XCTAssertEqual(others?.items[2], moreThan90Days1)
+        XCTAssertEqual(others.type, .others)
+        XCTAssertEqual(others.items.count, 3)
+        assertEqual(others.items[0], moreThan90Days3)
+        assertEqual(others.items[1], moreThan90Days2)
+        assertEqual(others.items[2], moreThan90Days1)
     }
 
     func assertEqual(_ lhs: any DateSortable, _ rhs: any DateSortable) {
