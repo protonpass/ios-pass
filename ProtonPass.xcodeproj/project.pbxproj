@@ -563,6 +563,8 @@
 		5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */; };
 		5BD870D92BB46C7800A9F1A8 /* PasswordReusedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD870D72BB46C7800A9F1A8 /* PasswordReusedViewModel.swift */; };
 		5BDDEABD2C5916590068B9DF /* SearchViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDEABC2C5916590068B9DF /* SearchViewModifier.swift */; };
+		5BE464D22CC2568C009EDF18 /* MostRecentType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */; };
+		5BE464D32CC25922009EDF18 /* MostRecentType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */; };
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE8092E2C071EC200D3A707 /* DetailHistoryView+Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8092D2C071EC200D3A707 /* DetailHistoryView+Identity.swift */; };
@@ -1053,6 +1055,7 @@
 		5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedView.swift; sourceTree = "<group>"; };
 		5BD870D72BB46C7800A9F1A8 /* PasswordReusedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedViewModel.swift; sourceTree = "<group>"; };
 		5BDDEABC2C5916590068B9DF /* SearchViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModifier.swift; sourceTree = "<group>"; };
+		5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MostRecentType+Extensions.swift"; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
 		5BE8092D2C071EC200D3A707 /* DetailHistoryView+Identity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Identity.swift"; sourceTree = "<group>"; };
 		5BE8092F2C07358200D3A707 /* IdentityFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityFields.swift; sourceTree = "<group>"; };
@@ -2008,6 +2011,7 @@
 		5B1453E32A72BF2A0048B022 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */,
 				5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */,
 				3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */,
 				35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */,
@@ -3126,6 +3130,7 @@
 				3524A4622CB6A1B2001EC572 /* AliasDetailViewModel.swift in Sources */,
 				35706C2E2CB665FB009F438E /* NoteDetailView.swift in Sources */,
 				3559BAA22A5B32600020E172 /* Browser+Extensions.swift in Sources */,
+				5BE464D32CC25922009EDF18 /* MostRecentType+Extensions.swift in Sources */,
 				3597F0D12CB5D4CC00384874 /* ItemDetailHistorySection.swift in Sources */,
 				5B229A662A863F6D0009103E /* MainRouter.swift in Sources */,
 				3524A46C2CB6B7E4001EC572 /* IdentityFields.swift in Sources */,
@@ -3502,6 +3507,7 @@
 				354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */,
 				5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */,
 				354B24812A7814C20060EDF7 /* ItemTypeFilter.swift in Sources */,
+				5BE464D22CC2568C009EDF18 /* MostRecentType+Extensions.swift in Sources */,
 				3559BAA12A5B32550020E172 /* AppLockTime+Extensions.swift in Sources */,
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
