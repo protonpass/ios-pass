@@ -263,7 +263,7 @@ private struct MailboxElementRow: View {
 
             Spacer()
 
-            if showMenu {
+            if showMenu, !isDefault {
                 Menu(content: {
                     if !mailBox.isDefault {
                         if mailBox.verified {

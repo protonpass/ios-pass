@@ -19,6 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
+import Factory
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -27,6 +30,7 @@ struct AliasDetailView: View {
     @StateObject private var viewModel: AliasDetailViewModel
     @Namespace private var bottomID
     @State private var animate = false
+    @StateObject var router = resolve(\RouterContainer.darkWebRouter)
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
 
@@ -35,20 +39,9 @@ struct AliasDetailView: View {
     }
 
     var body: some View {
-        if let error = viewModel.error {
-            RetryableErrorView(errorMessage: error.localizedDescription) {
-                viewModel.refresh()
-            }
-            .padding()
-        } else {
-            if viewModel.isShownAsSheet {
-                NavigationStack {
-                    realBody
-                }
-            } else {
-                realBody
-            }
-        }
+        realBody
+            .routingProvided
+            .navigationStackEmbeded($router.path)
     }
 
     private var realBody: some View {
@@ -65,7 +58,33 @@ struct AliasDetailView: View {
 
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
-                                          vault: viewModel.vault?.vault)
+                                          vault: viewModel.vault?.vault,
+                                          note: viewModel.itemContent.note)
+                    }
+
+                    if let note = viewModel.aliasInfos?.note, !note.isEmpty {
+                        NoteDetailSection(itemContent: viewModel.itemContent,
+                                          vault: viewModel.vault?.vault,
+                                          title: "Note • SimpleLogin",
+                                          note: note)
+                    }
+
+                    if viewModel.isAdvancedAliasManagementActive {
+                        if viewModel.contacts != nil {
+                            contactRow
+
+                            // swiftlint:disable:next line_length
+                            Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .font(.footnote)
+                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .padding(.top, 8)
+                                .padding(.bottom, DesignConstant.sectionPadding)
+                        }
+
+                        if let stats = viewModel.aliasInfos?.stats {
+                            statsRow(stats: stats)
+                        }
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
@@ -81,22 +100,27 @@ struct AliasDetailView: View {
                 .padding()
             }
             .animation(.default, value: viewModel.moreInfoSectionExpanded)
+            .animation(.default, value: viewModel.aliasInfos)
+            .animation(.default, value: viewModel.contacts)
             .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
         }
         .itemDetailSetUp(viewModel)
-        .onFirstAppear(perform: viewModel.getAlias)
+        .task {
+            await viewModel.loadContact()
+        }
+        .onFirstAppear {
+            viewModel.getAlias()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                animate = true
+            }
+        }
         .if(viewModel.aliasSyncEnabled) {
             $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $viewModel.showingTrashAliasAlert,
                                                 enabled: viewModel.aliasEnabled,
                                                 disableAction: { viewModel.disableAlias() },
                                                 trashAction: { viewModel.moveToTrash() }))
-        }
-        .onFirstAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                animate = true
-            }
         }
     }
 
@@ -108,7 +132,7 @@ struct AliasDetailView: View {
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
-        .animation(.default, value: viewModel.mailboxes)
+        .animation(.default, value: viewModel.aliasInfos)
     }
 
     private var aliasRow: some View {
@@ -160,43 +184,118 @@ struct AliasDetailView: View {
             ItemDetailSectionIcon(icon: IconProvider.forward, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Forwarding to")
-                    .sectionTitleText()
-                    .frame(maxWidth: .infinity, alignment: .leading)
-
-                if let mailboxes = viewModel.mailboxes {
-                    ForEach(mailboxes, id: \.ID) { mailbox in
-                        Text(mailbox.email)
-                            .sectionContentText()
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                            .contentShape(.rect)
-                            .contextMenu {
-                                Button(action: {
-                                    viewModel.copyMailboxEmail(mailbox.email)
-                                }, label: {
-                                    Text("Copy")
-                                })
-
-                                Button(action: {
-                                    viewModel.showLarge(.text(mailbox.email))
-                                }, label: {
-                                    Text("Show large")
-                                })
-                            }
+                if let error = viewModel.error {
+                    RetryableErrorCellView(errorMessage: error.localizedDescription,
+                                           textColor: PassColor.signalDanger.toColor,
+                                           buttonColor: iconTintColor) {
+                        viewModel.refresh()
                     }
                 } else {
-                    Group {
-                        SkeletonBlock(tintColor: iconTintColor)
-                        SkeletonBlock(tintColor: iconTintColor)
-                        SkeletonBlock(tintColor: iconTintColor)
+                    Text("Forwarding to")
+                        .sectionTitleText()
+                        .frame(maxWidth: .infinity, alignment: .leading)
+
+                    if let mailboxes = viewModel.aliasInfos?.mailboxes {
+                        ForEach(mailboxes, id: \.ID) { mailbox in
+                            Text(mailbox.email)
+                                .sectionContentText()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .contentShape(.rect)
+                                .contextMenu {
+                                    Button(action: {
+                                        viewModel.copyMailboxEmail(mailbox.email)
+                                    }, label: {
+                                        Text("Copy")
+                                    })
+
+                                    Button(action: {
+                                        viewModel.showLarge(.text(mailbox.email))
+                                    }, label: {
+                                        Text("Show large")
+                                    })
+                                }
+                        }
+                    } else {
+                        Group {
+                            SkeletonBlock(tintColor: iconTintColor)
+                            SkeletonBlock(tintColor: iconTintColor)
+                            SkeletonBlock(tintColor: iconTintColor)
+                        }
+                        .clipShape(Capsule())
+                        .shimmering(active: animate)
                     }
-                    .clipShape(Capsule())
-                    .shimmering(active: animate)
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .animation(.default, value: viewModel.mailboxes)
+        .animation(.default, value: viewModel.aliasInfos)
+    }
+
+    private func statsRow(stats: AliasStats) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.chartLine, color: iconTintColor)
+
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Activity in last 14 days")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                // swiftlint:disable:next line_length
+                Text(verbatim: "\(stats.forwardedEmailsTitle) • \(stats.repliedEmailsTitle) • \(stats.blockedEmailsTitle)")
+                    .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection()
+    }
+
+    private var contactRow: some View {
+        Button {
+            guard let infos = viewModel.getContactsInfos() else { return }
+            router.navigate(to: .contacts(infos))
+        } label: {
+            HStack(spacing: DesignConstant.sectionPadding) {
+                ItemDetailSectionIcon(icon: IconProvider.filingCabinet, color: iconTintColor)
+                Text("Contacts")
+                    .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(.rect)
+                    .padding(.vertical, 8)
+
+                if let contacts = viewModel.contacts, !contacts.contacts.isEmpty {
+                    Text(verbatim: "\(contacts.total)")
+                        .fontWeight(.medium)
+                        .padding(.vertical, 4)
+                        .padding(.horizontal, 11)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .background(PassColor.backgroundMedium.toColor)
+                        .clipShape(Capsule())
+                }
+
+                ItemDetailSectionIcon(icon: IconProvider.chevronRight,
+                                      width: 20)
+            }
+            .padding(DesignConstant.sectionPadding)
+            .roundedDetailSection()
+        }
+        .animation(.default, value: viewModel.contacts)
+        .buttonStyle(.plain)
+    }
+}
+
+private extension AliasStats {
+    var forwardedEmailsTitle: String {
+        #localized("%lld forwards", forwardedEmails)
+    }
+
+    var repliedEmailsTitle: String {
+        #localized("%lld replies", repliedEmails)
+    }
+
+    var blockedEmailsTitle: String {
+        #localized("%lld blocks", blockedEmails)
     }
 }

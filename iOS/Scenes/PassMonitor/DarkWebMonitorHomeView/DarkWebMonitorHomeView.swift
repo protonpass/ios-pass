@@ -251,13 +251,8 @@ private extension DarkWebMonitorHomeView {
                 }
 
             case let .error(error):
-                HStack {
-                    Text(error.localizedDescription)
-                        .font(.callout)
-                        .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Spacer()
-                    RetryButton { viewModel.fetchAliasBreaches() }
+                RetryableErrorCellView(errorMessage: error.localizedDescription) {
+                    viewModel.fetchAliasBreaches()
                 }
                 .padding(DesignConstant.sectionPadding)
                 .roundedDetailSection()
@@ -330,13 +325,8 @@ private extension DarkWebMonitorHomeView {
                         }
                     }
                 case let .error(error):
-                    HStack {
-                        Text(error.localizedDescription)
-                            .font(.callout)
-                            .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Spacer()
-                        RetryButton { viewModel.fetchCustomEmails() }
+                    RetryableErrorCellView(errorMessage: error.localizedDescription) {
+                        viewModel.fetchCustomEmails()
                     }
                 }
 
