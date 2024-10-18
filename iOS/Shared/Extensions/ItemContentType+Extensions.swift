@@ -163,15 +163,15 @@ extension ItemContentType {
     var filterMessage: String {
         switch self {
         case .login:
-            #localized("Filtered by logins")
+            #localized("Filtered by logins. Trashed items aren't shown.")
         case .alias:
-            #localized("Filtered by aliases")
+            #localized("Filtered by aliases. Trashed items aren't shown.")
         case .note:
-            #localized("Filtered by notes")
+            #localized("Filtered by notes. Trashed items aren't shown.")
         case .creditCard:
-            #localized("Filtered by credit cards")
+            #localized("Filtered by credit cards. Trashed items aren't shown.")
         case .identity:
-            #localized("Filtered by identities")
+            #localized("Filtered by identities. Trashed items aren't shown.")
         }
     }
 
