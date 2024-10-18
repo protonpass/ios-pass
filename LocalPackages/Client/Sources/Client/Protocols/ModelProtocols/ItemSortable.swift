@@ -29,17 +29,29 @@ public protocol DateSortable: Hashable, Sendable {
 
 // MARK: - Most recent
 
+public enum MostRecentType: String, Hashable, Sendable, CaseIterable, Identifiable {
+    case today
+    case yesterday
+    case last7Days
+    case last14Days
+    case last30Days
+    case last60Days
+    case last90Days
+    case others
+
+    public var id: String { rawValue }
+}
+
+public struct MostRecentSortBucket<T: DateSortable>: Hashable, Sendable, Identifiable {
+    public let type: MostRecentType
+    public let items: [T]
+
+    public var id: String { type.id }
+}
+
 public struct MostRecentSortResult<T: DateSortable>: SearchResults {
     public var numberOfItems: Int
-
-    public let today: [T]
-    public let yesterday: [T]
-    public let last7Days: [T]
-    public let last14Days: [T]
-    public let last30Days: [T]
-    public let last60Days: [T]
-    public let last90Days: [T]
-    public let others: [T]
+    public let buckets: [MostRecentSortBucket<T>]
 }
 
 public extension Array where Element: DateSortable {
@@ -79,14 +91,16 @@ public extension Array where Element: DateSortable {
         }
 
         return MostRecentSortResult(numberOfItems: sortedElements.count,
-                                    today: today,
-                                    yesterday: yesterday,
-                                    last7Days: last7Days,
-                                    last14Days: last14Days,
-                                    last30Days: last30Days,
-                                    last60Days: last60Days,
-                                    last90Days: last90Days,
-                                    others: others)
+                                    buckets: [
+                                        MostRecentSortBucket(type: .today, items: today),
+                                        MostRecentSortBucket(type: .yesterday, items: yesterday),
+                                        MostRecentSortBucket(type: .last7Days, items: last7Days),
+                                        MostRecentSortBucket(type: .last14Days, items: last14Days),
+                                        MostRecentSortBucket(type: .last30Days, items: last30Days),
+                                        MostRecentSortBucket(type: .last60Days, items: last60Days),
+                                        MostRecentSortBucket(type: .last90Days, items: last90Days),
+                                        MostRecentSortBucket(type: .others, items: others)
+                                    ])
     }
 
     func asyncMostRecentSortResult() async -> MostRecentSortResult<Element> {
