@@ -62,6 +62,7 @@ public extension PassIcon {
     static let breachShieldUnresolved = Self.icon(named: "BreachShieldUnresolved")
     static let securityEmptyState = Self.icon(named: "SecurityEmptyState")
     static let stamp = Self.icon(named: "Stamp")
+    static let envelope = Self.icon(named: "Envelope")
     static let halfButtons = Self.icon(named: "HalfButtons")
 
     static let netShield = Self.icon(named: "Netshield")
