@@ -193,30 +193,11 @@ struct ItemsTabView: View {
         ItemListView(safeAreaInsets: safeAreaInsets,
                      mode: result.numberOfItems > kListThreshold ? .lazyVStack : .list,
                      content: {
-                         section(for: result.today,
-                                 headerTitle: #localized("Today"),
-                                 totalItemsCount: result.numberOfItems)
-                         section(for: result.yesterday,
-                                 headerTitle: #localized("Yesterday"),
-                                 totalItemsCount: result.numberOfItems)
-                         section(for: result.last7Days,
-                                 headerTitle: #localized("Last week"),
-                                 totalItemsCount: result.numberOfItems)
-                         section(for: result.last14Days,
-                                 headerTitle: #localized("Last two weeks"),
-                                 totalItemsCount: result.numberOfItems)
-                         section(for: result.last30Days,
-                                 headerTitle: #localized("Last 30 days"),
-                                 totalItemsCount: result.numberOfItems)
-                         section(for: result.last60Days,
-                                 headerTitle: #localized("Last 60 days"),
-                                 totalItemsCount: result.numberOfItems)
-                         section(for: result.last90Days,
-                                 headerTitle: #localized("Last 90 days"),
-                                 totalItemsCount: result.numberOfItems)
-                         section(for: result.others,
-                                 headerTitle: #localized("More than 90 days"),
-                                 totalItemsCount: result.numberOfItems)
+                         ForEach(result.buckets) { bucket in
+                             section(for: bucket.items,
+                                     headerTitle: bucket.type.title,
+                                     totalItemsCount: result.numberOfItems)
+                         }
                      },
                      onRefresh: viewModel.forceSyncIfNotEditMode)
     }
