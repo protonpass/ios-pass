@@ -343,31 +343,8 @@ private extension CredentialsView {
     }
 
     func sections(for result: MostRecentSortResult<some CredentialItem>, isListMode: Bool) -> some View {
-        Group {
-            section(for: result.today,
-                    isListMode: isListMode,
-                    headerTitle: #localized("Today"))
-            section(for: result.yesterday,
-                    isListMode: isListMode,
-                    headerTitle: #localized("Yesterday"))
-            section(for: result.last7Days,
-                    isListMode: isListMode,
-                    headerTitle: #localized("Last week"))
-            section(for: result.last14Days,
-                    isListMode: isListMode,
-                    headerTitle: #localized("Last two weeks"))
-            section(for: result.last30Days,
-                    isListMode: isListMode,
-                    headerTitle: #localized("Last 30 days"))
-            section(for: result.last60Days,
-                    isListMode: isListMode,
-                    headerTitle: #localized("Last 60 days"))
-            section(for: result.last90Days,
-                    isListMode: isListMode,
-                    headerTitle: #localized("Last 90 days"))
-            section(for: result.others,
-                    isListMode: isListMode,
-                    headerTitle: #localized("More than 90 days"))
+        ForEach(result.buckets) { bucket in
+            section(for: bucket.items, isListMode: isListMode, headerTitle: bucket.type.title)
         }
     }
 
