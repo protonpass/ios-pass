@@ -51384,52 +51384,52 @@
         }
       }
     },
-    "Filtered by aliases" : {
+    "Filtered by aliases. Trashed items aren't shown." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtered by aliases"
+            "value" : "Filtered by aliases. Trashed items aren't shown."
           }
         }
       }
     },
-    "Filtered by credit cards" : {
+    "Filtered by credit cards. Trashed items aren't shown." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtered by credit cards"
+            "value" : "Filtered by credit cards. Trashed items aren't shown."
           }
         }
       }
     },
-    "Filtered by identities" : {
+    "Filtered by identities. Trashed items aren't shown." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtered by identities"
+            "value" : "Filtered by identities. Trashed items aren't shown."
           }
         }
       }
     },
-    "Filtered by logins" : {
+    "Filtered by logins. Trashed items aren't shown." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtered by logins"
+            "value" : "Filtered by logins. Trashed items aren't shown."
           }
         }
       }
     },
-    "Filtered by notes" : {
+    "Filtered by notes. Trashed items aren't shown." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtered by notes"
+            "value" : "Filtered by notes. Trashed items aren't shown."
           }
         }
       }
