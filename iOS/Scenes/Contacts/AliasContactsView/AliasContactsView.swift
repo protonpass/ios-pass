@@ -50,7 +50,6 @@ struct AliasContactsView: View {
             .optionalSheet(binding: $sheetState) { state in
                 sheetContent(for: state)
                     .presentationDetents(presentationDetents(for: state))
-                    .presentationDragIndicator(.visible)
             }
     }
 }
@@ -127,6 +126,7 @@ private extension AliasContactsView {
                     viewModel.updateAliasName()
                 })
                 .autocorrectionDisabled()
+                .tint(PassColor.aliasInteractionNormMajor2.toColor)
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
 
@@ -189,30 +189,24 @@ private extension AliasContactsView {
 
                 Menu(content: {
                     if !contact.blocked {
-                        Label(title: { Text("Send email") }, icon: { Image(uiImage: IconProvider.paperPlane) })
-                            .buttonEmbeded {
-                                viewModel.openMail(emailTo: contact.email)
-                            }
+                        button(title: #localized("Send email"), icon: IconProvider.paperPlane) {
+                            viewModel.openMail(emailTo: contact.email)
+                        }
                     }
 
-                    Label(title: { Text("Copy address") }, icon: { Image(uiImage: IconProvider.squares) })
-                        .buttonEmbeded {
-                            viewModel.copyContact(contact)
-                        }
+                    button(title: #localized("Copy address"), icon: IconProvider.squares) {
+                        viewModel.copyContact(contact)
+                    }
 
                     Divider()
 
-                    Label(title: { Text(contact.actionTitle) },
-                          icon: { Image(uiImage: IconProvider.crossCircle) })
-                        .buttonEmbeded {
-                            viewModel.toggleContactState(contact)
-                        }
+                    button(title: contact.actionTitle, icon: IconProvider.crossCircle) {
+                        viewModel.toggleContactState(contact)
+                    }
 
-                    Label(title: { Text("Delete") },
-                          icon: { Image(uiImage: IconProvider.trash) })
-                        .buttonEmbeded {
-                            viewModel.delete(contact: contact)
-                        }
+                    button(title: #localized("Delete"), icon: IconProvider.trash) {
+                        viewModel.delete(contact: contact)
+                    }
                 }, label: {
                     IconProvider.threeDotsVertical
                         .foregroundStyle(PassColor.textWeak.toColor)
@@ -243,6 +237,12 @@ private extension AliasContactsView {
         .padding(DesignConstant.sectionPadding)
         .background(PassColor.inputBorderNorm.toColor)
         .cornerRadius(16)
+    }
+
+    func button(title: String, icon: UIImage, action: @escaping () -> Void) -> some View {
+        Button { action() } label: {
+            Label(title: { Text(title) }, icon: { Image(uiImage: icon) })
+        }
     }
 }
 
@@ -319,7 +319,7 @@ private extension AliasContactsView {
     }
 }
 
-struct AliasContactsEmptyView: View {
+private struct AliasContactsEmptyView: View {
     let action: () -> Void
 
     var body: some View {
@@ -328,7 +328,7 @@ struct AliasContactsEmptyView: View {
 
             VStack(spacing: DesignConstant.sectionPadding) {
                 Text("Alias contacts")
-                    .font(.headline)
+                    .font(.title2.bold())
                     .foregroundStyle(PassColor.textNorm.toColor)
 
                 // swiftlint:disable:next line_length
@@ -350,7 +350,7 @@ struct AliasContactsEmptyView: View {
     }
 }
 
-enum ContactCreationSteps: String, CaseIterable {
+private enum ContactCreationSteps: String, CaseIterable {
     case first = "1"
     case second = "2"
     case third = "3"
@@ -388,10 +388,11 @@ enum ContactCreationSteps: String, CaseIterable {
                                       action: {})
                 }
                 Text("Create contact")
-                    .font(.title)
+                    .font(.title.bold())
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .padding(.vertical, 16)
 
-                Text("recipient_address@proton.me")
+                Text(verbatim: "recipient_address@proton.me")
                     .padding(.top, 16)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
@@ -447,30 +448,41 @@ enum ContactCreationSteps: String, CaseIterable {
     }
 }
 
-struct AliasExplanationView: View {
+private struct AliasExplanationView: View {
+    @Environment(\.dismiss) private var dismiss
+
     let email: String
 
     var body: some View {
         GeometryReader { proxy in
             ScrollView {
                 VStack {
-                    ZStack {
-                        GradientBackgroundView()
+                    ZStack(alignment: .topTrailing) {
+                        ZStack {
+                            GradientBackgroundView()
 
-                        Rectangle().fill(Color(red: 237 / 255, green: 192 / 255, blue: 101 / 255))
-                            .overlay {
-                                HStack {
-                                    Spacer()
-                                    Image(uiImage: PassIcon.stamp)
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(height: 150)
-                                        .offset(x: 50)
+                            Rectangle().fill(Color(red: 237 / 255, green: 192 / 255, blue: 101 / 255))
+                                .overlay {
+                                    HStack {
+                                        Spacer()
+                                        Image(uiImage: PassIcon.stamp)
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(height: 150)
+                                            .offset(x: 50)
+                                    }
+                                    .edgesIgnoringSafeArea(.all)
                                 }
-                                .edgesIgnoringSafeArea(.all)
-                            }
-                            .rotationEffect(.degrees(-10))
-                            .offset(x: -proxy.size.width / 2, y: 75)
+                                .rotationEffect(.degrees(-10))
+                                .offset(x: -proxy.size.width / 2, y: 75)
+                        }
+
+                        CircleButton(icon: IconProvider.cross,
+                                     iconColor: PassColor.interactionNorm,
+                                     backgroundColor: PassColor.textNorm,
+                                     accessibilityLabel: "Close",
+                                     action: dismiss.callAsFunction)
+                            .padding(16)
                     }
                     .frame(height: 178)
                     .clipped()
@@ -498,7 +510,7 @@ struct AliasExplanationView: View {
     }
 }
 
-struct ContactStepView: View {
+private struct ContactStepView: View {
     let step: ContactCreationSteps
     let email: String?
 
@@ -510,7 +522,7 @@ struct ContactStepView: View {
                     .fontWeight(.medium)
                     .padding(10)
                     .background(Circle()
-                        .stroke(PassColor.aliasInteractionNormMajor2.toColor, lineWidth: 1))
+                        .stroke(PassColor.aliasInteractionNormMinor1.toColor, lineWidth: 1))
                 VStack {
                     Divider()
                 }
@@ -551,7 +563,7 @@ struct CustomBorderShape: Shape {
     }
 }
 
-struct GradientBackgroundView: View {
+private struct GradientBackgroundView: View {
     var body: some View {
         ZStack {
             Color(hex: "#D9D9D9")
@@ -574,22 +586,5 @@ struct GradientBackgroundView: View {
                 endPoint: .bottom)
         }
         .ignoresSafeArea()
-    }
-}
-
-// Helper extension for hex color
-extension Color {
-    init(hex: String) {
-        let scanner = Scanner(string: hex)
-        _ = scanner.scanString("#")
-
-        var rgb: UInt64 = 0
-        scanner.scanHexInt64(&rgb)
-
-        let red = Double((rgb >> 16) & 0xFF) / 255.0
-        let green = Double((rgb >> 8) & 0xFF) / 255.0
-        let blue = Double((rgb >> 0) & 0xFF) / 255.0
-
-        self.init(red: red, green: green, blue: blue)
     }
 }
