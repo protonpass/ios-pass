@@ -237,32 +237,11 @@ extension ItemsForTextInsertionViewModel {
             switch selectedSortType {
             case .mostRecent:
                 let results = filteredItems.mostRecentSortResult()
-                return [
+                return results.buckets.map { bucket in
                     .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: #localized("Today"),
-                          items: results.today.map { ItemForTextInsertion.regular($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: #localized("Yesterday"),
-                          items: results.yesterday.map { ItemForTextInsertion.regular($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: #localized("Last week"),
-                          items: results.last7Days.map { ItemForTextInsertion.regular($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: #localized("Last two weeks"),
-                          items: results.last14Days.map { ItemForTextInsertion.regular($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: #localized("Last 30 days"),
-                          items: results.last30Days.map { ItemForTextInsertion.regular($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: #localized("Last 60 days"),
-                          items: results.last60Days.map { ItemForTextInsertion.regular($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: #localized("Last 90 days"),
-                          items: results.last90Days.map { ItemForTextInsertion.regular($0) }),
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: #localized("More than 90 days"),
-                          items: results.others.map { ItemForTextInsertion.regular($0) })
-                ]
+                          title: bucket.type.title,
+                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                }
 
             case .alphabeticalAsc, .alphabeticalDesc:
                 let results = filteredItems.alphabeticalSortResult(direction: self.selectedSortType.sortDirection)
