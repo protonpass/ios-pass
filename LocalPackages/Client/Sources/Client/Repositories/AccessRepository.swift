@@ -87,7 +87,9 @@ public extension AccessRepository {
         logger.trace("Getting access for user \(userId)")
         if let localAccess = try await localDatasource.getAccess(userId: userId) {
             logger.trace("Found local access for user \(userId)")
-            access.send(localAccess)
+            await MainActor.run {
+                access.send(localAccess)
+            }
             return localAccess
         }
 

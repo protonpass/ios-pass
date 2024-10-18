@@ -39,11 +39,7 @@ struct CreditCardDetailView: View {
     }
 
     var body: some View {
-        if viewModel.isShownAsSheet {
-            NavigationStack {
-                realBody
-            }
-        } else {
+        NavigationStack {
             realBody
         }
     }

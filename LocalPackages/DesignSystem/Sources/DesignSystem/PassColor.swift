@@ -33,7 +33,7 @@ public extension PassColor {
     static let inputBackgroundNorm = Self
         .color(named: "InputBackgroundNorm") // Self.color(named: , in: .module, compatibleWith: nil)!
     static let inputBorderNorm = Self.color(named: "InputBorderNorm")
-
+    static let borderWeak = Self.color(named: "BorderWeak")
     static let interactionNorm = Self.color(named: "InteractionNorm")
     static let interactionNormMajor1 = Self.color(named: "InteractionNormMajor1")
     static let interactionNormMajor2 = Self.color(named: "InteractionNormMajor2")
