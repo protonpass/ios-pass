@@ -66,7 +66,7 @@ private extension AliasContactsView {
 
             if !viewModel.aliasName.isEmpty {
                 // swiftlint:disable:next line_length
-                Text("When sending an email from this alias, the email will have '\(viewModel.aliasName.isEmpty ? "Chosen Name" : viewModel.aliasName) <\(viewModel.alias.email)>' as sender.")
+                Text("When sending an email from this alias, the email will have '\(viewModel.aliasName) <\(viewModel.alias.email)>' as sender.")
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
