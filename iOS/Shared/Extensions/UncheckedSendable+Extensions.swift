@@ -28,6 +28,5 @@ import SwiftUI
 
 extension AnyCancellable: @unchecked Sendable {}
 extension PhotosPickerItem: @unchecked Sendable {}
-extension ContainerManager: @unchecked Sendable {}
 extension CurrentValueSubject: @unchecked Sendable {}
 extension PassthroughSubject: @unchecked Sendable {}

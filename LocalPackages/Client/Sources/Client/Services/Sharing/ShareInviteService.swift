@@ -21,7 +21,7 @@
 import Combine
 import Entities
 
-public protocol ShareInviteServiceProtocol {
+public protocol ShareInviteServiceProtocol: Sendable {
     var currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> { get }
 
     func setCurrentSelectedVaultItem(with itemNum: Int)
@@ -34,7 +34,7 @@ public protocol ShareInviteServiceProtocol {
 }
 
 public final class ShareInviteService: ShareInviteServiceProtocol {
-    public let currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> = .init(nil)
+    public nonisolated let currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> = .init(nil)
     private var currentSelectedVaultItems: Int?
     private var emailsAndKeys = [String: [PublicKey]?]()
     private var emailsAndRole = [String: ShareRole]()
