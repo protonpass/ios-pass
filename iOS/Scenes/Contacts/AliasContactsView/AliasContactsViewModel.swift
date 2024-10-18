@@ -45,6 +45,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     @Published private(set) var displayName = ""
     @Published private(set) var showExplanation = false
     @Published private(set) var contactsInfos = AliasContactsModel.default
+    @Published private(set) var updatingName = false
 
     var hasNoContact: Bool {
         contacts.contacts.isEmpty
@@ -144,13 +145,18 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
             guard let self else {
                 return
             }
+            defer {
+                updatingName = false
+            }
             do {
+                updatingName = true
                 let userId = try await userManager.getActiveUserId()
                 try await aliasRepository.updateSlAliasName(userId: userId,
                                                             shareId: infos.shareId,
                                                             itemId: infos.itemId,
                                                             name: aliasName.nilIfEmpty)
                 previousName = aliasName
+                router.display(element: .infosMessage(#localized("Your sender name was updated to %@", aliasName)))
             } catch {
                 aliasName = previousName
                 handle(error)

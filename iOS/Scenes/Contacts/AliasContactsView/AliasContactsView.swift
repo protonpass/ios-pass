@@ -38,6 +38,8 @@ struct AliasContactsView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var sheetState: AliasContactsSheetState?
+    @State private var editingName = false
+    @FocusState private var focused
 
     var body: some View {
         mainContainer
@@ -62,13 +64,15 @@ private extension AliasContactsView {
 
             senderName
 
-            // swiftlint:disable:next line_length
-            Text("When sending an email from this alias, the email will have '\(viewModel.aliasName.isEmpty ? "Chosen Name" : viewModel.aliasName) <\(viewModel.alias.email)>' as sender.")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(.callout)
-                .foregroundStyle(PassColor.textWeak.toColor)
-                .padding(.top, 8)
-                .padding(.bottom, DesignConstant.sectionPadding)
+            if !viewModel.aliasName.isEmpty {
+                // swiftlint:disable:next line_length
+                Text("When sending an email from this alias, the email will have '\(viewModel.aliasName.isEmpty ? "Chosen Name" : viewModel.aliasName) <\(viewModel.alias.email)>' as sender.")
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .padding(.top, 8)
+                    .padding(.bottom, DesignConstant.sectionPadding)
+            }
 
             if viewModel.hasNoContact {
                 AliasContactsEmptyView { sheetState = .explanation }
@@ -79,6 +83,7 @@ private extension AliasContactsView {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.aliasName)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .background(PassColor.backgroundNorm.toColor)
@@ -119,19 +124,41 @@ private extension AliasContactsView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .contentShape(.rect)
 
-                TextField("Enter name", text: $viewModel.aliasName, onEditingChanged: { value in
-                    guard !value else {
-                        return
-                    }
-                    viewModel.updateAliasName()
-                })
-                .autocorrectionDisabled()
-                .tint(PassColor.aliasInteractionNormMajor2.toColor)
+                if editingName {
+                    TextField("Enter name", text: $viewModel.aliasName, onEditingChanged: { value in
+                        guard !value else {
+                            return
+                        }
+                        viewModel.updateAliasName()
+                        focused = false
+                    })
+                    .focused($focused)
+                    .autocorrectionDisabled()
+                    .tint(PassColor.aliasInteractionNormMajor2.toColor)
+                } else {
+                    Text(viewModel.aliasName.isEmpty ? "Enter name" : viewModel.aliasName)
+                        .foregroundStyle(viewModel.aliasName.isEmpty ? PassColor.textWeak.toColor : PassColor
+                            .textNorm.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .onTapGesture {
+                            editingName.toggle()
+                            focused = true
+                        }
+                }
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
 
-            ItemDetailSectionIcon(icon: IconProvider.pen,
-                                  width: 20)
+            if viewModel.updatingName {
+                ProgressView()
+            } else {
+                Button {
+                    editingName.toggle()
+                    focused = true
+                } label: {
+                    ItemDetailSectionIcon(icon: IconProvider.pen,
+                                          width: 20)
+                }.buttonStyle(.plain)
+            }
         }
         .padding(10)
         .roundedDetailSection()
@@ -350,27 +377,32 @@ private struct AliasContactsEmptyView: View {
     }
 }
 
-private enum ContactCreationSteps: String, CaseIterable {
-    case first = "1"
-    case second = "2"
-    case third = "3"
+private enum ContactCreationSteps: Hashable {
+    case first
+    case second
+    case third(email: String)
 
-    func title(_ element: String? = nil) -> String {
+    var number: String {
+        switch self {
+        case .first: "1"
+        case .second: "2"
+        case .third: "3"
+        }
+    }
+
+    var title: String {
         switch self {
         case .first:
-            return #localized("Enter the address you want to email.")
+            #localized("Enter the address you want to email.")
         case .second:
-            return #localized("Proton Pass will generate a forwarding address (also referred to as reverse alias).")
-        case .third:
-            guard let element else {
-                return ""
-            }
-            return #localized("Email this address and it will appear to be sent from %@.", element)
+            #localized("Proton Pass will generate a forwarding address (also referred to as reverse alias).")
+        case let .third(title):
+            #localized("Email this address and it will appear to be sent from %@.", title)
         }
     }
 
     @MainActor @ViewBuilder
-    func descriptionSubview(info: String? = nil) -> some View {
+    var descriptionSubview: some View {
         switch self {
         case .first:
             VStack(alignment: .leading, spacing: 0) {
@@ -409,8 +441,8 @@ private enum ContactCreationSteps: String, CaseIterable {
             })
             .cornerRadius(12)
             .overlay(RoundedRectangle(cornerRadius: 12)
-                .stroke(PassColor.backgroundWeak.toColor, lineWidth: 1))
-        case .third:
+                .stroke(PassColor.borderWeak.toColor, lineWidth: 1))
+        case let .third(info):
             VStack(alignment: .leading, spacing: 0) {
                 VStack(alignment: .leading, spacing: 0) {
                     HStack {
@@ -498,8 +530,12 @@ private struct AliasExplanationView: View {
                         Text("Here’s how it works:")
                             .foregroundStyle(PassColor.textNorm.toColor)
 
-                        ForEach(ContactCreationSteps.allCases, id: \.self) { step in
-                            ContactStepView(step: step, email: step == .third ? email : nil)
+                        ForEach([
+                            ContactCreationSteps.first,
+                            ContactCreationSteps.second,
+                            ContactCreationSteps.third(email: email)
+                        ], id: \.self) { step in
+                            ContactStepView(step: step)
                         }
                     }.padding()
 
@@ -512,12 +548,11 @@ private struct AliasExplanationView: View {
 
 private struct ContactStepView: View {
     let step: ContactCreationSteps
-    let email: String?
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 10) {
-                Text(step.rawValue)
+                Text(step.number)
                     .foregroundStyle(PassColor.aliasInteractionNormMajor2.toColor)
                     .fontWeight(.medium)
                     .padding(10)
@@ -528,10 +563,10 @@ private struct ContactStepView: View {
                 }
             }.padding(.top, 10)
 
-            Text(step.title(email))
+            Text(step.title)
                 .foregroundStyle(PassColor.textNorm.toColor)
 
-            step.descriptionSubview(info: email)
+            step.descriptionSubview
         }
     }
 }
