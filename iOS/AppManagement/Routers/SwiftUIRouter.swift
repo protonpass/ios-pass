@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Entities
 import SwiftUI
 
@@ -38,6 +39,13 @@ enum BreachDetailsInfo: Equatable, Hashable {
     }
 }
 
+struct ContactsInfos: Hashable {
+    let itemId: String
+    let shareId: String
+    let alias: Alias
+    let contacts: PaginatedAliasContacts
+}
+
 enum GeneralRouterDestination: Hashable {
     case userSharePermission
     case shareSummary
@@ -47,6 +55,7 @@ enum GeneralRouterDestination: Hashable {
     case breachDetail(BreachDetailsInfo)
     case monitoredAliases([AliasMonitorInfo], monitored: Bool)
     case darkWebMonitorHome(UserBreaches)
+    case contacts(ContactsInfos)
 }
 
 enum ValidationEmailType: Hashable {
@@ -125,6 +134,8 @@ extension View {
                 MonitorAllAliasesView(infos: infos, monitored: monitored)
             case let .darkWebMonitorHome(breach):
                 DarkWebMonitorHomeView(viewModel: .init(userBreaches: breach))
+            case let .contacts(infos):
+                AliasContactsView(viewModel: .init(infos: infos))
             }
         }
     }
