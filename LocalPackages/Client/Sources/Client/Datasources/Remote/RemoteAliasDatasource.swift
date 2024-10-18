@@ -56,7 +56,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func createAliasContact(userId: String,
                             shareId: String,
                             itemId: String,
-                            request: CreateAContactRequest) async throws -> LightAliasContact
+                            request: CreateAContactRequest) async throws -> AliasContactLite
     func getAliasContactInfos(userId: String,
                               shareId: String,
                               itemId: String,
@@ -65,7 +65,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
                             shareId: String,
                             itemId: String,
                             contactId: String,
-                            request: UpdateContactRequest) async throws -> LightAliasContact
+                            request: UpdateContactRequest) async throws -> AliasContactLite
     func deleteContact(userId: String,
                        shareId: String,
                        itemId: String,
@@ -199,7 +199,7 @@ public extension RemoteAliasDatasource {
     func createAliasContact(userId: String,
                             shareId: String,
                             itemId: String,
-                            request: CreateAContactRequest) async throws -> LightAliasContact {
+                            request: CreateAContactRequest) async throws -> AliasContactLite {
         let endpoint = CreateAContactEndpoint(shareId: shareId, itemId: itemId, request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.contact
@@ -218,7 +218,7 @@ public extension RemoteAliasDatasource {
                             shareId: String,
                             itemId: String,
                             contactId: String,
-                            request: UpdateContactRequest) async throws -> LightAliasContact {
+                            request: UpdateContactRequest) async throws -> AliasContactLite {
         let endpoint = UpdateContactEndpoint(shareId: shareId,
                                              itemId: itemId,
                                              contactId: contactId,

@@ -59,14 +59,13 @@ struct AliasDetailView: View {
                     if !viewModel.itemContent.note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
                                           vault: viewModel.vault?.vault,
-                                          title: #localized("Note"),
                                           note: viewModel.itemContent.note)
                     }
 
                     if let note = viewModel.aliasInfos?.note, !note.isEmpty {
                         NoteDetailSection(itemContent: viewModel.itemContent,
                                           vault: viewModel.vault?.vault,
-                                          title: #localized("Note • SimpleLogin"),
+                                          title: "Note • SimpleLogin",
                                           note: note)
                     }
 
@@ -238,11 +237,11 @@ struct AliasDetailView: View {
             ItemDetailSectionIcon(icon: IconProvider.chartLine, color: iconTintColor)
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Activity in last two weeks")
+                Text("Activity in last 14 days")
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("\(stats.forwardedEmailsTitle) • \(stats.repliedEmailsTitle) • \(stats.blockedEmailsTitle)")
+                Text(verbatim: "\(stats.forwardedEmailsTitle) • \(stats.repliedEmailsTitle) • \(stats.blockedEmailsTitle)")
                     .sectionContentText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
@@ -258,7 +257,7 @@ struct AliasDetailView: View {
             router.navigate(to: .contacts(infos))
         } label: {
             HStack(spacing: DesignConstant.sectionPadding) {
-                ItemDetailSectionIcon(icon: IconProvider.chartLine, color: iconTintColor)
+                ItemDetailSectionIcon(icon: IconProvider.filingCabinet, color: iconTintColor)
                 Text("Contacts")
                     .sectionContentText()
                     .frame(maxWidth: .infinity, alignment: .leading)

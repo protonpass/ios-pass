@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "?" : {
+      "comment" : "Element of button that showcase a information screen ",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -480,16 +481,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "%@ • %@ • %@" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ • %@ • %@"
           }
         }
       }
@@ -13094,12 +13085,12 @@
         }
       }
     },
-    "Activity in last two weeks" : {
+    "Activity in last 14 days" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Activity in last two weeks"
+            "value" : "Activity in last 14 days"
           }
         }
       }
@@ -89936,16 +89927,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mới dùng"
-          }
-        }
-      }
-    },
-    "recipient_address@proton.me" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "recipient_address@proton.me"
           }
         }
       }

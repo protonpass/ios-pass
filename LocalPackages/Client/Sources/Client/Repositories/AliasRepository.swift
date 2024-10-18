@@ -61,7 +61,7 @@ public protocol AliasRepositoryProtocol: Sendable {
     func createContact(userId: String,
                        shareId: String,
                        itemId: String,
-                       request: CreateAContactRequest) async throws -> LightAliasContact
+                       request: CreateAContactRequest) async throws -> AliasContactLite
     func getContactInfos(userId: String,
                          shareId: String,
                          itemId: String,
@@ -70,7 +70,7 @@ public protocol AliasRepositoryProtocol: Sendable {
                        shareId: String,
                        itemId: String,
                        contactId: String,
-                       blocked: Bool) async throws -> LightAliasContact
+                       blocked: Bool) async throws -> AliasContactLite
 
     func deleteContact(userId: String,
                        shareId: String,
@@ -236,7 +236,7 @@ public extension AliasRepository {
     func createContact(userId: String,
                        shareId: String,
                        itemId: String,
-                       request: CreateAContactRequest) async throws -> LightAliasContact {
+                       request: CreateAContactRequest) async throws -> AliasContactLite {
         let contact = try await remoteDatasource.createAliasContact(userId: userId,
                                                                     shareId: shareId,
                                                                     itemId: itemId,
@@ -259,7 +259,7 @@ public extension AliasRepository {
                        shareId: String,
                        itemId: String,
                        contactId: String,
-                       blocked: Bool) async throws -> LightAliasContact {
+                       blocked: Bool) async throws -> AliasContactLite {
         let request = UpdateContactRequest(blocked: blocked)
         let contact = try await remoteDatasource.updateAliasContact(userId: userId,
                                                                     shareId: shareId,
