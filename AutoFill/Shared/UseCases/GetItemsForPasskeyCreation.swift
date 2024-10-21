@@ -65,9 +65,10 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
         var searchableItems = [SearchableItem]()
         var includedItems = [SymmetricallyEncryptedItem]()
 
+        let allowedVaults = vaults.autofillAllowedVaults
         for item in items {
             guard let vault = vaults.first(where: { $0.shareId == item.shareId }),
-                  shouldTakeVaultIntoAccount(vault, allVaults: vaults, plan: plan) else {
+                  shouldTakeVaultIntoAccount(vault, allowedVaults: allowedVaults, plan: plan) else {
                 continue
             }
             includedItems.append(item)
@@ -124,10 +125,10 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
 }
 
 private extension GetItemsForPasskeyCreation {
-    func shouldTakeVaultIntoAccount(_ vault: Vault, allVaults: [Vault], plan: Plan) -> Bool {
+    func shouldTakeVaultIntoAccount(_ vault: Vault, allowedVaults: [Vault], plan: Plan) -> Bool {
         switch plan.planType {
         case .free:
-            allVaults.twoOldestVaults.isOneOf(shareId: vault.shareId)
+            allowedVaults.contains(where: { $0.shareId == vault.shareId })
         default:
             true
         }
