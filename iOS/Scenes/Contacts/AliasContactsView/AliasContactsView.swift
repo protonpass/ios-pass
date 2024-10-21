@@ -88,6 +88,7 @@ private extension AliasContactsView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.aliasName)
+        .animation(.default, value: viewModel.hasNoContact)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .showSpinner(viewModel.loading)
