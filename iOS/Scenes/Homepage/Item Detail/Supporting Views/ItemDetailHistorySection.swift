@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Factory
@@ -52,30 +53,6 @@ extension ItemContent {
 
     var shortRevisionDate: String {
         item.revisionTime.shortDateString
-    }
-}
-
-extension Int64 {
-    var fullDateString: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .full
-        dateFormatter.timeStyle = .short
-        dateFormatter.doesRelativeDateFormatting = true
-        let relativeDateFormatter = RelativeDateTimeFormatter()
-
-        let timeInterval = TimeInterval(self)
-        let date = Date(timeIntervalSince1970: timeInterval)
-        let dateString = dateFormatter.string(from: date)
-        let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: .now)
-        return "\(dateString) (\(relativeString))"
-    }
-
-    var shortDateString: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "MMM-dd-yy HH:mm"
-        let timeInterval = TimeInterval(self)
-        let date = Date(timeIntervalSince1970: timeInterval)
-        return dateFormatter.string(from: date)
     }
 }
 
