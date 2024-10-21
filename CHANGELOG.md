@@ -1,3 +1,16 @@
+# Version 1.13.2
+Features:
+- Added support for arbitrary text filling (iOS 18): Long press on any text field -> AutoFill -> Passwords
+
+Improvements:
+- Enabled app launch via protonpass:// deeplink
+- Tap the item counter to filter by item type
+
+Others:
+- Updated Rust library from 0.8.2 to 0.8.3
+- Updated Factory (DI tool) to 2.4.0 for Swift 6 compliance
+- Introduced advanced alias management (behind feature flags)
+
 # Version 1.13.1
 One-time verification codes autofill (iOS 18)
 
