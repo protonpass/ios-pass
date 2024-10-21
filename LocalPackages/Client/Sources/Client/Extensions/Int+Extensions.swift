@@ -32,6 +32,12 @@ public extension Int {
     }
 
     var fullDateString: String {
+        Int64(self).fullDateString
+    }
+}
+
+public extension Int64 {
+    var fullDateString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
         dateFormatter.timeStyle = .short
@@ -41,6 +47,15 @@ public extension Int {
         let timeInterval = TimeInterval(self)
         let date = Date(timeIntervalSince1970: timeInterval)
         let dateString = dateFormatter.string(from: date)
-        return "\(dateString)"
+        let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: .now)
+        return "\(dateString) (\(relativeString))"
+    }
+
+    var shortDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM-dd-yy HH:mm"
+        let timeInterval = TimeInterval(self)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        return dateFormatter.string(from: date)
     }
 }
