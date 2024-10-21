@@ -37324,6 +37324,8 @@
       }
     },
     "Created %@" : {
+      "comment" : "Displayed in the alias contact cell to indicated the creation date of this contact",
+      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
