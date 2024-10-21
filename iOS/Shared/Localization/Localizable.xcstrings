@@ -649,8 +649,8 @@
       "localizations" : {
         "en" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%1$@, %2$@, %3$@ in the last 14 days."
+            "state" : "translated",
+            "value" : "%@, %@, %@ in the last 14 days."
           }
         }
       }
@@ -37345,7 +37345,6 @@
     },
     "Created %@" : {
       "comment" : "Displayed in the alias contact cell to indicated the creation date of this contact",
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
