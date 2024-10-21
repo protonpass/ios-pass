@@ -36,6 +36,7 @@ extension Vault {
               pendingInvites: 0,
               newUserInvitesReady: 0,
               shared: .random(),
-              createTime: 0)
+              createTime: 0,
+              canAutoFill: .random())
     }
 }

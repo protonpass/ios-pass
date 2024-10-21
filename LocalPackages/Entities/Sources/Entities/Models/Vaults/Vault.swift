@@ -49,6 +49,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
     /// Time of creation of this vault
     public let createTime: Int64
 
+    public let canAutoFill: Bool
+
     public init(id: String,
                 shareId: String,
                 addressId: String,
@@ -62,7 +64,8 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
                 pendingInvites: Int,
                 newUserInvitesReady: Int,
                 shared: Bool,
-                createTime: Int64) {
+                createTime: Int64,
+                canAutoFill: Bool) {
         self.id = id
         self.shareId = shareId
         self.name = name
@@ -77,6 +80,7 @@ public struct Vault: Identifiable, Hashable, Equatable, Sendable {
         self.newUserInvitesReady = newUserInvitesReady
         self.shared = shared
         self.createTime = createTime
+        self.canAutoFill = canAutoFill
     }
 }
 

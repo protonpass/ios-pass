@@ -20,53 +20,12 @@
 
 import Entities
 
-// periphery:ignore
-public struct WritableOldestVaults {
-    public let owned: Vault?
-    public let other: Vault?
-
-    static var empty: WritableOldestVaults {
-        WritableOldestVaults(owned: nil, other: nil)
-    }
-
-    public var allVaults: [Vault] {
-        [owned, other].compactMap { $0 }
-    }
-
-    public func isOneOf(shareId: String) -> Bool {
-        shareId == owned?.shareId || shareId == other?.shareId
-    }
-}
-
 public extension [Vault] {
-    /// This return the 2 oldest vaults to witch the users has write value.
-    /// The first vault always belongs the the current user
-    var twoOldestVaults: WritableOldestVaults {
-        if self.isEmpty {
-            return WritableOldestVaults.empty
-        }
-        var oldestOwned: Vault?
-        var secondOldest: Vault?
-        for vault in self {
-            if oldestOwned == nil, vault.isOwner {
-                oldestOwned = vault
-            } else {
-                if let previousOldestOwned = oldestOwned,
-                   vault.isOwner,
-                   previousOldestOwned.createTime > vault.createTime {
-                    secondOldest = oldestOwned
-                    oldestOwned = vault
-                } else {
-                    if secondOldest == nil {
-                        secondOldest = vault
-                    } else if let previousSecondOldest = secondOldest,
-                              previousSecondOldest.createTime > vault.createTime {
-                        secondOldest = vault
-                    }
-                }
-            }
-        }
-        return WritableOldestVaults(owned: oldestOwned, other: secondOldest)
+    /// This canAutoFill params has been computed on the BE side to determined if a vault should be accessible to
+    /// use in autofill
+    /// This should replace the previous client logic calculating the oldest 2 vaults of the user.
+    var autofillAllowedVaults: [Vault] {
+        self.filter(\.canAutoFill)
     }
 
     var oldestOwned: Vault? {
