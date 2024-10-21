@@ -41,7 +41,8 @@ final class ShareTests: XCTestCase {
                                contentKeyRotation: .random(in: 100...200),
                                contentFormatVersion: .random(in: 100...200),
                                expireTime: .random(in: 100...200),
-                               createTime: .random(in: 100...200))
+                               createTime: .random(in: 100...200),
+                               canAutoFill: .random())
 
         // When
         let clonedShare = givenShare.copy(pendingInvites: 10)
