@@ -285,10 +285,11 @@ private extension AliasContact {
     }
 
     var activityText: String {
-        noActivity ? #localized("No activity in the last 14 days.") :
-            #localized("%lld forwarded, %lld replies, %lld blocked in the last 14 days.", forwardedEmails,
-                       repliedEmails,
-                       blockedEmails)
+        let forwarded = #localized("%lld forwarded", forwardedEmails)
+        let replies = #localized("%lld replies", repliedEmails)
+        let blocked = #localized("%lld blocked", blockedEmails)
+        return noActivity ? #localized("No activity in the last 14 days.") :
+            #localized("%@, %@, %@ in the last 14 days.", forwarded, replies, blocked)
     }
 }
 

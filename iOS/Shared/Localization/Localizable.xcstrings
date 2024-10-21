@@ -645,6 +645,16 @@
         }
       }
     },
+    "%@, %@, %@ in the last 14 days." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@, %2$@, %3$@ in the last 14 days."
+          }
+        }
+      }
+    },
     "%@%% decrypted..." : {
       "localizations" : {
         "be" : {
@@ -2351,6 +2361,16 @@
         }
       }
     },
+    "%lld blocked" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld blocked"
+          }
+        }
+      }
+    },
     "%lld blocks" : {
       "comment" : "Number of email blocked",
       "localizations" : {
@@ -3444,12 +3464,12 @@
         }
       }
     },
-    "%lld forwarded, %lld replies, %lld blocked in the last 14 days." : {
+    "%lld forwarded" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld forwarded, %lld replies, %lld blocked in the last 14 days."
+            "value" : "%lld forwarded"
           }
         }
       }
@@ -8738,7 +8758,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld replie"
+                  "value" : "%lld reply"
                 }
               },
               "other" : {
@@ -8755,7 +8775,7 @@
             "plural" : {
               "one" : {
                 "stringUnit" : {
-                  "state" : "translated",
+                  "state" : "needs_review",
                   "value" : "%lld réponse"
                 }
               },
