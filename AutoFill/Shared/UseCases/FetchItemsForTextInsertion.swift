@@ -70,7 +70,7 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
              history) = try await (getSymmetricKey, getPlan, getVaults, getEncryptedItems, getHistory)
 
         let applicableVaults = if plan.isFreeUser {
-            vaults.twoOldestVaults.allVaults
+            vaults.autofillAllowedVaults
         } else {
             vaults
         }
