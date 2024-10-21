@@ -21,6 +21,14 @@
 public enum SortType: Int, CaseIterable, Equatable {
     case mostRecent = 0, alphabeticalAsc, alphabeticalDesc, newestToOldest, oldestToNewest
 
+    public var isDefault: Bool {
+        if case .mostRecent = self {
+            true
+        } else {
+            false
+        }
+    }
+
     public var isAlphabetical: Bool {
         switch self {
         case .alphabeticalAsc, .alphabeticalDesc:

@@ -29,6 +29,14 @@ enum ItemTypeFilterOption: Equatable, Hashable {
     case all
     case precise(ItemContentType)
 
+    var isDefault: Bool {
+        if case .all = self {
+            true
+        } else {
+            false
+        }
+    }
+
     static var allCases: [ItemTypeFilterOption] {
         // We want to control the order of appearance so we construct the array manually
         // instead of looping through "ItemContentType.allCases"
