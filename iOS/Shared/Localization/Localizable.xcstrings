@@ -75465,6 +75465,17 @@
         }
       }
     },
+    "No items found" : {
+      "comment" : "Message shown when filtering items by type and no items of such type is found",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No items found"
+          }
+        }
+      }
+    },
     "No logs" : {
       "localizations" : {
         "be" : {
