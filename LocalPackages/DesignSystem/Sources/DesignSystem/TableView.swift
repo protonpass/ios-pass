@@ -42,15 +42,18 @@ public final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
 
 public struct TableViewConfiguration {
     let showSectionIndexTitles: Bool
+    let rowSpacing: CGFloat
     let sectionIndexColor: UIColor
     let backgroundColor: UIColor
     let separatorColor: UIColor
 
     public init(showSectionIndexTitles: Bool = false,
+                rowSpacing: CGFloat = 0,
                 sectionIndexColor: UIColor = PassColor.interactionNorm,
                 backgroundColor: UIColor = .clear,
                 separatorColor: UIColor = .clear) {
         self.showSectionIndexTitles = showSectionIndexTitles
+        self.rowSpacing = rowSpacing
         self.sectionIndexColor = sectionIndexColor
         self.backgroundColor = backgroundColor
         self.separatorColor = separatorColor
@@ -146,7 +149,9 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
                     cell.backgroundColor = .clear
                     cell.contentView.backgroundColor = .clear
                     cell.contentConfiguration = UIHostingConfiguration {
-                        self.parent.itemView(item)
+                        self.parent
+                            .itemView(item)
+                            .padding(.bottom, self.parent.configuration.rowSpacing)
                     }
                     // A combination of minSize and magins to remove the vertical padding
                     .minSize(width: 0, height: 0)
