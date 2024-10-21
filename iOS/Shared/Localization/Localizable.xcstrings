@@ -9,6 +9,12 @@
             "state" : "translated",
             "value" : "?"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "?"
+          }
         }
       }
     },
@@ -1034,6 +1040,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld aliasser"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Aliasse"
                 }
               }
             }
@@ -2328,7 +2352,7 @@
       }
     },
     "%lld blocks" : {
-        "comment" : "Number of email blocked",
+      "comment" : "Number of email blocked",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -2343,6 +2367,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld blocks"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bloqué"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bloqués"
                 }
               }
             }
@@ -3427,6 +3469,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld forwards"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld transfert"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld transferts"
                 }
               }
             }
@@ -7637,6 +7697,24 @@
               }
             }
           }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld mois"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld mois"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -8707,6 +8785,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld replies"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld réponse"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld réponses"
                 }
               }
             }
@@ -11321,6 +11417,24 @@
               }
             }
           }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld an"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ans"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -13093,6 +13207,12 @@
             "state" : "translated",
             "value" : "Activity in last 14 days"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activité dans les 14 jours derniers jours"
+          }
         }
       }
     },
@@ -13434,6 +13554,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tilføj en brugerdefineret sektion"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benutzerdefinierten Abschnitt hinzufügen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προσθήκη προσαρμοσμένης ενότητας"
           }
         },
         "en" : {
@@ -14494,6 +14626,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tilføj postkasse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postfach hinzufügen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προσθήκη γραμματοκιβωτίου"
           }
         },
         "en" : {
@@ -15735,6 +15879,12 @@
             "value" : "Avanceret administration af alias"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προηγμένη διαχείριση ψευδωνύμων"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15853,6 +16003,12 @@
             "value" : "Avanceret alias-administration er tilgængelig med Pass Unlimited. Opgrader for øjeblikkelig adgang."
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η προηγμένη διαχείριση ψευδωνύμων είναι διαθέσιμη με το Pass Unlimited. Αναβαθμίστε για άμεση πρόσβαση."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15880,7 +16036,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass Unlimited permet la gestion avancée des alias. Améliorez votre abonnement pour en profiter immédiatemment."
+            "value" : "Pass Unlimited permet la gestion avancée des alias. Améliorez votre abonnement pour en profiter immédiatement."
           }
         },
         "id" : {
@@ -15898,7 +16054,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "향상된 별칭 관리가 Pass Unlimited에서 지원됩니다. 무제한 접근을 위해 업그레이드하세요."
+            "value" : "고급 별칭 관리가 Pass Unlimited에서 지원됩니다. 업그레이드하여 즉시 이용하세요."
           }
         },
         "nb" : {
@@ -18583,6 +18739,12 @@
             "state" : "translated",
             "value" : "Alias contacts"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacts de l'alias"
+          }
         }
       }
     },
@@ -19208,6 +19370,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias-administration"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasverwaltung"
           }
         },
         "el" : {
@@ -20595,6 +20763,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alle aliasser, der bruger postkassen **%@** vil også blive slettet. Hvis du vil fortsætte med at modtage e-mails, skal du overføre disse aliasser til en anden postkasse:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Όλα τα ψευδώνυμα που χρησιμοποιούν το γραμματοκιβώτιο **%@** θα διαγραφούν επίσης. Για να συνεχίσετε να λαμβάνετε μηνύματα ηλεκτρονικού ταχυδρομείου, μεταφέρετε αυτά τα ψευδώνυμα σε διαφορετική θυρίδα:"
           }
         },
         "en" : {
@@ -25098,6 +25272,12 @@
             "state" : "translated",
             "value" : "Block contact"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquer le contact"
+          }
         }
       }
     },
@@ -25107,6 +25287,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blocked"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqué"
           }
         }
       }
@@ -31927,6 +32113,12 @@
             "state" : "translated",
             "value" : "Contact copied"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le contact a été copié."
+          }
         }
       }
     },
@@ -31936,6 +32128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contact created %@ ago."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le contact a été créé il y a %@."
           }
         }
       }
@@ -32102,10 +32300,160 @@
     },
     "Contacts" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кантакты"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakty"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakter"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakte"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επαφές"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contacts"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactos"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhteystiedot"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacts"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontak"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contatti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კონტაქტები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연락처"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakter"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacten"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakty"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contatos"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contacte"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakty"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stiki"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakter"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kişiler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контакти"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liên hệ"
           }
         }
       }
@@ -32752,10 +33100,160 @@
     },
     "Copy address" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Капіяваць адрас"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovat adresu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiér adresse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Adresse kopieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή διεύθυνσης"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copy address"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar dirección"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar dirección"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi osoite"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier l'adresse"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salin alamat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia indirizzo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アドレスをコピー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მისამართის კოპირება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주소 복사"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier adresse"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres kopiëren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj adres"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar endereço"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiere adresă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovať adresu"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiraj naslov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera adress"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresi kopyala"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копіювати адресу"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sao chép địa chỉ"
           }
         }
       }
@@ -36270,6 +36768,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create contact"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Créer un contact"
           }
         }
       }
@@ -40561,6 +41065,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Slet postkasse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postfach löschen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαγραφή γραμματοκιβωτίου"
           }
         },
         "en" : {
@@ -46327,10 +46843,130 @@
     },
     "Enable SimpleLogin sync" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уключыць сінхранізацыю SimpleLogin"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolit synchronizaci se SimpleLogin"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver SimpleLogin-synkronisering"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin-Synchronisierung aktivieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ενεργοποιήστε το συγχρονισμό SimpleLogin"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enable SimpleLogin sync"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar la sincronización con SimpleLogin"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar sincronización de SimpleLogin"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ota SimpleLogin-synkronointi käyttöön"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer la synchronisation avec SimpleLogin"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktifkan sinkronisasi SimpleLogin"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attiva la sincronizzazione con SimpleLogin"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin-ის სინქრონიზაციის ჩართვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin 동기화 활성화"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver SimpleLogin synkronisering"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz synchronizację SimpleLogin"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar sincronização com SimpleLogin"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activare sincronizare SimpleLogin"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapnúť SimpleLogin synchronizáciu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivera SimpleLogin-synkronisering"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin eşitlemesini aç"
           }
         }
       }
@@ -47290,6 +47926,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Enter name"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saisir un nom"
           }
         }
       }
@@ -52648,6 +53290,12 @@
             "state" : "translated",
             "value" : "Forwarding addresses"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresses de transfert"
+          }
         }
       }
     },
@@ -52813,10 +53461,160 @@
     },
     "From" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ад"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fra"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Από"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "From"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lähettäjä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dari"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "差出人"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამომგზავნელი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보낸 사람"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fra"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afzender"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De la"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Från"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kimden"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Від"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Từ"
           }
         }
       }
@@ -52827,6 +53625,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "From your alias <%@>"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De votre alias <%@>"
           }
         }
       }
@@ -54902,6 +55706,18 @@
             "value" : "Få Proton Unlimited"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Unlimited holen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποκτήστε το Pass Unlimited"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55814,6 +56630,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Here’s how it works:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voici comment ça fonctionne :"
           }
         }
       }
@@ -57341,7 +58163,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "사회 보장 번호 숨기기"
+            "value" : "주민등록번호 숨기기"
           }
         },
         "nb" : {
@@ -60729,7 +61551,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Інтегрований двоетапний (2FA) автентифікатор"
+            "value" : "Інтегрований автентифікатор 2FA"
           }
         },
         "vi" : {
@@ -68739,10 +69561,118 @@
     "Logins with 2FA" : {
       "comment" : "Title of the page that lists only login items that have 2FA set up",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запісы ўваходу з 2ФА"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přihlášení pomocí 2FA"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logins med 2FA"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logins mit 2FA"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Συνδέσεις με έλεγχο ταυτότητας δύο παραγόντων (2FA)"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Logins with 2FA"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicios de sesión con 2FA"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicios de sesión con 2FA"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA:ta käyttävät kirjautumistiedot"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identifiants avec A2F"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entri masuk dengan 2FA"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Login con autenticazione a due fattori"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2FA-ით შესვლები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2단계 인증으로의 로그인들"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pålogginger med 2FA"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logins com 2FA"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conectări cu A2F"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inloggningar med 2FA"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İki adımlı doğrulama kullanan oturum açma kayıtları"
           }
         }
       }
@@ -69088,6 +70018,12 @@
             "value" : "Handlingsmenu for postkasse"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μενού ενεργειών γραμματοκιβωτίου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69139,7 +70075,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "메일함 동작 매뉴"
+            "value" : "메일함 동작 메뉴"
           }
         },
         "nb" : {
@@ -69172,6 +70108,12 @@
             "value" : "Ponuka akcií poštovej schránky"
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Åtgärdsmeny för brevlåda"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69198,6 +70140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Postkasse er der, hvor e-mails sendt til et alias videresendes til. Det er din sædvanlige postkasse, f.eks. Gmail, Outlook, Proton Mail osv."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το γραμματοκιβώτιο είναι το σημείο όπου προωθούνται τα μηνύματα ηλεκτρονικού ταχυδρομείου που αποστέλλονται σε ένα ψευδώνυμο. Είναι το συνηθισμένο γραμματοκιβώτιό σας, π.χ. Gmail, Outlook, Proton Mail κ.λπ."
           }
         },
         "en" : {
@@ -70068,6 +71016,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Administrer dine aliasser"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαχείριση των ψευδωνύμων σας"
           }
         },
         "en" : {
@@ -74105,6 +75059,12 @@
             "state" : "translated",
             "value" : "No activity in the last 14 days."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune activité dans les 14 derniers jours"
+          }
         }
       }
     },
@@ -76133,6 +77093,12 @@
     "Note • SimpleLogin" : {
       "localizations" : {
         "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note • SimpleLogin"
+          }
+        },
+        "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Note • SimpleLogin"
@@ -78453,7 +79419,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "무료 Proton Pass 계정만 허용됩니다."
+            "value" : "오직 하나의 무료 Proton Pass 계정만 허용됩니다."
           }
         },
         "nb" : {
@@ -87293,6 +88259,18 @@
             "value" : "Premium domæne"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium-Domain"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium τομέας"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89031,6 +90009,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Offentligt domæne"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δημόσιος τομέας"
           }
         },
         "en" : {
@@ -98188,6 +99172,12 @@
             "value" : "Link sicuri"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュアリンク"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -100800,6 +101790,12 @@
             "state" : "translated",
             "value" : "Send email"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Envoyer un message"
+          }
         }
       }
     },
@@ -100969,6 +101965,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sender name"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom de l'expéditeur"
           }
         }
       }
@@ -105952,7 +106954,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "사회 보장 번호 보기"
+            "value" : "주민등록번호 보기"
           }
         },
         "nb" : {
@@ -106569,7 +107571,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ 계정으로 로그인함"
+            "value" : "%@ 계정으로 로그인됨"
           }
         },
         "nb" : {
@@ -113907,10 +114909,160 @@
     },
     "To" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Каму"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Til"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προς"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "To"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vastaanottaja"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "À"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kepada"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "宛先"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვის"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "받는사람"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Til"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aan"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Către"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pre"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Till"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kime"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кому"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đến"
           }
         }
       }
@@ -114082,6 +115234,12 @@
             "state" : "translated",
             "value" : "To keep your personal email address hidden, you can create an alias contact that masks your address."
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour masquer votre adresse e-mail personnelle, vous pouvez créer un alias qui la dissimule."
+          }
         }
       }
     },
@@ -114104,6 +115262,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Til postkasse"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Στο γραμματοκιβώτιο"
           }
         },
         "en" : {
@@ -114880,6 +116044,12 @@
             "value" : "Overfør aliasser"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μεταφορά ψευδωνύμων"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114996,6 +116166,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Overfør og slet postkasse"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μεταφορά και διαγραφή γραμματοκιβωτίου"
           }
         },
         "en" : {
@@ -116866,6 +118042,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unblock contact"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer le contact"
           }
         }
       }
@@ -118969,6 +120151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ubekræftet postkasse"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μη επαληθευμένο γραμματοκιβώτιο"
           }
         },
         "en" : {
@@ -126755,25 +127943,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld aliasy, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                  "value" : "Zistili sme, že máte %lld aliasy, ktoré sa nachádzajú v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sa nachádzajú v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld alias, ktorý je prítomný v SimpleLogin, ale chýba v Proton Pass. Chcete ho naimportovať?"
+                  "value" : "Zistili sme, že máte %lld alias, ktorý je prítomný sa nachádza v SimpleLogin, ale chýba v Proton Pass. Chcete ho naimportovať?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sa nachádzajú v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
                 }
               }
             }
@@ -126900,7 +128088,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "생체 인증 설정 변경사항이 감지되었습니다. 보안상 이유로 로그아웃되었습니다."
+            "value" : "생체 인증 설정에 변경사항이 감지되었습니다. 보안상의 이유로 로그아웃 되었습니다."
           }
         },
         "nb" : {
@@ -128554,6 +129742,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "When sending an email from this alias, the email will have '%@ <%@>' as sender."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lors de l'envoi d'un email depuis cet alias, l'expéditeur sera %@ <%@>."
           }
         }
       }
@@ -131636,7 +132830,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA 시크릿 키(TOTP)의 로그인 항목이 없습니다"
+            "value" : "2FA 시크릿 키(TOTP)가 등록된 로그인 항목이 없습니다"
           }
         },
         "nb" : {
@@ -133269,7 +134463,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "다른 무료 계정에서 로그아웃되었습니다."
+            "value" : "다른 무료 계정에서 로그아웃 되었습니다."
           }
         },
         "nb" : {
@@ -133666,6 +134860,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dit domæne"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Domain"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο τομέας σας"
           }
         },
         "en" : {
@@ -135200,6 +136406,12 @@
             "state" : "translated",
             "value" : "Your recipient"
           }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre destinataire"
+          }
         }
       }
     },
@@ -135209,6 +136421,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your sender name was updated to %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le nom de votre destinataire a été mis à jour : %@"
           }
         }
       }
