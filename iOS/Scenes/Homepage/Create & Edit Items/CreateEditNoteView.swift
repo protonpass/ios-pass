@@ -229,7 +229,8 @@ private extension CreateEditNoteContentUIView {
             guard let self else { return }
             if let text = titleTextField.text {
                 Task { @MainActor [weak self] in
-                    await self?.delegate?.titleUpdated(text)
+                    guard let self else { return }
+                    await delegate?.titleUpdated(text)
                 }
             }
         }
@@ -244,7 +245,8 @@ private extension CreateEditNoteContentUIView {
         defer {
             contentTextView.text = note
             Task { @MainActor [weak self] in
-                await self?.delegate?.contentUpdated(note)
+                guard let self else { return }
+                await delegate?.contentUpdated(note)
             }
         }
         for (index, page) in document.scannedPages.enumerated() {
@@ -271,7 +273,8 @@ extension CreateEditNoteContentUIView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         if let text = textView.text {
             Task { @MainActor [weak self] in
-                await self?.delegate?.contentUpdated(text)
+                guard let self else { return }
+                await delegate?.contentUpdated(text)
             }
         }
         updatePlaceholderVisibility()

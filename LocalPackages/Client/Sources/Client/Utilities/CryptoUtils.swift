@@ -21,8 +21,8 @@
 import Core
 import Entities
 import Foundation
-import ProtonCoreCrypto
-import ProtonCoreCryptoGoInterface
+@preconcurrency import ProtonCoreCrypto
+@preconcurrency import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
 import ProtonCoreLogin
 

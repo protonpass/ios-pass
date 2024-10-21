@@ -24,7 +24,7 @@ import Entities
 import Foundation
 import ProtonCoreAuthentication
 import ProtonCoreChallenge
-import ProtonCoreCryptoGoInterface
+@preconcurrency import ProtonCoreCryptoGoInterface
 @preconcurrency import ProtonCoreDoh
 import ProtonCoreFoundations
 import ProtonCoreNetworking
