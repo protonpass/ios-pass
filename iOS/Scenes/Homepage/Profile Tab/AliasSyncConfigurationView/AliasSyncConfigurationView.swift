@@ -56,7 +56,7 @@ struct AliasSyncConfigurationView: View {
 
             Section {
                 VStack(spacing: DesignConstant.sectionPadding) {
-                    LazyVStack {
+                    LazyVStack(spacing: 10) {
                         if viewModel.loading {
                             VStack {
                                 Group {
@@ -263,7 +263,7 @@ private struct MailboxElementRow: View {
 
             Spacer()
 
-            if showMenu {
+            if showMenu, !isDefault {
                 Menu(content: {
                     if !mailBox.isDefault {
                         if mailBox.verified {
@@ -391,7 +391,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
     var body: some View {
         NavigationStack {
             ScrollView {
-                LazyVStack(spacing: 0) {
+                LazyVStack(spacing: DesignConstant.sectionPadding) {
                     if optional {
                         row(title: #localized("Not selected"),
                             subtitle: nil,
@@ -446,7 +446,7 @@ private struct GenericSelectionView<Selection: Identifiable & Equatable & TitleR
                     .resizable()
                     .scaledToFit()
                     .foregroundStyle(PassColor.interactionNorm.toColor)
-                    .frame(maxHeight: 20)
+                    .frame(maxHeight: 25)
             }
 
             if shouldUpsell {

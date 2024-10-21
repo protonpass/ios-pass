@@ -31,11 +31,8 @@ struct SecurityWeaknessDetailView: View {
     let isSheet: Bool
 
     var body: some View {
-        mainContainer.if(isSheet) { view in
-            NavigationStack {
-                view
-            }
-        }
+        mainContainer
+            .navigationStackEmbeded()
     }
 }
 
@@ -92,6 +89,7 @@ private extension SecurityWeaknessDetailView {
             view.scrollViewEmbeded(maxWidth: .infinity)
         }
         .background(PassColor.backgroundNorm.toColor)
+        .navigationBarTitleDisplayMode(.inline)
         .navigationTitle(viewModel.type.title)
     }
 }
