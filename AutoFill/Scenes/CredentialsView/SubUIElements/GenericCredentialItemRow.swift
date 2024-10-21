@@ -50,6 +50,7 @@ struct GenericCredentialItemRow: View {
                     VStack(alignment: .leading, spacing: 4) {
                         HighlightText(highlightableText: item.highlightableTitle,
                                       additionalTexts: additionalSearchResultTitles)
+                            .foregroundStyle(PassColor.textNorm.toColor)
                             .fixedSize(horizontal: false, vertical: true)
 
                         VStack(alignment: .leading, spacing: 2) {
@@ -58,14 +59,13 @@ struct GenericCredentialItemRow: View {
                                 if !eachDetail.fullText.isEmpty {
                                     HighlightText(highlightableText: eachDetail)
                                         .font(.callout)
-                                        .foregroundStyle(Color(.secondaryLabel))
+                                        .foregroundStyle(PassColor.textWeak.toColor)
                                         .lineLimit(1)
                                 }
                             }
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.bottom)
                 }
             }
         }
