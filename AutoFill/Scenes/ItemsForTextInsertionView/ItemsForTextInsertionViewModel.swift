@@ -93,11 +93,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     }
 
     var highlighted: Bool {
-        filterOption != .all
-    }
-
-    var resettable: Bool {
-        filterOption != .all || selectedSortType != .mostRecent
+        !filterOption.isDefault || !selectedSortType.isDefault
     }
 
     var selectedItemType: ItemType?
