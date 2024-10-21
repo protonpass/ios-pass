@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import DesignSystem
 import Entities
 import Factory
@@ -245,7 +246,7 @@ private extension AliasContactsView {
             }
 
             VStack(alignment: .leading) {
-                Text(viewModel.timeSinceCreation(from: contact.createTime))
+                Text("Created \(contact.createTime.fullDateString)")
                 Text(contact.activityText)
             }
             .font(.footnote)
@@ -471,7 +472,7 @@ private enum ContactCreationSteps: Hashable {
                 .padding(.leading, 18)
                 .padding(.top, 12)
                 .overlay(CustomBorderShape(cornerRadius: 12)
-                    .stroke(PassColor.backgroundWeak.toColor, lineWidth: 1))
+                    .stroke(PassColor.borderWeak.toColor, lineWidth: 1))
                 .padding(.leading, 16)
                 .padding(.top, 16)
                 .frame(maxWidth: .infinity)

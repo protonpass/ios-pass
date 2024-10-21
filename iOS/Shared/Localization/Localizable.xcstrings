@@ -7678,46 +7678,6 @@
         }
       }
     },
-    "%lld months" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld month"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld months"
-                }
-              }
-            }
-          }
-        },
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld mois"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld mois"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "%lld other logins use this password" : {
       "localizations" : {
         "be" : {
@@ -11391,46 +11351,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld từ"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "%lld years" : {
-      "localizations" : {
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld year"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld years"
-                }
-              }
-            }
-          }
-        },
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld an"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld ans"
                 }
               }
             }
@@ -32122,22 +32042,6 @@
         }
       }
     },
-    "Contact created %@ ago." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Contact created %@ ago."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Le contact a été créé il y a %@."
-          }
-        }
-      }
-    },
     "Contact details" : {
       "localizations" : {
         "be" : {
@@ -37415,6 +37319,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã tạo"
+          }
+        }
+      }
+    },
+    "Created %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Created %@"
           }
         }
       }

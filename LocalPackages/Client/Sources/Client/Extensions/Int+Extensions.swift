@@ -30,4 +30,17 @@ public extension Int {
     var nilIfZero: Int? {
         self == 0 ? nil : self
     }
+
+    var fullDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .full
+        dateFormatter.timeStyle = .short
+        dateFormatter.doesRelativeDateFormatting = true
+        let relativeDateFormatter = RelativeDateTimeFormatter()
+
+        let timeInterval = TimeInterval(self)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        let dateString = dateFormatter.string(from: date)
+        return "\(dateString)"
+    }
 }
