@@ -23,7 +23,7 @@ import Client
 import Core
 import Foundation
 @preconcurrency import ProtonCoreServices
-import ProtonCoreTelemetry
+@preconcurrency import ProtonCoreTelemetry
 
 public protocol SetUpCoreTelemetryUseCase: Sendable {
     func execute()
