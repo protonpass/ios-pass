@@ -79,6 +79,8 @@ public struct Share: Decodable, Swift.Hashable, Equatable, Sendable {
     /// Time of creation of this share
     public let createTime: Int64
 
+    public let canAutoFill: Bool
+
     /// Enum representation of `targetType`
     public var shareType: TargetType {
         .init(rawValue: targetType) ?? .unknown
