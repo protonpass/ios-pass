@@ -117,13 +117,8 @@ private extension IndexAllLoginItems {
         var applicableShareIds = [String]()
         if access.access.plan.isFreeUser {
             let vaults = try await shareRepository.getVaults(userId: userId)
-            let oldestVaults = vaults.twoOldestVaults
-            if let owned = oldestVaults.owned {
-                applicableShareIds.append(owned.shareId)
-            }
-            if let other = oldestVaults.other {
-                applicableShareIds.append(other.shareId)
-            }
+            let ids = vaults.autofillAllowedVaults.map(\.shareId)
+            applicableShareIds.append(contentsOf: ids)
         } else {
             applicableShareIds = applicableVaults.map(\.shareId)
         }
