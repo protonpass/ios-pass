@@ -21,6 +21,7 @@
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -30,23 +31,32 @@ struct NoteDetailSection: View {
     @State private var isShowingFullNote = false
     let itemContent: ItemContent
     let vault: Vault?
+    let title: LocalizedStringKey
+    let note: String
+
+    init(itemContent: ItemContent, vault: Vault?, title: LocalizedStringKey = "Note", note: String? = nil) {
+        self.itemContent = itemContent
+        self.vault = vault
+        self.title = title
+        self.note = note ?? itemContent.note
+    }
 
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             ItemDetailSectionIcon(icon: IconProvider.note, color: itemContent.type.normColor)
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Note")
+                Text(title)
                     .sectionTitleText()
 
-                TextView(.constant(itemContent.note))
+                TextView(.constant(note))
                     .autoDetectDataTypes(.all)
                     // swiftlint:disable:next deprecated_foregroundcolor_modifier
                     .foregroundColor(PassColor.textNorm)
                     .isEditable(false)
                     .onTapGesture {
                         // Pure heuristic
-                        if itemContent.note.count > 400 {
+                        if note.count > 400 {
                             isShowingFullNote.toggle()
                         }
                     }
@@ -57,7 +67,7 @@ struct NoteDetailSection: View {
         .tint(itemContent.type.normMajor2Color.toColor)
         .roundedDetailSection()
         .sheet(isPresented: $isShowingFullNote) {
-            FullNoteView(itemContent: itemContent, vault: vault)
+            FullNoteView(itemContent: itemContent, vault: vault, title: title, note: note)
         }
     }
 }
@@ -66,6 +76,8 @@ private struct FullNoteView: View {
     @Environment(\.dismiss) private var dismiss
     let itemContent: ItemContent
     let vault: Vault?
+    let title: LocalizedStringKey
+    let note: String
 
     var body: some View {
         NavigationStack {
@@ -75,9 +87,9 @@ private struct FullNoteView: View {
                                         vault: vault,
                                         shouldShowVault: true)
                         .padding(.bottom)
-                    Text("Note")
+                    Text(title)
                         .sectionTitleText()
-                    TextView(.constant(itemContent.note))
+                    TextView(.constant(note))
                         .autoDetectDataTypes(.all)
                         // swiftlint:disable:next deprecated_foregroundcolor_modifier
                         .foregroundColor(PassColor.textNorm)

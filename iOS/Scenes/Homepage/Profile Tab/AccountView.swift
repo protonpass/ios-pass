@@ -29,11 +29,7 @@ struct AccountView: View {
     @State private var showDisableExtraPasswordAlert = false
 
     var body: some View {
-        if viewModel.isShownAsSheet {
-            NavigationStack {
-                realBody
-            }
-        } else {
+        NavigationStack {
             realBody
         }
     }
