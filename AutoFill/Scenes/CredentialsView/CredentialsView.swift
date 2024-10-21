@@ -228,12 +228,15 @@ private extension CredentialsView {
                     .font(.callout.italic())
                     .padding(.horizontal)
                     .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .plainListRow()
             }, header: {
                 Text(sectionTitle)
                     .font(.callout)
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal)
             })
         } else {
             section(for: items,
