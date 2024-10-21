@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import DesignSystem
 import Entities
 import Factory
@@ -87,6 +88,7 @@ private extension AliasContactsView {
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.aliasName)
+        .animation(.default, value: viewModel.hasNoContact)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .showSpinner(viewModel.loading)
@@ -245,7 +247,7 @@ private extension AliasContactsView {
             }
 
             VStack(alignment: .leading) {
-                Text(viewModel.timeSinceCreation(from: contact.createTime))
+                Text("Created \(contact.createTime.fullDateString)")
                 Text(contact.activityText)
             }
             .font(.footnote)
@@ -283,10 +285,11 @@ private extension AliasContact {
     }
 
     var activityText: String {
-        noActivity ? #localized("No activity in the last 14 days.") :
-            #localized("%lld forwarded, %lld replies, %lld blocked in the last 14 days.", forwardedEmails,
-                       repliedEmails,
-                       blockedEmails)
+        let forwarded = #localized("%lld forwarded", forwardedEmails)
+        let replies = #localized("%lld replies", repliedEmails)
+        let blocked = #localized("%lld blocked", blockedEmails)
+        return noActivity ? #localized("No activity in the last 14 days.") :
+            #localized("%@, %@, %@ in the last 14 days.", forwarded, replies, blocked)
     }
 }
 
@@ -471,7 +474,7 @@ private enum ContactCreationSteps: Hashable {
                 .padding(.leading, 18)
                 .padding(.top, 12)
                 .overlay(CustomBorderShape(cornerRadius: 12)
-                    .stroke(PassColor.backgroundWeak.toColor, lineWidth: 1))
+                    .stroke(PassColor.borderWeak.toColor, lineWidth: 1))
                 .padding(.leading, 16)
                 .padding(.top, 16)
                 .frame(maxWidth: .infinity)
