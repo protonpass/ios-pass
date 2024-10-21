@@ -119,8 +119,7 @@ private extension ItemsTabTopBar {
                 .resetFilters { viewModel.resetFilters() }
             ],
             highlighted: viewModel.highlighted,
-            selectable: viewModel.selectable,
-            resettable: viewModel.resettable)
+            selectable: viewModel.selectable)
         }
         .padding(.horizontal)
     }
