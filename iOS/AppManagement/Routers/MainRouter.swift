@@ -64,7 +64,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case acceptRejectInvite(UserInvite)
     case vaultCreateEdit(vault: Vault?)
     case upgradeFlow
-    case upselling(UpsellingViewConfiguration)
+    case upselling(UpsellingViewConfiguration, SheetDismissal = .all)
     case logView(module: PassModule)
     case autoFillInstructions
     case moveItemsBetweenVaults(MovingContext)

@@ -162,6 +162,8 @@ open class Coordinator: CoordinatorProtocol {
                 /// instead of pushing it into the navigation stack of the current secondary view controller.
                 /// This is to reduce memory footprint.
                 let navigationController = UINavigationController(rootViewController: viewController)
+                navigationController.isNavigationBarHidden = true
+
                 splitViewController.setViewController(navigationController, for: .secondary)
                 splitViewController.show(.secondary)
             }

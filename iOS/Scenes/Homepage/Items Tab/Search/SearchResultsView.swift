@@ -201,14 +201,9 @@ private extension SearchResultsView {
 
     @ViewBuilder
     func mostRecentItemList(_ result: MostRecentSortResult<ItemSearchResult>) -> some View {
-        section(for: result.today, headerTitle: #localized("Today"))
-        section(for: result.yesterday, headerTitle: #localized("Yesterday"))
-        section(for: result.last7Days, headerTitle: #localized("Last week"))
-        section(for: result.last14Days, headerTitle: #localized("Last two weeks"))
-        section(for: result.last30Days, headerTitle: #localized("Last 30 days"))
-        section(for: result.last60Days, headerTitle: #localized("Last 60 days"))
-        section(for: result.last90Days, headerTitle: #localized("Last 90 days"))
-        section(for: result.others, headerTitle: #localized("More than 90 days"))
+        ForEach(result.buckets) { bucket in
+            section(for: bucket.items, headerTitle: bucket.type.title)
+        }
     }
 
     func alphabeticalItemList(_ result: AlphabeticalSortResult<ItemSearchResult>) -> some View {

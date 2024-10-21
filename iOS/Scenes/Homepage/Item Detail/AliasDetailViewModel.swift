@@ -33,13 +33,20 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var aliasEmail = ""
     @Published private(set) var name = ""
     @Published private(set) var note = ""
-    @Published private(set) var mailboxes: [AliasLinkedMailbox]?
+    @Published private(set) var aliasInfos: Alias?
+    @Published private(set) var contacts: PaginatedAliasContacts?
     @Published private(set) var error: (any Error)?
     @Published private(set) var aliasEnabled = false
     @Published private(set) var togglingAliasStatus = false
 
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+
+    private var task: Task<Void, Never>?
+
+    var isAdvancedAliasManagementActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
+    }
 
     override func bindValues() {
         super.bindValues()
@@ -61,13 +68,28 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                     try await aliasRepository.getAliasDetails(shareId: itemContent.shareId,
                                                               itemId: itemContent.item.itemID)
                 aliasEmail = alias.email
-                mailboxes = alias.mailboxes
+                aliasInfos = alias
                 aliasEnabled = itemContent.item.isAliasEnabled
                 logger.info("Get alias detail successfully \(itemContent.debugDescription)")
             } catch {
                 logger.error(error)
                 self.error = error
             }
+        }
+    }
+
+    func loadContact() async {
+        guard isAdvancedAliasManagementActive else {
+            return
+        }
+        do {
+            let userId = try await userManager.getActiveUserId()
+            contacts = try await aliasRepository.getContacts(userId: userId,
+                                                             shareId: itemContent.shareId,
+                                                             itemId: itemContent.item.itemID,
+                                                             lastContactId: nil)
+        } catch {
+            handle(error)
         }
     }
 
@@ -80,10 +102,15 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     override func refresh() {
-        mailboxes = nil
+        aliasInfos = nil
         error = nil
         super.refresh()
         getAlias()
+        task?.cancel()
+        task = Task { [weak self] in
+            guard let self else { return }
+            await loadContact()
+        }
     }
 
     func copyAliasEmail() {
@@ -92,6 +119,14 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     func copyMailboxEmail(_ email: String) {
         copyToClipboard(text: email, message: #localized("Email address copied"))
+    }
+
+    func getContactsInfos() -> ContactsInfos? {
+        guard let contacts, let aliasInfos else { return nil }
+        return ContactsInfos(itemId: itemContent.itemId,
+                             shareId: itemContent.shareId,
+                             alias: aliasInfos,
+                             contacts: contacts)
     }
 }
 
