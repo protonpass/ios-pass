@@ -96,7 +96,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     }
 
     var highlighted: Bool {
-        vaultsManager.filterOption != .all
+        !vaultsManager.filterOption.isDefault || !selectedSortType.isDefault
     }
 
     var selectable: Bool {
@@ -106,10 +106,6 @@ final class ItemsTabTopBarViewModel: ObservableObject {
         case let .precise(vault):
             vault.canEdit
         }
-    }
-
-    var resettable: Bool {
-        vaultsManager.filterOption != .all || selectedSortType != .mostRecent
     }
 
     var selectedFilterOption: ItemTypeFilterOption {

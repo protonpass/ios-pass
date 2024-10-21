@@ -94,8 +94,7 @@ private extension ItemsForTextInsertionView {
                             .resetFilters { viewModel.resetFilters() }
                         ],
                         highlighted: viewModel.highlighted,
-                        selectable: false,
-                        resettable: viewModel.resettable)
+                        selectable: false)
                     }
                 }
                 .padding(.horizontal)
