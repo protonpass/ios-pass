@@ -20,23 +20,15 @@
 
 import Foundation
 
-extension Int {
+public extension BinaryInteger {
     var codableBoolValue: Bool {
         self != 0
     }
-}
 
-public extension Int {
     var nilIfZero: Int? {
-        self == 0 ? nil : self
+        self == 0 ? nil : Int(self)
     }
 
-    var fullDateString: String {
-        Int64(self).fullDateString
-    }
-}
-
-public extension Int64 {
     var fullDateString: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
