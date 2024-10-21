@@ -26,7 +26,7 @@ import Screens
 import SwiftUI
 
 struct CredentialSearchResultView: View {
-    @StateObject private var viewModel: CredentialSearchResultViewModel
+    @ObservedObject private var viewModel: CredentialSearchResultViewModel
     @Binding var selectedSortType: SortType
     let getUser: (any ItemIdentifiable) -> UserUiModel?
     let selectItem: (any TitledItemIdentifiable) -> Void
@@ -36,7 +36,8 @@ struct CredentialSearchResultView: View {
          getUser: @escaping (any ItemIdentifiable) -> UserUiModel?,
          selectItem: @escaping (any TitledItemIdentifiable) -> Void) {
         _selectedSortType = selectedSortType
-        _viewModel = .init(wrappedValue: .init(results: results))
+        _viewModel = .init(wrappedValue: .init(results: results,
+                                               sortType: selectedSortType.wrappedValue))
         self.getUser = getUser
         self.selectItem = selectItem
     }
@@ -45,19 +46,15 @@ struct CredentialSearchResultView: View {
         headerView
 
         TableView(sections: viewModel.sections,
-                  configuration: .init(showSectionIndexTitles: selectedSortType.isAlphabetical),
-                  id: nil,
+                  configuration: .init(showSectionIndexTitles: selectedSortType.isAlphabetical,
+                                       rowSpacing: DesignConstant.sectionPadding / 2),
+                  id: viewModel.sections.hashValue,
                   itemView: { item in
                       GenericCredentialItemRow(item: item,
                                                user: getUser(item),
                                                selectItem: selectItem)
                   },
-                  headerView: { _ in
-                      nil
-                  })
-                  .task {
-                      viewModel.filterAndSortItems(selectedSortType)
-                  }
+                  headerView: { _ in nil })
     }
 }
 
@@ -88,10 +85,13 @@ private final class CredentialSearchResultViewModel: ObservableObject {
 
     let results: [ItemSearchResult]
 
-    init(results: [ItemSearchResult]) {
+    init(results: [ItemSearchResult], sortType: SortType) {
         self.results = results
+        filterAndSortItems(sortType)
     }
+}
 
+private extension CredentialSearchResultViewModel {
     func filterAndSortItems(_ sortType: SortType) {
         let type = Int.max
         let sections: [SearchResultSection] = {

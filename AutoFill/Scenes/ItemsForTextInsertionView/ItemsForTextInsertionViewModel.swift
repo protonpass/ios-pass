@@ -210,8 +210,14 @@ private extension ItemsForTextInsertionViewModel {
 
 extension ItemsForTextInsertionViewModel {
     func filterAndSortItems() {
-        defer { state = .idle }
-        state = .loading
+        defer {
+            switch state {
+            case .searchResults:
+                break
+            default:
+                state = .idle
+            }
+        }
 
         let history: [ItemUiModel]
         let allItems: [ItemUiModel]
