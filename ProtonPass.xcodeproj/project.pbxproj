@@ -526,6 +526,10 @@
 		5B8D20B12AA751AF00457CA3 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20B02AA751AF00457CA3 /* MBProgressHUD */; };
 		5B8D20BE2AA7639E00457CA3 /* fusion in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20BD2AA7639E00457CA3 /* fusion */; };
 		5B92AB372C91C69E007365FC /* AliasTrashAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */; };
+		5BA09B802CAE94D0000001B7 /* AliasContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B7F2CAE94D0000001B7 /* AliasContactsViewModel.swift */; };
+		5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B7E2CAE94D0000001B7 /* AliasContactsView.swift */; };
+		5BA09B862CAFE2DA000001B7 /* CreateContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B852CAFE2DA000001B7 /* CreateContactViewModel.swift */; };
+		5BA09B872CAFE2DA000001B7 /* CreateContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B842CAFE2DA000001B7 /* CreateContactView.swift */; };
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
 		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
 		5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
@@ -562,6 +566,8 @@
 		5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */; };
 		5BD870D92BB46C7800A9F1A8 /* PasswordReusedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD870D72BB46C7800A9F1A8 /* PasswordReusedViewModel.swift */; };
 		5BDDEABD2C5916590068B9DF /* SearchViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDDEABC2C5916590068B9DF /* SearchViewModifier.swift */; };
+		5BE464D22CC2568C009EDF18 /* MostRecentType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */; };
+		5BE464D32CC25922009EDF18 /* MostRecentType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */; };
 		5BE64E6B2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
 		5BE8092E2C071EC200D3A707 /* DetailHistoryView+Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE8092D2C071EC200D3A707 /* DetailHistoryView+Identity.swift */; };
@@ -1023,6 +1029,10 @@
 		5B8D20A22AA7499400457CA3 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = LocalPackages/Core; sourceTree = "<group>"; };
 		5B8D20A92AA74B4700457CA3 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = LocalPackages/DesignSystem; sourceTree = "<group>"; };
 		5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasTrashAlertModifier.swift; sourceTree = "<group>"; };
+		5BA09B7E2CAE94D0000001B7 /* AliasContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsView.swift; sourceTree = "<group>"; };
+		5BA09B7F2CAE94D0000001B7 /* AliasContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsViewModel.swift; sourceTree = "<group>"; };
+		5BA09B842CAFE2DA000001B7 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
+		5BA09B852CAFE2DA000001B7 /* CreateContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactViewModel.swift; sourceTree = "<group>"; };
 		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
 		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
 		5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpsellingViewConfiguration+Extensions.swift"; sourceTree = "<group>"; };
@@ -1050,6 +1060,7 @@
 		5BD870D62BB46C7800A9F1A8 /* PasswordReusedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedView.swift; sourceTree = "<group>"; };
 		5BD870D72BB46C7800A9F1A8 /* PasswordReusedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordReusedViewModel.swift; sourceTree = "<group>"; };
 		5BDDEABC2C5916590068B9DF /* SearchViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModifier.swift; sourceTree = "<group>"; };
+		5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MostRecentType+Extensions.swift"; sourceTree = "<group>"; };
 		5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedViewContainer+DependencyInjection.swift"; sourceTree = "<group>"; };
 		5BE8092D2C071EC200D3A707 /* DetailHistoryView+Identity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DetailHistoryView+Identity.swift"; sourceTree = "<group>"; };
 		5BE8092F2C07358200D3A707 /* IdentityFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityFields.swift; sourceTree = "<group>"; };
@@ -1833,6 +1844,7 @@
 		35E5070B286FB57800A3F6EA /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				5BA09B7D2CAE947E000001B7 /* Contacts */,
 				5B1453DE2A727EDC0048B022 /* AcceptRejectInviteView */,
 				35E5070C286FB58800A3F6EA /* App */,
 				5B87CC8C2BA4AE6E00258D70 /* Authenticator */,
@@ -2004,6 +2016,7 @@
 		5B1453E32A72BF2A0048B022 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */,
 				5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */,
 				3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */,
 				35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */,
@@ -2242,6 +2255,33 @@
 				5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */,
 			);
 			path = Authenticator;
+			sourceTree = "<group>";
+		};
+		5BA09B7D2CAE947E000001B7 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				5BA09B832CAFE2B9000001B7 /* CreateContactView */,
+				5BA09B822CAFE2A2000001B7 /* AliasContactsView */,
+			);
+			path = Contacts;
+			sourceTree = "<group>";
+		};
+		5BA09B822CAFE2A2000001B7 /* AliasContactsView */ = {
+			isa = PBXGroup;
+			children = (
+				5BA09B7E2CAE94D0000001B7 /* AliasContactsView.swift */,
+				5BA09B7F2CAE94D0000001B7 /* AliasContactsViewModel.swift */,
+			);
+			path = AliasContactsView;
+			sourceTree = "<group>";
+		};
+		5BA09B832CAFE2B9000001B7 /* CreateContactView */ = {
+			isa = PBXGroup;
+			children = (
+				5BA09B842CAFE2DA000001B7 /* CreateContactView.swift */,
+				5BA09B852CAFE2DA000001B7 /* CreateContactViewModel.swift */,
+			);
+			path = CreateContactView;
 			sourceTree = "<group>";
 		};
 		5BAD39612AF52B31009FD5A3 /* ShareOrCreateNewVaultView */ = {
@@ -3120,6 +3160,7 @@
 				3524A4622CB6A1B2001EC572 /* AliasDetailViewModel.swift in Sources */,
 				35706C2E2CB665FB009F438E /* NoteDetailView.swift in Sources */,
 				3559BAA22A5B32600020E172 /* Browser+Extensions.swift in Sources */,
+				5BE464D32CC25922009EDF18 /* MostRecentType+Extensions.swift in Sources */,
 				3597F0D12CB5D4CC00384874 /* ItemDetailHistorySection.swift in Sources */,
 				5B229A662A863F6D0009103E /* MainRouter.swift in Sources */,
 				3524A46C2CB6B7E4001EC572 /* IdentityFields.swift in Sources */,
@@ -3370,6 +3411,8 @@
 				3545731F2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
+				5BA09B802CAE94D0000001B7 /* AliasContactsViewModel.swift in Sources */,
+				5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */,
 				5B0C75022A30776100272CE8 /* SharedTooling+DependencyInjections.swift in Sources */,
 				3590A3392A9F9C2600622F45 /* View+Extensions.swift in Sources */,
 				354FBF5F2A02939600A0B27D /* AliasLimitView.swift in Sources */,
@@ -3495,6 +3538,7 @@
 				354E1A122A3B43C000519F58 /* CreditCardDetailView.swift in Sources */,
 				5B503FDE2A4C846200E6681C /* Repository+DependencyInjections.swift in Sources */,
 				354B24812A7814C20060EDF7 /* ItemTypeFilter.swift in Sources */,
+				5BE464D22CC2568C009EDF18 /* MostRecentType+Extensions.swift in Sources */,
 				3559BAA12A5B32550020E172 /* AppLockTime+Extensions.swift in Sources */,
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
@@ -3535,6 +3579,8 @@
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
 				357101EE2CBFAC020073A291 /* LoginsWith2faView.swift in Sources */,
+				5BA09B862CAFE2DA000001B7 /* CreateContactViewModel.swift in Sources */,
+				5BA09B872CAFE2DA000001B7 /* CreateContactView.swift in Sources */,
 				5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URL+Extensions.swift in Sources */,

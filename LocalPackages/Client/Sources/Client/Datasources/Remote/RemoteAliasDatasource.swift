@@ -31,6 +31,10 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
 
     func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws
+    func updateSlAliasName(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           request: UpdateAliasSlNameRequest) async throws
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
@@ -44,6 +48,28 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func deleteMailbox(userId: String, mailboxID: Int, request: DeleteMailboxRequest) async throws
     func verifyMailbox(userId: String, mailboxID: Int, request: VerifyMailboxRequest) async throws -> Mailbox
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
+
+    func getAliasContacts(userId: String,
+                          shareId: String,
+                          itemId: String,
+                          lastContactId: String?) async throws -> PaginatedAliasContacts
+    func createAliasContact(userId: String,
+                            shareId: String,
+                            itemId: String,
+                            request: CreateAContactRequest) async throws -> AliasContactLite
+    func getAliasContactInfos(userId: String,
+                              shareId: String,
+                              itemId: String,
+                              contactId: String) async throws -> AliasContact
+    func updateAliasContact(userId: String,
+                            shareId: String,
+                            itemId: String,
+                            contactId: String,
+                            request: UpdateContactRequest) async throws -> AliasContactLite
+    func deleteContact(userId: String,
+                       shareId: String,
+                       itemId: String,
+                       contactId: String) async throws
 }
 
 public final class RemoteAliasDatasource: RemoteDatasource, RemoteAliasDatasourceProtocol, @unchecked Sendable {}
@@ -82,6 +108,14 @@ public extension RemoteAliasDatasource {
 
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws {
         let endpoint = EnableSLAliasSyncEndpoint(request: EnableSLAliasSyncRequest(defaultShareID: defaultShareID))
+        _ = try await exec(userId: userId, endpoint: endpoint)
+    }
+
+    func updateSlAliasName(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           request: UpdateAliasSlNameRequest) async throws {
+        let endpoint = UpdateAliasSlNameEndpoint(shareId: shareId, itemId: itemId, request: request)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
@@ -146,5 +180,60 @@ public extension RemoteAliasDatasource {
         let endpoint = ResendMailboxVerificationEmailEndpoint(mailboxID: "\(mailboxID)")
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.mailbox
+    }
+}
+
+// MARK: - Contacts
+
+public extension RemoteAliasDatasource {
+    func getAliasContacts(userId: String,
+                          shareId: String,
+                          itemId: String,
+                          lastContactId: String?) async throws -> PaginatedAliasContacts {
+        let query = GetAliasContactsQuery(lastContactId: lastContactId)
+        let endpoint = GetAliasContactsEndpoint(shareId: shareId, itemId: itemId, query: query)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response
+    }
+
+    func createAliasContact(userId: String,
+                            shareId: String,
+                            itemId: String,
+                            request: CreateAContactRequest) async throws -> AliasContactLite {
+        let endpoint = CreateAContactEndpoint(shareId: shareId, itemId: itemId, request: request)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.contact
+    }
+
+    func getAliasContactInfos(userId: String,
+                              shareId: String,
+                              itemId: String,
+                              contactId: String) async throws -> AliasContact {
+        let endpoint = GetContactInfoEndpoint(shareId: shareId, itemId: itemId, contactId: contactId)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.contact
+    }
+
+    func updateAliasContact(userId: String,
+                            shareId: String,
+                            itemId: String,
+                            contactId: String,
+                            request: UpdateContactRequest) async throws -> AliasContactLite {
+        let endpoint = UpdateContactEndpoint(shareId: shareId,
+                                             itemId: itemId,
+                                             contactId: contactId,
+                                             request: request)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.contact
+    }
+
+    func deleteContact(userId: String,
+                       shareId: String,
+                       itemId: String,
+                       contactId: String) async throws {
+        let endpoint = DeleteContactEndpoint(shareId: shareId,
+                                             itemId: itemId,
+                                             contactId: contactId)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }
