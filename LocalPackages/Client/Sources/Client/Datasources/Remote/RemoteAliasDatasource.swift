@@ -34,7 +34,11 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func updateSlAliasName(userId: String,
                            shareId: String,
                            itemId: String,
-                           request: UpdateAliasSlNameRequest) async throws
+                           name: String?) async throws
+    func updateSlAliasNote(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           note: String?) async throws
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
@@ -114,8 +118,16 @@ public extension RemoteAliasDatasource {
     func updateSlAliasName(userId: String,
                            shareId: String,
                            itemId: String,
-                           request: UpdateAliasSlNameRequest) async throws {
-        let endpoint = UpdateAliasSlNameEndpoint(shareId: shareId, itemId: itemId, request: request)
+                           name: String?) async throws {
+        let endpoint = UpdateAliasSlNameEndpoint(shareId: shareId, itemId: itemId, name: name)
+        _ = try await exec(userId: userId, endpoint: endpoint)
+    }
+
+    func updateSlAliasNote(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           note: String?) async throws {
+        let endpoint = UpdateAliasSlNoteEndpoint(shareId: shareId, itemId: itemId, note: note)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
