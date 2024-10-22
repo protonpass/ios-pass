@@ -57,6 +57,7 @@ private extension InfoBannerView {
                     .minimumScaleFactor(0.75)
                     .font(.body.weight(.bold))
                     .lineLimit(2)
+                    .frame(maxHeight: banner.isSlSync ? nil : .infinity)
 
                 Text(banner.detail.description)
                     .minimumScaleFactor(0.75)
@@ -70,6 +71,9 @@ private extension InfoBannerView {
                 }
             }
             .foregroundStyle(banner.detail.foregroundColor)
+            .if(!banner.isSlSync) { view in
+                view.padding(.vertical, 16)
+            }
 
             Spacer()
 
