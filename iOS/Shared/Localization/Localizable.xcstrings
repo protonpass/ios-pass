@@ -967,7 +967,6 @@
     },
     "%1$@, %2$@, %3$@ in the last 14 days." : {
       "comment" : "Sample final text \"1 forwarded, 2 blocked, 3 replies in the last 14 days\". Each placeholder is localized and pluralized separately.",
-      "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
