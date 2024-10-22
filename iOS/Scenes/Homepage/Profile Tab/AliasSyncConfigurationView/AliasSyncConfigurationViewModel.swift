@@ -105,12 +105,12 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 
             vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
             if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {
-                guard let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) else {
+                if let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) {
+                    self.selectedVault = selectedVault
+                } else {
                     let mainVault = await getMainVault()
-                    self.selectedVault = vaults.first { $0.vault.shareId == mainVault?.shareId }
-                    return
+                    selectedVault = vaults.first { $0.vault.shareId == mainVault?.shareId }
                 }
-                self.selectedVault = selectedVault
             }
 
             async let fetchDomains = try aliasRepository.getAllAliasDomains(userId: userId)
