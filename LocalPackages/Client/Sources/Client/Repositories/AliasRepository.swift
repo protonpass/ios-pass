@@ -36,6 +36,7 @@ public protocol AliasRepositoryProtocol: Sendable {
     func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws
     func updateSlAliasName(userId: String, shareId: String, itemId: String, name: String?) async throws
+    func updateSlAliasNote(userId: String, shareId: String, itemId: String, note: String?) async throws
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
@@ -147,11 +148,17 @@ public extension AliasRepository {
     }
 
     func updateSlAliasName(userId: String, shareId: String, itemId: String, name: String?) async throws {
-        let request = UpdateAliasSlNameRequest(name: name)
         try await remoteDatasource.updateSlAliasName(userId: userId,
                                                      shareId: shareId,
                                                      itemId: itemId,
-                                                     request: request)
+                                                     name: name)
+    }
+
+    func updateSlAliasNote(userId: String, shareId: String, itemId: String, note: String?) async throws {
+        try await remoteDatasource.updateSlAliasNote(userId: userId,
+                                                     shareId: shareId,
+                                                     itemId: itemId,
+                                                     note: note)
     }
 
     func getPendingAliasesToSync(userId: String,
@@ -195,14 +202,9 @@ public extension AliasRepository {
     }
 
     func deleteMailbox(userId: String, mailboxID: Int, transferMailboxID: Int?) async throws {
-        let id: String? = if let transferMailboxID {
-            "\(transferMailboxID)"
-        } else {
-            nil
-        }
-
-        let request = DeleteMailboxRequest(transferMailboxID: id)
-        try await remoteDatasource.deleteMailbox(userId: userId, mailboxID: mailboxID, request: request)
+        try await remoteDatasource.deleteMailbox(userId: userId,
+                                                 mailboxID: mailboxID,
+                                                 transferMailboxId: transferMailboxID)
         mailboxUpdated.send(())
     }
 
