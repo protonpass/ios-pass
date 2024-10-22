@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import DesignSystem
 import Entities
 import Factory
@@ -29,6 +30,9 @@ struct EmptyVaultView: View {
     private let canCreateItems: Bool
     private let onCreate: (ItemContentType) -> Void
 
+    @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
+    private(set) var filterOption = ItemTypeFilterOption.all
+
     init(canCreateItems: Bool,
          onCreate: @escaping (ItemContentType) -> Void) {
         self.canCreateItems = canCreateItems
@@ -36,6 +40,21 @@ struct EmptyVaultView: View {
     }
 
     var body: some View {
+        if filterOption.isDefault {
+            createItemButtons
+        } else {
+            VStack {
+                Spacer()
+                Text("No items found")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                Spacer()
+            }
+        }
+    }
+}
+
+private extension EmptyVaultView {
+    var createItemButtons: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 0) {
                 Text("Your vault is empty")
@@ -45,7 +64,7 @@ struct EmptyVaultView: View {
                     .padding(.bottom, 8)
 
                 Text("Let's get started by creating your first item")
-                    .foregroundStyle(.secondary)
+                    .foregroundStyle(PassColor.textWeak.toColor)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 32)
 
