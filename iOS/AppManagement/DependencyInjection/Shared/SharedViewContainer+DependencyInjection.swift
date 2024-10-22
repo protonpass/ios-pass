@@ -22,9 +22,24 @@ import Client
 import Factory
 import UIKit
 
-final class SharedViewContainer: SharedContainer, AutoRegistering {
+final class SharedViewContainer: @unchecked Sendable, SharedContainer, AutoRegistering {
     static let shared = SharedViewContainer()
-    private(set) var registered = false
+
+    private let queue = DispatchQueue(label: "me.proton.pass.SharedViewContainer")
+    private var safeRegistered = false
+    private var registered: Bool {
+        get {
+            queue.sync {
+                safeRegistered
+            }
+        }
+        set {
+            queue.sync {
+                safeRegistered = newValue
+            }
+        }
+    }
+
     let manager = ContainerManager()
 
     func autoRegister() {

@@ -69,7 +69,7 @@ public extension SymmetricKeyProviderImpl {
 // sourcery: AutoMockable
 /// Non `Sendable` variant with no cache mechanism for usages in non concurrency contexts
 /// where it's impossible to introduce async functions like `AuthManager`
-public protocol NonSendableSymmetricKeyProvider {
+public protocol NonSendableSymmetricKeyProvider: Sendable {
     func getSymmetricKey() throws -> SymmetricKey
 }
 

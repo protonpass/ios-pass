@@ -18,8 +18,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+@preconcurrency import Combine
 import Entities
+import Foundation
 
 public protocol ShareInviteServiceProtocol: Sendable {
     var currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> { get }
@@ -33,9 +34,24 @@ public protocol ShareInviteServiceProtocol: Sendable {
     func resetShareInviteInformations()
 }
 
-public final class ShareInviteService: ShareInviteServiceProtocol {
+public final class ShareInviteService: @unchecked Sendable, ShareInviteServiceProtocol {
     public nonisolated let currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> = .init(nil)
-    private var currentSelectedVaultItems: Int?
+
+    private let queue = DispatchQueue(label: "me.proton.pass.shareInviteService")
+    private var safeCurrentSelectedVaultItems: Int?
+    private var currentSelectedVaultItems: Int? {
+        get {
+            queue.sync {
+                safeCurrentSelectedVaultItems
+            }
+        }
+        set {
+            queue.sync {
+                safeCurrentSelectedVaultItems = newValue
+            }
+        }
+    }
+
     private var emailsAndKeys = [String: [PublicKey]?]()
     private var emailsAndRole = [String: ShareRole]()
 
