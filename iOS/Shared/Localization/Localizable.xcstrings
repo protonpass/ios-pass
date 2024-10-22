@@ -645,17 +645,6 @@
         }
       }
     },
-    "%@, %@, %@ in the last 14 days." : {
-      "comment" : "Sample final text \"1 forwarded, 2 blocked, 3 replies in the last 14 days\". Each placeholder is localized and pluralized separately.",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@, %@, %@ in the last 14 days."
-          }
-        }
-      }
-    },
     "%@%% decrypted..." : {
       "localizations" : {
         "be" : {
@@ -972,6 +961,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "đã tải %@%%..."
+          }
+        }
+      }
+    },
+    "%1$@, %2$@, %3$@ in the last 14 days." : {
+      "comment" : "Sample final text \"1 forwarded, 2 blocked, 3 replies in the last 14 days\". Each placeholder is localized and pluralized separately.",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@ in the last 14 days."
           }
         }
       }
@@ -2363,6 +2364,7 @@
       }
     },
     "%lld blocked" : {
+      "comment" : "Number of emails blocked",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -3478,6 +3480,7 @@
       }
     },
     "%lld forwarded" : {
+      "comment" : "Number of emails forwarded",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -8776,6 +8779,7 @@
       }
     },
     "%lld replies" : {
+      "comment" : "Number of replies from an alias",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -74203,16 +74207,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Перемістити до смітника"
-          }
-        }
-      }
-    },
-    "Name for contact detail" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name for contact detail"
           }
         }
       }
