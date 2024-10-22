@@ -35,6 +35,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var prefix = ""
     @Published var prefixManuallyEdited = false
     @Published var note = ""
+    @Published var simpleLoginNote = ""
 
     var suffix: String { suffixSelection.selectedSuffixString }
     var mailboxes: String { mailboxSelection.selectedMailboxesString }
@@ -69,8 +70,13 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     private(set) var alias: Alias?
-    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
-    private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+
+    var isAdvancedAliasManagementActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
+    }
 
     override var isSaveable: Bool {
         switch mode {
@@ -186,6 +192,7 @@ extension CreateEditAliasViewModel {
                         try await aliasRepository.getAliasDetails(shareId: shareId,
                                                                   itemId: itemContent.item.itemID)
                     aliasEmail = alias.email
+                    simpleLoginNote = alias.note ?? ""
                     self.alias = alias
                     mailboxSelection.selectedMailboxes = alias.mailboxes
                     logger.info("Get alias successfully \(itemContent.debugDescription)")
