@@ -237,16 +237,16 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                      customFields: [])
     }
 
-    override func additionalEdit() async throws {
+    override func additionalEdit() async throws -> Bool {
         // Create new alias item if applicable
         let userId = try await userManager.getActiveUserId()
-        if let aliasCreationInfo = generateAliasCreationInfo(),
-           let aliasItemContent = generateAliasItemContent() {
-            try await itemRepository.createAlias(userId: userId,
-                                                 info: aliasCreationInfo,
-                                                 itemContent: aliasItemContent,
-                                                 shareId: selectedVault.shareId)
-        }
+        guard let aliasCreationInfo = generateAliasCreationInfo(),
+              let aliasItemContent = generateAliasItemContent() else { return false }
+        try await itemRepository.createAlias(userId: userId,
+                                             info: aliasCreationInfo,
+                                             itemContent: aliasItemContent,
+                                             shareId: selectedVault.shareId)
+        return true
     }
 
     override func telemetryEventTypes() -> [TelemetryEventType] {

@@ -35,6 +35,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var prefix = ""
     @Published var prefixManuallyEdited = false
     @Published var note = ""
+    @Published var simpleLoginNote = ""
 
     var suffix: String { suffixSelection.selectedSuffixString }
     var mailboxes: String { mailboxSelection.selectedMailboxesString }
@@ -69,8 +70,13 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     private(set) var alias: Alias?
-    private let aliasRepository = resolve(\SharedRepositoryContainer.aliasRepository)
-    private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+
+    var isAdvancedAliasManagementActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
+    }
 
     override var isSaveable: Bool {
         switch mode {
@@ -144,15 +150,27 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                      mailboxIds: mailboxSelection.selectedMailboxes.map(\.ID))
     }
 
-    override func additionalEdit() async throws {
-        guard let alias,
-              Set(alias.mailboxes) != Set(mailboxSelection.selectedMailboxes),
-              case let .edit(itemContent) = mode
-        else { return }
-        let mailboxIds = mailboxSelection.selectedMailboxes.map(\.ID)
-        try await changeMailboxes(shareId: itemContent.shareId,
-                                  itemId: itemContent.item.itemID,
-                                  mailboxIDs: mailboxIds)
+    override func additionalEdit() async throws -> Bool {
+        guard let alias, case let .edit(itemContent) = mode else { return false }
+
+        var edited = false
+        if Set(alias.mailboxes) != Set(mailboxSelection.selectedMailboxes) {
+            let mailboxIds = mailboxSelection.selectedMailboxes.map(\.ID)
+            try await changeMailboxes(shareId: itemContent.shareId,
+                                      itemId: itemContent.item.itemID,
+                                      mailboxIDs: mailboxIds)
+            edited = true
+        }
+
+        if simpleLoginNote != alias.note {
+            let userId = try await userManager.getActiveUserId()
+            try await aliasRepository.updateSlAliasNote(userId: userId,
+                                                        shareId: itemContent.shareId,
+                                                        itemId: itemContent.itemId,
+                                                        note: simpleLoginNote)
+            edited = true
+        }
+        return edited
     }
 
     private func validatePrefix() {
@@ -186,6 +204,7 @@ extension CreateEditAliasViewModel {
                         try await aliasRepository.getAliasDetails(shareId: shareId,
                                                                   itemId: itemContent.item.itemID)
                     aliasEmail = alias.email
+                    simpleLoginNote = alias.note ?? ""
                     self.alias = alias
                     mailboxSelection.selectedMailboxes = alias.mailboxes
                     logger.info("Get alias successfully \(itemContent.debugDescription)")
