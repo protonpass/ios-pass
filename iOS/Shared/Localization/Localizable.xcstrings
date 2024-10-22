@@ -60550,6 +60550,16 @@
         }
       }
     },
+    "In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note. Not even Proton or SimpleLogin can see it. SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note. Not even Proton or SimpleLogin can see it. SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it."
+          }
+        }
+      }
+    },
     "Inactive 2FA" : {
       "localizations" : {
         "be" : {
@@ -129217,6 +129227,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã sao chép trang web"
+          }
+        }
+      }
+    },
+    "What is a SimpleLogin note?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What is a SimpleLogin note?"
           }
         }
       }
