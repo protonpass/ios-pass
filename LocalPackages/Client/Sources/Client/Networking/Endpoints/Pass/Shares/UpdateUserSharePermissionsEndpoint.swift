@@ -33,7 +33,7 @@ struct UpdateUserSharePermissionsEndpoint: Endpoint {
     init(shareId: String,
          userShareId: String,
          request: UserSharePermissionRequest) {
-        debugDescription = "Update a user's share persmission"
+        debugDescription = "Update a user's share permission"
         path = "/pass/v1/share/\(shareId)/user/\(userShareId)"
         method = .put
         body = request

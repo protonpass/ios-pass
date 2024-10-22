@@ -93,11 +93,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     }
 
     var highlighted: Bool {
-        filterOption != .all
-    }
-
-    var resettable: Bool {
-        filterOption != .all || selectedSortType != .mostRecent
+        !filterOption.isDefault || !selectedSortType.isDefault
     }
 
     var selectedItemType: ItemType?
@@ -210,8 +206,14 @@ private extension ItemsForTextInsertionViewModel {
 
 extension ItemsForTextInsertionViewModel {
     func filterAndSortItems() {
-        defer { state = .idle }
-        state = .loading
+        defer {
+            switch state {
+            case .searchResults:
+                break
+            default:
+                state = .idle
+            }
+        }
 
         let history: [ItemUiModel]
         let allItems: [ItemUiModel]
