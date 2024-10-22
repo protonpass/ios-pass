@@ -36,7 +36,7 @@ enum VaultManagerState {
     case error(any Error)
 }
 
-final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProtocol {
+final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintable, VaultsManagerProtocol {
     deinit { print(deinitMessage) }
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -44,7 +44,21 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
-    private var isRefreshing = false
+
+    private let queue = DispatchQueue(label: "me.proton.pass.vaultsManager")
+    private var safeIsRefreshing = false
+    private var isRefreshing: Bool {
+        get {
+            queue.sync {
+                safeIsRefreshing
+            }
+        }
+        set {
+            queue.sync {
+                safeIsRefreshing = newValue
+            }
+        }
+    }
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)

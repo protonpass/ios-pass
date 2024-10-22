@@ -28,7 +28,7 @@ import ProtonCoreChallenge
 @preconcurrency import ProtonCoreDoh
 import ProtonCoreFoundations
 import ProtonCoreNetworking
-import ProtonCoreServices
+@preconcurrency import ProtonCoreServices
 
 public protocol VerifyProtonPasswordUseCase: Sendable {
     func execute(_ password: String) async throws -> Bool
@@ -40,14 +40,27 @@ public extension VerifyProtonPasswordUseCase {
     }
 }
 
-public final class VerifyProtonPassword: Sendable, VerifyProtonPasswordUseCase {
+public final class VerifyProtonPassword: @unchecked Sendable, VerifyProtonPasswordUseCase {
     private let userManager: any UserManagerProtocol
     private let doh: any DoHInterface
     private let appVer: String
 
+    private var safeAuthSessionInvalidatedDelegate: (any AuthSessionInvalidatedDelegate)?
+    private let queue = DispatchQueue(label: "me.proton.pass.verifyProtonPassword")
     // Required by `AuthDelegate`
     // swiftlint:disable:next identifier_name
-    public var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)?
+    public var authSessionInvalidatedDelegateForLoginAndSignup: (any AuthSessionInvalidatedDelegate)? {
+        get {
+            queue.sync {
+                safeAuthSessionInvalidatedDelegate
+            }
+        }
+        set {
+            queue.sync {
+                safeAuthSessionInvalidatedDelegate = newValue
+            }
+        }
+    }
 
     private var apiService: (any APIService)?
 

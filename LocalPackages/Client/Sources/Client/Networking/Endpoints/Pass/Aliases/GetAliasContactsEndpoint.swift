@@ -35,7 +35,7 @@ public struct PaginatedAliasContacts: Decodable, Sendable, Equatable, Hashable {
     public let lastID: Int
 }
 
-struct GetAliasContactsEndpoint: Endpoint {
+struct GetAliasContactsEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
     typealias Response = PaginatedAliasContacts
 
