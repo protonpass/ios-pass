@@ -174,41 +174,6 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
         }
     }
 
-    func timeSinceCreation(from timestamp: Int) -> String {
-        // Convert timestamp (in seconds) to Date
-        let creationDate = Date(timeIntervalSince1970: TimeInterval(timestamp))
-
-        let currentDate = Date()
-
-        // Define the calendar and components
-        let calendar = Calendar.current
-
-        // Calculate the difference between the two dates
-        let components = calendar.dateComponents([.year, .month, .day], from: creationDate, to: currentDate)
-
-        // Localized string components
-        let yearsString = if let years = components.year {
-            #localized("%lld years", years)
-        } else {
-            ""
-        }
-        let monthsString = if let months = components.month {
-            #localized("%lld months", months)
-        } else {
-            ""
-        }
-
-        let daysString = if let days = components.day {
-            #localized("%lld day(s)", days)
-        } else {
-            ""
-        }
-
-        let timeComponents = [yearsString, monthsString, daysString].filter { !$0.isEmpty }.joined(separator: ", ")
-
-        return #localized("Contact created %@ ago.", timeComponents)
-    }
-
     func upsell() {
         let config = UpsellingViewConfiguration(icon: PassIcon.passPlus,
                                                 title: #localized("Manage your aliases"),

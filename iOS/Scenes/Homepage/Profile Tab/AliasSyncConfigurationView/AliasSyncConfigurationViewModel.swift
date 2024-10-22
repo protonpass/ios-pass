@@ -64,6 +64,10 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     private var selectedMailboxTask: Task<Void, Never>?
     private var aliasSettings: AliasSettings?
 
+    var isAliasesSyncActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
     }

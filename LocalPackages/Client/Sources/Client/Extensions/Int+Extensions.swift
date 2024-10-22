@@ -20,14 +20,34 @@
 
 import Foundation
 
-extension Int {
+public extension BinaryInteger {
     var codableBoolValue: Bool {
         self != 0
     }
-}
 
-public extension Int {
     var nilIfZero: Int? {
-        self == 0 ? nil : self
+        self == 0 ? nil : Int(self)
+    }
+
+    var fullDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .full
+        dateFormatter.timeStyle = .short
+        dateFormatter.doesRelativeDateFormatting = true
+        let relativeDateFormatter = RelativeDateTimeFormatter()
+
+        let timeInterval = TimeInterval(self)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        let dateString = dateFormatter.string(from: date)
+        let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: .now)
+        return "\(dateString) (\(relativeString))"
+    }
+
+    var shortDateString: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMM-dd-yy HH:mm"
+        let timeInterval = TimeInterval(self)
+        let date = Date(timeIntervalSince1970: timeInterval)
+        return dateFormatter.string(from: date)
     }
 }
