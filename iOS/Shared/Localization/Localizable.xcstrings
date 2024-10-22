@@ -646,6 +646,7 @@
       }
     },
     "%@, %@, %@ in the last 14 days." : {
+      "comment" : "Sample final text \"1 forwarded, 2 blocked, 3 replies in the last 14 days\". Each placeholder is localized and pluralized separately.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2364,9 +2365,21 @@
     "%lld blocked" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld blocked"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blocked"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blocked"
+                }
+              }
+            }
           }
         }
       }
@@ -3467,9 +3480,21 @@
     "%lld forwarded" : {
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld forwarded"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld forwarded"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld forwarded"
+                }
+              }
+            }
           }
         }
       }
@@ -75461,6 +75486,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không có vụ rò rỉ dữ liệu nào được tìm thấy cho"
+          }
+        }
+      }
+    },
+    "No items found" : {
+      "comment" : "Message shown when filtering items by type and no items of such type is found",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No items found"
           }
         }
       }
