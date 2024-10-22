@@ -162,8 +162,9 @@ public extension SyncEventLoop {
             }
 
             delegate?.syncEventLoopDidStartLooping()
-            timerTask = Task {
-                await self.timerLoop()
+            timerTask = Task { [weak self] in
+                guard let self else { return }
+                await timerLoop()
             }
         }
     }
