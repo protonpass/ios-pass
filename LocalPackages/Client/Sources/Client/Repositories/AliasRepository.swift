@@ -202,14 +202,9 @@ public extension AliasRepository {
     }
 
     func deleteMailbox(userId: String, mailboxID: Int, transferMailboxID: Int?) async throws {
-        let id: String? = if let transferMailboxID {
-            "\(transferMailboxID)"
-        } else {
-            nil
-        }
-
-        let request = DeleteMailboxRequest(transferMailboxID: id)
-        try await remoteDatasource.deleteMailbox(userId: userId, mailboxID: mailboxID, request: request)
+        try await remoteDatasource.deleteMailbox(userId: userId,
+                                                 mailboxID: mailboxID,
+                                                 transferMailboxId: transferMailboxID)
         mailboxUpdated.send(())
     }
 

@@ -49,7 +49,9 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func getAllAliasDomains(userId: String) async throws -> [Domain]
     func getAllAliasMailboxes(userId: String) async throws -> [Mailbox]
     func createMailbox(userId: String, request: CreateMailboxRequest) async throws -> Mailbox
-    func deleteMailbox(userId: String, mailboxID: Int, request: DeleteMailboxRequest) async throws
+    func deleteMailbox(userId: String,
+                       mailboxID: Int,
+                       transferMailboxId: Int?) async throws
     func verifyMailbox(userId: String, mailboxID: Int, request: VerifyMailboxRequest) async throws -> Mailbox
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
 
@@ -177,8 +179,9 @@ public extension RemoteAliasDatasource {
         return response.mailbox
     }
 
-    func deleteMailbox(userId: String, mailboxID: Int, request: DeleteMailboxRequest) async throws {
-        let endpoint = DeleteMailboxEndpoint(mailboxID: "\(mailboxID)", request: request)
+    func deleteMailbox(userId: String, mailboxID: Int, transferMailboxId: Int?) async throws {
+        let endpoint = DeleteMailboxEndpoint(mailboxID: "\(mailboxID)",
+                                             transferMailboxId: transferMailboxId)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
