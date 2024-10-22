@@ -1,6 +1,6 @@
 //
-// UpdateAliasMailboxEndpoint.swift
-// Proton Pass - Created on 06/08/2024.
+// UpdateAliasSlNoteEndpoint.swift
+// Proton Pass - Created on 22/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,34 +17,31 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import ProtonCoreNetworking
 
-public struct UpdateAliasMailboxRequest: Sendable, Encodable {
-    let defaultMailboxID: Int
-
-    public init(defaultMailboxID: Int) {
-        self.defaultMailboxID = defaultMailboxID
-    }
+struct UpdateAliasSlNoteRequest: Encodable, Sendable {
+    let note: String?
 
     enum CodingKeys: String, CodingKey {
-        case defaultMailboxID = "DefaultMailboxID"
+        case note = "Note"
     }
 }
 
-struct UpdateAliasMailboxEndpoint: Endpoint {
-    typealias Body = UpdateAliasMailboxRequest
-    typealias Response = GetAliasSettingsResponse
+struct UpdateAliasSlNoteEndpoint: Endpoint {
+    typealias Body = UpdateAliasSlNoteRequest
+    typealias Response = CodeOnlyResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
-    var body: UpdateAliasMailboxRequest?
+    var body: UpdateAliasSlNoteRequest?
 
-    init(request: UpdateAliasMailboxRequest) {
-        debugDescription = "Update user alias default mailbox"
-        path = "/pass/v1/user/alias/settings/default_mailbox_id"
+    init(shareId: String, itemId: String, note: String?) {
+        debugDescription = "Change alias note in SL"
+        path = "/pass/v1/share/\(shareId)/alias/\(itemId)/note"
         method = .put
-        body = request
+        body = .init(note: note)
     }
 }
