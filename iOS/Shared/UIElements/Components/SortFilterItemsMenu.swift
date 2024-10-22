@@ -40,7 +40,6 @@ struct SortFilterItemsMenu: View {
     let options: [SortFilterItemsMenuOption]
     let highlighted: Bool
     let selectable: Bool
-    let resettable: Bool
 
     var body: some View {
         Menu(content: {
@@ -66,12 +65,12 @@ struct SortFilterItemsMenu: View {
                     sortOptions(selectedType: selectedType, onSelect: onSelect)
 
                 case let .resetFilters(onReset):
-                    if resettable {
+                    if highlighted {
                         Button(action: onReset) {
                             Label(title: {
                                 Text("Reset filters")
                             }, icon: {
-                                IconProvider.crossCircle
+                                IconProvider.arrowUpAndLeft
                             })
                         }
                     }
@@ -120,7 +119,7 @@ private extension SortFilterItemsMenu {
                     text(for: selectedOption.uiModel(from: itemCount))
                 }
             }, icon: {
-                Image(uiImage: highlighted ? PassIcon.filterFilled : IconProvider.filter)
+                Image(uiImage: !selectedOption.isDefault ? PassIcon.filterFilled : IconProvider.filter)
             })
         })
     }

@@ -371,7 +371,7 @@ private extension SymmetricallyEncryptedShare {
         guard let decryptedContentData = try decryptedContent.base64Decode() else { return nil }
         let vaultContent = try VaultProtobuf(data: decryptedContentData)
 
-        return .init(id: share.vaultID,
+        return Vault(id: share.vaultID,
                      shareId: share.shareID,
                      addressId: share.addressID,
                      name: vaultContent.name,
@@ -384,6 +384,7 @@ private extension SymmetricallyEncryptedShare {
                      pendingInvites: Int(share.pendingInvites),
                      newUserInvitesReady: Int(share.newUserInvitesReady),
                      shared: share.shared,
-                     createTime: share.createTime)
+                     createTime: share.createTime,
+                     canAutoFill: share.canAutoFill)
     }
 }

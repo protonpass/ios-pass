@@ -41,13 +41,13 @@ final class ItemRepositoryTests: XCTestCase {
     override func setUp() {
         super.setUp()
         symmetricKeyProvider = SymmetricKeyProviderMock()
-         localDatasource = LocalItemDatasourceProtocolMock()
+        localDatasource = LocalItemDatasourceProtocolMock()
         userManager = UserManagerProtocolMock()
-         localDatasource.stubbedGetAllPinnedItemsResult = []
-         remoteDatasource = RemoteItemDatasourceProtocolMock()
-         shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
-         passKeyManager = PassKeyManagerProtocolMock()
-         logManager = LogManagerProtocolMock()
+        localDatasource.stubbedGetAllPinnedItemsResult = []
+        remoteDatasource = RemoteItemDatasourceProtocolMock()
+        shareEventIDRepository = ShareEventIDRepositoryProtocolMock()
+        passKeyManager = PassKeyManagerProtocolMock()
+        logManager = LogManagerProtocolMock()
     }
 
     override func tearDown() {
@@ -83,6 +83,7 @@ extension ItemRepositoryTests {
                              logManager: logManager)
 
         let expectation = expectation(description: "Init of ItemRepository")
+        expectation.assertForOverFulfill = false
 
         let pinnedItems = try await sut.getAllPinnedItems()
         var currentlyPinnedItems:[SymmetricallyEncryptedItem]?
