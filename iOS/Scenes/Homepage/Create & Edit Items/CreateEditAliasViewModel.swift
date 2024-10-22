@@ -150,15 +150,27 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                      mailboxIds: mailboxSelection.selectedMailboxes.map(\.ID))
     }
 
-    override func additionalEdit() async throws {
-        guard let alias,
-              Set(alias.mailboxes) != Set(mailboxSelection.selectedMailboxes),
-              case let .edit(itemContent) = mode
-        else { return }
-        let mailboxIds = mailboxSelection.selectedMailboxes.map(\.ID)
-        try await changeMailboxes(shareId: itemContent.shareId,
-                                  itemId: itemContent.item.itemID,
-                                  mailboxIDs: mailboxIds)
+    override func additionalEdit() async throws -> Bool {
+        guard let alias, case let .edit(itemContent) = mode else { return false }
+
+        var edited = false
+        if Set(alias.mailboxes) != Set(mailboxSelection.selectedMailboxes) {
+            let mailboxIds = mailboxSelection.selectedMailboxes.map(\.ID)
+            try await changeMailboxes(shareId: itemContent.shareId,
+                                      itemId: itemContent.item.itemID,
+                                      mailboxIDs: mailboxIds)
+            edited = true
+        }
+
+        if simpleLoginNote != alias.note {
+            let userId = try await userManager.getActiveUserId()
+            try await aliasRepository.updateSlAliasNote(userId: userId,
+                                                        shareId: itemContent.shareId,
+                                                        itemId: itemContent.itemId,
+                                                        note: simpleLoginNote)
+            edited = true
+        }
+        return edited
     }
 
     private func validatePrefix() {
