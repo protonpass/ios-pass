@@ -83,7 +83,7 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
 
     private var qaPasswordPolicyOverride: Bool {
-        UserDefaults.standard.bool(forKey: Constants.QA.forcePasswordPolicy)
+        UserDefaults.standard.bool(forKey: Constants.QA.forcePassPolicy)
     }
 
     @AppStorage("passwordType", store: kSharedUserDefaults)
@@ -218,7 +218,7 @@ private extension GeneratePasswordViewModel {
             defer { loading = false }
             loading = true
             if qaPasswordPolicyOverride {
-                if let string = UserDefaults.standard.string(forKey: Constants.QA.passwordPolicy) {
+                if let string = UserDefaults.standard.string(forKey: Constants.QA.passPolicy) {
                     passwordPolicy = PasswordPolicy(rawValue: string)
                 }
             } else if let userId = try? await userManager.getActiveUserId(),
