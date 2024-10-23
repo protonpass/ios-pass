@@ -41,7 +41,7 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
-    @Published private var type: ValidationEmailType
+    @Published private(set) var type: ValidationEmailType
 
     var canContinue: Bool {
         if type.isNotEmpty {
@@ -53,10 +53,6 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
 
     var isVerificationMode: Bool {
         type.isNotEmpty
-    }
-
-    var isMailbox: Bool {
-        type.isMailbox
     }
 
     init(validationType: ValidationEmailType) {
