@@ -104,6 +104,7 @@ struct GeneratePasswordView: View {
             .navigationBarTitleDisplayMode(.inline)
             .animation(.default, value: viewModel.password)
             .animation(.default, value: viewModel.isShowingAdvancedOptions)
+            .showSpinner(viewModel.loading)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     // Hidden gimmick button to make the navigation title centered properly
