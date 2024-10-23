@@ -45,47 +45,56 @@ private struct PasswordPolicyView: View {
             Toggle(isOn: $forcePasswordPolicy) {
                 Text(verbatim: "Apply password policy to all users")
             }
-            Section(header: Text("Random Password Settings").font(.headline.bold())) {
-                Toggle("Allow Random Password", isOn: $viewModel.randomPasswordAllowed)
+            Section(header: Text(verbatim: "Random Password Settings").font(.headline.bold())) {
+                Toggle(isOn: $viewModel.randomPasswordAllowed,
+                       label: { Text(verbatim: "Allow Random Password") })
 
-                Picker("Min Length", selection: $viewModel.randomPasswordMinLength) {
-                    ForEach(8...20, id: \.self) { length in
-                        Text("\(length)").tag(length)
-                    }
-                }
+                Picker(selection: $viewModel.randomPasswordMinLength,
+                       content: {
+                           ForEach(8...20, id: \.self) { length in
+                               Text(verbatim: "\(length)").tag(length)
+                           }
+                       }, label: { Text(verbatim: "Min Length") })
 
-                Picker("Max Length", selection: $viewModel.randomPasswordMaxLength) {
-                    ForEach(20...40, id: \.self) { length in
-                        Text("\(length)").tag(length)
-                    }
-                }
+                Picker(selection: $viewModel.randomPasswordMaxLength,
+                       content: {
+                           ForEach(20...40, id: \.self) { length in
+                               Text(verbatim: "\(length)").tag(length)
+                           }
+                       }, label: { Text(verbatim: "Max Length") })
 
-                Toggle("Must Include Numbers", isOn: $viewModel.randomPasswordMustIncludeNumbers)
-                Toggle("Must Include Symbols", isOn: $viewModel.randomPasswordMustIncludeSymbols)
-                Toggle("Must Include Uppercase", isOn: $viewModel.randomPasswordMustIncludeUppercase)
+                Toggle(isOn: $viewModel.randomPasswordMustIncludeNumbers,
+                       label: { Text(verbatim: "Must Include Numbers") })
+                Toggle(isOn: $viewModel.randomPasswordMustIncludeSymbols,
+                       label: { Text(verbatim: "Must Include Symbols") })
+                Toggle(isOn: $viewModel.randomPasswordMustIncludeUppercase,
+                       label: { Text(verbatim: "Must Include Uppercase") })
             }
 
-            Section(header: Text("Memorable Password Settings").font(.headline.bold())) {
-                Toggle("Allow Memorable Password", isOn: $viewModel.memorablePasswordAllowed)
+            Section(header: Text(verbatim: "Memorable Password Settings").font(.headline.bold())) {
+                Toggle(isOn: $viewModel.memorablePasswordAllowed,
+                       label: { Text(verbatim: "Allow Memorable Password") })
 
-                Picker("Min Words", selection: $viewModel.memorablePasswordMinWords) {
-                    ForEach(1...5, id: \.self) { wordCount in
-                        Text("\(wordCount)").tag(wordCount)
-                    }
-                }
+                Picker(selection: $viewModel.memorablePasswordMinWords,
+                       content: {
+                           ForEach(1...5, id: \.self) { wordCount in
+                               Text(verbatim: "\(wordCount)").tag(wordCount)
+                           }
+                       }, label: { Text(verbatim: "Min Words") })
 
-                Picker("Max Words", selection: $viewModel.memorablePasswordMaxWords) {
-                    ForEach(5...15, id: \.self) { wordCount in
-                        Text("\(wordCount)").tag(wordCount)
-                    }
-                }
+                Picker(selection: $viewModel.memorablePasswordMaxWords,
+                       content: { ForEach(5...15, id: \.self) { wordCount in
+                           Text(verbatim: "\(wordCount)").tag(wordCount)
+                       }}, label: { Text(verbatim: "Max Words") })
 
-                Toggle("Capitalize Words", isOn: $viewModel.memorablePasswordMustCapitalize)
-                Toggle("Must Include Numbers", isOn: $viewModel.memorablePasswordMustIncludeNumbers)
+                Toggle(isOn: $viewModel.memorablePasswordMustCapitalize,
+                       label: { Text(verbatim: "Capitalize Words") })
+                Toggle(isOn: $viewModel.memorablePasswordMustIncludeNumbers,
+                       label: { Text(verbatim: "Must Include Numbers") })
             }
         }
         .padding(DesignConstant.sectionPadding)
-        .navigationTitle("Password Policy Settings")
+        .navigationTitle(Text(verbatim: "Password Policy Settings"))
     }
 }
 
