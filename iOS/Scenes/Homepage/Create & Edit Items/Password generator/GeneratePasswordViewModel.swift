@@ -86,9 +86,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
         UserDefaults.standard.bool(forKey: Constants.QA.forcePasswordPolicy)
     }
 
-//    @AppStorage(Constants.QA.passwordPolicy)
-//    private var qaPasswordPolicy = PasswordPolicy.default
-//
     @AppStorage("passwordType", store: kSharedUserDefaults)
     private var type: PasswordType = .memorable {
         didSet {
