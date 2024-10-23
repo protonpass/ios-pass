@@ -86676,6 +86676,17 @@
         }
       }
     },
+    "Please check in your Spam for an email called \"Please confirm your mailbox %@\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)." : {
+      "comment" : "Placeholder is an email address",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please check in your Spam for an email called \"Please confirm your mailbox %@\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)."
+          }
+        }
+      }
+    },
     "Please contact us to investigate the issue" : {
       "localizations" : {
         "be" : {

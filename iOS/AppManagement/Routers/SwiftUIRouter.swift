@@ -79,15 +79,6 @@ enum ValidationEmailType: Hashable {
             data != nil
         }
     }
-
-    var isMailbox: Bool {
-        switch self {
-        case .customEmail:
-            false
-        case .mailbox:
-            true
-        }
-    }
 }
 
 enum GeneralSheetDestination: Identifiable, Hashable {
