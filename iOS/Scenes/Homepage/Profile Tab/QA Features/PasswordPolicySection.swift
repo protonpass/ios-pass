@@ -37,7 +37,7 @@ struct PasswordPolicySection: View {
 private struct PasswordPolicyView: View {
     @StateObject private var viewModel = PasswordPolicyViewModel()
 
-    @AppStorage(Constants.QA.forcePasswordPolicy)
+    @AppStorage(Constants.QA.forcePassPolicy)
     private var forcePasswordPolicy = false
 
     var body: some View {
@@ -167,7 +167,7 @@ private final class PasswordPolicyViewModel: ObservableObject {
         }
     }
 
-    @AppStorage(Constants.QA.passwordPolicy)
+    @AppStorage(Constants.QA.passPolicy)
     private var passwordPolicy = PasswordPolicy.default
 
     private var cancellables = Set<AnyCancellable>()
