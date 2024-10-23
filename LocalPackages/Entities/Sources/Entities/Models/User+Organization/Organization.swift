@@ -61,15 +61,63 @@ public extension Organization {
 
         public let exportMode: ExportMode
 
+        public let passwordPolicy: PasswordPolicy?
+
         public init(shareMode: ShareMode,
                     forceLockSeconds: Int,
-                    exportMode: ExportMode) {
+                    exportMode: ExportMode,
+                    passwordPolicy: PasswordPolicy?) {
             self.shareMode = shareMode
             self.forceLockSeconds = forceLockSeconds
             self.exportMode = exportMode
+            self.passwordPolicy = passwordPolicy
         }
     }
 }
+
+// swiftlint:disable discouraged_optional_boolean
+public struct PasswordPolicy: Sendable, Codable, Equatable {
+    public let randomPasswordAllowed: Bool
+    public let randomPasswordMinLength: Int?
+    public let randomPasswordMaxLength: Int?
+    public let randomPasswordMustIncludeNumbers: Bool?
+    public let randomPasswordMustIncludeSymbols: Bool?
+    public let randomPasswordMustIncludeUppercase: Bool?
+    public let memorablePasswordAllowed: Bool
+    public let memorablePasswordMinWords: Int?
+    public let memorablePasswordMaxWords: Int?
+    public let memorablePasswordMustCapitalize: Bool?
+    public let memorablePasswordMustIncludeNumbers: Bool?
+    public let memorablePasswordMustIncludeSeparator: Bool?
+
+    init(randomPasswordAllowed: Bool,
+         randomPasswordMinLength: Int?,
+         randomPasswordMaxLength: Int?,
+         randomPasswordMustIncludeNumbers: Bool?,
+         randomPasswordMustIncludeSymbols: Bool?,
+         randomPasswordMustIncludeUppercase: Bool?,
+         memorablePasswordAllowed: Bool,
+         memorablePasswordMinWords: Int?,
+         memorablePasswordMaxWords: Int?,
+         memorablePasswordMustCapitalize: Bool?,
+         memorablePasswordMustIncludeNumbers: Bool?,
+         memorablePasswordMustIncludeSeparator: Bool?) {
+        self.randomPasswordAllowed = randomPasswordAllowed
+        self.randomPasswordMinLength = randomPasswordMinLength
+        self.randomPasswordMaxLength = randomPasswordMaxLength
+        self.randomPasswordMustIncludeNumbers = randomPasswordMustIncludeNumbers
+        self.randomPasswordMustIncludeSymbols = randomPasswordMustIncludeSymbols
+        self.randomPasswordMustIncludeUppercase = randomPasswordMustIncludeUppercase
+        self.memorablePasswordAllowed = memorablePasswordAllowed
+        self.memorablePasswordMinWords = memorablePasswordMinWords
+        self.memorablePasswordMaxWords = memorablePasswordMaxWords
+        self.memorablePasswordMustCapitalize = memorablePasswordMustCapitalize
+        self.memorablePasswordMustIncludeNumbers = memorablePasswordMustIncludeNumbers
+        self.memorablePasswordMustIncludeSeparator = memorablePasswordMustIncludeSeparator
+    }
+}
+
+// swiftlint:enable discouraged_optional_boolean
 
 public extension Organization.Settings {
     /// `AppLockTime` base on `forceLockSeconds`
