@@ -90,18 +90,18 @@ public struct PasswordPolicy: Sendable, Codable, Equatable {
     public let memorablePasswordMustIncludeNumbers: Bool?
     public let memorablePasswordMustIncludeSeparator: Bool?
 
-    init(randomPasswordAllowed: Bool,
-         randomPasswordMinLength: Int?,
-         randomPasswordMaxLength: Int?,
-         randomPasswordMustIncludeNumbers: Bool?,
-         randomPasswordMustIncludeSymbols: Bool?,
-         randomPasswordMustIncludeUppercase: Bool?,
-         memorablePasswordAllowed: Bool,
-         memorablePasswordMinWords: Int?,
-         memorablePasswordMaxWords: Int?,
-         memorablePasswordMustCapitalize: Bool?,
-         memorablePasswordMustIncludeNumbers: Bool?,
-         memorablePasswordMustIncludeSeparator: Bool?) {
+    public init(randomPasswordAllowed: Bool,
+                randomPasswordMinLength: Int?,
+                randomPasswordMaxLength: Int?,
+                randomPasswordMustIncludeNumbers: Bool?,
+                randomPasswordMustIncludeSymbols: Bool?,
+                randomPasswordMustIncludeUppercase: Bool?,
+                memorablePasswordAllowed: Bool,
+                memorablePasswordMinWords: Int?,
+                memorablePasswordMaxWords: Int?,
+                memorablePasswordMustCapitalize: Bool?,
+                memorablePasswordMustIncludeNumbers: Bool?,
+                memorablePasswordMustIncludeSeparator: Bool?) {
         self.randomPasswordAllowed = randomPasswordAllowed
         self.randomPasswordMinLength = randomPasswordMinLength
         self.randomPasswordMaxLength = randomPasswordMaxLength

@@ -106,16 +106,16 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     // Random password options
     @AppStorage("characterCount", store: kSharedUserDefaults)
-    private var characterCount: Double = 20 { didSet { if characterCount != oldValue { regenerate() } } }
+    private var characterCount: Double = 20
 
     @AppStorage("hasSpecialCharacters", store: kSharedUserDefaults)
-    private var hasSpecialCharacters = true { didSet { regenerate() } }
+    private var hasSpecialCharacters = true
 
     @AppStorage("hasCapitalCharacters", store: kSharedUserDefaults)
-    private var hasCapitalCharacters = true { didSet { regenerate() } }
+    private var hasCapitalCharacters = true
 
     @AppStorage("hasNumberCharacters", store: kSharedUserDefaults)
-    private var hasNumberCharacters = true { didSet { regenerate() } }
+    private var hasNumberCharacters = true
 
     // Memorable password options
     @AppStorage("wordSeparator", store: kSharedUserDefaults)
@@ -164,7 +164,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
 extension GeneratePasswordViewModel {
     func regenerate(forceRefresh: Bool = true) {
-        // TODO: do not base the reneration on appstarage values but published values
         do {
             defer {
                 strength = getPasswordStrength(password: password) ?? .vulnerable
@@ -223,18 +222,12 @@ private extension GeneratePasswordViewModel {
             }
 
             setPasswordLimitations()
-
-            // TODO: subscribe to publishers here
             subscribeToChanges()
-
-//            if passwordPolicy == nil {
-//                //TODO: listen and record changes for publishers to appStorage elements
-//                subscribeToChanges()
-//            }
             regenerate()
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     func setPasswordLimitations() {
         passwordType = type
 
@@ -323,102 +316,91 @@ private extension GeneratePasswordViewModel {
                 type = newType
             }
             .store(in: &cancellables)
+
+        $numberOfCharacters
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] new in
+                guard let self else { return }
+                if passwordPolicy == nil {
+                    characterCount = new
+                }
+                regenerate()
+            }
+            .store(in: &cancellables)
+
+        $activateSpecialCharacters
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] new in
+                guard let self else { return }
+                if passwordPolicy == nil {
+                    hasSpecialCharacters = new
+                }
+                regenerate()
+            }
+            .store(in: &cancellables)
+
+        $activateCapitalCharacters
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] new in
+                guard let self else { return }
+                if passwordPolicy == nil {
+                    hasCapitalCharacters = new
+                }
+                regenerate()
+            }
+            .store(in: &cancellables)
+
+        $activateNumberCharacters
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] new in
+                guard let self else { return }
+                if passwordPolicy == nil {
+                    hasNumberCharacters = new
+                }
+                regenerate()
+            }
+            .store(in: &cancellables)
+
+        $typeOfWordSeparator
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] new in
+                guard let self else { return }
+                wordSeparator = new
+            }
+            .store(in: &cancellables)
+
+        $numberOfWords
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] new in
+                guard let self else { return }
+                if passwordPolicy == nil {
+                    wordCount = new
+                }
+                regenerate()
+            }
+            .store(in: &cancellables)
+
+        $activateCapitalized
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] new in
+                guard let self else { return }
+                if passwordPolicy == nil {
+                    capitalizingWords = new
+                }
+                regenerate(forceRefresh: false)
+            }
+            .store(in: &cancellables)
+
+        $includeNumbers
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] new in
+                guard let self else { return }
+                if passwordPolicy == nil {
+                    includingNumbers = new
+                }
+                regenerate(forceRefresh: false)
+            }
+            .store(in: &cancellables)
     }
+    // swiftlint:enable cyclomatic_complexity
 }
-
-// @Published var passwordType: PasswordType = .memorable
-// @Published var numberOfCharacters: Double = 20
-// @Published var activateSpecialCharacters: Bool = true
-// @Published var activateCapitalCharacters: Bool = true
-// @Published var activateNumberCharacters: Bool = true
-// @Published var typeOfWordSeparator: WordSeparator = .hyphens
-// @Published var numberOfWords: Double = 5
-// @Published var activateCapitalized: Bool = true
-// @Published var includeNumbers: Bool = true
-
-//
-// @Published private(set) var minChar: Double = 4
-// @Published private(set) var maxChar: Double = 64
-// @Published private(set) var minWord: Double = 1
-// @Published private(set) var maxWord: Double = 10
-//
-// passwordType = type
-////numberOfCharacters = characterCount
-////activateSpecialCharacters = hasSpecialCharacters
-////activateCapitalCharacters = hasCapitalCharacters
-////activateNumberCharacters = hasNumberCharacters
-////typeOfWordSeparator = wordSeparator
-////numberOfWords = wordCount
-// activateCapitalized = capitalizingWords
-// includeNumbers = includingNumbers
-
-//
-// let randomPasswordAllowed: Bool
-// let randomPasswordMustIncludeNumbers: Bool?
-////let randomPasswordMustIncludeSymbols: Bool?
-////let randomPasswordMustIncludeUppercase: Bool?
-// let memorablePasswordAllowed: Bool
-////let memorablePasswordMinWords: Int?
-////let memorablePasswordMaxWords: Int?
-// let memorablePasswordMustCapitalize: Bool?
-// let memorablePasswordMustIncludeNumbers: Bool?
-// let memorablePasswordMustIncludeSeparator: Bool?
-//
-// @Published var numberOfCharacters: Double
-// @Published var activateSpecialCharacters: Bool = true
-// @Published var activateCapitalCharacters: Bool = true
-// @Published var activateNumberCharacters: Bool = true
-// @Published var typeOfWordSeparator: WordSeparator = .hyphens
-// @Published var numberOfWords: Double = 5
-// @Published var activateCapitalized: Bool = true
-// @Published var includeNumbers: Bool = true
-//
-// @Published private(set) var minChar: Double = 4
-// @Published private(set) var maxChar: Double = 64
-// @Published private(set) var minWord: Double = 1
-// @Published private(set) var maxWord: Double = 10
-// @Published private(set) var passwordPolicy: PasswordPolicy?
-//
-//
-//
-//
-// @AppStorage("passwordType", store: kSharedUserDefaults)
-// private(set) var type: PasswordType = .memorable {
-//    didSet {
-//        regenerate(forceRefresh: false)
-//        requestHeightUpdate()
-//    }
-// }
-//
-// @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
-//
-//// Random password options
-// @AppStorage("characterCount", store: kSharedUserDefaults)
-// var characterCount: Double = 20 { didSet { if characterCount != oldValue { regenerate() } } }
-//
-// @AppStorage("hasSpecialCharacters", store: kSharedUserDefaults)
-// var hasSpecialCharacters = true { didSet { regenerate() } }
-//
-// @AppStorage("hasCapitalCharacters", store: kSharedUserDefaults)
-// var hasCapitalCharacters = true { didSet { regenerate() } }
-//
-// @AppStorage("hasNumberCharacters", store: kSharedUserDefaults)
-// var hasNumberCharacters = true { didSet { regenerate() } }
-//
-//// Memorable password options
-// @AppStorage("wordSeparator", store: kSharedUserDefaults)
-// private(set) var wordSeparator: WordSeparator = .hyphens {
-//    didSet {
-//        regenerate(forceRefresh: false)
-//        requestHeightUpdate()
-//    }
-// }
-//
-// @AppStorage("wordCount", store: kSharedUserDefaults)
-// var wordCount: Double = 5 { didSet { if wordCount != oldValue { regenerate() } } }
-//
-// @AppStorage("capitalizingWords", store: kSharedUserDefaults)
-// var capitalizingWords = true { didSet { regenerate(forceRefresh: false) } }
-//
-// @AppStorage("includingNumbers", store: kSharedUserDefaults)
-// var includingNumbers = true { didSet { regenerate(forceRefresh: false) } }
