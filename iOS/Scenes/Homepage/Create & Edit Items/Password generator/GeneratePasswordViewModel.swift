@@ -62,10 +62,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     let mode: GeneratePasswordViewMode
 
-    @Published private(set) var password = ""
-    @Published private(set) var strength: PasswordStrength = .vulnerable
-    @Published private(set) var loading = false
-
     @Published var passwordType: PasswordType = .memorable
     @Published var numberOfCharacters: Double = 20
     @Published var activateSpecialCharacters: Bool = true
@@ -75,13 +71,24 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published var numberOfWords: Double = 5
     @Published var activateCapitalized: Bool = true
     @Published var includeNumbers: Bool = true
-
+    @Published private(set) var password = ""
+    @Published private(set) var strength: PasswordStrength = .vulnerable
+    @Published private(set) var loading = false
     @Published private(set) var minChar: Double = 4
     @Published private(set) var maxChar: Double = 64
     @Published private(set) var minWord: Double = 1
     @Published private(set) var maxWord: Double = 10
     @Published private(set) var passwordPolicy: PasswordPolicy?
 
+    @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
+
+    private var qaPasswordPolicyOverride: Bool {
+        UserDefaults.standard.bool(forKey: Constants.QA.forcePasswordPolicy)
+    }
+
+//    @AppStorage(Constants.QA.passwordPolicy)
+//    private var qaPasswordPolicy = PasswordPolicy.default
+//
     @AppStorage("passwordType", store: kSharedUserDefaults)
     private var type: PasswordType = .memorable {
         didSet {
@@ -89,20 +96,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
             requestHeightUpdate()
         }
     }
-
-    var shouldDisplayTypeSelection: Bool {
-        if let randomPasswordAllowed = passwordPolicy?.randomPasswordAllowed, !randomPasswordAllowed {
-            return false
-        }
-
-        if let memorablePasswordAllowed = passwordPolicy?.memorablePasswordAllowed, !memorablePasswordAllowed {
-            return false
-        }
-
-        return true
-    }
-
-    @Published var isShowingAdvancedOptions = false { didSet { requestHeightUpdate() } }
 
     // Random password options
     @AppStorage("characterCount", store: kSharedUserDefaults)
@@ -140,6 +133,18 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
+    }
+
+    var shouldDisplayTypeSelection: Bool {
+        if let randomPasswordAllowed = passwordPolicy?.randomPasswordAllowed, !randomPasswordAllowed {
+            return false
+        }
+
+        if let memorablePasswordAllowed = passwordPolicy?.memorablePasswordAllowed, !memorablePasswordAllowed {
+            return false
+        }
+
+        return true
     }
 
     private var cachedWords = [String]()
@@ -215,9 +220,13 @@ private extension GeneratePasswordViewModel {
             guard let self else { return }
             defer { loading = false }
             loading = true
-            if let userId = try? await userManager.getActiveUserId(),
-               let organization = try? await organizationRepository.refreshOrganization(userId: userId),
-               let newPasswordPolicy = organization.settings?.passwordPolicy {
+            if qaPasswordPolicyOverride {
+                if let string = UserDefaults.standard.string(forKey: Constants.QA.passwordPolicy) {
+                    passwordPolicy = PasswordPolicy(rawValue: string)
+                }
+            } else if let userId = try? await userManager.getActiveUserId(),
+                      let organization = try? await organizationRepository.refreshOrganization(userId: userId),
+                      let newPasswordPolicy = organization.settings?.passwordPolicy {
                 passwordPolicy = newPasswordPolicy
             }
 
