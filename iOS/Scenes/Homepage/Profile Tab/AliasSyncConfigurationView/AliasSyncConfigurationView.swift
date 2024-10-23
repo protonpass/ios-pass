@@ -70,7 +70,7 @@ struct AliasSyncConfigurationView: View {
                             ForEach(viewModel.mailboxes) { mailbox in
                                 MailboxElementRow(mailBox: mailbox,
                                                   isDefault: mailbox == viewModel.defaultMailbox,
-                                                  showMenu: viewModel.isAliasesSyncActive,
+                                                  showMenu: viewModel.isAdvancedAliasManagementActive,
                                                   setDefault: { mailbox in
                                                       viewModel.setDefaultMailBox(mailbox: mailbox)
                                                   },
@@ -93,7 +93,7 @@ struct AliasSyncConfigurationView: View {
                 HStack {
                     sectionHeader("Mailboxes")
                     Spacer()
-                    if viewModel.isAliasesSyncActive, !viewModel.loading {
+                    if viewModel.isAdvancedAliasManagementActive, !viewModel.loading {
                         CapsuleLabelButton(icon: IconProvider.plus,
                                            title: #localized("Add"),
                                            titleColor: PassColor.interactionNormMajor2,
