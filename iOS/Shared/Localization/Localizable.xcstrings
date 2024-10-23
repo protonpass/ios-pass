@@ -60549,12 +60549,12 @@
         }
       }
     },
-    "In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note. Not even Proton or SimpleLogin can see it. SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it." : {
+    "In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note. Not even Proton or SimpleLogin can see it. SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it."
+            "value" : "In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note."
           }
         }
       }
@@ -76603,6 +76603,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không có địa chỉ email hay bí danh nào của bạn bị rò rỉ"
+          }
+        }
+      }
+    },
+    "Not even Proton or SimpleLogin can see it." : {
+      "comment" : "Part of the explanation about E2E encrypted items. \"It\" being referred here is about item's note.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not even Proton or SimpleLogin can see it."
           }
         }
       }
@@ -107730,6 +107741,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin takma adlarının içe aktarılacağı kasa."
+          }
+        }
+      }
+    },
+    "SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it."
           }
         }
       }
