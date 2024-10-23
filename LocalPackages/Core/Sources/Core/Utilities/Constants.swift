@@ -69,8 +69,8 @@ public enum Constants {
         public static let resetTipsStateOnLaunch = "resetTipsStateOnLaunch"
         public static let forceShowTips = "forceShowTips"
         public static let searchAndListSecureLink = "searchAndListSecureLink"
-        public static let forcePassPolicy = "forcePassPolicy"
-        public static let passPolicy = "passPolicy"
+        public static let forcePassPolicy = "forcePassPolicy" // #gitleaks:allow
+        public static let passPolicy = "passPolicy" // #gitleaks:allow
     }
 }
 
