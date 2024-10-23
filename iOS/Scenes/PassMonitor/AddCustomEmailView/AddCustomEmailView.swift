@@ -44,7 +44,7 @@ struct AddCustomEmailView: View {
 
                 TextField("Code", text: $viewModel.code)
                     .focused($focused)
-                    .keyboardType(.emailAddress)
+                    .keyboardType(.numberPad)
                     .autocorrectionDisabled()
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .tint(PassColor.interactionNorm.toColor)
@@ -53,6 +53,7 @@ struct AddCustomEmailView: View {
                 TextField("Email address", text: $viewModel.email)
                     .focused($focused)
                     .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .tint(PassColor.interactionNorm.toColor)
