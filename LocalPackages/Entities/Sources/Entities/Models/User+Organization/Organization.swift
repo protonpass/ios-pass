@@ -115,6 +115,32 @@ public struct PasswordPolicy: Sendable, Codable, Equatable {
         self.memorablePasswordMustIncludeNumbers = memorablePasswordMustIncludeNumbers
         self.memorablePasswordMustIncludeSeparator = memorablePasswordMustIncludeSeparator
     }
+
+    public static var `default`: PasswordPolicy {
+        PasswordPolicy(randomPasswordAllowed: true,
+                       randomPasswordMinLength: 10,
+                       randomPasswordMaxLength: 30,
+                       randomPasswordMustIncludeNumbers: true,
+                       randomPasswordMustIncludeSymbols: true,
+                       randomPasswordMustIncludeUppercase: true,
+                       memorablePasswordAllowed: true,
+                       memorablePasswordMinWords: 2,
+                       memorablePasswordMaxWords: 5,
+                       memorablePasswordMustCapitalize: true,
+                       memorablePasswordMustIncludeNumbers: true,
+                       memorablePasswordMustIncludeSeparator: true)
+    }
+}
+
+public extension PasswordPolicy {
+    init?(rawValue: String) {
+        guard let data = rawValue.data(using: .utf8),
+              let result = try? JSONDecoder().decode(PasswordPolicy.self, from: data)
+        else {
+            return nil
+        }
+        self = result
+    }
 }
 
 // swiftlint:enable discouraged_optional_boolean

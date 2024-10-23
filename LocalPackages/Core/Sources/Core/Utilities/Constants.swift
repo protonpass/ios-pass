@@ -69,6 +69,8 @@ public enum Constants {
         public static let resetTipsStateOnLaunch = "resetTipsStateOnLaunch"
         public static let forceShowTips = "forceShowTips"
         public static let searchAndListSecureLink = "searchAndListSecureLink"
+        public static let forcePasswordPolicy = "forcePasswordPolicy"
+        public static let passwordPolicy = "passwordPolicy"
     }
 }
 
