@@ -415,7 +415,7 @@ private extension HomepageCoordinator {
                 if !ProcessInfo.processInfo.isiOSAppOnMac,
                    currentCount >= 10,
                    let windowScene = rootViewController.view.window?.windowScene {
-                    SKStoreReviewController.requestReview(in: windowScene)
+                    AppStore.requestReview(in: windowScene)
                 }
             } catch {
                 handle(error: error)

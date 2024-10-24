@@ -18,16 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import Foundation
 import ProtonCoreNetworking
 
-public struct UpdateAliasSlNameRequest: Encodable, Sendable {
+struct UpdateAliasSlNameRequest: Encodable, Sendable {
     let name: String?
-
-    public init(name: String?) {
-        self.name = name
-    }
 
     enum CodingKeys: String, CodingKey {
         case name = "Name"
@@ -43,10 +37,10 @@ struct UpdateAliasSlNameEndpoint: Endpoint {
     var method: HTTPMethod
     var body: UpdateAliasSlNameRequest?
 
-    init(shareId: String, itemId: String, request: UpdateAliasSlNameRequest) {
+    init(shareId: String, itemId: String, name: String?) {
         debugDescription = "Change alias name in SL"
         path = "/pass/v1/share/\(shareId)/alias/\(itemId)/name"
         method = .put
-        body = request
+        body = .init(name: name)
     }
 }

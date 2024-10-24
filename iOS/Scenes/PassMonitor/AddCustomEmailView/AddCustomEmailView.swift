@@ -44,7 +44,7 @@ struct AddCustomEmailView: View {
 
                 TextField("Code", text: $viewModel.code)
                     .focused($focused)
-                    .keyboardType(.emailAddress)
+                    .keyboardType(.numberPad)
                     .autocorrectionDisabled()
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .tint(PassColor.interactionNorm.toColor)
@@ -53,6 +53,7 @@ struct AddCustomEmailView: View {
                 TextField("Email address", text: $viewModel.email)
                     .focused($focused)
                     .keyboardType(.emailAddress)
+                    .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .tint(PassColor.interactionNorm.toColor)
@@ -80,10 +81,11 @@ struct AddCustomEmailView: View {
                     }
 
                 if showResendCodeButton {
-                    // swiftlint:disable:next line_length
-                    Text("Please check in your Spam for an email called \"Please confirm your email address for Proton Pass\"\n\nIf you can't find such email, you can [request a new code](https://proton.me).")
+                    Text(viewModel.type.resendCodeMessage)
                         .foregroundStyle(PassColor.textWeak.toColor)
                         .tint(PassColor.interactionNormMajor1.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .fixedSize(horizontal: false, vertical: true)
                         .environment(\.openURL, OpenURLAction(handler: handleURL))
                 }
             }
@@ -119,8 +121,7 @@ struct AddCustomEmailView: View {
                    }
                })
         .onAppear { focused = true }
-        .navigationTitle(viewModel.isVerificationMode ? "Confirm your email" : viewModel
-            .isMailbox ? "Add mailbox" : "Custom email monitoring")
+        .navigationTitle(viewModel.isVerificationMode ? "Confirm your email" : viewModel.type.title)
         .navigationStackEmbeded()
     }
 }
@@ -141,4 +142,26 @@ private extension AddCustomEmailView {
         viewModel.sendVerificationCode()
         return .handled
     }
+}
+
+private extension ValidationEmailType {
+    var title: LocalizedStringKey {
+        switch self {
+        case .customEmail:
+            "Custom email monitoring"
+        case .mailbox:
+            "Add mailbox"
+        }
+    }
+
+    // swiftlint:disable line_length
+    var resendCodeMessage: LocalizedStringKey {
+        switch self {
+        case .customEmail:
+            "Please check in your Spam for an email called \"Please confirm your email address for Proton Pass\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)."
+        case let .mailbox(email):
+            "Please check in your Spam for an email called \"Please confirm your mailbox \(email?.email ?? "")\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)."
+        }
+    }
+    // swiftlint:enable line_length
 }

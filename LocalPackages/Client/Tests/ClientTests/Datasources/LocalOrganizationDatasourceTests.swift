@@ -45,7 +45,8 @@ extension LocalOrganizationDatasourceTests {
         let org1 = Organization(canUpdate: true,
                                 settings: .init(shareMode: .restricted,
                                                 forceLockSeconds: 100,
-                                                exportMode: .admins))
+                                                exportMode: .admins,
+                                                passwordPolicy: PasswordPolicy.default))
 
         // When
         try await sut.upsertOrganization(org1, userId: userId)
@@ -59,7 +60,8 @@ extension LocalOrganizationDatasourceTests {
         let org2 = Organization(canUpdate: false,
                                 settings: .init(shareMode: .unrestricted,
                                                 forceLockSeconds: 300,
-                                                exportMode: .anyone))
+                                                exportMode: .anyone,
+                                                passwordPolicy:  PasswordPolicy.default))
 
         // When
         try await sut.upsertOrganization(org2, userId: userId)
@@ -75,7 +77,8 @@ extension LocalOrganizationDatasourceTests {
         let org1 = Organization(canUpdate: true,
                                 settings: .init(shareMode: .restricted,
                                                 forceLockSeconds: 100,
-                                                exportMode: .admins))
+                                                exportMode: .admins,
+                                                passwordPolicy: PasswordPolicy.default))
 
         // When
         try await sut.upsertOrganization(org1, userId: userId)

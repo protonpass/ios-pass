@@ -40,19 +40,12 @@ struct CreateContactView: View {
                 .keyboardType(.emailAddress)
                 .autocorrectionDisabled()
                 .foregroundStyle(PassColor.textNorm.toColor)
-                .tint(PassColor.interactionNorm.toColor)
-                .frame(height: 64)
-
-            TextField("Name for contact detail", text: $viewModel.name)
-                .keyboardType(.asciiCapable)
-                .autocorrectionDisabled()
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .tint(PassColor.interactionNorm.toColor)
+                .tint(ItemContentType.alias.normColor.toColor)
                 .frame(height: 64)
 
             Spacer()
         }
-        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.horizontal)
         .toolbar { toolbarContent }
         .background(PassColor.backgroundNorm.toColor)
         .onChange(of: viewModel.finishedSaving) { saved in
