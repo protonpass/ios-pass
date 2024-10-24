@@ -26,12 +26,6 @@ import Factory
 import Foundation
 import Macro
 
-@MainActor
-protocol EditableVaultListViewModelDelegate: AnyObject {
-    func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
-                                                        delegate: any DeleteVaultAlertHandlerDelegate)
-}
-
 private extension EditableVaultListViewModel {
     struct VaultCount: Sendable {
         let shareId: String
@@ -80,8 +74,6 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         count.trashed > 0
     }
 
-    weak var delegate: (any EditableVaultListViewModelDelegate)?
-
     init() {
         count = .init(vaultsManager: vaultsManager)
         setUp()
@@ -122,8 +114,12 @@ private extension EditableVaultListViewModel {
             }
             .store(in: &cancellables)
     }
+}
 
-    func doDelete(vault: Vault) {
+// MARK: - Public APIs
+
+extension EditableVaultListViewModel {
+    func delete(vault: Vault) {
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
@@ -139,11 +135,7 @@ private extension EditableVaultListViewModel {
             }
         }
     }
-}
 
-// MARK: - Public APIs
-
-extension EditableVaultListViewModel {
     func createNewVault() {
         router.present(for: .vaultCreateEdit(vault: nil))
     }
@@ -173,10 +165,6 @@ extension EditableVaultListViewModel {
                 router.display(element: .displayErrorBanner(error))
             }
         }
-    }
-
-    func delete(vault: Vault) {
-        delegate?.editableVaultListViewModelWantsToConfirmDelete(vault: vault, delegate: self)
     }
 
     func restoreAllTrashedItems() {
@@ -226,13 +214,5 @@ extension EditableVaultListViewModel {
         case .trash:
             count.trashed
         }
-    }
-}
-
-// MARK: - DeleteVaultConfirmationDelegate
-
-extension EditableVaultListViewModel: DeleteVaultAlertHandlerDelegate {
-    func confirmDelete(vault: Vault) {
-        doDelete(vault: vault)
     }
 }
