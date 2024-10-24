@@ -34,7 +34,11 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func updateSlAliasName(userId: String,
                            shareId: String,
                            itemId: String,
-                           request: UpdateAliasSlNameRequest) async throws
+                           name: String?) async throws
+    func updateSlAliasNote(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           note: String?) async throws
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
@@ -45,7 +49,9 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func getAllAliasDomains(userId: String) async throws -> [Domain]
     func getAllAliasMailboxes(userId: String) async throws -> [Mailbox]
     func createMailbox(userId: String, request: CreateMailboxRequest) async throws -> Mailbox
-    func deleteMailbox(userId: String, mailboxID: Int, request: DeleteMailboxRequest) async throws
+    func deleteMailbox(userId: String,
+                       mailboxID: Int,
+                       transferMailboxId: Int?) async throws
     func verifyMailbox(userId: String, mailboxID: Int, request: VerifyMailboxRequest) async throws -> Mailbox
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
 
@@ -114,8 +120,16 @@ public extension RemoteAliasDatasource {
     func updateSlAliasName(userId: String,
                            shareId: String,
                            itemId: String,
-                           request: UpdateAliasSlNameRequest) async throws {
-        let endpoint = UpdateAliasSlNameEndpoint(shareId: shareId, itemId: itemId, request: request)
+                           name: String?) async throws {
+        let endpoint = UpdateAliasSlNameEndpoint(shareId: shareId, itemId: itemId, name: name)
+        _ = try await exec(userId: userId, endpoint: endpoint)
+    }
+
+    func updateSlAliasNote(userId: String,
+                           shareId: String,
+                           itemId: String,
+                           note: String?) async throws {
+        let endpoint = UpdateAliasSlNoteEndpoint(shareId: shareId, itemId: itemId, note: note)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
@@ -165,8 +179,9 @@ public extension RemoteAliasDatasource {
         return response.mailbox
     }
 
-    func deleteMailbox(userId: String, mailboxID: Int, request: DeleteMailboxRequest) async throws {
-        let endpoint = DeleteMailboxEndpoint(mailboxID: "\(mailboxID)", request: request)
+    func deleteMailbox(userId: String, mailboxID: Int, transferMailboxId: Int?) async throws {
+        let endpoint = DeleteMailboxEndpoint(mailboxID: "\(mailboxID)",
+                                             transferMailboxId: transferMailboxId)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 

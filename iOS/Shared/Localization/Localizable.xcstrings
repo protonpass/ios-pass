@@ -645,16 +645,6 @@
         }
       }
     },
-    "%@, %@, %@ in the last 14 days." : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@, %@, %@ in the last 14 days."
-          }
-        }
-      }
-    },
     "%@%% decrypted..." : {
       "localizations" : {
         "be" : {
@@ -971,6 +961,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "đã tải %@%%..."
+          }
+        }
+      }
+    },
+    "%1$@, %2$@, %3$@ in the last 14 days." : {
+      "comment" : "Sample final text \"1 forwarded, 2 blocked, 3 replies in the last 14 days\". Each placeholder is localized and pluralized separately.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@ in the last 14 days."
           }
         }
       }
@@ -2362,11 +2363,24 @@
       }
     },
     "%lld blocked" : {
+      "comment" : "Number of emails blocked",
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld blocked"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blocked"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blocked"
+                }
+              }
+            }
           }
         }
       }
@@ -3465,11 +3479,24 @@
       }
     },
     "%lld forwarded" : {
+      "comment" : "Number of emails forwarded",
       "localizations" : {
         "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld forwarded"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld forwarded"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld forwarded"
+                }
+              }
+            }
           }
         }
       }
@@ -8751,6 +8778,7 @@
       }
     },
     "%lld replies" : {
+      "comment" : "Number of replies from an alias",
       "localizations" : {
         "en" : {
           "variations" : {
@@ -60521,6 +60549,16 @@
         }
       }
     },
+    "In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note."
+          }
+        }
+      }
+    },
     "Inactive 2FA" : {
       "localizations" : {
         "be" : {
@@ -74182,16 +74220,6 @@
         }
       }
     },
-    "Name for contact detail" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name for contact detail"
-          }
-        }
-      }
-    },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
       "localizations" : {
@@ -75465,6 +75493,17 @@
         }
       }
     },
+    "No items found" : {
+      "comment" : "Message shown when filtering items by type and no items of such type is found",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No items found"
+          }
+        }
+      }
+    },
     "No logs" : {
       "localizations" : {
         "be" : {
@@ -76564,6 +76603,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không có địa chỉ email hay bí danh nào của bạn bị rò rỉ"
+          }
+        }
+      }
+    },
+    "Not even Proton or SimpleLogin can see it." : {
+      "comment" : "Part of the explanation about E2E encrypted items. \"It\" being referred here is about item's note.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not even Proton or SimpleLogin can see it."
           }
         }
       }
@@ -86622,6 +86672,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vui lòng tìm kiếm trong mục thư rác email có nội dung \"Vui lòng xác nhận địa chỉ email của bạn với Proton Pass\"\n\nNếu không tìm thấy, bạn có thể [yêu cầu một mã khác](https://proton.me)"
+          }
+        }
+      }
+    },
+    "Please check in your Spam for an email called \"Please confirm your mailbox %@\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)." : {
+      "comment" : "Placeholder is an email address",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please check in your Spam for an email called \"Please confirm your mailbox %@\"\n\nIf you can't find such email, you can [request a new code](https://proton.me)."
           }
         }
       }
@@ -107691,6 +107752,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin takma adlarının içe aktarılacağı kasa."
+          }
+        }
+      }
+    },
+    "SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it."
           }
         }
       }
@@ -129187,6 +129258,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đã sao chép trang web"
+          }
+        }
+      }
+    },
+    "What is a SimpleLogin note?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What is a SimpleLogin note?"
           }
         }
       }

@@ -18,16 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
-import Foundation
 import ProtonCoreNetworking
 
-public struct DeleteMailboxRequest: Encodable, Sendable {
-    let transferMailboxID: String?
-
-    public init(transferMailboxID: String?) {
-        self.transferMailboxID = transferMailboxID
-    }
+struct DeleteMailboxRequest: Encodable, Sendable {
+    let transferMailboxID: Int?
 
     enum CodingKeys: String, CodingKey {
         case transferMailboxID = "TransferMailboxID"
@@ -43,10 +37,10 @@ struct DeleteMailboxEndpoint: Endpoint {
     var method: HTTPMethod
     var body: DeleteMailboxRequest?
 
-    init(mailboxID: String, request: DeleteMailboxRequest) {
+    init(mailboxID: String, transferMailboxId: Int?) {
         debugDescription = "Delete an alias mailbox"
         path = "/pass/v1/user/alias/mailbox/\(mailboxID)"
         method = .delete
-        body = request
+        body = .init(transferMailboxID: transferMailboxId)
     }
 }
