@@ -34,7 +34,7 @@ struct EditableVaultListView: View {
     var body: some View {
         VStack(alignment: .leading) {
             ScrollView {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) {
                     switch viewModel.state {
                     case .error, .loading:
                         // Should never happen
