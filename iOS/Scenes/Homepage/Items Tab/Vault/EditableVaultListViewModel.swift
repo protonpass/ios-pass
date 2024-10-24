@@ -32,10 +32,36 @@ protocol EditableVaultListViewModelDelegate: AnyObject {
                                                         delegate: any DeleteVaultAlertHandlerDelegate)
 }
 
+private extension EditableVaultListViewModel {
+    struct VaultCount: Sendable {
+        let shareId: String
+        let value: Int
+    }
+
+    struct Count: Sendable {
+        let all: Int
+        let vaultCounts: [VaultCount]
+        let trashed: Int
+
+        init(vaultsManager: VaultsManager) {
+            guard case let .loaded(vaults, trashedItems) = vaultsManager.state else {
+                all = 0
+                vaultCounts = []
+                trashed = 0
+                return
+            }
+            all = vaults.map(\.items.count).reduce(into: 0) { $0 += $1 }
+            vaultCounts = vaults.map { .init(shareId: $0.vault.shareId, value: $0.itemCount) }
+            trashed = trashedItems.count
+        }
+    }
+}
+
 @MainActor
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
     @Published private(set) var state = VaultManagerState.loading
+    private let count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -51,12 +77,13 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
 
     var hasTrashItems: Bool {
-        vaultsManager.getItemCount(for: .trash) > 0
+        count.trashed > 0
     }
 
     weak var delegate: (any EditableVaultListViewModelDelegate)?
 
     init() {
+        count = .init(vaultsManager: vaultsManager)
         setUp()
     }
 
@@ -191,7 +218,14 @@ extension EditableVaultListViewModel {
     }
 
     func itemCount(for selection: VaultSelection) -> Int {
-        vaultsManager.getItemCount(for: selection)
+        switch selection {
+        case .all:
+            count.all
+        case let .precise(vault):
+            count.vaultCounts.first { $0.shareId == vault.shareId }?.value ?? 0
+        case .trash:
+            count.trashed
+        }
     }
 }
 
