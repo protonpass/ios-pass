@@ -169,9 +169,6 @@ private final class PasswordPolicyViewModel: ObservableObject {
 
     @AppStorage(Constants.QA.passwordPolicy)
     private var passwordPolicy = PasswordPolicy.default
-
-    private var cancellables = Set<AnyCancellable>()
-
     private var updatingValues: Bool = true
 
     init() {
@@ -207,8 +204,7 @@ private final class PasswordPolicyViewModel: ObservableObject {
                                         memorablePasswordMinWords: memorablePasswordMinWords,
                                         memorablePasswordMaxWords: memorablePasswordMaxWords,
                                         memorablePasswordMustCapitalize: memorablePasswordMustCapitalize,
-                                        memorablePasswordMustIncludeNumbers: memorablePasswordMustIncludeNumbers,
-                                        memorablePasswordMustIncludeSeparator: true)
+                                        memorablePasswordMustIncludeNumbers: memorablePasswordMustIncludeNumbers)
     }
 }
 
