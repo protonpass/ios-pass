@@ -116,13 +116,13 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     }
 
     @AppStorage("wordCount", store: kSharedUserDefaults)
-    private var wordCount: Double = 5 { didSet { if wordCount != oldValue { regenerate() } } }
+    private var wordCount: Double = 5
 
     @AppStorage("capitalizingWords", store: kSharedUserDefaults)
-    private var capitalizingWords = true { didSet { regenerate(forceRefresh: false) } }
+    private var capitalizingWords = true
 
     @AppStorage("includingNumbers", store: kSharedUserDefaults)
-    private var includingNumbers = true { didSet { regenerate(forceRefresh: false) } }
+    private var includingNumbers = true
 
     weak var delegate: (any GeneratePasswordViewModelDelegate)?
     weak var uiDelegate: (any GeneratePasswordViewModelUiDelegate)?
@@ -239,7 +239,6 @@ private extension GeneratePasswordViewModel {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity
     func setPasswordLimitations() {
         passwordType = type
 
@@ -261,28 +260,9 @@ private extension GeneratePasswordViewModel {
         }
         numberOfCharacters = passwordPolicy == nil ? characterCount : adjustToRange(numberOfCharacters,
                                                                                     range: minChar...maxChar)
-
-        activateSpecialCharacters = if let randomPasswordMustIncludeSymbols = passwordPolicy?
-            .randomPasswordMustIncludeSymbols {
-            randomPasswordMustIncludeSymbols
-        } else {
-            hasSpecialCharacters
-        }
-
-        activateCapitalCharacters = if let randomPasswordMustIncludeUppercase = passwordPolicy?
-            .randomPasswordMustIncludeUppercase {
-            randomPasswordMustIncludeUppercase
-        } else {
-            hasCapitalCharacters
-        }
-
-        activateNumberCharacters = if let randomPasswordMustIncludeNumbers = passwordPolicy?
-            .randomPasswordMustIncludeNumbers {
-            randomPasswordMustIncludeNumbers
-        } else {
-            hasNumberCharacters
-        }
-
+        activateSpecialCharacters = passwordPolicy?.randomPasswordMustIncludeSymbols ?? hasSpecialCharacters
+        activateCapitalCharacters = passwordPolicy?.randomPasswordMustIncludeUppercase ?? hasCapitalCharacters
+        activateNumberCharacters = passwordPolicy?.randomPasswordMustIncludeNumbers ?? hasNumberCharacters
         typeOfWordSeparator = wordSeparator
 
         if let memorablePasswordMinWords = passwordPolicy?.memorablePasswordMinWords {
@@ -294,20 +274,8 @@ private extension GeneratePasswordViewModel {
         }
 
         numberOfWords = passwordPolicy == nil ? wordCount : adjustToRange(numberOfWords, range: minWord...maxWord)
-
-        activateCapitalized = if let memorablePasswordMustCapitalize = passwordPolicy?
-            .memorablePasswordMustCapitalize {
-            memorablePasswordMustCapitalize
-        } else {
-            capitalizingWords
-        }
-
-        includeNumbers = if let memorablePasswordIncludeNumbers = passwordPolicy?
-            .memorablePasswordMustIncludeNumbers {
-            memorablePasswordIncludeNumbers
-        } else {
-            includingNumbers
-        }
+        activateCapitalized = passwordPolicy?.memorablePasswordMustCapitalize ?? capitalizingWords
+        includeNumbers = passwordPolicy?.memorablePasswordMustIncludeNumbers ?? includingNumbers
     }
 
     func adjustToRange(_ number: Double, range: ClosedRange<Double>) -> Double {
@@ -329,49 +297,10 @@ private extension GeneratePasswordViewModel {
             }
             .store(in: &cancellables)
 
-        $numberOfCharacters
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] new in
-                guard let self else { return }
-                if passwordPolicy == nil {
-                    characterCount = new
-                }
-                regenerate()
-            }
-            .store(in: &cancellables)
-
-        $activateSpecialCharacters
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] new in
-                guard let self else { return }
-                if passwordPolicy == nil {
-                    hasSpecialCharacters = new
-                }
-                regenerate()
-            }
-            .store(in: &cancellables)
-
-        $activateCapitalCharacters
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] new in
-                guard let self else { return }
-                if passwordPolicy == nil {
-                    hasCapitalCharacters = new
-                }
-                regenerate()
-            }
-            .store(in: &cancellables)
-
-        $activateNumberCharacters
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] new in
-                guard let self else { return }
-                if passwordPolicy == nil {
-                    hasNumberCharacters = new
-                }
-                regenerate()
-            }
-            .store(in: &cancellables)
+        update($numberOfCharacters.eraseToAnyPublisher(), keyPath: \.characterCount)
+        update($activateSpecialCharacters.eraseToAnyPublisher(), keyPath: \.hasSpecialCharacters)
+        update($activateCapitalCharacters.eraseToAnyPublisher(), keyPath: \.hasCapitalCharacters)
+        update($activateNumberCharacters.eraseToAnyPublisher(), keyPath: \.hasNumberCharacters)
 
         $typeOfWordSeparator
             .receive(on: DispatchQueue.main)
@@ -381,38 +310,23 @@ private extension GeneratePasswordViewModel {
             }
             .store(in: &cancellables)
 
-        $numberOfWords
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] new in
-                guard let self else { return }
-                if passwordPolicy == nil {
-                    wordCount = new
-                }
-                regenerate()
-            }
-            .store(in: &cancellables)
+        update($numberOfWords.eraseToAnyPublisher(), keyPath: \.wordCount)
+        update($activateCapitalized.eraseToAnyPublisher(), keyPath: \.capitalizingWords, forceRefresh: false)
+        update($includeNumbers.eraseToAnyPublisher(), keyPath: \.includingNumbers, forceRefresh: false)
+    }
 
-        $activateCapitalized
+    func update<Value>(_ publisher: AnyPublisher<Value, Never>,
+                       keyPath: WritableKeyPath<GeneratePasswordViewModel, Value>,
+                       forceRefresh: Bool = true) {
+        publisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] new in
-                guard let self else { return }
+            .sink { [weak self] newValue in
+                guard var self else { return }
                 if passwordPolicy == nil {
-                    capitalizingWords = new
+                    self[keyPath: keyPath] = newValue
                 }
-                regenerate(forceRefresh: false)
-            }
-            .store(in: &cancellables)
-
-        $includeNumbers
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] new in
-                guard let self else { return }
-                if passwordPolicy == nil {
-                    includingNumbers = new
-                }
-                regenerate(forceRefresh: false)
+                regenerate(forceRefresh: forceRefresh)
             }
             .store(in: &cancellables)
     }
-    // swiftlint:enable cyclomatic_complexity
 }
