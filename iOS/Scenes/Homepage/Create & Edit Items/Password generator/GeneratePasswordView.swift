@@ -45,6 +45,7 @@ struct GeneratePasswordView: View {
                 Label(viewModel.strength.title, systemImage: viewModel.strength.iconName)
                     .font(.headline)
                     .foregroundStyle(viewModel.strength.color)
+                    .animationsDisabled()
 
                 if viewModel.shouldDisplayTypeSelection {
                     passwordTypeRow
