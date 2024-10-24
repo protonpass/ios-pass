@@ -116,31 +116,23 @@ public struct PasswordPolicy: Sendable, Codable, Equatable {
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         randomPasswordAllowed = try container.decode(Bool.self, forKey: .randomPasswordAllowed)
-        randomPasswordMinLength = (try? container.decodeIfPresent(Int.self, forKey: .randomPasswordMinLength)) ?? 4
-        randomPasswordMaxLength = (try? container.decodeIfPresent(Int.self, forKey: .randomPasswordMaxLength)) ??
-            64
-        randomPasswordMustIncludeNumbers = (try? container.decodeIfPresent(Bool.self,
-                                                                           forKey: .randomPasswordMustIncludeNumbers)) ??
-            true
-        randomPasswordMustIncludeSymbols = (try? container.decodeIfPresent(Bool.self,
-                                                                           forKey: .randomPasswordMustIncludeSymbols)) ??
-            true
-        randomPasswordMustIncludeUppercase = (try? container.decodeIfPresent(Bool.self,
-                                                                             forKey: .randomPasswordMustIncludeUppercase)) ??
-            true
+        randomPasswordMinLength = try (container.decodeIfPresent(Int.self, forKey: .randomPasswordMinLength)) ?? 4
+        randomPasswordMaxLength = try (container.decodeIfPresent(Int.self, forKey: .randomPasswordMaxLength)) ?? 64
+        randomPasswordMustIncludeNumbers =
+            try (container.decodeIfPresent(Bool.self, forKey: .randomPasswordMustIncludeNumbers)) ?? true
+        randomPasswordMustIncludeSymbols =
+            try (container.decodeIfPresent(Bool.self, forKey: .randomPasswordMustIncludeSymbols)) ?? true
+        randomPasswordMustIncludeUppercase =
+            try (container.decodeIfPresent(Bool.self, forKey: .randomPasswordMustIncludeUppercase)) ?? true
         memorablePasswordAllowed = try container.decode(Bool.self, forKey: .memorablePasswordAllowed)
-        memorablePasswordMinWords = (try? container.decodeIfPresent(Int.self,
-                                                                    forKey: .memorablePasswordMinWords)) ??
-            1
-        memorablePasswordMaxWords = (try? container.decodeIfPresent(Int.self,
-                                                                    forKey: .memorablePasswordMaxWords)) ??
-            10
-        memorablePasswordMustCapitalize = (try? container.decodeIfPresent(Bool.self,
-                                                                          forKey: .memorablePasswordMustCapitalize)) ??
-            true
-        memorablePasswordMustIncludeNumbers = (try? container.decodeIfPresent(Bool.self,
-                                                                              forKey: .memorablePasswordMustIncludeNumbers)) ??
-            true
+        memorablePasswordMinWords =
+            try (container.decodeIfPresent(Int.self, forKey: .memorablePasswordMinWords)) ?? 1
+        memorablePasswordMaxWords =
+            try (container.decodeIfPresent(Int.self, forKey: .memorablePasswordMaxWords)) ?? 10
+        memorablePasswordMustCapitalize =
+            try (container.decodeIfPresent(Bool.self, forKey: .memorablePasswordMustCapitalize)) ?? true
+        memorablePasswordMustIncludeNumbers =
+            try (container.decodeIfPresent(Bool.self, forKey: .memorablePasswordMustIncludeNumbers)) ?? true
     }
 
     // swiftlint:enable line_length

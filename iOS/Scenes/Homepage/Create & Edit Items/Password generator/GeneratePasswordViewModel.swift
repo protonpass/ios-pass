@@ -73,7 +73,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @Published var includeNumbers: Bool = true
     @Published private(set) var password = ""
     @Published private(set) var strength: PasswordStrength = .vulnerable
-    @Published private(set) var loading = false
     @Published private(set) var minChar: Double = 4
     @Published private(set) var maxChar: Double = 64
     @Published private(set) var minWord: Double = 1
@@ -151,6 +150,8 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     private let getPasswordStrength = resolve(\SharedUseCasesContainer.getPasswordStrength)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\SharedRepositoryContainer.organizationRepository) private var organizationRepository
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
@@ -215,18 +216,23 @@ private extension GeneratePasswordViewModel {
     func checkForOrganisationLimitation() {
         Task { [weak self] in
             guard let self else { return }
-            defer { loading = false }
-            loading = true
-            if qaPasswordPolicyOverride {
-                if let string = UserDefaults.standard.string(forKey: Constants.QA.passwordPolicy) {
-                    passwordPolicy = PasswordPolicy(rawValue: string)
-                }
-            } else if let userId = try? await userManager.getActiveUserId(),
-                      let organization = try? await organizationRepository.refreshOrganization(userId: userId),
-                      let newPasswordPolicy = organization.settings?.passwordPolicy {
-                passwordPolicy = newPasswordPolicy
-            }
 
+            if let plan = accessRepository.access.value?.access.plan, plan.planType == .business {
+                do {
+                    if qaPasswordPolicyOverride,
+                       let string = UserDefaults.standard.string(forKey: Constants.QA.passwordPolicy) {
+                        passwordPolicy = PasswordPolicy(rawValue: string)
+                    } else {
+                        let userId = try await userManager.getActiveUserId()
+                        let organization = try await organizationRepository.getOrganization(userId: userId)
+                        if let newPasswordPolicy = organization?.settings?.passwordPolicy {
+                            passwordPolicy = newPasswordPolicy
+                        }
+                    }
+                } catch {
+                    logger.error(error)
+                }
+            }
             setPasswordLimitations()
             subscribeToChanges()
             regenerate()

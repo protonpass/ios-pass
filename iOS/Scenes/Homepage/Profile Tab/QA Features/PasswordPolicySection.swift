@@ -100,7 +100,6 @@ private struct PasswordPolicyView: View {
 
 @MainActor
 private final class PasswordPolicyViewModel: ObservableObject {
-    /// Credentials grouped by username
     @Published var randomPasswordAllowed = true {
         didSet {
             updatePolicy()
