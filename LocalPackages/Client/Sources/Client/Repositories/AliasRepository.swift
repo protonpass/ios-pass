@@ -22,8 +22,14 @@
 import Core
 import Entities
 
+public enum MailboxUpdateEvent: Sendable {
+    case created(Mailbox)
+    case deleted(mailboxId: Int)
+    case verified(Mailbox)
+}
+
 public protocol AliasRepositoryProtocol: Sendable {
-    var mailboxUpdated: PassthroughSubject<Void, Never> { get }
+    var mailboxUpdated: PassthroughSubject<MailboxUpdateEvent, Never> { get }
     var contactsUpdated: PassthroughSubject<Void, Never> { get }
 
     func getAliasOptions(userId: String?, shareId: String) async throws -> AliasOptions
@@ -36,6 +42,7 @@ public protocol AliasRepositoryProtocol: Sendable {
     func getAliasSyncStatus(userId: String) async throws -> AliasSyncStatus
     func enableSlAliasSync(userId: String, defaultShareID: String?) async throws
     func updateSlAliasName(userId: String, shareId: String, itemId: String, name: String?) async throws
+    func updateSlAliasNote(userId: String, shareId: String, itemId: String, note: String?) async throws
     func getPendingAliasesToSync(userId: String,
                                  since: String?,
                                  pageSize: Int) async throws -> PaginatedPendingAliases
@@ -98,7 +105,7 @@ public actor AliasRepository: AliasRepositoryProtocol {
     private let remoteDatasource: any RemoteAliasDatasourceProtocol
     private let userManager: any UserManagerProtocol
 
-    public nonisolated let mailboxUpdated: PassthroughSubject<Void, Never> = .init()
+    public nonisolated let mailboxUpdated: PassthroughSubject<MailboxUpdateEvent, Never> = .init()
     public nonisolated let contactsUpdated: PassthroughSubject<Void, Never> = .init()
 
     public init(remoteDatasource: any RemoteAliasDatasourceProtocol,
@@ -148,11 +155,17 @@ public extension AliasRepository {
     }
 
     func updateSlAliasName(userId: String, shareId: String, itemId: String, name: String?) async throws {
-        let request = UpdateAliasSlNameRequest(name: name)
         try await remoteDatasource.updateSlAliasName(userId: userId,
                                                      shareId: shareId,
                                                      itemId: itemId,
-                                                     request: request)
+                                                     name: name)
+    }
+
+    func updateSlAliasNote(userId: String, shareId: String, itemId: String, note: String?) async throws {
+        try await remoteDatasource.updateSlAliasNote(userId: userId,
+                                                     shareId: shareId,
+                                                     itemId: itemId,
+                                                     note: note)
     }
 
     func getPendingAliasesToSync(userId: String,
@@ -191,20 +204,15 @@ public extension AliasRepository {
     func createMailbox(userId: String, email: String) async throws -> Mailbox {
         let request = CreateMailboxRequest(email: email)
         let mailbox = try await remoteDatasource.createMailbox(userId: userId, request: request)
-        mailboxUpdated.send(())
+        mailboxUpdated.send(.created(mailbox))
         return mailbox
     }
 
     func deleteMailbox(userId: String, mailboxID: Int, transferMailboxID: Int?) async throws {
-        let id: String? = if let transferMailboxID {
-            "\(transferMailboxID)"
-        } else {
-            nil
-        }
-
-        let request = DeleteMailboxRequest(transferMailboxID: id)
-        try await remoteDatasource.deleteMailbox(userId: userId, mailboxID: mailboxID, request: request)
-        mailboxUpdated.send(())
+        try await remoteDatasource.deleteMailbox(userId: userId,
+                                                 mailboxID: mailboxID,
+                                                 transferMailboxId: transferMailboxID)
+        mailboxUpdated.send(.deleted(mailboxId: mailboxID))
     }
 
     func verifyMailbox(userId: String, mailboxID: Int, code: String) async throws -> Mailbox {
@@ -212,7 +220,7 @@ public extension AliasRepository {
         let mailbox = try await remoteDatasource.verifyMailbox(userId: userId,
                                                                mailboxID: mailboxID,
                                                                request: request)
-        mailboxUpdated.send(())
+        mailboxUpdated.send(.verified(mailbox))
         return mailbox
     }
 

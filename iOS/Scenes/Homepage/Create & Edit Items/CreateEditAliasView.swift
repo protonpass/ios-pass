@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -31,6 +32,7 @@ struct CreateEditAliasView: View {
     @FocusState private var focusedField: Field?
     @Namespace private var noteID
     @State private var isShowingAdvancedOptions = false
+    @State private var isShowingSlNoteExplanation = false
     @State private var sheetState: AliasOptionsSheetState?
 
     private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
@@ -40,7 +42,7 @@ struct CreateEditAliasView: View {
     }
 
     enum Field {
-        case title, prefix, note
+        case title, prefix, note, simpleLoginNote
     }
 
     var body: some View {
@@ -61,6 +63,10 @@ struct CreateEditAliasView: View {
             .background(PassColor.backgroundNorm.toColor)
             .navigationBarTitleDisplayMode(.inline)
         }
+        .alert("What is a SimpleLogin note?",
+               isPresented: $isShowingSlNoteExplanation,
+               actions: { Button("OK", action: {}) },
+               message: { Text(verbatim: simpleLoginNoteExplanationMessage) })
     }
 
     private var closeButtonToolbar: some ToolbarContent {
@@ -129,11 +135,16 @@ struct CreateEditAliasView: View {
                                     focusedField: $focusedField,
                                     field: .note)
                         .id(noteID)
+
+                    if viewModel.isAdvancedAliasManagementActive, !viewModel.simpleLoginNote.isEmpty {
+                        simpleLoginNoteSection
+                    }
                 }
                 .padding()
                 .animation(.default, value: viewModel.shouldUpgrade)
                 .animation(.default, value: isShowingAdvancedOptions)
                 .animation(.default, value: viewModel.mailboxSelection)
+                .animation(.default, value: viewModel.alias)
             }
             .onChange(of: focusedField) { focusedField in
                 if case .note = focusedField {
@@ -230,6 +241,53 @@ struct CreateEditAliasView: View {
         .animation(.default, value: viewModel.prefixError)
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
+    }
+}
+
+private extension CreateEditAliasView {
+    var simpleLoginNoteSection: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.note)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Label(title: {
+                    Text("Note • SimpleLogin")
+                        .sectionTitleText()
+                }, icon: {
+                    Image(uiImage: IconProvider.questionCircle)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 16)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .onTapGesture {
+                            isShowingSlNoteExplanation.toggle()
+                        }
+                })
+                .labelStyle(.rightIcon)
+
+                TextEditorWithPlaceholder(text: $viewModel.simpleLoginNote,
+                                          focusedField: $focusedField,
+                                          field: .simpleLoginNote,
+                                          placeholder: #localized("Add note"))
+                    .frame(maxWidth: .infinity, maxHeight: 350, alignment: .topLeading)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ClearTextButton(text: $viewModel.simpleLoginNote)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection()
+    }
+
+    var simpleLoginNoteExplanationMessage: String {
+        // swiftlint:disable line_length
+        let phrase1 =
+            #localized("In Pass, an item note is encrypted with the item encryption key and only users who have access to the item can view the note.")
+        let phrase2 = #localized("Not even Proton or SimpleLogin can see it.")
+        let phrase3 =
+            #localized("SimpleLogin note is stored together in the same location with alias address and while it is protected by encryption at rest, it isn't E2E encrypted meaning anyone who has access to SimpleLogin database can read it.")
+        return [phrase1, phrase2, phrase3].joined(separator: " ")
+        // swiftlint:enable line_length
     }
 }
 

@@ -48,6 +48,7 @@ struct QAFeaturesView: View {
                     ItemReadEventsSection()
                     TrashItemsSection()
                     BannersSection()
+                    PasswordPolicySection()
                     Toggle(isOn: $displayUpgradeAppBanner) {
                         Text(verbatim: "Display upgrade app banner")
                     }

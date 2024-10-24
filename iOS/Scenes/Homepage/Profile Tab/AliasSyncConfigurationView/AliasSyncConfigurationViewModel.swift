@@ -64,10 +64,6 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
     private var selectedMailboxTask: Task<Void, Never>?
     private var aliasSettings: AliasSettings?
 
-    var isAliasesSyncActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
-    }
-
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
     }
@@ -105,12 +101,12 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 
             vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
             if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {
-                guard let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) else {
+                if let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) {
+                    self.selectedVault = selectedVault
+                } else {
                     let mainVault = await getMainVault()
-                    self.selectedVault = vaults.first { $0.vault.shareId == mainVault?.shareId }
-                    return
+                    selectedVault = vaults.first { $0.vault.shareId == mainVault?.shareId }
                 }
-                self.selectedVault = selectedVault
             }
 
             async let fetchDomains = try aliasRepository.getAllAliasDomains(userId: userId)
@@ -159,13 +155,10 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
 
     func delete(mailbox: Mailbox, transferMailboxId: Int?) {
         Task { [weak self] in
-            guard let self else {
-                return
-            }
-            defer { loading = false }
-
+            guard let self else { return }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            router.display(element: .globalLoading(shouldShow: true))
             do {
-                loading = true
                 let userId = try await userManager.getActiveUserId()
                 try await aliasRepository.deleteMailbox(userId: userId,
                                                         mailboxID: mailbox.mailboxID,
@@ -222,16 +215,16 @@ private extension AliasSyncConfigurationViewModel {
 
         aliasRepository.mailboxUpdated
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] in
-                Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    do {
-                        let userId = try await userManager.getActiveUserId()
-                        mailboxes = try await aliasRepository.getAllAliasMailboxes(userId: userId)
-                    } catch {
-                        handle(error: error)
+            .sink { [weak self] event in
+                guard let self else { return }
+                switch event {
+                case let .created(mailbox):
+                    mailboxes.append(mailbox)
+                case let .deleted(mailboxId):
+                    mailboxes.removeAll(where: { $0.mailboxID == mailboxId })
+                case let .verified(mailbox):
+                    if let index = mailboxes.firstIndex(where: { $0.mailboxID == mailbox.mailboxID }) {
+                        mailboxes[index] = mailbox
                     }
                 }
             }

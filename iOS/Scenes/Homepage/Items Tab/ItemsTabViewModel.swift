@@ -184,7 +184,7 @@ private extension ItemsTabViewModel {
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
                 guard let self else { return }
-                refreshBanners()
+                refreshBanners(getPendingUserInvitations().value)
             }
             .store(in: &cancellables)
 
