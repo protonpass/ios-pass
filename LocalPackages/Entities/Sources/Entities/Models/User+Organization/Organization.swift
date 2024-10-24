@@ -112,7 +112,6 @@ public struct PasswordPolicy: Sendable, Codable, Equatable {
         self.memorablePasswordMustIncludeNumbers = memorablePasswordMustIncludeNumbers
     }
 
-    // swiftlint:disable line_length
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         randomPasswordAllowed = try container.decode(Bool.self, forKey: .randomPasswordAllowed)
@@ -134,8 +133,6 @@ public struct PasswordPolicy: Sendable, Codable, Equatable {
         memorablePasswordMustIncludeNumbers =
             try (container.decodeIfPresent(Bool.self, forKey: .memorablePasswordMustIncludeNumbers)) ?? true
     }
-
-    // swiftlint:enable line_length
 
     public static var `default`: PasswordPolicy {
         PasswordPolicy(randomPasswordAllowed: true,
