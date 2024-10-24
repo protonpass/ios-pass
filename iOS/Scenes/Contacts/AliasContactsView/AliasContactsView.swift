@@ -289,7 +289,7 @@ private extension AliasContact {
         let replies = #localized("%lld replies", repliedEmails)
         let blocked = #localized("%lld blocked", blockedEmails)
         return noActivity ? #localized("No activity in the last 14 days.") :
-            #localized("%@, %@, %@ in the last 14 days.", forwarded, replies, blocked)
+            #localized("%1$@, %2$@, %3$@ in the last 14 days.", forwarded, replies, blocked)
     }
 }
 

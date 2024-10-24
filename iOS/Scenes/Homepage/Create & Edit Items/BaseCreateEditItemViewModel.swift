@@ -194,7 +194,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         }
     }
 
-    func additionalEdit() async throws {}
+    func additionalEdit() async throws -> Bool { false }
 
     func generateAliasCreationInfo() -> AliasCreationInfo? { nil }
     func generateAliasItemContent() -> ItemContentProtobuf? { nil }
@@ -288,7 +288,7 @@ private extension BaseCreateEditItemViewModel {
 
     /// Return `true` if item is edited, `false` otherwise
     func editItem(oldItemContent: ItemContent) async throws -> Bool {
-        try await additionalEdit()
+        let additionallyEdited = try await additionalEdit()
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
         guard let oldItem = try await itemRepository.getItem(shareId: shareId,
@@ -297,11 +297,11 @@ private extension BaseCreateEditItemViewModel {
         }
         guard let newItemContent = await generateItemContent() else {
             logger.warning("No new item content")
-            return false
+            return additionallyEdited
         }
         guard !oldItemContent.protobuf.isLooselyEqual(to: newItemContent) else {
             logger.trace("Skipped editing because no changes \(oldItemContent.debugDescription)")
-            return false
+            return additionallyEdited
         }
         try await itemRepository.updateItem(userId: oldItem.userId,
                                             oldItem: oldItem.item,
