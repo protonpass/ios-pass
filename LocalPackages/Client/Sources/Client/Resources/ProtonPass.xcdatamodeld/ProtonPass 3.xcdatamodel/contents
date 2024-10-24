@@ -79,7 +79,18 @@
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="forceLockSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="passwordPolicy" optional="YES" attributeType="Binary"/>
+        <attribute name="hasPasswordPolicy" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="memorablePasswordAllowed" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="memorablePasswordMaxWords" attributeType="Integer 64" defaultValueString="10" usesScalarValueType="YES"/>
+        <attribute name="memorablePasswordMinWords" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
+        <attribute name="memorablePasswordMustCapitalize" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="memorablePasswordMustIncludeNumbers" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="randomPasswordAllowed" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="randomPasswordMaxLength" attributeType="Integer 64" defaultValueString="64" usesScalarValueType="YES"/>
+        <attribute name="randomPasswordMinLength" attributeType="Integer 64" defaultValueString="4" usesScalarValueType="YES"/>
+        <attribute name="randomPasswordMustIncludeNumbers" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="randomPasswordMustIncludeSymbols" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="randomPasswordMustIncludeUppercase" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
         <attribute name="shareMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <uniquenessConstraints>
