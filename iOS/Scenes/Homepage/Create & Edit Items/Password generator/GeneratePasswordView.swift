@@ -45,26 +45,32 @@ struct GeneratePasswordView: View {
                 Label(viewModel.strength.title, systemImage: viewModel.strength.iconName)
                     .font(.headline)
                     .foregroundStyle(viewModel.strength.color)
+                    .animationsDisabled()
 
-                passwordTypeRow
-                PassDivider()
+                if viewModel.shouldDisplayTypeSelection {
+                    passwordTypeRow
+                    PassDivider()
+                }
 
-                switch viewModel.type {
+                switch viewModel.passwordType {
                 case .random:
                     characterCountRow
                     PassDivider()
 
                     toggle(title: #localized("Special characters"),
-                           isOn: $viewModel.hasSpecialCharacters)
+                           isOn: $viewModel.activateSpecialCharacters,
+                           hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeSymbols ?? false)
                     PassDivider()
 
                     if viewModel.isShowingAdvancedOptions {
                         toggle(title: #localized("Capital letters"),
-                               isOn: $viewModel.hasCapitalCharacters)
+                               isOn: $viewModel.activateCapitalCharacters,
+                               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeUppercase ?? false)
                         PassDivider()
 
                         toggle(title: #localized("Include numbers"),
-                               isOn: $viewModel.hasNumberCharacters)
+                               isOn: $viewModel.activateNumberCharacters,
+                               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeNumbers ?? false)
                         PassDivider()
                     } else {
                         advancedOptionsRow
@@ -81,7 +87,8 @@ struct GeneratePasswordView: View {
                         PassDivider()
 
                         toggle(title: #localized("Include numbers"),
-                               isOn: $viewModel.includingNumbers)
+                               isOn: $viewModel.includeNumbers,
+                               hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustIncludeNumbers ?? false)
                         PassDivider()
                     } else {
                         capitalizingWordsRow
@@ -139,7 +146,7 @@ struct GeneratePasswordView: View {
                         HStack {
                             Text(type.title)
                             Spacer()
-                            if viewModel.type == type {
+                            if viewModel.passwordType == type {
                                 Image(systemName: "checkmark")
                             }
                         }
@@ -147,7 +154,7 @@ struct GeneratePasswordView: View {
                 }
             }, label: {
                 HStack {
-                    Text(viewModel.type.title)
+                    Text(viewModel.passwordType.title)
                         .foregroundStyle(PassColor.textNorm.toColor)
                     Image(uiImage: IconProvider.chevronDownFilled)
                         .resizable()
@@ -188,38 +195,41 @@ struct GeneratePasswordView: View {
 
     private var characterCountRow: some View {
         HStack {
-            Text("\(Int(viewModel.characterCount)) characters")
+            Text("\(Int(viewModel.numberOfCharacters)) characters")
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .animationsDisabled()
-            Slider(value: $viewModel.characterCount, in: 4...64, step: 1)
+            Slider(value: $viewModel.numberOfCharacters, in: viewModel.minChar...viewModel.maxChar, step: 1)
                 .tint(PassColor.loginInteractionNormMajor1.toColor)
         }
     }
 
     private var wordCountRow: some View {
         HStack {
-            Text("\(Int(viewModel.wordCount)) word(s)")
+            Text("\(Int(viewModel.numberOfWords)) word(s)")
                 .monospacedDigit()
                 .frame(minWidth: 120, alignment: .leading)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .animationsDisabled()
-            Slider(value: $viewModel.wordCount, in: 1...10, step: 1)
+            Slider(value: $viewModel.numberOfWords, in: viewModel.minWord...viewModel.maxWord, step: 1)
                 .tint(PassColor.loginInteractionNormMajor1.toColor)
         }
     }
 
-    private func toggle(title: String, isOn: Binding<Bool>) -> some View {
+    private func toggle(title: String, isOn: Binding<Bool>, hasPolicy: Bool = false) -> some View {
         Toggle(isOn: isOn) {
             Text(title)
                 .foregroundStyle(PassColor.textNorm.toColor)
         }
         .toggleStyle(SwitchToggleStyle.pass)
+        .disabled(hasPolicy)
     }
 
     private var capitalizingWordsRow: some View {
-        toggle(title: #localized("Capitalize"), isOn: $viewModel.capitalizingWords)
+        toggle(title: #localized("Capitalize"),
+               isOn: $viewModel.activateCapitalized,
+               hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustCapitalize ?? false)
     }
 
     private var wordSeparatorRow: some View {
@@ -237,7 +247,7 @@ struct GeneratePasswordView: View {
                         HStack {
                             Text(separator.title)
                             Spacer()
-                            if viewModel.wordSeparator == separator {
+                            if viewModel.typeOfWordSeparator == separator {
                                 Image(systemName: "checkmark")
                             }
                         }
@@ -245,7 +255,7 @@ struct GeneratePasswordView: View {
                 }
             }, label: {
                 HStack {
-                    Text(viewModel.wordSeparator.title)
+                    Text(viewModel.typeOfWordSeparator.title)
                         .foregroundStyle(PassColor.textNorm.toColor)
                     Image(uiImage: IconProvider.chevronDownFilled)
                         .resizable()
