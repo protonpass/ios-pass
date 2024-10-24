@@ -25,7 +25,7 @@ import Entities
 import Foundation
 import ProtonCoreKeymaker
 
-public final class NonSendableSymmetricKeyProviderMock: @unchecked Sendable, NonSendableSymmetricKeyProvider {
+public final class NonSendableSymmetricKeyProviderMock: @unchecked Sendable, NonAsyncSymmetricKeyProvider {
 
     public init() {}
 

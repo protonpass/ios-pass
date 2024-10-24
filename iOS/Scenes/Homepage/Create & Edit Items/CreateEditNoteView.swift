@@ -68,6 +68,7 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
         Coordinator(self)
     }
 
+    @MainActor
     final class Coordinator: CreateEditNoteContentUIViewDelegate {
         let parent: CreateEditNoteContentView
 
@@ -75,12 +76,10 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
             self.parent = parent
         }
 
-        @MainActor
         func titleUpdated(_ text: String) {
             parent.title = text
         }
 
-        @MainActor
         func contentUpdated(_ text: String) {
             parent.content = text
         }
@@ -88,10 +87,11 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
 }
 
 private protocol CreateEditNoteContentUIViewDelegate: AnyObject, Sendable {
-    func titleUpdated(_ text: String) async
-    func contentUpdated(_ text: String) async
+    @MainActor func titleUpdated(_ text: String)
+    @MainActor func contentUpdated(_ text: String)
 }
 
+@MainActor
 private final class CreateEditNoteContentUIView: UIView {
     private let padding: CGFloat = 16
 
@@ -228,10 +228,7 @@ private extension CreateEditNoteContentUIView {
         titleTextField.setOnTextChangeListener { [weak self] in
             guard let self else { return }
             if let text = titleTextField.text {
-                Task { @MainActor [weak self] in
-                    guard let self else { return }
-                    await delegate?.titleUpdated(text)
-                }
+                delegate?.titleUpdated(text)
             }
         }
     }
@@ -244,10 +241,7 @@ private extension CreateEditNoteContentUIView {
         var note = contentTextView.text ?? ""
         defer {
             contentTextView.text = note
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                await delegate?.contentUpdated(note)
-            }
+            delegate?.contentUpdated(note)
         }
         for (index, page) in document.scannedPages.enumerated() {
             note += page.text.reduce(into: "") { partialResult, next in
@@ -272,10 +266,7 @@ extension CreateEditNoteContentUIView: UITextFieldDelegate {
 extension CreateEditNoteContentUIView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         if let text = textView.text {
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                await delegate?.contentUpdated(text)
-            }
+            delegate?.contentUpdated(text)
         }
         updatePlaceholderVisibility()
     }

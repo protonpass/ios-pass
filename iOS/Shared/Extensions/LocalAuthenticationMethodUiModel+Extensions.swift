@@ -56,7 +56,7 @@ extension LocalAuthenticationMethodUiModel {
     }
 }
 
-extension LocalAuthenticationMethodUiModel: Equatable {
+extension LocalAuthenticationMethodUiModel: @retroactive Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.method == rhs.method
     }
