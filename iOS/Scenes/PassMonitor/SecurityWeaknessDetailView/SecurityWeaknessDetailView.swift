@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
@@ -28,6 +29,10 @@ import SwiftUI
 struct SecurityWeaknessDetailView: View {
     @StateObject var viewModel: SecurityWeaknessDetailViewModel
     @State private var collapsedSections = Set<SecuritySectionHeaderKey>()
+
+    @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
+    private var useSwiftUIList = false
+
     let isSheet: Bool
 
     var body: some View {
@@ -38,17 +43,18 @@ struct SecurityWeaknessDetailView: View {
 
 private extension SecurityWeaknessDetailView {
     var mainContainer: some View {
-        VStack {
+        VStack(spacing: 0) {
             switch viewModel.state {
             case .fetching:
                 ProgressView()
+                    .controlSize(.large)
 
             case let .fetched(data):
                 if let subtitleInfo = viewModel.type.subtitleInfo {
                     Text(subtitleInfo)
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.vertical)
+                        .padding()
                 }
 
                 if data.isEmpty {
@@ -64,13 +70,10 @@ private extension SecurityWeaknessDetailView {
                     Spacer()
                     Spacer()
                 } else {
-                    LazyVStack(spacing: 0) {
-                        if viewModel.type.hasSections {
-                            itemsSections(sections: data)
-                        } else {
-                            itemsList(items: data.flatMap(\.value))
-                        }
-                        Spacer()
+                    if useSwiftUIList {
+                        lazyVStack(for: data)
+                    } else {
+                        tableView(for: data)
                     }
                 }
 
@@ -80,12 +83,12 @@ private extension SecurityWeaknessDetailView {
                     .frame(maxWidth: .infinity, alignment: .center)
             }
         }
-        .padding(.horizontal, DesignConstant.sectionPadding)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: viewModel.state)
         .animation(.default, value: collapsedSections)
         .toolbar { toolbarContent }
-        .if(viewModel.state.fetchedObject?.isEmpty == false) { view in
+        // `TableView` wouldn't work when embeded in a scroll view
+        .if(viewModel.state.fetchedObject?.isEmpty == false && useSwiftUIList) { view in
             view.scrollViewEmbeded(maxWidth: .infinity)
         }
         .background(PassColor.backgroundNorm.toColor)
@@ -97,60 +100,89 @@ private extension SecurityWeaknessDetailView {
 // MARK: - List of Items
 
 private extension SecurityWeaknessDetailView {
-    func itemsSections(sections: [SecuritySectionHeaderKey: [ItemContent]]) -> some View {
+    func lazyVStack(for data: SecuritySectionedData) -> some View {
+        LazyVStack(spacing: 0) {
+            if viewModel.type.isSectionned {
+                itemsSections(sections: data)
+            } else {
+                forEach(data.flatMap(\.value))
+            }
+        }
+        .padding(.horizontal)
+    }
+
+    func itemsSections(sections: SecuritySectionedData) -> some View {
         ForEach(sections.sortedMostWeakness) { key in
             Section(content: {
                 if !collapsedSections.contains(key), let items = sections[key] {
-                    itemsList(items: items)
+                    forEach(items)
                 }
             }, header: {
-                header(for: key)
+                Label(title: { Text(key.title) },
+                      icon: {
+                          if viewModel.type.collapsible {
+                              Image(systemName: collapsedSections.contains(key) ? "chevron.up" : "chevron.down")
+                                  .resizable()
+                                  .scaledToFit()
+                                  .frame(width: 12)
+                          }
+                      })
+                      .foregroundStyle(PassColor.textWeak.toColor)
+                      .frame(maxWidth: .infinity, alignment: .leading)
+                      .if(viewModel.type.collapsible) { view in
+                          view
+                              .padding(.top, DesignConstant.sectionPadding)
+                              .buttonEmbeded {
+                                  if collapsedSections.contains(key) {
+                                      collapsedSections.remove(key)
+                                  } else {
+                                      collapsedSections.insert(key)
+                                  }
+                              }
+                      }
             })
         }
     }
 
-    func header(for key: SecuritySectionHeaderKey) -> some View {
-        Label(title: { Text(key.title) },
-              icon: {
-                  if viewModel.type.collapsible {
-                      Image(systemName: collapsedSections.contains(key) ? "chevron.up" : "chevron.down")
-                          .resizable()
-                          .scaledToFit()
-                          .frame(width: 12)
-                  }
-              })
-              .foregroundStyle(PassColor.textWeak.toColor)
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .if(viewModel.type.collapsible) { view in
-                  view
-                      .padding(.top, DesignConstant.sectionPadding)
-                      .buttonEmbeded {
-                          if collapsedSections.contains(key) {
-                              collapsedSections.remove(key)
-                          } else {
-                              collapsedSections.insert(key)
-                          }
-                      }
-              }
-    }
-
-    func itemsList(items: [ItemContent]) -> some View {
+    func forEach(_ items: [ItemUiModel]) -> some View {
         ForEach(items) { item in
-            itemRow(for: item)
+            Row(item: item) {
+                viewModel.showDetail(item: item)
+            }
         }
     }
+}
 
-    func itemRow(for item: ItemContent) -> some View {
-        Button {
-            viewModel.showDetail(item: item)
-        } label: {
+private struct Row: View {
+    let item: ItemUiModel
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
             GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
                            title: item.title,
-                           description: item.toItemUiModel.description)
+                           description: item.description)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.vertical, 3)
         }
         .buttonStyle(.plain)
+    }
+}
+
+private extension SecurityWeaknessDetailView {
+    @ViewBuilder
+    func tableView(for data: SecuritySectionedData) -> some View {
+        let sections: [TableView<ItemUiModel, Row, Text>.Section] = data.map { key, value in
+            .init(type: key.title, title: key.title, items: value)
+        }
+        TableView(sections: sections,
+                  configuration: .init(),
+                  id: sections.hashValue,
+                  itemView: { item in
+                      Row(item: item) {
+                          viewModel.showDetail(item: item)
+                      }
+                  },
+                  headerView: { _ in nil })
     }
 }
 
@@ -178,7 +210,7 @@ struct SecuritySectionHeaderKey: Hashable, Comparable, Identifiable {
 }
 
 private extension SecurityWeakness {
-    var hasSections: Bool {
+    var isSectionned: Bool {
         switch self {
         case .excludedItems, .missing2FA, .weakPasswords:
             false
@@ -195,9 +227,9 @@ private extension SecurityWeakness {
     }
 }
 
-private extension [SecuritySectionHeaderKey: [ItemContent]] {
+private extension SecuritySectionedData {
     var sortedMostWeakness: [SecuritySectionHeaderKey] {
-        self.keys.sorted {
+        keys.sorted {
             (self[$0]?.count ?? 0) > (self[$1]?.count ?? 0)
         }
     }
