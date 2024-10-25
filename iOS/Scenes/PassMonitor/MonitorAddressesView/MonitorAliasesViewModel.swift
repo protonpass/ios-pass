@@ -107,9 +107,9 @@ private extension MonitorAliasesViewModel {
     func setUp() {
         preferencesManager
             .appPreferencesUpdates
+            .receive(on: DispatchQueue.main)
             .filter(\.dismissedCustomDomainExplanation)
             .removeDuplicates()
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard let self else { return }
                 dismissedCustomDomainExplanation = newValue
@@ -117,8 +117,8 @@ private extension MonitorAliasesViewModel {
             .store(in: &cancellables)
 
         passMonitorRepository.darkWebDataSectionUpdate
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] update in
                 guard let self else { return }
                 if case let .aliases(infos) = update {
