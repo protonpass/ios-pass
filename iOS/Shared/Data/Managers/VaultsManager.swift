@@ -121,8 +121,8 @@ private extension VaultsManager {
             .store(in: &cancellables)
 
         $vaultSelection
-            .dropFirst()
             .receive(on: DispatchQueue.main)
+            .dropFirst()
             .sink { [weak self] _ in
                 guard let self else { return }
                 filterOption = pendingItemTypeFilterOption ?? .all

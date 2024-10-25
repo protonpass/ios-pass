@@ -87,8 +87,8 @@ extension MonitorProtonAddressesViewModel {
 private extension MonitorProtonAddressesViewModel {
     func setUp() {
         accessRepository.access
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .compactMap { $0 }
             .sink { [weak self] newValue in
                 guard let self else { return }
@@ -97,8 +97,8 @@ private extension MonitorProtonAddressesViewModel {
             .store(in: &cancellables)
 
         passMonitorRepository.darkWebDataSectionUpdate
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] update in
                 guard let self else { return }
                 if case let .protonAddresses(userBreaches) = update, allAddresses != userBreaches.addresses {
@@ -108,8 +108,8 @@ private extension MonitorProtonAddressesViewModel {
             .store(in: &cancellables)
 
         passMonitorRepository.userBreaches
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .compactMap { $0 }
             .sink { [weak self] userBreaches in
                 guard let self else { return }
