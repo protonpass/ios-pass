@@ -57,6 +57,8 @@ protocol TitledItemIdentifiable: ItemIdentifiable {
 
 protocol CredentialItem: DateSortable, AlphabeticalSortable, TitledItemIdentifiable, Identifiable {}
 
+extension ItemUiModel: @retroactive ItemIdentifiable {}
+extension ItemUiModel: @retroactive CustomDebugStringConvertible {}
 extension ItemUiModel: CredentialItem {
     var itemTitle: String { title }
 }

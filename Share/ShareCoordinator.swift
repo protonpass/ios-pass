@@ -26,7 +26,7 @@ import Entities
 import Factory
 import Macro
 import Screens
-import SwiftUI
+@preconcurrency import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 

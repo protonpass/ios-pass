@@ -21,7 +21,7 @@
 import Entities
 import Macro
 
-extension Browser: CustomStringConvertible {
+extension Browser: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .safari:

@@ -72,10 +72,10 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
     private let userManager: any UserManagerProtocol
 
-    public let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
-    public let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
-    public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
-    public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
+    public nonisolated let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
+    public nonisolated let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
+    public nonisolated let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
+    public nonisolated let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
 
     private var cancellable = Set<AnyCancellable>()
     private var refreshTask: Task<Void, Never>?
