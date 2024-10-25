@@ -72,8 +72,8 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
         preferencesManager
             .userPreferencesUpdates
-            .filter(\.extraPasswordEnabled)
             .receive(on: DispatchQueue.main)
+            .filter(\.extraPasswordEnabled)
             .sink { [weak self] enabled in
                 guard let self else { return }
                 extraPasswordEnabled = enabled
@@ -82,6 +82,7 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
         userManager
             .currentActiveUser
+            .receive(on: DispatchQueue.main)
             .compactMap(\.?.user.canManageSubscription)
             .sink { [weak self] canManageSubscription in
                 guard let self else { return }
