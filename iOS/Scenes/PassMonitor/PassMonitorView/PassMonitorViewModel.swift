@@ -119,8 +119,8 @@ private extension PassMonitorViewModel {
         refreshUserStatus()
 
         passMonitorRepository.weaknessStats
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self else {
                     return
@@ -129,8 +129,8 @@ private extension PassMonitorViewModel {
             }.store(in: &cancellables)
 
         passMonitorRepository.userBreaches
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self else { return }
                 breaches = newValue
@@ -148,8 +148,8 @@ private extension PassMonitorViewModel {
             }.store(in: &cancellables)
 
         monitorStateStream
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] state in
                 guard let self else { return }
                 numberOfBreaches = state.breachCount ?? 0
@@ -157,8 +157,8 @@ private extension PassMonitorViewModel {
             }.store(in: &cancellables)
 
         passMonitorRepository.darkWebDataSectionUpdate
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
                 refreshingTask?.cancel()
