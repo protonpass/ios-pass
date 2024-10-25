@@ -222,8 +222,8 @@ private extension SettingsViewModel {
     func setup() {
         preferencesManager
             .sharedPreferencesUpdates
-            .filter(\.browser)
             .receive(on: DispatchQueue.main)
+            .filter(\.browser)
             .sink { [weak self] newValue in
                 guard let self else { return }
                 selectedBrowser = newValue
@@ -232,8 +232,8 @@ private extension SettingsViewModel {
 
         preferencesManager
             .sharedPreferencesUpdates
-            .filter(\.theme)
             .receive(on: DispatchQueue.main)
+            .filter(\.theme)
             .sink { [weak self] newValue in
                 guard let self else { return }
                 selectedTheme = newValue
@@ -242,8 +242,8 @@ private extension SettingsViewModel {
 
         preferencesManager
             .sharedPreferencesUpdates
-            .filter(\.clipboardExpiration)
             .receive(on: DispatchQueue.main)
+            .filter(\.clipboardExpiration)
             .sink { [weak self] newValue in
                 guard let self else { return }
                 selectedClipboardExpiration = newValue
@@ -252,8 +252,8 @@ private extension SettingsViewModel {
 
         preferencesManager
             .userPreferencesUpdates
-            .filter(\.spotlightSearchableContent)
             .receive(on: DispatchQueue.main)
+            .filter(\.spotlightSearchableContent)
             .sink { [weak self] newValue in
                 guard let self else { return }
                 spotlightSearchableContent = newValue
@@ -262,8 +262,8 @@ private extension SettingsViewModel {
 
         preferencesManager
             .userPreferencesUpdates
-            .filter(\.spotlightSearchableVaults)
             .receive(on: DispatchQueue.main)
+            .filter(\.spotlightSearchableVaults)
             .sink { [weak self] newValue in
                 guard let self else { return }
                 spotlightSearchableVaults = newValue
@@ -281,8 +281,8 @@ private extension SettingsViewModel {
             .store(in: &cancellables)
 
         currentSpotlightVaults
-            .dropFirst() // Drop first event when the stream is init
             .receive(on: DispatchQueue.main)
+            .dropFirst() // Drop first event when the stream is init
             // Debouncing 1.5 secs because this will trigger expensive database operations
             // and Spotlight indexation
             .debounce(for: .seconds(1.5), scheduler: DispatchQueue.main)
