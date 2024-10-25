@@ -60,7 +60,7 @@ extension ItemContextMenuHandler {
                         return
                     }
                     await banner.dismiss()
-                    restore(item)
+                    self.restore(item)
                 }
             }
             bannerManager.displayBottomInfoMessage(item.trashMessage,

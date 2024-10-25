@@ -147,7 +147,7 @@ private extension Preferences {
     }
 }
 
-extension Preferences: PreferencesMigrator {
+extension Preferences: @unchecked Sendable, PreferencesMigrator {
     // swiftlint:disable:next large_tuple
     func migratePreferences() -> (AppPreferences, SharedPreferences, UserPreferences) {
         let app = AppPreferences(onboarded: onboarded,
