@@ -176,16 +176,16 @@ private final class PasswordPolicyViewModel: ObservableObject {
 
     private func updateValues() {
         randomPasswordAllowed = passwordPolicy.randomPasswordAllowed
-        randomPasswordMinLength = passwordPolicy.randomPasswordMinLength ?? 10
-        randomPasswordMaxLength = passwordPolicy.randomPasswordMaxLength ?? 30
-        randomPasswordMustIncludeNumbers = passwordPolicy.randomPasswordMustIncludeNumbers ?? true
-        randomPasswordMustIncludeSymbols = passwordPolicy.randomPasswordMustIncludeSymbols ?? true
-        randomPasswordMustIncludeUppercase = passwordPolicy.randomPasswordMustIncludeUppercase ?? true
+        randomPasswordMinLength = passwordPolicy.randomPasswordMinLength
+        randomPasswordMaxLength = passwordPolicy.randomPasswordMaxLength
+        randomPasswordMustIncludeNumbers = passwordPolicy.randomPasswordMustIncludeNumbers
+        randomPasswordMustIncludeSymbols = passwordPolicy.randomPasswordMustIncludeSymbols
+        randomPasswordMustIncludeUppercase = passwordPolicy.randomPasswordMustIncludeUppercase
         memorablePasswordAllowed = passwordPolicy.memorablePasswordAllowed
-        memorablePasswordMinWords = passwordPolicy.memorablePasswordMinWords ?? 2
-        memorablePasswordMaxWords = passwordPolicy.memorablePasswordMaxWords ?? 5
-        memorablePasswordMustCapitalize = passwordPolicy.memorablePasswordMustCapitalize ?? true
-        memorablePasswordMustIncludeNumbers = passwordPolicy.memorablePasswordMustIncludeNumbers ?? true
+        memorablePasswordMinWords = passwordPolicy.memorablePasswordMinWords
+        memorablePasswordMaxWords = passwordPolicy.memorablePasswordMaxWords
+        memorablePasswordMustCapitalize = passwordPolicy.memorablePasswordMustCapitalize
+        memorablePasswordMustIncludeNumbers = passwordPolicy.memorablePasswordMustIncludeNumbers
         updatingValues.toggle()
     }
 

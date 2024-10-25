@@ -162,8 +162,9 @@ public extension SyncEventLoop {
             }
 
             delegate?.syncEventLoopDidStartLooping()
-            timerTask = Task {
-                await self.timerLoop()
+            timerTask = Task { [weak self] in
+                guard let self else { return }
+                await timerLoop()
             }
         }
     }
@@ -225,8 +226,10 @@ private extension SyncEventLoop {
         }
         fetchEventsTask = Task { [weak self] in
             defer {
-                fetchEventsTask?.cancel()
-                fetchEventsTask = nil
+                // swiftlint:disable discouraged_optional_self
+                self?.fetchEventsTask?.cancel()
+                self?.fetchEventsTask = nil
+                // swiftlint:enable discouraged_optional_self
             }
 
             guard let self else {

@@ -40,10 +40,10 @@ public extension GetAllSecurityAffectedLoginsUseCase {
 public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase {
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let getPasswordStrength: any GetPasswordStrengthUseCase
-    private let symmetricKeyProvider: any NonSendableSymmetricKeyProvider
+    private let symmetricKeyProvider: any NonAsyncSymmetricKeyProvider
 
     public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
-                symmetricKeyProvider: any NonSendableSymmetricKeyProvider,
+                symmetricKeyProvider: any NonAsyncSymmetricKeyProvider,
                 getPasswordStrength: any GetPasswordStrengthUseCase) {
         self.passMonitorRepository = passMonitorRepository
         self.getPasswordStrength = getPasswordStrength

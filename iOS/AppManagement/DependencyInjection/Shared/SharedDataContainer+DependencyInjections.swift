@@ -66,7 +66,7 @@ extension SharedDataContainer {
                                         mainKeyProvider: self.mainKeyProvider) }
     }
 
-    var nonSendableSymmetricKeyProvider: Factory<any NonSendableSymmetricKeyProvider> {
+    var nonSendableSymmetricKeyProvider: Factory<any NonAsyncSymmetricKeyProvider> {
         self { NonSendableSymmetricKeyProviderImpl(keychain: self.keychain,
                                                    mainKeyProvider: self.mainKeyProvider) }
     }

@@ -21,8 +21,8 @@
 import Core
 import Entities
 import Foundation
-import ProtonCoreCrypto
-import ProtonCoreCryptoGoInterface
+@preconcurrency import ProtonCoreCrypto
+@preconcurrency import ProtonCoreCryptoGoInterface
 import ProtonCoreDataModel
 import ProtonCoreLogin
 
@@ -49,18 +49,34 @@ public enum CryptoUtils {
 
     public static func unlockAddressKeys(address: Address,
                                          userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
-        address.keys.compactMap { key -> DecryptionKey? in
-            let binKeys = userData.user.keys.map(\.privateKey).compactMap(\.unArmor)
+        let binKeys = userData.user.keys
+        return address.keys.compactMap { key -> DecryptionKey? in
             for passphrase in userData.passphrases {
-                if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: binKeys,
-                                                                     mailboxPassphrase: passphrase.value) {
+                if let decryptionKeyPassphrase = try? key.passphrase(userPrivateKeys: binKeys.toArmoredPrivateKeys,
+                                                                     mailboxPassphrase: Passphrase(value: passphrase
+                                                                         .value)) {
                     return .init(privateKey: .init(value: key.privateKey),
-                                 passphrase: .init(value: decryptionKeyPassphrase))
+                                 passphrase: .init(value: decryptionKeyPassphrase.value))
                 }
             }
             return nil
         }
     }
+
+//    public static func unlockAddressKeys(address: Address,
+//                                         userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
+//        address.keys.compactMap { key -> DecryptionKey? in
+//            let binKeys = userData.user.keys.map(\.privateKey).compactMap(\.unArmor)
+//            for passphrase in userData.passphrases {
+//                if let decryptionKeyPassphrase = try? key.passphrase(userBinKeys: binKeys,
+//                                                                     mailboxPassphrase: passphrase.value) {
+//                    return .init(privateKey: .init(value: key.privateKey),
+//                                 passphrase: .init(value: decryptionKeyPassphrase))
+//                }
+//            }
+//            return nil
+//        }
+//    }
 
     public static func unlockAddressKeys(addressID: String,
                                          userData: UserData) throws -> [ProtonCoreCrypto.DecryptionKey] {
