@@ -86,6 +86,9 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
     /// Custom header view, pass `nil` to use the default text header
     let headerView: (_ sectionIndex: Int) -> HeaderView?
 
+    let refreshControl = UIRefreshControl()
+    let onRefresh: (() async -> Void)?
+
     /// Set `id` to force refreshing the table because relying on `UITableViewDiffableDataSource`
     /// is not enough in some cases, e.g 2 snapshots may be completely different but the first visible items are
     /// the same
@@ -100,12 +103,14 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
                 configuration: TableViewConfiguration,
                 id: Int?,
                 itemView: @escaping (Item) -> ItemView,
-                headerView: @escaping (_ sectionIndex: Int) -> HeaderView?) {
+                headerView: @escaping (_ sectionIndex: Int) -> HeaderView?,
+                onRefresh: (() async -> Void)? = nil) {
         self.sections = sections
         self.configuration = configuration
         self.id = id
         self.itemView = itemView
         self.headerView = headerView
+        self.onRefresh = onRefresh
     }
 
     public func makeCoordinator() -> Coordinator {
@@ -119,6 +124,12 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
         tableView.separatorColor = configuration.separatorColor
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellId)
         tableView.delegate = context.coordinator
+        if onRefresh != nil {
+            refreshControl.addTarget(context.coordinator,
+                                     action: #selector(Coordinator.handleRefresh),
+                                     for: .valueChanged)
+            tableView.refreshControl = refreshControl
+        }
         context.coordinator.configureDataSource(for: tableView)
         return tableView
     }
@@ -204,6 +215,16 @@ public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIVie
 
             dataSource.lastId = id
             dataSource.apply(snapshot, animatingDifferences: true)
+        }
+
+        @objc
+        func handleRefresh() {
+            guard let onRefresh = parent.onRefresh else { return }
+            Task { [weak self] in
+                guard let self else { return }
+                await onRefresh()
+                parent.refreshControl.endRefreshing()
+            }
         }
     }
 }
