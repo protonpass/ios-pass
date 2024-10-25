@@ -64,9 +64,7 @@ private extension AliasContactsView {
                 .padding(.top)
 
             senderName
-                .if(viewModel.aliasName.isEmpty) { view in
-                    view.padding(.bottom, DesignConstant.sectionPadding)
-                }
+                .padding(.bottom, viewModel.aliasName.isEmpty ? DesignConstant.sectionPadding : 0)
 
             if !viewModel.aliasName.isEmpty {
                 // swiftlint:disable:next line_length
@@ -147,7 +145,7 @@ private extension AliasContactsView {
                             .textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .onTapGesture {
-                            editingName.toggle()
+                            editingName = true
                             focused = true
                         }
                 }
@@ -158,7 +156,7 @@ private extension AliasContactsView {
                 ProgressView()
             } else {
                 Button {
-                    editingName.toggle()
+                    editingName = true
                     focused = true
                 } label: {
                     ItemDetailSectionIcon(icon: IconProvider.pen,
@@ -261,7 +259,7 @@ private extension AliasContactsView {
                 .background(contact.blocked ? .clear : PassColor.aliasInteractionNormMinor1.toColor)
                 .clipShape(Capsule())
                 .buttonEmbeded {
-                    sheetState = .creation
+                    viewModel.toggleContactState(contact)
                 }
                 .overlay(Capsule()
                     .stroke(PassColor.aliasInteractionNormMinor1.toColor, lineWidth: 1))
@@ -420,11 +418,14 @@ private enum ContactCreationSteps: Hashable {
                                  accessibilityLabel: "Close",
                                  action: {})
                     Spacer()
-                    CapsuleTextButton(title: #localized("Save"),
-                                      titleColor: PassColor.textInvert,
-                                      backgroundColor: PassColor.aliasInteractionNormMajor1,
-                                      maxWidth: nil,
-                                      action: {})
+
+                    Text("Save")
+                        .font(.callout)
+                        .foregroundStyle(PassColor.textInvert.toColor)
+                        .frame(height: 40)
+                        .padding(.horizontal, 16)
+                        .background(PassColor.aliasInteractionNormMajor1.toColor)
+                        .clipShape(Capsule())
                 }
                 Text("Create contact")
                     .font(.title.bold())
