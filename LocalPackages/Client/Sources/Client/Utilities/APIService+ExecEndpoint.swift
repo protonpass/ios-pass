@@ -209,8 +209,9 @@ private enum NetworkDebugger {
             if let responseError = error as? ResponseError,
                let underError = responseError.underlyingError as? SessionResponseError,
                case let .responseBodyIsNotADecodableObject(body, _) = underError,
-               let body {
-                print(String(data: body, encoding: .utf8))
+               let body,
+               let message = String(data: body, encoding: .utf8) {
+                print(message)
             }
         }
     }
