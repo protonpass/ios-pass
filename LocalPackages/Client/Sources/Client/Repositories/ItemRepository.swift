@@ -27,7 +27,7 @@ import ProtonCoreLogin
 
 private let kBatchPageSize = 100
 
-extension KeyPath: @unchecked Sendable {}
+//extension KeyPath: @unchecked Sendable {}
 
 // sourcery: AutoMockable
 public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
