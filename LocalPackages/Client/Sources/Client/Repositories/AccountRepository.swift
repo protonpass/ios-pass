@@ -41,4 +41,4 @@ public actor AccountRepository: AccountRepositoryProtocol {
     }
 }
 
-extension AccountRecovery: @unchecked Sendable {}
+extension AccountRecovery: @unchecked @retroactive Sendable {}

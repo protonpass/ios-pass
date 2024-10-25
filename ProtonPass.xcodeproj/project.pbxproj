@@ -296,7 +296,6 @@
 		357C71C32B5FB23500AA0BF1 /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */; };
 		357C71C42B5FB30100AA0BF1 /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		357C71C62B5FB31600AA0BF1 /* PasswordStrength+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */; };
-		357C71C72B5FB31900AA0BF1 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* Item+Extensions.swift */; };
 		357C71C82B5FB33200AA0BF1 /* NoteEditSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350AF86D299683940045B7B6 /* NoteEditSection.swift */; };
 		357C71C92B5FB34200AA0BF1 /* WrappedCodeScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB50F2A5D41BF00C2D1F9 /* WrappedCodeScannerView.swift */; };
 		357C71CA2B5FB35300AA0BF1 /* PasswordStrengthIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A90E2B15FC0B00C44C08 /* PasswordStrengthIcon.swift */; };
@@ -505,7 +504,6 @@
 		5B5DBF1B2B6961EE00F72F6C /* ItemContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */; };
 		5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */; };
 		5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */; };
-		5B6639592B4C3DCB0029F8DA /* UncheckedSendable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6639582B4C3DCB0029F8DA /* UncheckedSendable+Extensions.swift */; };
 		5B66395E2B4D88290029F8DA /* ItemHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B66395C2B4D88290029F8DA /* ItemHistoryView.swift */; };
 		5B66395F2B4D88290029F8DA /* ItemHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B66395D2B4D88290029F8DA /* ItemHistoryViewModel.swift */; };
 		5B6639612B4D9A4F0029F8DA /* ItemDetailHistorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6639602B4D9A4F0029F8DA /* ItemDetailHistorySection.swift */; };
@@ -581,8 +579,6 @@
 		5BECDE4F2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */; };
 		5BECDE512B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */; };
 		5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */; };
-		5BF35D6A2B21F82900D3E297 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* Item+Extensions.swift */; };
-		5BF35D6C2B21FA4200D3E297 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D692B21F82900D3E297 /* Item+Extensions.swift */; };
 		5BF35D6E2B21FB1800D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
 		5BF35D6F2B21FB2D00D3E297 /* Pinnable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */; };
 		5BF9F9562C183F0700EF0627 /* SecureLinkListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BF9F9542C183F0700EF0627 /* SecureLinkListView.swift */; };
@@ -1018,7 +1014,6 @@
 		5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContent+Extensions.swift"; sourceTree = "<group>"; };
 		5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultView.swift; sourceTree = "<group>"; };
 		5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultViewModel.swift; sourceTree = "<group>"; };
-		5B6639582B4C3DCB0029F8DA /* UncheckedSendable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UncheckedSendable+Extensions.swift"; sourceTree = "<group>"; };
 		5B66395C2B4D88290029F8DA /* ItemHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemHistoryView.swift; sourceTree = "<group>"; };
 		5B66395D2B4D88290029F8DA /* ItemHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemHistoryViewModel.swift; sourceTree = "<group>"; };
 		5B6639602B4D9A4F0029F8DA /* ItemDetailHistorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailHistorySection.swift; sourceTree = "<group>"; };
@@ -1076,7 +1071,6 @@
 		5BECDE4D2B97789A0040FCA7 /* SecurityWeaknessDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecurityWeaknessDetailViewModel.swift; sourceTree = "<group>"; };
 		5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SecurityWeakness+Extensions.swift"; sourceTree = "<group>"; };
 		5BEE71E12BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+ItemCreateEditDetails.swift"; sourceTree = "<group>"; };
-		5BF35D692B21F82900D3E297 /* Item+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+Extensions.swift"; sourceTree = "<group>"; };
 		5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Pinnable+Extensions.swift"; sourceTree = "<group>"; };
 		5BF9F9542C183F0700EF0627 /* SecureLinkListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkListView.swift; sourceTree = "<group>"; };
 		5BF9F9552C183F0700EF0627 /* SecureLinkListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureLinkListViewModel.swift; sourceTree = "<group>"; };
@@ -2030,7 +2024,6 @@
 				5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */,
 				356FBD472949246A0063978C /* Coordinator+Extensions.swift */,
 				5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */,
-				5BF35D692B21F82900D3E297 /* Item+Extensions.swift */,
 				5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */,
 				3572E5222993D68800775FAC /* ItemContentType+Extensions.swift */,
 				5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */,
@@ -2045,7 +2038,6 @@
 				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
 				3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */,
 				3543615B2941E1A8000CAE12 /* UIApplication+Extensions.swift */,
-				5B6639582B4C3DCB0029F8DA /* UncheckedSendable+Extensions.swift */,
 				3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */,
 				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
 				3590A3382A9F9C2600622F45 /* View+Extensions.swift */,
@@ -2835,7 +2827,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					3544F5DF28E2341800834CA4 = {
 						CreatedOnToolsVersion = 13.4.1;
@@ -3152,7 +3144,6 @@
 				35706C342CB6669A009F438E /* AliasDetailView.swift in Sources */,
 				35492E42293E085300BDE231 /* GeneratePasswordView.swift in Sources */,
 				3597F0D42CB5D76200384874 /* VaultButton.swift in Sources */,
-				5BF35D6C2B21FA4200D3E297 /* Item+Extensions.swift in Sources */,
 				3577746F2B8FD71D0087A275 /* FetchCredentials.swift in Sources */,
 				359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */,
 				359A90342B90D01C00A50138 /* SelectPasskeyViewModel.swift in Sources */,
@@ -3318,7 +3309,6 @@
 				351B420C2B641976003FA3E3 /* View+LocalAuthentication.swift in Sources */,
 				357C71B22B5FB08600AA0BF1 /* SharedViewContainer+DependencyInjection.swift in Sources */,
 				357C71B82B5FB0DE00AA0BF1 /* ItemContextMenuHandler.swift in Sources */,
-				357C71C72B5FB31900AA0BF1 /* Item+Extensions.swift in Sources */,
 				357C71A62B5FAEBD00AA0BF1 /* SharedUseCase+DependencyInjections.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3478,7 +3468,6 @@
 				3552A28A29EC29BF00ABDB6E /* CachedFavIconsSection.swift in Sources */,
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				5BE809302C07358200D3A707 /* IdentityFields.swift in Sources */,
-				5B6639592B4C3DCB0029F8DA /* UncheckedSendable+Extensions.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
 				35C0D1C72B20B567005D48A6 /* TOTPRow.swift in Sources */,
 				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
@@ -3585,7 +3574,6 @@
 				3564DE9C299A4EBD0002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */,
 				5B1F5CE82A5EAD0400A6C3ED /* WrappedCodeScannerView.swift in Sources */,
-				5BF35D6A2B21F82900D3E297 /* Item+Extensions.swift in Sources */,
 				35B0F7892C0739D700A89E93 /* SecureLinkDetailViewModel.swift in Sources */,
 				3567E46629B0E6F900511D62 /* NoCameraPermissionView.swift in Sources */,
 				355895B329D79565001E2207 /* FeedbackChannelsView.swift in Sources */,
@@ -4087,7 +4075,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -4355,7 +4342,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -4445,7 +4431,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35C2161529EA8991001720FF /* iOS-Release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -4713,7 +4698,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -5016,7 +5000,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconQA;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -5062,7 +5045,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35E506D5286FB12000A3F6EA /* macOS-Debug-QA.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -5153,7 +5135,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconQA;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;
@@ -5198,7 +5179,6 @@
 		35E506C3286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ENABLE_MODULES = YES;

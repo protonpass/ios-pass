@@ -139,7 +139,7 @@ private extension TotpLoginsView {
                     HStack {
                         Spacer()
                         SectionIndexTitles(proxy: proxy,
-                                           direction: viewModel.selectedSortType.sortDirection ?? .ascending)
+                                           direction: viewModel.selectedSortType.sortDirection)
                     }
                 }
             }

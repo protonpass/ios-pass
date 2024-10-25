@@ -131,7 +131,7 @@ final class AppCoordinator {
                     logger.info("Already logged in")
                     showHomeScene(mode: .alreadyLoggedIn)
                     if let userId = userManager.activeUserId,
-                       let sessionID = authManager.getCredential(userId: userId)?.sessionID {
+                       authManager.getCredential(userId: userId)?.sessionID != nil {
                         registerForPushNotificationsIfNeededAndAddHandlers( /* uid: sessionID */ )
                     }
                 case let .manuallyLoggedIn(userData, extraPassword):
@@ -304,8 +304,7 @@ private extension AppCoordinator {
     }
 
     func resetAllData() {
-        Task { [weak self] in
-            guard let self else { return }
+        Task {
             // swiftlint:disable:next todo
             // TODO: why did we reset the root view controller and banner manager ?
             SharedViewContainer.shared.reset()

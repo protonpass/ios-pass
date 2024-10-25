@@ -65,6 +65,7 @@ public protocol AliasRepositoryProtocol: Sendable {
                      shareId: String,
                      itemId: String,
                      lastContactId: String?) async throws -> PaginatedAliasContacts
+    @discardableResult
     func createContact(userId: String,
                        shareId: String,
                        itemId: String,
