@@ -279,19 +279,17 @@ private struct MailboxElementRow: View {
 
             if showMenu, !isDefault {
                 Menu(content: {
-                    if !mailBox.isDefault {
-                        if mailBox.verified {
-                            Label(title: { Text("Make default") },
-                                  icon: { Image(uiImage: IconProvider.star) })
-                                .buttonEmbeded { setDefault(mailBox) }
-                        } else {
-                            Label(title: { Text("Verify") },
-                                  icon: { Image(uiImage: IconProvider.star) })
-                                .buttonEmbeded { verify(mailBox) }
-                        }
-
-                        Divider()
+                    if mailBox.verified {
+                        Label(title: { Text("Make default") },
+                              icon: { Image(uiImage: IconProvider.star) })
+                            .buttonEmbeded { setDefault(mailBox) }
+                    } else {
+                        Label(title: { Text("Verify") },
+                              icon: { Image(uiImage: IconProvider.star) })
+                            .buttonEmbeded { verify(mailBox) }
                     }
+
+                    Divider()
                     Label(title: { Text("Delete") },
                           icon: { Image(uiImage: IconProvider.trash) })
                         .buttonEmbeded { delete(mailBox) }
