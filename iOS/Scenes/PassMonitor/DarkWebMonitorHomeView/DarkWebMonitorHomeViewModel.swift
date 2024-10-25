@@ -159,8 +159,8 @@ extension DarkWebMonitorHomeViewModel {
 private extension DarkWebMonitorHomeViewModel {
     func setUp() {
         passMonitorRepository.darkWebDataSectionUpdate
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] section in
                 guard let self else {
                     return
@@ -177,8 +177,8 @@ private extension DarkWebMonitorHomeViewModel {
             }.store(in: &cancellables)
 
         accessRepository.access
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self else { return }
                 access = newValue?.access
