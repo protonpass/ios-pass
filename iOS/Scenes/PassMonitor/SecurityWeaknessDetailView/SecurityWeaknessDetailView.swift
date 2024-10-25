@@ -172,7 +172,7 @@ private extension SecurityWeaknessDetailView {
     @ViewBuilder
     func tableView(for data: SecuritySectionedData) -> some View {
         let sections: [TableView<ItemUiModel, Row, Text>.Section] = data.map { key, value in
-            .init(type: key.title, title: key.title, items: value)
+            .init(type: key.id, title: key.title, items: value)
         }
         TableView(sections: sections,
                   configuration: .init(),
