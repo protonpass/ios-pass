@@ -549,7 +549,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld predmeta"
+                  "value" : "%lld predmeti"
                 }
               },
               "one" : {
@@ -561,13 +561,13 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld predmeta"
+                  "value" : "%lld predmetov"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld predmeti"
+                  "value" : "%lld predmeta"
                 }
               },
               "zero" : {
@@ -2617,6 +2617,12 @@
             "value" : "Cassaforte SimpleLogin predefinita"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デフォルトの SimpleLogin 保管庫"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2911,6 +2917,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Attiva la sincronizzazione con SimpleLogin"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin 同期を有効にする"
           }
         },
         "ka" : {
@@ -6876,6 +6888,12 @@
             "value" : "Sincronizza gli alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを同期する"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7495,6 +7513,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Abbiamo rilevato che hai alias %lld presenti in SimpleLogin ma mancanti in Proton Pass. Desideri importarli?"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "SimpleLogin に存在し Proton Pass に存在しないエイリアスが、%lld 件検知されました。インポートしますか？"
                 }
               }
             }
