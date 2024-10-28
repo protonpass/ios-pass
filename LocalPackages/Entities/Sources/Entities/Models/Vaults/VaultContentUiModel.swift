@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct VaultContentUiModel: Hashable {
+public struct VaultContentUiModel: Hashable, Sendable {
     public let vault: Vault
     /// `Active` items only
     public let items: [ItemUiModel]
@@ -30,11 +30,5 @@ public struct VaultContentUiModel: Hashable {
     public init(vault: Vault, items: [ItemUiModel]) {
         self.vault = vault
         self.items = items
-    }
-}
-
-public extension [VaultContentUiModel] {
-    mutating func sortAlphabetically() {
-        sort(by: { $0.vault.name < $1.vault.name })
     }
 }

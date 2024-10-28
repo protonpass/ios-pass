@@ -37,9 +37,9 @@ struct ItemCountView: View {
         switch vaultsManager.state {
         case .loading:
             skeleton
-        case let .loaded(vaults, trashedItems):
-            let activeItems = vaults.flatMap(\.items)
-            let allItems = activeItems + trashedItems
+        case let .loaded(uiModel):
+            let activeItems = uiModel.vaults.flatMap(\.items)
+            let allItems = activeItems + uiModel.trashedItems
             let itemCount = ItemCount(items: allItems)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {

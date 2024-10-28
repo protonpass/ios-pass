@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import DesignSystem
 import Entities
 import Macro
@@ -39,6 +40,9 @@ struct ItemsTabView: View {
 
     @State private var aliasToTrash: (any ItemTypeIdentifiable)?
 
+    @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
+    private var useSwiftUIList = false
+
     var body: some View {
         let vaultsManager = viewModel.vaultsManager
         ZStack {
@@ -52,14 +56,27 @@ struct ItemsTabView: View {
                 ItemsTabsSkeleton()
                     .opacity(viewModel.shouldShowSyncProgress ? 0 : 1)
 
-            case .loaded:
-                if viewModel.shouldShowSyncProgress {
-                    fullSyncProgressView
-                } else {
-                    vaultContent(vaultsManager.getFilteredItems())
-                }
+            case let .loaded(uiModel):
+//                if viewModel.shouldShowSyncProgress {
+//                    fullSyncProgressView
+//                } else {
+//                    vaultContent(vaultsManager.getFilteredItems())
+//                }
+//
+//                itemForceTouchTip
 
-                itemForceTouchTip
+                let sections: [TableView<ItemUiModel, Text, Text>.Section] = [
+                    .init(type: "", title: "", items: uiModel.vaults.flatMap(\.items))
+                ]
+                let _ = Self._printChanges()
+                TableView(sections: sections,
+                          configuration: .init(),
+                          id: sections.hashValue,
+                          itemView: { item in
+                              Text(item.title)
+                          },
+                          headerView: { _ in nil })
+                Spacer()
 
             case let .error(error):
                 RetryableErrorView(errorMessage: error.localizedDescription,
@@ -324,6 +341,62 @@ struct ItemsTabView: View {
         .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
                                                 onDelete: viewModel.permanentlyDelete))
         .disabled(!isEditable && viewModel.isEditMode)
+    }
+}
+
+private struct ItemRow: View {
+    let item: ItemUiModel
+    let isEditMode: Bool
+    let isEditable: Bool
+    let isSelected: Bool
+    let isTrashed: Bool
+    let aliasSyncEnabled: Bool
+    let onSelectThumbnail: () -> Void
+    let onSelectItem: () -> Void
+    let onPermanentlyDelete: () -> Void
+    let onAliasTrash: () -> Void
+    let itemContextMenuHandler: ItemContextMenuHandler
+    let itemToBePermanentlyDeleted: Binding<(any ItemTypeIdentifiable)?>
+
+    var body: some View {
+        Button(action: onSelectItem) {
+            GeneralItemRow(thumbnailView: {
+                               if isEditMode, isSelected {
+                                   SquircleCheckbox()
+                               } else {
+                                   ItemSquircleThumbnail(data: item.thumbnailData(),
+                                                         isEnabled: item.isAlias ? item.isAliasEnabled : true,
+                                                         pinned: item.pinned)
+                                       .onTapGesture(perform: onSelectThumbnail)
+                               }
+                           },
+                           title: item.title,
+                           description: item.description)
+                .if(!isEditMode) { view in
+                    view.itemContextMenu(item: item,
+                                         isTrashed: isTrashed,
+                                         isEditable: isEditable,
+                                         aliasSyncEnabled: aliasSyncEnabled,
+                                         onPermanentlyDelete: onPermanentlyDelete,
+                                         onAliasTrash: onAliasTrash,
+                                         handler: itemContextMenuHandler)
+                }
+                .padding(.horizontal)
+                .background(isSelected ? PassColor.interactionNormMinor1.toColor : .clear)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .animation(.default, value: isSelected)
+        }
+        .frame(height: 64)
+        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: itemToBePermanentlyDeleted,
+                                    item: item,
+                                    isEditMode: isEditMode,
+                                    isTrashed: isTrashed,
+                                    isEditable: isEditable,
+                                    itemContextMenuHandler: itemContextMenuHandler,
+                                    aliasSyncEnabled: aliasSyncEnabled))
+//        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
+//                                                onDelete: viewModel.permanentlyDelete))
+        .disabled(!isEditable && isEditMode)
     }
 }
 
