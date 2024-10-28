@@ -20,7 +20,7 @@
 
 import Entities
 import Macro
-import ProtonCoreUIFoundations
+@preconcurrency import ProtonCoreUIFoundations
 import UIKit
 
 public protocol BannerDisplayProtocol: Sendable {
@@ -46,10 +46,6 @@ public extension BannerDisplayProtocol {
         displayTopErrorMessage(message, dismissButtonTitle: dismissButtonTitle, onDismiss: onDismiss)
     }
 }
-
-extension PMBanner: @unchecked Sendable {}
-extension PMBannerPosition: @unchecked Sendable {}
-extension PMBannerNewStyle: @unchecked Sendable {}
 
 public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
     private weak var container: UIViewController?
@@ -99,8 +95,8 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
 
         Task { @MainActor in
             let onDismiss = onDismiss ?? { banner in
-                Task {
-                    await banner.dismiss()
+                Task { @MainActor in
+                    banner.dismiss()
                 }
             }
             let banner = PMBanner(message: message, style: PMBannerNewStyle.error)

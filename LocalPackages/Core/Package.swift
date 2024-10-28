@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 5.10
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -14,8 +14,8 @@ let swiftSettings: [SwiftSetting] = [
    .enableUpcomingFeature("BareSlashRegexLiterals"),
    .enableUpcomingFeature("ConciseMagicFile"),
    .enableUpcomingFeature("ExistentialAny"),
-   .enableUpcomingFeature("ForwardTrailingClosures"),
    .enableUpcomingFeature("ImplicitOpenExistentials"),
+   .enableUpcomingFeature("InferSendableFromCaptures"),
    .enableUpcomingFeature("StrictConcurrency"),
    .unsafeFlags(["-warn-concurrency", "-enable-actor-data-race-checks",
                  "-driver-time-compilation",
@@ -63,9 +63,6 @@ let package = Package(name: "Core",
                                       .product(name: "Entities", package: "Entities"),
                                       .product(name: "DesignSystem", package: "DesignSystem"),
                                       .product(name: "Macro", package: "Macro")
-                                  ],
-                                  resources: [
-                                      .process("Resources")
                                   ],
                                   swiftSettings: swiftSettings
                                  ),

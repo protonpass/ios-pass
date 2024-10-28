@@ -28,7 +28,7 @@ public protocol MainKeyProvider: Sendable, AnyObject {
 
 extension Keymaker: @unchecked @retroactive Sendable, MainKeyProvider {}
 
-extension Keymaker: AutoLocker {
+extension Keymaker: @retroactive AutoLocker {
     public var autolockerTimeout: LockTime {
         LockTime(rawValue: PPKeychain().lockTime.rawValue)
     }
