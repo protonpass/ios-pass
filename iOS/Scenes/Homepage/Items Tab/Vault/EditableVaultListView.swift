@@ -41,12 +41,12 @@ struct EditableVaultListView: View {
                     case .error, .loading:
                         // Should never happen
                         ProgressView()
-                    case let .loaded(vaults, _):
+                    case let .loaded(uiModel):
                         vaultRow(for: .all)
 
                         PassDivider()
 
-                        ForEach(vaults, id: \.hashValue) { vault in
+                        ForEach(uiModel.vaults, id: \.hashValue) { vault in
                             vaultRow(for: .precise(vault.vault))
                             PassDivider()
                         }
