@@ -79,7 +79,7 @@ struct SortFilterItemsMenu: View {
         }, label: {
             CircleButton(icon: IconProvider.threeDotsVertical,
                          iconColor: highlighted ? PassColor.textInvert : PassColor.interactionNormMajor2,
-                         backgroundColor: highlighted ? PassColor.interactionNormMajor2 : .clear,
+                         backgroundColor: highlighted ? PassColor.interactionNormMajor1 : .clear,
                          accessibilityLabel: "Items filtering and sort menu")
         })
         .accessibilityLabel(Text("Items filter Menus"))
