@@ -76,7 +76,11 @@ extension PPKeychain: SettingsProvider {
             return AutolockTimeout(rawValue: intValue)
         }
         set {
-            set(String(newValue.rawValue), forKey: Self.LockTimeKey)
+            do {
+                try setOrError(String(newValue.rawValue), forKey: Self.LockTimeKey)
+            } catch {
+                print("Failed to set lockTime with error: \(error)")
+            }
         }
     }
 }

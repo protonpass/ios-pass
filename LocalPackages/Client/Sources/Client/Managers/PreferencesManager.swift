@@ -34,6 +34,10 @@ public struct PreferencesUpdate<T>: @unchecked Sendable {
     public let value: any Sendable
 }
 
+// swiftlint:disable:next todo
+// TODO: Check evolution of KeyPath with structured concurrency
+extension KeyPath: @unchecked @retroactive Sendable {}
+
 public typealias AppPreferencesUpdate = PreferencesUpdate<AppPreferences>
 public typealias SharedPreferencesUpdate = PreferencesUpdate<SharedPreferences>
 public typealias UserPreferencesUpdate = PreferencesUpdate<UserPreferences>
