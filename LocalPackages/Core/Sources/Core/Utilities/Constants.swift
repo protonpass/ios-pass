@@ -71,6 +71,7 @@ public enum Constants {
         public static let searchAndListSecureLink = "searchAndListSecureLink"
         public static let forcePasswordPolicy = "forcePasswordPolicy" // gitleaks:allow
         public static let passwordPolicy = "passwordPolicy" // gitleaks:allow
+        public static let useSwiftUIList = "useSwiftUIList"
     }
 }
 
