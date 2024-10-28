@@ -44,8 +44,14 @@ private extension EditableVaultListViewModel {
                 trashed = 0
                 return
             }
-            all = vaults.map(\.items.count).reduce(into: 0) { $0 += $1 }
-            vaultCounts = vaults.map { .init(shareId: $0.vault.shareId, value: $0.itemCount) }
+            var all = 0
+            var vaultCounts = [VaultCount]()
+            for vault in vaults {
+                all += vault.itemCount
+                vaultCounts.append(.init(shareId: vault.vault.shareId, value: vault.itemCount))
+            }
+            self.all = all
+            self.vaultCounts = vaultCounts
             trashed = trashedItems.count
         }
     }
