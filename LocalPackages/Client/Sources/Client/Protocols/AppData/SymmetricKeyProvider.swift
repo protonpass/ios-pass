@@ -21,7 +21,7 @@
 
 // periphery:ignore:all
 import Core
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import Foundation
 import ProtonCoreKeymaker

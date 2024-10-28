@@ -24,13 +24,14 @@ import Core
 import DesignSystem
 import Entities
 import Factory
+@preconcurrency import Foundation
 import Macro
 import Screens
 @preconcurrency import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 
-enum SharedContent {
+enum SharedContent: Sendable {
     case url(URL)
     case text(String)
     case textWithUrl(String, URL)

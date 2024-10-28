@@ -20,7 +20,7 @@
 
 import Entities
 import Macro
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 import UIKit
 
 extension HomepageCoordinator {

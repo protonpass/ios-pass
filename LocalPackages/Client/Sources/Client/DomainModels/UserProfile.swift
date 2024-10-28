@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 
 public struct UserProfile: Sendable, Identifiable {
     public let userdata: UserData

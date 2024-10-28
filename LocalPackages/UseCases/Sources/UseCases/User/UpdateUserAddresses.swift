@@ -23,7 +23,7 @@
 import Client
 
 @preconcurrency import ProtonCoreAuthentication
-import ProtonCoreDataModel
+@preconcurrency import ProtonCoreDataModel
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
