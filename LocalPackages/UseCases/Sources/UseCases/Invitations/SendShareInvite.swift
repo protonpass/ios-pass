@@ -25,7 +25,7 @@ import Core
 import CryptoKit
 import Entities
 import ProtonCoreCrypto
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 
 /// Make an invitation and return the shared `Vault`
 public protocol SendVaultShareInviteUseCase: Sendable {

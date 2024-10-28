@@ -38,4 +38,4 @@ struct SelectPasskeySheetInformation {
     let passkeys: [Passkey]
 }
 
-extension ASCredentialServiceIdentifier: @unchecked Sendable {}
+extension ASCredentialServiceIdentifier: @unchecked @retroactive Sendable {}

@@ -18,13 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreDataModel
+@preconcurrency import ProtonCoreDataModel
 
 struct GetUserResponse: Decodable, Sendable {
     let user: User
 }
-
-extension User: @unchecked Sendable {}
 
 struct GetUserEndpoint: Endpoint {
     typealias Response = GetUserResponse

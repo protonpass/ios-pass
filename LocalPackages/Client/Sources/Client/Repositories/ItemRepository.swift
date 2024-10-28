@@ -21,13 +21,11 @@
 @preconcurrency import Combine
 import Core
 import CoreData
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import ProtonCoreLogin
 
 private let kBatchPageSize = 100
-
-//extension KeyPath: @unchecked Sendable {}
 
 // sourcery: AutoMockable
 public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {

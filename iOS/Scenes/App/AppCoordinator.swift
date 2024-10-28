@@ -26,7 +26,7 @@ import Factory
 import Macro
 import ProtonCoreAccountRecovery
 import ProtonCoreFeatureFlags
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 import ProtonCorePushNotifications
 import SwiftUI
 
