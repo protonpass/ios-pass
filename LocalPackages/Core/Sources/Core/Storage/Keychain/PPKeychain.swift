@@ -57,9 +57,9 @@ public extension KeychainProtocol {
     }
 }
 
-extension Keychain: @unchecked Sendable, KeychainProtocol {}
+extension Keychain: @unchecked @retroactive Sendable, KeychainProtocol {}
 
-public final class PPKeychain: Keychain {
+public final class PPKeychain: Keychain, @unchecked Sendable {
     public init() {
         super.init(service: "ch.protonmail", accessGroup: Constants.keychainGroup)
     }

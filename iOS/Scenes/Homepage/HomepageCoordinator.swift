@@ -22,6 +22,7 @@
 import Client
 import Combine
 import Core
+@preconcurrency import CryptoKit
 import DesignSystem
 import Entities
 import Factory
@@ -30,7 +31,7 @@ import MBProgressHUD
 import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
@@ -142,7 +143,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 private extension HomepageCoordinator {
     /// Some properties are dependant on other propeties which are in turn not initialized
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
-    func finalizeInitialization() { // swiftlint:disable:this cyclomatic_complexity
+    func finalizeInitialization() { // swiftlint:disable:this cyclomatic_complexity function_body_length
         eventLoop.delegate = self
         urlOpener.rootViewController = rootViewController
 
@@ -178,6 +179,9 @@ private extension HomepageCoordinator {
             .store(in: &cancellables)
 
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self else {
+                return
+            }
             Task { [weak self] in
                 guard let self else { return }
                 guard await authenticated,
@@ -230,6 +234,7 @@ private extension HomepageCoordinator {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
+                guard let self else { return }
                 Task { [weak self] in
                     guard let self else { return }
                     do {
@@ -1639,11 +1644,11 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
             // swiftformat:disable:next redundantParens
             let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
                 guard let self else { return }
-                Task { [weak self] in
+                Task { @MainActor [weak self] in
                     guard let self else {
                         return
                     }
-                    await banner.dismiss()
+                    banner.dismiss()
                     itemContextMenuHandler.restore(item)
                 }
             }
@@ -1704,7 +1709,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Began new sync loop for userId \(userId)")
     }
 
-    #warning("Handle no connection reason")
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
         logger.info("Skipped sync loop \(reason)")
     }
