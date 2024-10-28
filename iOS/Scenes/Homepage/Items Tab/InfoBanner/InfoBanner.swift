@@ -87,7 +87,7 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                   foregroundColor: PassColor.textNorm.toColor,
                   closeButtonColor: PassColor.textNorm.toColor,
                   typeOfCtaButton: .capsule(buttonTitle: PassColor.textInvert,
-                                            buttonBackground: PassColor.aliasInteractionNormMajor2))
+                                            buttonBackground: PassColor.aliasInteractionNormMajor1))
         }
     }
 
