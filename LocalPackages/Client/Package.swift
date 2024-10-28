@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -10,26 +10,7 @@ var platforms: [SupportedPlatform] = [
     .watchOS(.v8)
 ]
 
-let swiftSettings: [SwiftSetting] = [
-   .enableUpcomingFeature("BareSlashRegexLiterals"),
-   .enableUpcomingFeature("ConciseMagicFile"),
-   .enableUpcomingFeature("ExistentialAny"),
-//   .enableUpcomingFeature("ForwardTrailingClosures"),
-   .enableUpcomingFeature("ImplicitOpenExistentials"),
-   .enableUpcomingFeature("StrictConcurrency"),
-   .unsafeFlags(["-warn-concurrency", 
-                 "-enable-actor-data-race-checks",
-                 "-driver-time-compilation",
-                 "-Xfrontend",
-                 "-debug-time-function-bodies",
-                 "-Xfrontend",
-                 "-debug-time-expression-type-checking",
-                 "-Xfrontend",
-                 "-warn-long-function-bodies=100",
-                 "-Xfrontend",
-                 "-warn-long-expression-type-checking=100"
-                ])
-]
+let swiftSettings: [SwiftSetting] = []
 
 let package = Package(name: "Client",
                       defaultLocalization: "en",
@@ -88,4 +69,6 @@ let package = Package(name: "Client",
                                                      .product(name: "ProtonCoreForceUpgrade", package: "protoncore_ios"),
                                                      .product(name: "ProtonCoreTestingToolkitUnitTestsCore", package: "protoncore_ios"),
                                                     ])
-                      ])
+                      ],
+                      swiftLanguageModes: [.version("6")]
+)

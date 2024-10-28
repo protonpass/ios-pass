@@ -325,7 +325,6 @@
 		35855AB72A0A793D0091992F /* GeneratePasswordCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */; };
 		35855C112AC8743F00794DB4 /* UseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 35855C102AC8743F00794DB4 /* UseCases */; };
 		35855C132AC8744A00794DB4 /* UseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 35855C122AC8744A00794DB4 /* UseCases */; };
-		3585DE522B591035008AFD9F /* ImportExportWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3585DE512B591035008AFD9F /* ImportExportWebView.swift */; };
 		3586478229F825E0003487B1 /* TelemetryEventsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3586478129F825E0003487B1 /* TelemetryEventsSection.swift */; };
 		358C68262A68067B006E720F /* SetPINCodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C68252A68067B006E720F /* SetPINCodeViewModel.swift */; };
 		358FB12F2CBFF45600ECE39F /* ItemTypeListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */; };
@@ -868,7 +867,6 @@
 		358152022C57C3EB0054F755 /* CredentialsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsSection.swift; sourceTree = "<group>"; };
 		3583AE462CB7BA8E00A57A31 /* SelectedItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedItem.swift; sourceTree = "<group>"; };
 		35855AB52A0A6BF80091992F /* GeneratePasswordCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneratePasswordCoordinator.swift; sourceTree = "<group>"; };
-		3585DE512B591035008AFD9F /* ImportExportWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportExportWebView.swift; sourceTree = "<group>"; };
 		3586478129F825E0003487B1 /* TelemetryEventsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TelemetryEventsSection.swift; sourceTree = "<group>"; };
 		358C68252A68067B006E720F /* SetPINCodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPINCodeViewModel.swift; sourceTree = "<group>"; };
 		358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountSwitcherSection.swift; sourceTree = "<group>"; };
@@ -1553,7 +1551,6 @@
 				3575EB5829FABC92000FFD53 /* EditAppLockTimeView.swift */,
 				355895B229D79565001E2207 /* FeedbackChannelsView.swift */,
 				35533BBA29D5C3CA00EC58DE /* ItemCountView.swift */,
-				3585DE512B591035008AFD9F /* ImportExportWebView.swift */,
 				3569B2A829B7D22E0070830B /* ProfileTabView.swift */,
 				3569B2AA29B7D2430070830B /* ProfileTabViewModel.swift */,
 				35CEA8EC2A61EEC400343A4E /* SecuritySettingsCoordinator.swift */,
@@ -3515,7 +3512,6 @@
 				5B0939182C04DD250046F467 /* IdentityDetailView.swift in Sources */,
 				5B0939192C04DD250046F467 /* IdentityDetailViewModel.swift in Sources */,
 				5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */,
-				3585DE522B591035008AFD9F /* ImportExportWebView.swift in Sources */,
 				5B14538F2A6821D20048B022 /* Router+DependencyInjections.swift in Sources */,
 				5BD613892C2028FE00968E0F /* SecureLinkListUIModel.swift in Sources */,
 				5BD4A8FE2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */,
@@ -5479,7 +5475,7 @@
 			repositoryURL = "https://github.com/hmlongco/Factory";
 			requirement = {
 				kind = exactVersion;
-				version = 2.4.0;
+				version = 2.4.1;
 			};
 		};
 		5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {

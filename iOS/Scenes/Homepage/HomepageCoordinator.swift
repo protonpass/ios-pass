@@ -82,8 +82,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
     let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
-    private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
-    private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
@@ -513,8 +511,6 @@ extension HomepageCoordinator {
                     presentItemHistory(item)
                 case .restoreHistory:
                     updateAfterRestoration()
-                case .importExport:
-                    beginImportExportFlow()
                 case .tutorial:
                     openTutorialVideo()
                 case .accountSettings:
@@ -1080,32 +1076,6 @@ extension HomepageCoordinator {
 // MARK: - Open webpages
 
 extension HomepageCoordinator {
-    // swiftlint:disable:next todo
-    // TODO: do we need this ?
-    func beginImportExportFlow() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                showLoadingHud()
-                let selector = try await forkSession(payload: nil, childClientId: "pass-ios", independent: 1)
-                hideLoadingHud()
-                let url = try makeImportExportUrl(selector: selector)
-                presentImportExportView(url: url)
-            } catch {
-                hideLoadingHud()
-                handle(error: error)
-            }
-        }
-    }
-
-    func presentImportExportView(url: URL) {
-        let view = ImportExportWebView(url: url)
-        let viewController = UIHostingController(rootView: view)
-        viewController.modalPresentationStyle = .fullScreen
-        viewController.isModalInPresentation = true
-        present(viewController)
-    }
-
     func beginAccountSettingsFlow() {
         do {
             let url = try makeAccountSettingsUrl()

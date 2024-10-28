@@ -74,7 +74,6 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case setPINCode
     case history(ItemContent)
     case restoreHistory
-    case importExport
     case tutorial
     case accountSettings
     case settingsMenu
