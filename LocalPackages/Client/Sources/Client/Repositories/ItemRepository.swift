@@ -25,6 +25,10 @@ import CoreData
 import Entities
 import ProtonCoreLogin
 
+// swiftlint:disable:next todo
+// TODO: need to keep an eye on the evolution of Combine publisher and structured concurrency
+extension CurrentValueSubject: @unchecked @retroactive Sendable {}
+
 private let kBatchPageSize = 100
 
 // sourcery: AutoMockable

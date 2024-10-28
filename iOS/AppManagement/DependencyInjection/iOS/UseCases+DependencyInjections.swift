@@ -436,10 +436,6 @@ extension UseCasesContainer {
         self { OpenAutoFillSettings(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
     }
 
-    var makeImportExportUrl: Factory<any MakeImportExportUrlUseCase> {
-        self { MakeImportExportUrl(doh: SharedToolingContainer.shared.doh()) }
-    }
-
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {
         self { MakeAccountSettingsUrl(doh: SharedToolingContainer.shared.doh()) }
     }
