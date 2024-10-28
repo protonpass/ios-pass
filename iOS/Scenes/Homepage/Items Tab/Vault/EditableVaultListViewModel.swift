@@ -38,7 +38,7 @@ private extension EditableVaultListViewModel {
         let trashed: Int
 
         init(vaultsManager: VaultsManager) {
-            guard case let .loaded(vaults, trashedItems) = vaultsManager.state else {
+            guard case let .loaded(uiModel) = vaultsManager.state else {
                 all = 0
                 vaultCounts = []
                 trashed = 0
@@ -46,13 +46,13 @@ private extension EditableVaultListViewModel {
             }
             var all = 0
             var vaultCounts = [VaultCount]()
-            for vault in vaults {
+            for vault in uiModel.vaults {
                 all += vault.itemCount
                 vaultCounts.append(.init(shareId: vault.vault.shareId, value: vault.itemCount))
             }
             self.all = all
             self.vaultCounts = vaultCounts
-            trashed = trashedItems.count
+            trashed = uiModel.trashedItems.count
         }
     }
 }
