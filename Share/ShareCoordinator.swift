@@ -24,13 +24,14 @@ import Core
 import DesignSystem
 import Entities
 import Factory
+@preconcurrency import Foundation
 import Macro
 import Screens
 @preconcurrency import SwiftUI
 import UIKit
 import UniformTypeIdentifiers
 
-enum SharedContent {
+enum SharedContent: Sendable {
     case url(URL)
     case text(String)
     case textWithUrl(String, URL)
@@ -190,13 +191,24 @@ private extension ShareCoordinator {
         for item in extensionItems {
             guard let attachments = item.attachments else { continue }
             for attachment in attachments {
-                // Optionally parse URL and fallback to text
-                if let url = try? await attachment.loadItem(forTypeIdentifier: UTType.url.identifier) as? URL {
+                // Switch to nonisolated context for loading items to avoid main actor isolation warnings
+                if let url = await withCheckedContinuation({ continuation in
+                    Task { @MainActor in
+                        try await continuation
+                            .resume(returning: attachment
+                                .loadItem(forTypeIdentifier: UTType.url.identifier) as? URL)
+                    }
+                }) {
                     return .url(url)
                 }
 
-                if let text = try await attachment
-                    .loadItem(forTypeIdentifier: UTType.plainText.identifier) as? String {
+                if let text = await withCheckedContinuation({ continuation in
+                    Task { @MainActor in
+                        try await continuation
+                            .resume(returning: attachment
+                                .loadItem(forTypeIdentifier: UTType.plainText.identifier) as? String)
+                    }
+                }) {
                     if let url = text.firstUrl() {
                         return .textWithUrl(text, url)
                     } else {

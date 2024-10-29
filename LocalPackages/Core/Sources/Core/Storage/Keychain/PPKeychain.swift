@@ -57,9 +57,9 @@ public extension KeychainProtocol {
     }
 }
 
-extension Keychain: @unchecked Sendable, KeychainProtocol {}
+extension Keychain: @unchecked @retroactive Sendable, KeychainProtocol {}
 
-public final class PPKeychain: Keychain {
+public final class PPKeychain: Keychain, @unchecked Sendable {
     public init() {
         super.init(service: "ch.protonmail", accessGroup: Constants.keychainGroup)
     }
@@ -76,7 +76,11 @@ extension PPKeychain: SettingsProvider {
             return AutolockTimeout(rawValue: intValue)
         }
         set {
-            set(String(newValue.rawValue), forKey: Self.LockTimeKey)
+            do {
+                try setOrError(String(newValue.rawValue), forKey: Self.LockTimeKey)
+            } catch {
+                print("Failed to set lockTime with error: \(error)")
+            }
         }
     }
 }

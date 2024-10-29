@@ -26,9 +26,7 @@ import SwiftUI
 public final class TOTPCircularTimerViewModel: ObservableObject {
     @Published private(set) var remainingSeconds = 1.0
     @Published private(set) var percentage = 1.0
-
-    private var timer: Timer?
-
+    private var timerTask: Task<Void, Never>?
     private(set) var data: TOTPTimerData
 
     init(data: TOTPTimerData) {
@@ -40,18 +38,21 @@ public final class TOTPCircularTimerViewModel: ObservableObject {
     }
 
     deinit {
-        timer?.invalidate()
-        timer = nil
+        timerTask?.cancel()
+        timerTask = nil
     }
 
     func startTimer() {
-        timer?.invalidate()
-        timer = nil
+        timerTask?.cancel()
+        timerTask = nil
 
         // Create a new timer
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            MainActor.assumeIsolated { [weak self] in
-                guard let self else { return }
+        timerTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            while !Task.isCancelled {
+                try? await Task.sleep(seconds: 1)
+
+                guard !Task.isCancelled else { return }
                 remainingSeconds -= 1
                 percentage = remainingSeconds / Double(data.total)
             }
@@ -59,8 +60,8 @@ public final class TOTPCircularTimerViewModel: ObservableObject {
     }
 
     func stopTimer() {
-        timer?.invalidate() // Stop the timer
-        timer = nil // Clear the timer
+        timerTask?.cancel()
+        timerTask = nil
     }
 }
 

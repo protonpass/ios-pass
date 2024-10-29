@@ -22,23 +22,8 @@ import Client
 import Factory
 import UIKit
 
-final class SharedViewContainer: @unchecked Sendable, SharedContainer, AutoRegistering {
+final class SharedViewContainer: SharedContainer, AutoRegistering {
     static let shared = SharedViewContainer()
-
-    private let queue = DispatchQueue(label: "me.proton.pass.SharedViewContainer")
-    private var safeRegistered = false
-    private var registered: Bool {
-        get {
-            queue.sync {
-                safeRegistered
-            }
-        }
-        set {
-            queue.sync {
-                safeRegistered = newValue
-            }
-        }
-    }
 
     let manager = ContainerManager()
 
@@ -48,16 +33,11 @@ final class SharedViewContainer: @unchecked Sendable, SharedContainer, AutoRegis
 
     func register(rootViewController: UIViewController) {
         self.rootViewController.register { rootViewController }
-        registered = true
     }
 
     func reset() {
-        // Check if registered before resetting otherwise it'll crash
-        if registered {
-            SharedViewContainer.shared.bannerManager.reset()
-            SharedViewContainer.shared.rootViewController.reset()
-            registered = false
-        }
+        SharedViewContainer.shared.bannerManager.reset()
+        SharedViewContainer.shared.rootViewController.reset()
     }
 }
 
