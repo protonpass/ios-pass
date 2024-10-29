@@ -21,6 +21,7 @@
 
 import SwiftUI
 
+private let kAnimationThreshold = 500
 private let kHeaderId = "header"
 private let kCellId = "cell"
 
@@ -204,9 +205,14 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
                          showSectionIndexTitles: Bool,
                          id: Int?) {
             var snapshot = NSDiffableDataSourceSnapshot<PassSectionIdentifier, Item>()
+            let itemCount = sections.map(\.items.count).reduce(0) { $0 + $1 }
             if dataSource.lastId != id {
                 // Force refresh by providing an empty snapshot
-                dataSource.apply(snapshot, animatingDifferences: false)
+                if itemCount > kAnimationThreshold {
+                    dataSource.applySnapshotUsingReloadData(snapshot)
+                } else {
+                    dataSource.apply(snapshot, animatingDifferences: false)
+                }
             }
 
             for section in sections {
@@ -216,7 +222,11 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
             }
 
             dataSource.lastId = id
-            dataSource.apply(snapshot, animatingDifferences: true)
+            if itemCount > kAnimationThreshold {
+                dataSource.applySnapshotUsingReloadData(snapshot)
+            } else {
+                dataSource.apply(snapshot, animatingDifferences: true)
+            }
         }
 
         @objc

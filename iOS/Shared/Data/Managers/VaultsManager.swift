@@ -320,6 +320,7 @@ extension VaultsManager {
 
     func localFullSync(userId: String) async throws {
         let vaults = try await shareRepository.getVaults(userId: userId)
+        state = .loading
         try await loadContents(userId: userId, for: vaults)
     }
 
