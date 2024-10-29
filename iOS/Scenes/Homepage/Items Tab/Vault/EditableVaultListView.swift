@@ -28,13 +28,15 @@ import SwiftUI
 
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject var viewModel: EditableVaultListViewModel
+    @StateObject private var viewModel = EditableVaultListViewModel()
+    @State private var vaultNameConfirmation = ""
+    @State private var vaultToDelete: Vault?
     @State private var isShowingEmptyTrashAlert = false
 
     var body: some View {
         VStack(alignment: .leading) {
             ScrollView {
-                VStack(spacing: 0) {
+                LazyVStack(spacing: 0) {
                     switch viewModel.state {
                     case .error, .loading:
                         // Should never happen
@@ -69,6 +71,19 @@ struct EditableVaultListView: View {
         .background(PassColor.backgroundWeak.toColor)
         .showSpinner(viewModel.loading)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .alert("Delete vault?",
+               isPresented: $vaultToDelete.mappedToBool(),
+               presenting: vaultToDelete,
+               actions: { vault in
+                   TextField("Vault name", text: $vaultNameConfirmation)
+                   Button("Delete", action: { viewModel.delete(vault: vault) })
+                       .disabled(vaultNameConfirmation != vault.name)
+                   Button("Cancel", action: { vaultNameConfirmation = "" })
+               },
+               message: { vault in
+                   // swiftlint:disable:next line_length
+                   Text("This will permanently delete the vault « \(vault.name) » and all its contents. Enter the vault name to confirm deletion.")
+               })
     }
 
     @ViewBuilder
@@ -170,13 +185,16 @@ struct EditableVaultListView: View {
             Divider()
 
             Button(role: .destructive,
-                   action: { vault.isOwner ? viewModel.delete(vault: vault) : viewModel.leaveVault(vault: vault) },
+                   action: {
+                       if vault.isOwner {
+                           vaultToDelete = vault
+                       } else {
+                           viewModel.leaveVault(vault: vault)
+                       }
+                   },
                    label: {
-                       Label(title: {
-                           vault.isOwner ? Text("Delete vault") : Text("Leave vault")
-                       }, icon: {
-                           Image(uiImage: IconProvider.trash)
-                       })
+                       Label(vault.isOwner ? "Delete vault" : "Leave vault",
+                             uiImage: IconProvider.trash)
                    })
         }, label: threeDotsIcon)
     }
