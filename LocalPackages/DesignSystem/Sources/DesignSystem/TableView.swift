@@ -24,7 +24,7 @@ import SwiftUI
 private let kHeaderId = "header"
 private let kCellId = "cell"
 
-public final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
+public final class PassDiffableDataSource<Section: Hashable, Item: TableViewItemConformance>:
     UITableViewDiffableDataSource<Section, Item> {
     var sectionTitles: [String]?
     var showSectionIndexTitles = false
@@ -60,7 +60,9 @@ public struct TableViewConfiguration {
     }
 }
 
-public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIViewRepresentable {
+public typealias TableViewItemConformance = Hashable & Sendable
+
+public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderView: View>: UIViewRepresentable {
     public struct Section: Hashable, Equatable {
         public let type: AnyHashable
         public let title: String

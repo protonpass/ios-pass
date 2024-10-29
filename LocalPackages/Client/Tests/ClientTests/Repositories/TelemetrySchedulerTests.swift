@@ -28,7 +28,7 @@ private final class MockedCurrentDateProvider: CurrentDateProviderProtocol {
     func getCurrentDate() -> Date { kMockedDate }
 }
 
-final class TelemetryThresholdProviderMock: TelemetryThresholdProviderProtocol {
+final class TelemetryThresholdProviderMock: @unchecked Sendable, TelemetryThresholdProviderProtocol {
     var telemetryThreshold: TimeInterval?
 
     func getThreshold() -> TimeInterval? {
