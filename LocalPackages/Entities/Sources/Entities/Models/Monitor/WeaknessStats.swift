@@ -41,9 +41,9 @@ public struct WeaknessStats: Equatable, Sendable {
     }
 
     public static var `default`: WeaknessStats {
-        WeaknessStats(weakPasswords: 0,
-                      reusedPasswords: 0,
-                      missing2FA: 0,
-                      excludedItems: 0)
+        WeaknessStats(weakPasswords: -1,
+                      reusedPasswords: -1,
+                      missing2FA: -1,
+                      excludedItems: -1)
     }
 }
