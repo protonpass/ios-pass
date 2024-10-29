@@ -52,7 +52,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
@@ -72,6 +71,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     weak var appCoverView: UIView?
 
     // Lazily initialised properties
+    @LazyInjected(\SharedServiceContainer.syncEventLoop) var eventLoop
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) var apiManager
     @LazyInjected(\SharedToolingContainer.authManager) var authManager

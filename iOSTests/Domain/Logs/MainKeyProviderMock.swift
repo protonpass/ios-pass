@@ -22,7 +22,7 @@ import Core
 import ProtonCoreKeymaker
 import ProtonCoreTestingToolkitUnitTestsCore
 
-final class MainKeyProviderMock: MainKeyProvider {
+final class MainKeyProviderMock: @unchecked Sendable, MainKeyProvider {
     @PropertyStub(\MainKeyProviderMock.mainKey, initialGet: nil) var mainKeyStub
 
     var mainKey: MainKey? { mainKeyStub() }

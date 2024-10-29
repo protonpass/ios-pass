@@ -155,7 +155,7 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
 public extension SyncEventLoop {
     /// Start looping
     func start() {
-        queue.async { [weak self] in
+        queue.sync { [weak self] in
             guard let self else { return }
             guard timerTask == nil else {
                 return
@@ -176,7 +176,7 @@ public extension SyncEventLoop {
 
     /// Stop looping
     func stop() {
-        queue.async { [weak self] in
+        queue.sync { [weak self] in
             guard let self else { return }
 
             for (key, task) in activeTasks {
