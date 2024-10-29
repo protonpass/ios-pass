@@ -18,10 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct VaultContentUiModel: Hashable, Sendable {
+public struct VaultContentUiModel: Identifiable, Hashable, Sendable {
     public let vault: Vault
     /// `Active` items only
     public let items: [ItemUiModel]
+
+    public var id: String {
+        vault.shareId
+    }
 
     public var itemCount: Int {
         items.count
