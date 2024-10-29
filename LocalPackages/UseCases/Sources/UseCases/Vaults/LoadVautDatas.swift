@@ -45,6 +45,8 @@ public extension LoadVautDatasUseCase {
     }
 }
 
+extension SymmetricKey: @unchecked @retroactive Sendable {}
+
 public final class LoadVautDatas: LoadVautDatasUseCase {
     public init() {}
 
@@ -52,7 +54,7 @@ public final class LoadVautDatas: LoadVautDatasUseCase {
                         vaults: [Vault],
                         items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel {
         let batches = try await withThrowingTaskGroup(of: Batch.self,
-                                                      returning: [Batch].self) { [symmetricKey] group in
+                                                      returning: [Batch].self) { group in
             let itemBatches = items.chunked(into: kBatchSize)
             for batch in itemBatches {
                 group.addTask {
@@ -97,7 +99,10 @@ public final class LoadVautDatas: LoadVautDatasUseCase {
         let vaultContentUiModels = vaults
             .sorted { $0.name < $1.name }
             .compactMap { vault -> VaultContentUiModel? in
-                guard let items = vaultDict[vault.shareId] else { return nil }
+                guard let items = vaultDict[vault.shareId] else {
+                    assertionFailure("Items for share \(vault.shareId) should not be nil")
+                    return nil
+                }
                 return .init(vault: vault, items: items)
             }
 
