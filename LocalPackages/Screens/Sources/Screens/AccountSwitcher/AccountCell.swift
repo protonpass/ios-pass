@@ -129,7 +129,7 @@ public struct AccountCell: View {
 private extension AccountCell {
     var initial: some View {
         ZStack {
-            PassColor.interactionNormMajor2.toColor
+            PassColor.interactionNormMajor1.toColor
             Text(verbatim: detail.initial)
                 .foregroundStyle(PassColor.textInvert.toColor)
                 .fontWeight(.medium)

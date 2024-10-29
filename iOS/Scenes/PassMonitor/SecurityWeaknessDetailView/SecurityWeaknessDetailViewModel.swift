@@ -27,7 +27,7 @@ import Foundation
 import Macro
 import UseCases
 
-typealias SecuritySectionedData = [SecuritySectionHeaderKey: [ItemContent]]
+typealias SecuritySectionedData = [SecuritySectionHeaderKey: [ItemUiModel]]
 
 extension SecuritySectionedData {
     var isEmpty: Bool {
@@ -40,9 +40,12 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
     @Published private(set) var state: FetchableObject<SecuritySectionedData> = .fetching
 
     let type: SecurityWeakness
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let getAllSecurityAffectedLogins = resolve(\UseCasesContainer.getAllSecurityAffectedLogins)
-    private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
+
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\UseCasesContainer.getAllSecurityAffectedLogins) private var getAllSecurityAffectedLogins
+    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) private var addTelemetryEvent
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+
     private var cancellables = Set<AnyCancellable>()
 
     var nothingWrongMessage: String {
@@ -65,20 +68,31 @@ final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    func showDetail(item: ItemContent) {
-        router.present(for: .itemDetail(item, automaticDisplay: false, showSecurityIssues: true))
-        let eventType: TelemetryEventType? = switch type {
-        case .weakPasswords:
-            .monitorItemDetailFromWeakPassword
-        case .missing2FA:
-            .monitorItemDetailFromMissing2FA
-        case .reusedPasswords:
-            .monitorItemDetailFromReusedPassword
-        default:
-            nil
-        }
-        if let eventType {
-            addTelemetryEvent(with: eventType)
+    func showDetail(item: any ItemIdentifiable) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                guard let itemContent = try await itemRepository.getItemContent(shareId: item.shareId,
+                                                                                itemId: item.itemId) else {
+                    return
+                }
+                router.present(for: .itemDetail(itemContent, automaticDisplay: false, showSecurityIssues: true))
+                let eventType: TelemetryEventType? = switch type {
+                case .weakPasswords:
+                    .monitorItemDetailFromWeakPassword
+                case .missing2FA:
+                    .monitorItemDetailFromMissing2FA
+                case .reusedPasswords:
+                    .monitorItemDetailFromReusedPassword
+                default:
+                    nil
+                }
+                if let eventType {
+                    addTelemetryEvent(with: eventType)
+                }
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
         }
     }
 
@@ -104,7 +118,7 @@ private extension SecurityWeaknessDetailViewModel {
                     return
                 }
 
-                var data = [SecuritySectionHeaderKey: [ItemContent]]()
+                var data = SecuritySectionedData()
 
                 for (key, value) in logins {
                     data[key.toSecuritySectionHeaderKey] = value

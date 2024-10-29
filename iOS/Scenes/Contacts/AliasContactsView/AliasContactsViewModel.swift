@@ -143,7 +143,9 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
                                                             contactId: "\(contact.ID)",
                                                             blocked: !contact.blocked)
                 try await reloadContact()
-            } catch {}
+            } catch {
+                handle(error)
+            }
         }
     }
 
@@ -180,8 +182,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
                                                 description: UpsellEntry.aliasManagement.description,
                                                 upsellElements: UpsellEntry.aliasManagement.upsellElements,
                                                 ctaTitle: #localized("Get Pass Unlimited"))
-        router
-            .present(for: .upselling(config, .none))
+        router.present(for: .upselling(config, .none))
     }
 }
 
@@ -214,9 +215,9 @@ private extension AliasContactsViewModel {
             .store(in: &cancellables)
 
         accessRepository.access
+            .receive(on: DispatchQueue.main)
             .dropFirst()
             .compactMap { $0 }
-            .receive(on: DispatchQueue.main)
             .sink { [weak self] updatedAccess in
                 guard let self else {
                     return

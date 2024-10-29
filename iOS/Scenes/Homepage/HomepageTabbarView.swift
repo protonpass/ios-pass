@@ -205,8 +205,8 @@ final class HomepageTabBarController: UITabBarController, DeinitPrintable, UIGes
         super.init(nibName: nil, bundle: nil)
 
         monitorStateStream
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] state in
                 guard let self else { return }
                 passMonitorViewController?.tabBarItem.image = state.icon(selected: false)

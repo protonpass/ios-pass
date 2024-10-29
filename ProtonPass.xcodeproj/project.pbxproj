@@ -201,7 +201,6 @@
 		356BC35D29D710DC00F03497 /* EditClipboardExpirationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */; };
 		356C55EC2CC0F3080085DC9C /* CompleteTextAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C55EB2CC0F3080085DC9C /* CompleteTextAutoFill.swift */; };
 		356CE7732A2289C80043DC62 /* BannersSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356CE7722A2289C80043DC62 /* BannersSection.swift */; };
-		356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */; };
 		356EAF1C2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */; };
 		356EAF1E2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EAF1D2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift */; };
 		356EAF202BD8016100C83AE6 /* ToggleMonitorButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356EAF1F2BD8016100C83AE6 /* ToggleMonitorButton.swift */; };
@@ -821,7 +820,6 @@
 		356BC35C29D710DC00F03497 /* EditClipboardExpirationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditClipboardExpirationView.swift; sourceTree = "<group>"; };
 		356C55EB2CC0F3080085DC9C /* CompleteTextAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompleteTextAutoFill.swift; sourceTree = "<group>"; };
 		356CE7722A2289C80043DC62 /* BannersSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BannersSection.swift; sourceTree = "<group>"; };
-		356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeleteVaultAlertHandler.swift; sourceTree = "<group>"; };
 		356EAF1B2BD7F6E200C83AE6 /* MonitorProtonAddressesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorProtonAddressesView.swift; sourceTree = "<group>"; };
 		356EAF1D2BD7F70200C83AE6 /* MonitorProtonAddressesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorProtonAddressesViewModel.swift; sourceTree = "<group>"; };
 		356EAF1F2BD8016100C83AE6 /* ToggleMonitorButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleMonitorButton.swift; sourceTree = "<group>"; };
@@ -1294,7 +1292,6 @@
 			isa = PBXGroup;
 			children = (
 				3560843929DD4909001F7487 /* AppearanceSettings.swift */,
-				356D474329D1E228004792B2 /* DeleteVaultAlertHandler.swift */,
 				355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */,
 				35A5EEE12958CDBC00A09623 /* UrlOpener.swift */,
 				3570584429C65F0A0032D52F /* View+ItemContextMenus.swift */,
@@ -3340,7 +3337,6 @@
 				35219D7F2AE1C38D00868F78 /* ShareInvitee+Extensions.swift in Sources */,
 				5B1F5CCB2A5D822300A6C3ED /* BugReportView.swift in Sources */,
 				353739E129EAE8C000A3255E /* HapticFeedbacksSection.swift in Sources */,
-				356D474429D1E228004792B2 /* DeleteVaultAlertHandler.swift in Sources */,
 				356B830C29C3359A0084488A /* EmptySearchView.swift in Sources */,
 				356BBB712ACC539E005A10DB /* ShareOrCreateNewVaultView.swift in Sources */,
 				350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */,
@@ -5459,7 +5455,7 @@
 			repositoryURL = "https://github.com/ProtonMail/protoncore_ios";
 			requirement = {
 				kind = exactVersion;
-				version = 26.1.2;
+				version = 26.5.0;
 			};
 		};
 		575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */ = {
