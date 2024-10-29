@@ -23,7 +23,7 @@ import Combine
 import ProtonCoreKeymaker
 import XCTest
 
-final class KeychainMainkeyProviderMock: KeychainProtocol, MainKeyProvider {
+final class KeychainMainkeyProviderMock: @unchecked Sendable, KeychainProtocol, MainKeyProvider {
     var dict: [String: Data] = [:]
 
     func dataOrError(forKey key: String, attributes: [CFString : Any]?) throws -> Data? {

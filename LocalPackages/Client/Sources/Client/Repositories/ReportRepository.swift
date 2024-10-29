@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 import ProtonCoreServices
 
 enum ReportRepositoryError: Error {
@@ -48,9 +48,6 @@ public actor ReportRepository: @unchecked Sendable, ReportRepositoryProtocol {
         self.userManager = userManager
     }
 }
-
-// periphery:ignore
-extension UserData: @unchecked Sendable {}
 
 public extension ReportRepository {
     /// Sends a user bug report

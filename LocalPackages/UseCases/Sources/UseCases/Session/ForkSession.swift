@@ -19,35 +19,35 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
-import Foundation
-
-/// Fork the session and return the `selector`
-public protocol ForkSessionUseCase: Sendable {
-    func execute(payload: String?, childClientId: String, independent: Int) async throws -> String
-}
-
-public extension ForkSessionUseCase {
-    func callAsFunction(payload: String?, childClientId: String, independent: Int) async throws -> String {
-        try await execute(payload: payload, childClientId: childClientId, independent: independent)
-    }
-}
-
-public final class ForkSession: ForkSessionUseCase {
-    private let networkRepository: any NetworkRepositoryProtocol
-    private let userManager: any UserManagerProtocol
-
-    public init(networkRepository: any NetworkRepositoryProtocol,
-                userManager: any UserManagerProtocol) {
-        self.networkRepository = networkRepository
-        self.userManager = userManager
-    }
-
-    public func execute(payload: String?, childClientId: String, independent: Int) async throws -> String {
-        let userId = try await userManager.getActiveUserId()
-        return try await networkRepository.forkSession(userId: userId,
-                                                       payload: payload,
-                                                       childClientId: childClientId,
-                                                       independent: independent)
-    }
-}
+// import Client
+// import Foundation
+//
+///// Fork the session and return the `selector`
+// public protocol ForkSessionUseCase: Sendable {
+//    func execute(payload: String?, childClientId: String, independent: Int) async throws -> String
+// }
+//
+// public extension ForkSessionUseCase {
+//    func callAsFunction(payload: String?, childClientId: String, independent: Int) async throws -> String {
+//        try await execute(payload: payload, childClientId: childClientId, independent: independent)
+//    }
+// }
+//
+// public final class ForkSession: ForkSessionUseCase {
+//    private let networkRepository: any NetworkRepositoryProtocol
+//    private let userManager: any UserManagerProtocol
+//
+//    public init(networkRepository: any NetworkRepositoryProtocol,
+//                userManager: any UserManagerProtocol) {
+//        self.networkRepository = networkRepository
+//        self.userManager = userManager
+//    }
+//
+//    public func execute(payload: String?, childClientId: String, independent: Int) async throws -> String {
+//        let userId = try await userManager.getActiveUserId()
+//        return try await networkRepository.forkSession(userId: userId,
+//                                                       payload: payload,
+//                                                       childClientId: childClientId,
+//                                                       independent: independent)
+//    }
+// }

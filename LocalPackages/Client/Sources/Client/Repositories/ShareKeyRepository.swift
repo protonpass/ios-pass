@@ -20,9 +20,10 @@
 
 import Core
 import CoreData
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import ProtonCoreCrypto
+@preconcurrency import ProtonCoreLogin
 
 typealias DecryptionKey = ProtonCoreCrypto.DecryptionKey
 typealias Encryptor = ProtonCoreCrypto.Encryptor
