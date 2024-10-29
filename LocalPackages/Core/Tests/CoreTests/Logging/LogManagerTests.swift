@@ -21,7 +21,7 @@
 @testable import Core
 import XCTest
 
-final class LogManagerTests: XCTestCase {
+final class LogManagerTests: XCTestCase, @unchecked Sendable {
     private static let destinationFile = "logManagerTest.log"
     var sut: LogManagerProtocol!
 

@@ -25,7 +25,7 @@ import Foundation
 
 @preconcurrency import ProtonCoreServices
 
-final class RepositoryContainer: SharedContainer, AutoRegistering, Sendable {
+final class RepositoryContainer: SharedContainer, AutoRegistering {
     static let shared = RepositoryContainer()
     let manager = ContainerManager()
 

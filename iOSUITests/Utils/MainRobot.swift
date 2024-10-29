@@ -75,6 +75,7 @@ public enum WelcomeScreenMode {
     case calendar
 }
 
+@MainActor
 public final class MainRobot: CoreElements {
     public func showLogin() -> LoginRobot {
         button(showLoginButtonLabelText).waitUntilExists().tap()
@@ -121,7 +122,7 @@ public final class MainRobot: CoreElements {
     }
 
     @discardableResult
-    public func changeEnvironmentToCustomIfDomainHereBlackOtherwise(_ dynamicDomainAvailable: Bool) -> MainRobot {
+    public nonisolated func changeEnvironmentToCustomIfDomainHereBlackOtherwise(_ dynamicDomainAvailable: Bool) -> MainRobot {
         if dynamicDomainAvailable {
             button(environmentCustomText).tap()
         } else {

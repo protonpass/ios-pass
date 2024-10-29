@@ -22,7 +22,7 @@ import Factory
 import Foundation
 import UIKit
 
-final class RouterContainer: SharedContainer, AutoRegistering, Sendable {
+final class RouterContainer: SharedContainer, AutoRegistering {
     static let shared = RouterContainer()
     let manager = ContainerManager()
 
