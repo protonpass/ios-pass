@@ -68,7 +68,6 @@ struct ItemsTabView: View {
                 let sections: [TableView<ItemUiModel, Text, Text>.Section] = [
                     .init(type: "", title: "", items: uiModel.vaults.flatMap(\.items))
                 ]
-                let _ = Self._printChanges()
                 TableView(sections: sections,
                           configuration: .init(),
                           id: sections.hashValue,
