@@ -36,6 +36,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published var prefixManuallyEdited = false
     @Published var note = ""
     @Published var simpleLoginNote = ""
+    @Published var senderName = ""
 
     var suffix: String { suffixSelection.selectedSuffixString }
     var mailboxes: String { mailboxSelection.selectedMailboxesString }
@@ -170,6 +171,16 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                                         note: simpleLoginNote)
             edited = true
         }
+
+        if senderName != alias.name {
+            let userId = try await userManager.getActiveUserId()
+            try await aliasRepository.updateSlAliasName(userId: userId,
+                                                        shareId: itemContent.shareId,
+                                                        itemId: itemContent.itemId,
+                                                        name: senderName.nilIfEmpty)
+            edited = true
+        }
+
         return edited
     }
 
@@ -207,6 +218,7 @@ extension CreateEditAliasViewModel {
                     simpleLoginNote = alias.note ?? ""
                     self.alias = alias
                     mailboxSelection.selectedMailboxes = alias.mailboxes
+                    senderName = alias.name ?? ""
                     logger.info("Get alias successfully \(itemContent.debugDescription)")
                 }
 
