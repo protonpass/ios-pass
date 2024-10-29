@@ -383,8 +383,8 @@ private extension ProfileTabViewModel {
             .store(in: &cancellables)
 
         secureLinkManager.currentSecureLinks
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] newLinks in
                 guard let self, secureLinks != newLinks else { return }
                 secureLinks = newLinks

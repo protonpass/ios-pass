@@ -1210,10 +1210,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
     }
 
     func itemsTabViewModelWantsToPresentVaultList() {
-        let viewModel = EditableVaultListViewModel()
-        viewModel.delegate = self
-        let view = EditableVaultListView(viewModel: viewModel)
-        let viewController = UIHostingController(rootView: view)
+        let viewController = UIHostingController(rootView: EditableVaultListView())
 
         // Num of vaults + all items + trash + create vault button
         let rowHeight = 74
@@ -1573,18 +1570,6 @@ extension HomepageCoordinator: GeneratePasswordViewModelDelegate {
                             bannerMessage: #localized("Password copied"),
                             bannerDisplay: bannerManager)
         }
-    }
-}
-
-// MARK: - EditableVaultListViewModelDelegate
-
-extension HomepageCoordinator: EditableVaultListViewModelDelegate {
-    func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
-                                                        delegate: any DeleteVaultAlertHandlerDelegate) {
-        let handler = DeleteVaultAlertHandler(rootViewController: topMostViewController,
-                                              vault: vault,
-                                              delegate: delegate)
-        handler.showAlert()
     }
 }
 
