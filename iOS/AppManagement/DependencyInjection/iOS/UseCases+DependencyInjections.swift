@@ -23,7 +23,7 @@ import Core
 import Factory
 import UseCases
 
-final class UseCasesContainer: SharedContainer, AutoRegistering, Sendable {
+final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()
     let manager = ContainerManager()
 
