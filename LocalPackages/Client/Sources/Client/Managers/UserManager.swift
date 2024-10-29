@@ -25,7 +25,7 @@
 import Core
 import Entities
 import Foundation
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 
 // sourcery: AutoMockable
 public protocol UserManagerProtocol: Sendable {
@@ -184,7 +184,7 @@ private extension UserManager {
 
 public extension UserManager {
     nonisolated func setUserData(_ userData: UserData) {
-        Task { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self else {
                 return
             }

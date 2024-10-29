@@ -21,13 +21,15 @@
 @preconcurrency import Combine
 import Core
 import CoreData
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import ProtonCoreLogin
 
-private let kBatchPageSize = 100
+// swiftlint:disable:next todo
+// TODO: need to keep an eye on the evolution of Combine publisher and structured concurrency
+extension CurrentValueSubject: @unchecked @retroactive Sendable {}
 
-extension KeyPath: @unchecked Sendable {}
+private let kBatchPageSize = 100
 
 // sourcery: AutoMockable
 public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {

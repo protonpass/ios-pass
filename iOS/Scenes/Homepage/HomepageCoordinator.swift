@@ -22,6 +22,7 @@
 import Client
 import Combine
 import Core
+@preconcurrency import CryptoKit
 import DesignSystem
 import Entities
 import Factory
@@ -30,7 +31,7 @@ import MBProgressHUD
 import ProtonCoreAccountDeletion
 import ProtonCoreAccountRecovery
 import ProtonCoreDataModel
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCorePasswordChange
@@ -51,7 +52,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     deinit { print(deinitMessage) }
 
     // Injected & self-initialized properties
-    let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
@@ -71,6 +71,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     weak var appCoverView: UIView?
 
     // Lazily initialised properties
+    @LazyInjected(\SharedServiceContainer.syncEventLoop) var eventLoop
     @LazyInjected(\SharedViewContainer.bannerManager) var bannerManager
     @LazyInjected(\SharedToolingContainer.apiManager) var apiManager
     @LazyInjected(\SharedToolingContainer.authManager) var authManager
@@ -81,8 +82,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
     let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
-    private let forkSession = resolve(\SharedUseCasesContainer.forkSession)
-    private let makeImportExportUrl = resolve(\UseCasesContainer.makeImportExportUrl)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
     private let overrideSecuritySettings = resolve(\UseCasesContainer.overrideSecuritySettings)
@@ -142,7 +141,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 private extension HomepageCoordinator {
     /// Some properties are dependant on other propeties which are in turn not initialized
     /// before the Coordinator is fully initialized. This method is to resolve these dependencies.
-    func finalizeInitialization() { // swiftlint:disable:this cyclomatic_complexity
+    func finalizeInitialization() { // swiftlint:disable:this cyclomatic_complexity function_body_length
         eventLoop.delegate = self
         urlOpener.rootViewController = rootViewController
 
@@ -178,6 +177,9 @@ private extension HomepageCoordinator {
             .store(in: &cancellables)
 
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self else {
+                return
+            }
             Task { [weak self] in
                 guard let self else { return }
                 guard await authenticated,
@@ -230,6 +232,7 @@ private extension HomepageCoordinator {
         NotificationCenter.default
             .publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in
+                guard let self else { return }
                 Task { [weak self] in
                     guard let self else { return }
                     do {
@@ -508,8 +511,6 @@ extension HomepageCoordinator {
                     presentItemHistory(item)
                 case .restoreHistory:
                     updateAfterRestoration()
-                case .importExport:
-                    beginImportExportFlow()
                 case .tutorial:
                     openTutorialVideo()
                 case .accountSettings:
@@ -1075,32 +1076,6 @@ extension HomepageCoordinator {
 // MARK: - Open webpages
 
 extension HomepageCoordinator {
-    // swiftlint:disable:next todo
-    // TODO: do we need this ?
-    func beginImportExportFlow() {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                showLoadingHud()
-                let selector = try await forkSession(payload: nil, childClientId: "pass-ios", independent: 1)
-                hideLoadingHud()
-                let url = try makeImportExportUrl(selector: selector)
-                presentImportExportView(url: url)
-            } catch {
-                hideLoadingHud()
-                handle(error: error)
-            }
-        }
-    }
-
-    func presentImportExportView(url: URL) {
-        let view = ImportExportWebView(url: url)
-        let viewController = UIHostingController(rootView: view)
-        viewController.modalPresentationStyle = .fullScreen
-        viewController.isModalInPresentation = true
-        present(viewController)
-    }
-
     func beginAccountSettingsFlow() {
         do {
             let url = try makeAccountSettingsUrl()
@@ -1624,11 +1599,11 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
             // swiftformat:disable:next redundantParens
             let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
                 guard let self else { return }
-                Task { [weak self] in
+                Task { @MainActor [weak self] in
                     guard let self else {
                         return
                     }
-                    await banner.dismiss()
+                    banner.dismiss()
                     itemContextMenuHandler.restore(item)
                 }
             }
@@ -1689,7 +1664,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         logger.info("Began new sync loop for userId \(userId)")
     }
 
-    #warning("Handle no connection reason")
     nonisolated func syncEventLoopDidSkipLoop(reason: SyncEventLoopSkipReason) {
         logger.info("Skipped sync loop \(reason)")
     }

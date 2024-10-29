@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import Combine
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import Foundation
 import PassRustCore

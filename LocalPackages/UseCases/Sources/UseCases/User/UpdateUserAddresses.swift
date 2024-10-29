@@ -23,7 +23,7 @@
 import Client
 
 @preconcurrency import ProtonCoreAuthentication
-import ProtonCoreDataModel
+@preconcurrency import ProtonCoreDataModel
 import ProtonCoreLogin
 import ProtonCoreNetworking
 
@@ -65,6 +65,10 @@ public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
         return newAddresses
     }
 }
+
+// swiftlint:disable:next todo
+// TODO: check with account eam for the implementation of address_v2 and sendable conformance.
+extension Address: @unchecked @retroactive Sendable {}
 
 private extension AuthenticatorInterface {
     func getAddresses(_ credential: Credential?) async throws -> [Address] {

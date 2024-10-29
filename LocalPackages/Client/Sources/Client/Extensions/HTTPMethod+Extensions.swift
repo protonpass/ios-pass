@@ -20,4 +20,4 @@
 
 import ProtonCoreNetworking
 
-extension HTTPMethod: @unchecked Sendable {}
+extension HTTPMethod: @unchecked @retroactive Sendable {}

@@ -31,6 +31,8 @@ import SwiftUI
 
 typealias UserForNewItemSubject = PassthroughSubject<UserUiModel, Never>
 
+extension ASCredentialProviderExtensionContext: @unchecked @retroactive Sendable {}
+
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties

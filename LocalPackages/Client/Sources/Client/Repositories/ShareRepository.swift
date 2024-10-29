@@ -20,9 +20,9 @@
 
 @preconcurrency import Combine
 import Core
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
-import ProtonCoreLogin
+@preconcurrency import ProtonCoreLogin
 
 // sourcery: AutoMockable
 public protocol ShareRepositoryProtocol: Sendable {

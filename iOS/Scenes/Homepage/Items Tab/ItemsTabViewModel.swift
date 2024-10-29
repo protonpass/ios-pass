@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+@preconcurrency import CryptoKit
 import Entities
 import Factory
 import Macro

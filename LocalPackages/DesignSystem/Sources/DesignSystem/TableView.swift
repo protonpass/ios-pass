@@ -65,7 +65,9 @@ public struct TableViewConfiguration {
     }
 }
 
-public struct TableView<Item: Hashable, ItemView: View, HeaderView: View>: UIViewRepresentable {
+public typealias TableViewItemConformance = Hashable & Sendable
+
+public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderView: View>: UIViewRepresentable {
     public struct Section: Hashable, Equatable {
         public let type: AnyHashable
         public let title: String
