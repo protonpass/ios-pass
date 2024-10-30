@@ -39,8 +39,6 @@ struct AliasContactsView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var sheetState: AliasContactsSheetState?
-    @State private var editingName = false
-    @FocusState private var focused
 
     var body: some View {
         mainContainer
@@ -63,18 +61,10 @@ private extension AliasContactsView {
             mainTitle
                 .padding(.top)
 
-            senderName
+            // swiftlint:disable:next line_length
+            Text("A contact is created for every email address that sends emails to or receives emails from \(viewModel.alias.email)")
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.bottom, viewModel.aliasName.isEmpty ? DesignConstant.sectionPadding : 0)
-
-            if !viewModel.aliasName.isEmpty {
-                // swiftlint:disable:next line_length
-                Text("When sending an email from this alias, the email will have '\(viewModel.aliasName) <\(viewModel.alias.email)>' as sender.")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .padding(.top, 8)
-                    .padding(.bottom, DesignConstant.sectionPadding)
-            }
 
             if viewModel.hasNoContact {
                 AliasContactsEmptyView { sheetState = .explanation }
@@ -119,57 +109,6 @@ private extension AliasContactsView {
 }
 
 private extension AliasContactsView {
-    var senderName: some View {
-        HStack {
-            VStack(spacing: 8) {
-                Text("Sender name")
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .contentShape(.rect)
-
-                if editingName {
-                    TextField("Enter name", text: $viewModel.aliasName, onEditingChanged: { value in
-                        guard !value else {
-                            return
-                        }
-                        viewModel.updateAliasName()
-                        focused = false
-                    })
-                    .focused($focused)
-                    .autocorrectionDisabled()
-                    .tint(PassColor.aliasInteractionNormMajor2.toColor)
-                } else {
-                    Text(viewModel.aliasName.isEmpty ? "Enter name" : viewModel.aliasName)
-                        .foregroundStyle(viewModel.aliasName.isEmpty ? PassColor.textWeak.toColor : PassColor
-                            .textNorm.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .onTapGesture {
-                            editingName = true
-                            focused = true
-                        }
-                }
-            }
-            .padding(.horizontal, DesignConstant.sectionPadding)
-
-            if viewModel.updatingName {
-                ProgressView()
-            } else {
-                Button {
-                    editingName = true
-                    focused = true
-                } label: {
-                    ItemDetailSectionIcon(icon: IconProvider.pen,
-                                          width: 20)
-                }.buttonStyle(.plain)
-            }
-        }
-        .padding(10)
-        .roundedDetailSection()
-    }
-}
-
-private extension AliasContactsView {
     var contactList: some View {
         LazyVStack(spacing: 25) {
             if !viewModel.contactsInfos.activeContacts.isEmpty {
@@ -177,12 +116,8 @@ private extension AliasContactsView {
                     ForEach(viewModel.contactsInfos.activeContacts) { contact in
                         itemRow(for: contact)
                     }
-                } header: {
-                    Text("Forwarding addresses")
-                        .font(.callout.bold())
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .padding(.top, 20)
             }
 
             if !viewModel.contactsInfos.blockContacts.isEmpty {
@@ -191,7 +126,7 @@ private extension AliasContactsView {
                         itemRow(for: contact)
                     }
                 } header: {
-                    Text("Blocked")
+                    Text("Blocked addresses")
                         .font(.callout)
                         .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -210,7 +145,7 @@ private extension AliasContactsView {
 
                 if !contact.blocked {
                     Button {
-                        viewModel.openMail(emailTo: contact.email)
+                        viewModel.openMail(emailTo: contact.reverseAlias)
                     } label: {
                         Image(uiImage: IconProvider.paperPlane)
                             .foregroundStyle(PassColor.textWeak.toColor)
@@ -415,8 +350,7 @@ private enum ContactCreationSteps: Hashable {
                     CircleButton(icon: IconProvider.cross,
                                  iconColor: PassColor.aliasInteractionNormMajor2,
                                  backgroundColor: PassColor.aliasInteractionNormMinor1,
-                                 accessibilityLabel: "Close",
-                                 action: {})
+                                 accessibilityLabel: "Close")
                     Spacer()
 
                     Text("Save")

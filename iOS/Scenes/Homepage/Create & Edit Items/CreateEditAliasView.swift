@@ -42,7 +42,7 @@ struct CreateEditAliasView: View {
     }
 
     enum Field {
-        case title, prefix, note, simpleLoginNote
+        case title, prefix, note, simpleLoginNote, senderName
     }
 
     var body: some View {
@@ -139,6 +139,10 @@ struct CreateEditAliasView: View {
                     if viewModel.isAdvancedAliasManagementActive, !viewModel.simpleLoginNote.isEmpty {
                         simpleLoginNoteSection
                     }
+
+                    if viewModel.senderName.isEmpty {
+                        senderNameRow
+                    }
                 }
                 .padding()
                 .animation(.default, value: viewModel.shouldUpgrade)
@@ -175,6 +179,31 @@ struct CreateEditAliasView: View {
                                      onDismiss: { sheetState = nil })
                 .environment(\.colorScheme, colorScheme)
         }
+    }
+
+    var senderNameRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.cardIdentity)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Display name")
+                    .sectionTitleText()
+
+                TrimmingTextField("Add display name", text: $viewModel.senderName)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .focused($focusedField, equals: .senderName)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .submitLabel(.next)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ClearTextButton(text: $viewModel.senderName)
+        }
+        .animation(.default, value: viewModel.senderName.isEmpty)
+        .animation(.default, value: focusedField)
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection()
     }
 
     private var aliasReadonlySection: some View {

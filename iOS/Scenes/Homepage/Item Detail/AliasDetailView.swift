@@ -72,6 +72,11 @@ struct AliasDetailView: View {
                     }
 
                     if viewModel.isAdvancedAliasManagementActive {
+                        if let name = viewModel.aliasInfos?.name {
+                            senderNameRow(name: name)
+                                .padding(.bottom, 8)
+                        }
+
                         if viewModel.contacts != nil {
                             contactRow
 
@@ -285,6 +290,31 @@ struct AliasDetailView: View {
         }
         .animation(.default, value: viewModel.contacts)
         .buttonStyle(.plain)
+    }
+
+    @ViewBuilder
+    private func senderNameRow(name: String) -> some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.cardIdentity, color: iconTintColor)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Display name")
+                    .sectionTitleText()
+
+                Text(verbatim: name)
+                    .sectionContentText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection()
+
+        Text("The display name when sending an email from this alias.")
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .font(.footnote)
+            .foregroundStyle(PassColor.textWeak.toColor)
+            .padding(.bottom, DesignConstant.sectionPadding)
     }
 }
 
