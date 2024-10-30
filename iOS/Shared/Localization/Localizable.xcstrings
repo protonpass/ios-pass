@@ -13824,12 +13824,12 @@
         }
       }
     },
-    "A contact is created for every email address that sends emails to or receives emails from {alias address}" : {
+    "A contact is created for every email address that sends emails to or receives emails from %@" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A contact is created for every email address that sends emails to or receives emails from {alias address}"
+            "value" : "A contact is created for every email address that sends emails to or receives emails from %@"
           }
         }
       }
