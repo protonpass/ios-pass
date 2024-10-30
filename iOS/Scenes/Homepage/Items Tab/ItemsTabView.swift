@@ -28,10 +28,6 @@ import Screens
 import SwiftUI
 import TipKit
 
-// swiftlint:disable:next todo
-// TODO: Remove later on after using the same UI component to render item list
-private let kListThreshold = 500
-
 struct ItemsTabView: View {
     @StateObject var viewModel: ItemsTabViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
@@ -44,10 +40,9 @@ struct ItemsTabView: View {
     private var useSwiftUIList = false
 
     var body: some View {
-        let vaultsManager = viewModel.vaultsManager
         ZStack {
-            switch vaultsManager.state {
-            case .loading:
+            switch viewModel.sectionedItems {
+            case .fetching:
                 // We display both the skeleton and the progress at the same time
                 // and use opacity trick because we need fullSyncProgressView
                 // to be intialized asap so its viewModel doesn't miss any events
@@ -56,25 +51,14 @@ struct ItemsTabView: View {
                 ItemsTabsSkeleton()
                     .opacity(viewModel.shouldShowSyncProgress ? 0 : 1)
 
-            case let .loaded(uiModel):
-//                if viewModel.shouldShowSyncProgress {
-//                    fullSyncProgressView
-//                } else {
-//                    vaultContent(vaultsManager.getFilteredItems())
-//                }
-//
-//                itemForceTouchTip
+            case let .fetched(sections):
+                if viewModel.shouldShowSyncProgress {
+                    fullSyncProgressView
+                } else {
+                    vaultContent(sections)
+                }
 
-                let sections: [TableView<ItemUiModel, Text, Text>.Section] = [
-                    .init(type: "", title: "", items: uiModel.vaults.flatMap(\.items))
-                ]
-                TableView(sections: sections,
-                          configuration: .init(),
-                          id: sections.hashValue,
-                          itemView: { item in
-                              Text(item.title)
-                          },
-                          headerView: { _ in nil })
+                itemForceTouchTip
                 Spacer()
 
             case let .error(error):
@@ -82,10 +66,16 @@ struct ItemsTabView: View {
                                    onRetry: { viewModel.refresh() })
             }
         }
-        .animation(.default, value: vaultsManager.state)
+        .animation(.default, value: viewModel.sectionedItems)
         .animation(.default, value: viewModel.shouldShowSyncProgress)
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarHidden(true)
+        .onChange(of: viewModel.filterOption) { _ in
+            viewModel.filterAndSortItems(sortType: nil)
+        }
+        .onChange(of: viewModel.selectedSortType) { type in
+            viewModel.filterAndSortItems(sortType: type)
+        }
     }
 
     private var fullSyncProgressView: some View {
@@ -93,7 +83,7 @@ struct ItemsTabView: View {
     }
 
     @ViewBuilder
-    private func vaultContent(_ items: [ItemUiModel]) -> some View {
+    private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
         GeometryReader { proxy in
             VStack(spacing: 0) {
                 ItemsTabTopBar(searchMode: $searchMode,
@@ -136,7 +126,7 @@ struct ItemsTabView: View {
                     Divider()
                 }
 
-                if items.isEmpty {
+                if sections.isEmpty {
                     switch viewModel.vaultsManager.vaultSelection {
                     case .all:
                         EmptyVaultView(canCreateItems: true,
@@ -151,7 +141,7 @@ struct ItemsTabView: View {
                             .padding(.bottom, safeAreaInsets.bottom)
                     }
                 } else {
-                    itemList(items)
+                    itemList(sections)
                     Spacer()
                 }
             }
@@ -188,162 +178,85 @@ struct ItemsTabView: View {
         }
         .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)
     }
+}
 
+private extension ItemsTabView {
     @ViewBuilder
-    private func itemList(_ items: [ItemUiModel]) -> some View {
-        switch viewModel.selectedSortType {
-        case .mostRecent:
-            itemList(items.mostRecentSortResult())
-        case .alphabeticalAsc:
-            itemList(items.alphabeticalSortResult(direction: .ascending), direction: .ascending)
-        case .alphabeticalDesc:
-            itemList(items.alphabeticalSortResult(direction: .descending), direction: .descending)
-        case .newestToOldest:
-            itemList(items.monthYearSortResult(direction: .descending))
-        case .oldestToNewest:
-            itemList(items.monthYearSortResult(direction: .ascending))
-        }
-    }
-
-    func itemList(_ result: MostRecentSortResult<ItemUiModel>) -> some View {
-        ItemListView(safeAreaInsets: safeAreaInsets,
-                     mode: result.numberOfItems > kListThreshold ? .lazyVStack : .list,
-                     content: {
-                         ForEach(result.buckets) { bucket in
-                             section(for: bucket.items,
-                                     headerTitle: bucket.type.title,
-                                     totalItemsCount: result.numberOfItems)
-                         }
-                     },
-                     onRefresh: viewModel.forceSyncIfNotEditMode)
-    }
-
-    func itemList(_ result: AlphabeticalSortResult<ItemUiModel>,
-                  direction: SortDirection) -> some View {
-        ScrollViewReader { proxy in
-            ItemListView(safeAreaInsets: safeAreaInsets,
-                         showScrollIndicators: false,
-                         mode: result.numberOfItems > kListThreshold ? .lazyVStack : .list,
-                         content: {
-                             ForEach(result.buckets, id: \.letter) { bucket in
-                                 section(for: bucket.items,
-                                         headerTitle: bucket.letter.character,
-                                         totalItemsCount: result.numberOfItems)
-                                     .id(bucket.letter.character)
-                             }
-                         },
-                         onRefresh: viewModel.forceSyncIfNotEditMode)
-                .overlay {
-                    HStack {
-                        Spacer()
-                        SectionIndexTitles(proxy: proxy, direction: direction)
+    func itemList(_ sections: [SectionedItemUiModel]) -> some View {
+        if useSwiftUIList {
+            ScrollViewReader { proxy in
+                ItemListView(safeAreaInsets: safeAreaInsets,
+                             content: {
+                                 ForEach(sections) { section in
+                                     Section(content: {
+                                         ForEach(section.items) { item in
+                                             itemRow(item)
+                                         }
+                                     }, header: {
+                                         Text(section.sectionTitle)
+                                             .font(.callout)
+                                             .foregroundStyle(PassColor.textWeak.toColor)
+                                             .frame(maxWidth: .infinity, alignment: .leading)
+                                     })
+                                     .id(section.id)
+                                 }
+                             },
+                             onRefresh: viewModel.forceSyncIfNotEditMode)
+                    .if(viewModel.selectedSortType.isAlphabetical) { view in
+                        view.overlay {
+                            HStack {
+                                Spacer()
+                                SectionIndexTitles(proxy: proxy,
+                                                   direction: viewModel.selectedSortType.sortDirection)
+                            }
+                        }
                     }
-                }
-        }
-    }
-
-    func itemList(_ result: MonthYearSortResult<ItemUiModel>) -> some View {
-        ItemListView(safeAreaInsets: safeAreaInsets,
-                     mode: result.numberOfItems > kListThreshold ? .lazyVStack : .list,
-                     content: {
-                         ForEach(result.buckets, id: \.monthYear) { bucket in
-                             section(for: bucket.items,
-                                     headerTitle: bucket.monthYear.relativeString,
-                                     totalItemsCount: result.numberOfItems)
-                         }
-                     },
-                     onRefresh: viewModel.forceSyncIfNotEditMode)
-    }
-
-    @ViewBuilder
-    func section(for items: [ItemUiModel],
-                 headerTitle: String,
-                 totalItemsCount: Int) -> some View {
-        let isListMode = totalItemsCount <= kListThreshold
-        if items.isEmpty {
-            EmptyView()
+            }
         } else {
-            Section(content: {
-                ForEach(items) { item in
-                    itemRow(for: item, isListMode: isListMode)
-                        .listRowSeparator(.hidden)
-                        .listRowInsets(.init(top: 4, leading: -10, bottom: 4, trailing: -10))
-                        .listRowBackground(Color.clear)
-                }
-            }, header: {
-                Text(headerTitle)
-                    .font(.callout)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, isListMode ? 0 : 20)
-                    .padding(.vertical, isListMode ? 0 : 4)
-                    .if(!isListMode) {
-                        $0.background(.ultraThinMaterial)
-                    }
-            })
+            let sections: [TableView<ItemUiModel, ItemRow, Text>.Section] = sections.map { section in
+                .init(type: section.id,
+                      title: section.sectionTitle,
+                      items: section.items)
+            }
+            TableView(sections: sections,
+                      configuration: .init(showSectionIndexTitles: viewModel.selectedSortType
+                          .isAlphabetical),
+                      id: sections.hashValue,
+                      itemView: { itemRow($0) },
+                      headerView: { _ in nil })
         }
     }
 
     @ViewBuilder
-    func itemRow(for item: ItemUiModel, isListMode: Bool) -> some View {
+    func itemRow(_ item: ItemUiModel) -> ItemRow {
         let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
         let isEditable = viewModel.isEditable(item)
         let isSelected = viewModel.isSelected(item)
-        Button(action: {
-            viewModel.handleSelection(item)
-        }, label: {
-            GeneralItemRow(thumbnailView: {
-                               if viewModel.isEditMode, isSelected {
-                                   SquircleCheckbox()
-                               } else {
-                                   ItemSquircleThumbnail(data: item.thumbnailData(),
-                                                         isEnabled: item.isAlias ? item.isAliasEnabled : true,
-                                                         pinned: item.pinned)
-                                       .onTapGesture {
-                                           viewModel.handleThumbnailSelection(item)
-                                       }
-                               }
-                           },
-                           title: item.title,
-                           description: item.description)
-                .if(!viewModel.isEditMode) { view in
-                    view.itemContextMenu(item: item,
-                                         isTrashed: isTrashed,
-                                         isEditable: isEditable,
-                                         aliasSyncEnabled: viewModel.aliasSyncEnabled,
-                                         onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
-                                         onAliasTrash: {
-                                             if viewModel.aliasSyncEnabled {
-                                                 aliasToTrash = item
-                                             } else {
-                                                 viewModel.itemContextMenuHandler.trash(item)
-                                             }
-                                         },
-                                         handler: viewModel.itemContextMenuHandler)
-                }
-                .padding(.horizontal)
-                .background(isSelected ? PassColor.interactionNormMinor1.toColor : .clear)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
-                .animation(.default, value: isSelected)
-        })
-        .if(isListMode) {
-            $0.padding(.horizontal, 16)
-        }
-        .frame(height: 64)
-        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
-                                    item: item,
-                                    isEditMode: viewModel.isEditMode,
-                                    isTrashed: isTrashed,
-                                    isEditable: isEditable,
-                                    itemContextMenuHandler: viewModel.itemContextMenuHandler,
-                                    aliasSyncEnabled: viewModel.aliasSyncEnabled))
-        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
-                                                onDelete: viewModel.permanentlyDelete))
-        .disabled(!isEditable && viewModel.isEditMode)
+        ItemRow(item: item,
+                isEditMode: viewModel.isEditMode,
+                isEditable: isEditable,
+                isSelected: isSelected,
+                isTrashed: isTrashed,
+                aliasSyncEnabled: viewModel.aliasSyncEnabled,
+                onSelectThumbnail: { viewModel.handleThumbnailSelection(item) },
+                onSelectItem: { viewModel.handleSelection(item) },
+                itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
+                onPermanentlyDelete: { viewModel.permanentlyDelete() },
+                onAliasTrash: {
+                    if viewModel.aliasSyncEnabled {
+                        aliasToTrash = item
+                    } else {
+                        viewModel.itemContextMenuHandler.trash(item)
+                    }
+                },
+                itemContextMenuHandler: viewModel.itemContextMenuHandler)
     }
 }
 
 private struct ItemRow: View {
+    @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
+    private var useSwiftUIList = false
+
     let item: ItemUiModel
     let isEditMode: Bool
     let isEditable: Bool
@@ -352,10 +265,10 @@ private struct ItemRow: View {
     let aliasSyncEnabled: Bool
     let onSelectThumbnail: () -> Void
     let onSelectItem: () -> Void
+    let itemToBePermanentlyDeleted: Binding<(any ItemTypeIdentifiable)?>
     let onPermanentlyDelete: () -> Void
     let onAliasTrash: () -> Void
     let itemContextMenuHandler: ItemContextMenuHandler
-    let itemToBePermanentlyDeleted: Binding<(any ItemTypeIdentifiable)?>
 
     var body: some View {
         Button(action: onSelectItem) {
@@ -380,7 +293,7 @@ private struct ItemRow: View {
                                          onAliasTrash: onAliasTrash,
                                          handler: itemContextMenuHandler)
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, useSwiftUIList ? nil : 0)
                 .background(isSelected ? PassColor.interactionNormMinor1.toColor : .clear)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .animation(.default, value: isSelected)
@@ -393,9 +306,12 @@ private struct ItemRow: View {
                                     isEditable: isEditable,
                                     itemContextMenuHandler: itemContextMenuHandler,
                                     aliasSyncEnabled: aliasSyncEnabled))
-//        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
-//                                                onDelete: viewModel.permanentlyDelete))
+        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: itemToBePermanentlyDeleted.mappedToBool(),
+                                                onDelete: onPermanentlyDelete))
         .disabled(!isEditable && isEditMode)
+        .listRowSeparator(.hidden)
+        .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
+        .listRowBackground(Color.clear)
     }
 }
 
@@ -487,52 +403,30 @@ private extension ItemsTabView {
 }
 
 private struct ItemListView<Content: View>: View {
-    enum Mode {
-        case list, lazyVStack
-    }
-
     let safeAreaInsets: EdgeInsets
     let showScrollIndicators: Bool
-    let mode: Mode
     let content: () -> Content
     let onRefresh: @Sendable () async -> Void
 
     init(safeAreaInsets: EdgeInsets,
          showScrollIndicators: Bool = true,
-         mode: Mode,
          @ViewBuilder content: @escaping () -> Content,
          onRefresh: @Sendable @escaping () async -> Void) {
         self.safeAreaInsets = safeAreaInsets
         self.showScrollIndicators = showScrollIndicators
-        self.mode = mode
         self.content = content
         self.onRefresh = onRefresh
     }
 
     var body: some View {
-        switch mode {
-        case .list:
-            List {
-                content()
-                Spacer()
-                    .frame(height: safeAreaInsets.bottom)
-                    .plainListRow()
-            }
-            .listStyle(.plain)
-            .scrollIndicatorsHidden(!showScrollIndicators)
-            .refreshable(action: onRefresh)
-
-        case .lazyVStack:
-            ScrollView {
-                LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                    content()
-                    Spacer()
-                        .frame(height: safeAreaInsets.bottom)
-                        .plainListRow()
-                }
-            }
-            .scrollIndicatorsHidden(!showScrollIndicators)
-            .refreshable(action: onRefresh)
+        List {
+            content()
+            Spacer()
+                .frame(height: safeAreaInsets.bottom)
+                .plainListRow()
         }
+        .listStyle(.plain)
+        .scrollIndicatorsHidden(!showScrollIndicators)
+        .refreshable(action: onRefresh)
     }
 }
