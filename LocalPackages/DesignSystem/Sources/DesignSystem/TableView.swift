@@ -139,13 +139,14 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
 
     public func updateUIView(_ tableView: UITableView, context: Context) {
         context.coordinator.updateTable(with: sections,
-                                        showSectionIndexTitles: configuration.showSectionIndexTitles,
+                                        configuration: configuration,
                                         id: id)
     }
 
     public final class Coordinator: NSObject, UITableViewDelegate {
         let parent: TableView
         private var dataSource: PassDiffableDataSource<PassSectionIdentifier, Item>!
+        private var configuration: TableViewConfiguration = .init()
 
         init(_ parent: TableView) {
             self.parent = parent
@@ -179,7 +180,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
                     cell.contentConfiguration = UIHostingConfiguration {
                         self.parent
                             .itemView(item)
-                            .padding(.bottom, self.parent.configuration.rowSpacing)
+                            .padding(.bottom, self.configuration.rowSpacing)
                     }
                     // A combination of minSize and magins to remove the vertical padding
                     .minSize(width: 0, height: 0)
@@ -189,7 +190,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
 
             dataSource.sectionIndexTitles = { [weak self] in
                 guard let self else { return nil }
-                return parent.configuration.showSectionIndexTitles ?
+                return configuration.showSectionIndexTitles ?
                     dataSource.snapshot().sectionIdentifiers.map(\.title) : nil
             }
 
@@ -202,8 +203,9 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
         }
 
         func updateTable(with sections: [Section],
-                         showSectionIndexTitles: Bool,
+                         configuration: TableViewConfiguration,
                          id: Int?) {
+            self.configuration = configuration
             var snapshot = NSDiffableDataSourceSnapshot<PassSectionIdentifier, Item>()
             let itemCount = sections.map(\.items.count).reduce(0) { $0 + $1 }
             if dataSource.lastId != id {
