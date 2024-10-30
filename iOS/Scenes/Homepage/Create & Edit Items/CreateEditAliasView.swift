@@ -140,7 +140,7 @@ struct CreateEditAliasView: View {
                         simpleLoginNoteSection
                     }
 
-                    if viewModel.alias != nil {
+                    if viewModel.senderName.isEmpty {
                         senderNameRow
                     }
                 }

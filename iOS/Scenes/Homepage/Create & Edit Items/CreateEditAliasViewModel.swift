@@ -163,8 +163,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             edited = true
         }
 
+        let userId = try await userManager.getActiveUserId()
+
         if simpleLoginNote != alias.note {
-            let userId = try await userManager.getActiveUserId()
             try await aliasRepository.updateSlAliasNote(userId: userId,
                                                         shareId: itemContent.shareId,
                                                         itemId: itemContent.itemId,
@@ -173,7 +174,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
 
         if senderName != alias.name {
-            let userId = try await userManager.getActiveUserId()
             try await aliasRepository.updateSlAliasName(userId: userId,
                                                         shareId: itemContent.shareId,
                                                         itemId: itemContent.itemId,

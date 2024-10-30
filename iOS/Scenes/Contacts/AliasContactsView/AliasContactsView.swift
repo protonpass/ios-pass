@@ -62,7 +62,7 @@ private extension AliasContactsView {
                 .padding(.top)
 
             // swiftlint:disable:next line_length
-            Text("A contact is created for every email address that sends emails to or receives emails from {alias address}")
+            Text("A contact is created for every email address that sends emails to or receives emails from \(viewModel.alias.email)")
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .padding(.bottom, viewModel.aliasName.isEmpty ? DesignConstant.sectionPadding : 0)
 
@@ -116,12 +116,8 @@ private extension AliasContactsView {
                     ForEach(viewModel.contactsInfos.activeContacts) { contact in
                         itemRow(for: contact)
                     }
-                } header: {
-                    Text(verbatim: "")
-                        .font(.callout.bold())
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .padding(.top, 20)
             }
 
             if !viewModel.contactsInfos.blockContacts.isEmpty {

@@ -301,7 +301,7 @@ struct AliasDetailView: View {
                 Text("Display name")
                     .sectionTitleText()
 
-                Text(verbatim: "\(name)")
+                Text(verbatim: name)
                     .sectionContentText()
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
