@@ -21,7 +21,7 @@
 
 import Client
 import Core
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 
 private let kBatchSize = 500
@@ -45,8 +45,6 @@ public extension LoadVautDatasUseCase {
     }
 }
 
-extension SymmetricKey: @unchecked @retroactive Sendable {}
-
 public final class LoadVautDatas: LoadVautDatasUseCase {
     public init() {}
 
@@ -54,10 +52,10 @@ public final class LoadVautDatas: LoadVautDatasUseCase {
                         vaults: [Vault],
                         items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel {
         let batches = try await withThrowingTaskGroup(of: Batch.self,
-                                                      returning: [Batch].self) { group in
+                                                      returning: [Batch].self) { @Sendable group in
             let itemBatches = items.chunked(into: kBatchSize)
             for batch in itemBatches {
-                group.addTask {
+                group.addTask { @Sendable in
                     var dict = [String: [ItemUiModel]]()
                     var trashed = [ItemUiModel]()
                     for item in batch {
