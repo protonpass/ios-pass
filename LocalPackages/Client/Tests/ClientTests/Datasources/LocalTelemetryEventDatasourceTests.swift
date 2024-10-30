@@ -104,7 +104,7 @@ extension LocalTelemetryEventDatasourceTests {
     }
 }
 
-extension TelemetryEvent: Equatable {
+extension TelemetryEvent: @retroactive Equatable {
     static func random() -> TelemetryEvent {
         .init(uuid: UUID().uuidString, time: Date.now.timeIntervalSince1970, type: .random())
     }
