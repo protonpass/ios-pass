@@ -63,7 +63,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
-    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
     private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
     private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
@@ -159,6 +159,7 @@ private extension ItemsTabViewModel {
 
         vaultsManager.$vaultSelection
             .receive(on: DispatchQueue.main)
+            .dropFirst()
             .sink { [weak self] _ in
                 guard let self else { return }
                 filterAndSortItems(sortType: nil)

@@ -220,10 +220,13 @@ private extension ItemsTabView {
             }
             TableView(sections: sections,
                       configuration: .init(showSectionIndexTitles: viewModel.selectedSortType
-                          .isAlphabetical),
-                      id: sections.hashValue,
+                          .isAlphabetical,
+                          rowSpacing: 8),
+                      // Force reload rows when bulk selecting
+                      id: viewModel.currentSelectedItems.value.hashValue,
                       itemView: { itemRow($0) },
-                      headerView: { _ in nil })
+                      headerView: { _ in nil },
+                      onRefresh: viewModel.forceSyncIfNotEditMode)
         }
     }
 
@@ -293,7 +296,7 @@ private struct ItemRow: View {
                                          onAliasTrash: onAliasTrash,
                                          handler: itemContextMenuHandler)
                 }
-                .padding(.horizontal, useSwiftUIList ? nil : 0)
+                .padding(.horizontal)
                 .background(isSelected ? PassColor.interactionNormMinor1.toColor : .clear)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .animation(.default, value: isSelected)
