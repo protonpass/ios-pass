@@ -22,7 +22,7 @@ import SwiftUI
 
 public extension Button {
     init(role: ButtonRole?,
-         action: @escaping () async -> Void,
+         action: @escaping @Sendable () async -> Void,
          @ViewBuilder label: () -> Label) {
         self = Button(role: role,
                       action: { Task { await action() } },
