@@ -30,12 +30,27 @@ import Macro
 import Screens
 import UIKit
 
-struct AliasContactsModel {
+struct AliasContactsModel: Sendable, Hashable {
     let activeContacts: [AliasContact]
     let blockContacts: [AliasContact]
 
-    static var `default`: AliasContactsModel {
-        AliasContactsModel(activeContacts: [], blockContacts: [])
+    var isEmpty: Bool {
+        activeContacts.isEmpty && blockContacts.isEmpty
+    }
+
+    init(contacts: [AliasContact]) {
+        var activeContacts: [AliasContact] = []
+        var blockContacts: [AliasContact] = []
+
+        for contact in contacts {
+            if contact.blocked {
+                blockContacts.append(contact)
+            } else {
+                activeContacts.append(contact)
+            }
+        }
+        self.activeContacts = activeContacts
+        self.blockContacts = blockContacts
     }
 }
 
@@ -44,14 +59,13 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     @Published var aliasName = ""
     @Published private(set) var displayName = ""
     @Published private(set) var showExplanation = false
-    @Published private(set) var contactsInfos = AliasContactsModel.default
+    @Published private(set) var contactsInfos: AliasContactsModel
     @Published private(set) var loading = false
 
     var hasNoContact: Bool {
-        contacts.contacts.isEmpty
+        contactsInfos.isEmpty
     }
 
-    private var contacts: PaginatedAliasContacts
     private var previousName = ""
     private(set) var alias: Alias
     private let infos: ContactsInfos
@@ -75,14 +89,13 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     }
 
     init(infos: ContactsInfos) {
-        contacts = infos.contacts
+        contactsInfos = .init(contacts: infos.contacts.contacts)
         self.infos = infos
         alias = infos.alias
         aliasName = alias.name ?? ""
         displayName = alias.displayName
         previousName = aliasName
         setUp()
-        parseContacts()
     }
 
     func copyContact(_ contact: AliasContact) {
@@ -141,7 +154,6 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
                                                             itemId: infos.itemId,
                                                             contactId: "\(contact.ID)",
                                                             blocked: !contact.blocked)
-                try await reloadContact()
             } catch {
                 handle(error)
             }
@@ -201,26 +213,11 @@ private extension AliasContactsViewModel {
 
     func reloadContact() async throws {
         let userId = try await userManager.getActiveUserId()
-        contacts = try await aliasRepository.getContacts(userId: userId,
-                                                         shareId: infos.shareId,
-                                                         itemId: infos.itemId,
-                                                         lastContactId: nil)
-        parseContacts()
-    }
-
-    func parseContacts() {
-        var activeContacts: [AliasContact] = []
-        var blockContacts: [AliasContact] = []
-
-        for contact in contacts.contacts {
-            if contact.blocked {
-                blockContacts.append(contact)
-            } else {
-                activeContacts.append(contact)
-            }
-        }
-
-        contactsInfos = AliasContactsModel(activeContacts: activeContacts, blockContacts: blockContacts)
+        let contacts = try await aliasRepository.getContacts(userId: userId,
+                                                             shareId: infos.shareId,
+                                                             itemId: infos.itemId,
+                                                             lastContactId: nil)
+        contactsInfos = .init(contacts: contacts.contacts)
     }
 
     func handle(_ error: any Error) {
