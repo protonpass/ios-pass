@@ -257,9 +257,6 @@ private extension ItemsTabView {
 }
 
 private struct ItemRow: View {
-    @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
-    private var useSwiftUIList = false
-
     let item: ItemUiModel
     let isEditMode: Bool
     let isEditable: Bool
