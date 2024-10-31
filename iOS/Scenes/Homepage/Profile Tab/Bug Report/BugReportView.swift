@@ -253,8 +253,11 @@ private extension BugReportView {
             }
 
             VStack(alignment: .leading) {
-                FlowLayout(items: Array(viewModel.currentFiles.keys),
-                           viewMapping: { view(for: $0) })
+                AnyLayout(FlowLayout(spacing: 8)) {
+                    ForEach(Array(viewModel.currentFiles.keys), id: \.self) { key in
+                        view(for: key)
+                    }
+                }
             }
         }
     }
