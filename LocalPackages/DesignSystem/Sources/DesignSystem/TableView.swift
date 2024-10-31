@@ -26,8 +26,18 @@ private let kHeaderId = "header"
 private let kCellId = "cell"
 
 private struct PassSectionIdentifier: Sendable, Hashable {
-    var id: UUID = .init()
+    let id: Int
     let title: String
+
+    /// We can't init `id` directly as `AnyHashable` because `AnyHashable` is not `Sendable`
+    /// so we manually map the `type` and `title` to a unique `id` as an `Int`
+    init(type: AnyHashable, title: String) {
+        var hasher = Hasher()
+        hasher.combine(type)
+        hasher.combine(title)
+        id = hasher.finalize()
+        self.title = title
+    }
 }
 
 final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
@@ -125,6 +135,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
         tableView.sectionIndexColor = configuration.sectionIndexColor
         tableView.backgroundColor = configuration.backgroundColor
         tableView.separatorColor = configuration.separatorColor
+        tableView.layoutMargins = .zero
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellId)
         tableView.delegate = context.coordinator
         if onRefresh != nil {
@@ -177,6 +188,8 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
                     let cell = tableView.dequeueReusableCell(withIdentifier: kCellId, for: indexPath)
                     cell.backgroundColor = .clear
                     cell.contentView.backgroundColor = .clear
+                    cell.layoutMargins = .zero
+                    cell.separatorInset = .zero
                     cell.contentConfiguration = UIHostingConfiguration {
                         self.parent
                             .itemView(item)
@@ -199,7 +212,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
                 return dataSource.snapshot().sectionIdentifiers[safeIndex: section]?.title
             }
 
-            dataSource.defaultRowAnimation = .fade
+            dataSource.defaultRowAnimation = .bottom
         }
 
         func updateTable(with sections: [Section],
@@ -208,27 +221,19 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
             self.configuration = configuration
             var snapshot = NSDiffableDataSourceSnapshot<PassSectionIdentifier, Item>()
             let itemCount = sections.map(\.items.count).reduce(0) { $0 + $1 }
-            if dataSource.lastId != id {
-                // Force refresh by providing an empty snapshot
-                if itemCount > kAnimationThreshold {
-                    dataSource.applySnapshotUsingReloadData(snapshot)
-                } else {
-                    dataSource.apply(snapshot, animatingDifferences: false)
-                }
-            }
 
             for section in sections {
-                let sectionTitle = PassSectionIdentifier(title: section.title)
-                snapshot.appendSections([sectionTitle])
-                snapshot.appendItems(section.items, toSection: sectionTitle)
+                let sectionId = PassSectionIdentifier(type: section.type, title: section.title)
+                snapshot.appendSections([sectionId])
+                snapshot.appendItems(section.items, toSection: sectionId)
             }
 
-            dataSource.lastId = id
-            if itemCount > kAnimationThreshold {
+            if itemCount > kAnimationThreshold || dataSource.lastId != id {
                 dataSource.applySnapshotUsingReloadData(snapshot)
             } else {
                 dataSource.apply(snapshot, animatingDifferences: true)
             }
+            dataSource.lastId = id
         }
 
         @objc
