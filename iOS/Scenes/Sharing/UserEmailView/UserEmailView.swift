@@ -47,9 +47,12 @@ struct UserEmailView: View {
                     vaultRow(vault)
                 }
 
-                FlowLayout(items: viewModel.selectedEmails + [""],
-                           viewMapping: { token(for: $0) })
-                    .padding(.leading, -4)
+                AnyLayout(FlowLayout(spacing: 8)) {
+                    ForEach(viewModel.selectedEmails + [""], id: \.self) { item in
+                        token(for: item)
+                    }
+                }
+                .padding(.leading, -4)
 
                 PassDivider()
                     .padding(.horizontal, -DesignConstant.sectionPadding)
