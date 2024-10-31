@@ -112,6 +112,10 @@ extension SharedServiceContainer {
                            totpService: self.totpService()) }
             .unique
     }
+
+    var cachedFavIconsManager: Factory<any CachedFavIconsManagerProtocol> {
+        self { CachedFavIconsManager() }
+    }
 }
 
 // MARK: - User
