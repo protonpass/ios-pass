@@ -1675,10 +1675,22 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
                 guard let self else {
                     return
                 }
+                await MainActor.run {
+                    testDisplayNotification()
+                }
+
                 await refresh()
             }
         } else {
             logger.info("Has no new events for userId \(userId). Do nothing.")
+        }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            await MainActor.run {
+                testDisplayNotification()
+            }
         }
     }
 
@@ -1698,7 +1710,136 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     nonisolated func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error) {
         logger.error(message: "Failed to execute additional task \(label) for userId \(userId)", error: error)
     }
+
+    func testDisplayNotification() {
+        let view = Button {
+            self.updateFloatingView(floatingView: nil, shouldAdd: false)
+        } label: {
+            Text("tess")
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(.red)
+//        let currentValue = getUserPreferences().spotlightSearchableContent
+//        let view = EditSpotlightSearchableContentView(selection: currentValue) { [weak self] newValue in
+//            guard let self else { return }
+//            updateUserPreferences(\.spotlightSearchableContent, value: newValue)
+//        }
+
+        let viewController = UIHostingController(rootView: view)
+//
+//        viewController.setDetentType(.custom(CGFloat(470)),
+//                                     parentViewController: rootViewController)
+//
+//        viewController.sheetPresentationController?.prefersGrabberVisible = true
+//        present(viewController)
+
+        if let view = viewController.view {
+            updateFloatingView(floatingView: view, shouldAdd: true)
+        }
+    }
+
+//    func updateTabViewController(viewController: UIViewController, shouldAdd: Bool) {
+//        // Search for a UITabBarController in the view hierarchy
+//        if let tabBarController = findTabBarController(in: rootViewController) {
+//            var viewControllers = tabBarController.viewControllers ?? []
+//
+//            if shouldAdd {
+//                // Add the view controller if it's not already present
+//                if !viewControllers.contains(viewController) {
+//                    viewControllers.append(viewController)
+//                }
+//            } else {
+//                // Remove the view controller if it's present
+//                if let index = viewControllers.firstIndex(of: viewController) {
+//                    viewControllers.remove(at: index)
+//                }
+//            }
+//
+//            // Update the tab bar controller's view controllers
+//            tabBarController.viewControllers = viewControllers
+//        } else {
+//            print("No UITabBarController found in the view hierarchy.")
+//        }
+//    }
+
+    func updateFloatingView(floatingView: UIView?, shouldAdd: Bool) {
+        let viewTag = 1
+        // Locate the UITabBarController in the view hierarchy
+        if let tabBarController = findTabBarController(in: rootViewController), let floatingView {
+            if shouldAdd {
+                if tabBarController.view.viewWithTag(viewTag) == nil {
+                    floatingView.tag = viewTag
+                    // Check if the floating view is already added
+                    if floatingView.superview == nil {
+                        // Customize the floating view's appearance and position above the tab bar
+                        floatingView.translatesAutoresizingMaskIntoConstraints = false
+                        tabBarController.view.addSubview(floatingView)
+
+                        // Position the floating view above the tab bar
+                        NSLayoutConstraint.activate([
+                            floatingView.centerXAnchor.constraint(equalTo: tabBarController.view.centerXAnchor),
+                            floatingView.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor,
+                                                                 constant: -10),
+                            floatingView.leadingAnchor
+                                .constraint(greaterThanOrEqualTo: tabBarController.view.leadingAnchor,
+                                            constant: 16),
+                            floatingView.trailingAnchor
+                                .constraint(lessThanOrEqualTo: tabBarController.view.trailingAnchor,
+                                            constant: -16)
+//                            floatingView.leadingAnchor
+//                                .constraint(lessThanOrEqualTo: tabBarController.tabBar.leadingAnchor,
+//                                            constant: 16),
+//                            floatingView.trailingAnchor
+//                                .constraint(lessThanOrEqualTo: tabBarController.tabBar.trailingAnchor,
+//                                            constant: 16)
+
+//                            floatingView.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
+//                            // Adjust width as needed
+//                            floatingView.heightAnchor.constraint(equalToConstant: 50) // Adjust height as needed
+                        ])
+                    }
+                }
+            } else {
+                if let floatingView = tabBarController.view.viewWithTag(viewTag) {
+                    // Remove the floating view if present
+                    floatingView.removeFromSuperview()
+                }
+            }
+        } else {
+            if !shouldAdd {
+                if let floatingView = rootViewController.view.window?.viewWithTag(viewTag) {
+                    floatingView.removeFromSuperview()
+                }
+            }
+            print("No UITabBarController found in the view hierarchy.")
+        }
+    }
+
+    // Helper function to recursively search for UITabBarController
+    func findTabBarController(in viewController: UIViewController) -> UITabBarController? {
+        // Check if the current view controller is a UITabBarController
+        if let tabBarController = viewController as? UITabBarController {
+            return tabBarController
+        }
+
+        // Search in the children of the current view controller
+        for child in viewController.children {
+            if let found = findTabBarController(in: child) {
+                return found
+            }
+        }
+
+        // If presented, search in the presented view controller
+        if let presented = viewController.presentedViewController {
+            return findTabBarController(in: presented)
+        }
+
+        // Return nil if no UITabBarController is found in this branch
+        return nil
+    }
 }
+
+import UIKit
 
 private extension HomepageCoordinator {
     func parseNavigationConfig(config: NavigationConfiguration?) {
