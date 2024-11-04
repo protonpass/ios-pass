@@ -46,6 +46,8 @@ struct AddCustomEmailView: View {
                     .focused($focused)
                     .keyboardType(.numberPad)
                     .autocorrectionDisabled()
+                    // Trick iOS into not suggesting one-time code autofill
+                    .textContentType(.jobTitle)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .tint(PassColor.interactionNorm.toColor)
                     .frame(height: 64)
