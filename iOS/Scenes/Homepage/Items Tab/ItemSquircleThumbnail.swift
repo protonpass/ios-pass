@@ -60,6 +60,7 @@ struct ItemSquircleThumbnail: View {
 
     private let repository = resolve(\SharedRepositoryContainer.favIconRepository)
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
+    private let cachedFavIconsManager = resolve(\SharedServiceContainer.cachedFavIconsManager)
     private let data: ItemThumbnailData
     private let pinned: Bool
     private let isEnabled: Bool
@@ -76,6 +77,9 @@ struct ItemSquircleThumbnail: View {
         self.isEnabled = isEnabled
         self.size = size
         self.alternativeBackground = alternativeBackground
+        if case let .favIcon(_, url, _) = data {
+            _image = .init(initialValue: cachedFavIconsManager.get(for: url))
+        }
     }
 
     var body: some View {
@@ -143,9 +147,11 @@ private extension ItemSquircleThumbnail {
             .task {
                 do {
                     if preferencesManager.sharedPreferences.unwrapped().displayFavIcons,
+                       image == nil,
                        let favIcon = try await repository.getIcon(for: url),
                        let newImage = UIImage(data: favIcon.data) {
                         image = newImage
+                        cachedFavIconsManager.cache(url: url, image: newImage)
                     }
                 } catch {
                     print(error)
