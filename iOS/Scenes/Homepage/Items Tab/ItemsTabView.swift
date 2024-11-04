@@ -71,7 +71,7 @@ struct ItemsTabView: View {
         .background(PassColor.backgroundNorm.toColor)
         .navigationBarHidden(true)
         .onChange(of: viewModel.filterOption) { _ in
-            viewModel.filterAndSortItems(sortType: nil)
+            viewModel.filterAndSortItems()
         }
         .onChange(of: viewModel.selectedSortType) { type in
             viewModel.filterAndSortItems(sortType: type)

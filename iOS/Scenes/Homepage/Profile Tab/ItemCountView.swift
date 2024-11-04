@@ -149,6 +149,8 @@ private final class ItemCountViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private var cancellables = Set<AnyCancellable>()
 
+    private var task: Task<Void, Never>?
+
     init() {
         vaultsManager.$state
             .receive(on: DispatchQueue.main)
@@ -158,8 +160,10 @@ private final class ItemCountViewModel: ObservableObject {
                 case .loading:
                     object = .fetching
                 case let .loaded(uiModel):
-                    Task.detached(priority: .userInitiated) { [weak self, uiModel] in
+                    task?.cancel()
+                    task = Task.detached(priority: .userInitiated) { [weak self, uiModel] in
                         guard let self else { return }
+                        if Task.isCancelled { return }
                         let activeItems = uiModel.vaults.flatMap(\.items)
                         let allItems = activeItems + uiModel.trashedItems
                         let itemCount = ItemCount(items: allItems)
