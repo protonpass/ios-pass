@@ -90,6 +90,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var inviteRefreshTask: Task<Void, Never>?
+    private var sortTask: Task<Void, Never>?
+
     private var cancellables = Set<AnyCancellable>()
 
     /// `PullToRefreshable` conformance
@@ -150,7 +152,7 @@ private extension ItemsTabViewModel {
                 case .loading:
                     sectionedItems = .fetching
                 case .loaded:
-                    filterAndSortItems(sortType: nil)
+                    filterAndSortItems()
                 case let .error(error):
                     sectionedItems = .error(error)
                 }
@@ -162,7 +164,7 @@ private extension ItemsTabViewModel {
             .dropFirst()
             .sink { [weak self] _ in
                 guard let self else { return }
-                filterAndSortItems(sortType: nil)
+                filterAndSortItems()
             }
             .store(in: &cancellables)
 
@@ -378,12 +380,13 @@ private extension ItemsTabViewModel {
 // MARK: - Public APIs
 
 extension ItemsTabViewModel {
-    func filterAndSortItems(sortType: SortType?) {
+    func filterAndSortItems(sortType: SortType? = nil) {
         if sortType == nil {
             sectionedItems = .fetching
         }
         let sortType = sortType ?? selectedSortType
-        Task.detached(priority: .userInitiated) { [weak self] in
+        sortTask?.cancel()
+        sortTask = Task.detached(priority: .userInitiated) { [weak self] in
             guard let self else { return }
             let filteredItems = vaultsManager.getFilteredItems()
             let sectionedItems: [SectionedItemUiModel]

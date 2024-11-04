@@ -43,7 +43,7 @@ final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintabl
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
-    private let loadVautDatas = resolve(\SharedUseCasesContainer.loadVautDatas)
+    private let loadVaultDatas = resolve(\SharedUseCasesContainer.loadVaultDatas)
 
     private let queue = DispatchQueue(label: "me.proton.pass.vaultsManager")
     private var safeIsRefreshing = false
@@ -112,7 +112,6 @@ final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintabl
 private extension VaultsManager {
     func setUp() {
         $state
-            .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
@@ -144,6 +143,7 @@ private extension VaultsManager {
         case .trash:
             uiModel.trashedItems
         }
+
         itemCount = .init(items: items)
     }
 
@@ -162,9 +162,9 @@ private extension VaultsManager {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
 
-        let uiModel = try await loadVautDatas(symmetricKey: symmetricKey,
-                                              vaults: vaults,
-                                              items: allItems)
+        let uiModel = try await loadVaultDatas(symmetricKey: symmetricKey,
+                                               vaults: vaults,
+                                               items: allItems)
 
         await MainActor.run { [weak self] in
             guard let self else { return }

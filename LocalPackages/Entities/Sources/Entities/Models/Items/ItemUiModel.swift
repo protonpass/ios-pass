@@ -21,6 +21,7 @@
 import Foundation
 
 public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
+    // Existing properties
     public let itemId: String
     public let shareId: String
     public let type: ItemContentType
@@ -38,6 +39,9 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
     public let pinned: Bool
 
     public var hasTotpUri: Bool { totpUri?.isEmpty == false }
+
+    // Add a stored property for the precomputed hash
+    private let precomputedHash: Int
 
     public init(itemId: String,
                 shareId: String,
@@ -69,6 +73,30 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
         self.state = state
         self.pinned = pinned
         self.isAliasEnabled = isAliasEnabled
+
+        // Precompute the hash value
+        var hasher = Hasher()
+        hasher.combine(itemId)
+        hasher.combine(shareId)
+        hasher.combine(type)
+        hasher.combine(aliasEmail)
+        hasher.combine(aliasEnabled)
+        hasher.combine(title)
+        hasher.combine(description)
+        hasher.combine(url)
+        hasher.combine(isAlias)
+        hasher.combine(totpUri)
+        hasher.combine(lastUseTime)
+        hasher.combine(modifyTime)
+        hasher.combine(state)
+        hasher.combine(pinned)
+        hasher.combine(isAliasEnabled)
+        precomputedHash = hasher.finalize()
+    }
+
+    // Use the precomputed hash in the hash(into:) method
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(precomputedHash)
     }
 }
 

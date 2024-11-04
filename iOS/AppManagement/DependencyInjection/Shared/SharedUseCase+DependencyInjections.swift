@@ -223,8 +223,8 @@ extension SharedUseCasesContainer {
                               vaultsManager: self.vaultsManager) }
     }
 
-    var loadVautDatas: Factory<any LoadVautDatasUseCase> {
-        self { LoadVautDatas() }
+    var loadVaultDatas: Factory<any LoadVaultDatasUseCase> {
+        self { LoadVaultDatas() }
     }
 }
 
