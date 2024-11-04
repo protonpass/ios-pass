@@ -420,6 +420,7 @@ extension UseCasesContainer {
                                         logOutUser: SharedUseCasesContainer.shared.logOutUser()) }
     }
 
+    // periphery:ignore
     var checkFlagForMultiUsers: Factory<any CheckFlagForMultiUsersUseCase> {
         self { CheckFlagForMultiUsers(apiServicing: self.apiManager) }
     }
