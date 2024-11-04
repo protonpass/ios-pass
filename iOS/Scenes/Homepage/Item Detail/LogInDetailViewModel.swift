@@ -53,8 +53,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
-    private var cancellable: AnyCancellable?
-    private var cancellables = Set<AnyCancellable>()
 
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
@@ -69,7 +67,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                    itemContent: itemContent,
                    upgradeChecker: upgradeChecker)
         if showSecurityIssues {
-            cancellable = getLoginSecurityIssues(itemId: itemContent.itemId)
+            getLoginSecurityIssues(itemId: itemContent.itemId)
                 .subscribe(on: DispatchQueue.global())
                 .receive(on: DispatchQueue.main)
                 .sink { [weak self] newSecurityIssues in
@@ -78,6 +76,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                     }
                     securityIssues = newSecurityIssues
                 }
+                .store(in: &cancellables)
 
             $securityIssues.receive(on: DispatchQueue.main)
                 .sink { [weak self] issues in
