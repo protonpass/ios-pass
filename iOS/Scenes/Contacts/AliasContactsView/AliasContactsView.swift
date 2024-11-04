@@ -57,7 +57,7 @@ struct AliasContactsView: View {
 
 private extension AliasContactsView {
     var mainContainer: some View {
-        VStack {
+        LazyVStack {
             mainTitle
                 .padding(.top)
 
@@ -77,6 +77,7 @@ private extension AliasContactsView {
         .padding(.bottom, DesignConstant.sectionPadding)
         .animation(.default, value: viewModel.aliasName)
         .animation(.default, value: viewModel.hasNoContact)
+        .animation(.default, value: viewModel.contactsInfos)
         .toolbar { toolbarContent }
         .scrollViewEmbeded(maxWidth: .infinity)
         .showSpinner(viewModel.loading)
@@ -109,33 +110,53 @@ private extension AliasContactsView {
 }
 
 private extension AliasContactsView {
+    @ViewBuilder
     var contactList: some View {
-        LazyVStack(spacing: 25) {
-            if !viewModel.contactsInfos.activeContacts.isEmpty {
-                Section {
-                    ForEach(viewModel.contactsInfos.activeContacts) { contact in
-                        itemRow(for: contact)
-                    }
+        if !viewModel.contactsInfos.activeContacts.isEmpty {
+            Section {
+                ForEach(viewModel.contactsInfos.activeContacts, id: \.id) { contact in
+                    itemRow(for: contact)
                 }
-                .padding(.top, 20)
             }
+            .padding(.top, 20)
+        }
 
-            if !viewModel.contactsInfos.blockContacts.isEmpty {
-                Section {
-                    ForEach(viewModel.contactsInfos.blockContacts) { contact in
-                        itemRow(for: contact)
-                    }
-                } header: {
-                    Text("Blocked addresses")
-                        .font(.callout)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
+        if !viewModel.contactsInfos.blockContacts.isEmpty {
+            Section {
+                ForEach(viewModel.contactsInfos.blockContacts, id: \.id) { contact in
+                    itemRow(for: contact)
                 }
+            } header: {
+                Text("Blocked addresses")
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
     }
 
     func itemRow(for contact: AliasContact) -> some View {
+        ContactRow(contact: contact,
+                   onSend: { viewModel.openMail(emailTo: contact.reverseAlias) },
+                   onCopyAddress: { viewModel.copyContact(contact) },
+                   onToggleState: { viewModel.toggleContactState(contact) },
+                   onDelete: { viewModel.delete(contact: contact) })
+    }
+}
+
+@MainActor
+private struct ContactRow: View, @preconcurrency Equatable {
+    let contact: AliasContact
+    let onSend: () -> Void
+    let onCopyAddress: () -> Void
+    let onToggleState: () -> Void
+    let onDelete: () -> Void
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.contact.hashValue == rhs.contact.hashValue
+    }
+
+    var body: some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
             HStack {
                 Text(verbatim: contact.email)
@@ -144,9 +165,7 @@ private extension AliasContactsView {
                 Spacer()
 
                 if !contact.blocked {
-                    Button {
-                        viewModel.openMail(emailTo: contact.reverseAlias)
-                    } label: {
+                    Button(action: onSend) {
                         Image(uiImage: IconProvider.paperPlane)
                             .foregroundStyle(PassColor.textWeak.toColor)
                     }
@@ -155,24 +174,24 @@ private extension AliasContactsView {
 
                 Menu(content: {
                     if !contact.blocked {
-                        button(title: #localized("Send email"), icon: IconProvider.paperPlane) {
-                            viewModel.openMail(emailTo: contact.email)
-                        }
+                        button(title: "Send email",
+                               icon: IconProvider.paperPlane,
+                               action: onSend)
                     }
 
-                    button(title: #localized("Copy address"), icon: IconProvider.squares) {
-                        viewModel.copyContact(contact)
-                    }
+                    button(title: "Copy address",
+                           icon: IconProvider.squares,
+                           action: onCopyAddress)
 
                     Divider()
 
-                    button(title: contact.actionTitle, icon: IconProvider.crossCircle) {
-                        viewModel.toggleContactState(contact)
-                    }
+                    button(title: contact.actionTitle,
+                           icon: contact.actionIcon,
+                           action: onToggleState)
 
-                    button(title: #localized("Delete"), icon: IconProvider.trash) {
-                        viewModel.delete(contact: contact)
-                    }
+                    button(title: "Delete",
+                           icon: IconProvider.trash,
+                           action: onDelete)
                 }, label: {
                     IconProvider.threeDotsVertical
                         .foregroundStyle(PassColor.textWeak.toColor)
@@ -193,9 +212,7 @@ private extension AliasContactsView {
                 .padding(.horizontal, 16)
                 .background(contact.blocked ? .clear : PassColor.aliasInteractionNormMinor1.toColor)
                 .clipShape(Capsule())
-                .buttonEmbeded {
-                    viewModel.toggleContactState(contact)
-                }
+                .buttonEmbeded(action: onToggleState)
                 .overlay(Capsule()
                     .stroke(PassColor.aliasInteractionNormMinor1.toColor, lineWidth: 1))
         }
@@ -205,7 +222,9 @@ private extension AliasContactsView {
         .cornerRadius(16)
     }
 
-    func button(title: String, icon: UIImage, action: @escaping () -> Void) -> some View {
+    func button(title: LocalizedStringKey,
+                icon: UIImage,
+                action: @escaping () -> Void) -> some View {
         Button { action() } label: {
             Label(title: { Text(title) }, icon: { Image(uiImage: icon) })
         }
@@ -213,8 +232,12 @@ private extension AliasContactsView {
 }
 
 private extension AliasContact {
-    var actionTitle: String {
-        blocked ? #localized("Unblock contact") : #localized("Block contact")
+    var actionTitle: LocalizedStringKey {
+        blocked ? "Unblock contact" : "Block contact"
+    }
+
+    var actionIcon: UIImage {
+        blocked ? IconProvider.envelopeOpenText : IconProvider.circleSlash
     }
 
     var activityText: String {
