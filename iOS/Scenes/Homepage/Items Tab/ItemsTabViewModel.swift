@@ -36,6 +36,8 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
 
+typealias SectionedItemUiModel = SectionedObjects<ItemUiModel>
+
 @MainActor
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -43,21 +45,17 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
 
+    @AppStorage(Constants.filterTypeKey, store: kSharedUserDefaults)
+    private(set) var filterOption = ItemTypeFilterOption.all
+
     @Published private(set) var pinnedItems: [ItemUiModel]?
     @Published private(set) var showingUpgradeAppBanner = false
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var shouldShowSyncProgress = false
     @Published var isEditMode = false
-    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
-        didSet {
-            if itemToBePermanentlyDeleted != nil {
-                showingPermanentDeletionAlert = true
-            }
-        }
-    }
-
-    @Published var showingPermanentDeletionAlert = false
+    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var aliasSyncEnabled = false
+    @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
@@ -65,7 +63,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
-    private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
     private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
     private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
@@ -92,6 +90,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 
     weak var delegate: (any ItemsTabViewModelDelegate)?
     private var inviteRefreshTask: Task<Void, Never>?
+    private var sortTask: Task<Void, Never>?
+
     private var cancellables = Set<AnyCancellable>()
 
     /// `PullToRefreshable` conformance
@@ -142,9 +142,31 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
-    // swiftlint:disable:next cyclomatic_complexity
+    // swiftlint:disable:next cyclomatic_complexity function_body_length
     func setUp() {
-        vaultsManager.attach(to: self, storeIn: &cancellables)
+        vaultsManager.$state
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let self else { return }
+                switch state {
+                case .loading:
+                    sectionedItems = .fetching
+                case .loaded:
+                    filterAndSortItems()
+                case let .error(error):
+                    sectionedItems = .error(error)
+                }
+            }
+            .store(in: &cancellables)
+
+        vaultsManager.$vaultSelection
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                filterAndSortItems()
+            }
+            .store(in: &cancellables)
 
         vaultsManager.vaultSyncEventStream
             .receive(on: DispatchQueue.main)
@@ -358,6 +380,49 @@ private extension ItemsTabViewModel {
 // MARK: - Public APIs
 
 extension ItemsTabViewModel {
+    func filterAndSortItems(sortType: SortType? = nil) {
+        if sortType == nil {
+            sectionedItems = .fetching
+        }
+        let sortType = sortType ?? selectedSortType
+        sortTask?.cancel()
+        sortTask = Task.detached(priority: .userInitiated) { [weak self] in
+            guard let self else { return }
+            let filteredItems = vaultsManager.getFilteredItems()
+            let sectionedItems: [SectionedItemUiModel]
+
+            switch await selectedSortType {
+            case .mostRecent:
+                let sortedResult = filteredItems.mostRecentSortResult()
+                sectionedItems = sortedResult.buckets.map { bucket in
+                    SectionedItemUiModel(id: bucket.id,
+                                         sectionTitle: bucket.type.title,
+                                         items: bucket.items)
+                }
+
+            case .alphabeticalAsc, .alphabeticalDesc:
+                let sortedResult = filteredItems.alphabeticalSortResult(direction: sortType.sortDirection)
+                sectionedItems = sortedResult.buckets.map { bucket in
+                    SectionedItemUiModel(id: bucket.letter.character,
+                                         sectionTitle: bucket.letter.character,
+                                         items: bucket.items)
+                }
+
+            case .newestToOldest, .oldestToNewest:
+                let sortedResult = filteredItems.monthYearSortResult(direction: sortType.sortDirection)
+                sectionedItems = sortedResult.buckets.map { bucket in
+                    SectionedItemUiModel(id: bucket.monthYear.relativeString,
+                                         sectionTitle: bucket.monthYear.relativeString,
+                                         items: bucket.items)
+                }
+            }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.sectionedItems = .fetched(sectionedItems.filter { !$0.items.isEmpty })
+            }
+        }
+    }
+
     @Sendable
     func forceSyncIfNotEditMode() async {
         if !isEditMode {

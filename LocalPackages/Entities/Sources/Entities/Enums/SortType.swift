@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public enum SortType: Int, CaseIterable, Equatable {
+public enum SortType: Int, CaseIterable, Equatable, Sendable {
     case mostRecent = 0, alphabeticalAsc, alphabeticalDesc, newestToOldest, oldestToNewest
 
     public var isDefault: Bool {
