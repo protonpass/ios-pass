@@ -1,5 +1,5 @@
 //
-// LoadVautDatas.swift
+// LoadVaultDatas.swift
 // Proton Pass - Created on 28/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -31,13 +31,13 @@ private struct Batch: Sendable {
     let trashed: [ItemUiModel]
 }
 
-public protocol LoadVautDatasUseCase: Sendable {
+public protocol LoadVaultDatasUseCase: Sendable {
     func execute(symmetricKey: SymmetricKey,
                  vaults: [Vault],
                  items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel
 }
 
-public extension LoadVautDatasUseCase {
+public extension LoadVaultDatasUseCase {
     func callAsFunction(symmetricKey: SymmetricKey,
                         vaults: [Vault],
                         items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel {
@@ -45,7 +45,7 @@ public extension LoadVautDatasUseCase {
     }
 }
 
-public final class LoadVautDatas: LoadVautDatasUseCase {
+public final class LoadVaultDatas: LoadVaultDatasUseCase {
     public init() {}
 
     public func execute(symmetricKey: SymmetricKey,

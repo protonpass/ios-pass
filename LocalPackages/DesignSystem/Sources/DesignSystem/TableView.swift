@@ -127,7 +127,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
     }
 
     public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, configuration: configuration)
     }
 
     public func makeUIView(context: Context) -> UITableView {
@@ -157,10 +157,11 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
     public final class Coordinator: NSObject, UITableViewDelegate {
         let parent: TableView
         private var dataSource: PassDiffableDataSource<PassSectionIdentifier, Item>!
-        private var configuration: TableViewConfiguration = .init()
+        private var configuration: TableViewConfiguration
 
-        init(_ parent: TableView) {
+        init(_ parent: TableView, configuration: TableViewConfiguration) {
             self.parent = parent
+            self.configuration = configuration
         }
 
         public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
