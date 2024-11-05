@@ -54,9 +54,12 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         async let getItems = getEncryptedItems(userId: userId, searchMode: searchMode)
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         let (vaults, items, symmetricKey) = try await (getVaults, getItems, getSymmetricKey)
-        return try items.map { try SearchableItem(from: $0,
-                                                  symmetricKey: symmetricKey,
-                                                  allVaults: vaults) }
+        return try items.map {
+            try Task.checkCancellation()
+            return try SearchableItem(from: $0,
+                                      symmetricKey: symmetricKey,
+                                      allVaults: vaults)
+        }
     }
 }
 
@@ -64,15 +67,19 @@ private extension GetSearchableItems {
     func getEncryptedItems(userId: String, searchMode: SearchMode) async throws -> [SymmetricallyEncryptedItem] {
         switch searchMode {
         case .pinned:
-            try await getAllPinnedItems()
+            try Task.checkCancellation()
+            return try await getAllPinnedItems()
         case let .all(vaultSelection):
             switch vaultSelection {
             case .all:
-                try await itemRepository.getItems(userId: userId, state: .active)
+                try Task.checkCancellation()
+                return try await itemRepository.getItems(userId: userId, state: .active)
             case let .precise(vault):
-                try await itemRepository.getItems(shareId: vault.shareId, state: .active)
+                try Task.checkCancellation()
+                return try await itemRepository.getItems(shareId: vault.shareId, state: .active)
             case .trash:
-                try await itemRepository.getItems(userId: userId, state: .trashed)
+                try Task.checkCancellation()
+                return try await itemRepository.getItems(userId: userId, state: .trashed)
             }
         }
     }
