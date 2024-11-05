@@ -21,12 +21,23 @@
 
 import SwiftUI
 
+private let kAnimationThreshold = 500
 private let kHeaderId = "header"
 private let kCellId = "cell"
 
 private struct PassSectionIdentifier: Sendable, Hashable {
-    var id: UUID = .init()
+    let id: Int
     let title: String
+
+    /// We can't init `id` directly as `AnyHashable` because `AnyHashable` is not `Sendable`
+    /// so we manually map the `type` and `title` to a unique `id` as an `Int`
+    init(type: AnyHashable, title: String) {
+        var hasher = Hasher()
+        hasher.combine(type)
+        hasher.combine(title)
+        id = hasher.finalize()
+        self.title = title
+    }
 }
 
 final class PassDiffableDataSource<Section: Hashable, Item: Hashable>:
@@ -116,7 +127,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
     }
 
     public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(self, configuration: configuration)
     }
 
     public func makeUIView(context: Context) -> UITableView {
@@ -124,6 +135,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
         tableView.sectionIndexColor = configuration.sectionIndexColor
         tableView.backgroundColor = configuration.backgroundColor
         tableView.separatorColor = configuration.separatorColor
+        tableView.layoutMargins = .zero
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellId)
         tableView.delegate = context.coordinator
         if onRefresh != nil {
@@ -138,16 +150,18 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
 
     public func updateUIView(_ tableView: UITableView, context: Context) {
         context.coordinator.updateTable(with: sections,
-                                        showSectionIndexTitles: configuration.showSectionIndexTitles,
+                                        configuration: configuration,
                                         id: id)
     }
 
     public final class Coordinator: NSObject, UITableViewDelegate {
         let parent: TableView
         private var dataSource: PassDiffableDataSource<PassSectionIdentifier, Item>!
+        private var configuration: TableViewConfiguration
 
-        init(_ parent: TableView) {
+        init(_ parent: TableView, configuration: TableViewConfiguration) {
             self.parent = parent
+            self.configuration = configuration
         }
 
         public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -175,10 +189,12 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
                     let cell = tableView.dequeueReusableCell(withIdentifier: kCellId, for: indexPath)
                     cell.backgroundColor = .clear
                     cell.contentView.backgroundColor = .clear
+                    cell.layoutMargins = .zero
+                    cell.separatorInset = .zero
                     cell.contentConfiguration = UIHostingConfiguration {
                         self.parent
                             .itemView(item)
-                            .padding(.bottom, self.parent.configuration.rowSpacing)
+                            .padding(.bottom, self.configuration.rowSpacing)
                     }
                     // A combination of minSize and magins to remove the vertical padding
                     .minSize(width: 0, height: 0)
@@ -188,7 +204,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
 
             dataSource.sectionIndexTitles = { [weak self] in
                 guard let self else { return nil }
-                return parent.configuration.showSectionIndexTitles ?
+                return configuration.showSectionIndexTitles ?
                     dataSource.snapshot().sectionIdentifiers.map(\.title) : nil
             }
 
@@ -197,26 +213,28 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
                 return dataSource.snapshot().sectionIdentifiers[safeIndex: section]?.title
             }
 
-            dataSource.defaultRowAnimation = .fade
+            dataSource.defaultRowAnimation = .bottom
         }
 
         func updateTable(with sections: [Section],
-                         showSectionIndexTitles: Bool,
+                         configuration: TableViewConfiguration,
                          id: Int?) {
+            self.configuration = configuration
             var snapshot = NSDiffableDataSourceSnapshot<PassSectionIdentifier, Item>()
-            if dataSource.lastId != id {
-                // Force refresh by providing an empty snapshot
-                dataSource.apply(snapshot, animatingDifferences: false)
-            }
+            let itemCount = sections.map(\.items.count).reduce(0) { $0 + $1 }
 
             for section in sections {
-                let sectionTitle = PassSectionIdentifier(title: section.title)
-                snapshot.appendSections([sectionTitle])
-                snapshot.appendItems(section.items, toSection: sectionTitle)
+                let sectionId = PassSectionIdentifier(type: section.type, title: section.title)
+                snapshot.appendSections([sectionId])
+                snapshot.appendItems(section.items, toSection: sectionId)
             }
 
+            if itemCount > kAnimationThreshold || dataSource.lastId != id {
+                dataSource.applySnapshotUsingReloadData(snapshot)
+            } else {
+                dataSource.apply(snapshot, animatingDifferences: true)
+            }
             dataSource.lastId = id
-            dataSource.apply(snapshot, animatingDifferences: true)
         }
 
         @objc

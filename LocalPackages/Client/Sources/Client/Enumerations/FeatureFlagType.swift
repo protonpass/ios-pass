@@ -25,8 +25,7 @@ import ProtonCoreFeatureFlags
 /// following is how a flag should be added:
 /// Example:
 ///    case passSharingV1 = "PassSharingV1"
-public enum FeatureFlagType: String, FeatureFlagTypeProtocol {
-    case passAccountSwitchV1 = "PassAccountSwitchV1"
+public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
     case passSimpleLoginAliasesSync = "PassSimpleLoginAliasesSync"
     case passAdvancedAliasManagementV1 = "PassAdvancedAliasManagementV1"
 }

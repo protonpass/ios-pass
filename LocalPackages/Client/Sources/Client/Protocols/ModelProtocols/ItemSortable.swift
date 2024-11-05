@@ -40,11 +40,38 @@ public enum MostRecentType: String, Hashable, Sendable, CaseIterable, Identifiab
     case others
 
     public var id: String { rawValue }
+
+    static var cutOffDates: [Date] {
+        let calendar = Calendar.current
+        let now = Date()
+        let startOfToday = calendar.startOfDay(for: now)
+
+        return allCases.compactMap { type -> Date? in
+            switch type {
+            case .today:
+                return startOfToday
+            case .yesterday:
+                return calendar.date(byAdding: .day, value: -1, to: startOfToday)
+            case .last7Days:
+                return calendar.date(byAdding: .day, value: -7, to: startOfToday)
+            case .last14Days:
+                return calendar.date(byAdding: .day, value: -14, to: startOfToday)
+            case .last30Days:
+                return calendar.date(byAdding: .day, value: -30, to: startOfToday)
+            case .last60Days:
+                return calendar.date(byAdding: .day, value: -60, to: startOfToday)
+            case .last90Days:
+                return calendar.date(byAdding: .day, value: -90, to: startOfToday)
+            default:
+                return Date.distantPast
+            }
+        }
+    }
 }
 
 public struct MostRecentSortBucket<T: DateSortable>: Hashable, Sendable, Identifiable {
     public let type: MostRecentType
-    public let items: [T]
+    public var items: [T]
 
     public var id: String { type.id }
 }
@@ -56,51 +83,27 @@ public struct MostRecentSortResult<T: DateSortable>: SearchResults {
 
 public extension Array where Element: DateSortable {
     func mostRecentSortResult() -> MostRecentSortResult<Element> {
-        var today = [Element]()
-        var yesterday = [Element]()
-        var last7Days = [Element]()
-        var last14Days = [Element]()
-        var last30Days = [Element]()
-        var last60Days = [Element]()
-        var last90Days = [Element]()
-        var others = [Element]()
+        var buckets: [MostRecentSortBucket<Element>] = []
 
-        let calendar = Calendar.current
-        let now = Date()
-        let sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
-        for item in sortedElements {
-            let numberOfDaysFromNow = calendar.numberOfDaysBetween(now, and: item.dateForSorting)
-            switch abs(numberOfDaysFromNow) {
-            case 0:
-                today.append(item)
-            case 1:
-                yesterday.append(item)
-            case 2..<7:
-                last7Days.append(item)
-            case 7..<14:
-                last14Days.append(item)
-            case 14..<30:
-                last30Days.append(item)
-            case 30..<60:
-                last60Days.append(item)
-            case 60..<90:
-                last90Days.append(item)
-            default:
-                others.append(item)
-            }
+        for type in MostRecentType.allCases {
+            buckets.append(MostRecentSortBucket(type: type, items: []))
         }
 
-        return MostRecentSortResult(numberOfItems: sortedElements.count,
-                                    buckets: [
-                                        MostRecentSortBucket(type: .today, items: today),
-                                        MostRecentSortBucket(type: .yesterday, items: yesterday),
-                                        MostRecentSortBucket(type: .last7Days, items: last7Days),
-                                        MostRecentSortBucket(type: .last14Days, items: last14Days),
-                                        MostRecentSortBucket(type: .last30Days, items: last30Days),
-                                        MostRecentSortBucket(type: .last60Days, items: last60Days),
-                                        MostRecentSortBucket(type: .last90Days, items: last90Days),
-                                        MostRecentSortBucket(type: .others, items: others)
-                                    ])
+        let sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+        var bucketIndex = 0
+
+        let cutOffDates = MostRecentType.cutOffDates
+
+        for item in sortedElements {
+            // Move to the next bucket if the item's date is less than the current cutoff
+            while bucketIndex < cutOffDates.count - 1, item.dateForSorting < cutOffDates[bucketIndex] {
+                bucketIndex += 1
+            }
+            // Assign the item to the current bucket
+            buckets[bucketIndex].items.append(item)
+        }
+
+        return MostRecentSortResult(numberOfItems: count, buckets: buckets)
     }
 
     func asyncMostRecentSortResult() async -> MostRecentSortResult<Element> {

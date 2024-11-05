@@ -53,19 +53,20 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private var refreshingTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
-    var isBreached: Bool {
-        !monitorStateStream.value.noBreaches
-    }
-
     init() {
         setUp()
     }
 
-    func refresh() async throws {
-        try Task.checkCancellation()
-        let userId = try await userManager.getActiveUserId()
-        try await refreshAccessAndMonitorState(userId: userId)
-        addTelemetryEvent(with: .monitorDisplayHome)
+    func refresh() async {
+        do {
+            try Task.checkCancellation()
+            breaches = nil
+            let userId = try await userManager.getActiveUserId()
+            try await refreshAccessAndMonitorState(userId: userId)
+            addTelemetryEvent(with: .monitorDisplayHome)
+        } catch {
+            handle(error: error)
+        }
     }
 
     func showSecurityWeakness(type: SecurityWeakness) {
@@ -130,7 +131,6 @@ private extension PassMonitorViewModel {
 
         passMonitorRepository.userBreaches
             .receive(on: DispatchQueue.main)
-            .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self else { return }
                 breaches = newValue
@@ -169,7 +169,7 @@ private extension PassMonitorViewModel {
                     if Task.isCancelled {
                         return
                     }
-                    try? await refresh()
+                    await refresh()
                 }
             }.store(in: &cancellables)
     }
@@ -182,6 +182,7 @@ private extension PassMonitorViewModel {
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
                 isSentinelActive = await getSentinelStatus()
+                await refresh()
             } catch {
                 handle(error: error)
             }

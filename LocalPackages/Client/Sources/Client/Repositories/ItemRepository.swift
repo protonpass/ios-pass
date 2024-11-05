@@ -204,11 +204,11 @@ public extension ItemRepository {
     }
 
     func getAllItemContents(userId: String) async throws -> [ItemContent] {
-        let items: [ItemContent?] = try await getAllItems(userId: userId).parallelMap { [weak self] item in
-            guard let self else { return nil }
-            return try await item.getItemContent(symmetricKey: getSymmetricKey())
+        let key = try await getSymmetricKey()
+
+        return try await getAllItems(userId: userId).parallelMap(parallelism: 50) { item in
+            try item.getItemContent(symmetricKey: key)
         }
-        return items.compactMap { $0 }
     }
 
     func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {

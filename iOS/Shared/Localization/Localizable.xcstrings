@@ -94,6 +94,12 @@
             "value" : "?"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "?"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113,6 +119,12 @@
           }
         },
         "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "?"
+          }
+        },
+        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "?"
@@ -1124,6 +1136,12 @@
             "value" : "%1$@, %2$@, %3$@ en los últimos 14 días."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@ viimeisten 14 päivän aikana."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1158,6 +1176,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@, %2$@, %3$@ siste 14 dager."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@,%2$@,%3$@ in de laatste 14 dagen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@ w ciągu ostatnich 14 dni."
           }
         },
         "pt-BR" : {
@@ -2827,6 +2857,54 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld geblokkeerd"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld geblokkeerd"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "zablokowano %lld"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "zablokowano %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "zablokowano %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "zablokowano %lld"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -3169,6 +3247,54 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld blokkeringer"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blok"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokken"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "zablokowano %lld"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "zablokowano %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "zablokowano %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "zablokowano %lld"
                 }
               }
             }
@@ -4555,6 +4681,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld doorgeschakeld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld doorgeschakeld"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -4896,6 +5040,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld videresendinger"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld doorgestuurd"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld doorgestuurd"
                 }
               }
             }
@@ -8033,6 +8195,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item vastgezet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items vastgezet"
+                }
+              }
+            }
+          }
+        },
         "pl" : {
           "variations" : {
             "plural" : {
@@ -8464,6 +8644,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld elementer løsnet"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld item ontpinnen geslaagd"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld items losgemaakt"
                 }
               }
             }
@@ -13826,10 +14024,76 @@
     },
     "A contact is created for every email address that sends emails to or receives emails from %@" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кантакт ствараецца для кожнага адраса электроннай пошты, які адпраўляе лісты або атрымлівае іх ад %@."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro každou e-mailovou adresu, která odesílá e-maily nebo přijímá e-maily z %@, je vytvořen kontakt."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A contact is created for every email address that sends emails to or receives emails from %@"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se crea un contacto por cada dirección que envía o recibe correos electrónicos desde %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un contact est créé pour chaque adresse e-mail qui envoie ou reçoit des messages depuis %@."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კონტაქტი შეიქმნება თითოეული ელფოტის მისამართისთვის, რომელიც აგზავნის ელფოსტებს, ან იღებს მათ %@-დან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@(으)로 이메일을 보내거나 받는 모든 이메일 주소에 대해 연락처가 생성됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det opprettes en kontakt for hver e-postadresse som sender e-post til eller mottar e-post fra %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een contactpersoon wordt gemaakt voor elk e-mailadres dat e-mails naar of ontvangt van %@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este creată o persoană de contact pentru fiecare adresă de e-mail care trimite mesaje către sau primește de la %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En kontakt skapas för varje e-postadress som skickar e-post till eller tar emot e-post från %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ adresiyle e-posta gönderen veya alan her e-posta adresi için bir kişi oluşturulur"
           }
         }
       }
@@ -14722,6 +14986,12 @@
             "value" : "Aktivitet siste 14 dager"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activiteit in de afgelopen 14 dagen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15538,10 +15808,94 @@
     },
     "Add display name" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадаць бачнае імя"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přidat zobrazované jméno"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Add display name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Agregar un nombre a mostrar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Añadir un nombre a mostrar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajouter un nom d’affichage"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საჩვენებელი სახელის დამატება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "표시되는 이름 추가"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til visningsnavn"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weergavenaam toevoegen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj nazwę wyświetlaną"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adicionar nome de exibição"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adăugare nume afișat"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lägg till visningsnamn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görüntülenecek ad ekle"
           }
         }
       }
@@ -17505,6 +17859,12 @@
             "value" : "Avansert aliasadministrasjon"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geavanceerd alias beheer"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17627,6 +17987,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avansert aliasadministrasjon er tilgjengelig med Pass Unlimited. Oppgrader for umiddelbar tilgang."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geavanceerd alias beheer is beschikbaar met Pass Onbeperkt. Upgrade voor directe toegang."
           }
         },
         "pl" : {
@@ -19779,6 +20145,12 @@
             "value" : "Aliasadresse (deaktivert)"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasadres (uitgeschakeld)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20388,6 +20760,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias-kontakter"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias contacten"
           }
         },
         "pl" : {
@@ -22066,6 +22444,12 @@
             "value" : "Aliaser i papirkurven fortsetter å videresende e-poster. Hvis du vil slutte å motta e-post på denne adressen, deaktiver det i stedet."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliassen in de prullenbak worden doorgestuurd naar e-mails. Als u wilt stoppen met het ontvangen van e-mails op dit adres, schakel dit in plaats daarvan uit."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22499,6 +22883,12 @@
             "value" : "Verranno eliminati anche tutti gli alias che utilizzano la casella di posta **%@**. Per continuare a ricevere email trasferisci questi alias in una casella di posta diversa:"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ასევე წაიშლება ყველა ფსევდონიმი, რომელიც საფოსტო ყუთს **%@** იყენებს. ელფოსტის მიღების შესანარჩუნებლად გადაიტანეთ ეს ფსევდონიმები სხვა საფოსტო ყუთში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22509,6 +22899,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alle aliaser som bruker postboksen **%@** vil også bli slettet. Hvis du vil fortsette å motta e-post, flytter du disse aliasene til en annen postboks:"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle aliassen die de mailbox **%@** gebruiken zullen ook worden verwijderd. Om te blijven ontvangen van e-mails overdracht deze aliassen naar een ander postvak:"
           }
         },
         "pl" : {
@@ -24083,6 +24479,12 @@
             "value" : "Vis alltid brukernavnfeltet"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Altijd het veld gebruikersnaam tonen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24692,6 +25094,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er du sikker på at du vil logge av %@?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weet u zeker dat u %@ wilt uitloggen?"
           }
         },
         "pl" : {
@@ -25481,6 +25889,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Legg ved"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attach"
           }
         },
         "pl" : {
@@ -27043,6 +27457,12 @@
             "value" : "Blokkèr kontakt"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact blokkeren"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27083,10 +27503,94 @@
     },
     "Blocked addresses" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заблакіраваныя адрасы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blokované adresy"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Blocked addresses"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Direcciones bloqueadas"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Direcciones bloqueadas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresses bloquées"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაბლოკილი მისამართები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "차단된 연락처"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blokkerte adresser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geblokkeerde adressen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zablokowane adresy"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endereço bloqueado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adrese blocate"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blockerade adresser"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Engellenmiş adresler"
           }
         }
       }
@@ -28260,6 +28764,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kan sees:"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kan worden bekeken:"
           }
         },
         "pl" : {
@@ -30337,6 +30847,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Forsiktig: du får ikke tilgang til Pass-kontoen din hvis du mister dette passordet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let op: U heeft geen toegang tot uw passer-account als u dit wachtwoord kwijtraakt."
           }
         },
         "pl" : {
@@ -33986,10 +34502,16 @@
             "value" : "Kontakt kopiert"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact gekopieerd"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontakt skopiowany"
+            "value" : "Kontakt został skopiowany"
           }
         },
         "pt-BR" : {
@@ -38728,6 +39250,12 @@
             "value" : "Opprett kontakt"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact aanmaken"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39480,6 +40008,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opprettet %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gemaakt op %@"
           }
         },
         "pl" : {
@@ -42642,6 +43176,12 @@
             "value" : "Standard domene for aliaser"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaarddomein voor aliassen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43238,6 +43778,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Slett postboks"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox verwijderen"
           }
         },
         "pl" : {
@@ -44460,6 +45006,12 @@
             "value" : "Deaktiver i stedet"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In plaats daarvan uitschakelen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44666,10 +45218,160 @@
     },
     "Display name" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бачнае імя"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazované jméno"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vist navn"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anzeigename"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εμφανιζόμενο Όνομα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Display name"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre a mostrar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombre a mostrar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näyttönimi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nom d'affichage"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama tampilan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome visualizzato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表示名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საჩვენებელი სახელი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "표시되는 이름"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visningsnavn"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weergavenaam"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa wyświetlana"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome de exibição"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nume afișat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazované meno"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prikazno ime"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visningsnamn"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görüntülenecek ad"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ім'я"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tên hiển thị"
           }
         }
       }
@@ -46051,6 +46753,12 @@
             "value" : "Rediger seksjonens tittel"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sectie titel bewerken"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47155,6 +47863,12 @@
             "value" : "Send denne e-postadressen på e-post, og den vil se ut til å være sendt fra %@."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail dit adres en het zal lijken te worden verzonden van %@."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47171,6 +47885,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pošlite email na túto adresu a zobrazí sa, že bol odoslaný z %@."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skicka e-post till denna adress så verkar den vara skickad från %@."
           }
         },
         "tr" : {
@@ -47592,6 +48312,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tom seksjon"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lege sectie"
           }
         },
         "pl" : {
@@ -49152,6 +49878,12 @@
             "value" : "Aktiver SimpleLogin synkronisering"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schakel SimpleLogin synchronisatie in"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49923,6 +50655,12 @@
             "value" : "Skriv inn en ny seksjonstittel"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voer een nieuwe sectie titel in"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50544,6 +51282,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skriv inn adressen du vil sende e-post til."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vul het adres in dat u wilt mailen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wpisz adres odbiorcy."
           }
         },
         "pt-BR" : {
@@ -52105,6 +52855,12 @@
             "value" : "Utløpt %@"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlopen %@"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52252,6 +53008,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Utløper %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verloopt %@"
           }
         },
         "pl" : {
@@ -53211,6 +53973,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Ekstra passord må inneholde minst %lld tegn"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Extra wachtwoord moet ten minste %lld tekens bevatten"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Extra wachtwoord moet ten minste %lld tekens bevatten"
                 }
               }
             }
@@ -54675,6 +55455,12 @@
             "value" : "Filtrert etter aliaser. Elementer som er slettet, vises ikke."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefilterd door aliasen. Verwijderde items worden niet weergegeven."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54696,7 +55482,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtrované podľa aliasov. Položky z koša nie sú zobrazené."
+            "value" : "Filtrované podľa aliasov. Položky v koši nie sú zobrazené."
           }
         },
         "tr" : {
@@ -54793,6 +55579,12 @@
             "value" : "Filtrert etter kredittkort. Elementer som er slettet, vises ikke."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefilterd met creditcards. Verwijderde items worden niet weergegeven."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54814,7 +55606,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtrované podľa platobných kariet. Položky z koša nie sú zobrazené."
+            "value" : "Filtrované podľa platobných kariet. Položky v koši nie sú zobrazené."
           }
         },
         "tr" : {
@@ -54911,6 +55703,12 @@
             "value" : "Filtrert etter identiteter. Elementer som er slettet, vises ikke."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefilterd op identiteiten. Verwijderde items worden niet weergegeven."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54932,7 +55730,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtrované podľa identít. Položky z koša nie sú zobrazené."
+            "value" : "Filtrované podľa identít. Položky v koši nie sú zobrazené."
           }
         },
         "tr" : {
@@ -55029,6 +55827,12 @@
             "value" : "Filtrert etter pålogginger. Elementer som er slettet, vises ikke."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefilterd door inloggegevens. Items worden niet weergegeven."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55050,7 +55854,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtrované podľa prihlásenia. Položky z koša nie sú zobrazené."
+            "value" : "Filtrované podľa prihlásenia. Položky v koši nie sú zobrazené."
           }
         },
         "tr" : {
@@ -55147,6 +55951,12 @@
             "value" : "Filtrert etter notater. Elementer som er slettet, vises ikke."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gefilterd door notities. Items die verplaatst worden, worden niet weergegeven."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55168,7 +55978,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filtrované podľa poznámok. Položky z koša nie sú zobrazené."
+            "value" : "Filtrované podľa poznámok. Položky v koši nie sú zobrazené."
           }
         },
         "tr" : {
@@ -56540,6 +57350,18 @@
             "value" : "Fra aliaset ditt <%@>"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Van uw alias <%@>"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Z aliasu <%@>"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56555,7 +57377,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Z vašeho aliasu <%@>"
+            "value" : "Z vášho aliasu <%@>"
           }
         },
         "sv" : {
@@ -57136,6 +57958,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Generer en sikker kobling til dette elementet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genereer een beveiligde link naar dit item"
           }
         },
         "pl" : {
@@ -59647,6 +60475,18 @@
             "value" : "Slik fungerer det:"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zo werkt het:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jak to działa:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61209,6 +62049,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skjul personnummer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burgerservicenummer (rijksregisternummer) verbergen"
           }
         },
         "pl" : {
@@ -63101,6 +63947,12 @@
             "value" : "Identitet slettet permanent"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identiteit permanent verwijderd"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63657,6 +64509,12 @@
             "value" : "En Pass, una nota se cifra con la clave de cifrado de esa nota y solo los usuarios que tienen acceso a la nota pueden verla."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passin kohteen muistiinpano salataan kohteen salausavaimella, ja vain kohteen käyttöoikeudet omaavat käyttäjät voivat tarkastella muistiinpanoa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63675,6 +64533,12 @@
             "value" : "In Pass, una nota dell'elemento viene crittografata con la chiave di crittografia dell'elemento e solo gli utenti che hanno accesso all'elemento possono visualizzare la nota."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass-ში ელემენტის შენიშვნა ელემენტთან ერთად იშიფრება და, მხოლოდ, მომხმარებლებს, რომლებსაც აქვთ წვდომა ელემენთან, აქვთ წვდომა შენიშვნასთან."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63685,6 +64549,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I Pass krypteres et elementnotat med elementkrypteringsnøkkelen, og bare brukere som har tilgang til elementet, kan se notatet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Pass is een artikelnotitie versleuteld met de artikelversleutelingssleutel en alleen gebruikers die toegang hebben tot het item kunnen de notitie bekijken."
           }
         },
         "ro" : {
@@ -63951,6 +64821,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inaktive koblinger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inactieve koppelingen"
           }
         },
         "pl" : {
@@ -72766,10 +73642,16 @@
             "value" : "Pålogginger med 2FA"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aanmeldingen met 2FA"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Logowanie za pomocą 2FA"
+            "value" : "Dane logowania z uwierzytelnianiem dwustopniowym"
           }
         },
         "pt-BR" : {
@@ -72787,7 +73669,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prihlásenie pomocou 2FA"
+            "value" : "Prihlásenia pomocou 2FA"
           }
         },
         "sv" : {
@@ -73211,6 +74093,12 @@
             "value" : "Handlingsmeny for postboks"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox actie menu"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -73333,6 +74221,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Postboks er der e-poster sendt til et alias videresendes til. Det er din vanlige postboks, for eksempel Gmail, Outlook, Proton Mail, osv."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailbox is waar e-mails verzonden naar een alias worden doorgestuurd. Het is uw gebruikelijke mailbox, bijvoorbeeld Gmail, Outlook, Proton Mail, enz."
           }
         },
         "pl" : {
@@ -74221,6 +75115,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Administrer aliasene dine"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beheer uw aliassen"
           }
         },
         "pl" : {
@@ -75303,6 +76203,12 @@
             "value" : "Mangler brukernavn"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ontbrekende gebruikersnaam"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -75923,6 +76829,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Endre seksjonsnavnet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verander de sectienaam"
           }
         },
         "pl" : {
@@ -78186,7 +79098,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адсутнічае актыўнасць на працягу 14 дзён."
+            "value" : "Адсутнічае актыўнасць за апошнія 14 дзён."
           }
         },
         "cs" : {
@@ -78265,6 +79177,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ingen aktivitet de siste 14 dagene."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen activiteit in de afgelopen 14 dagen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak aktywności w ciągu ostatnich 14 dni."
           }
         },
         "pt-BR" : {
@@ -78846,6 +79770,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ingen elementer funnet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen items gevonden"
           }
         },
         "pl" : {
@@ -79995,7 +80925,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Нават у Proton або SimpleLogin не могуць бачыць яе."
+            "value" : "Нават у Proton або SimpleLogin не могуць бачыць іх."
           }
         },
         "cs" : {
@@ -80020,6 +80950,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ni Proton ni SimpleLogin pueden verla."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edes Proton tai SimpleLogin eivät näe sitä."
           }
         },
         "fr" : {
@@ -80056,6 +80992,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ikke engang Proton eller SimpleLogin kan se det."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zelfs Proton of SimpleLogin kan het niet zien."
           }
         },
         "pt-BR" : {
@@ -80341,6 +81283,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ikke valgt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet geselecteerd"
           }
         },
         "pl" : {
@@ -80637,6 +81585,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notat • SimpleLogin"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notitie • SimpleLogin"
           }
         },
         "pl" : {
@@ -83776,6 +84730,12 @@
             "value" : "Åpne kredittkortet"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open creditcard"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83910,6 +84870,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Åpne identiteten"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open identiteit"
           }
         },
         "pl" : {
@@ -84048,6 +85014,12 @@
             "value" : "Åpne innlogging"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open login"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84182,6 +85154,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Åpne notat"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open notitie"
           }
         },
         "pl" : {
@@ -90331,10 +91309,34 @@
             "value" : "Sjekk søppelposten for en e-post som heter \"Bekreft postboks %@\"\n\nHvis du ikke finner en slik e-post, kan du [be om en ny kode](https://proton.me)."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controleer in uw spam voor een e-mail genaamd \"Bevestig uw mailbox %@\"\n\nAls u deze e-mail niet kan vinden, dan kunt u [een nieuwe code aanvragen](https://proton.me)."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprawdź folder Spam w poszukiwaniu wiadomości \"Potwierdź skrzynkę odbiorczą %@\"\n\n[Poproś o nowy kod], jeśli nie widzisz wiadomości\n(https://proton.me)."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verifique seu Spam por um e-mail chamado \"Confirme sua caixa de correio %@\"\n\nSe você não encontrou esse e-mail, você pode [solicitar um novo código](https://proton.me)."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verificați în folderul de mesaje nedorite și căutați un mesaj cu subiectul „Confirmați contul %@”\n\nDacă nu găsiți un astfel de mesaj, puteți [solicita un cod nou](https://proton.me)."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolla i din skräppost efter ett e-postmeddelande som heter ”Bekräfta din brevlåda %@”\n\nOm du inte kan hitta ett sådant e-postmeddelande kan du [begära en ny kod](https://proton.me)."
           }
         },
         "tr" : {
@@ -91064,6 +92066,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vennligst gi oss flere detaljer i beskrivelsen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geef ons meer details in de beschrijving"
           }
         },
         "pl" : {
@@ -91983,6 +92991,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Premium-domene"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium domein"
           }
         },
         "pl" : {
@@ -93526,6 +94540,12 @@
             "value" : "Proton Pass vil generere en videresendingsadresse (også referert til som omvendt alias)."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass zal een doorschakeladres genereren (ook aangeduid als reverse alias)."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93837,6 +94857,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Offentlig domene"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Publiek domein"
           }
         },
         "pl" : {
@@ -95604,6 +96630,12 @@
             "value" : "Fjern alle inaktive koblinger"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijder alle inactieve links"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -96212,6 +97244,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fjern inaktiv kobling"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijder inactieve link"
           }
         },
         "pl" : {
@@ -99070,6 +100108,12 @@
             "value" : "Begrens antall visninger"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beperk aantal weergaven"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101140,6 +102184,12 @@
             "value" : "Bla for mer"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scroll voor meer"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101624,6 +102674,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Søk i %lld kontoer"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zoeken in %lld account"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zoeken in %lld accounts"
                 }
               }
             }
@@ -105637,6 +106705,12 @@
             "value" : "Send e-post"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail verzenden"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -108157,6 +109231,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Del sikker kobling"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beveiligde link delen"
           }
         },
         "pl" : {
@@ -110823,6 +111903,12 @@
             "value" : "Vis personnummer"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toon burgerservicenummer (rijksregisternummer)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -111652,6 +112738,12 @@
             "value" : "La nota de SimpleLogin se almacena en la misma ubicación con la dirección de alias y, si bien está protegida con cifrado, no lo está con cifrado de extremo a extremo, lo que significa que cualquiera que tenga acceso a la base de datos de SimpleLogin puede leerla."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin-muistiinpano tallennetaan samaan paikkaan alias-osoitteen kanssa. Vaikka se on suojattu salauksella levossa, sitä ei ole E2E-salattu, joten kuka tahansa, jolla on pääsy SimpleLogin-tietokantaan, voi lukea sen."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -111680,6 +112772,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin-notatet lagres sammen på samme sted med aliasadresse, og selv om det er beskyttet av kryptering i hvile, er det ikke E2E-kryptert, noe som betyr at alle som har tilgang til SimpleLogin-databasen kan lese det."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin note wordt samen opgeslagen op dezelfde locatie met alias adres en terwijl het beschermd is door encryptie in de rest het is niet E2E versleuteld wat betekent dat iedereen die toegang heeft tot SimpleLogin database dit kan lezen."
           }
         },
         "pt-BR" : {
@@ -114190,6 +115288,12 @@
             "value" : "Bytt og administrer"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wisselen en beheren"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114331,6 +115435,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Byttet til %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overgeschakeld naar %@"
           }
         },
         "pl" : {
@@ -116297,10 +117407,70 @@
     },
     "The display name when sending an email from this alias." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Бачнае імя пры адпраўцы ліста з гэтага псеўданіма."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazované jméno při odesílání e-mailu z tohoto aliasu."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The display name when sending an email from this alias."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El nombre a mostrar cuando se envía un correo desde este alias."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il s'agit du nom d'affichage lors de l'envoi d'un message depuis cet alias."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საჩვენებელი სახელი, როცა ელფოსტას ამ ფსევდონიმიდან აგზავნით."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 별칭으로부터 이메일이 전송되면 표시되는 이름입니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visningsnavnet når du sender en e-post fra dette aliaset."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De weergavenaam bij het verzenden van een e-mail van deze alias."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numele afișat când se trimite un mesaj de la acest alias."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu takma ad ile e-posta gönderilirken görüntülenecek ad."
           }
         }
       }
@@ -119277,6 +120447,18 @@
             "value" : "Hvis du vil holde den personlige e-postadressen din skjult, kan du opprette en aliaskontakt som maskerer adressen din."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Om uw persoonlijke e-mailadres verborgen te houden, kunt u een alias-contactpersoon maken die uw adres maskert."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aby ukryć osobisty adres e-mail, możesz utworzyć alias."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -119400,6 +120582,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Til postboks"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naar mailbox"
           }
         },
         "pl" : {
@@ -119690,6 +120878,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "For mange feilforsøk"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te veel verkeerde pogingen"
           }
         },
         "pl" : {
@@ -120182,6 +121376,12 @@
             "value" : "Overfør aliaser"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer aliassen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -120304,6 +121504,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Overfør og slett postboks"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overdracht en verwijder mailbox"
           }
         },
         "pl" : {
@@ -122192,6 +123398,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fjern blokkering av kontakt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contact deblokkeren"
           }
         },
         "pl" : {
@@ -124399,6 +125611,12 @@
             "value" : "Ubekreftet postboks"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet geverifieerd"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125329,6 +126547,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oppgrader for å legge til tilpassede seksjoner"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade om aangepaste secties toe te voegen"
           }
         },
         "pl" : {
@@ -130115,6 +131339,12 @@
             "value" : "Vis alle dine sikre koblinger"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekijk al uw beveiligde links"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -132057,6 +133287,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We hebben gedetecteerd dat u %lld alias hebt die aanwezig is in SimpleLogin, maar ontbreekt in Proton Pass. Wilt u deze importeren?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We hebben gedetecteerd dat u %lld aliassen hebt die aanwezig zijn in SimpleLogin, maar ontbreken in Proton Pass. Wilt u deze importeren?"
+                }
+              }
+            }
+          }
+        },
         "pl" : {
           "variations" : {
             "plural" : {
@@ -132287,6 +133535,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vi har oppdaget en endring i innstillingene for biometrisk autentisering. Av sikkerhetsgrunner har du blitt logget av."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We hebben een wijziging gedetecteerd in uw biometrische verificatie-instellingen. Om veiligheidsredenen bent u afgemeld."
           }
         },
         "pl" : {
@@ -133526,6 +134780,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hva er et SimpleLogin-notat?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat is een SimpleLogin notitie?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Co to jest notatka SimpleLogin?"
           }
         },
         "pt-BR" : {
@@ -135060,6 +136326,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Galt ekstra passord"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verkeerd extra wachtwoord"
           }
         },
         "pl" : {
@@ -136831,6 +138103,12 @@
             "value" : "Du har for øyeblikket ingen sikre koblinger"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U heeft momenteel geen beveiligde koppelingen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137119,6 +138397,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du har for øyeblikket ingen påloggingselementer med 2FA hemmelig nøkkel (TOTP)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U heeft momenteel geen inloggegevens met de geheime sleutel van 2FA (TOTP)"
           }
         },
         "pl" : {
@@ -137886,6 +139170,12 @@
             "value" : "Du har nådd grensen for hvelv du kan opprette. Oppgrader til en betalt plan for å opprette flere hvelv."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U heeft de limiet bereikt van de kluizen die u kunt maken. Upgrade naar een betaald abonnement om meerdere kluizen te maken."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138021,6 +139311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du må bytte til %@ for å administrere det"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U moet overschakelen naar %@ om het te beheren"
           }
         },
         "pl" : {
@@ -138171,6 +139467,12 @@
             "value" : "Du vil bli bedt om dette passordet under innlogging og når du bytter fra en annen Proton-app til Proton Pass på nettet."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U wordt gevraagd om dit wachtwoord tijdens het inloggen en wanneer u overschakelt van een andere Proton app naar Proton Pass op het internet."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138311,6 +139613,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du blir logget ut og må logge på igjen på alle de andre enhetene dine."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U wordt uitgelogd en moet opnieuw inloggen op al uw andere apparaten."
           }
         },
         "pl" : {
@@ -138611,6 +139919,12 @@
             "value" : "Du er logget av fra %@"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U bent uitgelogd uit %@"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138752,6 +140066,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du er logget ut fra andre gratiskontoer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U bent uitgelogd uit andere gratis accounts"
           }
         },
         "pl" : {
@@ -140489,6 +141809,12 @@
             "value" : "Planen din tillater bare å bruke elementer fra dine to første hvelv for autofyllformål."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uw plan staat alleen toe om items uit uw eerste 2 kluizen te gebruiken voor autofill doeleinden."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140765,6 +142091,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mottakeren din"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uw ontvanger"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twój odbiorca"
           }
         },
         "pt-BR" : {

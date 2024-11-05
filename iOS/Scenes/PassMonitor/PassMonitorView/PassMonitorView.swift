@@ -180,14 +180,14 @@ struct PassMonitorView: View {
                 }
             }
             .refreshable {
-                try? await viewModel.refresh()
+                await viewModel.refresh()
             }
             .routingProvided
             .sheetDestinations(sheetDestination: $router.presentedSheet)
             .navigationStackEmbeded($router.path)
             .environmentObject(router)
             .task {
-                try? await viewModel.refresh()
+                await viewModel.refresh()
             }
     }
 }
@@ -197,6 +197,16 @@ private extension PassMonitorView {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
             if let breaches = viewModel.breaches {
                 breachedDataRows(breaches: breaches)
+            } else {
+                VStack(alignment: .leading) {
+                    Text(verbatim: "A long placeholder text for title")
+                        .redacted(reason: .placeholder)
+                    Text(verbatim: "A short text")
+                        .redacted(reason: .placeholder)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                .roundedDetailSection()
             }
 
             if let weaknessStats = viewModel.weaknessStats {
@@ -291,7 +301,7 @@ private extension PassMonitorView {
 
     @ViewBuilder
     func upsellRow(breaches: UserBreaches) -> some View {
-        let isBreached = viewModel.isBreached
+        let isBreached = breaches.breached
         ZStack(alignment: .topTrailing) {
             VStack(alignment: isBreached ? .leading : .center, spacing: DesignConstant.sectionPadding) {
                 Text(isBreached ? "Breached Detected" : "Dark Web Monitoring")
@@ -383,11 +393,10 @@ private extension PassMonitorView {
 
     @ViewBuilder
     func breachedRow(_ breaches: UserBreaches) -> some View {
-        if !viewModel.isBreached {
+        if !breaches.breached {
             passMonitorRow(rowType: .success,
                            title: "Dark Web Monitoring",
                            subTitle: "No breaches detected",
-                           info: nil,
                            action: {
                                router.navigate(to: .darkWebMonitorHome(breaches))
                                viewModel.addTelemetryEvent(with: SecurityWeakness.breaches.telemetryEventType)
@@ -459,7 +468,7 @@ private extension PassMonitorView {
         passMonitorRow(rowType: weakPasswords > 0 ? .warning : .success,
                        title: "Weak Passwords",
                        subTitle: "Change your passwords",
-                       info: "\(weakPasswords)",
+                       count: weakPasswords,
                        action: { viewModel.showSecurityWeakness(type: .weakPasswords) })
     }
 }
@@ -469,7 +478,7 @@ private extension PassMonitorView {
         passMonitorRow(rowType: reusedPasswords > 0 ? .warning : .success,
                        title: "Reused passwords",
                        subTitle: "Generate unique passwords",
-                       info: "\(reusedPasswords)",
+                       count: reusedPasswords,
                        action: { viewModel.showSecurityWeakness(type: .reusedPasswords) })
     }
 }
@@ -479,7 +488,7 @@ private extension PassMonitorView {
         passMonitorRow(rowType: .info,
                        title: "Inactive 2FA",
                        subTitle: "Set up 2FA for more security",
-                       info: "\(missing2FA)",
+                       count: missing2FA,
                        action: { viewModel.showSecurityWeakness(type: .missing2FA) })
     }
 }
@@ -489,7 +498,7 @@ private extension PassMonitorView {
         passMonitorRow(rowType: .info,
                        title: "Excluded items",
                        subTitle: "These items remain at risk",
-                       info: "\(excludedItems)",
+                       count: excludedItems,
                        action: { viewModel.showSecurityWeakness(type: .excludedItems) })
     }
 }
@@ -497,12 +506,18 @@ private extension PassMonitorView {
 // MARK: - Rows
 
 private extension PassMonitorView {
+    @ViewBuilder
     func passMonitorRow(rowType: SecureRowType,
                         title: LocalizedStringKey,
                         subTitle: LocalizedStringKey?,
-                        info: String? = nil,
+                        count: Int? = nil,
                         badge: Bool = false,
                         action: @escaping () -> Void) -> some View {
+        let loading = if let count {
+            count < 0 // swiftlint:disable:this empty_count
+        } else {
+            false
+        }
         Button(action: action) {
             HStack(spacing: DesignConstant.sectionPadding) {
                 if let iconName = rowType.icon {
@@ -510,9 +525,12 @@ private extension PassMonitorView {
                         .resizable()
                         .renderingMode(.template)
                         .scaledToFit()
-                        .foregroundStyle(rowType.iconColor.toColor)
+                        .foregroundStyle(loading ? Color.secondary : rowType.iconColor.toColor)
                         .frame(width: DesignConstant.Icons.defaultIconSize)
                         .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .if(loading) { view in
+                            view.redacted(reason: .placeholder)
+                        }
                 }
 
                 VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
@@ -525,16 +543,21 @@ private extension PassMonitorView {
                         Text(subTitle)
                             .font(.callout)
                             .lineLimit(1)
-                            .foregroundStyle(rowType.subtitleColor.toColor)
+                            .foregroundStyle(loading ? Color.secondary : rowType.subtitleColor.toColor)
                             .layoutPriority(1)
                             .minimumScaleFactor(0.25)
+                            .if(loading) { view in
+                                view.redacted(reason: .placeholder)
+                            }
                     }
                 }
                 .frame(maxWidth: .infinity, minHeight: ElementSizes.cellHeight, alignment: .leading)
                 .contentShape(.rect)
 
-                if let info {
-                    Text(info)
+                if loading {
+                    ProgressView()
+                } else if let count {
+                    Text(verbatim: "\(count)")
                         .fontWeight(.medium)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 11)
@@ -552,9 +575,10 @@ private extension PassMonitorView {
                 }
             }
             .padding(.horizontal, DesignConstant.sectionPadding)
-            .roundedDetailSection(backgroundColor: rowType.background,
-                                  borderColor: rowType.border)
+            .roundedDetailSection(backgroundColor: loading ? .clear : rowType.background,
+                                  borderColor: loading ? PassColor.inputBorderNorm : rowType.border)
         }
         .buttonStyle(.plain)
+        .animation(.default, value: loading)
     }
 }
