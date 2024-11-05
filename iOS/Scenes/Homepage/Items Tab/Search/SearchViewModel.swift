@@ -75,6 +75,8 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     private var results = [ItemSearchResult]()
     private var cancellables = Set<AnyCancellable>()
 
+    private var refreshResultsTask: Task<Void, Never>?
+
     var searchBarPlaceholder: String {
         searchMode.searchBarPlacehoder
     }
@@ -224,11 +226,16 @@ private extension SearchViewModel {
 
 extension SearchViewModel {
     func refreshResults() {
-        Task { [weak self] in
+        refreshResultsTask?.cancel()
+        refreshResultsTask = Task { [weak self] in
             guard let self else { return }
             await indexItems()
             doSearch(query: lastSearchQuery)
         }
+    }
+
+    func cancelRefreshing() {
+        refreshResultsTask?.cancel()
     }
 
     func viewDetail(of item: any ItemIdentifiable) {
@@ -302,6 +309,7 @@ private extension SearchViewModel {
         itemRepository
             .itemsWereUpdated
             .receive(on: DispatchQueue.main)
+            .dropFirst()
             .sink { [weak self] _ in
                 guard let self else { return }
                 refreshResults()
