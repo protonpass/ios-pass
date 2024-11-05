@@ -21,6 +21,7 @@
 import Foundation
 
 public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
+    // Existing properties
     public let itemId: String
     public let shareId: String
     public let type: ItemContentType
@@ -39,6 +40,9 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
 
     public var hasTotpUri: Bool { totpUri?.isEmpty == false }
 
+    // Add a stored property for the precomputed hash
+    private let precomputedHash: Int
+
     public init(itemId: String,
                 shareId: String,
                 type: ItemContentType,
@@ -54,21 +58,62 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
                 state: ItemState,
                 pinned: Bool,
                 isAliasEnabled: Bool) {
+        // We precompute and cache the hash value
+        // because we rely on it a lot to drive SwiftUI's rerendering process
+        // the faster we can hash this object, the better the UI performance
+        var hasher = Hasher()
+
         self.itemId = itemId
+        hasher.combine(itemId)
+
         self.shareId = shareId
+        hasher.combine(shareId)
+
         self.type = type
+        hasher.combine(type)
+
         self.aliasEmail = aliasEmail
+        hasher.combine(aliasEmail)
+
         self.aliasEnabled = aliasEnabled
+        hasher.combine(aliasEnabled)
+
         self.title = title
+        hasher.combine(title)
+
         self.description = description
+        hasher.combine(description)
+
         self.url = url
+        hasher.combine(url)
+
         self.isAlias = isAlias
+        hasher.combine(isAlias)
+
         self.totpUri = totpUri
+        hasher.combine(totpUri)
+
         self.lastUseTime = lastUseTime
+        hasher.combine(lastUseTime)
+
         self.modifyTime = modifyTime
+        hasher.combine(modifyTime)
+
         self.state = state
+        hasher.combine(state)
+
         self.pinned = pinned
+        hasher.combine(pinned)
+
         self.isAliasEnabled = isAliasEnabled
+        hasher.combine(isAliasEnabled)
+
+        precomputedHash = hasher.finalize()
+    }
+
+    // Use the precomputed hash in the hash(into:) method
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(precomputedHash)
     }
 }
 

@@ -267,6 +267,7 @@
 		357ABEB22B188A30003D05C8 /* ItemsTabTopBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEB12B188A30003D05C8 /* ItemsTabTopBarViewModel.swift */; };
 		357ABEB42B18BB04003D05C8 /* DataStream+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357ABEB32B18BB04003D05C8 /* DataStream+DependencyInjections.swift */; };
 		357B162D2C87159A000073C8 /* CreateEditAliasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3547ABED287777B700EE85E1 /* CreateEditAliasView.swift */; };
+		357C1D292CD8F18400703891 /* FeatureFlagsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357C1D282CD8F18400703891 /* FeatureFlagsSection.swift */; };
 		357C71A12B5FAE5700AA0BF1 /* CreateAliasLiteViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BDED5299E6515009FDBB1 /* CreateAliasLiteViewModel.swift */; };
 		357C71A22B5FAE5F00AA0BF1 /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
 		357C71A32B5FAE6500AA0BF1 /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
@@ -859,6 +860,7 @@
 		357ABEAF2B188A08003D05C8 /* ItemsTabTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabTopBar.swift; sourceTree = "<group>"; };
 		357ABEB12B188A30003D05C8 /* ItemsTabTopBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemsTabTopBarViewModel.swift; sourceTree = "<group>"; };
 		357ABEB32B18BB04003D05C8 /* DataStream+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DataStream+DependencyInjections.swift"; sourceTree = "<group>"; };
+		357C1D282CD8F18400703891 /* FeatureFlagsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureFlagsSection.swift; sourceTree = "<group>"; };
 		357E13FE2A1BBDE2001B5791 /* ItemTypeListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListViewModel.swift; sourceTree = "<group>"; };
 		357ED8C42AC1C6F20019A0E9 /* Macro */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Macro; path = LocalPackages/Macro; sourceTree = "<group>"; };
 		35805D092BD8E39300288CC0 /* MonitorExcludedEmailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorExcludedEmailView.swift; sourceTree = "<group>"; };
@@ -1263,17 +1265,18 @@
 			isa = PBXGroup;
 			children = (
 				358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */,
+				356CE7722A2289C80043DC62 /* BannersSection.swift */,
 				3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */,
 				358152022C57C3EB0054F755 /* CredentialsSection.swift */,
-				356CE7722A2289C80043DC62 /* BannersSection.swift */,
+				357C1D282CD8F18400703891 /* FeatureFlagsSection.swift */,
 				353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */,
 				35F0BD582C1853A70062F34B /* ItemReadEventsSection.swift */,
 				353739E629EAEE6F00A3255E /* OnboardSection.swift */,
+				5BDD9AED2CC9094700C120B3 /* PasswordPolicySection.swift */,
 				353739E229EAE9D900A3255E /* QAFeaturesView.swift */,
 				3586478129F825E0003487B1 /* TelemetryEventsSection.swift */,
 				351A96002BAC7E8700D599BB /* TipKitSection.swift */,
 				353EC0152A05A7EF004AF925 /* TrashItemsSection.swift */,
-				5BDD9AED2CC9094700C120B3 /* PasswordPolicySection.swift */,
 			);
 			path = "QA Features";
 			sourceTree = "<group>";
@@ -3343,6 +3346,7 @@
 				35661CB229B8BF97003BBAD6 /* EditableVaultListView.swift in Sources */,
 				3567DF4D2A49C7950025BD88 /* UpsellableDetailText.swift in Sources */,
 				356750D529D31E9200247648 /* ItemSwipeModifier.swift in Sources */,
+				357C1D292CD8F18400703891 /* FeatureFlagsSection.swift in Sources */,
 				3569B2A129B788600070830B /* ItemsTabView.swift in Sources */,
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
 				5B5DBF182B68048600F72F6C /* TotpLoginsView.swift in Sources */,
