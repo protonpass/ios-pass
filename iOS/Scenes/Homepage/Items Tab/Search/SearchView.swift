@@ -54,17 +54,22 @@ struct SearchView: View {
             }
         }
     }
+}
 
-    private var content: some View {
+private extension SearchView {
+    var content: some View {
         VStack(spacing: 0) {
             SearchBar(query: $viewModel.query,
                       isFocused: $isFocusedOnSearchBar,
                       placeholder: viewModel.searchBarPlaceholder,
                       cancelMode: .always,
-                      onCancel: { searchMode = nil })
-                .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
-                                       in: animationNamespace)
-                .disabled(viewModel.state == .initializing)
+                      canEdit: viewModel.state != .initializing,
+                      onCancel: {
+                          viewModel.cancelRefreshing()
+                          searchMode = nil
+                      })
+                      .matchedGeometryEffect(id: SearchEffectID.searchbar.id,
+                                             in: animationNamespace)
 
             if #available(iOS 17, *) {
                 let tip = SpotlightTip()
@@ -79,6 +84,11 @@ struct SearchView: View {
             }
 
             switch viewModel.state {
+            case .initializing:
+                ProgressView()
+                    .padding(.top)
+                Spacer()
+
             case .empty:
                 EmptySearchView()
                     .frame(maxHeight: .infinity)
@@ -117,9 +127,9 @@ struct SearchView: View {
                                   onScroll: { isFocusedOnSearchBar = false },
                                   onSelectItem: { viewModel.viewDetail(of: $0) })
 
-            default:
-                // Impossible cases
-                EmptyView()
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: { viewModel.refreshResults() })
             }
 
             Spacer()
