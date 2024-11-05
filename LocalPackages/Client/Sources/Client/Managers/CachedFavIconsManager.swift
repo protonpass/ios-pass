@@ -1,6 +1,6 @@
 //
-// File.swift
-// Proton Pass - Created on 10/10/2024.
+// CachedFavIconsManager.swift
+// Proton Pass - Created on 31/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,10 +19,26 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Testing
+import Foundation
+import UIKit
 
-extension Tag {
-    @Tag static var localDatasource: Self
-    @Tag static var remoteDatasource: Self
-    @Tag static var repository: Self
+public protocol CachedFavIconsManagerProtocol {
+    func cache(url: String, image: UIImage)
+    func get(for url: String) -> UIImage?
+}
+
+public final class CachedFavIconsManager: CachedFavIconsManagerProtocol {
+    private let cachedData = NSCache<NSString, UIImage>()
+
+    public init(countLimit: Int = 20) {
+        cachedData.countLimit = countLimit
+    }
+
+    public func cache(url: String, image: UIImage) {
+        cachedData.setObject(image, forKey: NSString(string: url))
+    }
+
+    public func get(for url: String) -> UIImage? {
+        cachedData.object(forKey: NSString(string: url))
+    }
 }
