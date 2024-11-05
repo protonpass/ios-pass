@@ -26,17 +26,17 @@ import CoreMocks
 import CryptoKit
 import Entities
 import EntitiesMocks
-import XCTest
+import Foundation
+import Testing
 
-final class PassMonitorRepositoryTests: XCTestCase {
-    var symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory!
-    var itemRepository: ItemRepositoryProtocolMock!
-    var sut: PassMonitorRepositoryProtocol!
-    var userManager: UserManagerProtocolMock!
+@Suite(.tags(.repository))
+struct PassMonitorRepositoryTests {
+    let symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory
+    let itemRepository: ItemRepositoryProtocolMock
+    let sut: PassMonitorRepositoryProtocol
+    let userManager: UserManagerProtocolMock
 
-
-    override func setUp() {
-        super.setUp()
+    init() {
         userManager = .init()
         userManager.stubbedGetActiveUserDataResult = .preview
         symmetricKeyProviderMockFactory = .init()
@@ -44,19 +44,12 @@ final class PassMonitorRepositoryTests: XCTestCase {
         itemRepository = ItemRepositoryProtocolMock()
         itemRepository.stubbedGetActiveLogInItemsResult = []
         itemRepository.stubbedItemsWereUpdated = .init(())
-        sut = PassMonitorRepository(itemRepository: itemRepository, 
+        sut = PassMonitorRepository(itemRepository: itemRepository,
                                     remoteDataSource: RemoteBreachDataSourceProtocolMock(),
-                                    symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(), 
+                                    symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                                     userManager: userManager)
     }
 
-    override func tearDown() {
-        symmetricKeyProviderMockFactory = nil
-        itemRepository = nil
-        sut = nil
-        super.tearDown()
-    }
-    
     func createEncryptedLoginItems(weakness: [SecurityWeakness], addStrong: Bool = true) -> [SymmetricallyEncryptedItem] {
         var items = [SymmetricallyEncryptedItem]()
         let key = symmetricKeyProviderMockFactory.key
@@ -118,48 +111,49 @@ final class PassMonitorRepositoryTests: XCTestCase {
         
         return items
     }
-    
+
+    @Test("PassMonitorRepository operations")
     func testPassMonitorRepositoryTests() async throws {
         itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.reusedPasswords,.reusedPasswords,.weakPasswords,.missing2FA, .excludedItems])
         try await sut.refreshSecurityChecks()
         
         let state = sut.weaknessStats.value
-        XCTAssertEqual(state.reusedPasswords, 1)
-        XCTAssertEqual(state.weakPasswords, 1)
-        XCTAssertEqual(state.excludedItems, 1)
-        XCTAssertEqual(state.missing2FA, 1)
+        #expect(state.reusedPasswords == 1)
+        #expect(state.weakPasswords == 1)
+        #expect(state.excludedItems == 1)
+        #expect(state.missing2FA == 1)
 
 
         let itemsWithSecurityIssues = sut.itemsWithSecurityIssues.value
-        XCTAssertEqual(itemsWithSecurityIssues.count, 5)
-        
+        #expect(itemsWithSecurityIssues.count == 5)
+
         itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [])
         try await sut.refreshSecurityChecks()
         
         let itemsWithSecurityNoIssues = sut.itemsWithSecurityIssues.value
-        XCTAssertEqual(itemsWithSecurityNoIssues.count, 0)
-        
+        #expect(itemsWithSecurityNoIssues.count == 0)
+
         itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.reusedPasswords,.reusedPasswords,.reusedPasswords,.reusedPasswords])
         try await sut.refreshSecurityChecks()
         
         let itemsWithSecurityOnlyReused = sut.itemsWithSecurityIssues.value
-        XCTAssertEqual(itemsWithSecurityOnlyReused.count, 4)
+        #expect(itemsWithSecurityOnlyReused.count == 4)
         let state2 = sut.weaknessStats.value
-        XCTAssertEqual(state2.reusedPasswords, 1)
-        XCTAssertEqual(state2.weakPasswords, 0)
-        XCTAssertEqual(state2.excludedItems, 0)
-        XCTAssertEqual(state2.missing2FA, 0)
-        
+        #expect(state2.reusedPasswords == 1)
+        #expect(state2.weakPasswords == 0)
+        #expect(state2.excludedItems == 0)
+        #expect(state2.missing2FA == 0)
+
         itemRepository.stubbedGetActiveLogInItemsResult = createEncryptedLoginItems(weakness: [.weakPasswords,.weakPasswords,.weakPasswords])
         try await sut.refreshSecurityChecks()
         
         let itemsWithSecurityReusedWeak = sut.itemsWithSecurityIssues.value
-        XCTAssertEqual(itemsWithSecurityReusedWeak.count, 3)
+        #expect(itemsWithSecurityReusedWeak.count == 3)
         let state3 = sut.weaknessStats.value
-        XCTAssertEqual(state3.reusedPasswords, 1)
-        XCTAssertEqual(state3.weakPasswords, 3)
-        XCTAssertEqual(state3.excludedItems, 0)
-        XCTAssertEqual(state3.missing2FA, 0)
+        #expect(state3.reusedPasswords == 1)
+        #expect(state3.weakPasswords == 3)
+        #expect(state3.excludedItems == 0)
+        #expect(state3.missing2FA == 0)
     }
     
     func testPassMonitorRepository_listOfReusedPasswordItems() async throws {
@@ -169,12 +163,12 @@ final class PassMonitorRepositoryTests: XCTestCase {
         let key = symmetricKeyProviderMockFactory.key
 
         let reusedItems = try await sut.getItemsWithSamePassword(item: item.getItemContent(symmetricKey: key))
-        XCTAssertEqual(reusedItems.count, 1)
-        XCTAssertEqual(reusedItems.first!, try! items.last!.getItemContent(symmetricKey: key))
+        #expect(reusedItems.count == 1)
+        #expect(reusedItems.first! == (try! items.last!.getItemContent(symmetricKey: key)))
     }
 }
 
-extension Item {
+private extension Item {
     static var monitoredMock: Item {
         .random(flags: 0)
     }

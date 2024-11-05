@@ -23,42 +23,42 @@
 // periphery:ignore:all
 
 import Client
+import Core
+import Foundation
 import ProtonCoreFeatureFlags
 
 // sourcery: AutoMockable
 public protocol GetFeatureFlagStatusUseCase: Sendable {
-    func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool
     func execute(for flag: any FeatureFlagTypeProtocol) -> Bool
 }
 
 public extension GetFeatureFlagStatusUseCase {
-    func callAsFunction(with flag: any FeatureFlagTypeProtocol) async -> Bool {
-        await execute(with: flag)
-    }
-
     func callAsFunction(for flag: any FeatureFlagTypeProtocol) -> Bool {
         execute(for: flag)
     }
 }
 
 public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
+    private let bundle: Bundle
+    private let userDefault: UserDefaults
     private let userManager: any UserManagerProtocol
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
 
-    public init(userManager: any UserManagerProtocol,
+    public init(bundle: Bundle = .main,
+                userDefault: UserDefaults = kSharedUserDefaults,
+                userManager: any UserManagerProtocol,
                 repository: any FeatureFlagsRepositoryProtocol) {
+        self.bundle = bundle
+        self.userDefault = userDefault
         self.userManager = userManager
         featureFlagsRepository = repository
     }
 
-    public func execute(with flag: any FeatureFlagTypeProtocol) async -> Bool {
-        if let userId = userManager.activeUserId {
-            featureFlagsRepository.setUserId(userId)
-        }
-        return featureFlagsRepository.isEnabled(flag, reloadValue: true)
-    }
-
     public func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
+        if bundle.isQaBuild, userDefault.bool(forKey: flag.rawValue) {
+            return true
+        }
+
         if let userId = userManager.activeUserId {
             featureFlagsRepository.setUserId(userId)
         }

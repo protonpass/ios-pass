@@ -42,6 +42,9 @@ struct QAFeaturesView: View {
         NavigationStack {
             Form {
                 OnboardSection()
+                if #available(iOS 17, *) {
+                    FeatureFlagsSection()
+                }
                 HapticFeedbacksSection()
                 Section {
                     AccountSwitcherSection()

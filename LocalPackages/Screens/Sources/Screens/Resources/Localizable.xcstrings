@@ -1282,6 +1282,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Alle accounts (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Alle accounts (%lld)"
+                }
+              }
+            }
+          }
+        },
         "pl" : {
           "variations" : {
             "plural" : {
@@ -2941,6 +2959,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktiver SimpleLogin synkronisering"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schakel SimpleLogin synchronisatie in"
           }
         },
         "pl" : {
@@ -7573,6 +7597,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Vi oppdaget at du har %lld aliaser som er til stede i SimpleLogin, men mangler i Proton Pass. Vil du importere dem?"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We hebben gedetecteerd dat u %lld alias hebt die aanwezig is in SimpleLogin, maar ontbreekt in Proton Pass. Wilt u deze importeren?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We hebben gedetecteerd dat u %lld aliassen hebt die aanwezig zijn in SimpleLogin, maar ontbreken in Proton Pass. Wilt u deze importeren?"
                 }
               }
             }
