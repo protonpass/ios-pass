@@ -84,6 +84,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     weak var delegate: (any ItemDetailViewModelDelegate)?
+    var cancellables = Set<AnyCancellable>()
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
