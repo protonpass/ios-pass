@@ -43,7 +43,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var totpTokenState = TOTPTokenState.loading
     @Published private var aliasItem: SymmetricallyEncryptedItem?
     @Published private(set) var securityIssues: [SecurityWeakness]?
-    @Published private(set) var reusedItems: [ItemContent]?
+    @Published private(set) var reusedItems: FetchableObject<[ItemContent]> = .fetching
 
     var isAlias: Bool { aliasItem != nil }
     let showSecurityIssues: Bool
@@ -57,6 +57,8 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     var coloredPassword: AttributedString {
         PasswordUtils.generateColoredPassword(password)
     }
+
+    private var fetchSimilarPasswordItemsTask: Task<Void, Never>?
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,
@@ -203,13 +205,17 @@ extension LogInDetailViewModel {
     }
 
     func fetchSimilarPasswordItems() {
-        Task { [weak self] in
+        fetchSimilarPasswordItemsTask?.cancel()
+        fetchSimilarPasswordItemsTask = Task { [weak self] in
             guard let self else {
                 return
             }
             do {
-                reusedItems = try await passMonitorRepository.getItemsWithSamePassword(item: itemContent)
+                reusedItems = .fetching
+                let items = try await passMonitorRepository.getItemsWithSamePassword(item: itemContent)
+                reusedItems = .fetched(items)
             } catch {
+                reusedItems = .error(error)
                 handle(error)
             }
         }
