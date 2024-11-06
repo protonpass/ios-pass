@@ -87356,6 +87356,16 @@
         }
       }
     },
+    "Please note once deleted, the aliases can't be restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please note once deleted, the aliases can't be restored"
+          }
+        }
+      }
+    },
     "Please provide us with more details in the description" : {
       "comment" : "Placeholder for bug report description",
       "localizations" : {
@@ -118259,6 +118269,16 @@
         }
       }
     },
+    "Understood, I will never need them" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Understood, I will never need them"
+          }
+        }
+      }
+    },
     "Undo" : {
       "localizations" : {
         "be" : {
@@ -131694,6 +131714,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn đang chuẩn bị tạo"
+          }
+        }
+      }
+    },
+    "You are about to permanently delete %lld aliases" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are about to permanently delete %lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "You are about to permanently delete %lld aliases"
+                }
+              }
+            }
           }
         }
       }
