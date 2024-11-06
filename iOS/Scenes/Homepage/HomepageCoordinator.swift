@@ -77,6 +77,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedToolingContainer.authManager) var authManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\SharedRepositoryContainer.inAppNotificationRepository) var inAppNotificationRepository
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -253,6 +254,7 @@ private extension HomepageCoordinator {
                         refreshSettings()
                         refreshFeatureFlags()
                         doLogOutExcessFreeAccounts()
+                        try await checkInAppNotification()
                     } catch {
                         logger.error(error)
                     }
@@ -305,10 +307,21 @@ private extension HomepageCoordinator {
                 try await vaultsManager.asyncRefresh(userId: userId)
                 eventLoop.forceSync()
                 eventLoop.start()
+                testDisplayNotification()
+
             } catch {
                 logger.error(error)
             }
         }
+//
+//        Task { [weak self] in
+//            guard let self else {
+//                return
+//            }
+//            await MainActor.run {
+//                testDisplayNotification()
+//            }
+//        }
     }
 
     func refreshAccessAndMonitorStateSync() {
@@ -1675,22 +1688,14 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
                 guard let self else {
                     return
                 }
-                await MainActor.run {
-                    testDisplayNotification()
-                }
+//                await MainActor.run {
+//                    testDisplayNotification()
+//                }
 
                 await refresh()
             }
         } else {
             logger.info("Has no new events for userId \(userId). Do nothing.")
-        }
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            await MainActor.run {
-                testDisplayNotification()
-            }
         }
     }
 
@@ -1715,10 +1720,12 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
         let view = Button {
             self.updateFloatingView(floatingView: nil, shouldAdd: false)
         } label: {
-            Text("tess")
+            InAppBannerView(onTap: {}, close: {})
+                .background(Color.clear)
+//            Text("tess")
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(.red)
+//        .frame(maxWidth: .infinity, maxHeight: .infinity)
+//        .background(Color.clear)
 //        let currentValue = getUserPreferences().spotlightSearchableContent
 //        let view = EditSpotlightSearchableContentView(selection: currentValue) { [weak self] newValue in
 //            guard let self else { return }
@@ -1781,10 +1788,10 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
                             floatingView.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor,
                                                                  constant: -10),
                             floatingView.leadingAnchor
-                                .constraint(greaterThanOrEqualTo: tabBarController.view.leadingAnchor,
+                                .constraint(equalTo: tabBarController.view.leadingAnchor,
                                             constant: 16),
                             floatingView.trailingAnchor
-                                .constraint(lessThanOrEqualTo: tabBarController.view.trailingAnchor,
+                                .constraint(equalTo: tabBarController.view.trailingAnchor,
                                             constant: -16)
 //                            floatingView.leadingAnchor
 //                                .constraint(lessThanOrEqualTo: tabBarController.tabBar.leadingAnchor,
@@ -1857,5 +1864,91 @@ private extension HomepageCoordinator {
         if config.dismissBeforeShowing {
             window?.endEditing(true)
         }
+    }
+}
+
+extension HomepageCoordinator {
+    func checkInAppNotification() async throws {
+        let userId = try await userManager.getActiveUserId()
+        let notifications = try await inAppNotificationRepository.getNotifications(lastNotificationId: nil,
+                                                                                   userId: userId)
+        print("woot notifications: \(notifications)")
+    }
+}
+
+struct InAppBannerView: View {
+//    let notification: InAppNotification
+    var borderColor: UIColor = PassColor.inputBorderNorm
+    let onTap: () -> Void
+    let close: () -> Void
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            HStack(spacing: DesignConstant.sectionPadding) {
+//                if let url = notification.content.imageUrl {
+                AsyncImage(url: URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/300px-Wikipedia-logo-v2.svg.png"),
+                           content: { image in
+                               image.resizable()
+                                   .aspectRatio(contentMode: .fit)
+                                   .frame(maxWidth: 40, maxHeight: 40)
+                           },
+                           placeholder: {
+                               ProgressView()
+                           })
+//                AsyncImage(url: )
+//                    .frame(width: 40, height: 40)
+//                }
+
+//                ItemDetailSectionIcon(icon: PassIcon.passkey,
+//                                      color: ItemContentType.login.normColor,
+//                                      width: 40)
+
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text("Passkey")
+                        .foregroundStyle(PassColor.textInvert.toColor)
+                        .fontWeight(.medium)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    Text("Wooot")
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Spacer()
+
+                ItemDetailSectionIcon(icon: IconProvider.chevronRight, width: 20)
+            }
+            .padding(12)
+            .background(PassColor.backgroundWeak.toColor)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .overlay(RoundedRectangle(cornerRadius: 8)
+                .stroke(borderColor.toColor, lineWidth: 1))
+            .contentShape(.rect)
+            .onTapGesture(perform: onTap)
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            CircleButton(icon: IconProvider.cross,
+                         iconColor: PassColor.textNorm,
+                         backgroundColor: PassColor.backgroundNorm,
+                         accessibilityLabel: "Close",
+                         action: close)
+                .overlay(Circle()
+                    .stroke(Color.blue, lineWidth: 1))
+                .padding(2)
+                .background(Color.red /* PassColor.backgroundNorm.toColor */ )
+                .clipShape(.circle)
+//                .overlay(Circle()
+//                    .padding(1)
+//                    .background(PassColor.backgroundNorm.toColor)
+//                    .clipShape(.circle))
+                .offset(x: 15, y: -15)
+        }
+        .frame(maxWidth: .infinity)
+        .background(Color.clear)
+//        .clipShape(RoundedRectangle(cornerRadius: 8))
+//        .overlay(RoundedRectangle(cornerRadius: 8)
+//        .stroke(borderColor.toColor, lineWidth: 1))
+//        .contentShape(.rect)
+//        .onTapGesture(perform: onTap)
     }
 }
