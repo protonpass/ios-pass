@@ -1,3 +1,6 @@
+# Version 1.13.3
+Show warning when deleting aliases
+
 # Version 1.13.2
 Features:
 - Added support for arbitrary text filling (iOS 18): Long press on any text field -> AutoFill -> Passwords
