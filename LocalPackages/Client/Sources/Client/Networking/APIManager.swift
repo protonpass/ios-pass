@@ -53,7 +53,7 @@ private extension [APIManagerElements] {
     }
 }
 
-public final class APIManager: Sendable, APIManagerProtocol {
+public final class APIManager: @unchecked Sendable, APIManagerProtocol {
     private let logger: Logger
     private let doh: any DoHInterface
     private let themeProvider: any ThemeProvider
@@ -63,7 +63,21 @@ public final class APIManager: Sendable, APIManagerProtocol {
     private let challengeProvider = ChallengeParametersProvider.forAPIService(clientApp: .pass,
                                                                               challenge: .init())
     private let forceUpgradeHelper: ForceUpgradeHelper
-    private var allCurrentApiServices = [APIManagerElements]()
+
+    private let queue = DispatchQueue(label: "me.proton.pass.apimanager")
+    private var safeAllCurrentApiServices = [APIManagerElements]()
+    private var allCurrentApiServices: [APIManagerElements] {
+        get {
+            queue.sync {
+                safeAllCurrentApiServices
+            }
+        }
+        set {
+            queue.sync {
+                safeAllCurrentApiServices = newValue
+            }
+        }
+    }
 
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,

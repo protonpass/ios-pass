@@ -23,9 +23,10 @@ import ClientMocks
 import Combine
 import Core
 import Entities
-import XCTest
+import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking
+import Testing
 
 private final class MockedRemoteDatasource: RemoteTelemetryEventDatasourceProtocol {
     func send(userId: String, events: [Client.EventInfo]) async throws {}
@@ -38,17 +39,17 @@ private struct MockedCurrentDateProvider: CurrentDateProviderProtocol {
     func getCurrentDate() -> Date { currentDate }
 }
 
-final class TelemetryEventRepositoryTests: XCTestCase {
-    var localDatasource: LocalTelemetryEventDatasourceProtocol!
-    var localAccessDatasource: LocalAccessDatasourceProtocolMock!
-    var thresholdProvider: TelemetryThresholdProviderMock!
-    var userSettingsRepository: UserSettingsRepositoryProtocolMock!
-    var userManager: UserManagerProtocolMock!
-    var itemReadEventRepository: ItemReadEventRepositoryProtocolMock!
+@Suite(.tags(.remoteDatasource))
+struct TelemetryEventRepositoryTests {
+    let localDatasource: LocalTelemetryEventDatasourceProtocol
+    let localAccessDatasource: LocalAccessDatasourceProtocolMock
+    let thresholdProvider: TelemetryThresholdProviderMock
+    let userSettingsRepository: UserSettingsRepositoryProtocolMock
+    let userManager: UserManagerProtocolMock
+    let itemReadEventRepository: ItemReadEventRepositoryProtocolMock
     var sut: TelemetryEventRepositoryProtocol!
 
-    override func setUp() {
-        super.setUp()
+    init() {
         localDatasource = LocalTelemetryEventDatasource(databaseService: DatabaseService(inMemory: true))
         localAccessDatasource = .init()
         thresholdProvider = .init()
@@ -57,20 +58,11 @@ final class TelemetryEventRepositoryTests: XCTestCase {
         userManager.stubbedGetActiveUserDataResult = UserData.preview
         itemReadEventRepository = .init()
     }
-
-    override func tearDown() {
-        localDatasource = nil
-        thresholdProvider = nil
-        userSettingsRepository = nil
-        userManager = nil
-        localAccessDatasource = nil
-        sut = nil
-        super.tearDown()
-    }
 }
 
 extension TelemetryEventRepositoryTests {
-    func testAddNewEvents() async throws {
+    @Test("Add new events")
+    mutating func testAddNewEvents() async throws {
         // Given
         let userId1 = String.random()
         let userId2 = String.random()
@@ -96,18 +88,19 @@ extension TelemetryEventRepositoryTests {
         let events3 = try await localDatasource.getOldestEvents(count: 100, userId: userId3)
 
         // Then
-        XCTAssertEqual(events1.count, 2)
-        XCTAssertEqual(events1[0].type, .create(.login))
-        XCTAssertEqual(events1[1].type, .read(.alias))
+        #expect(events1.count == 2)
+        #expect(events1[0].type == .create(.login))
+        #expect(events1[1].type == .read(.alias))
 
-        XCTAssertEqual(events2.count, 1)
-        XCTAssertEqual(events2[0].type, .update(.note))
+        #expect(events2.count == 1)
+        #expect(events2[0].type == .update(.note))
 
-        XCTAssertEqual(events3.count, 1)
-        XCTAssertEqual(events3[0].type, .delete(.login))
+        #expect(events3.count == 1)
+        #expect(events3[0].type == .delete(.login))
     }
 
-    func testAutoGenerateThresholdWhenCurrentThresholdIsNil() async throws {
+    @Test("Auto generate threshold when current threshold is nil")
+    mutating func testAutoGenerateThresholdWhenCurrentThresholdIsNil() async throws {
         // Given
         let telemetryScheduler = TelemetryScheduler(currentDateProvider: CurrentDateProvider(),
                                                     thresholdProvider: thresholdProvider)
@@ -120,19 +113,20 @@ extension TelemetryEventRepositoryTests {
                                        scheduler: telemetryScheduler,
                                        userManager: userManager)
         var threshold = await sut.scheduler.getThreshold()
-        XCTAssertNil(threshold)
+        #expect(threshold == nil)
 
         // When
         let sendResult = try await sut.sendAllEventsIfApplicable()
 
         // Then
         threshold = await sut.scheduler.getThreshold()
-        XCTAssertNotNil(threshold)
-        XCTAssertEqual(sendResult, .thresholdNotReached)
-        XCTAssertFalse(itemReadEventRepository.invokedSendAllEventsfunction)
+        #expect(threshold != nil)
+        #expect(sendResult == .thresholdNotReached)
+        #expect(!itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
-    func testDoNotSendEventWhenThresholdNotReached() async throws {
+    @Test("Do not send event when threshold not reached")
+    mutating func testDoNotSendEventWhenThresholdNotReached() async throws {
         // Given
         let givenCurrentDate = Date.now
         var mockedCurrentDateProvider = MockedCurrentDateProvider()
@@ -154,11 +148,12 @@ extension TelemetryEventRepositoryTests {
         let sendResult = try await sut.sendAllEventsIfApplicable()
 
         // Then
-        XCTAssertEqual(sendResult, .thresholdNotReached)
-        XCTAssertFalse(itemReadEventRepository.invokedSendAllEventsfunction)
+        #expect(sendResult == .thresholdNotReached)
+        #expect(!itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
-    func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
+    @Test("Send all events and random new threshold if threshold is reached")
+    mutating func testSendAllEventsAndRandomNewThresholdIfThresholdIsReached() async throws {
         // Given
         let user1 = UserData.random()
         let user2 = UserData.random()
@@ -174,9 +169,9 @@ extension TelemetryEventRepositoryTests {
 
         userManager.stubbedGetAllUsersResult = [user1, user2, user3]
 
-        localAccessDatasource.closureGetAccess = { [weak self] in
-            guard let self else { return }
-            let userId = localAccessDatasource.invokedGetAccessParameters?.0 ?? ""
+        let nonMutatingSelf = self
+        localAccessDatasource.closureGetAccess = {
+            let userId = nonMutatingSelf.localAccessDatasource.invokedGetAccessParameters?.0 ?? ""
             let access: UserAccess = switch userId {
             case userId2:
                 // Paid user
@@ -231,12 +226,11 @@ extension TelemetryEventRepositoryTests {
                                          userData: UserAliasSyncData.default))
             }
 
-            localAccessDatasource.stubbedGetAccessResult = access
+            nonMutatingSelf.localAccessDatasource.stubbedGetAccessResult = access
         }
 
-        userSettingsRepository.closureGetSettings = { [weak self] in
-            guard let self else { return }
-            let userId = userSettingsRepository.invokedGetSettingsParameters?.0 ?? ""
+        userSettingsRepository.closureGetSettings = {
+            let userId = nonMutatingSelf.userSettingsRepository.invokedGetSettingsParameters?.0 ?? ""
             let settings: UserSettings = switch userId {
             case userId2:
                 // Paid user with telemetry turned off
@@ -260,7 +254,7 @@ extension TelemetryEventRepositoryTests {
                           twoFactor: .init(type: .disabled))
             }
 
-            userSettingsRepository.stubbedGetSettingsResult = settings
+            nonMutatingSelf.userSettingsRepository.stubbedGetSettingsResult = settings
         }
 
         thresholdProvider.telemetryThreshold = givenCurrentDate.addingTimeInterval(-1).timeIntervalSince1970
@@ -290,28 +284,29 @@ extension TelemetryEventRepositoryTests {
         let events3 = try await localDatasource.getOldestEvents(count: 100, userId: userId3)
 
         let threshold = await telemetryScheduler.getThreshold()
-        let newThreshold = try XCTUnwrap(threshold)
+        let newThreshold = try #require(threshold)
         let difference = Calendar.current.dateComponents([.hour],
                                                          from: givenCurrentDate,
                                                          to: newThreshold)
-        let differenceInHours = try XCTUnwrap(difference.hour)
+        let differenceInHours = try #require(difference.hour)
 
         // Then
-        XCTAssertEqual(sendResult, .allEventsSent(userIds: [userId3, userId1]))
+        #expect(sendResult == .allEventsSent(userIds: [userId3, userId1]))
         // No more events left in local db for all users
-        XCTAssertTrue(events1.isEmpty)
-        XCTAssertTrue(events2.isEmpty)
-        XCTAssertTrue(events3.isEmpty)
+        #expect(events1.isEmpty)
+        #expect(events2.isEmpty)
+        #expect(events3.isEmpty)
 
         let minInterval = await telemetryScheduler.minIntervalInHours
         let maxInterval = await telemetryScheduler.maxIntervalInHours
-        XCTAssertTrue(differenceInHours >= minInterval)
-        XCTAssertTrue(differenceInHours <= maxInterval)
+        #expect(differenceInHours >= minInterval)
+        #expect(differenceInHours <= maxInterval)
 
-        XCTAssertEqual(itemReadEventRepository.invokedSendAllEventsCount, 1)
+        #expect(itemReadEventRepository.invokedSendAllEventsCount == 1)
     }
 
-    func testRemoveAllLocalEventsWhenThresholdIsReachedButTelemetryIsOff() async throws {
+    @Test("Remove all local events when threshold is reached but telemetry is off")
+    mutating func testRemoveAllLocalEventsWhenThresholdIsReachedButTelemetryIsOff() async throws {
         // Given
         let user = UserData.random()
         let userId = user.user.ID
@@ -363,23 +358,24 @@ extension TelemetryEventRepositoryTests {
         let sendResult = try await sut.sendAllEventsIfApplicable()
         let events = try await localDatasource.getOldestEvents(count: 100, userId: userId)
         let threshold = await telemetryScheduler.getThreshold()
-        let newThreshold = try XCTUnwrap(threshold)
+        let newThreshold = try #require(threshold)
         let difference = Calendar.current.dateComponents([.hour],
                                                          from: givenCurrentDate,
                                                          to: newThreshold)
-        let differenceInHours = try XCTUnwrap(difference.hour)
+        let differenceInHours = try #require(difference.hour)
 
         // Then
-        XCTAssertEqual(sendResult, .allEventsSent(userIds: []))
-        XCTAssertTrue(events.isEmpty) // No more events left in local db
+        #expect(sendResult == .allEventsSent(userIds: []))
+        #expect(events.isEmpty) // No more events left in local db
         let minInterval = await telemetryScheduler.minIntervalInHours
         let maxInterval = await telemetryScheduler.maxIntervalInHours
-        XCTAssertTrue(differenceInHours >= minInterval)
-        XCTAssertTrue(differenceInHours <= maxInterval)
-        XCTAssertFalse(itemReadEventRepository.invokedSendAllEventsfunction)
+        #expect(differenceInHours >= minInterval)
+        #expect(differenceInHours <= maxInterval)
+        #expect(!itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
-    func testSendItemReadEventsForB2BWhenThresholdIsReachedButTelemetryIsOff() async throws {
+    @Test("Send item read events for B2B when threshold is reached but telemetry is off")
+    mutating func testSendItemReadEventsForB2BWhenThresholdIsReachedButTelemetryIsOff() async throws {
         // Given
         let user = UserData.random()
         let userId = user.user.ID
@@ -427,11 +423,12 @@ extension TelemetryEventRepositoryTests {
         let sendResult = try await sut.sendAllEventsIfApplicable()
 
         // Then
-        XCTAssertEqual(sendResult, .allEventsSent(userIds: []))
-        XCTAssertTrue(itemReadEventRepository.invokedSendAllEventsfunction)
+        #expect(sendResult == .allEventsSent(userIds: []))
+        #expect(itemReadEventRepository.invokedSendAllEventsfunction)
     }
 
-    func testSendItemReadEventsForB2BWhenThresholdIsReached() async throws {
+    @Test("Send item read events for B2B when threshod is reached")
+    mutating func testSendItemReadEventsForB2BWhenThresholdIsReached() async throws {
         // Given
         let user = UserData.random()
         let userId = user.user.ID
@@ -481,7 +478,7 @@ extension TelemetryEventRepositoryTests {
         let sendResult = try await sut.sendAllEventsIfApplicable()
 
         // Then
-        XCTAssertEqual(sendResult, .allEventsSent(userIds: [userId]))
-        XCTAssertTrue(itemReadEventRepository.invokedSendAllEventsfunction)
+        #expect(sendResult == .allEventsSent(userIds: [userId]))
+        #expect(itemReadEventRepository.invokedSendAllEventsfunction)
     }
 }

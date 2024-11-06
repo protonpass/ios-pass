@@ -549,7 +549,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld predmeta"
+                  "value" : "%lld predmeti"
                 }
               },
               "one" : {
@@ -561,13 +561,13 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld predmeta"
+                  "value" : "%lld predmetov"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld predmeti"
+                  "value" : "%lld predmeta"
                 }
               },
               "zero" : {
@@ -1277,6 +1277,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Alle kontoer (%lld)"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Alle accounts (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Alle accounts (%lld)"
                 }
               }
             }
@@ -2617,6 +2635,12 @@
             "value" : "Cassaforte SimpleLogin predefinita"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デフォルトの SimpleLogin 保管庫"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2913,6 +2937,12 @@
             "value" : "Attiva la sincronizzazione con SimpleLogin"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin 同期を有効にする"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2929,6 +2959,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktiver SimpleLogin synkronisering"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schakel SimpleLogin synchronisatie in"
           }
         },
         "pl" : {
@@ -6876,6 +6912,12 @@
             "value" : "Sincronizza gli alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを同期する"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7500,6 +7542,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "SimpleLogin に存在し Proton Pass に存在しないエイリアスが、%lld 件検知されました。インポートしますか？"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -7543,6 +7597,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Vi oppdaget at du har %lld aliaser som er til stede i SimpleLogin, men mangler i Proton Pass. Vil du importere dem?"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We hebben gedetecteerd dat u %lld alias hebt die aanwezig is in SimpleLogin, maar ontbreekt in Proton Pass. Wilt u deze importeren?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "We hebben gedetecteerd dat u %lld aliassen hebt die aanwezig zijn in SimpleLogin, maar ontbreken in Proton Pass. Wilt u deze importeren?"
                 }
               }
             }

@@ -23,7 +23,7 @@ import Core
 import Factory
 import UseCases
 
-final class UseCasesContainer: SharedContainer, AutoRegistering, Sendable {
+final class UseCasesContainer: SharedContainer, AutoRegistering {
     static let shared = UseCasesContainer()
     let manager = ContainerManager()
 
@@ -420,6 +420,7 @@ extension UseCasesContainer {
                                         logOutUser: SharedUseCasesContainer.shared.logOutUser()) }
     }
 
+    // periphery:ignore
     var checkFlagForMultiUsers: Factory<any CheckFlagForMultiUsersUseCase> {
         self { CheckFlagForMultiUsers(apiServicing: self.apiManager) }
     }
@@ -434,10 +435,6 @@ extension UseCasesContainer {
 
     var openAutoFillSettings: Factory<any OpenAutoFillSettingsUseCase> {
         self { OpenAutoFillSettings(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
-    }
-
-    var makeImportExportUrl: Factory<any MakeImportExportUrlUseCase> {
-        self { MakeImportExportUrl(doh: SharedToolingContainer.shared.doh()) }
     }
 
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {

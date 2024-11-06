@@ -22,7 +22,7 @@ import Core
 import Foundation
 import ProtonCoreTestingToolkitUnitTestsCore
 
-final class CurrentDateProviderMock: CurrentDateProviderProtocol {
+final class CurrentDateProviderMock: @unchecked Sendable, CurrentDateProviderProtocol {
     @FuncStub(CurrentDateProviderMock.getCurrentDate, initialReturn: .now) var currentDateStub
     func getCurrentDate() -> Date { currentDateStub() }
 }

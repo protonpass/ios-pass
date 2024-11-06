@@ -19,10 +19,9 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
-
 import Combine
 import Core
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import Factory
 import Foundation
@@ -32,11 +31,11 @@ import SwiftUI
 
 enum VaultManagerState {
     case loading
-    case loaded(vaults: [VaultContentUiModel], trashedItems: [ItemUiModel])
+    case loaded(VaultDatasUiModel)
     case error(any Error)
 }
 
-final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProtocol {
+final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintable, VaultsManagerProtocol {
     deinit { print(deinitMessage) }
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -44,7 +43,22 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
-    private var isRefreshing = false
+    private let loadVaultDatas = resolve(\SharedUseCasesContainer.loadVaultDatas)
+
+    private let queue = DispatchQueue(label: "me.proton.pass.vaultsManager")
+    private var safeIsRefreshing = false
+    private var isRefreshing: Bool {
+        get {
+            queue.sync {
+                safeIsRefreshing
+            }
+        }
+        set {
+            queue.sync {
+                safeIsRefreshing = newValue
+            }
+        }
+    }
 
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
@@ -98,7 +112,6 @@ final class VaultsManager: ObservableObject, DeinitPrintable, VaultsManagerProto
 private extension VaultsManager {
     func setUp() {
         $state
-            .receive(on: DispatchQueue.main)
             .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
@@ -107,8 +120,8 @@ private extension VaultsManager {
             .store(in: &cancellables)
 
         $vaultSelection
-            .dropFirst()
             .receive(on: DispatchQueue.main)
+            .dropFirst()
             .sink { [weak self] _ in
                 guard let self else { return }
                 filterOption = pendingItemTypeFilterOption ?? .all
@@ -119,17 +132,18 @@ private extension VaultsManager {
     }
 
     func updateItemCount() {
-        guard case let .loaded(vaults, trashedItems) = state else { return }
+        guard case let .loaded(uiModel) = state else { return }
         let items: [any ItemTypeIdentifiable] = switch vaultSelection {
         case .all:
-            vaults.flatMap(\.items)
+            uiModel.vaults.flatMap(\.items)
         case let .precise(selectedVault):
-            vaults
+            uiModel.vaults
                 .filter { $0.vault.shareId == selectedVault.shareId }
                 .flatMap(\.items)
         case .trash:
-            trashedItems
+            uiModel.trashedItems
         }
+
         itemCount = .init(items: items)
     }
 
@@ -144,20 +158,25 @@ private extension VaultsManager {
         logger.info("Created default vault for user")
     }
 
-    @MainActor
     func loadContents(userId: String, for vaults: [Vault]) async throws {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
-        let allItemUiModels = try allItems.map { try $0.toItemUiModel(symmetricKey) }
-        var vaultContentUiModels = vaults.map { vault in
-            let items = allItemUiModels
-                .filter { $0.shareId == vault.shareId }
-                .filter { $0.state == .active }
-            return VaultContentUiModel(vault: vault, items: items)
-        }
-        vaultContentUiModels.sortAlphabetically()
 
-        let trashedItems = allItemUiModels.filter { $0.state == .trashed }
+        let uiModel = try await loadVaultDatas(symmetricKey: symmetricKey,
+                                               vaults: vaults,
+                                               items: allItems)
+
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            currentVaults.send(vaults)
+            state = .loaded(uiModel)
+            if let lastSelectedShareId = getUserPreferences().lastSelectedShareId,
+               let vault = vaults.first(where: { $0.shareId == lastSelectedShareId }) {
+                vaultSelection = .precise(vault)
+            } else {
+                vaultSelection = .all
+            }
+        }
 
         let indexForAutoFillAndSplotlight: @Sendable () async -> Void = { [weak self] in
             guard let self else { return }
@@ -175,15 +194,6 @@ private extension VaultsManager {
             } catch {
                 logger.error(error)
             }
-        }
-
-        currentVaults.send(vaults)
-        state = .loaded(vaults: vaultContentUiModels, trashedItems: trashedItems)
-        if let lastSelectedShareId = getUserPreferences().lastSelectedShareId,
-           let vault = vaults.first(where: { $0.shareId == lastSelectedShareId }) {
-            vaultSelection = .precise(vault)
-        } else {
-            vaultSelection = .all
         }
 
         if await loginMethod.isManualLogIn() {
@@ -246,9 +256,12 @@ extension VaultsManager {
     }
 
     // Delete everything and download again
-    @MainActor
     func fullSync(userId: String) async {
-        vaultSyncEventStream.send(.started)
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            vaultSyncEventStream.send(.started)
+        }
+
         incompleteFullSyncUserId = userId
 
         do {
@@ -291,16 +304,23 @@ extension VaultsManager {
 
             try await loadContents(userId: userId, for: vaults)
         } catch {
-            vaultSyncEventStream.send(.error(userId: userId, error: error))
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                vaultSyncEventStream.send(.error(userId: userId, error: error))
+            }
             return
         }
 
         incompleteFullSyncUserId = nil
-        vaultSyncEventStream.send(.done)
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            vaultSyncEventStream.send(.done)
+        }
     }
 
     func localFullSync(userId: String) async throws {
         let vaults = try await shareRepository.getVaults(userId: userId)
+        state = .loading
         try await loadContents(userId: userId, for: vaults)
     }
 
@@ -328,32 +348,19 @@ extension VaultsManager {
     }
 
     func getItems(for vault: Vault) -> [ItemUiModel] {
-        guard case let .loaded(vaults, _) = state else { return [] }
-
-        return vaults.first { $0.vault.id == vault.id }?.items ?? []
+        guard case let .loaded(uiModel) = state else { return [] }
+        return uiModel.vaults.first { $0.vault.id == vault.id }?.items ?? []
     }
 
     func getAllActiveAndTrashedItems() -> [ItemUiModel] {
-        guard case let .loaded(vaults, trashedItems) = state else { return [] }
-        let activeItems = vaults.flatMap(\.items)
-        return activeItems + trashedItems
-    }
-
-    func getItemCount(for selection: VaultSelection) -> Int {
-        guard case let .loaded(vaults, trashedItems) = state else { return 0 }
-        switch selection {
-        case .all:
-            return vaults.map(\.items.count).reduce(into: 0) { $0 += $1 }
-        case let .precise(vault):
-            return vaults.first { $0.vault == vault }?.items.count ?? 0
-        case .trash:
-            return trashedItems.count
-        }
+        guard case let .loaded(uiModel) = state else { return [] }
+        let activeItems = uiModel.vaults.flatMap(\.items)
+        return activeItems + uiModel.trashedItems
     }
 
     func getAllVaultContents() -> [VaultContentUiModel] {
-        guard case let .loaded(vaults, _) = state else { return [] }
-        return vaults
+        guard case let .loaded(uiModel) = state else { return [] }
+        return uiModel.vaults
     }
 
     func getAllEditableVaultContents() -> [VaultContentUiModel] {
@@ -394,22 +401,22 @@ extension VaultsManager {
     }
 
     func getOldestOwnedVault() -> Vault? {
-        guard case let .loaded(uiModels, _) = state else { return nil }
-        let vaults = uiModels.map(\.vault)
+        guard case let .loaded(uiModel) = state else { return nil }
+        let vaults = uiModel.vaults.map(\.vault)
         return vaults.oldestOwned
     }
 
     func getFilteredItems() -> [ItemUiModel] {
-        guard case let .loaded(vaults, trashedItems) = state else { return [] }
+        guard case let .loaded(uiModel) = state else { return [] }
         let items: [ItemUiModel] = switch vaultSelection {
         case .all:
-            vaults.flatMap(\.items)
+            uiModel.vaults.flatMap(\.items)
         case let .precise(selectedVault):
-            vaults
+            uiModel.vaults
                 .filter { $0.vault.shareId == selectedVault.shareId }
                 .flatMap(\.items)
         case .trash:
-            trashedItems
+            uiModel.trashedItems
         }
 
         switch filterOption {
@@ -463,9 +470,9 @@ private extension VaultsManager {
 extension VaultsManager: LimitationCounterProtocol {
     func getAliasCount() -> Int {
         switch state {
-        case let .loaded(vaults, trash):
-            let activeAliases = vaults.flatMap(\.items).filter(\.isAlias)
-            let trashedAliases = trash.filter(\.isAlias)
+        case let .loaded(uiModel):
+            let activeAliases = uiModel.vaults.flatMap(\.items).filter(\.isAlias)
+            let trashedAliases = uiModel.trashedItems.filter(\.isAlias)
             return activeAliases.count + trashedAliases.count
         default:
             return 0
@@ -473,16 +480,16 @@ extension VaultsManager: LimitationCounterProtocol {
     }
 
     func getTOTPCount() -> Int {
-        guard case let .loaded(vaults, trashedItems) = state else { return 0 }
-        let activeItemsWithTotpUri = vaults.flatMap(\.items).filter(\.hasTotpUri).count
-        let trashedItemsWithTotpUri = trashedItems.filter(\.hasTotpUri).count
+        guard case let .loaded(uiModel) = state else { return 0 }
+        let activeItemsWithTotpUri = uiModel.vaults.flatMap(\.items).filter(\.hasTotpUri).count
+        let trashedItemsWithTotpUri = uiModel.trashedItems.filter(\.hasTotpUri).count
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
     }
 
     func getVaultCount() -> Int {
         switch state {
-        case let .loaded(vaults, _):
-            vaults.count
+        case let .loaded(uiModel):
+            uiModel.vaults.count
         default:
             0
         }
@@ -493,8 +500,8 @@ extension VaultsManager: LimitationCounterProtocol {
 
 extension VaultsManager: VaultsProvider {
     func getAllVaults() -> [Vault] {
-        guard case let .loaded(vaults, _) = state else { return [] }
-        return vaults.map(\.vault)
+        guard case let .loaded(uiModel) = state else { return [] }
+        return uiModel.vaults.map(\.vault)
     }
 }
 
@@ -503,9 +510,8 @@ extension VaultManagerState: Equatable {
         switch (lhs, rhs) {
         case (.loading, .loading):
             true
-        case let (.loaded(lhsVaults, lhsTrashedItems), .loaded(rhsVaults, rhsTrashedItems)):
-            lhsVaults.hashValue == rhsVaults.hashValue &&
-                lhsTrashedItems.hashValue == rhsTrashedItems.hashValue
+        case let (.loaded(lhsUiModel), .loaded(rhsUiModel)):
+            lhsUiModel.hashValue == rhsUiModel.hashValue
         case let (.error(lhsError), .error(rhsError)):
             lhsError.localizedDescription == rhsError.localizedDescription
         default:

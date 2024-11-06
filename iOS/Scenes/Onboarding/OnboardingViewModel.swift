@@ -56,8 +56,8 @@ final class OnboardingViewModel: ObservableObject {
 
         preferencesManager
             .sharedPreferencesUpdates
-            .filter(\.localAuthenticationMethod)
             .receive(on: DispatchQueue.main)
+            .filter(\.localAuthenticationMethod)
             .sink { [weak self] newValue in
                 guard let self, newValue == .biometric else { return }
                 do {

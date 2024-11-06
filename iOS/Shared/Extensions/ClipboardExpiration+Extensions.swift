@@ -21,7 +21,7 @@
 import Entities
 import Macro
 
-extension ClipboardExpiration: CustomStringConvertible {
+extension ClipboardExpiration: @retroactive CustomStringConvertible {
     public var description: String {
         switch self {
         case .fifteenSeconds:

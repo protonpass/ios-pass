@@ -37,7 +37,7 @@ public struct LogManagerConfig: Sendable {
     let dumpThreshold: Int
     let timerInterval: Double
 
-    public init(maxLogLines: Int, dumpThreshold: Int = 300, timerInterval: Double = 30) {
+    public init(maxLogLines: Int, dumpThreshold: Int = 50, timerInterval: Double = 30) {
         self.maxLogLines = maxLogLines
         self.dumpThreshold = dumpThreshold
         self.timerInterval = timerInterval
@@ -55,6 +55,8 @@ public actor LogManager: LogManagerProtocol, Sendable {
     private var currentMemoryLogs = [LogEntry]()
     private let config: LogManagerConfig
     private var timer: Timer?
+    private var timerTask: Task<Void, Never>?
+    private var secondCount: Double = 0
 
     public private(set) var shouldLog = true
 
@@ -85,8 +87,8 @@ public actor LogManager: LogManagerProtocol, Sendable {
     }
 
     deinit {
-        timer?.invalidate()
-        timer = nil
+        timerTask?.cancel()
+        timerTask = nil
     }
 }
 
@@ -181,14 +183,28 @@ private extension LogManager {
 
 private extension LogManager {
     func setUp() {
-        timer = Timer.scheduledTimer(withTimeInterval: config.timerInterval,
-                                     repeats: true) { [weak self] _ in
-            Task { [weak self] in
-                guard let self,
-                      await currentMemoryLogs.count > self.config.dumpThreshold,
-                      await shouldLog else { return }
-                await saveAllLogs()
-            }
+        guard timerTask == nil else {
+            return
+        }
+        timerTask = Task { [weak self] in
+            guard let self else { return }
+            await timerLoop()
+        }
+    }
+
+    func timerLoop() async {
+        while !Task.isCancelled {
+            try? await Task.sleep(seconds: 1)
+
+            guard !Task.isCancelled else { return }
+
+            secondCount += 1
+
+            guard secondCount >= config.timerInterval,
+                  currentMemoryLogs.count > config.dumpThreshold,
+                  shouldLog else { return }
+            secondCount = 0
+            saveAllLogs()
         }
     }
 }

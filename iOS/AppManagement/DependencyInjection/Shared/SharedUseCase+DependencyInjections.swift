@@ -222,6 +222,10 @@ extension SharedUseCasesContainer {
         self { FullVaultsSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                               vaultsManager: self.vaultsManager) }
     }
+
+    var loadVaultDatas: Factory<any LoadVaultDatasUseCase> {
+        self { LoadVaultDatas() }
+    }
 }
 
 // MARK: - Feature Flags
@@ -352,10 +356,10 @@ extension SharedUseCasesContainer {
 // MARK: - Session
 
 extension SharedUseCasesContainer {
-    var forkSession: Factory<any ForkSessionUseCase> {
-        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository(),
-                           userManager: self.userManager) }
-    }
+//    var forkSession: Factory<any ForkSessionUseCase> {
+//        self { ForkSession(networkRepository: SharedRepositoryContainer.shared.networkRepository(),
+//                           userManager: self.userManager) }
+//    }
 }
 
 // MARK: - User

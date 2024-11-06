@@ -23,7 +23,7 @@ import Core
 import Entities
 import Factory
 import Macro
-import ProtonCoreUIFoundations
+@preconcurrency import ProtonCoreUIFoundations
 import Screens
 
 final class ItemContextMenuHandler: @unchecked Sendable {
@@ -49,17 +49,19 @@ extension ItemContextMenuHandler {
         }
     }
 
+    @MainActor
     func trash(_ item: any ItemTypeIdentifiable) {
         performAction(on: item, showSpinner: true) { [weak self] _ in
             guard let self else { return }
             try await itemRepository.trashItems([item])
 
             let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
-                Task { [weak self] in
+                guard let self else { return }
+                Task { @MainActor [weak self] in
                     guard let self else {
                         return
                     }
-                    await banner.dismiss()
+                    banner.dismiss()
                     restore(item)
                 }
             }

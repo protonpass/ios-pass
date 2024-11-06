@@ -22,7 +22,7 @@ import Entities
 import Foundation
 import Macro
 
-extension AliasPrefixError: LocalizedError {
+extension AliasPrefixError: @retroactive LocalizedError {
     public var localizedDescription: String {
         switch self {
         case .emptyPrefix:

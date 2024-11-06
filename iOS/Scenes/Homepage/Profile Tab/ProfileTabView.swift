@@ -137,12 +137,8 @@ struct ProfileTabView: View {
                                     animationNamespace: animationNamespace)
                             .animation(.default, value: showSwitcher)
                             .onTapGesture {
-                                if viewModel.isMultiAccountActive {
-                                    withAnimation {
-                                        showSwitcher.toggle()
-                                    }
-                                } else {
-                                    viewModel.manageAccount(activeUser)
+                                withAnimation {
+                                    showSwitcher.toggle()
                                 }
                             }
                     }

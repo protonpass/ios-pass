@@ -35,10 +35,16 @@ struct QAFeaturesView: View {
     @AppStorage(Constants.QA.searchAndListSecureLink)
     private var searchAndListSecureLink = false
 
+    @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
+    private var useSwiftUIList = false
+
     var body: some View {
         NavigationStack {
             Form {
                 OnboardSection()
+                if #available(iOS 17, *) {
+                    FeatureFlagsSection()
+                }
                 HapticFeedbacksSection()
                 Section {
                     AccountSwitcherSection()
@@ -48,6 +54,7 @@ struct QAFeaturesView: View {
                     ItemReadEventsSection()
                     TrashItemsSection()
                     BannersSection()
+                    PasswordPolicySection()
                     Toggle(isOn: $displayUpgradeAppBanner) {
                         Text(verbatim: "Display upgrade app banner")
                     }
@@ -57,6 +64,19 @@ struct QAFeaturesView: View {
 
                     Toggle(isOn: $searchAndListSecureLink) {
                         Text(verbatim: "Display search secure link")
+                    }
+
+                    Toggle(isOn: $useSwiftUIList) {
+                        Text(verbatim: "Use SwiftUI List")
+                        // swiftlint:disable line_length
+                        Text(verbatim: """
+                        We keep 2 implementations of list (SwiftUI List and UIKit UITableView)
+                        because of SwiftUI List performance issues which specifically arise on iOS 18
+                        This option allows to do the switch on the fly in order to benchmark SwiftUI List in future iOS versions
+                        """)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        // swiftlint:enable line_length
                     }
                 }
                 if #available(iOS 17, *) {
