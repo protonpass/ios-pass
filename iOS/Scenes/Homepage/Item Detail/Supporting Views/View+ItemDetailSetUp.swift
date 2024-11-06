@@ -40,8 +40,8 @@ struct ItemDetailSetUpModifier: ViewModifier {
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }
             .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBeDeleted,
-                                                    onDisableAlias: {},
-                                                    onDelete: viewModel.permanentlyDelete))
+                                                    onDisableAlias: { viewModel.disableAlias() },
+                                                    onDelete: { viewModel.permanentlyDelete() }))
     }
 }
 
