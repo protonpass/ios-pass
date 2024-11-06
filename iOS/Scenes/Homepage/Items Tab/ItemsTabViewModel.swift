@@ -470,7 +470,9 @@ extension ItemsTabViewModel {
             assertionFailure("No selected items to permanently delete")
             return
         }
-        router.alert(.bulkPermanentDeleteConfirmation(itemCount: items.count))
+        let aliasCount = items.count { $0.isAlias }
+        router.alert(.bulkPermanentDeleteConfirmation(itemCount: items.count,
+                                                      aliasCount: aliasCount))
     }
 
     func createNewItem(type: ItemContentType) {
