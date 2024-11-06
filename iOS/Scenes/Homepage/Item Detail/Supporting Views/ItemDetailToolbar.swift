@@ -114,7 +114,7 @@ struct ItemDetailToolbar: ToolbarContent {
 
                     Label("Delete permanently", image: IconProvider.trashCross)
                         .buttonEmbeded(role: .destructive,
-                                       action: { viewModel.showingDeleteAlert.toggle() })
+                                       action: { viewModel.itemToBeDeleted = viewModel.itemContent })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: itemContentType.normMajor2Color,
