@@ -124,7 +124,7 @@ enum UIElementDisplay: Sendable {
 }
 
 enum AlertDestination: Sendable {
-    case bulkPermanentDeleteConfirmation(itemCount: Int)
+    case bulkPermanentDeleteConfirmation(itemCount: Int, aliasCount: Int)
 }
 
 enum ActionDestination: Sendable {
