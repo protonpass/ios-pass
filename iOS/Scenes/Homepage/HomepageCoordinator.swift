@@ -52,7 +52,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Injected & self-initialized properties
     let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
@@ -1643,28 +1642,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
         showFullScreen(data: data)
-    }
-
-    func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable) {
-        refresh()
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            // swiftformat:disable:next redundantParens
-            let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
-                guard let self else { return }
-                Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await banner.dismiss()
-                    itemContextMenuHandler.restore(item)
-                }
-            }
-            bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                   dismissButtonTitle: #localized("Undo"),
-                                                   onDismiss: undoBlock)
-        }
-        addNewEvent(type: .update(item.type))
     }
 }
 
