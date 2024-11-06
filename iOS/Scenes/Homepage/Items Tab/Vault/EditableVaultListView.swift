@@ -183,6 +183,8 @@ struct EditableVaultListView: View {
 
     @ViewBuilder
     private var trashTrailingView: some View {
+        let trashedAliasesCount = viewModel.trashedAliasesCount
+        let showAliasWarning = trashedAliasesCount > 0
         if viewModel.hasTrashItems {
             Menu(content: {
                 Button { viewModel.restoreAllTrashedItems() } label: {
@@ -207,16 +209,24 @@ struct EditableVaultListView: View {
                            })
                        })
             }, label: threeDotsIcon)
-                .alert("Empty trash",
-                       isPresented: $isShowingEmptyTrashAlert,
-                       actions: {
-                           Button(role: .destructive,
-                                  action: { viewModel.emptyTrash() },
-                                  label: { Text("Empty trash") })
+                .alert(showAliasWarning ?
+                    "You are about to permanently delete \(trashedAliasesCount) aliases" :
+                    "Empty trash",
+                    isPresented: $isShowingEmptyTrashAlert,
+                    actions: {
+                        Button(role: .destructive,
+                               action: { viewModel.emptyTrash() },
+                               label: {
+                                   Text(showAliasWarning ? "Understood, I will never need them" : "Empty trash")
+                               })
 
-                           Button(role: .cancel, label: { Text("Cancel") })
-                       },
-                       message: { Text("All items in trash will be permanently deleted") })
+                        Button(role: .cancel, label: { Text("Cancel") })
+                    },
+                    message: {
+                        Text(showAliasWarning ?
+                            "Please note once deleted, the aliases can't be restored" :
+                            "All items in trash will be permanently deleted")
+                    })
         }
     }
 }
