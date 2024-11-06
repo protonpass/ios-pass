@@ -62,7 +62,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
 
     private var cachedCredentials: CachedCredentials = [:]
     private let keychain: any KeychainProtocol
-    private let symmetricKeyProvider: any NonSendableSymmetricKeyProvider
+    private let symmetricKeyProvider: any NonAsyncSymmetricKeyProvider
     private let module: PassModule
     private let _sessionWasInvalidated: PassthroughSubject<(sessionId: String, userId: String?), Never> = .init()
     private let logger: Logger
@@ -74,7 +74,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
     }
 
     public init(keychain: any KeychainProtocol,
-                symmetricKeyProvider: any NonSendableSymmetricKeyProvider,
+                symmetricKeyProvider: any NonAsyncSymmetricKeyProvider,
                 module: PassModule,
                 logManager: any LogManagerProtocol) {
         self.keychain = keychain
@@ -392,7 +392,7 @@ private struct CredentialsKey: Hashable, Codable {
     let module: PassModule
 }
 
-extension Credential: Codable, Hashable {
+extension Credential: Codable, @retroactive Hashable {
     private enum CodingKeys: String, CodingKey {
         case UID
         case accessToken

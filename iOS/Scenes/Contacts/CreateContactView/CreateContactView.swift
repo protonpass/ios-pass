@@ -39,6 +39,7 @@ struct CreateContactView: View {
                 .focused($focused)
                 .keyboardType(.emailAddress)
                 .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .tint(ItemContentType.alias.normColor.toColor)
                 .frame(height: 64)

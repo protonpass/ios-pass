@@ -21,7 +21,7 @@
 import Client
 @preconcurrency import Combine
 import Entities
-import ProtonCorePasswordChange
+@preconcurrency import ProtonCorePasswordChange
 import Screens
 import SwiftUI
 
@@ -58,8 +58,6 @@ enum SheetDismissal {
     case all
 }
 
-extension PasswordChangeModule.PasswordChangeMode: @unchecked Sendable {}
-
 enum SheetDestination: Equatable, Hashable, Sendable {
     case sharingFlow(SheetDismissal)
     case manageShareVault(Vault, SheetDismissal)
@@ -76,7 +74,6 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case setPINCode
     case history(ItemContent)
     case restoreHistory
-    case importExport
     case tutorial
     case accountSettings
     case settingsMenu
@@ -141,13 +138,13 @@ enum DeeplinkDestination: Sendable {
     case error(any Error)
 }
 
-final actor MainUIKitSwiftUIRouter: Sendable {
-    let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
+final class MainUIKitSwiftUIRouter: Sendable {
+    nonisolated let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     nonisolated let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
-    let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
-    let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
-    let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
-    let itemDestinations: PassthroughSubject<GenericDestination, Never> = .init()
+    nonisolated let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
+    nonisolated let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
+    nonisolated let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
+    nonisolated let itemDestinations: PassthroughSubject<GenericDestination, Never> = .init()
 
     @MainActor
     private var pendingDeeplinkDestination: DeeplinkDestination?

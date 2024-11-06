@@ -19,7 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import Combine
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import Foundation
 import PassRustCore
@@ -72,10 +72,10 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let remoteDataSource: any RemoteBreachDataSourceProtocol
     private let userManager: any UserManagerProtocol
 
-    public let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
-    public let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
-    public let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
-    public let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
+    public nonisolated let darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> = .init()
+    public nonisolated let userBreaches: CurrentValueSubject<UserBreaches?, Never> = .init(nil)
+    public nonisolated let weaknessStats: CurrentValueSubject<WeaknessStats, Never> = .init(.default)
+    public nonisolated let itemsWithSecurityIssues: CurrentValueSubject<[SecurityAffectedItem], Never> = .init([])
 
     private var cancellable = Set<AnyCancellable>()
     private var refreshTask: Task<Void, Never>?
@@ -103,7 +103,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     public func refreshSecurityChecks() async throws {
         let userId = try await userManager.getActiveUserId()
-        var reusedPasswords = [String: Int]()
+        var passwordCounts = [String: Int]()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
             .compactMap { encryptedItem -> InternalPassMonitorItem? in
@@ -113,13 +113,13 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                 }
 
                 if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
-                    reusedPasswords[loginItem.password, default: 0] += 1
+                    passwordCounts[loginItem.password, default: 0] += 1
                 }
                 return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
             }
 
         // Filter out unique passwords
-        reusedPasswords = reusedPasswords.filter { $0.value > 1 }
+        let reusedPasswords = Set(passwordCounts.filter { $0.value > 1 }.map(\.key))
 
         var numberOfWeakPassword = 0
         var numberOfMissing2fa = 0
@@ -134,7 +134,7 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                 weaknesses.append(.excludedItems)
                 numberOfExcludedItems += 1
             } else {
-                if reusedPasswords[item.loginData.password] != nil {
+                if reusedPasswords.contains(item.loginData.password) {
                     weaknesses.append(.reusedPasswords)
                 }
 

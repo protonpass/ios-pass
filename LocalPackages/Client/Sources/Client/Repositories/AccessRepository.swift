@@ -63,7 +63,6 @@ public actor AccessRepository: AccessRepositoryProtocol {
 
     public nonisolated let access: CurrentValueSubject<UserAccess?, Never> = .init(nil)
     public nonisolated let accesses: CurrentValueSubject<[UserAccess], Never> = .init([])
-
     public nonisolated let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
 
     public init(localDatasource: any LocalAccessDatasourceProtocol,
@@ -107,7 +106,9 @@ public extension AccessRepository {
         logger.trace("Refreshing access for user \(userId)")
         let remoteAccess = try await remoteDatasource.getAccess(userId: userId)
         let userAccess = UserAccess(userId: userId, access: remoteAccess)
-        access.send(userAccess)
+        await MainActor.run {
+            access.send(userAccess)
+        }
 
         if let localAccess = try await localDatasource.getAccess(userId: userId),
            localAccess.access.plan != remoteAccess.plan {

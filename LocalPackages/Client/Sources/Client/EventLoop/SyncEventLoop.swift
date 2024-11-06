@@ -155,15 +155,16 @@ public final class SyncEventLoop: SyncEventLoopProtocol, DeinitPrintable, @unche
 public extension SyncEventLoop {
     /// Start looping
     func start() {
-        queue.async { [weak self] in
+        queue.sync { [weak self] in
             guard let self else { return }
             guard timerTask == nil else {
                 return
             }
 
             delegate?.syncEventLoopDidStartLooping()
-            timerTask = Task {
-                await self.timerLoop()
+            timerTask = Task { [weak self] in
+                guard let self else { return }
+                await timerLoop()
             }
         }
     }
@@ -175,7 +176,7 @@ public extension SyncEventLoop {
 
     /// Stop looping
     func stop() {
-        queue.async { [weak self] in
+        queue.sync { [weak self] in
             guard let self else { return }
 
             for (key, task) in activeTasks {
@@ -223,10 +224,12 @@ private extension SyncEventLoop {
         guard fetchEventsTask == nil else {
             return
         }
-        fetchEventsTask = Task { [weak self] in
+        fetchEventsTask = Task { @MainActor [weak self] in
             defer {
-                fetchEventsTask?.cancel()
-                fetchEventsTask = nil
+                // swiftlint:disable discouraged_optional_self
+                self?.fetchEventsTask?.cancel()
+                self?.fetchEventsTask = nil
+                // swiftlint:enable discouraged_optional_self
             }
 
             guard let self else {
@@ -243,7 +246,7 @@ private extension SyncEventLoop {
                 if activeTasks[userData.user.ID] != nil {
                     delegate?.syncEventLoopDidSkipLoop(reason: .previousLoopNotFinished(userId: userData.user.ID))
                 } else {
-                    activeTasks[userData.user.ID] = Task { @MainActor [weak self] in
+                    activeTasks[userData.user.ID] = Task { [weak self] in
                         guard let self else { return }
 
                         defer {

@@ -154,8 +154,8 @@ private extension SecureLinkListViewModel {
             .store(in: &cancellables)
 
         secureLinkManager.currentSecureLinks
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] newLinks in
                 guard let self, let newLinks else { return }
                 links = newLinks

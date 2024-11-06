@@ -21,13 +21,15 @@
 @preconcurrency import Combine
 import Core
 import CoreData
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import ProtonCoreLogin
 
-private let kBatchPageSize = 100
+// swiftlint:disable:next todo
+// TODO: need to keep an eye on the evolution of Combine publisher and structured concurrency
+extension CurrentValueSubject: @unchecked @retroactive Sendable {}
 
-extension KeyPath: @unchecked Sendable {}
+private let kBatchPageSize = 100
 
 // sourcery: AutoMockable
 public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
@@ -167,8 +169,9 @@ public actor ItemRepository: ItemRepositoryProtocol {
     private let passKeyManager: any PassKeyManagerProtocol
     private let logger: Logger
 
-    public let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> = .init(nil)
-    public let itemsWereUpdated: CurrentValueSubject<Void, Never> = .init(())
+    public nonisolated let currentlyPinnedItems: CurrentValueSubject<[SymmetricallyEncryptedItem]?, Never> =
+        .init(nil)
+    public nonisolated let itemsWereUpdated: CurrentValueSubject<Void, Never> = .init(())
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol,
@@ -201,11 +204,11 @@ public extension ItemRepository {
     }
 
     func getAllItemContents(userId: String) async throws -> [ItemContent] {
-        let items: [ItemContent?] = try await getAllItems(userId: userId).parallelMap { [weak self] item in
-            guard let self else { return nil }
-            return try await item.getItemContent(symmetricKey: getSymmetricKey())
+        let key = try await getSymmetricKey()
+
+        return try await getAllItems(userId: userId).parallelMap(parallelism: 50) { item in
+            try item.getItemContent(symmetricKey: key)
         }
-        return items.compactMap { $0 }
     }
 
     func getItems(userId: String, state: ItemState) async throws -> [SymmetricallyEncryptedItem] {

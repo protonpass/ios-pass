@@ -42,9 +42,7 @@ enum AppDataKey: String {
     case mainCredential
 }
 
-extension UserData: @unchecked Sendable {}
-
-final class AppData: AppDataProtocol {
+final class AppData: @unchecked Sendable, AppDataProtocol {
     /// Can be removed after july 2025
     @LockedKeychainStorage(key: AppDataKey.userData, defaultValue: nil)
     private var userData: UserData?
