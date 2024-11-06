@@ -553,6 +553,11 @@ extension ItemsTabViewModel {
         }
     }
 
+    func disableAlias() {
+        guard let itemToBePermanentlyDeleted else { return }
+        itemContextMenuHandler.disableAlias(itemToBePermanentlyDeleted)
+    }
+
     func permanentlyDelete() {
         guard let itemToBePermanentlyDeleted else { return }
         itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)

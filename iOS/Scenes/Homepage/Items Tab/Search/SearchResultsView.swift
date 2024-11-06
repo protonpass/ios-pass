@@ -81,7 +81,7 @@ struct SearchResultsView: View {
                                                 }))
         }
         .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBePermanentlyDeleted,
-                                                onDisableAlias: {},
+                                                onDisableAlias: { viewModel.disableAlias() },
                                                 onDelete: { viewModel.permanentlyDelete() }))
     }
 

@@ -170,7 +170,7 @@ struct ItemsTabView: View {
                                                     }))
             }
             .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBePermanentlyDeleted,
-                                                    onDisableAlias: {},
+                                                    onDisableAlias: { viewModel.disableAlias() },
                                                     onDelete: { viewModel.permanentlyDelete() }))
         }
         .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)

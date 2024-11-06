@@ -74,6 +74,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private(set) var itemRepository
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
 
     var isAllowedToEdit: Bool {
         guard let vault else {
@@ -228,69 +229,18 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func moveToTrash() {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                logger.trace("Trashing \(itemContent.debugDescription)")
-                router.display(element: .globalLoading(shouldShow: true))
-                let encryptedItem = try await getItemTask(item: itemContent).value
-                let symmetricKey = try await getSymmetricKey()
-                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-                try await itemRepository.trashItems([encryptedItem])
-                delegate?.itemDetailViewModelDidMoveToTrash(item: item)
-                logger.info("Trashed \(item.debugDescription)")
-                donateToItemForceTouchTip()
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
+        itemContextMenuHandler.trash(itemContent)
     }
 
     func restore() {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                logger.trace("Restoring \(itemContent.debugDescription)")
-                router.display(element: .globalLoading(shouldShow: true))
-                let encryptedItem = try await getItemTask(item: itemContent).value
-                let symmetricKey = try await getSymmetricKey()
-                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-                try await itemRepository.untrashItems([encryptedItem])
-                router.display(element: .successMessage(item.type.restoreMessage,
-                                                        config: .dismissAndRefresh(with: .update(item.type))))
-                logger.info("Restored \(item.debugDescription)")
-                donateToItemForceTouchTip()
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
+        itemContextMenuHandler.restore(itemContent)
     }
 
+    // Overridden by alias detail page
+    func disableAlias() {}
+
     func permanentlyDelete() {
-        Task { [weak self] in
-            guard let self else { return }
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                logger.trace("Permanently deleting \(itemContent.debugDescription)")
-                router.display(element: .globalLoading(shouldShow: true))
-                let encryptedItem = try await getItemTask(item: itemContent).value
-                let symmetricKey = try await getSymmetricKey()
-                let item = try encryptedItem.getItemContent(symmetricKey: symmetricKey)
-                let userId = try await userManager.getActiveUserId()
-                try await itemRepository.deleteItems(userId: userId, [encryptedItem], skipTrash: false)
-                router.display(element: .successMessage(item.type.deleteMessage,
-                                                        config: .dismissAndRefresh(with: .delete(item.type))))
-                logger.info("Permanently deleted \(item.debugDescription)")
-                donateToItemForceTouchTip()
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
+        itemContextMenuHandler.deletePermanently(itemContent)
     }
 
     func upgrade() {
@@ -322,19 +272,6 @@ private extension BaseItemDetailViewModel {
             } catch {
                 handle(error)
             }
-        }
-    }
-
-    func getItemTask(item: any ItemIdentifiable) -> Task<SymmetricallyEncryptedItem, any Error> {
-        Task.detached(priority: .userInitiated) { [weak self] in
-            guard let self else {
-                throw PassError.deallocatedSelf
-            }
-            guard let item = try await itemRepository.getItem(shareId: item.shareId,
-                                                              itemId: item.itemId) else {
-                throw PassError.itemNotFound(item)
-            }
-            return item
         }
     }
 
