@@ -52,7 +52,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Injected & self-initialized properties
     let eventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     let logger = resolve(\SharedToolingContainer.logger)
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
@@ -601,8 +600,9 @@ extension HomepageCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case let .bulkPermanentDeleteConfirmation(itemCount):
-                    presentBulkPermanentDeleteConfirmation(itemCount: itemCount)
+                case let .bulkPermanentDeleteConfirmation(itemCount, aliasCount):
+                    presentBulkPermanentDeleteConfirmation(itemCount: itemCount,
+                                                           aliasCount: aliasCount)
                 }
             }
             .store(in: &cancellables)
@@ -768,11 +768,23 @@ extension HomepageCoordinator {
         present(viewController)
     }
 
-    func presentBulkPermanentDeleteConfirmation(itemCount: Int) {
-        let title = #localized("Delete permanently?")
-        let message = #localized("You are going to delete %lld items irreversibly, are you sure?", itemCount)
+    func presentBulkPermanentDeleteConfirmation(itemCount: Int, aliasCount: Int) {
+        let title: String
+        let message: String
+        let buttonTitle: String
+
+        if aliasCount > 0 {
+            title = #localized("You are about to permanently delete %lld aliases", aliasCount)
+            message = #localized("Please note once deleted, the aliases can't be restored")
+            buttonTitle = #localized("Understood, I will never need them")
+        } else {
+            title = #localized("Delete permanently?")
+            message = #localized("You are going to delete %lld items irreversibly, are you sure?", itemCount)
+            buttonTitle = #localized("Delete")
+        }
+
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let deleteAction = UIAlertAction(title: #localized("Delete"),
+        let deleteAction = UIAlertAction(title: buttonTitle,
                                          style: .destructive) { [weak self] _ in
             guard let self else { return }
             itemsTabViewModel?.permanentlyDeleteSelectedItems()
@@ -1630,28 +1642,6 @@ extension HomepageCoordinator: ItemDetailViewModelDelegate {
 
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData) {
         showFullScreen(data: data)
-    }
-
-    func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable) {
-        refresh()
-        dismissTopMostViewController(animated: true) { [weak self] in
-            guard let self else { return }
-            // swiftformat:disable:next redundantParens
-            let undoBlock: @Sendable (PMBanner) -> Void = { [weak self] banner in
-                guard let self else { return }
-                Task { [weak self] in
-                    guard let self else {
-                        return
-                    }
-                    await banner.dismiss()
-                    itemContextMenuHandler.restore(item)
-                }
-            }
-            bannerManager.displayBottomInfoMessage(item.trashMessage,
-                                                   dismissButtonTitle: #localized("Undo"),
-                                                   onDismiss: undoBlock)
-        }
-        addNewEvent(type: .update(item.type))
     }
 }
 

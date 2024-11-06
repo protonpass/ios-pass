@@ -97,7 +97,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         setAliasStatus(enabled: !aliasEnabled)
     }
 
-    func disableAlias() {
+    override func disableAlias() {
         setAliasStatus(enabled: false)
     }
 

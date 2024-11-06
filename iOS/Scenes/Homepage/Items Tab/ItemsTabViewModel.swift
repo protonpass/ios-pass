@@ -47,15 +47,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var shouldShowSyncProgress = false
     @Published var isEditMode = false
-    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
-        didSet {
-            if itemToBePermanentlyDeleted != nil {
-                showingPermanentDeletionAlert = true
-            }
-        }
-    }
-
-    @Published var showingPermanentDeletionAlert = false
+    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var aliasSyncEnabled = false
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -478,7 +470,9 @@ extension ItemsTabViewModel {
             assertionFailure("No selected items to permanently delete")
             return
         }
-        router.alert(.bulkPermanentDeleteConfirmation(itemCount: items.count))
+        let aliasCount = items.count { $0.isAlias }
+        router.alert(.bulkPermanentDeleteConfirmation(itemCount: items.count,
+                                                      aliasCount: aliasCount))
     }
 
     func createNewItem(type: ItemContentType) {
@@ -557,6 +551,11 @@ extension ItemsTabViewModel {
             selectOrDeselect(item)
             isEditMode = true
         }
+    }
+
+    func disableAlias() {
+        guard let itemToBePermanentlyDeleted else { return }
+        itemContextMenuHandler.disableAlias(itemToBePermanentlyDeleted)
     }
 
     func permanentlyDelete() {
