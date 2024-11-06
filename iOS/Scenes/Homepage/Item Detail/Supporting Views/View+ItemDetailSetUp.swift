@@ -39,7 +39,8 @@ struct ItemDetailSetUpModifier: ViewModifier {
             .navigationBarHidden(false)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }
-            .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingDeleteAlert,
+            .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBeDeleted,
+                                                    onDisableAlias: {},
                                                     onDelete: viewModel.permanentlyDelete))
     }
 }

@@ -40850,6 +40850,17 @@
         }
       }
     },
+    "Delete %@" : {
+      "comment" : "Placeholder is an alias address. Title of the alert shown when deleting an alias.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete %@"
+          }
+        }
+      }
+    },
     "Delete account" : {
       "localizations" : {
         "be" : {
@@ -41006,6 +41017,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa tài khoản"
+          }
+        }
+      }
+    },
+    "Delete it, I will never need it" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete it, I will never need it"
           }
         }
       }
@@ -87311,6 +87332,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vui lòng đăng nhập lại"
+          }
+        }
+      }
+    },
+    "Please note once deleted, the alias can't be restored. Maybe you want to disable the alias instead?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please note once deleted, the alias can't be restored. Maybe you want to disable the alias instead?"
+          }
+        }
+      }
+    },
+    "Please note once deleted, the alias can't be restored. The alias is already disabled and won't forward emails to your mailbox." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please note once deleted, the alias can't be restored. The alias is already disabled and won't forward emails to your mailbox."
           }
         }
       }

@@ -169,6 +169,9 @@ struct ItemsTabView: View {
                                                         }
                                                     }))
             }
+            .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBePermanentlyDeleted,
+                                                    onDisableAlias: {},
+                                                    onDelete: { viewModel.permanentlyDelete() }))
         }
         .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)
     }
@@ -321,8 +324,6 @@ struct ItemsTabView: View {
                                     isEditable: isEditable,
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                     aliasSyncEnabled: viewModel.aliasSyncEnabled))
-        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
-                                                onDelete: viewModel.permanentlyDelete))
         .disabled(!isEditable && viewModel.isEditMode)
     }
 }
