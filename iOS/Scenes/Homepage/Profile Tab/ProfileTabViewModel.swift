@@ -66,8 +66,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
 
-    @LazyInjected(\UseCasesContainer.checkFlagForMultiUsers) private var checkFlagForMultiUsers
-
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
     var canUpdateAppLockTime: Bool {
@@ -113,8 +111,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     /// Accesses of all logged in accounts
     @Published private var accesses = [UserAccess]()
 
-    @AppStorage("isMultiAccountActive") private(set) var isMultiAccountActive = false
-
     private var currentUserTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -144,9 +140,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     func reload() async {
         await refreshPlan()
         async let authMethod: Void = updateSupportedLocalAuthenticationMethods()
-        async let multiAccount: Void = checkForMultiAccountsSupport()
         async let secureLink: Void = fetchSecureLinks()
-        _ = await (authMethod, multiAccount, secureLink)
+        _ = await (authMethod, secureLink)
     }
 }
 
@@ -169,17 +164,6 @@ extension ProfileTabViewModel {
     func updateSupportedLocalAuthenticationMethods() async {
         do {
             supportedLocalAuthenticationMethods = try await getAuthMethods(policy: policy)
-        } catch {
-            logger.error(error)
-        }
-    }
-
-    func checkForMultiAccountsSupport() async {
-        do {
-            let flag = FeatureFlagType.passAccountSwitchV1.rawValue
-            let userIds = userManager.allUserAccounts.value.map(\.userId)
-            isMultiAccountActive = try await checkFlagForMultiUsers(flag: flag,
-                                                                    userIds: userIds)
         } catch {
             logger.error(error)
         }
@@ -383,8 +367,8 @@ private extension ProfileTabViewModel {
             .store(in: &cancellables)
 
         secureLinkManager.currentSecureLinks
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] newLinks in
                 guard let self, secureLinks != newLinks else { return }
                 secureLinks = newLinks

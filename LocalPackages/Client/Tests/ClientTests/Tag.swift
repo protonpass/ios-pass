@@ -23,4 +23,6 @@ import Testing
 
 extension Tag {
     @Tag static var localDatasource: Self
+    @Tag static var remoteDatasource: Self
+    @Tag static var repository: Self
 }

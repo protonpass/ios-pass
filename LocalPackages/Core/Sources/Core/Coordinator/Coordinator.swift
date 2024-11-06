@@ -80,6 +80,7 @@ public extension CoordinatorProtocol {
 
     func dismissTopMostViewController(animated: Bool = true, completion: (() -> Void)? = nil) {
         rootViewController.topMostViewController.dismiss(animated: animated) { [weak self] in
+            guard let self else { return }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
                 completion?()
                 guard let self else { return }
@@ -90,6 +91,7 @@ public extension CoordinatorProtocol {
 
     func dismissAllViewControllers(animated: Bool = true, completion: (() -> Void)? = nil) {
         rootViewController.dismiss(animated: animated) { [weak self] in
+            guard let self else { return }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
                 completion?()
                 guard let self else { return }

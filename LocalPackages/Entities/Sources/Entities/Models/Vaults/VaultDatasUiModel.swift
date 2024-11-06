@@ -1,7 +1,7 @@
 //
-// Item+Extensions.swift
-// Proton Pass - Created on 07/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// VaultDatasUiModel.swift
+// Proton Pass - Created on 28/10/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,8 +17,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Entities
-import Macro
+import CryptoKit
 
-extension Item: Pinnable {}
+public struct VaultDatasUiModel: Hashable, Sendable {
+    public let vaults: [VaultContentUiModel]
+    public let trashedItems: [ItemUiModel]
+
+    public init(vaults: [VaultContentUiModel], trashedItems: [ItemUiModel]) {
+        self.vaults = vaults
+        self.trashedItems = trashedItems
+    }
+}

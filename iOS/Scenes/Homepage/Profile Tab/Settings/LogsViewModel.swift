@@ -31,10 +31,10 @@ protocol LogsViewModelDelegate: AnyObject {
 @MainActor
 final class LogsViewModel: DeinitPrintable, ObservableObject {
     deinit {
-        print(deinitMessage)
         if let fileToDelete {
             try? FileManager.default.removeItem(at: fileToDelete)
         }
+        print(deinitMessage)
     }
 
     @Published private(set) var isLoading = true

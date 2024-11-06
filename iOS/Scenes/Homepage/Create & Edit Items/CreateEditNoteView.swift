@@ -68,8 +68,9 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
         Coordinator(self)
     }
 
+    @MainActor
     final class Coordinator: CreateEditNoteContentUIViewDelegate {
-        var parent: CreateEditNoteContentView
+        let parent: CreateEditNoteContentView
 
         init(_ parent: CreateEditNoteContentView) {
             self.parent = parent
@@ -85,11 +86,12 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
     }
 }
 
-private protocol CreateEditNoteContentUIViewDelegate: AnyObject {
-    func titleUpdated(_ text: String)
-    func contentUpdated(_ text: String)
+private protocol CreateEditNoteContentUIViewDelegate: AnyObject, Sendable {
+    @MainActor func titleUpdated(_ text: String)
+    @MainActor func contentUpdated(_ text: String)
 }
 
+@MainActor
 private final class CreateEditNoteContentUIView: UIView {
     private let padding: CGFloat = 16
 

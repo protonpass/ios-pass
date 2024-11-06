@@ -53,19 +53,20 @@ final class PassMonitorViewModel: ObservableObject, Sendable {
     private var refreshingTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
 
-    var isBreached: Bool {
-        !monitorStateStream.value.noBreaches
-    }
-
     init() {
         setUp()
     }
 
-    func refresh() async throws {
-        try Task.checkCancellation()
-        let userId = try await userManager.getActiveUserId()
-        try await refreshAccessAndMonitorState(userId: userId)
-        addTelemetryEvent(with: .monitorDisplayHome)
+    func refresh() async {
+        do {
+            try Task.checkCancellation()
+            breaches = nil
+            let userId = try await userManager.getActiveUserId()
+            try await refreshAccessAndMonitorState(userId: userId)
+            addTelemetryEvent(with: .monitorDisplayHome)
+        } catch {
+            handle(error: error)
+        }
     }
 
     func showSecurityWeakness(type: SecurityWeakness) {
@@ -119,8 +120,8 @@ private extension PassMonitorViewModel {
         refreshUserStatus()
 
         passMonitorRepository.weaknessStats
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] newValue in
                 guard let self else {
                     return
@@ -129,7 +130,6 @@ private extension PassMonitorViewModel {
             }.store(in: &cancellables)
 
         passMonitorRepository.userBreaches
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard let self else { return }
@@ -148,8 +148,8 @@ private extension PassMonitorViewModel {
             }.store(in: &cancellables)
 
         monitorStateStream
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] state in
                 guard let self else { return }
                 numberOfBreaches = state.breachCount ?? 0
@@ -157,8 +157,8 @@ private extension PassMonitorViewModel {
             }.store(in: &cancellables)
 
         passMonitorRepository.darkWebDataSectionUpdate
-            .removeDuplicates()
             .receive(on: DispatchQueue.main)
+            .removeDuplicates()
             .sink { [weak self] _ in
                 guard let self else { return }
                 refreshingTask?.cancel()
@@ -169,7 +169,7 @@ private extension PassMonitorViewModel {
                     if Task.isCancelled {
                         return
                     }
-                    try? await refresh()
+                    await refresh()
                 }
             }.store(in: &cancellables)
     }
@@ -182,6 +182,7 @@ private extension PassMonitorViewModel {
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
                 isSentinelActive = await getSentinelStatus()
+                await refresh()
             } catch {
                 handle(error: error)
             }

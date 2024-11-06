@@ -21,7 +21,7 @@
 
 // periphery:ignore:all
 import Core
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import Foundation
 import ProtonCoreKeymaker
@@ -69,11 +69,11 @@ public extension SymmetricKeyProviderImpl {
 // sourcery: AutoMockable
 /// Non `Sendable` variant with no cache mechanism for usages in non concurrency contexts
 /// where it's impossible to introduce async functions like `AuthManager`
-public protocol NonSendableSymmetricKeyProvider {
+public protocol NonAsyncSymmetricKeyProvider: Sendable {
     func getSymmetricKey() throws -> SymmetricKey
 }
 
-public final class NonSendableSymmetricKeyProviderImpl: NonSendableSymmetricKeyProvider {
+public final class NonSendableSymmetricKeyProviderImpl: NonAsyncSymmetricKeyProvider {
     private let keychain: any KeychainProtocol
     private let mainKeyProvider: any MainKeyProvider
 

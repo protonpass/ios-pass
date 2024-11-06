@@ -20,7 +20,7 @@
 
 import Foundation
 
-extension TaskPriority: CustomDebugStringConvertible {
+extension TaskPriority: @retroactive CustomDebugStringConvertible {
     public var debugDescription: String {
         switch self {
         case .background:

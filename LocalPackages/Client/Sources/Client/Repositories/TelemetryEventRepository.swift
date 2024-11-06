@@ -21,6 +21,7 @@
 import Core
 import Entities
 import Foundation
+@preconcurrency import ProtonCoreLogin
 
 public enum TelemetryEventSendResult: Sendable, Equatable {
     case thresholdNotReached
