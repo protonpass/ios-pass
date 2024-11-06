@@ -25,16 +25,7 @@ import SwiftUI
 
 @MainActor
 final class SearchResultsViewModel: ObservableObject {
-    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
-        didSet {
-            if itemToBePermanentlyDeleted != nil {
-                showingPermanentDeletionAlert = true
-            }
-        }
-    }
-
-    @Published var showingPermanentDeletionAlert = false
-
+    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
@@ -60,6 +51,11 @@ final class SearchResultsViewModel: ObservableObject {
 // MARK: Public APIs
 
 extension SearchResultsViewModel {
+    func disableAlias() {
+        guard let itemToBePermanentlyDeleted else { return }
+        itemContextMenuHandler.disableAlias(itemToBePermanentlyDeleted)
+    }
+
     func permanentlyDelete() {
         guard let itemToBePermanentlyDeleted else { return }
         itemContextMenuHandler.deletePermanently(itemToBePermanentlyDeleted)

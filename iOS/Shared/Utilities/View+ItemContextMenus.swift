@@ -335,18 +335,50 @@ private extension View {
 }
 
 struct PermenentlyDeleteItemModifier: ViewModifier {
-    @Binding var isShowingAlert: Bool
+    @Binding var item: (any ItemTypeIdentifiable)?
+    let onDisableAlias: () -> Void
     let onDelete: () -> Void
 
     func body(content: Content) -> some View {
         content
-            .alert("Delete permanently?",
-                   isPresented: $isShowingAlert,
+            .alert(title,
+                   isPresented: $item.mappedToBool(),
                    actions: {
-                       Button(role: .destructive, action: onDelete, label: { Text("Delete") })
+                       if item?.aliasEmail == nil {
+                           Button(role: .destructive, action: onDelete, label: { Text("Delete") })
+                       } else {
+                           if item?.aliasEnabled == true {
+                               Button(action: onDisableAlias,
+                                      label: { Text("Disable alias") })
+                           }
+                           Button(role: .destructive,
+                                  action: onDelete,
+                                  label: { Text("Delete it, I will never need it") })
+                       }
                        Button(role: .cancel, label: { Text("Cancel") })
                    },
-                   message: { Text("You are going to delete the item irreversibly, are you sure?") })
+                   message: { Text(message) })
+    }
+}
+
+private extension PermenentlyDeleteItemModifier {
+    var title: LocalizedStringKey {
+        if let aliasEmail = item?.aliasEmail {
+            "Delete \(aliasEmail)"
+        } else {
+            "Delete permanently?"
+        }
+    }
+
+    var message: LocalizedStringKey {
+        if item?.aliasEmail == nil {
+            "You are going to delete the item irreversibly, are you sure?"
+        } else {
+            item?.aliasEnabled == true ?
+                "Please note once deleted, the alias can't be restored. Maybe you want to disable the alias instead?" :
+                // swiftlint:disable:next line_length
+                "Please note once deleted, the alias can't be restored. The alias is already disabled and won't forward emails to your mailbox."
+        }
     }
 }
 
