@@ -80,6 +80,9 @@ struct SearchResultsView: View {
                                                     }
                                                 }))
         }
+        .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBePermanentlyDeleted,
+                                                onDisableAlias: {},
+                                                onDelete: { viewModel.permanentlyDelete() }))
     }
 
     @ViewBuilder
@@ -127,8 +130,6 @@ struct SearchResultsView: View {
                                     isEditable: isEditable,
                                     itemContextMenuHandler: viewModel.itemContextMenuHandler,
                                     aliasSyncEnabled: viewModel.aliasSyncEnabled))
-        .modifier(PermenentlyDeleteItemModifier(isShowingAlert: $viewModel.showingPermanentDeletionAlert,
-                                                onDelete: viewModel.permanentlyDelete))
     }
 }
 

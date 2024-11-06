@@ -47,15 +47,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var banners: [InfoBanner] = []
     @Published private(set) var shouldShowSyncProgress = false
     @Published var isEditMode = false
-    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)? {
-        didSet {
-            if itemToBePermanentlyDeleted != nil {
-                showingPermanentDeletionAlert = true
-            }
-        }
-    }
-
-    @Published var showingPermanentDeletionAlert = false
+    @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var aliasSyncEnabled = false
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
