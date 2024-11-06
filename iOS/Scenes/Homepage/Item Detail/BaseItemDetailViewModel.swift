@@ -33,7 +33,6 @@ protocol ItemDetailViewModelDelegate: AnyObject {
     func itemDetailViewModelWantsToGoBack(isShownAsSheet: Bool)
     func itemDetailViewModelWantsToEditItem(_ itemContent: ItemContent)
     func itemDetailViewModelWantsToShowFullScreen(_ data: FullScreenData)
-    func itemDetailViewModelDidMoveToTrash(item: any ItemTypeIdentifiable)
 }
 
 @MainActor
@@ -70,7 +69,6 @@ class BaseItemDetailViewModel: ObservableObject {
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     private let toggleItemMonitoring = resolve(\UseCasesContainer.toggleItemMonitoring)
     private let addItemReadEvent = resolve(\UseCasesContainer.addItemReadEvent)
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private(set) var itemRepository
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
