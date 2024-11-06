@@ -41,7 +41,6 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published private(set) var isMonitored = false // Only applicable to login items
     @Published var moreInfoSectionExpanded = false
-    @Published var showingDeleteAlert = false
     @Published var showingTrashAliasAlert = false
 
     private var superBindValuesCalled = false
@@ -55,6 +54,10 @@ class BaseItemDetailViewModel: ObservableObject {
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }
     }
+
+    /// A `@Published` copy of `itemContent` because
+    /// we need to pass it as `Binding` to `PermenentlyDeleteItemModifier`
+    @Published var itemToBeDeleted: (any ItemTypeIdentifiable)?
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: VaultListUiModel?
