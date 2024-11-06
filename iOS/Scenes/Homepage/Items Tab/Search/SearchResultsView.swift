@@ -179,7 +179,7 @@ private extension SearchResultsView {
                     HStack {
                         Spacer()
                         SectionIndexTitles(proxy: proxy,
-                                           direction: selectedSortType.sortDirection ?? .ascending)
+                                           direction: selectedSortType.sortDirection)
                     }
                 }
             }

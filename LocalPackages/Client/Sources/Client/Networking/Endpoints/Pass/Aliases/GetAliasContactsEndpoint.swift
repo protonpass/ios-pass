@@ -22,9 +22,9 @@ import Entities
 import ProtonCoreNetworking
 
 public struct GetAliasContactsQuery: Sendable {
-    public let lastContactId: String?
+    public let lastContactId: Int?
 
-    public init(lastContactId: String?) {
+    public init(lastContactId: Int?) {
         self.lastContactId = lastContactId
     }
 }
@@ -35,7 +35,7 @@ public struct PaginatedAliasContacts: Decodable, Sendable, Equatable, Hashable {
     public let lastID: Int
 }
 
-struct GetAliasContactsEndpoint: Endpoint {
+struct GetAliasContactsEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
     typealias Response = PaginatedAliasContacts
 

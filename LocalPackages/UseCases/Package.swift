@@ -1,4 +1,4 @@
-// swift-tools-version: 5.8
+// swift-tools-version: 6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -11,24 +11,6 @@ var platforms: [SupportedPlatform] = [
 ]
 
 let swiftSettings: [SwiftSetting] = [
-   .enableUpcomingFeature("BareSlashRegexLiterals"),
-   .enableUpcomingFeature("ConciseMagicFile"),
-   .enableUpcomingFeature("ExistentialAny"),
-   .enableUpcomingFeature("ForwardTrailingClosures"),
-   .enableUpcomingFeature("ImplicitOpenExistentials"),
-   .enableUpcomingFeature("StrictConcurrency"),
-   .unsafeFlags(["-warn-concurrency", 
-                 "-enable-actor-data-race-checks",
-                 "-driver-time-compilation",
-                 "-Xfrontend",
-                 "-debug-time-function-bodies",
-                 "-Xfrontend",
-                 "-debug-time-expression-type-checking",
-                 "-Xfrontend",
-                 "-warn-long-function-bodies=100",
-                 "-Xfrontend",
-                 "-warn-long-expression-type-checking=100"
-                ])
 ]
 
 let package = Package(name: "UseCases",
@@ -48,7 +30,7 @@ let package = Package(name: "UseCases",
                           .package(name: "Client", path: "../Client"),
                           .package(name: "PassRustCore", path: "../PassRustCore"),
                           .package(url: "https://github.com/getsentry/sentry-cocoa.git", exact: "8.36.0"),
-                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "26.1.2")
+                          .package(url: "https://github.com/ProtonMail/protoncore_ios", exact: "26.5.0")
                       ],
                       targets: [
                           // Targets are the basic building blocks of a package. A target can define a module or a
@@ -80,4 +62,6 @@ let package = Package(name: "UseCases",
                                                      .product(name: "ProtonCoreForceUpgrade", package: "protoncore_ios")
                                                     ],
                                       path: "Tests")
-                      ])
+                      ],
+                      swiftLanguageModes: [.version("6")]
+)

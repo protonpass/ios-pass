@@ -20,153 +20,59 @@
 
 import SwiftUI
 
-@MainActor
-public struct FlowLayout<T: Hashable, V: View>: View {
-    private let items: [T]
-    private let viewMapping: (T) -> V
-    @State private var totalHeight: CGFloat
+public struct FlowLayout: Layout {
+    private let spacing: CGFloat
 
-    public init(items: [T], viewMapping: @escaping (T) -> V) {
-        self.items = items
-        self.viewMapping = viewMapping
-        _totalHeight = State(initialValue: .zero)
+    public init(spacing: CGFloat = 8) {
+        self.spacing = spacing
     }
 
-    public var body: some View {
-        let stack = VStack {
-            GeometryReader { geometry in
-                content(in: geometry)
+    public func sizeThatFits(proposal: ProposedViewSize,
+                             subviews: Subviews,
+                             cache: inout ()) -> CGSize {
+        let containerWidth = proposal.width ?? .infinity
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        return Self.layout(sizes: sizes,
+                           spacing: spacing,
+                           containerWidth: containerWidth).size
+    }
+
+    public func placeSubviews(in bounds: CGRect,
+                              proposal: ProposedViewSize,
+                              subviews: Subviews,
+                              cache: inout ()) {
+        let sizes = subviews.map { $0.sizeThatFits(.unspecified) }
+        let offsets =
+            Self.layout(sizes: sizes,
+                        spacing: spacing,
+                        containerWidth: bounds.width).offsets
+        for (offset, subview) in zip(offsets, subviews) {
+            subview.place(at: .init(x: offset.x + bounds.minX,
+                                    y: offset.y + bounds.minY),
+                          proposal: .unspecified)
+        }
+    }
+
+    private static func layout(sizes: [CGSize],
+                               spacing: CGFloat = 8,
+                               containerWidth: CGFloat) -> (offsets: [CGPoint], size: CGSize) {
+        var result: [CGPoint] = []
+        var currentPosition: CGPoint = .zero
+        var lineHeight: CGFloat = 0
+        var maxX: CGFloat = 0
+        for size in sizes {
+            if currentPosition.x + size.width > containerWidth {
+                currentPosition.x = 0
+                currentPosition.y += lineHeight + spacing
+                lineHeight = 0
             }
+            result.append(currentPosition)
+            currentPosition.x += size.width
+            maxX = max(maxX, currentPosition.x)
+            currentPosition.x += spacing
+            lineHeight = max(lineHeight, size.height)
         }
-        return Group {
-            stack.frame(height: totalHeight)
-        }
+        return (result,
+                .init(width: maxX, height: currentPosition.y + lineHeight))
     }
 }
-
-extension FlowLayout {
-    private func content(in geometry: GeometryProxy) -> some View {
-        var width = CGFloat.zero
-        var height = CGFloat.zero
-        return ZStack(alignment: .topLeading) {
-            ForEach(items, id: \.self) { item in
-                viewMapping(item)
-                    .padding([.horizontal, .vertical], 4)
-                    .alignmentGuide(.leading) { dimension in
-                        if abs(width - dimension.width) > geometry.size.width {
-                            width = 0
-                            height -= dimension.height
-                        }
-                        let result = width
-                        if item == items.last {
-                            width = 0
-                        } else {
-                            width -= dimension.width
-                        }
-                        return result
-                    }
-                    .alignmentGuide(.top) { _ in
-                        let result = height
-                        if item == items.last {
-                            height = 0
-                        }
-                        return result
-                    }
-            }
-        }
-        .readSize { size in
-            totalHeight = size.height
-        }
-    }
-}
-
-extension View {
-    func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
-        background(GeometryReader { geometryProxy in
-            Color.clear
-                .preference(key: SizePreferenceKey.self, value: geometryProxy.size)
-        })
-        .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
-    }
-}
-
-private struct SizePreferenceKey: PreferenceKey {
-    static var defaultValue: CGSize = .zero
-
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {}
-}
-
-// @available(iOS 16.0, *)
-// struct FlowLayout: Layout {
-//    var spacing: CGFloat
-//
-//    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
-//        let arranger = Arranger(containerSize: proposal.replacingUnspecifiedDimensions(),
-//                                subviews: subviews,
-//                                spacing: spacing)
-//        let result = arranger.arrange()
-//        return result.size
-//    }
-//
-//    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
-//        let arranger = Arranger(containerSize: proposal.replacingUnspecifiedDimensions(),
-//                                subviews: subviews,
-//                                spacing: spacing)
-//        let result = arranger.arrange()
-//
-//        for (index, cell) in result.cells.enumerated() {
-//            let point = CGPoint(x: bounds.minX + cell.frame.origin.x,
-//                                y: bounds.minY + cell.frame.origin.y)
-//
-//            subviews[index].place(at: point,
-//                                  anchor: .topLeading,
-//                                  proposal: ProposedViewSize(cell.frame.size))
-//        }
-//    }
-// }
-//
-// @available(iOS 16.0, *)
-// struct Arranger {
-//    var containerSize: CGSize
-//    var subviews: LayoutSubviews
-//    var spacing: CGFloat
-//
-//    func arrange() -> TestResult {
-//        var cells: [Cell] = []
-//
-//        var maxY: CGFloat = 0
-//        var previousFrame: CGRect = .zero
-//
-//        for (index, subview) in subviews.enumerated() {
-//            let size = subview.sizeThatFits(ProposedViewSize(containerSize))
-//
-//            let origin: CGPoint = if index == 0 {
-//                .zero
-//            } else if previousFrame.maxX + spacing + size.width > containerSize.width {
-//                CGPoint(x: 0, y: maxY + spacing)
-//            } else {
-//                CGPoint(x: previousFrame.maxX + spacing, y: previousFrame.minY)
-//            }
-//
-//            let frame = CGRect(origin: origin, size: size)
-//            let cell = Cell(frame: frame)
-//            cells.append(cell)
-//
-//            previousFrame = frame
-//            maxY = max(maxY, frame.maxY)
-//        }
-//
-//        let maxWidth = cells.reduce(0) { max($0, $1.frame.maxX) }
-//        return TestResult(size: CGSize(width: maxWidth, height: previousFrame.maxY),
-//                          cells: cells)
-//    }
-// }
-//
-// struct TestResult {
-//    var size: CGSize
-//    var cells: [Cell]
-// }
-//
-// struct Cell {
-//    var frame: CGRect
-// }

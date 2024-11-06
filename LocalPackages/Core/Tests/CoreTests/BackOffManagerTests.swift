@@ -98,7 +98,7 @@ extension BackOffManagerTests {
 
     func testNoFailuresNoNeedToBackOff() async {
         let canProceed = await sut.canProceed()
-        var failures = await sut.failureDates
+        let failures = await sut.failureDates
 
         XCTAssertTrue(canProceed)
         XCTAssertTrue(failures.isEmpty)

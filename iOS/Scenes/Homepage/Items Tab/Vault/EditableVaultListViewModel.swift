@@ -26,16 +26,42 @@ import Factory
 import Foundation
 import Macro
 
-@MainActor
-protocol EditableVaultListViewModelDelegate: AnyObject {
-    func editableVaultListViewModelWantsToConfirmDelete(vault: Vault,
-                                                        delegate: any DeleteVaultAlertHandlerDelegate)
+private extension EditableVaultListViewModel {
+    struct VaultCount: Sendable {
+        let shareId: String
+        let value: Int
+    }
+
+    struct Count: Sendable {
+        let all: Int
+        let vaultCounts: [VaultCount]
+        let trashed: Int
+
+        init(vaultsManager: VaultsManager) {
+            guard case let .loaded(uiModel) = vaultsManager.state else {
+                all = 0
+                vaultCounts = []
+                trashed = 0
+                return
+            }
+            var all = 0
+            var vaultCounts = [VaultCount]()
+            for vault in uiModel.vaults {
+                all += vault.itemCount
+                vaultCounts.append(.init(shareId: vault.vault.shareId, value: vault.itemCount))
+            }
+            self.all = all
+            self.vaultCounts = vaultCounts
+            trashed = uiModel.trashedItems.count
+        }
+    }
 }
 
 @MainActor
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
     @Published private(set) var state = VaultManagerState.loading
+    private let count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
@@ -51,19 +77,18 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
 
     var hasTrashItems: Bool {
-        vaultsManager.getItemCount(for: .trash) > 0
+        count.trashed > 0
     }
 
     var trashedAliasesCount: Int {
-        guard case let .loaded(_, trashedItems) = vaultsManager.state else {
+        guard case let .loaded(uiModel) = vaultsManager.state else {
             return 0
         }
-        return trashedItems.filter(\.isAlias).count
+        return uiModel.trashedItems.filter(\.isAlias).count
     }
 
-    weak var delegate: (any EditableVaultListViewModelDelegate)?
-
     init() {
+        count = .init(vaultsManager: vaultsManager)
         setUp()
     }
 
@@ -102,8 +127,12 @@ private extension EditableVaultListViewModel {
             }
             .store(in: &cancellables)
     }
+}
 
-    func doDelete(vault: Vault) {
+// MARK: - Public APIs
+
+extension EditableVaultListViewModel {
+    func delete(vault: Vault) {
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
@@ -119,11 +148,7 @@ private extension EditableVaultListViewModel {
             }
         }
     }
-}
 
-// MARK: - Public APIs
-
-extension EditableVaultListViewModel {
     func createNewVault() {
         router.present(for: .vaultCreateEdit(vault: nil))
     }
@@ -153,10 +178,6 @@ extension EditableVaultListViewModel {
                 router.display(element: .displayErrorBanner(error))
             }
         }
-    }
-
-    func delete(vault: Vault) {
-        delegate?.editableVaultListViewModelWantsToConfirmDelete(vault: vault, delegate: self)
     }
 
     func restoreAllTrashedItems() {
@@ -198,14 +219,13 @@ extension EditableVaultListViewModel {
     }
 
     func itemCount(for selection: VaultSelection) -> Int {
-        vaultsManager.getItemCount(for: selection)
-    }
-}
-
-// MARK: - DeleteVaultConfirmationDelegate
-
-extension EditableVaultListViewModel: DeleteVaultAlertHandlerDelegate {
-    func confirmDelete(vault: Vault) {
-        doDelete(vault: vault)
+        switch selection {
+        case .all:
+            count.all
+        case let .precise(vault):
+            count.vaultCounts.first { $0.shareId == vault.shareId }?.value ?? 0
+        case .trash:
+            count.trashed
+        }
     }
 }

@@ -21,7 +21,7 @@
 import Client
 import Combine
 import Core
-import CryptoKit
+@preconcurrency import CryptoKit
 import Entities
 import Factory
 import Macro
@@ -86,6 +86,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     weak var delegate: (any ItemDetailViewModelDelegate)?
+    var cancellables = Set<AnyCancellable>()
 
     init(isShownAsSheet: Bool,
          itemContent: ItemContent,

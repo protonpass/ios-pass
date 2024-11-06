@@ -25,7 +25,7 @@ import Combine
 import CryptoKit
 import Entities
 
-public typealias SecurityIssuesContent = [SecuritySection: [ItemContent]]
+public typealias SecurityIssuesContent = [SecuritySection: [ItemUiModel]]
 
 public protocol GetAllSecurityAffectedLoginsUseCase: Sendable {
     func execute(for type: SecurityWeakness) -> AnyPublisher<SecurityIssuesContent, any Error>
@@ -40,10 +40,10 @@ public extension GetAllSecurityAffectedLoginsUseCase {
 public final class GetAllSecurityAffectedLogins: GetAllSecurityAffectedLoginsUseCase {
     private let passMonitorRepository: any PassMonitorRepositoryProtocol
     private let getPasswordStrength: any GetPasswordStrengthUseCase
-    private let symmetricKeyProvider: any NonSendableSymmetricKeyProvider
+    private let symmetricKeyProvider: any NonAsyncSymmetricKeyProvider
 
     public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
-                symmetricKeyProvider: any NonSendableSymmetricKeyProvider,
+                symmetricKeyProvider: any NonAsyncSymmetricKeyProvider,
                 getPasswordStrength: any GetPasswordStrengthUseCase) {
         self.passMonitorRepository = passMonitorRepository
         self.getPasswordStrength = getPasswordStrength
@@ -76,16 +76,16 @@ private extension GetAllSecurityAffectedLogins {
     func filterWeakPasswords(items: [SecurityAffectedItem],
                              type: SecurityWeakness,
                              key: SymmetricKey) throws -> SecurityIssuesContent {
-        var weakPasswords: [SecuritySection: [ItemContent]] = [:]
+        var weakPasswords: [SecuritySection: [ItemUiModel]] = [:]
         let section = SecuritySection.weakPasswords
 
         for item in items where item.weaknesses.contains(type) {
             let itemContent = try item.item.getItemContent(symmetricKey: key)
 
             if weakPasswords[section] != nil {
-                weakPasswords[section]?.append(itemContent)
+                weakPasswords[section]?.append(itemContent.toItemUiModel)
             } else {
-                weakPasswords[section] = [itemContent]
+                weakPasswords[section] = [itemContent.toItemUiModel]
             }
         }
         return weakPasswords
@@ -94,9 +94,9 @@ private extension GetAllSecurityAffectedLogins {
     func filterReusedPasswords(items: [SecurityAffectedItem],
                                type: SecurityWeakness,
                                key: SymmetricKey) throws -> SecurityIssuesContent {
-        var reusedPasswords: [SecuritySection: [ItemContent]] = [:]
+        var reusedPasswords: [SecuritySection: [ItemUiModel]] = [:]
 
-        var intermediatePasswords: [String: Set<ItemContent>] = [:]
+        var intermediatePasswords: [String: Set<ItemUiModel>] = [:]
 
         for item in items where item.weaknesses.contains(type) {
             let itemContent = try item.item.getItemContent(symmetricKey: key)
@@ -104,9 +104,9 @@ private extension GetAllSecurityAffectedLogins {
                 continue
             }
             if intermediatePasswords[password] != nil {
-                intermediatePasswords[password]?.insert(itemContent)
+                intermediatePasswords[password]?.insert(itemContent.toItemUiModel)
             } else {
-                intermediatePasswords[password] = [itemContent]
+                intermediatePasswords[password] = [itemContent.toItemUiModel]
             }
         }
 
@@ -123,11 +123,11 @@ private extension GetAllSecurityAffectedLogins {
                           type: SecurityWeakness,
                           key: SymmetricKey) throws -> SecurityIssuesContent {
         let section = SecuritySection.missing2fa
-        var missing2fas: [SecuritySection: [ItemContent]] = [section: []]
+        var missing2fas: [SecuritySection: [ItemUiModel]] = [section: []]
 
         for item in items where item.weaknesses.contains(type) {
             let itemContent = try item.item.getItemContent(symmetricKey: key)
-            missing2fas[section]?.append(itemContent)
+            missing2fas[section]?.append(itemContent.toItemUiModel)
         }
         return missing2fas
     }
@@ -136,11 +136,11 @@ private extension GetAllSecurityAffectedLogins {
                              type: SecurityWeakness,
                              key: SymmetricKey) throws -> SecurityIssuesContent {
         let section = SecuritySection.excludedItems
-        var excludedItems: [SecuritySection: [ItemContent]] = [section: []]
+        var excludedItems: [SecuritySection: [ItemUiModel]] = [section: []]
 
         for item in items where item.weaknesses.contains(type) {
             let itemContent = try item.item.getItemContent(symmetricKey: key)
-            excludedItems[section]?.append(itemContent)
+            excludedItems[section]?.append(itemContent.toItemUiModel)
         }
         return excludedItems
     }
