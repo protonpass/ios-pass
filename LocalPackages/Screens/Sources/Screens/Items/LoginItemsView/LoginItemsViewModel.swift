@@ -87,8 +87,12 @@ private extension LoginItemsViewModel {
                 return
             }
             state = .searching
-            let results = searchableItems.result(for: term)
-            state = .searchResults(results)
+            do {
+                let results = try await searchableItems.result(for: term)
+                state = .searchResults(results)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
 }

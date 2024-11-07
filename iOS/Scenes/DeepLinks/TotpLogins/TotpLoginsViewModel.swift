@@ -141,8 +141,15 @@ private extension TotpLoginsViewModel {
                 guard let self else {
                     return
                 }
-                results = search.isEmpty ? searchableItems.toItemSearchResults : searchableItems
-                    .result(for: search)
+                Task { [weak self] in
+                    guard let self else { return }
+                    do {
+                        results = try await search.isEmpty ?
+                            searchableItems.toItemSearchResults : searchableItems.result(for: search)
+                    } catch {
+                        print(error.localizedDescription)
+                    }
+                }
             }
             .store(in: &cancellables)
     }

@@ -63,7 +63,7 @@ struct SearchResultsView: View {
         VStack(spacing: 0) {
             SearchResultChips(selectedType: $selectedType, itemCount: viewModel.itemCount)
             topBarSearchInformations
-            searchListItems
+//            searchListItems
         }
         .if(viewModel.aliasSyncEnabled) {
             $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
