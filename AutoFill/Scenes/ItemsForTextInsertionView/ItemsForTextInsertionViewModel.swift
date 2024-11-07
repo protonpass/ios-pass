@@ -189,16 +189,16 @@ private extension ItemsForTextInsertionViewModel {
             let hashedTerm = term.sha256
             logger.trace("Searching for term \(hashedTerm)")
             state = .searching
-            let searchResults = searchableItems.result(for: term)
-            if Task.isCancelled {
-                state = .idle
-                return
-            }
-            state = .searchResults(searchResults)
-            if searchResults.isEmpty {
-                logger.trace("No results for term \(hashedTerm)")
-            } else {
-                logger.trace("Found results for term \(hashedTerm)")
+            do {
+                let searchResults = try await searchableItems.result(for: term)
+                state = .searchResults(searchResults)
+                if searchResults.isEmpty {
+                    logger.trace("No results for term \(hashedTerm)")
+                } else {
+                    logger.trace("Found results for term \(hashedTerm)")
+                }
+            } catch {
+                handle(error)
             }
         }
     }
@@ -235,43 +235,49 @@ extension ItemsForTextInsertionViewModel {
             allItems
         }
 
-        var sections: [ItemsForTextInsertionSection] = {
-            switch selectedSortType {
-            case .mostRecent:
-                let results = filteredItems.mostRecentSortResult()
-                return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: bucket.type.title,
-                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
-                }
+        do {
+            var sections: [ItemsForTextInsertionSection] = try {
+                switch selectedSortType {
+                case .mostRecent:
+                    let results = try filteredItems.mostRecentSortResult()
+                    return results.buckets.map { bucket in
+                        .init(type: ItemsForTextInsertionSectionType.regular,
+                              title: bucket.type.title,
+                              items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    }
 
-            case .alphabeticalAsc, .alphabeticalDesc:
-                let results = filteredItems.alphabeticalSortResult(direction: self.selectedSortType.sortDirection)
-                return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: bucket.letter.character,
-                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
-                }
+                case .alphabeticalAsc, .alphabeticalDesc:
+                    let results = try filteredItems
+                        .alphabeticalSortResult(direction: self.selectedSortType.sortDirection)
+                    return results.buckets.map { bucket in
+                        .init(type: ItemsForTextInsertionSectionType.regular,
+                              title: bucket.letter.character,
+                              items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    }
 
-            case .newestToOldest, .oldestToNewest:
-                let results = filteredItems.monthYearSortResult(direction: self.selectedSortType.sortDirection)
-                return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: bucket.monthYear.relativeString,
-                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                case .newestToOldest, .oldestToNewest:
+                    let results = try filteredItems
+                        .monthYearSortResult(direction: self.selectedSortType.sortDirection)
+                    return results.buckets.map { bucket in
+                        .init(type: ItemsForTextInsertionSectionType.regular,
+                              title: bucket.monthYear.relativeString,
+                              items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    }
                 }
+            }()
+            // Only show history section when not filtering by item types
+            if filterOption == .all, !history.isEmpty {
+                sections.insert(.init(type: ItemsForTextInsertionSectionType.history,
+                                      title: "",
+                                      items: history.map { ItemForTextInsertion.history($0) }),
+                                at: 0)
             }
-        }()
-        // Only show history section when not filtering by item types
-        if filterOption == .all, !history.isEmpty {
-            sections.insert(.init(type: ItemsForTextInsertionSectionType.history,
-                                  title: "",
-                                  items: history.map { ItemForTextInsertion.history($0) }),
-                            at: 0)
-        }
 
-        itemCount = .init(items: allItems)
-        self.sections = sections.filter { !$0.items.isEmpty }
+            itemCount = .init(items: allItems)
+            self.sections = sections.filter { !$0.items.isEmpty }
+        } catch {
+            handle(error)
+        }
     }
 
     func select(_ item: any ItemIdentifiable) {
@@ -323,7 +329,7 @@ extension ItemsForTextInsertionViewModel {
                                                               history: [],
                                                               searchableItems: $0.searchableItems,
                                                               items: $0.items) }
-                filterAndSortItems()
+                try filterAndSortItems()
             } catch {
                 handle(error)
             }

@@ -150,15 +150,15 @@ private extension TotpLoginsView {
     func sortableSections(for items: [ItemSearchResult]) -> some View {
         switch viewModel.selectedSortType {
         case .mostRecent:
-            sections(for: items.mostRecentSortResult())
+            sections(for: (try? items.mostRecentSortResult()) ?? .default)
         case .alphabeticalAsc:
-            sections(for: items.alphabeticalSortResult(direction: .ascending))
+            sections(for: (try? items.alphabeticalSortResult(direction: .ascending)) ?? .default)
         case .alphabeticalDesc:
-            sections(for: items.alphabeticalSortResult(direction: .descending))
+            sections(for: (try? items.alphabeticalSortResult(direction: .descending)) ?? .default)
         case .newestToOldest:
-            sections(for: items.monthYearSortResult(direction: .descending))
+            sections(for: (try? items.monthYearSortResult(direction: .descending)) ?? .default)
         case .oldestToNewest:
-            sections(for: items.monthYearSortResult(direction: .ascending))
+            sections(for: (try? items.monthYearSortResult(direction: .ascending)) ?? .default)
         }
     }
 
