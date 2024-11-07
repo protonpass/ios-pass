@@ -37,6 +37,8 @@ enum SearchViewState: Sendable {
     case history([SearchEntryUiModel])
     /// No results for the given search query
     case noResults(String)
+    /// Filterting search results
+    case filteringResults
     /// Results with a given search query
     case results(ItemCount, any SearchResults)
     /// Error
@@ -187,12 +189,18 @@ private extension SearchViewModel {
             // swiftlint:disable:next closure_parameter_position
             [weak self, results, selectedType, selectedSortType] in
             guard let self else { return }
+
             if results.isEmpty {
                 await MainActor.run { [weak self] in
                     guard let self else { return }
                     state = .noResults(lastSearchQuery)
                 }
                 return
+            }
+
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                state = .filteringResults
             }
 
             do {
@@ -359,7 +367,9 @@ private extension SearchViewModel {
 extension SearchViewState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.empty, .empty), (.initializing, .initializing):
+        case (.empty, .empty),
+             (.filteringResults, .filteringResults),
+             (.initializing, .initializing):
             true
 
         case let (.history(lhsHistory), .history(rhsHistory)):

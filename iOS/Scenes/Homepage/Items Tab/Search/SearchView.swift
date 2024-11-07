@@ -38,12 +38,11 @@ struct SearchView: View {
                 PassColor.backgroundNorm.toColor
                     .ignoresSafeArea(edges: .all)
                 switch viewModel.state {
-                case .empty, .history, .initializing, .noResults, .results:
-                    content
-
                 case let .error(error):
                     RetryableErrorView(errorMessage: error.localizedDescription,
                                        onRetry: { viewModel.refreshResults() })
+                default:
+                    content
                 }
             }
             .animation(.default, value: viewModel.state)
@@ -115,6 +114,10 @@ private extension SearchView {
                 } else {
                     NoSearchResultsInAllVaultView(query: query)
                 }
+
+            case .filteringResults:
+                ProgressView()
+                Spacer()
 
             case let .results(itemCount, results):
                 SearchResultsView(selectedType: $viewModel.selectedType,
