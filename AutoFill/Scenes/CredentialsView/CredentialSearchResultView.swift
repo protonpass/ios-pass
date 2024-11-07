@@ -87,17 +87,18 @@ private final class CredentialSearchResultViewModel: ObservableObject {
 
     init(results: [ItemSearchResult], sortType: SortType) {
         self.results = results
-        filterAndSortItems(sortType)
+        // TODO: handle error
+        try? filterAndSortItems(sortType)
     }
 }
 
 private extension CredentialSearchResultViewModel {
-    func filterAndSortItems(_ sortType: SortType) {
+    func filterAndSortItems(_ sortType: SortType) throws {
         let type = Int.max
-        let sections: [SearchResultSection] = {
+        let sections: [SearchResultSection] = try {
             switch sortType {
             case .mostRecent:
-                let results = results.mostRecentSortResult()
+                let results = try results.mostRecentSortResult()
                 return results.buckets.map { bucket in
                     .init(type: type,
                           title: bucket.type.title,
@@ -105,7 +106,7 @@ private extension CredentialSearchResultViewModel {
                 }
 
             case .alphabeticalAsc, .alphabeticalDesc:
-                let results = results.alphabeticalSortResult(direction: sortType.sortDirection)
+                let results = try results.alphabeticalSortResult(direction: sortType.sortDirection)
                 return results.buckets.map { bucket in
                     .init(type: type,
                           title: bucket.letter.character,
@@ -113,7 +114,7 @@ private extension CredentialSearchResultViewModel {
                 }
 
             case .newestToOldest, .oldestToNewest:
-                let results = results.monthYearSortResult(direction: sortType.sortDirection)
+                let results = try results.monthYearSortResult(direction: sortType.sortDirection)
                 return results.buckets.map { bucket in
                     .init(type: type,
                           title: bucket.monthYear.relativeString,

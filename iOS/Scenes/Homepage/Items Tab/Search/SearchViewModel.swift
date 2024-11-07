@@ -52,7 +52,15 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @Published var query = ""
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent { didSet { filterAndSortResults() } }
+    var selectedSortType = SortType.mostRecent {
+        didSet {
+            do {
+                try filterAndSortResults()
+            } catch {
+                handle(error)
+            }
+        }
+    }
 
     // Injected properties
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -147,8 +155,11 @@ private extension SearchViewModel {
         case .pinned:
             if query.isEmpty {
                 results = searchableItems.toItemSearchResults
-                filterAndSortResults()
-                return
+                do {
+                    try filterAndSortResults()
+                } catch {
+                    router.display(element: .displayErrorBanner(error))
+                }
             }
         case .all:
             guard !query.isEmpty else {
@@ -167,19 +178,21 @@ private extension SearchViewModel {
             }
             let hashedQuery = query.sha256
             logger.trace("Searching for \"\(hashedQuery)\"")
-            if Task.isCancelled {
-                return
+            do {
+                results = try await searchableItems.result(for: query)
+                try filterAndSortResults()
+                logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
+            } catch {
+                if error is CancellationError {
+                    print("Cancelled search for \"\(hashedQuery)\"")
+                    return
+                }
+                handle(error)
             }
-            results = searchableItems.result(for: query)
-            if Task.isCancelled {
-                return
-            }
-            filterAndSortResults()
-            logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
         }
     }
 
-    func filterAndSortResults() {
+    func filterAndSortResults() throws {
         guard !results.isEmpty else {
             state = .noResults(lastSearchQuery)
             return
@@ -190,35 +203,16 @@ private extension SearchViewModel {
         } else {
             results
         }
-        filteringTask?.cancel()
-        filteringTask = Task { [weak self] in
-            guard let self else {
-                return
+        let filteredAndSortedResults: any SearchResults =
+            switch selectedSortType {
+            case .mostRecent:
+                try filteredResults.mostRecentSortResult()
+            case .alphabeticalAsc, .alphabeticalDesc:
+                try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
+            case .newestToOldest, .oldestToNewest:
+                try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
             }
-            if Task.isCancelled {
-                return
-            }
-            let filteredAndSortedResults = await sortItems(for: filteredResults)
-            if Task.isCancelled {
-                return
-            }
-            state = .results(ItemCount(items: results), filteredAndSortedResults)
-        }
-    }
-
-    func sortItems(for items: [ItemSearchResult]) async -> any SearchResults {
-        switch selectedSortType {
-        case .mostRecent:
-            await items.asyncMostRecentSortResult()
-        case .alphabeticalAsc:
-            await items.asyncAlphabeticalSortResult(direction: .ascending)
-        case .alphabeticalDesc:
-            await items.asyncAlphabeticalSortResult(direction: .descending)
-        case .newestToOldest:
-            await items.asyncMonthYearSortResult(direction: .descending)
-        case .oldestToNewest:
-            await items.asyncMonthYearSortResult(direction: .ascending)
-        }
+        state = .results(ItemCount(items: results), filteredAndSortedResults)
     }
 }
 
@@ -266,7 +260,7 @@ extension SearchViewModel {
                 try await searchEntryDatasource.remove(item: item)
                 try await refreshSearchHistory()
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -284,7 +278,7 @@ extension SearchViewModel {
                 }
                 try await refreshSearchHistory()
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -333,7 +327,11 @@ private extension SearchViewModel {
             .dropFirst()
             .sink { [weak self] _ in
                 guard let self else { return }
-                filterAndSortResults()
+                do {
+                    try filterAndSortResults()
+                } catch {
+                    handle(error)
+                }
             }
             .store(in: &cancellables)
 
@@ -342,6 +340,11 @@ private extension SearchViewModel {
         }
 
         addTelemetryEvent(with: .searchTriggered)
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 

@@ -333,15 +333,19 @@ private extension CredentialsView {
     func sortableSections(for items: [some CredentialItem], isListMode: Bool) -> some View {
         switch viewModel.selectedSortType {
         case .mostRecent:
-            sections(for: items.mostRecentSortResult(), isListMode: isListMode)
+            sections(for: (try? items.mostRecentSortResult()) ?? .default, isListMode: isListMode)
         case .alphabeticalAsc:
-            sections(for: items.alphabeticalSortResult(direction: .ascending), isListMode: isListMode)
+            sections(for: (try? items.alphabeticalSortResult(direction: .ascending)) ?? .default,
+                     isListMode: isListMode)
         case .alphabeticalDesc:
-            sections(for: items.alphabeticalSortResult(direction: .descending), isListMode: isListMode)
+            sections(for: (try? items.alphabeticalSortResult(direction: .descending)) ?? .default,
+                     isListMode: isListMode)
         case .newestToOldest:
-            sections(for: items.monthYearSortResult(direction: .descending), isListMode: isListMode)
+            sections(for: (try? items.monthYearSortResult(direction: .descending)) ?? .default,
+                     isListMode: isListMode)
         case .oldestToNewest:
-            sections(for: items.monthYearSortResult(direction: .ascending), isListMode: isListMode)
+            sections(for: (try? items.monthYearSortResult(direction: .ascending)) ?? .default,
+                     isListMode: isListMode)
         }
     }
 
