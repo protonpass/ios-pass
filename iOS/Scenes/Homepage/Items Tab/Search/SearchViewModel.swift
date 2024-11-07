@@ -28,7 +28,7 @@ import Macro
 import Screens
 import SwiftUI
 
-enum SearchViewState {
+enum SearchViewState: Sendable {
     /// Indexing items
     case initializing
     /// No history, empty search query
@@ -52,15 +52,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     @Published var query = ""
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent {
-        didSet {
-            do {
-                try filterAndSortResults()
-            } catch {
-                handle(error)
-            }
-        }
-    }
+    var selectedSortType = SortType.mostRecent { didSet { filterAndSortResults() } }
 
     // Injected properties
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -76,7 +68,7 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
-    private var lastTask: Task<Void, Never>?
+    private var searchTask: Task<Void, Never>?
     private var filteringTask: Task<Void, Never>?
     private var searchableItems = [SearchableItem]()
     private var history = [SearchEntryUiModel]()
@@ -155,11 +147,7 @@ private extension SearchViewModel {
         case .pinned:
             if query.isEmpty {
                 results = searchableItems.toItemSearchResults
-                do {
-                    try filterAndSortResults()
-                } catch {
-                    router.display(element: .displayErrorBanner(error))
-                }
+                filterAndSortResults()
             }
         case .all:
             guard !query.isEmpty else {
@@ -171,8 +159,8 @@ private extension SearchViewModel {
                 return
             }
         }
-        lastTask?.cancel()
-        lastTask = Task { [weak self] in
+        searchTask?.cancel()
+        searchTask = Task { [weak self] in
             guard let self else {
                 return
             }
@@ -180,7 +168,7 @@ private extension SearchViewModel {
             logger.trace("Searching for \"\(hashedQuery)\"")
             do {
                 results = try await searchableItems.result(for: query)
-                try filterAndSortResults()
+                filterAndSortResults()
                 logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
             } catch {
                 if error is CancellationError {
@@ -192,27 +180,51 @@ private extension SearchViewModel {
         }
     }
 
-    func filterAndSortResults() throws {
-        guard !results.isEmpty else {
-            state = .noResults(lastSearchQuery)
-            return
-        }
-
-        let filteredResults: [ItemSearchResult] = if let selectedType {
-            results.filter { $0.type == selectedType }
-        } else {
-            results
-        }
-        let filteredAndSortedResults: any SearchResults =
-            switch selectedSortType {
-            case .mostRecent:
-                try filteredResults.mostRecentSortResult()
-            case .alphabeticalAsc, .alphabeticalDesc:
-                try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
-            case .newestToOldest, .oldestToNewest:
-                try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
+    // swiftlint:disable:next cyclomatic_complexity
+    func filterAndSortResults() {
+        filteringTask?.cancel()
+        filteringTask = Task.detached(priority: .userInitiated) {
+            // swiftlint:disable:next closure_parameter_position
+            [weak self, results, selectedType, selectedSortType] in
+            guard let self else { return }
+            if results.isEmpty {
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
+                    state = .noResults(lastSearchQuery)
+                }
+                return
             }
-        state = .results(ItemCount(items: results), filteredAndSortedResults)
+
+            do {
+                let filteredResults: [ItemSearchResult] = if let selectedType {
+                    try results.filter {
+                        try Task.checkCancellation()
+                        return $0.type == selectedType
+                    }
+                } else {
+                    results
+                }
+                let filteredAndSortedResults: any SearchResults =
+                    switch selectedSortType {
+                    case .mostRecent:
+                        try filteredResults.mostRecentSortResult()
+                    case .alphabeticalAsc, .alphabeticalDesc:
+                        try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
+                    case .newestToOldest, .oldestToNewest:
+                        try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
+                    }
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
+                    state = .results(ItemCount(items: results), filteredAndSortedResults)
+                }
+            } catch {
+                if error is CancellationError { return }
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
+                    state = .error(error)
+                }
+            }
+        }
     }
 }
 
@@ -327,11 +339,7 @@ private extension SearchViewModel {
             .dropFirst()
             .sink { [weak self] _ in
                 guard let self else { return }
-                do {
-                    try filterAndSortResults()
-                } catch {
-                    handle(error)
-                }
+                filterAndSortResults()
             }
             .store(in: &cancellables)
 

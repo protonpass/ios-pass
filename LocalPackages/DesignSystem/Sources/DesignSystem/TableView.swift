@@ -204,8 +204,8 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
 
             dataSource.sectionIndexTitles = { [weak self] in
                 guard let self else { return nil }
-                return configuration.showSectionIndexTitles ?
-                    dataSource.snapshot().sectionIdentifiers.map(\.title) : nil
+                let titles = dataSource.snapshot().sectionIdentifiers.map(\.title)
+                return configuration.showSectionIndexTitles && titles.count > 1 ? titles : nil
             }
 
             dataSource.titleForHeader = { [weak self] section in
