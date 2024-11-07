@@ -91,7 +91,8 @@ public struct MostRecentSortResult<T: DateSortable>: SearchResults {
         precomputedHash = hasher.finalize()
     }
 
-    // TODO: To be removed
+    // swiftlint:disable:next todo
+    // TODO: To be removed once removing item sorting out of views
     public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
 }
 
@@ -200,7 +201,8 @@ public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults, Se
         precomputedHash = hasher.finalize()
     }
 
-    // TODO: To be removed
+    // swiftlint:disable:next todo
+    // TODO: To be removed once removing item sorting out of views
     public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
 }
 
@@ -346,7 +348,8 @@ public struct MonthYearSortResult<T: DateSortable>: SearchResults {
         precomputedHash = hasher.finalize()
     }
 
-    // TODO: To be removed
+    // swiftlint:disable:next todo
+    // TODO: To be removed once removing item sorting out of views
     public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
 }
 
