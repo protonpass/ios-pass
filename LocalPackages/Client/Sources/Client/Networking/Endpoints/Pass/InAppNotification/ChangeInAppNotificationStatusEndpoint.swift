@@ -22,10 +22,10 @@ import Entities
 import ProtonCoreNetworking
 
 struct ChangeInAppNotificationStatusRequest: Encodable, Sendable {
-    let status: Int
+    let state: Int
 
     enum CodingKeys: String, CodingKey {
-        case status = "Status"
+        case state = "State"
     }
 }
 
@@ -38,10 +38,10 @@ struct ChangeInAppNotificationStatusEndpoint: Endpoint, @unchecked Sendable {
     var method: HTTPMethod
     var body: ChangeInAppNotificationStatusRequest?
 
-    init(notificationId: String, status: Int) {
+    init(notificationId: String, state: Int) {
         debugDescription = "Change notification status"
         path = "/pass/v1/notification/\(notificationId)"
         method = .put
-        body = .init(status: status)
+        body = .init(state: state)
     }
 }
