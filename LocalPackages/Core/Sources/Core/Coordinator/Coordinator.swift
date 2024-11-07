@@ -40,6 +40,7 @@ public protocol CoordinatorProtocol: AnyObject {
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func dismissAllViewControllers(animated: Bool, completion: (() -> Void)?)
     func coordinatorDidDismiss()
+    func updateFloatingView(floatingView: UIView?, shouldAdd: Bool)
 }
 
 public extension CoordinatorProtocol {
@@ -101,6 +102,72 @@ public extension CoordinatorProtocol {
     }
 
     func coordinatorDidDismiss() {}
+
+    func updateFloatingView(floatingView: UIView?, shouldAdd: Bool) {
+        let viewTag = 1
+        // Locate the UITabBarController in the view hierarchy
+        if let tabBarController = findTabBarController(in: rootViewController), let floatingView {
+            if shouldAdd {
+                if tabBarController.view.viewWithTag(viewTag) == nil {
+                    floatingView.tag = viewTag
+                    floatingView.backgroundColor = UIColor.clear
+                    // Check if the floating view is already added
+                    if floatingView.superview == nil {
+                        // Customize the floating view's appearance and position above the tab bar
+                        floatingView.translatesAutoresizingMaskIntoConstraints = false
+                        tabBarController.view.addSubview(floatingView)
+
+                        // Position the floating view above the tab bar
+                        NSLayoutConstraint.activate([
+                            floatingView.centerXAnchor.constraint(equalTo: tabBarController.view.centerXAnchor),
+                            floatingView.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor,
+                                                                 constant: -10),
+                            floatingView.leadingAnchor
+                                .constraint(equalTo: tabBarController.view.leadingAnchor,
+                                            constant: 16),
+                            floatingView.trailingAnchor
+                                .constraint(equalTo: tabBarController.view.trailingAnchor,
+                                            constant: -16)
+                        ])
+                    }
+                }
+            } else {
+                if let floatingView = tabBarController.view.viewWithTag(viewTag) {
+                    // Remove the floating view if present
+                    floatingView.removeFromSuperview()
+                }
+            }
+        } else {
+            if !shouldAdd {
+                if let floatingView = rootViewController.view.window?.viewWithTag(viewTag) {
+                    floatingView.removeFromSuperview()
+                }
+            }
+        }
+    }
+
+    // Helper function to recursively search for UITabBarController
+    func findTabBarController(in viewController: UIViewController) -> UITabBarController? {
+        // Check if the current view controller is a UITabBarController
+        if let tabBarController = viewController as? UITabBarController {
+            return tabBarController
+        }
+
+        // Search in the children of the current view controller
+        for child in viewController.children {
+            if let found = findTabBarController(in: child) {
+                return found
+            }
+        }
+
+        // If presented, search in the presented view controller
+        if let presented = viewController.presentedViewController {
+            return findTabBarController(in: presented)
+        }
+
+        // Return nil if no UITabBarController is found in this branch
+        return nil
+    }
 }
 
 enum CoordinatorType {

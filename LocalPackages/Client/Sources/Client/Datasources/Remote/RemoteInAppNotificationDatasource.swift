@@ -36,7 +36,7 @@ public final class RemoteInAppNotificationDatasource: RemoteDatasource, RemoteIn
     }
 
     public func changeNotificationStatus(notificationId: String, newStatus: Int, userId: String) async throws {
-        let endpoint = ChangeInAppNotificationStatusEndpoint(notificationId: notificationId, status: newStatus)
+        let endpoint = ChangeInAppNotificationStatusEndpoint(notificationId: notificationId, state: newStatus)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }

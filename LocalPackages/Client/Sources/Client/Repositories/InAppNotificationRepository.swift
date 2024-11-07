@@ -28,25 +28,13 @@ public protocol InAppNotificationRepositoryProtocol: AnyObject, Sendable {
     func changeNotificationStatus(notificationId: String, newStatus: Int, userId: String) async throws
 }
 
-// public extension AccessRepositoryProtocol {
-//    /// Conveniently get the plan of current access
-//    func getPlan(userId: String?) async throws -> Plan {
-//        try await getAccess(userId: userId).access.plan
-//    }
-// }
-
 public actor InAppNotificationRepository: InAppNotificationRepositoryProtocol {
 //    private let localDatasource: any LocalAccessDatasourceProtocol
     private let remoteDatasource: any RemoteInAppNotificationDatasourceProtocol
     private let userManager: any UserManagerProtocol
     private let logger: Logger
 
-//    public nonisolated let access: CurrentValueSubject<UserAccess?, Never> = .init(nil)
-//    public nonisolated let accesses: CurrentValueSubject<[UserAccess], Never> = .init([])
-//    public nonisolated let didUpdateToNewPlan: PassthroughSubject<Void, Never> = .init()
-
-    // TODO: add timmer to not pull if at least one hour has not gone by since last pull
-    // maybe add local cache or db to store the notifications
+    // TODO: maybe add local cache or db to store the notifications
     // add function to return the current notification we should display
     // and add logic to select next display notification
     public init(/* localDatasource: any LocalAccessDatasourceProtocol, */

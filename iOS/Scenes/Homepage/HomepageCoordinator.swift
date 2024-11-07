@@ -57,7 +57,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
-    private let urlOpener = UrlOpener()
+    let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
@@ -77,7 +77,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedToolingContainer.authManager) var authManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
-    @LazyInjected(\SharedRepositoryContainer.inAppNotificationRepository) var inAppNotificationRepository
+    @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -132,6 +132,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshAccessAndMonitorStateSync()
         refreshSettings()
         refreshFeatureFlags()
+        refreshInAppNotifications()
         sendAllEventsIfApplicable()
         doLogOutExcessFreeAccounts()
     }
@@ -253,8 +254,8 @@ private extension HomepageCoordinator {
                         refreshAccessAndMonitorStateSync()
                         refreshSettings()
                         refreshFeatureFlags()
+                        refreshInAppNotifications()
                         doLogOutExcessFreeAccounts()
-                        try await checkInAppNotification()
                     } catch {
                         logger.error(error)
                     }
@@ -307,21 +308,10 @@ private extension HomepageCoordinator {
                 try await vaultsManager.asyncRefresh(userId: userId)
                 eventLoop.forceSync()
                 eventLoop.start()
-                testDisplayNotification()
-
             } catch {
                 logger.error(error)
             }
         }
-//
-//        Task { [weak self] in
-//            guard let self else {
-//                return
-//            }
-//            await MainActor.run {
-//                testDisplayNotification()
-//            }
-//        }
     }
 
     func refreshAccessAndMonitorStateSync() {
@@ -1715,135 +1705,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     nonisolated func syncEventLoopDidFailedAdditionalTask(userId: String, label: String, error: any Error) {
         logger.error(message: "Failed to execute additional task \(label) for userId \(userId)", error: error)
     }
-
-    func testDisplayNotification() {
-        let view = Button {
-            self.updateFloatingView(floatingView: nil, shouldAdd: false)
-        } label: {
-            InAppBannerView(onTap: {}, close: {})
-                .background(Color.clear)
-//            Text("tess")
-        }
-//        .frame(maxWidth: .infinity, maxHeight: .infinity)
-//        .background(Color.clear)
-//        let currentValue = getUserPreferences().spotlightSearchableContent
-//        let view = EditSpotlightSearchableContentView(selection: currentValue) { [weak self] newValue in
-//            guard let self else { return }
-//            updateUserPreferences(\.spotlightSearchableContent, value: newValue)
-//        }
-
-        let viewController = UIHostingController(rootView: view)
-//
-//        viewController.setDetentType(.custom(CGFloat(470)),
-//                                     parentViewController: rootViewController)
-//
-//        viewController.sheetPresentationController?.prefersGrabberVisible = true
-//        present(viewController)
-
-        if let view = viewController.view {
-            updateFloatingView(floatingView: view, shouldAdd: true)
-        }
-    }
-
-//    func updateTabViewController(viewController: UIViewController, shouldAdd: Bool) {
-//        // Search for a UITabBarController in the view hierarchy
-//        if let tabBarController = findTabBarController(in: rootViewController) {
-//            var viewControllers = tabBarController.viewControllers ?? []
-//
-//            if shouldAdd {
-//                // Add the view controller if it's not already present
-//                if !viewControllers.contains(viewController) {
-//                    viewControllers.append(viewController)
-//                }
-//            } else {
-//                // Remove the view controller if it's present
-//                if let index = viewControllers.firstIndex(of: viewController) {
-//                    viewControllers.remove(at: index)
-//                }
-//            }
-//
-//            // Update the tab bar controller's view controllers
-//            tabBarController.viewControllers = viewControllers
-//        } else {
-//            print("No UITabBarController found in the view hierarchy.")
-//        }
-//    }
-
-    func updateFloatingView(floatingView: UIView?, shouldAdd: Bool) {
-        let viewTag = 1
-        // Locate the UITabBarController in the view hierarchy
-        if let tabBarController = findTabBarController(in: rootViewController), let floatingView {
-            if shouldAdd {
-                if tabBarController.view.viewWithTag(viewTag) == nil {
-                    floatingView.tag = viewTag
-                    // Check if the floating view is already added
-                    if floatingView.superview == nil {
-                        // Customize the floating view's appearance and position above the tab bar
-                        floatingView.translatesAutoresizingMaskIntoConstraints = false
-                        tabBarController.view.addSubview(floatingView)
-
-                        // Position the floating view above the tab bar
-                        NSLayoutConstraint.activate([
-                            floatingView.centerXAnchor.constraint(equalTo: tabBarController.view.centerXAnchor),
-                            floatingView.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor,
-                                                                 constant: -10),
-                            floatingView.leadingAnchor
-                                .constraint(equalTo: tabBarController.view.leadingAnchor,
-                                            constant: 16),
-                            floatingView.trailingAnchor
-                                .constraint(equalTo: tabBarController.view.trailingAnchor,
-                                            constant: -16)
-//                            floatingView.leadingAnchor
-//                                .constraint(lessThanOrEqualTo: tabBarController.tabBar.leadingAnchor,
-//                                            constant: 16),
-//                            floatingView.trailingAnchor
-//                                .constraint(lessThanOrEqualTo: tabBarController.tabBar.trailingAnchor,
-//                                            constant: 16)
-
-//                            floatingView.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
-//                            // Adjust width as needed
-//                            floatingView.heightAnchor.constraint(equalToConstant: 50) // Adjust height as needed
-                        ])
-                    }
-                }
-            } else {
-                if let floatingView = tabBarController.view.viewWithTag(viewTag) {
-                    // Remove the floating view if present
-                    floatingView.removeFromSuperview()
-                }
-            }
-        } else {
-            if !shouldAdd {
-                if let floatingView = rootViewController.view.window?.viewWithTag(viewTag) {
-                    floatingView.removeFromSuperview()
-                }
-            }
-            print("No UITabBarController found in the view hierarchy.")
-        }
-    }
-
-    // Helper function to recursively search for UITabBarController
-    func findTabBarController(in viewController: UIViewController) -> UITabBarController? {
-        // Check if the current view controller is a UITabBarController
-        if let tabBarController = viewController as? UITabBarController {
-            return tabBarController
-        }
-
-        // Search in the children of the current view controller
-        for child in viewController.children {
-            if let found = findTabBarController(in: child) {
-                return found
-            }
-        }
-
-        // If presented, search in the presented view controller
-        if let presented = viewController.presentedViewController {
-            return findTabBarController(in: presented)
-        }
-
-        // Return nil if no UITabBarController is found in this branch
-        return nil
-    }
 }
 
 import UIKit
@@ -1864,91 +1725,5 @@ private extension HomepageCoordinator {
         if config.dismissBeforeShowing {
             window?.endEditing(true)
         }
-    }
-}
-
-extension HomepageCoordinator {
-    func checkInAppNotification() async throws {
-        let userId = try await userManager.getActiveUserId()
-        let notifications = try await inAppNotificationRepository.getNotifications(lastNotificationId: nil,
-                                                                                   userId: userId)
-        print("woot notifications: \(notifications)")
-    }
-}
-
-struct InAppBannerView: View {
-//    let notification: InAppNotification
-    var borderColor: UIColor = PassColor.inputBorderNorm
-    let onTap: () -> Void
-    let close: () -> Void
-
-    var body: some View {
-        ZStack(alignment: .topTrailing) {
-            HStack(spacing: DesignConstant.sectionPadding) {
-//                if let url = notification.content.imageUrl {
-                AsyncImage(url: URL(string: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/300px-Wikipedia-logo-v2.svg.png"),
-                           content: { image in
-                               image.resizable()
-                                   .aspectRatio(contentMode: .fit)
-                                   .frame(maxWidth: 40, maxHeight: 40)
-                           },
-                           placeholder: {
-                               ProgressView()
-                           })
-//                AsyncImage(url: )
-//                    .frame(width: 40, height: 40)
-//                }
-
-//                ItemDetailSectionIcon(icon: PassIcon.passkey,
-//                                      color: ItemContentType.login.normColor,
-//                                      width: 40)
-
-                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                    Text("Passkey")
-                        .foregroundStyle(PassColor.textInvert.toColor)
-                        .fontWeight(.medium)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Text("Wooot")
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                Spacer()
-
-                ItemDetailSectionIcon(icon: IconProvider.chevronRight, width: 20)
-            }
-            .padding(12)
-            .background(PassColor.backgroundWeak.toColor)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
-            .overlay(RoundedRectangle(cornerRadius: 8)
-                .stroke(borderColor.toColor, lineWidth: 1))
-            .contentShape(.rect)
-            .onTapGesture(perform: onTap)
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            CircleButton(icon: IconProvider.cross,
-                         iconColor: PassColor.textNorm,
-                         backgroundColor: PassColor.backgroundNorm,
-                         accessibilityLabel: "Close",
-                         action: close)
-                .overlay(Circle()
-                    .stroke(Color.blue, lineWidth: 1))
-                .padding(2)
-                .background(Color.red /* PassColor.backgroundNorm.toColor */ )
-                .clipShape(.circle)
-//                .overlay(Circle()
-//                    .padding(1)
-//                    .background(PassColor.backgroundNorm.toColor)
-//                    .clipShape(.circle))
-                .offset(x: 15, y: -15)
-        }
-        .frame(maxWidth: .infinity)
-        .background(Color.clear)
-//        .clipShape(RoundedRectangle(cornerRadius: 8))
-//        .overlay(RoundedRectangle(cornerRadius: 8)
-//        .stroke(borderColor.toColor, lineWidth: 1))
-//        .contentShape(.rect)
-//        .onTapGesture(perform: onTap)
     }
 }
