@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Client
+import Core
 import DesignSystem
 import Entities
 import Factory
@@ -36,8 +37,10 @@ struct SearchResultsView: View {
     let onScroll: () -> Void
     let onSelectItem: (ItemSearchResult) -> Void
 
-    @State private var showingTrashAliasAlert = false
     @State private var aliasToTrash: (any ItemTypeIdentifiable)?
+
+    @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
+    private var useSwiftUIList = false
 
     init(selectedType: Binding<ItemContentType?>,
          selectedSortType: Binding<SortType>,
@@ -63,10 +66,14 @@ struct SearchResultsView: View {
         VStack(spacing: 0) {
             SearchResultChips(selectedType: $selectedType, itemCount: viewModel.itemCount)
             topBarSearchInformations
-//            searchListItems
+            if useSwiftUIList {
+                searchListItems
+            } else {
+                tableView
+            }
         }
         .if(viewModel.aliasSyncEnabled) {
-            $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
+            $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
                                                 enabled: aliasToTrash?.aliasEnabled ?? false,
                                                 disableAction: {
                                                     if let aliasToTrash {
@@ -102,34 +109,15 @@ struct SearchResultsView: View {
         }
     }
 
-    @ViewBuilder
-    private func itemRow(for item: ItemSearchResult) -> some View {
-        let isEditable = viewModel.isEditable(item)
-        Button(action: {
-            onSelectItem(item)
-        }, label: {
-            ItemSearchResultView(result: item)
-                .itemContextMenu(item: item,
-                                 isTrashed: viewModel.isTrash,
-                                 isEditable: isEditable,
-                                 aliasSyncEnabled: viewModel.aliasSyncEnabled,
-                                 onPermanentlyDelete: { viewModel.itemToBePermanentlyDeleted = item },
-                                 onAliasTrash: {
-                                     aliasToTrash = item
-                                     showingTrashAliasAlert.toggle()
-                                 },
-                                 handler: viewModel.itemContextMenuHandler)
-        })
-        .plainListRow()
-        .padding(.horizontal)
-        .padding(.vertical, 12)
-        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
-                                    item: item,
-                                    isEditMode: false,
-                                    isTrashed: viewModel.isTrash,
-                                    isEditable: isEditable,
-                                    itemContextMenuHandler: viewModel.itemContextMenuHandler,
-                                    aliasSyncEnabled: viewModel.aliasSyncEnabled))
+    private func itemRow(for item: ItemSearchResult) -> ResultRow {
+        ResultRow(item: item,
+                  isEditable: viewModel.isEditable(item),
+                  isTrash: viewModel.isTrash,
+                  aliasSyncEnabled: viewModel.aliasSyncEnabled,
+                  itemContextMenuHandler: viewModel.itemContextMenuHandler,
+                  itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
+                  onSelect: { onSelectItem(item) },
+                  onAliasTrash: { aliasToTrash = item })
     }
 }
 
@@ -158,6 +146,32 @@ private extension SearchResultsView {
 }
 
 private extension SearchResultsView {
+    @ViewBuilder
+    var tableView: some View {
+        let sections: [TableView<ItemSearchResult, ResultRow, Text>.Section] = switch viewModel.results {
+        case let results as MostRecentSortResult<ItemSearchResult>:
+            results.buckets.map {
+                .init(type: $0.id, title: $0.type.title, items: $0.items)
+            }
+        case let results as AlphabeticalSortResult<ItemSearchResult>:
+            results.buckets.map {
+                .init(type: $0.letter, title: $0.letter.character, items: $0.items)
+            }
+        case let results as MonthYearSortResult<ItemSearchResult>:
+            results.buckets.map {
+                .init(type: $0.monthYear, title: $0.monthYear.relativeString, items: $0.items)
+            }
+        default:
+            []
+        }
+        let isAlphabetical = viewModel.results is AlphabeticalSortResult<ItemSearchResult>
+        TableView(sections: sections.filter { !$0.items.isEmpty },
+                  configuration: .init(showSectionIndexTitles: isAlphabetical),
+                  id: nil,
+                  itemView: { itemRow(for: $0) },
+                  headerView: { _ in nil })
+    }
+
     var searchListItems: some View {
         ScrollViewReader { proxy in
             List {
@@ -218,5 +232,39 @@ private extension SearchResultsView {
         ForEach(result.buckets, id: \.monthYear) { bucket in
             section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
         }
+    }
+}
+
+private struct ResultRow: View {
+    let item: ItemSearchResult
+    let isEditable: Bool
+    let isTrash: Bool
+    let aliasSyncEnabled: Bool
+    let itemContextMenuHandler: ItemContextMenuHandler
+    @Binding var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
+    let onSelect: () -> Void
+    let onAliasTrash: () -> Void
+
+    var body: some View {
+        Button(action: onSelect) {
+            ItemSearchResultView(result: item)
+                .itemContextMenu(item: item,
+                                 isTrashed: isTrash,
+                                 isEditable: isEditable,
+                                 aliasSyncEnabled: aliasSyncEnabled,
+                                 onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
+                                 onAliasTrash: onAliasTrash,
+                                 handler: itemContextMenuHandler)
+        }
+        .plainListRow()
+        .padding(.horizontal)
+        .padding(.vertical, 12)
+        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: $itemToBePermanentlyDeleted,
+                                    item: item,
+                                    isEditMode: false,
+                                    isTrashed: isTrash,
+                                    isEditable: isEditable,
+                                    itemContextMenuHandler: itemContextMenuHandler,
+                                    aliasSyncEnabled: aliasSyncEnabled))
     }
 }

@@ -79,6 +79,17 @@ public struct MostRecentSortBucket<T: DateSortable>: Hashable, Sendable, Identif
 public struct MostRecentSortResult<T: DateSortable>: SearchResults {
     public var numberOfItems: Int
     public let buckets: [MostRecentSortBucket<T>]
+    public let precomputedHash: Int
+
+    init(numberOfItems: Int,
+         buckets: [MostRecentSortBucket<T>]) {
+        var hasher = Hasher()
+        self.numberOfItems = numberOfItems
+        hasher.combine(numberOfItems)
+        self.buckets = buckets
+        hasher.combine(buckets)
+        precomputedHash = hasher.finalize()
+    }
 
     // TODO: To be removed
     public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
@@ -176,8 +187,18 @@ public protocol AlphabeticalSortable: Hashable, Sendable {
 
 public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults, Sendable {
     public var numberOfItems: Int
-
     public let buckets: [AlphabetBucket<T>]
+    public let precomputedHash: Int
+
+    init(numberOfItems: Int,
+         buckets: [AlphabetBucket<T>]) {
+        var hasher = Hasher()
+        self.numberOfItems = numberOfItems
+        hasher.combine(numberOfItems)
+        self.buckets = buckets
+        hasher.combine(buckets)
+        precomputedHash = hasher.finalize()
+    }
 
     // TODO: To be removed
     public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
@@ -312,8 +333,18 @@ public struct MonthYearBucket<T: DateSortable>: Hashable, Sendable {
 
 public struct MonthYearSortResult<T: DateSortable>: SearchResults {
     public var numberOfItems: Int
-
     public let buckets: [MonthYearBucket<T>]
+    public let precomputedHash: Int
+
+    init(numberOfItems: Int,
+         buckets: [MonthYearBucket<T>]) {
+        var hasher = Hasher()
+        self.numberOfItems = numberOfItems
+        hasher.combine(numberOfItems)
+        self.buckets = buckets
+        hasher.combine(buckets)
+        precomputedHash = hasher.finalize()
+    }
 
     // TODO: To be removed
     public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
@@ -359,6 +390,6 @@ public extension Array where Element: DateSortable {
     }
 }
 
-public protocol SearchResults: Hashable, Equatable, Sendable {
+public protocol SearchResults: PrecomputedHashable, Equatable, Sendable {
     var numberOfItems: Int { get }
 }

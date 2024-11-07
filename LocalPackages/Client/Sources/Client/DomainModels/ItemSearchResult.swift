@@ -29,15 +29,6 @@ public protocol HighlightableText: Sendable, Hashable {
     var isTrailingText: Bool { get }
 }
 
-public extension HighlightableText {
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(fullText)
-        hasher.combine(highlightText)
-        hasher.combine(isLeadingText)
-        hasher.combine(isTrailingText)
-    }
-}
-
 public enum SearchResultEither: HighlightableText, Hashable {
     case notMatched(String)
     case matched(SearchResult)
@@ -79,7 +70,7 @@ public enum SearchResultEither: HighlightableText, Hashable {
     }
 }
 
-public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
+public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pinnable {
     public var id: String {
         "\(itemId + shareId)"
     }
@@ -100,6 +91,8 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
     public let modifyTime: Int64
     public let pinned: Bool
 
+    public let precomputedHash: Int
+
     public init(shareId: String,
                 itemId: String,
                 type: ItemContentType,
@@ -112,18 +105,45 @@ public struct ItemSearchResult: ItemTypeIdentifiable, Identifiable, Pinnable {
                 lastUseTime: Int64,
                 modifyTime: Int64,
                 pinned: Bool) {
+        var hasher = Hasher()
+
         self.shareId = shareId
+        hasher.combine(shareId)
+
         self.itemId = itemId
+        hasher.combine(itemId)
+
         self.type = type
+        hasher.combine(type)
+
         self.aliasEmail = aliasEmail
+        hasher.combine(aliasEmail)
+
         self.aliasEnabled = aliasEnabled
+        hasher.combine(aliasEnabled)
+
         highlightableTitle = title
+        hasher.combine(title)
+
         highlightableDetail = detail
+        hasher.combine(detail)
+
         self.url = url
+        hasher.combine(url)
+
         self.vault = vault
+        hasher.combine(vault)
+
         self.lastUseTime = lastUseTime
+        hasher.combine(lastUseTime)
+
         self.modifyTime = modifyTime
+        hasher.combine(modifyTime)
+
         self.pinned = pinned
+        hasher.combine(pinned)
+
+        precomputedHash = hasher.finalize()
     }
 }
 
@@ -141,23 +161,8 @@ extension ItemSearchResult: AlphabeticalSortable {
     public var alphabeticalSortableString: String { highlightableTitle.fullText }
 }
 
-extension ItemSearchResult: Hashable {
+extension ItemSearchResult: PrecomputedHashable {
     public static func == (lhs: ItemSearchResult, rhs: ItemSearchResult) -> Bool {
         lhs.hashValue == rhs.hashValue
-    }
-
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(itemId)
-        hasher.combine(shareId)
-        hasher.combine(type)
-        hasher.combine(aliasEmail)
-        hasher.combine(aliasEnabled)
-        hasher.combine(highlightableTitle.hashValue)
-        hasher.combine(highlightableDetail.map(\.hashValue))
-        hasher.combine(url)
-        hasher.combine(vault)
-        hasher.combine(lastUseTime)
-        hasher.combine(modifyTime)
-        hasher.combine(pinned)
     }
 }
