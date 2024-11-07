@@ -21,6 +21,8 @@
 //
 
 import Client
+import Core
+@preconcurrency import CryptoKit
 import Entities
 
 public protocol GetSearchableItemsUseCase: Sendable {
@@ -54,11 +56,26 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
         async let getItems = getEncryptedItems(userId: userId, searchMode: searchMode)
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         let (vaults, items, symmetricKey) = try await (getVaults, getItems, getSymmetricKey)
-        return try items.map {
-            try Task.checkCancellation()
-            return try SearchableItem(from: $0,
-                                      symmetricKey: symmetricKey,
-                                      allVaults: vaults)
+
+        return try await withThrowingTaskGroup(of: [SearchableItem].self,
+                                               returning: [SearchableItem].self) { @Sendable group in
+            let itemBatches = items.chunked(into: Constants.Utils.batchSize)
+            for batch in itemBatches {
+                group.addTask { @Sendable in
+                    try batch.map {
+                        try Task.checkCancellation()
+                        return try SearchableItem(from: $0,
+                                                  symmetricKey: symmetricKey,
+                                                  allVaults: vaults)
+                    }
+                }
+            }
+
+            var results = [SearchableItem]()
+            for try await result in group {
+                results.append(contentsOf: result)
+            }
+            return results
         }
     }
 }

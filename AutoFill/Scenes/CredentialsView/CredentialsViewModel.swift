@@ -314,15 +314,16 @@ private extension CredentialsViewModel {
             let hashedTerm = term.sha256
             logger.trace("Searching for term \(hashedTerm)")
             state = .searching
-            let searchResults = searchableItems.result(for: term)
-            if Task.isCancelled {
-                return
-            }
-            state = .searchResults(searchResults)
-            if searchResults.isEmpty {
-                logger.trace("No results for term \(hashedTerm)")
-            } else {
-                logger.trace("Found results for term \(hashedTerm)")
+            do {
+                let searchResults = try await searchableItems.result(for: term)
+                state = .searchResults(searchResults)
+                if searchResults.isEmpty {
+                    logger.trace("No results for term \(hashedTerm)")
+                } else {
+                    logger.trace("Found results for term \(hashedTerm)")
+                }
+            } catch {
+                handle(error)
             }
         }
     }
