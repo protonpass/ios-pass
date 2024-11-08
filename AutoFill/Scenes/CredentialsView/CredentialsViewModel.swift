@@ -51,22 +51,6 @@ enum CredentialsViewState: Equatable {
     }
 }
 
-protocol TitledItemIdentifiable: ItemIdentifiable {
-    var itemTitle: String { get }
-}
-
-protocol CredentialItem: DateSortable, AlphabeticalSortable, TitledItemIdentifiable, Identifiable {}
-
-extension ItemUiModel: @retroactive ItemIdentifiable {}
-extension ItemUiModel: @retroactive CustomDebugStringConvertible {}
-extension ItemUiModel: CredentialItem {
-    var itemTitle: String { title }
-}
-
-extension ItemSearchResult: CredentialItem {
-    var itemTitle: String { highlightableTitle.fullText }
-}
-
 @MainActor
 final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @Published private(set) var state = CredentialsViewState.loading
