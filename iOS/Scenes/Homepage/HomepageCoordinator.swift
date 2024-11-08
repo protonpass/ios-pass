@@ -1678,9 +1678,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
                 guard let self else {
                     return
                 }
-//                await MainActor.run {
-//                    testDisplayNotification()
-//                }
 
                 await refresh()
             }
