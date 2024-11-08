@@ -30,12 +30,47 @@ import Macro
 import Screens
 import UIKit
 
-struct AliasContactsModel {
+struct AliasContactsModel: Sendable, Hashable {
     let activeContacts: [AliasContact]
     let blockContacts: [AliasContact]
 
-    static var `default`: AliasContactsModel {
-        AliasContactsModel(activeContacts: [], blockContacts: [])
+    var isEmpty: Bool {
+        activeContacts.isEmpty && blockContacts.isEmpty
+    }
+
+    init(contacts: [AliasContact]) {
+        var activeContacts: [AliasContact] = []
+        var blockContacts: [AliasContact] = []
+
+        for contact in contacts {
+            if contact.blocked {
+                blockContacts.append(contact)
+            } else {
+                activeContacts.append(contact)
+            }
+        }
+        self.activeContacts = activeContacts
+        self.blockContacts = blockContacts
+    }
+
+    init(activeContacts: [AliasContact], blockContacts: [AliasContact]) {
+        self.activeContacts = activeContacts
+        self.blockContacts = blockContacts
+    }
+
+    func update(with newContacts: [AliasContact]) -> AliasContactsModel {
+        var activeContacts: [AliasContact] = activeContacts
+        var blockContacts: [AliasContact] = blockContacts
+
+        for contact in newContacts {
+            if contact.blocked {
+                blockContacts.append(contact)
+            } else {
+                activeContacts.append(contact)
+            }
+        }
+
+        return AliasContactsModel(activeContacts: activeContacts, blockContacts: blockContacts)
     }
 }
 
@@ -44,17 +79,19 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     @Published var aliasName = ""
     @Published private(set) var displayName = ""
     @Published private(set) var showExplanation = false
-    @Published private(set) var contactsInfos = AliasContactsModel.default
+    @Published private(set) var contactsInfos: AliasContactsModel
     @Published private(set) var loading = false
+    @Published private(set) var loadingMoreContent = false
 
     var hasNoContact: Bool {
-        contacts.contacts.isEmpty
+        contactsInfos.isEmpty
     }
 
-    private var contacts: PaginatedAliasContacts
     private var previousName = ""
     private(set) var alias: Alias
     private let infos: ContactsInfos
+    private var canFetchMoreContact = true
+
     @Published private(set) var plan: Plan?
 
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
@@ -75,14 +112,13 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     }
 
     init(infos: ContactsInfos) {
-        contacts = infos.contacts
+        contactsInfos = .init(contacts: infos.contacts.contacts)
         self.infos = infos
         alias = infos.alias
         aliasName = alias.name ?? ""
         displayName = alias.displayName
         previousName = aliasName
         setUp()
-        parseContacts()
     }
 
     func copyContact(_ contact: AliasContact) {
@@ -135,13 +171,13 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
             }
             do {
                 loading = true
+
                 let userId = try await userManager.getActiveUserId()
                 _ = try await aliasRepository.updateContact(userId: userId,
                                                             shareId: infos.shareId,
                                                             itemId: infos.itemId,
                                                             contactId: "\(contact.ID)",
                                                             blocked: !contact.blocked)
-                try await reloadContact()
             } catch {
                 handle(error)
             }
@@ -155,6 +191,26 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
                                                 upsellElements: UpsellEntry.aliasManagement.upsellElements,
                                                 ctaTitle: #localized("Get Pass Unlimited"))
         router.present(for: .upselling(config, .none))
+    }
+
+    func loadMore() {
+        guard canFetchMoreContact else {
+            return
+        }
+        loadingMoreContent = true
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                loadingMoreContent = false
+            }
+            do {
+                try await reloadContact()
+            } catch {
+                handle(error)
+            }
+        }
     }
 }
 
@@ -181,7 +237,11 @@ private extension AliasContactsViewModel {
                     guard let self else {
                         return
                     }
-                    try? await reloadContact()
+                    do {
+                        try await reloadContact()
+                    } catch {
+                        handle(error)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -199,28 +259,18 @@ private extension AliasContactsViewModel {
             .store(in: &cancellables)
     }
 
-    func reloadContact() async throws {
+    func reloadContact(lastContactId: Int? = nil) async throws {
         let userId = try await userManager.getActiveUserId()
-        contacts = try await aliasRepository.getContacts(userId: userId,
-                                                         shareId: infos.shareId,
-                                                         itemId: infos.itemId,
-                                                         lastContactId: nil)
-        parseContacts()
-    }
-
-    func parseContacts() {
-        var activeContacts: [AliasContact] = []
-        var blockContacts: [AliasContact] = []
-
-        for contact in contacts.contacts {
-            if contact.blocked {
-                blockContacts.append(contact)
-            } else {
-                activeContacts.append(contact)
-            }
+        let contacts = try await aliasRepository.getContacts(userId: userId,
+                                                             shareId: infos.shareId,
+                                                             itemId: infos.itemId,
+                                                             lastContactId: lastContactId)
+        canFetchMoreContact = contacts.lastID != 0
+        if lastContactId != nil {
+            contactsInfos = contactsInfos.update(with: contacts.contacts)
+        } else {
+            contactsInfos = .init(contacts: contacts.contacts)
         }
-
-        contactsInfos = AliasContactsModel(activeContacts: activeContacts, blockContacts: blockContacts)
     }
 
     func handle(_ error: any Error) {
