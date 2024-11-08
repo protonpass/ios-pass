@@ -47,8 +47,8 @@ struct PasskeyCredentialsView: View {
                                mode: .passkeyCreation,
                                users: viewModel.users,
                                selectedUser: $viewModel.selectedUser,
-                               itemRow: { row(for: $0) },
-                               searchResultRow: { row(for: $0) },
+                               itemRow: { row(for: .uiModel($0)) },
+                               searchResultRow: { row(for: .searchResult($0)) },
                                searchBarPlaceholder: viewModel.searchBarPlaceholder,
                                onRefresh: { await viewModel.sync(ignoreError: false) },
                                onCreate: {
@@ -90,9 +90,9 @@ struct PasskeyCredentialsView: View {
 }
 
 private extension PasskeyCredentialsView {
-    func row(for item: any CredentialItem) -> some View {
+    func row(for item: CredentialItem) -> some View {
         GenericCredentialItemRow(item: item,
-                                 user: viewModel.getUserForUiDisplay(for: item),
+                                 user: viewModel.getUserForUiDisplay(for: item.item),
                                  selectItem: { viewModel.selectedItem = $0 })
     }
 }

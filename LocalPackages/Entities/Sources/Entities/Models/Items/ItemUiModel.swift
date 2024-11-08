@@ -116,3 +116,5 @@ extension ItemUiModel: Identifiable {
 
     public var aliasDisabled: Bool { !aliasEnabled }
 }
+
+extension ItemUiModel: ItemIdentifiable {}
