@@ -26,11 +26,13 @@ import SwiftUI
 public struct InAppModalView: View {
     let notification: InAppNotification
     let borderColor: UIColor = PassColor.inputBorderNorm
-    let onTap: () -> Void
-    let close: () -> Void
+    let onTap: (InAppNotification) -> Void
+    let close: (InAppNotification) -> Void
     @Environment(\.dismiss) private var dismiss
 
-    public init(notification: InAppNotification, onTap: @escaping () -> Void, close: @escaping () -> Void) {
+    public init(notification: InAppNotification,
+                onTap: @escaping (InAppNotification) -> Void,
+                close: @escaping (InAppNotification) -> Void) {
         self.notification = notification
         self.onTap = onTap
         self.close = close
@@ -70,7 +72,7 @@ public struct InAppModalView: View {
                                       titleColor: PassColor.textInvert,
                                       backgroundColor: PassColor.interactionNormMajor2,
                                       height: 48,
-                                      action: onTap)
+                                      action: { onTap(notification) })
                         .padding(.horizontal, DesignConstant.sectionPadding)
                     Spacer()
                 }
@@ -86,7 +88,7 @@ public struct InAppModalView: View {
                          type: .custom(buttonSize: 30, iconSize: 25),
                          action: {
                              dismiss()
-                             close()
+                             close(notification)
                          })
                          .padding()
         }

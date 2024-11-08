@@ -28,6 +28,11 @@ public enum ItemFlag: Sendable, Hashable {
     case skipHealthCheck(Bool)
 }
 
+private struct InternalPassMonitorItem {
+    let encrypted: SymmetricallyEncryptedItem
+    let loginData: LogInItemData
+}
+
 // sourcery: AutoMockable
 public protocol PassMonitorRepositoryProtocol: Sendable {
     var darkWebDataSectionUpdate: PassthroughSubject<DarkWebDataSectionUpdate, Never> { get }
@@ -97,14 +102,24 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     }
 
     public func refreshSecurityChecks() async throws {
-        weaknessStats.send(.default)
         let userId = try await userManager.getActiveUserId()
-        var reusedPasswords = [String: Int]()
+        var passwordCounts = [String: Int]()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-        let encryptedLoginItems = try await itemRepository.getActiveLogInItems(userId: userId)
+        let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
+            .compactMap { encryptedItem -> InternalPassMonitorItem? in
+                guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
+                      let loginItem = item.loginItem else {
+                    return nil
+                }
+
+                if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
+                    passwordCounts[loginItem.password, default: 0] += 1
+                }
+                return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
+            }
 
         // Filter out unique passwords
-        reusedPasswords = reusedPasswords.filter { $0.value > 1 }
+        let reusedPasswords = Set(passwordCounts.filter { $0.value > 1 }.map(\.key))
 
         var numberOfWeakPassword = 0
         var numberOfMissing2fa = 0
@@ -112,40 +127,32 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
         var securityAffectedItems = [SecurityAffectedItem]()
 
-        for encryptedItem in encryptedLoginItems {
-            guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                  let loginItem = item.loginItem else { continue }
-
-            if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
-                reusedPasswords[loginItem.password, default: 0] += 1
-            }
-
+        for item in loginItems {
             var weaknesses = [SecurityWeakness]()
 
-            if encryptedItem.item.monitoringDisabled {
+            if item.encrypted.item.monitoringDisabled {
                 weaknesses.append(.excludedItems)
                 numberOfExcludedItems += 1
             } else {
-                if reusedPasswords[loginItem.password] != nil {
+                if reusedPasswords.contains(item.loginData.password) {
                     weaknesses.append(.reusedPasswords)
                 }
 
-                if !loginItem.password.isEmpty,
-                   passwordScorer.checkScore(password: loginItem.password) != .strong {
+                if !item.loginData.password.isEmpty,
+                   passwordScorer.checkScore(password: item.loginData.password) != .strong {
                     weaknesses.append(.weakPasswords)
                     numberOfWeakPassword += 1
                 }
 
-                if loginItem.totpUri.isEmpty,
-                   loginItem.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }) {
+                if item.loginData.totpUri.isEmpty,
+                   item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }) {
                     weaknesses.append(.missing2FA)
                     numberOfMissing2fa += 1
                 }
             }
 
             if !weaknesses.isEmpty {
-                securityAffectedItems.append(SecurityAffectedItem(item: encryptedItem,
-                                                                  weaknesses: weaknesses))
+                securityAffectedItems.append(SecurityAffectedItem(item: item.encrypted, weaknesses: weaknesses))
             }
         }
         weaknessStats.send(WeaknessStats(weakPasswords: numberOfWeakPassword,

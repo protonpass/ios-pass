@@ -40,55 +40,69 @@ extension HomepageCoordinator {
     }
 
     func displayNotification(_ notification: InAppNotification) {
-        let closed: () -> Void = { [weak self] in
-            guard let self else { return }
-            Task { [weak self] in
-                guard let self else { return }
-                if notification.displayType == .banner {
-                    updateFloatingView(floatingView: nil, shouldAdd: false)
-                }
-                try? await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
-                                                                            newState: .dismissed)
-            }
-        }
-
-        let onTap: () -> Void = { [weak self] in
-            guard let self else { return }
-
-            Task { [weak self] in
-                guard let self else { return }
-                do {
-                    if notification.displayType == .banner {
-                        updateFloatingView(floatingView: nil, shouldAdd: false)
-                    }
-
-                    try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
-                                                                               newState: .read)
-
-                    if case let .externalNavigation(url) = notification.cta, let url {
-                        urlOpener.open(urlString: url)
-                    }
-                } catch {
-                    handle(error: error)
-                }
-            }
-        }
-
         switch notification.displayType {
         case .banner:
             let view = InAppBannerView(notification: notification,
-                                       onTap: onTap,
-                                       close: closed)
+                                       onTap: { [weak self] notification in
+                                           guard let self else { return }
+                                           ctaFlow(notification)
+                                       },
+                                       close: { [weak self] notification in
+                                           guard let self else { return }
+                                           closed(notification)
+                                       })
             let viewController = UIHostingController(rootView: view)
             if let view = viewController.view {
                 updateFloatingView(floatingView: view, shouldAdd: true)
             }
         case .modal:
-            let view = InAppModalView(notification: notification, onTap: onTap, close: closed)
+            let view = InAppModalView(notification: notification,
+                                      onTap: { [weak self] notification in
+                                          guard let self else { return }
+                                          ctaFlow(notification)
+                                      }, close: { [weak self] notification in
+                                          guard let self else { return }
+                                          closed(notification)
+                                      })
             let viewController = UIHostingController(rootView: view)
             viewController.setDetentType(.custom(CGFloat(490)),
                                          parentViewController: rootViewController)
             present(viewController)
+        }
+    }
+
+    private func closed(_ notification: InAppNotification) {
+        Task { [weak self] in
+            guard let self else { return }
+            if notification.displayType == .banner {
+                updateFloatingView(floatingView: nil, shouldAdd: false)
+            }
+            do {
+                try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
+                                                                           newState: .dismissed)
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    private func ctaFlow(_ notification: InAppNotification) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                if notification.displayType == .banner {
+                    updateFloatingView(floatingView: nil, shouldAdd: false)
+                }
+
+                try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
+                                                                           newState: .read)
+
+                if case let .externalNavigation(url) = notification.cta, let url {
+                    urlOpener.open(urlString: url)
+                }
+            } catch {
+                handle(error: error)
+            }
         }
     }
 }

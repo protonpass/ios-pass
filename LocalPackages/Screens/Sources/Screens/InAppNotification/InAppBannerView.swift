@@ -23,13 +23,16 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
 public struct InAppBannerView: View {
     let notification: InAppNotification
     let borderColor: UIColor = PassColor.inputBorderNorm
-    let onTap: () -> Void
-    let close: () -> Void
+    let onTap: (InAppNotification) -> Void
+    let close: (InAppNotification) -> Void
 
-    public init(notification: InAppNotification, onTap: @escaping () -> Void, close: @escaping () -> Void) {
+    public init(notification: InAppNotification,
+                onTap: @escaping (InAppNotification) -> Void,
+                close: @escaping (InAppNotification) -> Void) {
         self.notification = notification
         self.onTap = onTap
         self.close = close
@@ -63,7 +66,9 @@ public struct InAppBannerView: View {
 
                 Spacer()
 
-                ItemDetailSectionIcon(icon: IconProvider.chevronRight, width: 20)
+                if notification.content.cta != nil {
+                    ItemDetailSectionIcon(icon: IconProvider.chevronRight, width: 20)
+                }
             }
             .padding(12)
             .background(PassColor.backgroundWeak.toColor)
@@ -71,7 +76,11 @@ public struct InAppBannerView: View {
             .overlay(RoundedRectangle(cornerRadius: 8)
                 .stroke(borderColor.toColor, lineWidth: 1))
             .contentShape(.rect)
-            .onTapGesture(perform: onTap)
+            .onTapGesture {
+                if notification.content.cta != nil {
+                    onTap(notification)
+                }
+            }
             .frame(maxWidth: .infinity, alignment: .leading)
 
             CircleButton(icon: IconProvider.cross,
@@ -79,7 +88,7 @@ public struct InAppBannerView: View {
                          backgroundColor: PassColor.backgroundNorm,
                          accessibilityLabel: "Close",
                          type: .custom(buttonSize: 25, iconSize: 16),
-                         action: close)
+                         action: { close(notification) })
                 .overlay(Circle()
                     .stroke(borderColor.toColor, lineWidth: 2))
                 .padding(4)
