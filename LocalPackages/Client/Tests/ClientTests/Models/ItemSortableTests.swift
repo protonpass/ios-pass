@@ -20,16 +20,17 @@
 
 @testable import Client
 import Core
-import XCTest
+import Foundation
+import Testing
 
 // swiftlint:disable function_body_length
-final class ItemSortableTests: XCTestCase {
-    func testMostRecentSort() {
+struct ItemSortableTests {
+    @Test("Most recent sort")
+    func mostRecentSort() throws {
         struct DummyItem: DateSortable {
             let dateForSorting: Date
         }
 
-        continueAfterFailure = false
         var items = [DummyItem]()
         let now = Date()
         // Given today items
@@ -91,156 +92,156 @@ final class ItemSortableTests: XCTestCase {
 
         items.append(contentsOf: [moreThan90Days1, moreThan90Days2, moreThan90Days3])
 
-        XCTAssertEqual(items.count, 24)
+        #expect(items.count == 24)
 
         items.shuffle()
 
         // When
-        let sortResult = items.mostRecentSortResult()
+        let sortResult = try items.mostRecentSortResult()
 
         // Then
         // Today
         let today = sortResult.buckets.first
-        XCTAssertEqual(today?.type, .today)
-        XCTAssertEqual(today?.items.count, 3)
-        XCTAssertEqual(today?.items[0], today3)
-        XCTAssertEqual(today?.items[1], today2)
-        XCTAssertEqual(today?.items[2], today1)
+        #expect(today?.type == .today)
+        #expect(today?.items.count == 3)
+        #expect(today?.items[0] == today3)
+        #expect(today?.items[1] == today2)
+        #expect(today?.items[2] == today1)
 
         // Yesterday
 
        let yesterday = sortResult.buckets[1]
-        XCTAssertEqual(yesterday.type, .yesterday)
-        XCTAssertEqual(yesterday.items.count, 3)
+        #expect(yesterday.type == .yesterday)
+        #expect(yesterday.items.count == 3)
         assertEqual(yesterday.items[0], yesterday3)
         assertEqual(yesterday.items[1], yesterday2)
         assertEqual(yesterday.items[2], yesterday1)
 
         // Last 7 days
         let last7Days = sortResult.buckets[2]
-        XCTAssertEqual(last7Days.type, .last7Days)
-        XCTAssertEqual(last7Days.items.count, 3)
+        #expect(last7Days.type == .last7Days)
+        #expect(last7Days.items.count == 3)
         assertEqual(last7Days.items[0], last7Days2)
         assertEqual(last7Days.items[1], last7Days1)
         assertEqual(last7Days.items[2], last7Days3)
         
         // Last 14 days
         let last14Days = sortResult.buckets[3]
-        XCTAssertEqual(last14Days.type, .last14Days)
-        XCTAssertEqual(last14Days.items.count, 3)
+        #expect(last14Days.type == .last14Days)
+        #expect(last14Days.items.count == 3)
         assertEqual(last14Days.items[0], last14Days2)
         assertEqual(last14Days.items[1], last14Days1)
         assertEqual(last14Days.items[2], last14Days3)
 
         // Last 30 days
         let last30Days = sortResult.buckets[4]
-        XCTAssertEqual(last30Days.type, .last30Days)
-         XCTAssertEqual(last30Days.items.count, 3)
+        #expect(last30Days.type == .last30Days)
+        #expect(last30Days.items.count == 3)
         assertEqual(last30Days.items[0], last30Days2)
         assertEqual(last30Days.items[1], last30Days1)
         assertEqual(last30Days.items[2], last30Days3)
         
         // Last 60 days
         let last60Days = sortResult.buckets[5]
-        XCTAssertEqual(last60Days.type, .last60Days)
-        XCTAssertEqual(last60Days.items.count, 3)
+        #expect(last60Days.type == .last60Days)
+        #expect(last60Days.items.count == 3)
         assertEqual(last60Days.items[0], last60Days3)
         assertEqual(last60Days.items[1], last60Days1)
         assertEqual(last60Days.items[2], last60Days2)
         
         // Last 90 days
         let last90Days = sortResult.buckets[6]
-        XCTAssertEqual(last90Days.type, .last90Days)
-        XCTAssertEqual(last90Days.items.count, 3)
+        #expect(last90Days.type == .last90Days)
+        #expect(last90Days.items.count == 3)
         assertEqual(last90Days.items[0], last90Days3)
         assertEqual(last90Days.items[1], last90Days2)
         assertEqual(last90Days.items[2], last90Days1)
 
         // Others
         let others = sortResult.buckets[7]
-        XCTAssertEqual(others.type, .others)
-        XCTAssertEqual(others.items.count, 3)
+        #expect(others.type == .others)
+        #expect(others.items.count == 3)
         assertEqual(others.items[0], moreThan90Days3)
         assertEqual(others.items[1], moreThan90Days2)
         assertEqual(others.items[2], moreThan90Days1)
     }
 
     func assertEqual(_ lhs: any DateSortable, _ rhs: any DateSortable) {
-        XCTAssertEqual(lhs.dateForSorting, rhs.dateForSorting)
+        #expect(lhs.dateForSorting == rhs.dateForSorting)
     }
 
-    func testAlphabeticalSort() {
+    @Test("Alphabetical sort")
+    func alphabeticalSort() throws {
         struct DummyItem: AlphabeticalSortable {
             let alphabeticalSortableString: String
         }
-        continueAfterFailure = false
 
         // Given
         let strings: [String] = ["Chíp", "Touti", "Đen", "Ponyo", "Méo", "Pao", "Chippy"]
         let items = strings.map { DummyItem(alphabeticalSortableString: $0) }
 
         // When
-        let sortResult = items.alphabeticalSortResult(direction: .ascending)
+        let sortResult = try items.alphabeticalSortResult(direction: .ascending)
 
         // Then
-        XCTAssertEqual(sortResult.buckets.count, 5)
+        #expect(sortResult.buckets.count == 5)
 
         let sharpBucket = sortResult.buckets[0]
-        XCTAssertEqual(sharpBucket.items.count, 1)
-        XCTAssertEqual(sharpBucket.items[0].alphabeticalSortableString, "Đen")
+        #expect(sharpBucket.items.count == 1)
+        #expect(sharpBucket.items[0].alphabeticalSortableString == "Đen")
 
         let cBucket = sortResult.buckets[1]
-        XCTAssertEqual(cBucket.items.count, 2)
-        XCTAssertEqual(cBucket.items[0].alphabeticalSortableString, "Chippy")
-        XCTAssertEqual(cBucket.items[1].alphabeticalSortableString, "Chíp")
+        #expect(cBucket.items.count == 2)
+        #expect(cBucket.items[0].alphabeticalSortableString == "Chippy")
+        #expect(cBucket.items[1].alphabeticalSortableString == "Chíp")
 
         let mBucket = sortResult.buckets[2]
-        XCTAssertEqual(mBucket.items.count, 1)
-        XCTAssertEqual(mBucket.items[0].alphabeticalSortableString, "Méo")
+        #expect(mBucket.items.count == 1)
+        #expect(mBucket.items[0].alphabeticalSortableString == "Méo")
 
         let pBucket = sortResult.buckets[3]
-        XCTAssertEqual(pBucket.items.count, 2)
-        XCTAssertEqual(pBucket.items[0].alphabeticalSortableString, "Pao")
-        XCTAssertEqual(pBucket.items[1].alphabeticalSortableString, "Ponyo")
+        #expect(pBucket.items.count == 2)
+        #expect(pBucket.items[0].alphabeticalSortableString == "Pao")
+        #expect(pBucket.items[1].alphabeticalSortableString == "Ponyo")
 
         let tBucket = sortResult.buckets[4]
-        XCTAssertEqual(tBucket.items.count, 1)
-        XCTAssertEqual(tBucket.items[0].alphabeticalSortableString, "Touti")
+        #expect(tBucket.items.count == 1)
+        #expect(tBucket.items[0].alphabeticalSortableString == "Touti")
     }
 
-    func testAlphabeticalSortWithNumbersAsPrefix() {
+    @Test("Alphabetical sort with numbers as prefix")
+    func alphabeticalSortWithNumbersAsPrefix() throws {
         struct DummyItem: AlphabeticalSortable {
             let alphabeticalSortableString: String
         }
-        continueAfterFailure = false
 
         // Given
         let strings: [String] = ["1 a", "3 b", "2 b", "1 b", "3 a", "2 a", "1 c"]
         let items = strings.map { DummyItem(alphabeticalSortableString: $0) }
 
         // When
-        let sortResult = items.alphabeticalSortResult(direction: .ascending)
+        let sortResult = try items.alphabeticalSortResult(direction: .ascending)
 
         // Then
-        XCTAssertEqual(sortResult.buckets.count, 1)
+        #expect(sortResult.buckets.count == 1)
 
         let sharpBucket = sortResult.buckets[0]
-        XCTAssertEqual(sharpBucket.items.count, 7)
-        XCTAssertEqual(sharpBucket.items[0].alphabeticalSortableString, "1 a")
-        XCTAssertEqual(sharpBucket.items[1].alphabeticalSortableString, "1 b")
-        XCTAssertEqual(sharpBucket.items[2].alphabeticalSortableString, "1 c")
-        XCTAssertEqual(sharpBucket.items[3].alphabeticalSortableString, "2 a")
-        XCTAssertEqual(sharpBucket.items[4].alphabeticalSortableString, "2 b")
-        XCTAssertEqual(sharpBucket.items[5].alphabeticalSortableString, "3 a")
-        XCTAssertEqual(sharpBucket.items[6].alphabeticalSortableString, "3 b")
+        #expect(sharpBucket.items.count == 7)
+        #expect(sharpBucket.items[0].alphabeticalSortableString == "1 a")
+        #expect(sharpBucket.items[1].alphabeticalSortableString == "1 b")
+        #expect(sharpBucket.items[2].alphabeticalSortableString == "1 c")
+        #expect(sharpBucket.items[3].alphabeticalSortableString == "2 a")
+        #expect(sharpBucket.items[4].alphabeticalSortableString == "2 b")
+        #expect(sharpBucket.items[5].alphabeticalSortableString == "3 a")
+        #expect(sharpBucket.items[6].alphabeticalSortableString == "3 b")
     }
 
-    func testMonthYearSort() {
+    @Test("Month year sort")
+    func monthYearSort() throws {
         struct DummyItem: DateSortable {
             let dateForSorting: Date
         }
 
-        continueAfterFailure = false
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let createDate: (String) -> Date = { dateFormat in
@@ -257,41 +258,41 @@ final class ItemSortableTests: XCTestCase {
         let items = [item1, item2, item3, item4, item5, item6].shuffled()
 
         // When
-        let sortedItemsDescending = items.monthYearSortResult(direction: .descending)
-        let sortedItemsAscending = items.monthYearSortResult(direction: .ascending)
+        let sortedItemsDescending = try items.monthYearSortResult(direction: .descending)
+        let sortedItemsAscending = try items.monthYearSortResult(direction: .ascending)
 
         // Then
         // Descending
-        XCTAssertEqual(sortedItemsDescending.buckets.count, 4)
+        #expect(sortedItemsDescending.buckets.count == 4)
 
-        XCTAssertEqual(sortedItemsDescending.buckets[0].items.count, 2)
+        #expect(sortedItemsDescending.buckets[0].items.count == 2)
         assertEqual(sortedItemsDescending.buckets[0].items[0], item2)
         assertEqual(sortedItemsDescending.buckets[0].items[1], item1)
 
-        XCTAssertEqual(sortedItemsDescending.buckets[1].items.count, 1)
+        #expect(sortedItemsDescending.buckets[1].items.count == 1)
         assertEqual(sortedItemsDescending.buckets[1].items[0], item3)
 
-        XCTAssertEqual(sortedItemsDescending.buckets[2].items.count, 2)
+        #expect(sortedItemsDescending.buckets[2].items.count == 2)
         assertEqual(sortedItemsDescending.buckets[2].items[0], item5)
         assertEqual(sortedItemsDescending.buckets[2].items[1], item4)
 
-        XCTAssertEqual(sortedItemsDescending.buckets[3].items.count, 1)
+        #expect(sortedItemsDescending.buckets[3].items.count == 1)
         assertEqual(sortedItemsDescending.buckets[3].items[0], item6)
 
         // Ascending
-        XCTAssertEqual(sortedItemsAscending.buckets.count, 4)
+        #expect(sortedItemsAscending.buckets.count == 4)
 
-        XCTAssertEqual(sortedItemsAscending.buckets[0].items.count, 1)
+        #expect(sortedItemsAscending.buckets[0].items.count == 1)
         assertEqual(sortedItemsAscending.buckets[0].items[0], item6)
 
-        XCTAssertEqual(sortedItemsAscending.buckets[1].items.count, 2)
+        #expect(sortedItemsAscending.buckets[1].items.count == 2)
         assertEqual(sortedItemsAscending.buckets[1].items[0], item4)
         assertEqual(sortedItemsAscending.buckets[1].items[1], item5)
 
-        XCTAssertEqual(sortedItemsAscending.buckets[2].items.count, 1)
+        #expect(sortedItemsAscending.buckets[2].items.count == 1)
         assertEqual(sortedItemsAscending.buckets[2].items[0], item3)
 
-        XCTAssertEqual(sortedItemsAscending.buckets[3].items.count, 2)
+        #expect(sortedItemsAscending.buckets[3].items.count == 2)
         assertEqual(sortedItemsAscending.buckets[3].items[0], item1)
         assertEqual(sortedItemsAscending.buckets[3].items[1], item2)
     }
