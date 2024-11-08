@@ -35,6 +35,8 @@ enum SearchViewState: Sendable {
     case empty
     /// Non-empty history
     case history([SearchEntryUiModel])
+    /// Doing search
+    case searching
     /// No results for the given search query
     case noResults(String)
     /// Filterting search results
@@ -169,6 +171,7 @@ private extension SearchViewModel {
             let hashedQuery = query.sha256
             logger.trace("Searching for \"\(hashedQuery)\"")
             do {
+                state = .searching
                 results = try await searchableItems.result(for: query)
                 filterAndSortResults()
                 logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
@@ -182,56 +185,59 @@ private extension SearchViewModel {
         }
     }
 
-    // swiftlint:disable:next cyclomatic_complexity
     func filterAndSortResults() {
         filteringTask?.cancel()
-        filteringTask = Task.detached(priority: .userInitiated) {
-            // swiftlint:disable:next closure_parameter_position
-            [weak self, results, selectedType, selectedSortType] in
+        filteringTask = Task { [weak self] in
             guard let self else { return }
+            await filterAndSortResultsAsync()
+        }
+    }
 
-            if results.isEmpty {
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    state = .noResults(lastSearchQuery)
-                }
-                return
-            }
+    nonisolated func filterAndSortResultsAsync() async {
+        let results = await results
+        let selectedType = await selectedType
+        let selectedSortType = await selectedSortType
 
+        let updateState: (SearchViewState) async -> Void = { [weak self] newState in
+            guard let self else { return }
             await MainActor.run { [weak self] in
                 guard let self else { return }
-                state = .filteringResults
+                state = newState
             }
+        }
 
-            do {
-                let filteredResults: [ItemSearchResult] = if let selectedType {
-                    try results.filter {
-                        try Task.checkCancellation()
-                        return $0.type == selectedType
-                    }
-                } else {
-                    results
+        if results.isEmpty {
+            await updateState(.noResults(lastSearchQuery))
+            return
+        }
+
+        await updateState(.filteringResults)
+
+        do {
+            let filteredResults: [ItemSearchResult] = if let selectedType {
+                try results.filter {
+                    try Task.checkCancellation()
+                    return $0.type == selectedType
                 }
-                let filteredAndSortedResults: any SearchResults =
-                    switch selectedSortType {
-                    case .mostRecent:
-                        try filteredResults.mostRecentSortResult()
-                    case .alphabeticalAsc, .alphabeticalDesc:
-                        try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
-                    case .newestToOldest, .oldestToNewest:
-                        try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
-                    }
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    state = .results(ItemCount(items: results), filteredAndSortedResults)
-                }
-            } catch {
-                if error is CancellationError { return }
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    state = .error(error)
-                }
+            } else {
+                results
             }
+            let filteredAndSortedResults: any SearchResults =
+                switch selectedSortType {
+                case .mostRecent:
+                    try filteredResults.mostRecentSortResult()
+                case .alphabeticalAsc, .alphabeticalDesc:
+                    try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
+                case .newestToOldest, .oldestToNewest:
+                    try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
+                }
+            await updateState(.results(ItemCount(items: results), filteredAndSortedResults))
+        } catch {
+            if error is CancellationError {
+                print("Cancelled \(#function)")
+                return
+            }
+            await updateState(.error(error))
         }
     }
 }
