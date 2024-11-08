@@ -55,7 +55,7 @@ struct CredentialSearchResultView: View {
                                                rowSpacing: DesignConstant.sectionPadding / 2),
                           id: results.hashValue,
                           itemView: { item in
-                              GenericCredentialItemRow(item: item,
+                              GenericCredentialItemRow(item: .searchResult(item),
                                                        user: getUser(item),
                                                        selectItem: selectItem)
                           },

@@ -274,7 +274,7 @@ private extension CredentialsView {
 
 private extension CredentialsView {
     @ViewBuilder
-    func section(for items: [some CredentialItem],
+    func section(for items: [ItemUiModel],
                  isListMode: Bool,
                  headerTitle: String,
                  headerColor: UIColor = PassColor.textWeak,
@@ -288,13 +288,12 @@ private extension CredentialsView {
                     Group {
                         switch viewModel.mode {
                         case .passwords:
-                            GenericCredentialItemRow(item: item,
+                            GenericCredentialItemRow(item: .uiModel(item),
                                                      user: user,
                                                      selectItem: { viewModel.select(item: $0) })
 
                         case .oneTimeCodes:
-                            if let item = item as? ItemUiModel,
-                               let totpUri = item.totpUri {
+                            if let totpUri = item.totpUri {
                                 let title = if let emailWithoutDomain = user?.emailWithoutDomain {
                                     item.itemTitle + " • \(emailWithoutDomain)"
                                 } else {
@@ -330,7 +329,7 @@ private extension CredentialsView {
     }
 
     @ViewBuilder
-    func sortableSections(for items: [some CredentialItem], isListMode: Bool) -> some View {
+    func sortableSections(for items: [ItemUiModel], isListMode: Bool) -> some View {
         switch viewModel.selectedSortType {
         case .mostRecent:
             sections(for: (try? items.mostRecentSortResult()) ?? .default, isListMode: isListMode)
@@ -349,13 +348,13 @@ private extension CredentialsView {
         }
     }
 
-    func sections(for result: MostRecentSortResult<some CredentialItem>, isListMode: Bool) -> some View {
+    func sections(for result: MostRecentSortResult<ItemUiModel>, isListMode: Bool) -> some View {
         ForEach(result.buckets) { bucket in
             section(for: bucket.items, isListMode: isListMode, headerTitle: bucket.type.title)
         }
     }
 
-    func sections(for result: AlphabeticalSortResult<some CredentialItem>,
+    func sections(for result: AlphabeticalSortResult<ItemUiModel>,
                   isListMode: Bool) -> some View {
         ForEach(result.buckets, id: \.letter) { bucket in
             section(for: bucket.items, isListMode: isListMode, headerTitle: bucket.letter.character)
@@ -363,7 +362,7 @@ private extension CredentialsView {
         }
     }
 
-    func sections(for result: MonthYearSortResult<some CredentialItem>,
+    func sections(for result: MonthYearSortResult<ItemUiModel>,
                   isListMode: Bool) -> some View {
         ForEach(result.buckets, id: \.monthYear) { bucket in
             section(for: bucket.items,
