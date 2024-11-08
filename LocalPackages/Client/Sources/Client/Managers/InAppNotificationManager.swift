@@ -76,7 +76,9 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         try await repository.changeNotificationStatus(notificationId: notificationId,
                                                       newStatus: newState.rawValue,
                                                       userId: userId)
-        notifications.removeAll(where: { $0.id == notificationId })
+        if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
+            notifications[index].state = newState.rawValue
+        }
     }
 }
 
