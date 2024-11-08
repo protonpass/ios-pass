@@ -24,6 +24,7 @@ import SwiftUI
 public struct CapsuleTextButton: View {
     let title: String
     let titleColor: UIColor
+    let font: Font
     let backgroundColor: UIColor
     let height: CGFloat
     let maxWidth: CGFloat?
@@ -31,12 +32,14 @@ public struct CapsuleTextButton: View {
 
     public init(title: String,
                 titleColor: UIColor,
+                font: Font = .callout,
                 backgroundColor: UIColor,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
                 action: (() -> Void)? = nil) {
         self.title = title
         self.titleColor = titleColor
+        self.font = font
         self.backgroundColor = backgroundColor
         self.height = height
         self.maxWidth = maxWidth
@@ -57,7 +60,7 @@ public struct CapsuleTextButton: View {
 private extension CapsuleTextButton {
     var realBody: some View {
         Text(title)
-            .font(.callout)
+            .font(font)
             .foregroundStyle(titleColor.toColor)
             .frame(height: height)
             .frame(maxWidth: maxWidth)

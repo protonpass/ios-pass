@@ -58,6 +58,21 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         } else {
             fatalError("Expecting alias type")
         }
+
+        aliasRepository.contactsUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] in
+                guard let self else {
+                    return
+                }
+                Task { [weak self] in
+                    guard let self else {
+                        return
+                    }
+                    await loadContact()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func getAlias() {
@@ -97,7 +112,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         setAliasStatus(enabled: !aliasEnabled)
     }
 
-    func disableAlias() {
+    override func disableAlias() {
         setAliasStatus(enabled: false)
     }
 
