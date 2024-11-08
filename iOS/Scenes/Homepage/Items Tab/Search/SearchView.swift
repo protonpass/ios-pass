@@ -83,7 +83,7 @@ private extension SearchView {
             }
 
             switch viewModel.state {
-            case .initializing:
+            case .filteringResults, .initializing, .searching:
                 ProgressView()
                     .padding(.top)
                 Spacer()
@@ -114,10 +114,6 @@ private extension SearchView {
                 } else {
                     NoSearchResultsInAllVaultView(query: query)
                 }
-
-            case .filteringResults:
-                ProgressView()
-                Spacer()
 
             case let .results(itemCount, results):
                 SearchResultsView(selectedType: $viewModel.selectedType,

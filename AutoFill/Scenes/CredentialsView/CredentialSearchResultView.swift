@@ -95,7 +95,7 @@ private typealias SearchResultSection = TableView<ItemSearchResult, GenericCrede
 private final class CredentialSearchResultViewModel: ObservableObject {
     @Published private(set) var state: State = .loading
 
-    enum State: Equatable {
+    enum State: Equatable, @unchecked Sendable {
         case loading
         case loaded([SearchResultSection])
         case error(any Error)
@@ -121,57 +121,65 @@ private final class CredentialSearchResultViewModel: ObservableObject {
         self.sortType = sortType
         filterAndSortItems()
     }
-}
 
-extension CredentialSearchResultViewModel {
     func filterAndSortItems() {
         task?.cancel()
-        task = Task.detached(priority: .userInitiated) { [weak self] in
+        task = Task { [weak self] in
             guard let self else { return }
-            do {
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    state = .loading
-                }
-                let type = Int.max
-                let sections: [SearchResultSection] = try {
-                    switch sortType {
-                    case .mostRecent:
-                        let results = try results.mostRecentSortResult()
-                        return results.buckets.map { bucket in
-                            .init(type: type,
-                                  title: bucket.type.title,
-                                  items: bucket.items)
-                        }
+            await filterAndSortItemsAsync()
+        }
+    }
+}
 
-                    case .alphabeticalAsc, .alphabeticalDesc:
-                        let results = try results.alphabeticalSortResult(direction: sortType.sortDirection)
-                        return results.buckets.map { bucket in
-                            .init(type: type,
-                                  title: bucket.letter.character,
-                                  items: bucket.items)
-                        }
-
-                    case .newestToOldest, .oldestToNewest:
-                        let results = try results.monthYearSortResult(direction: sortType.sortDirection)
-                        return results.buckets.map { bucket in
-                            .init(type: type,
-                                  title: bucket.monthYear.relativeString,
-                                  items: bucket.items)
-                        }
-                    }
-                }()
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    state = .loaded(sections.filter { !$0.items.isEmpty })
-                }
-            } catch {
-                if error is CancellationError { return }
-                await MainActor.run { [weak self] in
-                    guard let self else { return }
-                    state = .error(error)
-                }
+private extension CredentialSearchResultViewModel {
+    nonisolated func filterAndSortItemsAsync() async {
+        let updateState: (State) async -> Void = { [weak self] newState in
+            guard let self else { return }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                state = newState
             }
+        }
+
+        do {
+            await updateState(.loading)
+
+            let type = Int.max
+            let sections: [SearchResultSection] = try {
+                switch sortType {
+                case .mostRecent:
+                    let results = try results.mostRecentSortResult()
+                    return results.buckets.map { bucket in
+                        .init(type: type,
+                              title: bucket.type.title,
+                              items: bucket.items)
+                    }
+
+                case .alphabeticalAsc, .alphabeticalDesc:
+                    let results = try results.alphabeticalSortResult(direction: sortType.sortDirection)
+                    return results.buckets.map { bucket in
+                        .init(type: type,
+                              title: bucket.letter.character,
+                              items: bucket.items)
+                    }
+
+                case .newestToOldest, .oldestToNewest:
+                    let results = try results.monthYearSortResult(direction: sortType.sortDirection)
+                    return results.buckets.map { bucket in
+                        .init(type: type,
+                              title: bucket.monthYear.relativeString,
+                              items: bucket.items)
+                    }
+                }
+            }()
+
+            await updateState(.loaded(sections.filter { !$0.items.isEmpty }))
+        } catch {
+            if error is CancellationError {
+                print("Cancelled \(#function)")
+                return
+            }
+            await updateState(.error(error))
         }
     }
 }
