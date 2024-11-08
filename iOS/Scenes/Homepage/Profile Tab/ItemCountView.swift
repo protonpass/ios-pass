@@ -161,21 +161,27 @@ private final class ItemCountViewModel: ObservableObject {
                     object = .fetching
                 case let .loaded(uiModel):
                     task?.cancel()
-                    task = Task.detached(priority: .userInitiated) { [weak self, uiModel] in
+                    task = Task { [weak self] in
                         guard let self else { return }
-                        if Task.isCancelled { return }
-                        let activeItems = uiModel.vaults.flatMap(\.items)
-                        let allItems = activeItems + uiModel.trashedItems
-                        let itemCount = ItemCount(items: allItems)
-                        await MainActor.run { [weak self] in
-                            guard let self else { return }
-                            object = .fetched(itemCount)
-                        }
+                        await refreshAsync(uiModel)
                     }
                 case let .error(error):
                     object = .error(error)
                 }
             }
             .store(in: &cancellables)
+    }
+}
+
+private extension ItemCountViewModel {
+    nonisolated func refreshAsync(_ uiModel: VaultDatasUiModel) async {
+        if Task.isCancelled { return }
+        let activeItems = uiModel.vaults.flatMap(\.items)
+        let allItems = activeItems + uiModel.trashedItems
+        let itemCount = ItemCount(items: allItems)
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            object = .fetched(itemCount)
+        }
     }
 }
