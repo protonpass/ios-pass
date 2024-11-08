@@ -80,6 +80,13 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         count.trashed > 0
     }
 
+    var trashedAliasesCount: Int {
+        guard case let .loaded(uiModel) = vaultsManager.state else {
+            return 0
+        }
+        return uiModel.trashedItems.filter(\.isAlias).count
+    }
+
     init() {
         count = .init(vaultsManager: vaultsManager)
         setUp()

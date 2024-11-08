@@ -22,9 +22,9 @@ import Entities
 import ProtonCoreNetworking
 
 public struct GetAliasContactsQuery: Sendable {
-    public let lastContactId: String?
+    public let lastContactId: Int?
 
-    public init(lastContactId: String?) {
+    public init(lastContactId: Int?) {
         self.lastContactId = lastContactId
     }
 }
