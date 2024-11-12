@@ -20,6 +20,8 @@
 
 import Foundation
 
+public typealias SectionedItemUiModel = SectionedObjects<ItemUiModel>
+
 public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
     // Existing properties
     public let itemId: String
