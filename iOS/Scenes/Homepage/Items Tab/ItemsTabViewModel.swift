@@ -36,8 +36,6 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
 
-typealias SectionedItemUiModel = SectionedObjects<ItemUiModel>
-
 @MainActor
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }

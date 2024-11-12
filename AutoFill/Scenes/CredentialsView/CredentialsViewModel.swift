@@ -58,7 +58,9 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
     @Published var notMatchedItemInformation: UnmatchedItemAlertInformation?
     @Published var selectPasskeySheetInformation: SelectPasskeySheetInformation?
 
-    private var lastTask: Task<Void, Never>?
+    private var searchTask: Task<Void, Never>?
+    private var sortTask: Task<Void, Never>?
+    private var filterAndSortTask: Task<Void, Never>?
 
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\AutoFillUseCaseContainer.fetchCredentials) private var fetchCredentials
@@ -79,50 +81,11 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
         }
     }
 
-    private var searchableItems: [SearchableItem] {
-        let items = if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
-        } else {
-            getAllObjects(\.searchableItems)
-        }
+    private var searchableItems = [SearchableItem]()
+    private var notMatchedItems = [ItemUiModel]()
 
-        return switch mode {
-        case .passwords:
-            items
-        case .oneTimeCodes:
-            items.filter(\.hasTotpUri)
-        }
-    }
-
-    var matchedItems: [ItemUiModel] {
-        let items = if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.matchedItems ?? []
-        } else {
-            getAllObjects(\.matchedItems)
-        }
-
-        return switch mode {
-        case .passwords:
-            items
-        case .oneTimeCodes:
-            items.filter(\.hasTotpUri)
-        }
-    }
-
-    var notMatchedItems: [ItemUiModel] {
-        let items = if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.notMatchedItems ?? []
-        } else {
-            getAllObjects(\.notMatchedItems)
-        }
-
-        return switch mode {
-        case .passwords:
-            items
-        case .oneTimeCodes:
-            items.filter(\.hasTotpUri)
-        }
-    }
+    @Published private(set) var matchedItems = [ItemUiModel]()
+    @Published private(set) var notMatchedItemSections: FetchableObject<[SectionedItemUiModel]> = .fetching
 
     init(mode: CredentialsMode,
          users: [UserUiModel],
@@ -137,7 +100,53 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
         super.init(context: context,
                    users: users,
                    userForNewItemSubject: userForNewItemSubject)
-        setup()
+    }
+
+    override func setUp() {
+        super.setUp()
+        $query
+            .debounce(for: 0.4, scheduler: DispatchQueue.main)
+            .dropFirst()
+            .removeDuplicates()
+            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+            .subscribe(on: DispatchQueue.global())
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] term in
+                guard let self else { return }
+                doSearch(term: term)
+            }
+            .store(in: &cancellables)
+
+        $selectedUser
+            .receive(on: DispatchQueue.main)
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                filterAndSortTask?.cancel()
+                filterAndSortTask = Task { [weak self] in
+                    guard let self else { return }
+                    await filterAndSortItemsAsync()
+                }
+            }
+            .store(in: &cancellables)
+
+        sortTypeUpdated
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                sortTask?.cancel()
+                sortTask = Task { [weak self] in
+                    guard let self else { return }
+                    await sortNotMatchedItemsAsync()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    override nonisolated func fetchItems() async {
+        await super.fetchItems()
+        await filterAndSortItemsAsync()
     }
 
     override func getVaults(userId: String) -> [Vault]? {
@@ -170,8 +179,13 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
         state = .loading
     }
 
-    override func changeToLoadedState() {
-        state = .idle
+    nonisolated func filterAndSortItemsAsync() async {
+        do {
+            try await filterItemsAsync()
+            await sortNotMatchedItemsAsync()
+        } catch {
+            await handle(error)
+        }
     }
 }
 
@@ -284,49 +298,131 @@ private extension CredentialsViewModel {
 
 private extension CredentialsViewModel {
     func doSearch(term: String) {
-        guard state != .searching else { return }
-        guard !term.isEmpty else {
-            state = .idle
-            return
-        }
-
-        lastTask?.cancel()
-        lastTask = Task { [weak self] in
-            guard let self else {
-                return
-            }
-            let hashedTerm = term.sha256
-            logger.trace("Searching for term \(hashedTerm)")
-            state = .searching
+        searchTask?.cancel()
+        searchTask = Task { [weak self] in
+            guard let self else { return }
             do {
-                let searchResults = try await searchableItems.result(for: term)
-                state = .searchResults(searchResults)
-                if searchResults.isEmpty {
-                    logger.trace("No results for term \(hashedTerm)")
-                } else {
-                    logger.trace("Found results for term \(hashedTerm)")
-                }
+                try await searchAsync(term: term)
             } catch {
                 handle(error)
             }
         }
     }
-}
 
-// MARK: Setup & utils functions
-
-private extension CredentialsViewModel {
-    func setup() {
-        $query
-            .debounce(for: 0.4, scheduler: DispatchQueue.main)
-            .removeDuplicates()
-            .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-            .subscribe(on: DispatchQueue.global())
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] term in
+    nonisolated func searchAsync(term: String) async throws {
+        await MainActor.run { [weak self] in
+            guard let self, state != .searching else { return }
+        }
+        guard !term.isEmpty else {
+            await MainActor.run { [weak self] in
                 guard let self else { return }
-                doSearch(term: term)
+                state = .idle
             }
-            .store(in: &cancellables)
+            return
+        }
+
+        let hashedTerm = term.sha256
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            logger.trace("Searching for term \(hashedTerm)")
+            state = .searching
+        }
+
+        let searchResults = try await searchableItems.result(for: term)
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            state = .searchResults(searchResults)
+            if searchResults.isEmpty {
+                logger.trace("No results for term \(hashedTerm)")
+            } else {
+                logger.trace("Found results for term \(hashedTerm)")
+            }
+        }
+    }
+
+    nonisolated func filterItemsAsync() async throws {
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            state = .loading
+        }
+
+        var searchableItems = [SearchableItem]()
+        var matchedItems = [ItemUiModel]()
+        var notMatchedItems = [ItemUiModel]()
+
+        if let selectedUser = await selectedUser,
+           let result = await results.first(where: { $0.userId == selectedUser.id }) {
+            searchableItems = result.searchableItems
+            matchedItems = result.matchedItems
+            notMatchedItems = result.notMatchedItems
+        } else {
+            // Avoid async let here to reduce memory footprint
+            searchableItems = await getAllObjects(\.searchableItems)
+            matchedItems = await getAllObjects(\.matchedItems)
+            notMatchedItems = await getAllObjects(\.notMatchedItems)
+        }
+
+        if case .oneTimeCodes = mode {
+            searchableItems = searchableItems.filter(\.hasTotpUri)
+            matchedItems = matchedItems.filter(\.hasTotpUri)
+            notMatchedItems = notMatchedItems.filter(\.hasTotpUri)
+        }
+
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            self.searchableItems = searchableItems
+            self.matchedItems = matchedItems
+            self.notMatchedItems = notMatchedItems
+            state = .idle
+        }
+    }
+
+    nonisolated func sortNotMatchedItemsAsync() async {
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            notMatchedItemSections = .fetching
+        }
+
+        let items = await notMatchedItems
+        let sortType = await selectedSortType
+        let sectionedItems: [SectionedItemUiModel]
+        do {
+            switch sortType {
+            case .mostRecent:
+                let sortedResult = try items.mostRecentSortResult()
+                sectionedItems = sortedResult.buckets.map { bucket in
+                    SectionedItemUiModel(id: bucket.id,
+                                         sectionTitle: bucket.type.title,
+                                         items: bucket.items)
+                }
+
+            case .alphabeticalAsc, .alphabeticalDesc:
+                let sortedResult = try items.alphabeticalSortResult(direction: sortType.sortDirection)
+                sectionedItems = sortedResult.buckets.map { bucket in
+                    SectionedItemUiModel(id: bucket.letter.character,
+                                         sectionTitle: bucket.letter.character,
+                                         items: bucket.items)
+                }
+
+            case .newestToOldest, .oldestToNewest:
+                let sortedResult = try items.monthYearSortResult(direction: sortType.sortDirection)
+                sectionedItems = sortedResult.buckets.map { bucket in
+                    SectionedItemUiModel(id: bucket.monthYear.relativeString,
+                                         sectionTitle: bucket.monthYear.relativeString,
+                                         items: bucket.items)
+                }
+            }
+
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                notMatchedItemSections = .fetched(sectionedItems)
+            }
+        } catch {
+            if error is CancellationError { return }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                notMatchedItemSections = .error(error)
+            }
+        }
     }
 }
