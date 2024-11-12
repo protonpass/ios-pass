@@ -50,21 +50,23 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
 
     private let request: PasskeyCredentialRequest
 
-    var searchableItems: [SearchableItem] {
-        if let selectedUser {
-            results.first(where: { $0.userId == selectedUser.id })?.searchableItems ?? []
-        } else {
-            getAllObjects(\.searchableItems)
-        }
-    }
+    var searchableItems: [SearchableItem] = []
+//    var searchableItems: [SearchableItem] {
+//        if let selectedUser {
+//            results.first(where: { $0.userId == selectedUser.id })?.searchableItems ?? []
+//        } else {
+//            getAllObjects(\.searchableItems)
+//        }
+//    }
 
-    var items: [ItemUiModel] {
-        if let selectedUser {
-            results.first(where: { $0.userId == selectedUser.id })?.items ?? []
-        } else {
-            getAllObjects(\.items)
-        }
-    }
+    var items: [ItemUiModel] = []
+//    var items: [ItemUiModel] {
+//        if let selectedUser {
+//            results.first(where: { $0.userId == selectedUser.id })?.items ?? []
+//        } else {
+//            getAllObjects(\.items)
+//        }
+//    }
 
     init(users: [UserUiModel],
          request: PasskeyCredentialRequest,
@@ -102,10 +104,6 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
 
     override func changeToLoadingState() {
         state = .loading
-    }
-
-    override func changeToLoadedState() {
-        state = .loaded
     }
 }
 

@@ -80,13 +80,14 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     }
 
     private var searchTask: Task<Void, Never>?
-    private var searchableItems: [SearchableItem] {
-        if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
-        } else {
-            getAllObjects(\.searchableItems)
-        }
-    }
+    private var searchableItems: [SearchableItem] = []
+//    private var searchableItems: [SearchableItem] {
+//        if let selectedUser {
+//            results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
+//        } else {
+//            getAllObjects(\.searchableItems)
+//        }
+//    }
 
     private var vaults: [Vault] {
         results.flatMap(\.vaults)
@@ -106,7 +107,11 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
                 guard let self else { return }
-                filterAndSortItems()
+                // TODO: Keep track of this task
+                Task { [weak self] in
+                    guard let self else { return }
+                    await filterAndSortItems()
+                }
             }
             .store(in: &cancellables)
 
@@ -155,10 +160,6 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         state = .loading
     }
 
-    override func changeToLoadedState() {
-        state = .idle
-    }
-
     override func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
         switch selectedItemType {
         case .login:
@@ -205,7 +206,8 @@ private extension ItemsForTextInsertionViewModel {
 }
 
 extension ItemsForTextInsertionViewModel {
-    func filterAndSortItems() {
+    // TODO: Make this nonisolated
+    func filterAndSortItems() async {
         defer {
             switch state {
             case .searchResults:
@@ -222,11 +224,11 @@ extension ItemsForTextInsertionViewModel {
             history = result?.history.map(\.value) ?? []
             allItems = result?.items ?? []
         } else {
-            history = Array(getAllObjects(\.history)
+            history = await Array(getAllObjects(\.history)
                 .sorted(by: { $0.time > $1.time })
                 .prefix(Constants.textAutoFillHistoryLimit))
                 .map(\.value)
-            allItems = getAllObjects(\.items)
+            allItems = await getAllObjects(\.items)
         }
 
         let filteredItems = if case let .precise(type) = filterOption {
@@ -329,7 +331,7 @@ extension ItemsForTextInsertionViewModel {
                                                               history: [],
                                                               searchableItems: $0.searchableItems,
                                                               items: $0.items) }
-                try filterAndSortItems()
+                await filterAndSortItems()
             } catch {
                 handle(error)
             }
