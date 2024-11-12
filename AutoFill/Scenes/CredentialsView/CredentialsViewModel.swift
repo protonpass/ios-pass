@@ -310,9 +310,6 @@ private extension CredentialsViewModel {
     }
 
     nonisolated func searchAsync(term: String) async throws {
-        await MainActor.run { [weak self] in
-            guard let self, state != .searching else { return }
-        }
         guard !term.isEmpty else {
             await MainActor.run { [weak self] in
                 guard let self else { return }
