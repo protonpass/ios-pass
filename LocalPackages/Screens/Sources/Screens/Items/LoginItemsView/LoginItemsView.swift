@@ -41,6 +41,9 @@ public struct LoginItemsView<ItemRow: View, SearchResultRow: View>: View {
     private let onCreate: () -> Void
     private let onCancel: () -> Void
 
+    @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
+    private var useSwiftUIList = false
+
     public init(searchableItems: [SearchableItem],
                 uiModels: [ItemUiModel],
                 mode: Mode,
@@ -119,28 +122,53 @@ private extension LoginItemsView {
         }
     }
 
+    @ViewBuilder
     var allItems: some View {
-        List {
-            ForEach(viewModel.uiModels) { item in
-                itemRow(item)
-                    .plainListRow()
+        if useSwiftUIList {
+            List {
+                ForEach(viewModel.uiModels) { item in
+                    itemRow(item)
+                        .plainListRow()
+                }
             }
+            .refreshable { await onRefresh() }
+            .listStyle(.plain)
+        } else {
+            let sections: [TableView<ItemUiModel, ItemRow, Text>.Section] = [
+                .init(type: "", title: "", items: uiModels)
+            ]
+            TableView(sections: sections,
+                      configuration: .init(rowSpacing: 8),
+                      id: nil,
+                      itemView: { itemRow($0) },
+                      headerView: { _ in nil },
+                      onRefresh: { await onRefresh() })
         }
-        .refreshable { await onRefresh() }
-        .listStyle(.plain)
     }
 
+    @ViewBuilder
     func searchResults(_ results: [ItemSearchResult]) -> some View {
-        List {
-            ForEach(results) { result in
-                searchResultRow(result)
-                    .plainListRow()
-                    .padding(.top, DesignConstant.sectionPadding)
+        if useSwiftUIList {
+            List {
+                ForEach(results) { result in
+                    searchResultRow(result)
+                        .plainListRow()
+                        .padding(.top, DesignConstant.sectionPadding)
+                }
             }
+            .listStyle(.plain)
+            .padding(.horizontal)
+            .animation(.default, value: results.hashValue)
+        } else {
+            let sections: [TableView<ItemSearchResult, SearchResultRow, Text>.Section] = [
+                .init(type: "", title: "", items: results)
+            ]
+            TableView(sections: sections,
+                      configuration: .init(),
+                      id: results.hashValue,
+                      itemView: { searchResultRow($0) },
+                      headerView: { _ in nil })
         }
-        .listStyle(.plain)
-        .padding(.horizontal)
-        .animation(.default, value: results.hashValue)
     }
 }
 
