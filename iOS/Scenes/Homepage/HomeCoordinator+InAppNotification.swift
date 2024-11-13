@@ -85,7 +85,6 @@ extension HomepageCoordinator {
                         .notificationKey,
                     notificationStatus: notification
                         .removedState.rawValue))
-
             } catch {
                 logger.error(error)
             }
