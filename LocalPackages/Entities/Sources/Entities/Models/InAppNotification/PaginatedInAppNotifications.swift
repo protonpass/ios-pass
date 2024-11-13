@@ -22,4 +22,10 @@ public struct PaginatedInAppNotifications: Decodable, Sendable, Equatable, Hasha
     public let notifications: [InAppNotification]
     public let total: Int
     public let lastID: String?
+
+    public init(notifications: [InAppNotification], total: Int, lastID: String?) {
+        self.notifications = notifications
+        self.total = total
+        self.lastID = lastID
+    }
 }

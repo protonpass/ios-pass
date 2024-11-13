@@ -217,6 +217,10 @@ extension SharedRepositoryContainer {
         self { LocalTextAutoFillHistoryEntryDatasource(databaseService: self.databaseService) }
     }
 
+    var localInAppNotificationDatasource: Factory<any LocalInAppNotificationDatasourceProtocol> {
+        self { LocalInAppNotificationDatasource(databaseService: self.databaseService) }
+    }
+
     var remoteInAppNotificationDatasource: Factory<any RemoteInAppNotificationDatasourceProtocol> {
         self { RemoteInAppNotificationDatasource(apiServicing: self.apiManager) }
     }
@@ -377,7 +381,8 @@ extension SharedRepositoryContainer {
     }
 
     var inAppNotificationRepository: Factory<any InAppNotificationRepositoryProtocol> {
-        self { InAppNotificationRepository(remoteDatasource: self.remoteInAppNotificationDatasource(),
+        self { InAppNotificationRepository(localDatasource: self.localInAppNotificationDatasource(),
+                                           remoteDatasource: self.remoteInAppNotificationDatasource(),
                                            userManager: self.userManager,
                                            logManager: self.logManager) }
     }
