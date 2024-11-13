@@ -33,23 +33,30 @@ extension TelemetryEventEntity {
     }
 
     @NSManaged var uuid: String
-    @NSManaged var rawValue: String
+    @NSManaged var rawValue: String?
     @NSManaged var time: Double
     @NSManaged var userID: String
+    @NSManaged var rawData: Data?
 }
 
 extension TelemetryEventEntity {
     func toTelemetryEvent() throws -> TelemetryEvent {
-        guard let type = TelemetryEventType(rawValue: rawValue) else {
+        var type: TelemetryEventType
+        if let rawData {
+            type = try JSONDecoder().decode(TelemetryEventType.self, from: rawData)
+        } else if let rawValue, let decodedType = TelemetryEventType(rawValue: rawValue) {
+            type = decodedType
+        } else {
             throw PassError.coreData(.corrupted(object: self, property: "rawValue"))
         }
+
         return .init(uuid: uuid, time: time, type: type)
     }
 
-    func hydrate(from event: TelemetryEvent, userId: String) {
+    func hydrate(from event: TelemetryEvent, userId: String) throws {
         uuid = event.uuid
-        rawValue = event.type.rawValue
         time = event.time
         userID = userId
+        rawData = try JSONEncoder().encode(event.type)
     }
 }

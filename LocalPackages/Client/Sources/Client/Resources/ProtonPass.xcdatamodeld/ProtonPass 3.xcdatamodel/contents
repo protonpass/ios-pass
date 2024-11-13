@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24B83" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -33,6 +33,29 @@
             <uniquenessConstraint>
                 <constraint value="userID"/>
                 <constraint value="module"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="InAppNotificationEntity" representedClassName="InAppNotificationEntity" syncable="YES">
+        <attribute name="ctaRef" optional="YES" attributeType="String"/>
+        <attribute name="ctaText" optional="YES" attributeType="String"/>
+        <attribute name="ctaType" optional="YES" attributeType="String"/>
+        <attribute name="displayType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="endTime" attributeType="Double" defaultValueString="-1" usesScalarValueType="YES"/>
+        <attribute name="hasCta" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" attributeType="String"/>
+        <attribute name="imageUrl" optional="YES" attributeType="String"/>
+        <attribute name="message" attributeType="String"/>
+        <attribute name="notificationKey" attributeType="String"/>
+        <attribute name="priority" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="startTime" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="state" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="theme" optional="YES" attributeType="String"/>
+        <attribute name="title" attributeType="String"/>
+        <attribute name="userId" attributeType="String"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="id"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
@@ -181,7 +204,8 @@
         </uniquenessConstraints>
     </entity>
     <entity name="TelemetryEventEntity" representedClassName="TelemetryEventEntity" syncable="YES">
-        <attribute name="rawValue" attributeType="String"/>
+        <attribute name="rawData" optional="YES" attributeType="Binary"/>
+        <attribute name="rawValue" optional="YES" attributeType="String"/>
         <attribute name="time" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <attribute name="uuid" attributeType="String"/>

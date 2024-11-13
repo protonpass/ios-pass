@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
+import Core
 import Entities
 import Foundation
 
@@ -26,49 +28,70 @@ private let kInAppNotificationTimerKey = "InAppNotificationTimer"
 public protocol InAppNotificationManagerProtocol: Sendable {
     var notifications: [InAppNotification] { get }
 
-    func shouldPullNotifications() async -> Bool
-    func fetchNotifications(offsetId: String?) async throws -> [InAppNotification]
+    func fetchNotifications(offsetId: String?, reset: Bool) async throws -> [InAppNotification]
     func getNotificationToDisplay() async throws -> InAppNotification?
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws
+}
+
+public extension InAppNotificationManagerProtocol {
+    func fetchNotifications(offsetId: String? = nil, reset: Bool = true) async throws -> [InAppNotification] {
+        try await fetchNotifications(offsetId: offsetId, reset: reset)
+    }
 }
 
 public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerProtocol {
     private let repository: any InAppNotificationRepositoryProtocol
     private let userDefault: UserDefaults
     private let userManager: any UserManagerProtocol
+    private let logger: Logger
     public private(set) var notifications: [InAppNotification] = []
     private var lastId: String?
-    private var hasFetchedAtLeastOnce: Bool = false
+
+    private nonisolated(unsafe) var cancellables: Set<AnyCancellable> = []
+    private nonisolated(unsafe) var task: Task<Void, Never>?
 
     public init(repository: any InAppNotificationRepositoryProtocol,
                 userManager: any UserManagerProtocol,
-                userDefault: UserDefaults) {
+                userDefault: UserDefaults,
+                logManager: any LogManagerProtocol) {
         self.userDefault = userDefault
         self.repository = repository
         self.userManager = userManager
+        logger = .init(manager: logManager)
     }
 
-    public func fetchNotifications(offsetId: String?) async throws -> [InAppNotification] {
+    public func fetchNotifications(offsetId: String? = nil,
+                                   reset: Bool = true) async throws -> [InAppNotification] {
         let userId = try await userManager.getActiveUserId()
         let paginatedNotifications = try await repository
-            .getNotifications(lastNotificationId: offsetId,
-                              userId: userId)
+            .getPaginatedNotifications(lastNotificationId: offsetId,
+                                       userId: userId)
         lastId = paginatedNotifications.lastID
-        notifications.append(contentsOf: paginatedNotifications.notifications)
-        hasFetchedAtLeastOnce = true
-        updateTime(Date().timeIntervalSinceNow)
+        if reset {
+            notifications = paginatedNotifications.notifications
+        } else {
+            notifications.append(contentsOf: paginatedNotifications.notifications)
+        }
+        try await repository.removeAllInAppNotifications(userId: userId)
+        try await repository.upsertInAppNotification(notifications, userId: userId)
         return notifications
     }
 
     public func getNotificationToDisplay() async throws -> InAppNotification? {
-        notifications.first { !$0.hasBeenRead }
-    }
-
-    public func shouldPullNotifications() async -> Bool {
-        guard hasFetchedAtLeastOnce, let timeInterval = getTimeForLastNotificationPull() else {
-            return true
+        guard shouldDisplayNotifications else {
+            return nil
         }
-        return timeInterval > 3_600
+        let timestampDate = Date().timeIntervalSinceNow
+        updateTime(timestampDate)
+        return notifications.filter { notification in
+            guard !notification.hasBeenRead,
+                  notification.startTime <= timestampDate,
+                  (notification.endTime ?? .infinity) >= timestampDate
+            else {
+                return false
+            }
+            return true
+        }.max(by: { $0.priority < $1.priority })
     }
 
     public func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {
@@ -76,6 +99,9 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         try await repository.changeNotificationStatus(notificationId: notificationId,
                                                       newStatus: newState.rawValue,
                                                       userId: userId)
+        if newState == .dismissed {
+            try await repository.remove(notificationId: notificationId)
+        }
         if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
             notifications[index].state = newState.rawValue
         }
@@ -83,7 +109,40 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
 }
 
 private extension InAppNotificationManager {
-    func getTimeForLastNotificationPull() -> Double? {
+    func setup() {
+        Task {
+            do {
+                let userId = try await userManager.getActiveUserId()
+                notifications = try await repository.getNotifications(userId: userId)
+            } catch {
+                logger.error(message: "Could not load local in app notifications", error: error)
+            }
+        }
+
+        userManager.currentActiveUser
+            .dropFirst()
+            .sink { [weak self] _ in
+                guard let self else { return }
+                task?.cancel()
+                task = Task { [weak self] in
+                    guard let self else { return }
+                    _ = try? await fetchNotifications()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    /// Display notification at most once every 30 minutes
+    /// - Returns: A bool equals to `true` when there is more than 30 minutes past since last notification
+    /// displayed
+    var shouldDisplayNotifications: Bool {
+        guard let timeInterval = getTimeForLastNotificationDisplay() else {
+            return true
+        }
+        return timeInterval > 1_800
+    }
+
+    func getTimeForLastNotificationDisplay() -> Double? {
         userDefault.double(forKey: kInAppNotificationTimerKey)
     }
 
