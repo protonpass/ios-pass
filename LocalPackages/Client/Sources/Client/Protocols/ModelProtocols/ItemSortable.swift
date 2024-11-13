@@ -90,10 +90,6 @@ public struct MostRecentSortResult<T: DateSortable>: SearchResults {
         hasher.combine(buckets)
         precomputedHash = hasher.finalize()
     }
-
-    // swiftlint:disable:next todo
-    // TODO: To be removed once removing item sorting out of views
-    public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
 }
 
 public extension Array where Element: DateSortable {
@@ -200,10 +196,6 @@ public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults, Se
         hasher.combine(buckets)
         precomputedHash = hasher.finalize()
     }
-
-    // swiftlint:disable:next todo
-    // TODO: To be removed once removing item sorting out of views
-    public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
 }
 
 public extension Array where Element: AlphabeticalSortable {
@@ -347,10 +339,6 @@ public struct MonthYearSortResult<T: DateSortable>: SearchResults {
         hasher.combine(buckets)
         precomputedHash = hasher.finalize()
     }
-
-    // swiftlint:disable:next todo
-    // TODO: To be removed once removing item sorting out of views
-    public static var `default`: Self { .init(numberOfItems: 0, buckets: []) }
 }
 
 public extension Array where Element: DateSortable {

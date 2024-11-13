@@ -29,28 +29,39 @@ import Foundation
 import Macro
 import SwiftUI
 
+typealias SectionedItemSearchResult = SectionedObjects<ItemSearchResult>
+
 @MainActor
 final class TotpLoginsViewModel: ObservableObject, Sendable {
     @Published private(set) var loading = true
-    @Published private(set) var results = [ItemSearchResult]()
+    @Published private(set) var results: FetchableObject<[SectionedItemSearchResult]> = .fetching
     @Published var query = ""
     @Published var showAlert = false
     @Published private(set) var shouldDismiss = false
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
-    var selectedSortType = SortType.mostRecent
+    var selectedSortType = SortType.mostRecent {
+        didSet {
+            sortResults(query: nil)
+        }
+    }
 
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     private let getActiveLoginItems = resolve(\SharedUseCasesContainer.getActiveLoginItems)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
     let totpManager = resolve(\SharedServiceContainer.totpManager)
+
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
 
     private var searchableItems = [SearchableItem]()
     private(set) var selectedItem: ItemContent?
     let totpUri: String
     private var cancellables = Set<AnyCancellable>()
+
+    private var sortTask: Task<Void, Never>?
 
     init(totpUri: String) {
         self.totpUri = totpUri
@@ -58,19 +69,26 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
         setUp()
     }
 
-    func loadLogins() async {
-        loading = true
-        defer {
-            loading = false
+    nonisolated func loadLogins() async {
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            loading = true
         }
 
         do {
             let userId = try await userManager.getActiveUserId()
             let logins = try await getActiveLoginItems(userId: userId)
-            searchableItems = logins.map { SearchableItem(from: $0, allVaults: []) }
-            results = searchableItems.toItemSearchResults
+            let vaults = try await shareRepository.getVaults(userId: userId)
+            let searchableItems = logins.map { SearchableItem(from: $0, allVaults: vaults) }
+
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.searchableItems = searchableItems
+                loading = false
+            }
+            await sortResultsAsync(query: nil)
         } catch {
-            router.display(element: .displayErrorBanner(error))
+            await handle(error)
         }
     }
 
@@ -122,7 +140,7 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
                 }
                 shouldDismiss = true
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -137,29 +155,88 @@ private extension TotpLoginsViewModel {
         cleanedQuery
             .subscribe(on: DispatchQueue.global())
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] search in
-                guard let self else {
-                    return
-                }
-                Task { [weak self] in
-                    guard let self else { return }
-                    do {
-                        results = try await search.isEmpty ?
-                            searchableItems.toItemSearchResults : searchableItems.result(for: search)
-                    } catch {
-                        print(error.localizedDescription)
-                    }
-                }
+            .sink { [weak self] query in
+                guard let self else { return }
+                sortResults(query: query)
             }
             .store(in: &cancellables)
     }
 
-    private var cleanedQuery: AnyPublisher<String, Never> {
+    var cleanedQuery: AnyPublisher<String, Never> {
         $query
             .dropFirst()
             .debounce(for: 0.4, scheduler: RunLoop.main)
             .removeDuplicates()
             .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
             .eraseToAnyPublisher()
+    }
+
+    func sortResults(query: String?) {
+        sortTask?.cancel()
+        sortTask = Task { [weak self] in
+            guard let self else { return }
+            await sortResultsAsync(query: query)
+        }
+    }
+
+    nonisolated func sortResultsAsync(query: String?) async {
+        do {
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.results = .fetching
+            }
+
+            let searchableItems = await searchableItems
+            let filteredResults = if let query, !query.isEmpty {
+                try await searchableItems.result(for: query)
+            } else {
+                searchableItems.toItemSearchResults
+            }
+
+            let sortType = await selectedSortType
+            let results: [SectionedItemSearchResult]
+            switch await selectedSortType {
+            case .mostRecent:
+                let sortedResult = try filteredResults.mostRecentSortResult()
+                results = sortedResult.buckets.map { bucket in
+                    SectionedItemSearchResult(id: bucket.id,
+                                              sectionTitle: bucket.type.title,
+                                              items: bucket.items)
+                }
+
+            case .alphabeticalAsc, .alphabeticalDesc:
+                let sortedResult = try filteredResults.alphabeticalSortResult(direction: sortType.sortDirection)
+                results = sortedResult.buckets.map { bucket in
+                    SectionedItemSearchResult(id: bucket.letter.character,
+                                              sectionTitle: bucket.letter.character,
+                                              items: bucket.items)
+                }
+
+            case .newestToOldest, .oldestToNewest:
+                let sortedResult = try filteredResults.monthYearSortResult(direction: sortType.sortDirection)
+                results = sortedResult.buckets.map { bucket in
+                    SectionedItemSearchResult(id: bucket.monthYear.relativeString,
+                                              sectionTitle: bucket.monthYear.relativeString,
+                                              items: bucket.items)
+                }
+            }
+
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.results = .fetched(results.filter { !$0.items.isEmpty })
+            }
+        } catch {
+            if error is CancellationError { return }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                results = .error(error)
+            }
+        }
+    }
+
+    func handle(_ error: any Error) {
+        if error is CancellationError { return }
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }

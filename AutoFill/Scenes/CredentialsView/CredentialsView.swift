@@ -182,7 +182,7 @@ private extension CredentialsView {
 private extension CredentialsView {
     var itemList: some View {
         ScrollViewReader { proxy in
-            LazyVStack {
+            LazyVStack(pinnedViews: .sectionHeaders) {
                 // Suggestions section
                 let sectionTitle = #localized("Suggestions for %@", viewModel.domain)
                 if viewModel.matchedItems.isEmpty {
