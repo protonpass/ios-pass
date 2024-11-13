@@ -164,6 +164,10 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
             self.configuration = configuration
         }
 
+        public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+
         public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
             guard let headerView = parent.headerView(section) else { return nil }
             let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: kHeaderId)

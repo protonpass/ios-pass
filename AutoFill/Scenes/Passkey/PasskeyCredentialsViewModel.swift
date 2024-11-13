@@ -50,8 +50,8 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
 
     private let request: PasskeyCredentialRequest
 
-    var searchableItems: [SearchableItem] = []
-    @Published var items: [ItemUiModel] = []
+    private(set) var searchableItems: [SearchableItem] = []
+    @Published private(set) var items: [ItemUiModel] = []
 
     init(users: [UserUiModel],
          request: PasskeyCredentialRequest,
