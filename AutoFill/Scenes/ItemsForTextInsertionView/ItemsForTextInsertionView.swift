@@ -43,7 +43,6 @@ struct ItemsForTextInsertionView: View {
         }
         .task {
             await viewModel.fetchItems()
-            await viewModel.filterAndSortItems()
             await viewModel.sync(ignoreError: true)
         }
         .localAuthentication(logOutButtonMode: .topBarTrailing { viewModel.handleCancel() },
