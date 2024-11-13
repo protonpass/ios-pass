@@ -38,6 +38,9 @@ extension HomepageCoordinator {
     }
 
     func displayNotification(_ notification: InAppNotification) {
+        addTelemetryEvent(with: .passNotificationDisplayNotification(notificationKey: notification
+                .notificationKey))
+
         switch notification.displayType {
         case .banner:
             let view = InAppBannerView(notification: notification,
@@ -78,6 +81,11 @@ extension HomepageCoordinator {
             do {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
+                addTelemetryEvent(with: .passNotificationChangeNotificationStatus(notificationKey: notification
+                        .notificationKey,
+                    notificationStatus: notification
+                        .removedState.rawValue))
+
             } catch {
                 logger.error(error)
             }
@@ -91,7 +99,8 @@ extension HomepageCoordinator {
                 if notification.displayType == .banner {
                     updateFloatingView(floatingView: nil, shouldAdd: false)
                 }
-
+                addTelemetryEvent(with: .passNotificationNotificationCtaClick(notificationKey: notification
+                        .notificationKey))
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
 

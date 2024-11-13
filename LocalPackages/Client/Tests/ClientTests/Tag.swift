@@ -27,4 +27,5 @@ extension Tag {
     @Tag static var repository: Self
     @Tag static var manager: Self
     @Tag static var endpoint: Self
+    @Tag static var models: Self
 }

@@ -80,7 +80,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
-    let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
@@ -93,6 +92,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
     @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
     var addAndSwitchToNewUserAccount
+    @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
 
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
 

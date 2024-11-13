@@ -47,6 +47,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let telemetryEventDatasource: any LocalTelemetryEventDatasourceProtocol
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
+    private let inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
                 authCredentialDatasource: any LocalAuthCredentialDatasourceProtocol,
@@ -60,7 +61,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 spotlightVaultDatasource: any LocalSpotlightVaultDatasourceProtocol,
                 telemetryEventDatasource: any LocalTelemetryEventDatasourceProtocol,
                 userDataDatasource: any LocalUserDataDatasourceProtocol,
-                userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol) {
+                userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
+                inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol) {
         self.accessDatasource = accessDatasource
         self.authCredentialDatasource = authCredentialDatasource
         self.itemDatasource = itemDatasource
@@ -74,6 +76,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
         self.telemetryEventDatasource = telemetryEventDatasource
         self.userDataDatasource = userDataDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
+        self.inAppNotificationDatasource = inAppNotificationDatasource
     }
 }
 
@@ -92,6 +95,8 @@ public extension RemoveUserLocalData {
         async let removeTelemetryEvents: () = telemetryEventDatasource.removeAllEvents(userId: userId)
         async let removeUserData: () = userDataDatasource.remove(userId: userId)
         async let removeUserPrefs: () = userPreferencesDatasource.removePreferences(for: userId)
+        async let removeInAppNotifications: () = inAppNotificationDatasource
+            .removeAllInAppNotifications(userId: userId)
 
         _ = try await (removeAccess,
                        removeAuthCreds,
@@ -105,6 +110,7 @@ public extension RemoveUserLocalData {
                        removeSpotlightVaults,
                        removeTelemetryEvents,
                        removeUserData,
-                       removeUserPrefs)
+                       removeUserPrefs,
+                       removeInAppNotifications)
     }
 }

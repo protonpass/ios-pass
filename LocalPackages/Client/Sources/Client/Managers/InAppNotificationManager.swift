@@ -47,16 +47,19 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
     public private(set) var notifications: [InAppNotification] = []
     private var lastId: String?
 
+    private let delayBetweenNotifications: TimeInterval
     private nonisolated(unsafe) var cancellables: Set<AnyCancellable> = []
     private nonisolated(unsafe) var task: Task<Void, Never>?
 
     public init(repository: any InAppNotificationRepositoryProtocol,
                 userManager: any UserManagerProtocol,
                 userDefault: UserDefaults,
+                delayBetweenNotifications: TimeInterval = 1_800,
                 logManager: any LogManagerProtocol) {
         self.userDefault = userDefault
         self.repository = repository
         self.userManager = userManager
+        self.delayBetweenNotifications = delayBetweenNotifications
         logger = .init(manager: logManager)
     }
 
@@ -139,7 +142,7 @@ private extension InAppNotificationManager {
         guard let timeInterval = getTimeForLastNotificationDisplay() else {
             return true
         }
-        return timeInterval > 1_800
+        return timeInterval >= delayBetweenNotifications
     }
 
     func getTimeForLastNotificationDisplay() -> Double? {
