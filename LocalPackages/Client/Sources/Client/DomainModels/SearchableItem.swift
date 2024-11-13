@@ -221,7 +221,7 @@ private extension SearchableItem {
                          aliasEmail: aliasEmail,
                          aliasEnabled: aliasEnabled,
                          title: .notMatched(name),
-                         detail: [.notMatched(note)],
+                         detail: [.notMatched(requiredExtras.first ?? "")],
                          url: url,
                          vault: vault,
                          lastUseTime: lastUseTime,
@@ -243,6 +243,7 @@ public extension SearchableItem {
 
 public extension [SearchableItem] {
     // While this function has no async operations but they're quite resource demanding
+    // when dealing with a large amount of data
     // so we make it async in order to execute it concurrently out of the main thread
     func result(for term: String) async throws -> [ItemSearchResult] {
         try compactMap {

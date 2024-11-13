@@ -21,16 +21,21 @@
 //
 
 import Client
+import Core
 import DesignSystem
 import Entities
 import Factory
 import Macro
+import Screens
 import SwiftUI
 
 struct TotpLoginsView: View {
     @StateObject var viewModel: TotpLoginsViewModel
     @FocusState private var isFocusedOnSearchBar
     @Environment(\.dismiss) private var dismiss
+
+    @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
+    private var useSwiftUIList = false
 
     var body: some View {
         ZStack {
@@ -85,23 +90,39 @@ private extension TotpLoginsView {
                       cancelMode: .never,
                       onCancel: { viewModel.clearSearch() })
 
-            if !viewModel.results.isEmpty {
-                HStack {
-                    Text("Login items")
-                        .font(.callout)
-                        .fontWeight(.bold)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-
-                    Spacer()
-
-                    SmallSortTypeButton(selectedSortType: $viewModel.selectedSortType)
+            switch viewModel.results {
+            case .fetching:
+                if !viewModel.loading {
+                    ProgressView()
                 }
-                .plainListRow()
-                .padding([.horizontal])
-                .padding(.bottom, DesignConstant.sectionPadding)
-            }
 
-            itemList
+            case let .fetched(results):
+                if !results.isEmpty {
+                    HStack {
+                        Text("Login items")
+                            .font(.callout)
+                            .fontWeight(.bold)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+
+                        Spacer()
+
+                        SortTypeButton(selectedSortType: $viewModel.selectedSortType)
+                    }
+                    .plainListRow()
+                    .padding([.horizontal])
+                    .padding(.bottom, DesignConstant.sectionPadding)
+                }
+
+                if useSwiftUIList {
+                    list(results)
+                } else {
+                    tableView(results)
+                }
+
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: { Task { await viewModel.loadLogins() } })
+            }
 
             Spacer()
 
@@ -125,15 +146,41 @@ private extension TotpLoginsView {
                 .padding(.vertical, 8)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .animation(.default, value: viewModel.results)
     }
 
-    var itemList: some View {
+    @ViewBuilder
+    func tableView(_ results: [SectionedItemSearchResult]) -> some View {
+        let sections: [TableView<ItemSearchResult, ResultItemRow, Text>.Section] = results.map {
+            .init(type: $0.id, title: $0.sectionTitle, items: $0.items)
+        }
+        TableView(sections: sections,
+                  configuration: .init(showSectionIndexTitles: viewModel.selectedSortType.isAlphabetical),
+                  id: nil,
+                  itemView: { item in
+                      ResultItemRow(item: item,
+                                    selectItem: { viewModel.updateLogin(item: $0) })
+                  },
+                  headerView: { _ in nil })
+    }
+
+    func list(_ results: [SectionedItemSearchResult]) -> some View {
         ScrollViewReader { proxy in
             List {
-                sortableSections(for: viewModel.results)
+                ForEach(results) { result in
+                    Section(content: {
+                        ForEach(result.items) { item in
+                            ResultItemRow(item: item,
+                                          selectItem: { viewModel.updateLogin(item: $0) })
+                        }
+                    }, header: {
+                        Text(result.sectionTitle)
+                            .font(.callout)
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                    })
+                }
             }
             .listStyle(.plain)
-            .animation(.default, value: viewModel.results)
             .overlay {
                 if viewModel.selectedSortType.isAlphabetical {
                     HStack {
@@ -145,68 +192,9 @@ private extension TotpLoginsView {
             }
         }
     }
-
-    @ViewBuilder
-    func sortableSections(for items: [ItemSearchResult]) -> some View {
-        switch viewModel.selectedSortType {
-        case .mostRecent:
-            sections(for: (try? items.mostRecentSortResult()) ?? .default)
-        case .alphabeticalAsc:
-            sections(for: (try? items.alphabeticalSortResult(direction: .ascending)) ?? .default)
-        case .alphabeticalDesc:
-            sections(for: (try? items.alphabeticalSortResult(direction: .descending)) ?? .default)
-        case .newestToOldest:
-            sections(for: (try? items.monthYearSortResult(direction: .descending)) ?? .default)
-        case .oldestToNewest:
-            sections(for: (try? items.monthYearSortResult(direction: .ascending)) ?? .default)
-        }
-    }
-
-    func sections(for result: MostRecentSortResult<ItemSearchResult>) -> some View {
-        ForEach(result.buckets) { bucket in
-            section(for: bucket.items, headerTitle: bucket.type.title)
-        }
-    }
-
-    func sections(for result: AlphabeticalSortResult<ItemSearchResult>) -> some View {
-        ForEach(result.buckets, id: \.letter) { bucket in
-            section(for: bucket.items, headerTitle: bucket.letter.character)
-                .id(bucket.letter.character)
-        }
-    }
-
-    func sections(for result: MonthYearSortResult<ItemSearchResult>) -> some View {
-        ForEach(result.buckets, id: \.monthYear) { bucket in
-            section(for: bucket.items, headerTitle: bucket.monthYear.relativeString)
-        }
-    }
-
-    @ViewBuilder
-    func section(for items: [ItemSearchResult],
-                 headerTitle: String,
-                 headerColor: UIColor = PassColor.textWeak,
-                 headerFontWeight: Font.Weight = .regular) -> some View {
-        if items.isEmpty {
-            EmptyView()
-        } else {
-            Section(content: {
-                ForEach(items) { item in
-                    ResultItemRow(item: item, selectItem: { viewModel.updateLogin(item: $0) })
-                        .plainListRow()
-                        .padding(.horizontal)
-                        .padding(.vertical, 5)
-                }
-            }, header: {
-                Text(headerTitle)
-                    .font(.callout)
-                    .fontWeight(headerFontWeight)
-                    .foregroundStyle(headerColor.toColor)
-            })
-        }
-    }
 }
 
-struct ResultItemRow: View {
+private struct ResultItemRow: View {
     let item: ItemSearchResult
     let selectItem: (ItemSearchResult) -> Void
 
@@ -238,35 +226,11 @@ struct ResultItemRow: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.bottom, 10)
+            .contentShape(.rect)
         }
-    }
-}
-
-struct SmallSortTypeButton: View {
-    @Binding var selectedSortType: SortType
-
-    var body: some View {
-        Menu(content: {
-            ForEach(SortType.allCases, id: \.self) { type in
-                Button(action: {
-                    selectedSortType = type
-                }, label: {
-                    HStack {
-                        Text(type.title)
-                        Spacer()
-                        if type == selectedSortType {
-                            Image(systemName: "checkmark")
-                        }
-                    }
-                })
-            }
-        }, label: sortTypeLabel)
-    }
-
-    private func sortTypeLabel() -> some View {
-        Label(selectedSortType.title, systemImage: "arrow.up.arrow.down")
-            .font(.callout.weight(.medium))
-            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-            .animationsDisabled()
+        .plainListRow()
+        .buttonStyle(.plain)
+        .padding(.horizontal)
+        .padding(.vertical, 5)
     }
 }

@@ -152,6 +152,7 @@ private extension SearchViewModel {
             if query.isEmpty {
                 results = searchableItems.toItemSearchResults
                 filterAndSortResults()
+                return
             }
         case .all:
             guard !query.isEmpty else {
@@ -173,7 +174,7 @@ private extension SearchViewModel {
             do {
                 state = .searching
                 results = try await searchableItems.result(for: query)
-                filterAndSortResults()
+                await filterAndSortResultsAsync()
                 logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
             } catch {
                 if error is CancellationError {
