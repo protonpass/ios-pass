@@ -25,7 +25,24 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public let endTime: Double?
     // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
     public var state: Int
+    public let priority: Int
     public let content: InAppNotificationContent
+
+    public init(ID: String,
+                notificationKey: String,
+                startTime: Double,
+                endTime: Double?,
+                state: Int,
+                priority: Int,
+                content: InAppNotificationContent) {
+        self.ID = ID
+        self.notificationKey = notificationKey
+        self.startTime = startTime
+        self.endTime = endTime
+        self.state = state
+        self.priority = priority
+        self.content = content
+    }
 
     public var id: String {
         // swiftformat:disable:next redundantSelf
@@ -52,6 +69,14 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
             return .externalNavigation(cta.ref)
         }
     }
+
+    public var removedState: InAppNotificationState {
+        if displayType == .banner {
+            .read
+        } else {
+            .dismissed
+        }
+    }
 }
 
 public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable {
@@ -65,6 +90,20 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
     // Can be light or dark
     public let theme: String?
     public let cta: InAppNotificationCTA?
+
+    public init(imageUrl: String?,
+                displayType: Int,
+                title: String,
+                message: String,
+                theme: String?,
+                cta: InAppNotificationCTA?) {
+        self.imageUrl = imageUrl
+        self.displayType = displayType
+        self.title = title
+        self.message = message
+        self.theme = theme
+        self.cta = cta
+    }
 }
 
 public struct InAppNotificationCTA: Decodable, Sendable, Equatable, Hashable {
@@ -73,6 +112,12 @@ public struct InAppNotificationCTA: Decodable, Sendable, Equatable, Hashable {
     public let type: String
     // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
     public let ref: String
+
+    public init(text: String, type: String, ref: String) {
+        self.text = text
+        self.type = type
+        self.ref = ref
+    }
 }
 
 public enum CtaType: Sendable {
@@ -88,5 +133,6 @@ public enum InAppNotificationDisplayType: Sendable {
 public enum InAppNotificationState: Int, Sendable {
     case unread = 0
     case read = 1
+    // Dismissed is the equivalent of delete for the back end should be used with modal
     case dismissed = 2
 }
