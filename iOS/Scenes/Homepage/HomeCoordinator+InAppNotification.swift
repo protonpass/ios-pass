@@ -27,9 +27,7 @@ extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             do {
-                if await inAppNotificationManager.shouldPullNotifications() {
-                    _ = try await inAppNotificationManager.fetchNotifications(offsetId: nil)
-                }
+                _ = try await inAppNotificationManager.fetchNotifications()
                 if let notification = try await inAppNotificationManager.getNotificationToDisplay() {
                     displayNotification(notification)
                 }
@@ -79,7 +77,7 @@ extension HomepageCoordinator {
             }
             do {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
-                                                                           newState: .dismissed)
+                                                                           newState: notification.removedState)
             } catch {
                 logger.error(error)
             }
@@ -95,7 +93,7 @@ extension HomepageCoordinator {
                 }
 
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
-                                                                           newState: .read)
+                                                                           newState: notification.removedState)
 
                 if case let .externalNavigation(url) = notification.cta, let url {
                     urlOpener.open(urlString: url)

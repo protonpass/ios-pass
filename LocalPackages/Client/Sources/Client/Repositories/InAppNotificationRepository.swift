@@ -23,38 +23,59 @@ import Core
 import Entities
 
 public protocol InAppNotificationRepositoryProtocol: AnyObject, Sendable {
-    func getNotifications(lastNotificationId: String?, userId: String) async throws -> PaginatedInAppNotifications
+    func getNotifications(userId: String) async throws -> [InAppNotification]
+    func getPaginatedNotifications(lastNotificationId: String?, userId: String) async throws
+        -> PaginatedInAppNotifications
     // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
     func changeNotificationStatus(notificationId: String, newStatus: Int, userId: String) async throws
+    func remove(notificationId: String) async throws
+    func upsertInAppNotification(_ notification: [InAppNotification], userId: String) async throws
+    func removeAllInAppNotifications(userId: String) async throws
 }
 
 public actor InAppNotificationRepository: InAppNotificationRepositoryProtocol {
-//    private let localDatasource: any LocalAccessDatasourceProtocol
+    private let localDatasource: any LocalInAppNotificationDatasourceProtocol
     private let remoteDatasource: any RemoteInAppNotificationDatasourceProtocol
     private let userManager: any UserManagerProtocol
     private let logger: Logger
 
-    // TODO: maybe add local cache or db to store the notifications
-    // add function to return the current notification we should display
-    // and add logic to select next display notification
-    public init(/* localDatasource: any LocalAccessDatasourceProtocol, */
-        remoteDatasource: any RemoteInAppNotificationDatasourceProtocol,
-        userManager: any UserManagerProtocol,
-        logManager: any LogManagerProtocol) {
-//        self.localDatasource = localDatasource
+    public init(localDatasource: any LocalInAppNotificationDatasourceProtocol,
+                remoteDatasource: any RemoteInAppNotificationDatasourceProtocol,
+                userManager: any UserManagerProtocol,
+                logManager: any LogManagerProtocol) {
+        self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         self.userManager = userManager
         logger = .init(manager: logManager)
     }
 
-    public func getNotifications(lastNotificationId: String?,
-                                 userId: String) async throws -> PaginatedInAppNotifications {
-        try await remoteDatasource.getNotifications(lastNotificationId: lastNotificationId, userId: userId)
+    public func getNotifications(userId: String) async throws -> [InAppNotification] {
+        logger.trace("Fetching all user in app notification for user id: \(userId)")
+        return try await localDatasource.getAllNotificationsByPriority(userId: userId)
+    }
+
+    public func getPaginatedNotifications(lastNotificationId: String?,
+                                          userId: String) async throws -> PaginatedInAppNotifications {
+        let notifs = try await remoteDatasource.getNotifications(lastNotificationId: lastNotificationId,
+                                                                 userId: userId)
+        return notifs
     }
 
     public func changeNotificationStatus(notificationId: String, newStatus: Int, userId: String) async throws {
         try await remoteDatasource.changeNotificationStatus(notificationId: notificationId,
                                                             newStatus: newStatus,
                                                             userId: userId)
+    }
+
+    public func upsertInAppNotification(_ notification: [InAppNotification], userId: String) async throws {
+        try await localDatasource.upsertInAppNotification(notification, userId: userId)
+    }
+
+    public func remove(notificationId: String) async throws {
+        try await localDatasource.remove(notificationId: notificationId)
+    }
+
+    public func removeAllInAppNotifications(userId: String) async throws {
+        try await localDatasource.removeAllInAppNotifications(userId: userId)
     }
 }
