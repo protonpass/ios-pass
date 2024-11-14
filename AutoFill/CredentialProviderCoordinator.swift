@@ -352,7 +352,7 @@ private extension CredentialProviderCoordinator {
     func presentSelectUserActionSheet(_ users: [UserUiModel]) {
         let alert = UIAlertController(title: #localized("Select account"),
                                       message: nil,
-                                      preferredStyle: .actionSheet)
+                                      preferredStyle: UIDevice.current.isIpad ? .alert : .actionSheet)
         for user in users {
             alert.addAction(.init(title: user.email ?? user.displayName ?? "?",
                                   style: .default,

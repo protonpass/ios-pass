@@ -43,7 +43,6 @@ struct ItemsForTextInsertionView: View {
         }
         .task {
             await viewModel.fetchItems()
-            viewModel.filterAndSortItems()
             await viewModel.sync(ignoreError: true)
         }
         .localAuthentication(logOutButtonMode: .topBarTrailing { viewModel.handleCancel() },
@@ -175,7 +174,7 @@ private extension ItemsForTextInsertionView {
                   configuration: .init(showSectionIndexTitles: viewModel.selectedSortType.isAlphabetical),
                   id: viewModel.selectedUser?.hashValue,
                   itemView: { item in
-                      GenericCredentialItemRow(item: item.uiModel,
+                      GenericCredentialItemRow(item: .uiModel(item.uiModel),
                                                user: viewModel.getUserForUiDisplay(for: item.uiModel),
                                                selectItem: { viewModel.select($0) })
                   },

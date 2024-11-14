@@ -164,6 +164,10 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
             self.configuration = configuration
         }
 
+        public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
+
         public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
             guard let headerView = parent.headerView(section) else { return nil }
             let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: kHeaderId)
@@ -204,8 +208,8 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
 
             dataSource.sectionIndexTitles = { [weak self] in
                 guard let self else { return nil }
-                return configuration.showSectionIndexTitles ?
-                    dataSource.snapshot().sectionIdentifiers.map(\.title) : nil
+                let titles = dataSource.snapshot().sectionIdentifiers.map(\.title)
+                return configuration.showSectionIndexTitles && titles.count > 1 ? titles : nil
             }
 
             dataSource.titleForHeader = { [weak self] section in

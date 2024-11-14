@@ -21,6 +21,7 @@
 import Core
 import CryptoKit
 import Entities
+import Foundation
 
 // swiftlint:disable cyclomatic_complexity
 /// Items that live in memory for search purpose
@@ -151,7 +152,7 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     }
 }
 
-extension SearchableItem {
+private extension SearchableItem {
     func result(for term: String) -> ItemSearchResult? {
         let title: SearchResultEither = if let result = SearchUtils.search(query: term, in: name) {
             .matched(result)
@@ -220,15 +221,17 @@ extension SearchableItem {
                          aliasEmail: aliasEmail,
                          aliasEnabled: aliasEnabled,
                          title: .notMatched(name),
-                         detail: [.notMatched(note)],
+                         detail: [.notMatched(requiredExtras.first ?? "")],
                          url: url,
                          vault: vault,
                          lastUseTime: lastUseTime,
                          modifyTime: modifyTime,
                          pinned: pinned)
     }
+}
 
-    public var toSearchEntryUiModel: SearchEntryUiModel {
+public extension SearchableItem {
+    var toSearchEntryUiModel: SearchEntryUiModel {
         SearchEntryUiModel(itemId: itemId,
                            shareId: shareId,
                            type: type,
@@ -239,8 +242,19 @@ extension SearchableItem {
 }
 
 public extension [SearchableItem] {
-    func result(for term: String) -> [ItemSearchResult] {
-        compactMap { $0.result(for: term) }
+    // While this function has no async operations but they're quite resource demanding
+    // when dealing with a large amount of data
+    // so we make it async in order to execute it concurrently out of the main thread
+    func result(for term: String) async throws -> [ItemSearchResult] {
+        try compactMap {
+            #if DEBUG
+            if Thread.isMainThread {
+                assertionFailure("Should not search in main thread")
+            }
+            #endif
+            try Task.checkCancellation()
+            return $0.result(for: term)
+        }
     }
 
     var toItemSearchResults: [ItemSearchResult] {

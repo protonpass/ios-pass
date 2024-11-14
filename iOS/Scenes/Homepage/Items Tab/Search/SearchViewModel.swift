@@ -28,15 +28,19 @@ import Macro
 import Screens
 import SwiftUI
 
-enum SearchViewState {
+enum SearchViewState: Sendable {
     /// Indexing items
     case initializing
     /// No history, empty search query
     case empty
     /// Non-empty history
     case history([SearchEntryUiModel])
+    /// Doing search
+    case searching
     /// No results for the given search query
     case noResults(String)
+    /// Filterting search results
+    case filteringResults
     /// Results with a given search query
     case results(ItemCount, any SearchResults)
     /// Error
@@ -68,12 +72,14 @@ final class SearchViewModel: ObservableObject, DeinitPrintable {
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
 
     private var lastSearchQuery = ""
-    private var lastTask: Task<Void, Never>?
+    private var searchTask: Task<Void, Never>?
     private var filteringTask: Task<Void, Never>?
     private var searchableItems = [SearchableItem]()
     private var history = [SearchEntryUiModel]()
     private var results = [ItemSearchResult]()
     private var cancellables = Set<AnyCancellable>()
+
+    private var refreshResultsTask: Task<Void, Never>?
 
     var searchBarPlaceholder: String {
         searchMode.searchBarPlacehoder
@@ -158,64 +164,81 @@ private extension SearchViewModel {
                 return
             }
         }
-        lastTask?.cancel()
-        lastTask = Task { [weak self] in
+        searchTask?.cancel()
+        searchTask = Task { [weak self] in
             guard let self else {
                 return
             }
             let hashedQuery = query.sha256
             logger.trace("Searching for \"\(hashedQuery)\"")
-            if Task.isCancelled {
-                return
+            do {
+                state = .searching
+                results = try await searchableItems.result(for: query)
+                await filterAndSortResultsAsync()
+                logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
+            } catch {
+                if error is CancellationError {
+                    print("Cancelled search for \"\(hashedQuery)\"")
+                    return
+                }
+                handle(error)
             }
-            results = searchableItems.result(for: query)
-            if Task.isCancelled {
-                return
-            }
-            filterAndSortResults()
-            logger.trace("Get \(results.count) result(s) for \"\(hashedQuery)\"")
         }
     }
 
     func filterAndSortResults() {
-        guard !results.isEmpty else {
-            state = .noResults(lastSearchQuery)
-            return
-        }
-
-        let filteredResults: [ItemSearchResult] = if let selectedType {
-            results.filter { $0.type == selectedType }
-        } else {
-            results
-        }
         filteringTask?.cancel()
         filteringTask = Task { [weak self] in
-            guard let self else {
-                return
-            }
-            if Task.isCancelled {
-                return
-            }
-            let filteredAndSortedResults = await sortItems(for: filteredResults)
-            if Task.isCancelled {
-                return
-            }
-            state = .results(ItemCount(items: results), filteredAndSortedResults)
+            guard let self else { return }
+            await filterAndSortResultsAsync()
         }
     }
 
-    func sortItems(for items: [ItemSearchResult]) async -> any SearchResults {
-        switch selectedSortType {
-        case .mostRecent:
-            await items.asyncMostRecentSortResult()
-        case .alphabeticalAsc:
-            await items.asyncAlphabeticalSortResult(direction: .ascending)
-        case .alphabeticalDesc:
-            await items.asyncAlphabeticalSortResult(direction: .descending)
-        case .newestToOldest:
-            await items.asyncMonthYearSortResult(direction: .descending)
-        case .oldestToNewest:
-            await items.asyncMonthYearSortResult(direction: .ascending)
+    nonisolated func filterAndSortResultsAsync() async {
+        let results = await results
+        let selectedType = await selectedType
+        let selectedSortType = await selectedSortType
+
+        let updateState: (SearchViewState) async -> Void = { [weak self] newState in
+            guard let self else { return }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                state = newState
+            }
+        }
+
+        if results.isEmpty {
+            await updateState(.noResults(lastSearchQuery))
+            return
+        }
+
+        await updateState(.filteringResults)
+
+        do {
+            let filteredResults: [ItemSearchResult] = if let selectedType {
+                try results.filter {
+                    try Task.checkCancellation()
+                    return $0.type == selectedType
+                }
+            } else {
+                results
+            }
+            let filteredAndSortedResults: any SearchResults =
+                switch selectedSortType {
+                case .mostRecent:
+                    try filteredResults.mostRecentSortResult()
+                case .alphabeticalAsc, .alphabeticalDesc:
+                    try filteredResults.alphabeticalSortResult(direction: selectedSortType.sortDirection)
+                case .newestToOldest, .oldestToNewest:
+                    try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
+                }
+            await updateState(.results(ItemCount(items: results), filteredAndSortedResults))
+        } catch {
+            if error is CancellationError {
+                print("Cancelled \(#function)")
+                return
+            }
+            await updateState(.error(error))
         }
     }
 }
@@ -224,11 +247,16 @@ private extension SearchViewModel {
 
 extension SearchViewModel {
     func refreshResults() {
-        Task { [weak self] in
+        refreshResultsTask?.cancel()
+        refreshResultsTask = Task { [weak self] in
             guard let self else { return }
             await indexItems()
             doSearch(query: lastSearchQuery)
         }
+    }
+
+    func cancelRefreshing() {
+        refreshResultsTask?.cancel()
     }
 
     func viewDetail(of item: any ItemIdentifiable) {
@@ -259,7 +287,7 @@ extension SearchViewModel {
                 try await searchEntryDatasource.remove(item: item)
                 try await refreshSearchHistory()
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -277,7 +305,7 @@ extension SearchViewModel {
                 }
                 try await refreshSearchHistory()
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -302,6 +330,7 @@ private extension SearchViewModel {
         itemRepository
             .itemsWereUpdated
             .receive(on: DispatchQueue.main)
+            .dropFirst()
             .sink { [weak self] _ in
                 guard let self else { return }
                 refreshResults()
@@ -335,12 +364,19 @@ private extension SearchViewModel {
 
         addTelemetryEvent(with: .searchTriggered)
     }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
 }
 
 extension SearchViewState: Equatable {
     static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.empty, .empty), (.initializing, .initializing):
+        case (.empty, .empty),
+             (.filteringResults, .filteringResults),
+             (.initializing, .initializing):
             true
 
         case let (.history(lhsHistory), .history(rhsHistory)):

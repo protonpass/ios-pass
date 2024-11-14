@@ -27,6 +27,7 @@ public struct SearchBar: View {
     var isFocused: FocusState<Bool>.Binding
     let placeholder: String
     let cancelMode: CancelMode
+    let canEdit: Bool
     let onCancel: (() -> Void)?
 
     public enum CancelMode {
@@ -48,10 +49,12 @@ public struct SearchBar: View {
                 isFocused: FocusState<Bool>.Binding,
                 placeholder: String,
                 cancelMode: CancelMode,
+                canEdit: Bool = true,
                 onCancel: (() -> Void)? = nil) {
         _query = query
         self.isFocused = isFocused
         self.placeholder = placeholder
+        self.canEdit = canEdit
         self.cancelMode = cancelMode
         self.onCancel = onCancel
     }
@@ -66,31 +69,41 @@ public struct SearchBar: View {
                         .scaledToFit()
                         .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(width: 20, height: 20)
+                        .if(!canEdit) { view in
+                            view.redacted(reason: .placeholder)
+                        }
 
-                    TextField(placeholder, text: $query)
-                        .tint(PassColor.interactionNorm.toColor)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .autocorrectionDisabled()
-                        .focused(isFocused)
-                        .minimumScaleFactor(0.75)
+                    if canEdit {
+                        TextField(placeholder, text: $query)
+                            .tint(PassColor.interactionNorm.toColor)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .autocorrectionDisabled()
+                            .focused(isFocused)
+                            .minimumScaleFactor(0.75)
 
-                    Button(action: {
-                        query = ""
-                    }, label: {
-                        Image(uiImage: IconProvider.cross)
-                            .resizable()
-                            .scaledToFit()
+                        Button(action: {
+                            query = ""
+                        }, label: {
+                            Image(uiImage: IconProvider.cross)
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundStyle(PassColor.textWeak.toColor)
+                                .frame(width: 24, height: 24)
+                        })
+                        .buttonStyle(.plain)
+                        .opacity(query.isEmpty ? 0 : 1)
+                    } else {
+                        Text(verbatim: "A long redacted placeholder text")
                             .foregroundStyle(PassColor.textWeak.toColor)
-                            .frame(width: 24, height: 24)
-                    })
-                    .buttonStyle(.plain)
-                    .opacity(query.isEmpty ? 0 : 1)
+                            .redacted(reason: .placeholder)
+                    }
                 }
                 .padding(.horizontal)
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .contentShape(.rect)
+
             if let onCancel, cancelMode.shouldShow(query: query) {
                 Button(action: onCancel) {
                     Text("Cancel", bundle: .module)

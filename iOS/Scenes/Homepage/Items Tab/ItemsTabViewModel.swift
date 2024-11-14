@@ -36,8 +36,6 @@ protocol ItemsTabViewModelDelegate: AnyObject {
     func itemsTabViewModelWantsViewDetail(of itemContent: ItemContent)
 }
 
-typealias SectionedItemUiModel = SectionedObjects<ItemUiModel>
-
 @MainActor
 final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -386,40 +384,9 @@ extension ItemsTabViewModel {
         }
         let sortType = sortType ?? selectedSortType
         sortTask?.cancel()
-        sortTask = Task.detached(priority: .userInitiated) { [weak self] in
+        sortTask = Task { [weak self] in
             guard let self else { return }
-            let filteredItems = vaultsManager.getFilteredItems()
-            let sectionedItems: [SectionedItemUiModel]
-
-            switch await selectedSortType {
-            case .mostRecent:
-                let sortedResult = filteredItems.mostRecentSortResult()
-                sectionedItems = sortedResult.buckets.map { bucket in
-                    SectionedItemUiModel(id: bucket.id,
-                                         sectionTitle: bucket.type.title,
-                                         items: bucket.items)
-                }
-
-            case .alphabeticalAsc, .alphabeticalDesc:
-                let sortedResult = filteredItems.alphabeticalSortResult(direction: sortType.sortDirection)
-                sectionedItems = sortedResult.buckets.map { bucket in
-                    SectionedItemUiModel(id: bucket.letter.character,
-                                         sectionTitle: bucket.letter.character,
-                                         items: bucket.items)
-                }
-
-            case .newestToOldest, .oldestToNewest:
-                let sortedResult = filteredItems.monthYearSortResult(direction: sortType.sortDirection)
-                sectionedItems = sortedResult.buckets.map { bucket in
-                    SectionedItemUiModel(id: bucket.monthYear.relativeString,
-                                         sectionTitle: bucket.monthYear.relativeString,
-                                         items: bucket.items)
-                }
-            }
-            await MainActor.run { [weak self] in
-                guard let self else { return }
-                self.sectionedItems = .fetched(sectionedItems.filter { !$0.items.isEmpty })
-            }
+            await filterAndSortItemsAsync(sortType: sortType)
         }
     }
 
@@ -651,6 +618,56 @@ private extension ItemsTabViewModel {
             router.display(element: .successMessage(message, config: .dismissAndRefresh))
         } catch {
             handle(error: error)
+        }
+    }
+
+    nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
+        do {
+            let filteredItems = vaultsManager.getFilteredItems()
+            let sectionedItems: [SectionedItemUiModel]
+            switch await selectedSortType {
+            case .mostRecent:
+                let sortedResult = try filteredItems.mostRecentSortResult()
+                sectionedItems = sortedResult.buckets.compactMap { bucket in
+                    guard !bucket.items.isEmpty else { return nil }
+                    return .init(id: bucket.id,
+                                 sectionTitle: bucket.type.title,
+                                 items: bucket.items)
+                }
+
+            case .alphabeticalAsc, .alphabeticalDesc:
+                let sortedResult = try filteredItems.alphabeticalSortResult(direction: sortType.sortDirection)
+                sectionedItems = sortedResult.buckets.compactMap { bucket in
+                    guard !bucket.items.isEmpty else { return nil }
+                    return .init(id: bucket.letter.character,
+                                 sectionTitle: bucket.letter.character,
+                                 items: bucket.items)
+                }
+
+            case .newestToOldest, .oldestToNewest:
+                let sortedResult = try filteredItems.monthYearSortResult(direction: sortType.sortDirection)
+                sectionedItems = sortedResult.buckets.compactMap { bucket in
+                    guard !bucket.items.isEmpty else { return nil }
+                    return .init(id: bucket.monthYear.relativeString,
+                                 sectionTitle: bucket.monthYear.relativeString,
+                                 items: bucket.items)
+                }
+            }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.sectionedItems = .fetched(sectionedItems)
+            }
+        } catch {
+            if error is CancellationError {
+                #if DEBUG
+                print("Cancelled \(#function)")
+                #endif
+                return
+            }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                sectionedItems = .error(error)
+            }
         }
     }
 }

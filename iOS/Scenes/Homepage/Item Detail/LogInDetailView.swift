@@ -262,7 +262,8 @@ private extension LogInDetailView {
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(viewModel.passwordStrength.sectionTitle(reuseCount: viewModel.reusedItems?.count))
+                Text(viewModel.passwordStrength
+                    .sectionTitle(reuseCount: viewModel.reusedItems.fetchedObject?.count))
                     .font(.footnote)
                     .foregroundStyle(viewModel.passwordStrength.sectionTitleColor)
 
@@ -413,8 +414,9 @@ private extension LogInDetailView {
     @ViewBuilder
     func securityWeaknessRow(weakness: SecurityWeakness) -> some View {
         let rowType = weakness.secureRowType
+        let showIcon = weakness == .reusedPasswords ? viewModel.reusedItems.isFetched : true
         HStack(spacing: DesignConstant.sectionPadding) {
-            if let iconName = rowType.detailIcon {
+            if showIcon, let iconName = rowType.detailIcon {
                 VStack {
                     Image(systemName: iconName)
                         .resizable()
@@ -447,13 +449,18 @@ private extension LogInDetailView {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
+        .animation(.default, value: viewModel.reusedItems)
         .roundedDetailSection(backgroundColor: rowType.detailBackground,
                               borderColor: rowType.border)
     }
 
     @ViewBuilder
     func reusedList(rowType: SecureRowType) -> some View {
-        if let reusedItems = viewModel.reusedItems, !reusedItems.isEmpty {
+        switch viewModel.reusedItems {
+        case .fetching:
+            ProgressView()
+                .tint(rowType.iconColor.toColor)
+        case let .fetched(reusedItems):
             let reuseText: () -> Text = {
                 Text("\(reusedItems.count) other logins use this password")
                     .fontWeight(.bold)
@@ -477,6 +484,10 @@ private extension LogInDetailView {
                                             action: { viewModel.showDetail(for: $0) })
                 }
             }
+        case let .error(error):
+            RetryableErrorCellView(errorMessage: error.localizedDescription,
+                                   textColor: PassColor.signalDanger.toColor,
+                                   onRetry: { viewModel.fetchSimilarPasswordItems() })
         }
     }
 }

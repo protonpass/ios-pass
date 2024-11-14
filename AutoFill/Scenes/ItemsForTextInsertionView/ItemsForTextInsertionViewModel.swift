@@ -80,13 +80,8 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     }
 
     private var searchTask: Task<Void, Never>?
-    private var searchableItems: [SearchableItem] {
-        if let selectedUser {
-            results.first { $0.userId == selectedUser.id }?.searchableItems ?? []
-        } else {
-            getAllObjects(\.searchableItems)
-        }
-    }
+    private var searchableItems: [SearchableItem] = []
+    private var filterAndSortTask: Task<Void, Never>?
 
     private var vaults: [Vault] {
         results.flatMap(\.vaults)
@@ -131,6 +126,11 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
             .store(in: &cancellables)
     }
 
+    override nonisolated func fetchItems() async {
+        await super.fetchItems()
+        await filterAndSortItemsAsync()
+    }
+
     override func getVaults(userId: String) -> [Vault]? {
         results.first { $0.userId == userId }?.vaults
     }
@@ -155,10 +155,6 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         state = .loading
     }
 
-    override func changeToLoadedState() {
-        state = .idle
-    }
-
     override func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
         switch selectedItemType {
         case .login:
@@ -175,7 +171,6 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
 
 private extension ItemsForTextInsertionViewModel {
     func doSearch(term: String) {
-        guard state != .searching else { return }
         guard !term.isEmpty else {
             state = .idle
             return
@@ -183,95 +178,131 @@ private extension ItemsForTextInsertionViewModel {
 
         searchTask?.cancel()
         searchTask = Task { [weak self] in
-            guard let self else {
-                return
-            }
-            let hashedTerm = term.sha256
-            logger.trace("Searching for term \(hashedTerm)")
-            state = .searching
-            let searchResults = searchableItems.result(for: term)
-            if Task.isCancelled {
-                state = .idle
-                return
-            }
-            state = .searchResults(searchResults)
-            if searchResults.isEmpty {
-                logger.trace("No results for term \(hashedTerm)")
-            } else {
-                logger.trace("Found results for term \(hashedTerm)")
-            }
+            guard let self else { return }
+            await searchAsync(term: term)
         }
     }
-}
 
-extension ItemsForTextInsertionViewModel {
-    func filterAndSortItems() {
-        defer {
-            switch state {
-            case .searchResults:
-                break
-            default:
-                state = .idle
-            }
+    nonisolated func searchAsync(term: String) async {
+        let hashedTerm = term.sha256
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            logger.trace("Searching for term \(hashedTerm)")
+            state = .searching
         }
 
+        do {
+            let searchResults = try await searchableItems.result(for: term)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                state = .searchResults(searchResults)
+                if searchResults.isEmpty {
+                    logger.trace("No results for term \(hashedTerm)")
+                } else {
+                    logger.trace("Found results for term \(hashedTerm)")
+                }
+            }
+        } catch {
+            await handle(error)
+        }
+    }
+
+    // swiftlint:disable:next cyclomatic_complexity
+    nonisolated func filterAndSortItemsAsync() async {
+        let searchableItems: [SearchableItem]
         let history: [ItemUiModel]
         let allItems: [ItemUiModel]
-        if let selectedUser {
-            let result = results.first { $0.userId == selectedUser.id }
-            history = result?.history.map(\.value) ?? []
-            allItems = result?.items ?? []
+
+        let results = await results
+        if let selectedUser = await selectedUser,
+           let result = results.first(where: { $0.userId == selectedUser.id }) {
+            searchableItems = result.searchableItems
+            history = result.history.map(\.value)
+            allItems = result.items
         } else {
-            history = Array(getAllObjects(\.history)
+            searchableItems = await getAllObjects(\.searchableItems)
+            history = await Array(getAllObjects(\.history)
                 .sorted(by: { $0.time > $1.time })
                 .prefix(Constants.textAutoFillHistoryLimit))
                 .map(\.value)
-            allItems = getAllObjects(\.items)
+            allItems = await getAllObjects(\.items)
         }
 
+        let filterOption = await filterOption
         let filteredItems = if case let .precise(type) = filterOption {
             allItems.filter { $0.type == type }
         } else {
             allItems
         }
 
-        var sections: [ItemsForTextInsertionSection] = {
-            switch selectedSortType {
-            case .mostRecent:
-                let results = filteredItems.mostRecentSortResult()
-                return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: bucket.type.title,
-                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
-                }
+        do {
+            let selectedSortType = await selectedSortType
+            var sections: [ItemsForTextInsertionSection] = try {
+                switch selectedSortType {
+                case .mostRecent:
+                    let results = try filteredItems.mostRecentSortResult()
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: ItemsForTextInsertionSectionType.regular,
+                                     title: bucket.type.title,
+                                     items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    }
 
-            case .alphabeticalAsc, .alphabeticalDesc:
-                let results = filteredItems.alphabeticalSortResult(direction: self.selectedSortType.sortDirection)
-                return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: bucket.letter.character,
-                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
-                }
+                case .alphabeticalAsc, .alphabeticalDesc:
+                    let results = try filteredItems
+                        .alphabeticalSortResult(direction: selectedSortType.sortDirection)
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: ItemsForTextInsertionSectionType.regular,
+                                     title: bucket.letter.character,
+                                     items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    }
 
-            case .newestToOldest, .oldestToNewest:
-                let results = filteredItems.monthYearSortResult(direction: self.selectedSortType.sortDirection)
-                return results.buckets.map { bucket in
-                    .init(type: ItemsForTextInsertionSectionType.regular,
-                          title: bucket.monthYear.relativeString,
-                          items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                case .newestToOldest, .oldestToNewest:
+                    let results = try filteredItems
+                        .monthYearSortResult(direction: selectedSortType.sortDirection)
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: ItemsForTextInsertionSectionType.regular,
+                                     title: bucket.monthYear.relativeString,
+                                     items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    }
+                }
+            }()
+            // Only show history section when not filtering by item types
+            if filterOption == .all, !history.isEmpty {
+                sections.insert(.init(type: ItemsForTextInsertionSectionType.history,
+                                      title: "",
+                                      items: history.map { ItemForTextInsertion.history($0) }),
+                                at: 0)
+            }
+
+            let itemCount = ItemCount(items: allItems)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.searchableItems = searchableItems
+                self.itemCount = itemCount
+                self.sections = sections
+                switch state {
+                case .searchResults:
+                    break
+                default:
+                    state = .idle
                 }
             }
-        }()
-        // Only show history section when not filtering by item types
-        if filterOption == .all, !history.isEmpty {
-            sections.insert(.init(type: ItemsForTextInsertionSectionType.history,
-                                  title: "",
-                                  items: history.map { ItemForTextInsertion.history($0) }),
-                            at: 0)
+        } catch {
+            await handle(error)
         }
+    }
+}
 
-        itemCount = .init(items: allItems)
-        self.sections = sections.filter { !$0.items.isEmpty }
+extension ItemsForTextInsertionViewModel {
+    func filterAndSortItems() {
+        filterAndSortTask?.cancel()
+        filterAndSortTask = Task { [weak self] in
+            guard let self else { return }
+            await filterAndSortItemsAsync()
+        }
     }
 
     func select(_ item: any ItemIdentifiable) {
@@ -323,7 +354,7 @@ extension ItemsForTextInsertionViewModel {
                                                               history: [],
                                                               searchableItems: $0.searchableItems,
                                                               items: $0.items) }
-                filterAndSortItems()
+                await filterAndSortItemsAsync()
             } catch {
                 handle(error)
             }
