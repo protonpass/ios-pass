@@ -27,15 +27,15 @@ public struct InAppModalView: View {
     let notification: InAppNotification
     let borderColor: UIColor = PassColor.inputBorderNorm
     let onTap: (InAppNotification) -> Void
-    let close: (InAppNotification) -> Void
+    let onClose: (InAppNotification) -> Void
     @Environment(\.dismiss) private var dismiss
 
     public init(notification: InAppNotification,
                 onTap: @escaping (InAppNotification) -> Void,
-                close: @escaping (InAppNotification) -> Void) {
+                onClose: @escaping (InAppNotification) -> Void) {
         self.notification = notification
         self.onTap = onTap
-        self.close = close
+        self.onClose = onClose
     }
 
     public var body: some View {
@@ -88,7 +88,7 @@ public struct InAppModalView: View {
                          type: .custom(buttonSize: 30, iconSize: 25),
                          action: {
                              dismiss()
-                             close(notification)
+                             onClose(notification)
                          })
                          .padding()
         }

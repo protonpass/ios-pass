@@ -41,14 +41,14 @@
         <attribute name="ctaText" optional="YES" attributeType="String"/>
         <attribute name="ctaType" optional="YES" attributeType="String"/>
         <attribute name="displayType" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="endTime" attributeType="Double" defaultValueString="-1" usesScalarValueType="YES"/>
+        <attribute name="endTime" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
         <attribute name="hasCta" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" attributeType="String"/>
         <attribute name="imageUrl" optional="YES" attributeType="String"/>
         <attribute name="message" attributeType="String"/>
         <attribute name="notificationKey" attributeType="String"/>
         <attribute name="priority" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="startTime" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="startTime" attributeType="Integer 64" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="state" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="theme" optional="YES" attributeType="String"/>
         <attribute name="title" attributeType="String"/>
@@ -56,6 +56,7 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="id"/>
+                <constraint value="userId"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

@@ -35,9 +35,8 @@ extension InAppNotificationEntity {
     @NSManaged var userId: String
     @NSManaged var id: String
     @NSManaged var notificationKey: String
-    @NSManaged var startTime: Double
-    // Is optional so if value is -1 should not be taken into account
-    @NSManaged var endTime: Double
+    @NSManaged var startTime: Int64
+    @NSManaged var endTime: Int64
     @NSManaged var state: Int64
     @NSManaged var imageUrl: String?
     @NSManaged var displayType: Int64
@@ -58,6 +57,7 @@ extension InAppNotificationEntity {
         } else {
             nil
         }
+
         let content = InAppNotificationContent(imageUrl: imageUrl,
                                                displayType: Int(displayType),
                                                title: title,
@@ -66,8 +66,8 @@ extension InAppNotificationEntity {
                                                cta: cta)
         return InAppNotification(ID: id,
                                  notificationKey: notificationKey,
-                                 startTime: startTime,
-                                 endTime: endTime == -1 ? nil : endTime,
+                                 startTime: Int(startTime),
+                                 endTime: endTime == -1 ? nil : Int(endTime),
                                  state: Int(state),
                                  priority: Int(priority),
                                  content: content)
@@ -77,8 +77,8 @@ extension InAppNotificationEntity {
         self.userId = userId
         id = notification.id
         notificationKey = notification.notificationKey
-        startTime = notification.startTime
-        endTime = notification.endTime ?? -1
+        startTime = Int64(notification.startTime)
+        endTime = Int64(notification.endTime ?? -1)
         state = Int64(notification.state)
         imageUrl = notification.content.imageUrl
         displayType = Int64(notification.content.displayType)
