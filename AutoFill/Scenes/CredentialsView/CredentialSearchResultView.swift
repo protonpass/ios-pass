@@ -43,18 +43,30 @@ struct CredentialSearchResultView: View {
     }
 
     var body: some View {
-        headerView
+        Group {
+            switch viewModel.state {
+            case .loading:
+                ProgressView()
 
-        TableView(sections: viewModel.sections,
-                  configuration: .init(showSectionIndexTitles: selectedSortType.isAlphabetical,
-                                       rowSpacing: DesignConstant.sectionPadding / 2),
-                  id: viewModel.sections.hashValue,
-                  itemView: { item in
-                      GenericCredentialItemRow(item: item,
-                                               user: getUser(item),
-                                               selectItem: selectItem)
-                  },
-                  headerView: { _ in nil })
+            case let .loaded(results):
+                headerView
+                TableView(sections: results,
+                          configuration: .init(showSectionIndexTitles: selectedSortType.isAlphabetical,
+                                               rowSpacing: DesignConstant.sectionPadding / 2),
+                          id: results.hashValue,
+                          itemView: { item in
+                              GenericCredentialItemRow(item: .searchResult(item),
+                                                       user: getUser(item),
+                                                       selectItem: selectItem)
+                          },
+                          headerView: { _ in nil })
+
+            case let .error(error):
+                RetryableErrorView(errorMessage: error.localizedDescription,
+                                   onRetry: { viewModel.filterAndSortItems() })
+            }
+        }
+        .animation(.default, value: viewModel.state)
     }
 }
 
@@ -81,46 +93,99 @@ private typealias SearchResultSection = TableView<ItemSearchResult, GenericCrede
 
 @MainActor
 private final class CredentialSearchResultViewModel: ObservableObject {
-    @Published private(set) var sections: [SearchResultSection] = []
+    @Published private(set) var state: State = .loading
+
+    enum State: Equatable, @unchecked Sendable {
+        case loading
+        case loaded([SearchResultSection])
+        case error(any Error)
+
+        static func == (lhs: Self, rhs: Self) -> Bool {
+            switch (lhs, rhs) {
+            case (.loaded, .loaded), (.loading, .loading):
+                true
+            case let (.error(lError), .error(rError)):
+                lError.localizedDescription == rError.localizedDescription
+            default:
+                false
+            }
+        }
+    }
 
     let results: [ItemSearchResult]
+    private let sortType: SortType
+    private var task: Task<Void, Never>?
 
     init(results: [ItemSearchResult], sortType: SortType) {
         self.results = results
-        filterAndSortItems(sortType)
+        self.sortType = sortType
+        filterAndSortItems()
+    }
+
+    func filterAndSortItems() {
+        task?.cancel()
+        task = Task { [weak self] in
+            guard let self else { return }
+            await filterAndSortItemsAsync()
+        }
     }
 }
 
 private extension CredentialSearchResultViewModel {
-    func filterAndSortItems(_ sortType: SortType) {
-        let type = Int.max
-        let sections: [SearchResultSection] = {
-            switch sortType {
-            case .mostRecent:
-                let results = results.mostRecentSortResult()
-                return results.buckets.map { bucket in
-                    .init(type: type,
-                          title: bucket.type.title,
-                          items: bucket.items)
-                }
-
-            case .alphabeticalAsc, .alphabeticalDesc:
-                let results = results.alphabeticalSortResult(direction: sortType.sortDirection)
-                return results.buckets.map { bucket in
-                    .init(type: type,
-                          title: bucket.letter.character,
-                          items: bucket.items)
-                }
-
-            case .newestToOldest, .oldestToNewest:
-                let results = results.monthYearSortResult(direction: sortType.sortDirection)
-                return results.buckets.map { bucket in
-                    .init(type: type,
-                          title: bucket.monthYear.relativeString,
-                          items: bucket.items)
-                }
+    nonisolated func filterAndSortItemsAsync() async {
+        let updateState: (State) async -> Void = { [weak self] newState in
+            guard let self else { return }
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                state = newState
             }
-        }()
-        self.sections = sections.filter { !$0.items.isEmpty }
+        }
+
+        do {
+            await updateState(.loading)
+
+            // Unique static type for all sections because those sections don't share the same title
+            let type = Int.max
+            let sections: [SearchResultSection] = try {
+                switch sortType {
+                case .mostRecent:
+                    let results = try results.mostRecentSortResult()
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: type,
+                                     title: bucket.type.title,
+                                     items: bucket.items)
+                    }
+
+                case .alphabeticalAsc, .alphabeticalDesc:
+                    let results = try results.alphabeticalSortResult(direction: sortType.sortDirection)
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: type,
+                                     title: bucket.letter.character,
+                                     items: bucket.items)
+                    }
+
+                case .newestToOldest, .oldestToNewest:
+                    let results = try results.monthYearSortResult(direction: sortType.sortDirection)
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: type,
+                                     title: bucket.monthYear.relativeString,
+                                     items: bucket.items)
+                    }
+                }
+            }()
+
+            await updateState(.loaded(sections))
+        } catch {
+            if error is CancellationError {
+                #if DEBUG
+                print("Cancelled \(#function)")
+                #endif
+                return
+            }
+            await updateState(.error(error))
+        }
     }
 }
