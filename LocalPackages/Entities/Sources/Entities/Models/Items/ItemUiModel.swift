@@ -20,7 +20,9 @@
 
 import Foundation
 
-public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
+public typealias SectionedItemUiModel = SectionedObjects<ItemUiModel>
+
+public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
     // Existing properties
     public let itemId: String
     public let shareId: String
@@ -40,8 +42,7 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
 
     public var hasTotpUri: Bool { totpUri?.isEmpty == false }
 
-    // Add a stored property for the precomputed hash
-    private let precomputedHash: Int
+    public let precomputedHash: Int
 
     public init(itemId: String,
                 shareId: String,
@@ -110,11 +111,6 @@ public struct ItemUiModel: Hashable, Equatable, Sendable, Pinnable {
 
         precomputedHash = hasher.finalize()
     }
-
-    // Use the precomputed hash in the hash(into:) method
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(precomputedHash)
-    }
 }
 
 extension ItemUiModel: Identifiable {
@@ -122,3 +118,5 @@ extension ItemUiModel: Identifiable {
 
     public var aliasDisabled: Bool { !aliasEnabled }
 }
+
+extension ItemUiModel: ItemIdentifiable {}

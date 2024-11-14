@@ -24,7 +24,7 @@ import Entities
 import SwiftUI
 
 struct GenericCredentialItemRow: View {
-    let item: any CredentialItem
+    let item: CredentialItem
     let user: UserUiModel?
     let selectItem: (any TitledItemIdentifiable) -> Void
 
@@ -32,30 +32,31 @@ struct GenericCredentialItemRow: View {
         Button {
             selectItem(item)
         } label: {
-            if let item = item as? ItemUiModel {
-                GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: item.thumbnailData()) },
-                               title: item.title,
+            switch item {
+            case let .uiModel(uiModel):
+                GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: uiModel.thumbnailData()) },
+                               title: uiModel.title,
                                titleLineLimit: 2,
-                               description: item.description,
+                               description: uiModel.description,
                                secondaryTitle: secondaryTitle,
                                secondaryTitleColor: PassColor.textWeak)
                     .frame(maxWidth: .infinity, alignment: .leading)
-            } else if let item = item as? ItemSearchResult {
+            case let .searchResult(result):
                 HStack {
                     VStack {
-                        ItemSquircleThumbnail(data: item.thumbnailData())
+                        ItemSquircleThumbnail(data: result.thumbnailData())
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
 
                     VStack(alignment: .leading, spacing: 4) {
-                        HighlightText(highlightableText: item.highlightableTitle,
+                        HighlightText(highlightableText: result.highlightableTitle,
                                       additionalTexts: additionalSearchResultTitles)
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .fixedSize(horizontal: false, vertical: true)
 
                         VStack(alignment: .leading, spacing: 2) {
-                            ForEach(0..<item.highlightableDetail.count, id: \.self) { index in
-                                let eachDetail = item.highlightableDetail[index]
+                            ForEach(0..<result.highlightableDetail.count, id: \.self) { index in
+                                let eachDetail = result.highlightableDetail[index]
                                 if !eachDetail.fullText.isEmpty {
                                     HighlightText(highlightableText: eachDetail)
                                         .font(.callout)

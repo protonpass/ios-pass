@@ -24,8 +24,6 @@ import Core
 @preconcurrency import CryptoKit
 import Entities
 
-private let kBatchSize = 500
-
 private struct Batch: Sendable {
     let dict: [String: [ItemUiModel]] // ShareID -> ItemUiModel
     let trashed: [ItemUiModel]
@@ -53,7 +51,7 @@ public final class LoadVaultDatas: LoadVaultDatasUseCase {
                         items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel {
         let batches = try await withThrowingTaskGroup(of: Batch.self,
                                                       returning: [Batch].self) { @Sendable group in
-            let itemBatches = items.chunked(into: kBatchSize)
+            let itemBatches = items.chunked(into: Constants.Utils.batchSize)
             for batch in itemBatches {
                 group.addTask { @Sendable in
                     var dict = [String: [ItemUiModel]]()

@@ -112,7 +112,7 @@ private extension CredentialsView {
 
                 if !viewModel.results.isEmpty {
                     if viewModel.matchedItems.isEmpty,
-                       viewModel.notMatchedItems.isEmpty {
+                       viewModel.notMatchedItemSections.fetchedObject?.isEmpty == true {
                         VStack {
                             Spacer()
                             Text(viewModel.mode.emptyMessage)
@@ -122,8 +122,7 @@ private extension CredentialsView {
                             Spacer()
                         }
                     } else {
-                        itemList(matchedItems: viewModel.matchedItems,
-                                 notMatchedItems: viewModel.notMatchedItems)
+                        itemList
                     }
                 }
             case .searching:
@@ -181,32 +180,76 @@ private extension CredentialsView {
 // MARK: ResultView & elements
 
 private extension CredentialsView {
-    func itemList(matchedItems: [ItemUiModel],
-                  notMatchedItems: [ItemUiModel]) -> some View {
+    var itemList: some View {
         ScrollViewReader { proxy in
-            Group {
-                // swiftlint:disable:next todo
-                // TODO: Remove later on after using the same UI component to render item list
-                let isListMode = matchedItems.count + notMatchedItems.count <= 200
-                if isListMode {
-                    List {
-                        matchedItemsSection(matchedItems, isListMode: isListMode)
-                        notMatchedItemsSection(notMatchedItems, isListMode: isListMode)
-                    }
+            LazyVStack(pinnedViews: .sectionHeaders) {
+                // Suggestions section
+                let sectionTitle = #localized("Suggestions for %@", viewModel.domain)
+                if viewModel.matchedItems.isEmpty {
+                    Section(content: {
+                        Text("No suggestions")
+                            .font(.callout.italic())
+                            .padding(.horizontal)
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .plainListRow()
+                    }, header: {
+                        Text(sectionTitle)
+                            .font(.callout)
+                            .fontWeight(.bold)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal)
+                    })
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                            matchedItemsSection(matchedItems, isListMode: isListMode)
-                            notMatchedItemsSection(notMatchedItems, isListMode: isListMode)
+                    section(for: viewModel.matchedItems,
+                            headerTitle: sectionTitle,
+                            headerColor: PassColor.textNorm,
+                            headerFontWeight: .bold)
+                }
+
+                // Not matched items sections
+                switch viewModel.notMatchedItemSections {
+                case .fetching:
+                    ProgressView()
+
+                case let .fetched(sections):
+                    let itemCount = sections.reduce(0) { $0 + $1.items.count }
+                    if itemCount > 0 {
+                        HStack {
+                            Text("Other items")
+                                .font(.callout)
+                                .fontWeight(.bold)
+                                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                                Text(verbatim: " (\(itemCount))")
+                                .font(.callout)
+                                .adaptiveForegroundStyle(PassColor.textWeak.toColor)
+
+                            Spacer()
+
+                            SortTypeButton(selectedSortType: $viewModel.selectedSortType)
+                                .animationsDisabled()
+                        }
+                        .plainListRow()
+                        .padding([.top, .horizontal])
+
+                        ForEach(sections) { section in
+                            self.section(for: section.items,
+                                         headerTitle: section.sectionTitle)
                         }
                     }
+
+                case let .error(error):
+                    RetryableErrorCellView(errorMessage: error.localizedDescription,
+                                           onRetry: { Task { await viewModel.filterAndSortItemsAsync() } })
                 }
             }
             .padding(.top)
             .listStyle(.plain)
             .refreshable { await viewModel.sync(ignoreError: false) }
-            .animation(.default, value: matchedItems.hashValue)
-            .animation(.default, value: notMatchedItems.hashValue)
+            .animation(.default, value: viewModel.matchedItems)
+            .animation(.default, value: viewModel.notMatchedItemSections)
+            .scrollViewEmbeded()
             .overlay {
                 if viewModel.selectedSortType.isAlphabetical {
                     HStack {
@@ -218,64 +261,13 @@ private extension CredentialsView {
             }
         }
     }
-
-    @ViewBuilder
-    func matchedItemsSection(_ items: [ItemUiModel], isListMode: Bool) -> some View {
-        let sectionTitle = #localized("Suggestions for %@", viewModel.domain)
-        if items.isEmpty {
-            Section(content: {
-                Text("No suggestions")
-                    .font(.callout.italic())
-                    .padding(.horizontal)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .plainListRow()
-            }, header: {
-                Text(sectionTitle)
-                    .font(.callout)
-                    .fontWeight(.bold)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal)
-            })
-        } else {
-            section(for: items,
-                    isListMode: isListMode,
-                    headerTitle: sectionTitle,
-                    headerColor: PassColor.textNorm,
-                    headerFontWeight: .bold)
-        }
-    }
-
-    @ViewBuilder
-    func notMatchedItemsSection(_ items: [ItemUiModel], isListMode: Bool) -> some View {
-        if !items.isEmpty {
-            HStack {
-                Text("Other items")
-                    .font(.callout)
-                    .fontWeight(.bold)
-                    .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
-                    Text(verbatim: " (\(items.count))")
-                    .font(.callout)
-                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
-
-                Spacer()
-
-                SortTypeButton(selectedSortType: $viewModel.selectedSortType)
-            }
-            .plainListRow()
-            .padding([.top, .horizontal])
-            sortableSections(for: items, isListMode: isListMode)
-        }
-    }
 }
 
 // MARK: Sections & elements
 
 private extension CredentialsView {
     @ViewBuilder
-    func section(for items: [some CredentialItem],
-                 isListMode: Bool,
+    func section(for items: [ItemUiModel],
                  headerTitle: String,
                  headerColor: UIColor = PassColor.textWeak,
                  headerFontWeight: Font.Weight = .regular) -> some View {
@@ -284,35 +276,10 @@ private extension CredentialsView {
         } else {
             Section(content: {
                 ForEach(items) { item in
-                    let user = viewModel.getUserForUiDisplay(for: item)
-                    Group {
-                        switch viewModel.mode {
-                        case .passwords:
-                            GenericCredentialItemRow(item: item,
-                                                     user: user,
-                                                     selectItem: { viewModel.select(item: $0) })
-
-                        case .oneTimeCodes:
-                            if let item = item as? ItemUiModel,
-                               let totpUri = item.totpUri {
-                                let title = if let emailWithoutDomain = user?.emailWithoutDomain {
-                                    item.itemTitle + " • \(emailWithoutDomain)"
-                                } else {
-                                    item.itemTitle
-                                }
-                                AuthenticatorRow(thumbnailView: {
-                                                     ItemSquircleThumbnail(data: item.thumbnailData())
-                                                 },
-                                                 uri: totpUri,
-                                                 title: title,
-                                                 totpManager: SharedServiceContainer.shared.totpManager(),
-                                                 onCopyTotpToken: { _ in viewModel.select(item: item) })
-                                    .padding(.top, DesignConstant.sectionPadding / 2)
-                            }
-                        }
-                    }
-                    .plainListRow()
-                    .padding(.horizontal)
+                    ItemRow(item: item,
+                            mode: viewModel.mode,
+                            getUser: { viewModel.getUserForUiDisplay(for: $0) },
+                            onSelect: { viewModel.select(item: $0) })
                 }
             }, header: {
                 Text(headerTitle)
@@ -320,52 +287,49 @@ private extension CredentialsView {
                     .fontWeight(headerFontWeight)
                     .foregroundStyle(headerColor.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, isListMode ? 0 : 20)
-                    .padding(.vertical, isListMode ? 0 : 4)
-                    .if(!isListMode) {
-                        $0.background(.ultraThinMaterial)
-                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 4)
+                    .background(.ultraThinMaterial)
             })
         }
     }
+}
 
-    @ViewBuilder
-    func sortableSections(for items: [some CredentialItem], isListMode: Bool) -> some View {
-        switch viewModel.selectedSortType {
-        case .mostRecent:
-            sections(for: items.mostRecentSortResult(), isListMode: isListMode)
-        case .alphabeticalAsc:
-            sections(for: items.alphabeticalSortResult(direction: .ascending), isListMode: isListMode)
-        case .alphabeticalDesc:
-            sections(for: items.alphabeticalSortResult(direction: .descending), isListMode: isListMode)
-        case .newestToOldest:
-            sections(for: items.monthYearSortResult(direction: .descending), isListMode: isListMode)
-        case .oldestToNewest:
-            sections(for: items.monthYearSortResult(direction: .ascending), isListMode: isListMode)
-        }
-    }
+private struct ItemRow: View {
+    let item: ItemUiModel
+    let mode: CredentialsMode
+    let getUser: (ItemUiModel) -> UserUiModel?
+    let onSelect: (any TitledItemIdentifiable) -> Void
 
-    func sections(for result: MostRecentSortResult<some CredentialItem>, isListMode: Bool) -> some View {
-        ForEach(result.buckets) { bucket in
-            section(for: bucket.items, isListMode: isListMode, headerTitle: bucket.type.title)
-        }
-    }
+    var body: some View {
+        let user = getUser(item)
+        Group {
+            switch mode {
+            case .passwords:
+                GenericCredentialItemRow(item: .uiModel(item),
+                                         user: user,
+                                         selectItem: onSelect)
 
-    func sections(for result: AlphabeticalSortResult<some CredentialItem>,
-                  isListMode: Bool) -> some View {
-        ForEach(result.buckets, id: \.letter) { bucket in
-            section(for: bucket.items, isListMode: isListMode, headerTitle: bucket.letter.character)
-                .id(bucket.letter.character)
+            case .oneTimeCodes:
+                if let totpUri = item.totpUri {
+                    let title = if let emailWithoutDomain = user?.emailWithoutDomain {
+                        item.itemTitle + " • \(emailWithoutDomain)"
+                    } else {
+                        item.itemTitle
+                    }
+                    AuthenticatorRow(thumbnailView: {
+                                         ItemSquircleThumbnail(data: item.thumbnailData())
+                                     },
+                                     uri: totpUri,
+                                     title: title,
+                                     totpManager: SharedServiceContainer.shared.totpManager(),
+                                     onCopyTotpToken: { _ in onSelect(item) })
+                        .padding(.top, DesignConstant.sectionPadding / 2)
+                }
+            }
         }
-    }
-
-    func sections(for result: MonthYearSortResult<some CredentialItem>,
-                  isListMode: Bool) -> some View {
-        ForEach(result.buckets, id: \.monthYear) { bucket in
-            section(for: bucket.items,
-                    isListMode: isListMode,
-                    headerTitle: bucket.monthYear.relativeString)
-        }
+        .plainListRow()
+        .padding(.horizontal)
     }
 }
 

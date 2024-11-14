@@ -83,12 +83,27 @@ private extension LoginItemsViewModel {
 
         lastTask?.cancel()
         lastTask = Task { [weak self] in
-            guard let self else {
-                return
-            }
+            guard let self else { return }
+            await searchAsync(term: term)
+        }
+    }
+
+    nonisolated func searchAsync(term: String) async {
+        await MainActor.run { [weak self] in
+            guard let self else { return }
             state = .searching
-            let results = searchableItems.result(for: term)
-            state = .searchResults(results)
+        }
+
+        do {
+            let results = try await searchableItems.result(for: term)
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                state = .searchResults(results)
+            }
+        } catch {
+            #if DEBUG
+            print(error.localizedDescription)
+            #endif
         }
     }
 }
