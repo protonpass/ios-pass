@@ -33,6 +33,7 @@ extension TelemetryEventEntity {
     }
 
     @NSManaged var uuid: String
+    // This is a deprecated value we now use rawData. It should be remove in November 2025
     @NSManaged var rawValue: String?
     @NSManaged var time: Double
     @NSManaged var userID: String

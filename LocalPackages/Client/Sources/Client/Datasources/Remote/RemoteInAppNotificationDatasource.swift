@@ -23,7 +23,9 @@ import Entities
 public protocol RemoteInAppNotificationDatasourceProtocol: Sendable {
     func getNotifications(lastNotificationId: String?, userId: String) async throws -> PaginatedInAppNotifications
     // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
-    func changeNotificationStatus(notificationId: String, newStatus: Int, userId: String) async throws
+    func changeNotificationStatus(notificationId: String,
+                                  newStatus: InAppNotificationState,
+                                  userId: String) async throws
 }
 
 public final class RemoteInAppNotificationDatasource: RemoteDatasource, RemoteInAppNotificationDatasourceProtocol,
@@ -35,8 +37,11 @@ public final class RemoteInAppNotificationDatasource: RemoteDatasource, RemoteIn
         return response.notifications
     }
 
-    public func changeNotificationStatus(notificationId: String, newStatus: Int, userId: String) async throws {
-        let endpoint = ChangeInAppNotificationStatusEndpoint(notificationId: notificationId, state: newStatus)
+    public func changeNotificationStatus(notificationId: String,
+                                         newStatus: InAppNotificationState,
+                                         userId: String) async throws {
+        let endpoint = ChangeInAppNotificationStatusEndpoint(notificationId: notificationId,
+                                                             state: newStatus.rawValue)
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }

@@ -21,8 +21,8 @@
 public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Identifiable {
     public let ID: String
     public let notificationKey: String
-    public let startTime: Double
-    public let endTime: Double?
+    public let startTime: Int
+    public let endTime: Int?
     // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
     public var state: Int
     public let priority: Int
@@ -30,8 +30,8 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
 
     public init(ID: String,
                 notificationKey: String,
-                startTime: Double,
-                endTime: Double?,
+                startTime: Int,
+                endTime: Int?,
                 state: Int,
                 priority: Int,
                 content: InAppNotificationContent) {
@@ -61,7 +61,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
         state != InAppNotificationState.unread.rawValue
     }
 
-    public var cta: CtaType? {
+    public var cta: InAppNotificationCtaType? {
         guard let cta = content.cta else { return nil }
         if cta.type == "internal_navigation" {
             return .internalNavigation
@@ -120,7 +120,7 @@ public struct InAppNotificationCTA: Decodable, Sendable, Equatable, Hashable {
     }
 }
 
-public enum CtaType: Sendable {
+public enum InAppNotificationCtaType: Sendable {
     case internalNavigation
     case externalNavigation(String?)
 }

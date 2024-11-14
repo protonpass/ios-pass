@@ -1694,8 +1694,6 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
     }
 }
 
-import UIKit
-
 private extension HomepageCoordinator {
     func parseNavigationConfig(config: NavigationConfiguration?) {
         guard let config else {

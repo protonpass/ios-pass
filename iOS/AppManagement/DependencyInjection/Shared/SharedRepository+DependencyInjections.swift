@@ -383,7 +383,6 @@ extension SharedRepositoryContainer {
     var inAppNotificationRepository: Factory<any InAppNotificationRepositoryProtocol> {
         self { InAppNotificationRepository(localDatasource: self.localInAppNotificationDatasource(),
                                            remoteDatasource: self.remoteInAppNotificationDatasource(),
-                                           userManager: self.userManager,
                                            logManager: self.logManager) }
     }
 }

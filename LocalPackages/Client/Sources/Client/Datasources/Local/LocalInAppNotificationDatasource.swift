@@ -24,9 +24,9 @@ import Entities
 // sourcery: AutoMockable
 public protocol LocalInAppNotificationDatasourceProtocol: Sendable {
     func getAllNotificationsByPriority(userId: String) async throws -> [InAppNotification]
-    func upsertInAppNotification(_ notification: [InAppNotification], userId: String) async throws
-    func removeAllInAppNotifications(userId: String) async throws
-    func remove(notificationId: String) async throws
+    func upsertNotifications(_ notifications: [InAppNotification], userId: String) async throws
+    func removeAllNotifications(userId: String) async throws
+    func remove(notificationId: String, userId: String) async throws
 }
 
 public final class LocalInAppNotificationDatasource: LocalDatasource, LocalInAppNotificationDatasourceProtocol,
@@ -43,8 +43,8 @@ public extension LocalInAppNotificationDatasource {
         return inAppNotificationEntities.map { $0.toInAppNotification() }
     }
 
-    func upsertInAppNotification(_ notification: [InAppNotification], userId: String) async throws {
-        try await upsert(notification,
+    func upsertNotifications(_ notifications: [InAppNotification], userId: String) async throws {
+        try await upsert(notifications,
                          entityType: InAppNotificationEntity.self,
                          fetchPredicate: NSPredicate(format: "userId = %@", userId),
                          isEqual: { item, entity in
@@ -55,7 +55,7 @@ public extension LocalInAppNotificationDatasource {
                          })
     }
 
-    func removeAllInAppNotifications(userId: String) async throws {
+    func removeAllNotifications(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "InAppNotificationEntity")
         fetchRequest.predicate = .init(format: "userId = %@", userId)
@@ -63,10 +63,13 @@ public extension LocalInAppNotificationDatasource {
                           context: taskContext)
     }
 
-    func remove(notificationId: String) async throws {
+    func remove(notificationId: String, userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "InAppNotificationEntity")
-        fetchRequest.predicate = .init(format: "id = %@", notificationId)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userId = %@", userId),
+            .init(format: "id = %@", notificationId)
+        ])
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }
