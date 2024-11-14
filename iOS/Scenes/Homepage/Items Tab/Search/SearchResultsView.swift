@@ -150,22 +150,27 @@ private extension SearchResultsView {
     var tableView: some View {
         let sections: [TableView<ItemSearchResult, ResultRow, Text>.Section] = switch viewModel.results {
         case let results as MostRecentSortResult<ItemSearchResult>:
-            results.buckets.map {
-                .init(type: $0.id, title: $0.type.title, items: $0.items)
+            results.buckets.compactMap { bucket in
+                guard !bucket.items.isEmpty else { return nil }
+                return .init(type: bucket.id, title: bucket.type.title, items: bucket.items)
             }
         case let results as AlphabeticalSortResult<ItemSearchResult>:
-            results.buckets.map {
-                .init(type: $0.letter, title: $0.letter.character, items: $0.items)
+            results.buckets.compactMap { bucket in
+                guard !bucket.items.isEmpty else { return nil }
+                return .init(type: bucket.letter, title: bucket.letter.character, items: bucket.items)
             }
         case let results as MonthYearSortResult<ItemSearchResult>:
-            results.buckets.map {
-                .init(type: $0.monthYear, title: $0.monthYear.relativeString, items: $0.items)
+            results.buckets.compactMap { bucket in
+                guard !bucket.items.isEmpty else { return nil }
+                return .init(type: bucket.monthYear,
+                             title: bucket.monthYear.relativeString,
+                             items: bucket.items)
             }
         default:
             []
         }
         let isAlphabetical = viewModel.results is AlphabeticalSortResult<ItemSearchResult>
-        TableView(sections: sections.filter { !$0.items.isEmpty },
+        TableView(sections: sections,
                   configuration: .init(showSectionIndexTitles: isAlphabetical),
                   id: nil,
                   itemView: { itemRow(for: $0) },

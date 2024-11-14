@@ -207,6 +207,7 @@ private extension ItemsForTextInsertionViewModel {
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     nonisolated func filterAndSortItemsAsync() async {
         let searchableItems: [SearchableItem]
         let history: [ItemUiModel]
@@ -240,28 +241,31 @@ private extension ItemsForTextInsertionViewModel {
                 switch selectedSortType {
                 case .mostRecent:
                     let results = try filteredItems.mostRecentSortResult()
-                    return results.buckets.map { bucket in
-                        .init(type: ItemsForTextInsertionSectionType.regular,
-                              title: bucket.type.title,
-                              items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: ItemsForTextInsertionSectionType.regular,
+                                     title: bucket.type.title,
+                                     items: bucket.items.map { ItemForTextInsertion.regular($0) })
                     }
 
                 case .alphabeticalAsc, .alphabeticalDesc:
                     let results = try filteredItems
                         .alphabeticalSortResult(direction: selectedSortType.sortDirection)
-                    return results.buckets.map { bucket in
-                        .init(type: ItemsForTextInsertionSectionType.regular,
-                              title: bucket.letter.character,
-                              items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: ItemsForTextInsertionSectionType.regular,
+                                     title: bucket.letter.character,
+                                     items: bucket.items.map { ItemForTextInsertion.regular($0) })
                     }
 
                 case .newestToOldest, .oldestToNewest:
                     let results = try filteredItems
                         .monthYearSortResult(direction: selectedSortType.sortDirection)
-                    return results.buckets.map { bucket in
-                        .init(type: ItemsForTextInsertionSectionType.regular,
-                              title: bucket.monthYear.relativeString,
-                              items: bucket.items.map { ItemForTextInsertion.regular($0) })
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: ItemsForTextInsertionSectionType.regular,
+                                     title: bucket.monthYear.relativeString,
+                                     items: bucket.items.map { ItemForTextInsertion.regular($0) })
                     }
                 }
             }()
@@ -278,7 +282,7 @@ private extension ItemsForTextInsertionViewModel {
                 guard let self else { return }
                 self.searchableItems = searchableItems
                 self.itemCount = itemCount
-                self.sections = sections.filter { !$0.items.isEmpty }
+                self.sections = sections
                 switch state {
                 case .searchResults:
                     break
