@@ -36,14 +36,17 @@ struct LocalInAppNotificationDatasourceTests {
     func get() async throws {
         // Given
         let userId1 = String.random()
-        
+        let userId2 = String.random()
+
         // Creating a mock with all default values
         let defaultNotification = InAppNotification.mock()
 
         // Creating a mock with some custom values
         let morePrioNotification = InAppNotification.mock(priority: 5)
-        
-        try await sut.upsertInAppNotification([defaultNotification, morePrioNotification], userId: userId1)
+        let morePrioNotificationForUser2 = InAppNotification.mock(priority: 8)
+
+        try await sut.upsertNotifications([defaultNotification, morePrioNotification], userId: userId1)
+        try await sut.upsertNotifications([morePrioNotificationForUser2], userId: userId2)
 
         // When
         let itemsForUser1 = try await sut.getAllNotificationsByPriority(userId: userId1)
@@ -59,20 +62,19 @@ struct LocalInAppNotificationDatasourceTests {
         let userId = String.random()
         // Creating a mock with all default values
         var defaultNotification = InAppNotification.mock()
-        try await sut.upsertInAppNotification([defaultNotification], userId: userId)
+        try await sut.upsertNotifications([defaultNotification], userId: userId)
 
         defaultNotification.state = 1
 
         // When
-        try await sut.upsertInAppNotification([defaultNotification], userId: userId)
+        try await sut.upsertNotifications([defaultNotification], userId: userId)
         let items = try await sut.getAllNotificationsByPriority(userId: userId)
         let updatedNotification = try #require(items.first)
 
+
         // Then
         #expect(items.count == 1)
-        #expect(defaultNotification.id == updatedNotification.id)
-        #expect(defaultNotification.priority == updatedNotification.priority)
-        #expect(updatedNotification.state == 1)
+        #expect(defaultNotification == updatedNotification)
     }
 
     @Test("Remove all in app notification for one user")
@@ -87,7 +89,7 @@ struct LocalInAppNotificationDatasourceTests {
         }
 
         // When
-        try await sut.removeAllInAppNotifications(userId: userId1)
+        try await sut.removeAllNotifications(userId: userId1)
         let items1 = try await sut.getAllNotificationsByPriority(userId: userId1)
         let items2 = try await sut.getAllNotificationsByPriority(userId: userId2)
 
@@ -108,7 +110,7 @@ struct LocalInAppNotificationDatasourceTests {
         }
 
         // When
-        try await sut.remove(notificationId: defaultNotification.id)
+        try await sut.remove(notificationId: defaultNotification.id, userId: userId)
         let items = try await sut.getAllNotificationsByPriority(userId: userId)
 
         // Then
@@ -122,7 +124,7 @@ private extension LocalInAppNotificationDatasourceProtocol {
     func givenInsertedInAppNotification(userID: String = .random())
     async throws -> InAppNotification {
         let notification = InAppNotification.mock()
-        try await upsertInAppNotification([notification], userId: userID)
+        try await upsertNotifications([notification], userId: userID)
         return notification
     }
 }

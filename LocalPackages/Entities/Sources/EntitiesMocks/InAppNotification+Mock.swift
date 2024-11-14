@@ -25,8 +25,8 @@ import Foundation
 public extension InAppNotification {
     static func mock(ID: String = UUID().uuidString,
                      notificationKey: String = "notification_key",
-                     startTime: Double = 0,
-                     endTime: Double? = Date().addingTimeInterval(600).timeIntervalSince1970,
+                     startTime: Int = 0,
+                     endTime: Int? = Int(Date().addingTimeInterval(600).timeIntervalSince1970),
                      state: Int = 0,
                      priority: Int = 1,
                      content: InAppNotificationContent = .mock()) -> InAppNotification {
@@ -60,35 +60,3 @@ public extension InAppNotificationCTA {
         InAppNotificationCTA(text: text, type: type, ref: ref)
     }
 }
-//
-//@Copyable
-//extension InAppNotification: Mockable {
-//    public static func mock(overrides: ((inout InAppNotification) -> InAppNotification)? = nil) -> InAppNotification {
-//        var instance = InAppNotification(
-//            ID: UUID().uuidString,
-//            notificationKey: "notification_key",
-//            startTime: Date().timeIntervalSince1970,
-//            endTime: Date().addingTimeInterval(600).timeIntervalSince1970,
-//            state: 0,
-//            priority: 1,
-//            content: InAppNotificationContent.mock()
-//        )
-//        return overrides?(&instance) ?? instance
-//    }
-//}
-//
-//extension InAppNotificationContent: Mockable {
-//    public static func mock(overrides: ((inout InAppNotificationContent) -> Void)? = nil) -> InAppNotificationContent {
-//        var instance = InAppNotificationContent(
-//            imageUrl: "https://example.com/image.png",
-//            displayType: 0,
-//            title: "Sample Notification",
-//            message: "This is a sample in-app notification message.",
-//            theme: "light",
-//            cta: InAppNotificationCTA.mock()
-//        )
-//        overrides?(&instance)
-//        return instance
-//    }
-//}
-//

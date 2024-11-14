@@ -187,8 +187,8 @@ private extension TelemetryEventType {
             UIImage(systemName: "person.badge.shield.checkmark.fill")!
         case .multiAccountAddAccount, .multiAccountRemoveAccount:
             UIImage(systemName: "person.3.fill")!
-        case .passNotificationChangeNotificationStatus, .passNotificationDisplayNotification,
-             .passNotificationNotificationCtaClick:
+        case .notificationChangeNotificationStatus, .notificationDisplayNotification,
+             .notificationNotificationCtaClick:
             UIImage(systemName: "envelope.fill")!
         }
     }
@@ -223,9 +223,9 @@ private extension TelemetryEventType {
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMajor1Color
-        case .passNotificationChangeNotificationStatus,
-             .passNotificationDisplayNotification,
-             .passNotificationNotificationCtaClick:
+        case .notificationChangeNotificationStatus,
+             .notificationDisplayNotification,
+             .notificationNotificationCtaClick:
             ItemContentType.creditCard.normMajor1Color
         }
     }
@@ -260,8 +260,8 @@ private extension TelemetryEventType {
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMinor1Color
-        case .passNotificationChangeNotificationStatus, .passNotificationDisplayNotification,
-             .passNotificationNotificationCtaClick:
+        case .notificationChangeNotificationStatus, .notificationDisplayNotification,
+             .notificationNotificationCtaClick:
             ItemContentType.creditCard.normMinor1Color
         }
     }
@@ -324,11 +324,11 @@ private extension TelemetryEventType {
             "Add new account"
         case .multiAccountRemoveAccount:
             "Remove an account"
-        case .passNotificationDisplayNotification:
+        case .notificationDisplayNotification:
             "Display notification"
-        case .passNotificationChangeNotificationStatus:
+        case .notificationChangeNotificationStatus:
             "Change notification status"
-        case .passNotificationNotificationCtaClick:
+        case .notificationNotificationCtaClick:
             "Notification Cta clicked"
         }
     }
