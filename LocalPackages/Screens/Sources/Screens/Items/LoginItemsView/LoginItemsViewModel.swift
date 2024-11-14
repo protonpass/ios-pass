@@ -101,7 +101,9 @@ private extension LoginItemsViewModel {
                 state = .searchResults(results)
             }
         } catch {
+            #if DEBUG
             print(error.localizedDescription)
+            #endif
         }
     }
 }
