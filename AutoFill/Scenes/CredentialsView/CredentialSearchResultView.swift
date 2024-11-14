@@ -144,39 +144,45 @@ private extension CredentialSearchResultViewModel {
         do {
             await updateState(.loading)
 
+            // Unique static type for all sections because those sections don't share the same title
             let type = Int.max
             let sections: [SearchResultSection] = try {
                 switch sortType {
                 case .mostRecent:
                     let results = try results.mostRecentSortResult()
-                    return results.buckets.map { bucket in
-                        .init(type: type,
-                              title: bucket.type.title,
-                              items: bucket.items)
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: type,
+                                     title: bucket.type.title,
+                                     items: bucket.items)
                     }
 
                 case .alphabeticalAsc, .alphabeticalDesc:
                     let results = try results.alphabeticalSortResult(direction: sortType.sortDirection)
-                    return results.buckets.map { bucket in
-                        .init(type: type,
-                              title: bucket.letter.character,
-                              items: bucket.items)
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: type,
+                                     title: bucket.letter.character,
+                                     items: bucket.items)
                     }
 
                 case .newestToOldest, .oldestToNewest:
                     let results = try results.monthYearSortResult(direction: sortType.sortDirection)
-                    return results.buckets.map { bucket in
-                        .init(type: type,
-                              title: bucket.monthYear.relativeString,
-                              items: bucket.items)
+                    return results.buckets.compactMap { bucket in
+                        guard !bucket.items.isEmpty else { return nil }
+                        return .init(type: type,
+                                     title: bucket.monthYear.relativeString,
+                                     items: bucket.items)
                     }
                 }
             }()
 
-            await updateState(.loaded(sections.filter { !$0.items.isEmpty }))
+            await updateState(.loaded(sections))
         } catch {
             if error is CancellationError {
+                #if DEBUG
                 print("Cancelled \(#function)")
+                #endif
                 return
             }
             await updateState(.error(error))
