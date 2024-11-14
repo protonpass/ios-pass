@@ -63,8 +63,8 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         logger = .init(manager: logManager)
     }
 
-    public func fetchNotifications(offsetId: String? = nil,
-                                   reset: Bool = true) async throws -> [InAppNotification] {
+    public func fetchNotifications(offsetId: String?,
+                                   reset: Bool) async throws -> [InAppNotification] {
         let userId = try await userManager.getActiveUserId()
         let paginatedNotifications = try await repository
             .getPaginatedNotifications(lastNotificationId: offsetId,
@@ -75,8 +75,8 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         } else {
             notifications.append(contentsOf: paginatedNotifications.notifications)
         }
-        try await repository.removeAllInAppNotifications(userId: userId)
-        try await repository.upsertInAppNotification(notifications, userId: userId)
+        try await repository.removeAllNotifications(userId: userId)
+        try await repository.upsertNotifications(notifications, userId: userId)
         return notifications
     }
 
@@ -84,26 +84,22 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         guard shouldDisplayNotifications else {
             return nil
         }
-        let timestampDate = Date().timeIntervalSinceNow
+        let timestampDate = Date().timeIntervalSince1970
         updateTime(timestampDate)
         return notifications.filter { notification in
-            guard !notification.hasBeenRead,
-                  notification.startTime <= timestampDate,
-                  (notification.endTime ?? .infinity) >= timestampDate
-            else {
-                return false
-            }
-            return true
+            !notification.hasBeenRead &&
+                notification.startTime <= timestampDate.toInt &&
+                (notification.endTime ?? .max) >= timestampDate.toInt
         }.max(by: { $0.priority < $1.priority })
     }
 
     public func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {
         let userId = try await userManager.getActiveUserId()
         try await repository.changeNotificationStatus(notificationId: notificationId,
-                                                      newStatus: newState.rawValue,
+                                                      newStatus: newState,
                                                       userId: userId)
         if newState == .dismissed {
-            try await repository.remove(notificationId: notificationId)
+            try await repository.remove(notificationId: notificationId, userId: userId)
         }
         if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
             notifications[index].state = newState.rawValue
@@ -142,7 +138,7 @@ private extension InAppNotificationManager {
         guard let timeInterval = getTimeForLastNotificationDisplay() else {
             return true
         }
-        return timeInterval >= delayBetweenNotifications
+        return (Date.now.timeIntervalSince1970 - timeInterval) >= delayBetweenNotifications
     }
 
     func getTimeForLastNotificationDisplay() -> Double? {

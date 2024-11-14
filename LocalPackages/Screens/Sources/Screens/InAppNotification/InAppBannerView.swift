@@ -23,19 +23,18 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
-@MainActor
 public struct InAppBannerView: View {
     let notification: InAppNotification
     let borderColor: UIColor = PassColor.inputBorderNorm
     let onTap: (InAppNotification) -> Void
-    let close: (InAppNotification) -> Void
+    let onClose: (InAppNotification) -> Void
 
     public init(notification: InAppNotification,
                 onTap: @escaping (InAppNotification) -> Void,
-                close: @escaping (InAppNotification) -> Void) {
+                onClose: @escaping (InAppNotification) -> Void) {
         self.notification = notification
         self.onTap = onTap
-        self.close = close
+        self.onClose = onClose
     }
 
     public var body: some View {
@@ -88,7 +87,7 @@ public struct InAppBannerView: View {
                          backgroundColor: PassColor.backgroundNorm,
                          accessibilityLabel: "Close",
                          type: .custom(buttonSize: 25, iconSize: 16),
-                         action: { close(notification) })
+                         action: { onClose(notification) })
                 .overlay(Circle()
                     .stroke(borderColor.toColor, lineWidth: 2))
                 .padding(4)

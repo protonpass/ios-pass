@@ -113,14 +113,14 @@ public struct EventInfo: Encodable, Sendable {
 private extension TelemetryEventType {
     var extraValues: [String: DimensionsValue]? {
         switch self {
-        case let .passNotificationDisplayNotification(notificationKey):
+        case let .notificationDisplayNotification(notificationKey):
             ["notificationKey": notificationKey]
-        case let .passNotificationChangeNotificationStatus(notificationKey, notificationStatus):
+        case let .notificationChangeNotificationStatus(notificationKey, notificationStatus):
             [
                 "notificationKey": notificationKey,
                 "notificationStatus": notificationStatus
             ]
-        case let .passNotificationNotificationCtaClick(notificationKey):
+        case let .notificationNotificationCtaClick(notificationKey):
             ["notificationKey": notificationKey]
         default:
             nil

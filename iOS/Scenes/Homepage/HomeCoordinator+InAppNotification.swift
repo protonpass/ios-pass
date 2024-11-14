@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import Entities
 import Screens
 import SwiftUI
@@ -38,7 +39,7 @@ extension HomepageCoordinator {
     }
 
     func displayNotification(_ notification: InAppNotification) {
-        addTelemetryEvent(with: .passNotificationDisplayNotification(notificationKey: notification
+        addTelemetryEvent(with: .notificationDisplayNotification(notificationKey: notification
                 .notificationKey))
 
         switch notification.displayType {
@@ -48,9 +49,9 @@ extension HomepageCoordinator {
                                            guard let self else { return }
                                            ctaFlow(notification)
                                        },
-                                       close: { [weak self] notification in
+                                       onClose: { [weak self] notification in
                                            guard let self else { return }
-                                           closed(notification)
+                                           close(notification)
                                        })
             let viewController = UIHostingController(rootView: view)
             if let view = viewController.view {
@@ -61,9 +62,9 @@ extension HomepageCoordinator {
                                       onTap: { [weak self] notification in
                                           guard let self else { return }
                                           ctaFlow(notification)
-                                      }, close: { [weak self] notification in
+                                      }, onClose: { [weak self] notification in
                                           guard let self else { return }
-                                          closed(notification)
+                                          close(notification)
                                       })
             let viewController = UIHostingController(rootView: view)
             viewController.setDetentType(.custom(CGFloat(490)),
@@ -72,7 +73,7 @@ extension HomepageCoordinator {
         }
     }
 
-    private func closed(_ notification: InAppNotification) {
+    private func close(_ notification: InAppNotification) {
         Task { [weak self] in
             guard let self else { return }
             if notification.displayType == .banner {
@@ -81,7 +82,7 @@ extension HomepageCoordinator {
             do {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
-                addTelemetryEvent(with: .passNotificationChangeNotificationStatus(notificationKey: notification
+                addTelemetryEvent(with: .notificationChangeNotificationStatus(notificationKey: notification
                         .notificationKey,
                     notificationStatus: notification
                         .removedState.rawValue))
@@ -98,7 +99,7 @@ extension HomepageCoordinator {
                 if notification.displayType == .banner {
                     updateFloatingView(floatingView: nil, shouldAdd: false)
                 }
-                addTelemetryEvent(with: .passNotificationNotificationCtaClick(notificationKey: notification
+                addTelemetryEvent(with: .notificationNotificationCtaClick(notificationKey: notification
                         .notificationKey))
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)

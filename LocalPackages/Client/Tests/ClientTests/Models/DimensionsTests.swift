@@ -28,19 +28,19 @@ struct DimensionsTests {
     @Test("Test generic telemetry dimension encoding conversion")
     func testDimensionConversions() throws {
         let dimensions = Dimensions(properties: [
-                  "userId": "A string value",
-                  "notificationKey": "notification_Key",
-                  "doubleValue": 3.14,
-                  "boolValue": true
-              ])
+            "userId": "A string value",
+            "notificationKey": "notification_Key",
+            "doubleValue": 3.14,
+            "boolValue": true
+        ])
         
-              let encoder = JSONEncoder()
-              encoder.outputFormatting = .prettyPrinted
-              let decodeData = try encoder.encode(dimensions)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let decodeData = try encoder.encode(dimensions)
         
-              // Convert JSON data to a string for easy comparison and output
+        // Convert JSON data to a string for easy comparison and output
         let jsonString = try #require(String(data: decodeData, encoding: .utf8))
-
+        
         #expect(jsonString.contains("userId"))
         #expect(jsonString.contains("notificationKey"))
         #expect(jsonString.contains("doubleValue"))
@@ -49,16 +49,16 @@ struct DimensionsTests {
     
     @Test("Test event info telemetry with generic dimension encoding conversion")
     func testEvenInfoConversions() throws {
-        let telemetrie = TelemetryEvent(uuid: "idTest", time: 0, type: .passNotificationChangeNotificationStatus(notificationKey: "notificationKey", notificationStatus: 3))
+        let telemetrie = TelemetryEvent(uuid: "idTest", time: 0, type: .notificationChangeNotificationStatus(notificationKey: "notificationKey", notificationStatus: 3))
         let event = EventInfo(event: telemetrie, userTier: "user tier")
         
-              let encoder = JSONEncoder()
-              encoder.outputFormatting = .prettyPrinted
-              let decodeData = try encoder.encode(event)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let decodeData = try encoder.encode(event)
         
-              // Convert JSON data to a string for easy comparison and output
+        // Convert JSON data to a string for easy comparison and output
         let jsonString = try #require(String(data: decodeData, encoding: .utf8))
-
+        
         #expect(jsonString.contains("user_tier"))
         #expect(jsonString.contains("notificationKey"))
         #expect(jsonString.contains("notificationStatus"))
