@@ -50,21 +50,8 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
 
     private let request: PasskeyCredentialRequest
 
-    var searchableItems: [SearchableItem] {
-        if let selectedUser {
-            results.first(where: { $0.userId == selectedUser.id })?.searchableItems ?? []
-        } else {
-            getAllObjects(\.searchableItems)
-        }
-    }
-
-    var items: [ItemUiModel] {
-        if let selectedUser {
-            results.first(where: { $0.userId == selectedUser.id })?.items ?? []
-        } else {
-            getAllObjects(\.items)
-        }
-    }
+    private(set) var searchableItems: [SearchableItem] = []
+    @Published private(set) var items: [ItemUiModel] = []
 
     init(users: [UserUiModel],
          request: PasskeyCredentialRequest,
@@ -104,8 +91,9 @@ final class PasskeyCredentialsViewModel: AutoFillViewModel<CredentialsForPasskey
         state = .loading
     }
 
-    override func changeToLoadedState() {
-        state = .loaded
+    override nonisolated func fetchItems() async {
+        await super.fetchItems()
+        await filterItems()
     }
 }
 
@@ -126,6 +114,29 @@ extension PasskeyCredentialsViewModel {
                                                 context: context)
         } catch {
             handle(error)
+        }
+    }
+}
+
+private extension PasskeyCredentialsViewModel {
+    nonisolated func filterItems() async {
+        let searchableItems: [SearchableItem]
+        let items: [ItemUiModel]
+
+        if let selectedUser = await selectedUser,
+           let result = await results.first(where: { $0.userId == selectedUser.id }) {
+            searchableItems = result.searchableItems
+            items = result.items
+        } else {
+            searchableItems = await getAllObjects(\.searchableItems)
+            items = await getAllObjects(\.items)
+        }
+
+        await MainActor.run { [weak self] in
+            guard let self else { return }
+            self.searchableItems = searchableItems
+            self.items = items
+            state = .loaded
         }
     }
 }

@@ -109,6 +109,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         self.userForNewItemSubject = userForNewItemSubject
         shareIdToUserManager = ShareIdToUserManager(users: users)
         setUp()
+        changeToLoadingState()
     }
 
     /// Set up after initialization, `super` must be called when overidding
@@ -138,7 +139,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
         fatalError("Must be overridden by subclasses")
     }
 
-    func fetchAutoFillCredentials(userId: String) async throws -> T {
+    nonisolated func fetchAutoFillCredentials(userId: String) async throws -> T {
         fatalError("Must be overridden by subclasses")
     }
 
@@ -146,7 +147,33 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
 
     func changeToErrorState(_ error: any Error) {}
     func changeToLoadingState() {}
-    func changeToLoadedState() {}
+
+    nonisolated func fetchItems() async {
+        do {
+            if await isErrorState() {
+                await changeToLoadingState()
+            }
+
+            var results = [T]()
+            for user in users {
+                let result = try await fetchAutoFillCredentials(userId: user.id)
+                await MainActor.run { [weak self] in
+                    guard let self else { return }
+                    shareIdToUserManager.index(vaults: result.vaults,
+                                               userId: result.userId)
+                }
+                results.append(result)
+            }
+
+            await MainActor.run { [weak self] in
+                guard let self else { return }
+                self.results = results
+            }
+        } catch {
+            await logger.error(error)
+            await changeToErrorState(error)
+        }
+    }
 }
 
 // MARK: - Non trivial common operations
@@ -168,28 +195,6 @@ extension AutoFillViewModel {
             if !ignoreError {
                 changeToErrorState(error)
             }
-        }
-    }
-
-    func fetchItems() async {
-        do {
-            if isErrorState() {
-                changeToLoadingState()
-            }
-
-            var results = [T]()
-            for user in users {
-                let result = try await fetchAutoFillCredentials(userId: user.id)
-                shareIdToUserManager.index(vaults: result.vaults,
-                                           userId: result.userId)
-                results.append(result)
-            }
-
-            self.results = results
-            changeToLoadedState()
-        } catch {
-            logger.error(error)
-            changeToErrorState(error)
         }
     }
 
@@ -230,10 +235,10 @@ extension AutoFillViewModel {
         try shareIdToUserManager.getUser(for: item)
     }
 
-    func getAllObjects<Object: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<T, [Object]>)
-        -> [Object] {
-        let uniqueShareIds = Set(uniqueVaults.map(\.shareId))
-        return results
+    nonisolated func getAllObjects<Object: ItemIdentifiable & Hashable>(_ keyPath: KeyPath<T, [Object]>)
+        async -> [Object] {
+        let uniqueShareIds = await Set(uniqueVaults.map(\.shareId))
+        return await results
             .flatMap { $0[keyPath: keyPath] }
             .filter { uniqueShareIds.contains($0.shareId) }
     }
@@ -260,6 +265,9 @@ extension AutoFillViewModel {
     }
 
     func handle(_ error: any Error) {
+        if error is CancellationError {
+            return
+        }
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }

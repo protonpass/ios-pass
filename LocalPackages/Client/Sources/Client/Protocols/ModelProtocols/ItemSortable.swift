@@ -79,22 +79,38 @@ public struct MostRecentSortBucket<T: DateSortable>: Hashable, Sendable, Identif
 public struct MostRecentSortResult<T: DateSortable>: SearchResults {
     public var numberOfItems: Int
     public let buckets: [MostRecentSortBucket<T>]
+    public let precomputedHash: Int
+
+    init(numberOfItems: Int,
+         buckets: [MostRecentSortBucket<T>]) {
+        var hasher = Hasher()
+        self.numberOfItems = numberOfItems
+        hasher.combine(numberOfItems)
+        self.buckets = buckets
+        hasher.combine(buckets)
+        precomputedHash = hasher.finalize()
+    }
 }
 
 public extension Array where Element: DateSortable {
-    func mostRecentSortResult() -> MostRecentSortResult<Element> {
+    func mostRecentSortResult() throws -> MostRecentSortResult<Element> {
         var buckets: [MostRecentSortBucket<Element>] = []
 
         for type in MostRecentType.allCases {
+            try Task.checkCancellation()
             buckets.append(MostRecentSortBucket(type: type, items: []))
         }
 
-        let sortedElements = sorted(by: { $0.dateForSorting > $1.dateForSorting })
+        let sortedElements = try sorted(by: {
+            try Task.checkCancellation()
+            return $0.dateForSorting > $1.dateForSorting
+        })
         var bucketIndex = 0
 
         let cutOffDates = MostRecentType.cutOffDates
 
         for item in sortedElements {
+            try Task.checkCancellation()
             // Move to the next bucket if the item's date is less than the current cutoff
             while bucketIndex < cutOffDates.count - 1, item.dateForSorting < cutOffDates[bucketIndex] {
                 bucketIndex += 1
@@ -104,12 +120,6 @@ public extension Array where Element: DateSortable {
         }
 
         return MostRecentSortResult(numberOfItems: count, buckets: buckets)
-    }
-
-    func asyncMostRecentSortResult() async -> MostRecentSortResult<Element> {
-        await Task {
-            mostRecentSortResult()
-        }.value
     }
 }
 
@@ -174,15 +184,26 @@ public protocol AlphabeticalSortable: Hashable, Sendable {
 
 public struct AlphabeticalSortResult<T: AlphabeticalSortable>: SearchResults, Sendable {
     public var numberOfItems: Int
-
     public let buckets: [AlphabetBucket<T>]
+    public let precomputedHash: Int
+
+    init(numberOfItems: Int,
+         buckets: [AlphabetBucket<T>]) {
+        var hasher = Hasher()
+        self.numberOfItems = numberOfItems
+        hasher.combine(numberOfItems)
+        self.buckets = buckets
+        hasher.combine(buckets)
+        precomputedHash = hasher.finalize()
+    }
 }
 
 public extension Array where Element: AlphabeticalSortable {
     // swiftlint:disable cyclomatic_complexity
-    func alphabeticalSortResult(direction: SortDirection) -> AlphabeticalSortResult<Element> {
-        let dict = Dictionary(grouping: self) { element in
-            if let firstCharacter = element.alphabeticalSortableString.first {
+    func alphabeticalSortResult(direction: SortDirection) throws -> AlphabeticalSortResult<Element> {
+        let dict = try Dictionary(grouping: self) { element in
+            try Task.checkCancellation()
+            return if let firstCharacter = element.alphabeticalSortableString.first {
                 String(firstCharacter).uppercased()
             } else {
                 ""
@@ -192,6 +213,7 @@ public extension Array where Element: AlphabeticalSortable {
         var buckets = [AlphabetBucket<Element>]()
         var sharpElements = [Element]()
         for key in dict.keys {
+            try Task.checkCancellation()
             guard let elements = dict[key] else { continue }
             let letter: AlphabetLetter = switch key.uppercased() {
             case "A": .a
@@ -233,16 +255,13 @@ public extension Array where Element: AlphabeticalSortable {
         }
 
         buckets.append(.init(letter: .sharp, items: sharpElements.sorted(by: direction)))
-        buckets = buckets.sorted { $0.letter.rawValue < $1.letter.rawValue }
+        buckets = try buckets.sorted {
+            try Task.checkCancellation()
+            return $0.letter.rawValue < $1.letter.rawValue
+        }
 
         return .init(numberOfItems: count,
                      buckets: direction == .ascending ? buckets : buckets.reversed())
-    }
-
-    func asyncAlphabeticalSortResult(direction: SortDirection) async -> AlphabeticalSortResult<Element> {
-        await Task {
-            alphabeticalSortResult(direction: direction)
-        }.value
     }
     // swiftlint:enable cyclomatic_complexity
 }
@@ -308,30 +327,49 @@ public struct MonthYearBucket<T: DateSortable>: Hashable, Sendable {
 
 public struct MonthYearSortResult<T: DateSortable>: SearchResults {
     public var numberOfItems: Int
-
     public let buckets: [MonthYearBucket<T>]
+    public let precomputedHash: Int
+
+    init(numberOfItems: Int,
+         buckets: [MonthYearBucket<T>]) {
+        var hasher = Hasher()
+        self.numberOfItems = numberOfItems
+        hasher.combine(numberOfItems)
+        self.buckets = buckets
+        hasher.combine(buckets)
+        precomputedHash = hasher.finalize()
+    }
 }
 
 public extension Array where Element: DateSortable {
-    func monthYearSortResult(direction: SortDirection) -> MonthYearSortResult<Element> {
+    func monthYearSortResult(direction: SortDirection) throws -> MonthYearSortResult<Element> {
         let sortedElements: [Element] = switch direction {
         case .ascending:
-            sorted(by: { $0.dateForSorting < $1.dateForSorting })
+            try sorted(by: {
+                try Task.checkCancellation()
+                return $0.dateForSorting < $1.dateForSorting
+            })
         case .descending:
-            sorted(by: { $0.dateForSorting > $1.dateForSorting })
+            try sorted(by: {
+                try Task.checkCancellation()
+                return $0.dateForSorting > $1.dateForSorting
+            })
         }
-        let dict = Dictionary(grouping: sortedElements) { element in
-            MonthYear(date: element.dateForSorting)
+        let dict = try Dictionary(grouping: sortedElements) { element in
+            try Task.checkCancellation()
+            return MonthYear(date: element.dateForSorting)
         }
 
         var buckets = [MonthYearBucket<Element>]()
         for key in dict.keys {
+            try Task.checkCancellation()
             guard let elements = dict[key] else { continue }
             buckets.append(.init(monthYear: key, items: elements))
         }
 
-        buckets = buckets.sorted(by: { lhs, rhs in
-            switch direction {
+        buckets = try buckets.sorted(by: { lhs, rhs in
+            try Task.checkCancellation()
+            return switch direction {
             case .ascending:
                 lhs.monthYear < rhs.monthYear
             case .descending:
@@ -341,14 +379,8 @@ public extension Array where Element: DateSortable {
 
         return .init(numberOfItems: sortedElements.count, buckets: buckets)
     }
-
-    func asyncMonthYearSortResult(direction: SortDirection) async -> MonthYearSortResult<Element> {
-        await Task {
-            monthYearSortResult(direction: direction)
-        }.value
-    }
 }
 
-public protocol SearchResults: Hashable, Equatable, Sendable {
+public protocol SearchResults: PrecomputedHashable, Equatable, Sendable {
     var numberOfItems: Int { get }
 }
