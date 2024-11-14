@@ -77,8 +77,11 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
 
         do {
             let userId = try await userManager.getActiveUserId()
-            let logins = try await getActiveLoginItems(userId: userId)
-            let vaults = try await shareRepository.getVaults(userId: userId)
+            async let getLogins = try getActiveLoginItems(userId: userId)
+            async let getVaults = try shareRepository.getVaults(userId: userId)
+
+            let (logins, vaults) = try await (getLogins, getVaults)
+
             let searchableItems = logins.map { SearchableItem(from: $0, allVaults: vaults) }
 
             await MainActor.run { [weak self] in
@@ -179,6 +182,7 @@ private extension TotpLoginsViewModel {
         }
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     nonisolated func sortResultsAsync(query: String?) async {
         do {
             await MainActor.run { [weak self] in
@@ -198,32 +202,35 @@ private extension TotpLoginsViewModel {
             switch await selectedSortType {
             case .mostRecent:
                 let sortedResult = try filteredResults.mostRecentSortResult()
-                results = sortedResult.buckets.map { bucket in
-                    SectionedItemSearchResult(id: bucket.id,
-                                              sectionTitle: bucket.type.title,
-                                              items: bucket.items)
+                results = sortedResult.buckets.compactMap { bucket in
+                    guard !bucket.items.isEmpty else { return nil }
+                    return .init(id: bucket.id,
+                                 sectionTitle: bucket.type.title,
+                                 items: bucket.items)
                 }
 
             case .alphabeticalAsc, .alphabeticalDesc:
                 let sortedResult = try filteredResults.alphabeticalSortResult(direction: sortType.sortDirection)
-                results = sortedResult.buckets.map { bucket in
-                    SectionedItemSearchResult(id: bucket.letter.character,
-                                              sectionTitle: bucket.letter.character,
-                                              items: bucket.items)
+                results = sortedResult.buckets.compactMap { bucket in
+                    guard !bucket.items.isEmpty else { return nil }
+                    return .init(id: bucket.letter.character,
+                                 sectionTitle: bucket.letter.character,
+                                 items: bucket.items)
                 }
 
             case .newestToOldest, .oldestToNewest:
                 let sortedResult = try filteredResults.monthYearSortResult(direction: sortType.sortDirection)
-                results = sortedResult.buckets.map { bucket in
-                    SectionedItemSearchResult(id: bucket.monthYear.relativeString,
-                                              sectionTitle: bucket.monthYear.relativeString,
-                                              items: bucket.items)
+                results = sortedResult.buckets.compactMap { bucket in
+                    guard !bucket.items.isEmpty else { return nil }
+                    return .init(id: bucket.monthYear.relativeString,
+                                 sectionTitle: bucket.monthYear.relativeString,
+                                 items: bucket.items)
                 }
             }
 
             await MainActor.run { [weak self] in
                 guard let self else { return }
-                self.results = .fetched(results.filter { !$0.items.isEmpty })
+                self.results = .fetched(results)
             }
         } catch {
             if error is CancellationError { return }
