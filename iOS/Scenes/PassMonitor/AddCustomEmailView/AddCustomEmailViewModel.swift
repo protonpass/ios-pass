@@ -140,6 +140,12 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
                         passMonitorRepository.darkWebDataSectionUpdate.send(.customEmails(customEmails))
                     }
                     verificationError = error
+                } else if case let .mailbox(box) = type,
+                          let apiError = error.asPassApiError,
+                          case .notAllowed = apiError,
+                          let box {
+                    aliasRepository.mailboxUpdated.send(.deleted(mailboxId: box.mailboxID))
+                    verificationError = error
                 } else {
                     handle(error: error)
                 }
