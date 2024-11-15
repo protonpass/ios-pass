@@ -27,6 +27,7 @@ import Entities
 import Factory
 import SwiftUI
 
+@available(iOS 17, *)
 struct InAppNotificationSection: View {
     var body: some View {
         NavigationLink(destination: { InAppNotificationView() },
@@ -34,8 +35,9 @@ struct InAppNotificationSection: View {
     }
 }
 
+@available(iOS 17, *)
 private struct InAppNotificationView: View {
-    @StateObject private var viewModel = InAppNotificationViewModel()
+    @State private var viewModel = InAppNotificationViewModel()
 
     var body: some View {
         List {
@@ -164,42 +166,45 @@ private enum QADisplayType: String, CaseIterable {
     }
 }
 
+@available(iOS 17, *)
 @MainActor
-private final class InAppNotificationViewModel: ObservableObject {
+@Observable
+private final class InAppNotificationViewModel {
+    @ObservationIgnored
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
-    @Published var notificationKey = "pass_user_internal_notification"
-    @Published var startDate = Date.now
-    @Published var addEndTime = false
-    @Published var endDate = Date.now
+    var notificationKey = "pass_user_internal_notification"
+    var startDate = Date.now
+    var addEndTime = false
+    var endDate = Date.now
     // Notification state. 0 = Unread, 1 = Read, 2 = Dismissed
-    @Published var state: QANotificationState = .unread
-    @Published var priority: Int = 1
+    var state: QANotificationState = .unread
+    var priority: Int = 1
 
     // MARK: - InAppNotificationContent content
 
-    @Published var imageUrl: String =
+    var imageUrl: String =
         "https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/Wikipedia-logo-v2.svg/300px-Wikipedia-logo-v2.svg.png"
     //    0 = Banner, 1 = Modal.
     //    Banner -> The small bar on the bottom
     //    Modal -> Full screen in your face
-    @Published var displayType: QADisplayType = .banner
-    @Published var title: String = "Test notification"
-    @Published var message: String = "Message of the test notification"
-    @Published var addTheme = false
+    var displayType: QADisplayType = .banner
+    var title: String = "Test notification"
+    var message: String = "Message of the test notification"
+    var addTheme = false
 
     // Can be light or dark
-    @Published var theme: String = ""
+    var theme: String = ""
 
     // MARK: - InAppNotificationCTA content
 
-    @Published var addCta = true
+    var addCta = true
 
-    @Published var text: String = "Learn something"
+    var text: String = "Learn something"
     // Action of the CTA. Can be either external_link | internal_navigation
-    @Published var type: QACTAType = .external
+    var type: QACTAType = .external
     // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
-    @Published var ref: String = "https://en.wikipedia.org/wiki/Wikipedia"
+    var ref: String = "https://en.wikipedia.org/wiki/Wikipedia"
 
     init() {}
 

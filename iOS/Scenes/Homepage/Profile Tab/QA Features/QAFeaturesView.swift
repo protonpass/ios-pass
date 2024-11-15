@@ -55,7 +55,9 @@ struct QAFeaturesView: View {
                     TrashItemsSection()
                     BannersSection()
                     PasswordPolicySection()
-                    InAppNotificationSection()
+                    if #available(iOS 17, *) {
+                        InAppNotificationSection()
+                    }
                     Toggle(isOn: $displayUpgradeAppBanner) {
                         Text(verbatim: "Display upgrade app banner")
                     }

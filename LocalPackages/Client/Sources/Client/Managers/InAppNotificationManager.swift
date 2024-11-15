@@ -88,47 +88,46 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
     }
 
     public func getNotificationToDisplay() async throws -> InAppNotification? {
+        let timestampDate = Date().timeIntervalSince1970
+
         if let mockNotification {
-            return mockNotification
+            return mockNotification.canBeDisplayed(timestampDate: timestampDate.toInt) ? mockNotification : nil
         }
         guard shouldDisplayNotifications else {
             return nil
         }
-        let timestampDate = Date().timeIntervalSince1970
         updateTime(timestampDate)
         return notifications.filter { notification in
-            !notification.hasBeenRead &&
-                notification.startTime <= timestampDate.toInt &&
-                (notification.endTime ?? .max) >= timestampDate.toInt
+            notification.canBeDisplayed(timestampDate: timestampDate.toInt)
         }.max(by: { $0.priority < $1.priority })
     }
 
     public func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {
-        if mockNotification == nil {
-            let userId = try await userManager.getActiveUserId()
-            try await repository.changeNotificationStatus(notificationId: notificationId,
-                                                          newStatus: newState,
-                                                          userId: userId)
-            if newState == .dismissed {
-                try await repository.remove(notificationId: notificationId, userId: userId)
-            }
-            if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
-                notifications[index].state = newState.rawValue
-            }
-        } else {
+        guard mockNotification == nil else {
             mockNotification?.state = newState.rawValue
+            return
+        }
+        let userId = try await userManager.getActiveUserId()
+        try await repository.changeNotificationStatus(notificationId: notificationId,
+                                                      newStatus: newState,
+                                                      userId: userId)
+        if newState == .dismissed {
+            try await repository.remove(notificationId: notificationId, userId: userId)
+        }
+        if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
+            notifications[index].state = newState.rawValue
         }
     }
 }
 
 // MARK: - QA features
 
-public extension InAppNotificationManager {
-    @_spi(QA) func addMockNotification(notification: InAppNotification) async {
+@_spi(QA) public extension InAppNotificationManager {
+    func addMockNotification(notification: InAppNotification) async {
         mockNotification = notification
     }
 
-    @_spi(QA) func removeMockNotification() async {
+    func removeMockNotification() async {
         notifications.removeAll(where: { $0.id == mockNotification?.id })
         mockNotification = nil
     }
@@ -178,5 +177,13 @@ private extension InAppNotificationManager {
 
     func removeTime() {
         userDefault.removeObject(forKey: kInAppNotificationTimerKey)
+    }
+}
+
+private extension InAppNotification {
+    func canBeDisplayed(timestampDate: Int) -> Bool {
+        !hasBeenRead &&
+            startTime <= timestampDate &&
+            (endTime ?? .max) >= timestampDate
     }
 }

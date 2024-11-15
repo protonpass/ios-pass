@@ -58,7 +58,7 @@ extension HomepageCoordinator {
                                        })
             let viewController = UIHostingController(rootView: view)
             if let view = viewController.view {
-                updateFloatingView(floatingView: view, shouldAdd: true)
+                updateFloatingView(floatingView: view)
             }
         case .modal:
             let view = InAppModalView(notification: notification,
@@ -80,7 +80,7 @@ extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             if notification.displayType == .banner {
-                updateFloatingView(floatingView: nil, shouldAdd: false)
+                updateFloatingView(floatingView: nil)
             }
             do {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
@@ -100,7 +100,7 @@ extension HomepageCoordinator {
             guard let self else { return }
             do {
                 if notification.displayType == .banner {
-                    updateFloatingView(floatingView: nil, shouldAdd: false)
+                    updateFloatingView(floatingView: nil)
                 }
                 addTelemetryEvent(with: .notificationNotificationCtaClick(notificationKey: notification
                         .notificationKey))
