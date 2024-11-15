@@ -172,6 +172,9 @@ final class AddCustomEmailViewModel: ObservableObject, Sendable {
                 case .mailbox:
                     let userId = try await userManager.getActiveUserId()
                     let mailbox = try await aliasRepository.createMailbox(userId: userId, email: lowercasedEmail)
+                    if mailbox.verified {
+                        finishedVerification = true
+                    }
                     type = .mailbox(mailbox)
                 }
             } catch {
