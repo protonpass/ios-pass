@@ -31,6 +31,7 @@ struct AliasDetailView: View {
     @Namespace private var bottomID
     @State private var animate = false
     @StateObject var router = resolve(\RouterContainer.darkWebRouter)
+    @Environment(\.dismiss) private var dismiss
 
     private var iconTintColor: UIColor { viewModel.itemContent.type.normColor }
 
@@ -127,7 +128,10 @@ struct AliasDetailView: View {
             $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $viewModel.showingTrashAliasAlert,
                                                 enabled: viewModel.aliasEnabled,
                                                 disableAction: { viewModel.disableAlias() },
-                                                trashAction: { viewModel.moveToTrash() }))
+                                                trashAction: {
+                                                    dismiss()
+                                                    viewModel.moveToTrash()
+                                                }))
         }
     }
 

@@ -93038,6 +93038,16 @@
         }
       }
     },
+    "Please note that once deleted, aliases cannot be restored." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please note that once deleted, aliases cannot be restored."
+          }
+        }
+      }
+    },
     "Please provide us with more details in the description" : {
       "comment" : "Placeholder for bug report description",
       "localizations" : {
