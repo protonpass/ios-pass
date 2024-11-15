@@ -1,7 +1,7 @@
 //
-// FeatureFlagType.swift
-// Proton Pass - Created on 04/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Tag.swift
+// Proton Pass - Created on 12/11/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,15 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import ProtonCoreFeatureFlags
+import Testing
 
-// periphery:ignore
-/// Should be activated when new feature flags are added to the project
-/// following is how a flag should be added:
-/// Example:
-///    case passSharingV1 = "PassSharingV1"
-public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
-    case passSimpleLoginAliasesSync = "PassSimpleLoginAliasesSync"
-    case passAdvancedAliasManagementV1 = "PassAdvancedAliasManagementV1"
-    case passInAppMessagesV1 = "PassInAppMessagesV1"
+extension Tag {
+    @Tag static var entity: Self
 }

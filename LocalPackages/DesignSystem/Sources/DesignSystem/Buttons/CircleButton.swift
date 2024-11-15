@@ -21,7 +21,7 @@
 import SwiftUI
 
 public enum CircleButtonType {
-    case small, regular, big
+    case small, regular, big, custom(buttonSize: CGFloat, iconSize: CGFloat)
 
     var width: CGFloat {
         switch self {
@@ -31,6 +31,8 @@ public enum CircleButtonType {
             40
         case .big:
             48
+        case let .custom(size, _):
+            size
         }
     }
 
@@ -38,10 +40,10 @@ public enum CircleButtonType {
         switch self {
         case .small:
             16
-        case .regular:
+        case .big, .regular:
             20
-        case .big:
-            20
+        case let .custom(_, size):
+            size
         }
     }
 }

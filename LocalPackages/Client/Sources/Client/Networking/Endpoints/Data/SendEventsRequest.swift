@@ -29,6 +29,72 @@ struct SendEventsRequest: Encodable, Sendable {
     }
 }
 
+public typealias DimensionsValue = Encodable & Sendable
+struct Dimensions: Encodable, Sendable {
+    var properties: [String: any DimensionsValue]
+
+    // Custom encode function to handle dynamic keys and types
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: DynamicCodingKeys.self)
+        for (key, value) in properties {
+            let codingKey = DynamicCodingKeys(stringValue: key)
+            // Encode the value based on its dynamic type
+            switch value {
+            case let stringValue as String:
+                try container.encode(stringValue, forKey: codingKey)
+            case let intValue as Int:
+                try container.encode(intValue, forKey: codingKey)
+            case let doubleValue as Double:
+                try container.encode(doubleValue, forKey: codingKey)
+            case let boolValue as Bool:
+                try container.encode(boolValue, forKey: codingKey)
+            default:
+                // Throw an error for unsupported types
+                let context = EncodingError.Context(codingPath: encoder.codingPath,
+                                                    debugDescription: "Unsupported type in properties")
+                throw EncodingError.invalidValue(value, context)
+            }
+        }
+    }
+
+    // Dynamic coding keys to allow for unknown keys
+    private struct DynamicCodingKeys: CodingKey {
+        var intValue: Int?
+
+        init?(intValue: Int) {
+            self.intValue = intValue
+            stringValue = ""
+        }
+
+        var stringValue: String
+
+        init(stringValue: String) { self.stringValue = stringValue }
+    }
+}
+
+// Helper enum for flexible encoding of values with various types
+enum CodableValue: Encodable {
+    case string(String)
+    case int(Int)
+    case double(Double)
+    case bool(Bool)
+
+    // Encoding logic for each case
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        switch self {
+        case let .string(value):
+            try container.encode(value)
+        case let .int(value):
+            try container.encode(value)
+        case let .double(value):
+            try container.encode(value)
+        case let .bool(value):
+            try container.encode(value)
+        }
+    }
+}
+
 public struct EventInfo: Encodable, Sendable {
     let measurementGroup: String
     let event: String
@@ -42,16 +108,22 @@ public struct EventInfo: Encodable, Sendable {
         case values = "Values"
         case dimensions = "Dimensions"
     }
+}
 
-    struct Dimensions: Encodable {
-        let type: String?
-        let location: String?
-        let userTier: String
-
-        enum CodingKeys: String, CodingKey {
-            case type
-            case location
-            case userTier = "user_tier"
+private extension TelemetryEventType {
+    var extraValues: [String: DimensionsValue]? {
+        switch self {
+        case let .notificationDisplayNotification(notificationKey):
+            ["notificationKey": notificationKey]
+        case let .notificationChangeNotificationStatus(notificationKey, notificationStatus):
+            [
+                "notificationKey": notificationKey,
+                "notificationStatus": notificationStatus
+            ]
+        case let .notificationNotificationCtaClick(notificationKey):
+            ["notificationKey": notificationKey]
+        default:
+            nil
         }
     }
 }
@@ -59,74 +131,25 @@ public struct EventInfo: Encodable, Sendable {
 public extension EventInfo {
     init(event: TelemetryEvent, userTier: String) {
         measurementGroup = "pass.any.user_actions"
-        self.event = event.eventName
-        dimensions = .init(type: event.dimensionType,
-                           location: event.dimensionLocation,
-                           userTier: userTier)
+        self.event = event.type.eventName
+        var baseDimensions = [String: DimensionsValue]()
+        if let dimensionType = event.dimensionType {
+            baseDimensions["type"] = dimensionType
+        }
+        if let dimensionLocation = event.dimensionLocation {
+            baseDimensions["location"] = dimensionLocation
+        }
+        baseDimensions["user_tier"] = userTier
+
+        if let extraDimensionsElements = event.type.extraValues {
+            baseDimensions = baseDimensions.merging(extraDimensionsElements) { current, _ in current }
+        }
+
+        dimensions = Dimensions(properties: baseDimensions)
     }
 }
 
 private extension TelemetryEvent {
-    // The event name sent to the BE
-    var eventName: String {
-        switch type {
-        case .create:
-            "item.creation"
-        case .read:
-            "item.read"
-        case .update:
-            "item.update"
-        case .delete:
-            "item.deletion"
-        case .autofillDisplay:
-            "autofill.display"
-        case .autofillTriggeredFromApp, .autofillTriggeredFromSource:
-            "autofill.triggered"
-        case .searchClick:
-            "search.click"
-        case .searchTriggered:
-            "search.triggered"
-        case .twoFaCreation:
-            "2fa.creation"
-        case .twoFaUpdate:
-            "2fa.update"
-        case .passkeyCreate:
-            "passkey.create_done"
-        case .passkeyAuth:
-            "passkey.auth_done"
-        case .passkeyDisplay:
-            "passkey.display_all_passkeys"
-        case .monitorDisplayHome:
-            "pass_monitor.display_home"
-        case .monitorDisplayWeakPasswords:
-            "pass_monitor.display_weak_passwords"
-        case .monitorDisplayReusedPasswords:
-            "pass_monitor.display_reused_passwords"
-        case .monitorDisplayMissing2FA:
-            "pass_monitor.display_missing_2fa"
-        case .monitorDisplayExcludedItems:
-            "pass_monitor.display_excluded_items"
-        case .monitorDisplayDarkWebMonitoring:
-            "pass_monitor.display_dark_web_monitoring"
-        case .monitorDisplayMonitoringProtonAddresses:
-            "pass_monitor.display_monitoring_proton_addresses"
-        case .monitorDisplayMonitoringEmailAliases:
-            "pass_monitor.display_monitoring_email_aliases"
-        case .monitorAddCustomEmailFromSuggestion:
-            "pass_monitor.add_custom_email_from_suggestion"
-        case .monitorItemDetailFromWeakPassword:
-            "pass_monitor.item_detail_from_weak_password"
-        case .monitorItemDetailFromMissing2FA:
-            "pass_monitor.item_detail_from_missing_2fa"
-        case .monitorItemDetailFromReusedPassword:
-            "pass_monitor.item_detail_from_reused_password"
-        case .multiAccountAddAccount:
-            "pass_multi_account.add_account"
-        case .multiAccountRemoveAccount:
-            "pass_multi_account.remove_account"
-        }
-    }
-
     var dimensionType: String? {
         switch type {
         case let .create(itemContentType):
