@@ -14204,6 +14204,12 @@
             "value" : "Der oprettes en kontakt for hver e-mailadresse, der sender e-mails til eller modtager e-mails fra %@"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δημιουργείται μια επαφή για κάθε διεύθυνση ηλεκτρονικού ταχυδρομείου που στέλνει μηνύματα ηλεκτρονικού ταχυδρομείου ή λαμβάνει μηνύματα ηλεκτρονικού ταχυδρομείου από %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16028,6 +16034,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anzeigenamen hinzufügen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προσθήκη εμφανιζόμενου ονόματος"
           }
         },
         "en" : {
@@ -43891,6 +43903,12 @@
             "value" : "%@ löschen"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαγραφή %@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43955,6 +43973,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verwijder %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń %@"
           }
         },
         "pt-BR" : {
@@ -44175,6 +44199,12 @@
             "value" : "Lösche es, ich werde es nie brauchen"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαγράψτε το, δε θα το χρειαστώ ποτέ"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44202,7 +44232,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Supprimez-le, je n'en aurai jamais besoin."
+            "value" : "Supprimez-le. Je n'en aurai jamais besoin."
           }
         },
         "id" : {
@@ -44233,6 +44263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Slett det, jeg kommer aldri til å trenge det"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijder het, ik heb het nooit nodig"
           }
         },
         "ro" : {
@@ -65106,6 +65142,12 @@
             "value" : "I Pass er en element-note krypteret med elementets krypteringsnøgle, og kun brugere, der har adgang til elementet, kan se noten."
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Στο Pass, μια σημείωση στοιχείου κρυπτογραφείται με το κλειδί κρυπτογράφησης στοιχείου και μόνο οι χρήστες που έχουν πρόσβαση στο στοιχείο μπορούν να δουν τη σημείωση."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81573,6 +81615,12 @@
             "value" : "Noch nicht einmal Proton oder SimpleLogin können sie sehen."
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ούτε καν το Proton ή το SimpleLogin δεν μπορούν να το δουν."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84196,7 +84244,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выдаленне псеўданімаў у Pass таксама выдаліць іх у SimpleLogin пасля сінхранізацыі."
+            "value" : "Пасля сінхранізацыі выдаленне псеўданімаў у Pass прывядзе да іх выдалення ў SimpleLogin."
           }
         },
         "cs" : {
@@ -84215,6 +84263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nach der Synchronisierung werden Aliasnamen, die in Pass gelöscht werden, auch in SimpleLogin gelöscht."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μόλις συγχρονιστούν, η διαγραφή ψευδωνύμων στο Pass θα τα διαγράψει επίσης στο SimpleLogin."
           }
         },
         "en" : {
@@ -84263,6 +84317,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Når de er synkronisert, vil sletting av aliaser i Pass også slette dem i SimpleLogin."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eenmaal gesynchroniseerd, zal het verwijderen van aliassen in Pass ze ook verwijderen in SimpleLogin."
           }
         },
         "ro" : {
@@ -92006,6 +92066,12 @@
             "value" : "Tjek din spammappe efter en e-mail med titlen \"Bekræft venligst din postkasse %@\"\n\nHvis du ikke kan finde en sådan e-mail, kan du [bede om en ny kode](https://proton.me)."
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παρακαλούμε ελέγξτε τα Ανεπιθύμητα για ένα μήνυμα ηλεκτρονικού ταχυδρομείου που ονομάζεται \"Παρακαλούμε επιβεβαιώστε το γραμματοκιβώτιό σας %@\"\n\nΑν δεν μπορείτε να βρείτε τέτοια μηνύματα ηλεκτρονικού ταχυδρομείου, μπορείτε να [ζητήσετε νέο κωδικό](https://proton.me)."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92758,6 +92824,12 @@
             "value" : "Bitte beachte, dass der Alias nach dem Löschen nicht wiederhergestellt werden kann. Vielleicht möchtest du stattdessen den Alias deaktivieren?"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Λάβετε υπόψη ότι μετά τη διαγραφή, δεν είναι δυνατή η επαναφορά του ψευδωνύμου. Ίσως θέλετε να απενεργοποιήσετε το ψευδώνυμο;"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92788,10 +92860,22 @@
             "value" : "Veuillez noter qu'une fois supprimé, l'alias ne pourra pas être restauré. Voulez-vous plutôt le désactiver ?"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mohon diperhatikan bahwa setelah dihapus, alias ini tidak akan lagi dapat dipulihkan. Apakah Anda ingin sekadar menonaktifkan alias ini?"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tieni presente che una volta eliminato, l'alias non potrà essere ripristinato. Magari preferisci disabilitare l'alias?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაიმახსოვრეთ, რომ ფსევდონიმის აღდგენა შეუქცევადია. შეიძლება, მისი, უბრალოდ გათიშვა გნებავთ?"
           }
         },
         "ko" : {
@@ -92806,6 +92890,12 @@
             "value" : "Vær oppmerksom på at aliaset ikke kan gjenopprettes når det er slettet. Kanskje du vil deaktivere aliaset i stedet?"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let op: de alias kan niet worden hersteld. Misschien wilt u de alias in plaats daarvan uitschakelen?"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92815,7 +92905,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upozorňujeme, že po vymazaní sa alias nedá obnoviť. Možno chcete alias namiesto toho vypnúť?"
+            "value" : "Upozorňujeme, že po vymazaní sa alias nedá obnoviť. Nechcete alias radšej deaktivovať?"
           }
         },
         "sv" : {
@@ -92894,6 +92984,12 @@
             "value" : "Veuillez noter qu'une fois supprimé, l'alias ne pourra pas être restauré. Cet alias est déjà désactivé et ne transfèrera plus d'e-mails dans votre messagerie."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mohon diperhatikan bahwa setelah dihapus, alias ini tidak akan lagi dapat dipulihkan. Alias ini telah dinonaktifkan dan tidak akan lagi meneruskan email ke kotak surat Anda."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92910,6 +93006,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vær oppmerksom på at aliaset ikke kan gjenopprettes når det er slettet. Aliaset er allerede deaktivert og videresender ikke e-post til postboksen din."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let op: de alias kan niet worden hersteld. De alias is al uitgeschakeld en zal geen e-mails doorsturen naar uw mailbox."
           }
         },
         "ro" : {
@@ -92994,10 +93096,22 @@
             "value" : "Veuillez noter qu'une fois supprimé, les alias ne peuvent pas être restaurés."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mohon diperhatikan bahwa setelah dihapus, rangkaian alias ini tidak akan lagi dapat dipulihkan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tieni presente che una volta eliminati, gli alias non potranno essere ripristinati"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაიმახსოვრეთ, მას შემდეგ, რაც ფსევდონიმს წაშლით, მას ვერ აღადგენთ"
           }
         },
         "ko" : {
@@ -93010,6 +93124,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vær oppmerksom på at aliasene ikke kan gjenopprettes når de er slettet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let op: deze aliassen kunnen niet worden hersteld"
           }
         },
         "ro" : {
@@ -113805,6 +113925,12 @@
             "value" : "SimpleLogin-noten gemmes samme sted som alias-adressen, og selvom den er beskyttet af kryptering i hvile, er den ikke E2E-krypteret, hvilket betyder, at alle, der har adgang til SimpleLogin-databasen, kan læse den."
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η σημείωση SimpleLogin αποθηκεύεται μαζί στην ίδια τοποθεσία με την ψευδώνυμη διεύθυνση και ενώ προστατεύεται από κρυπτογράφηση σε κατάσταση ηρεμίας, δεν είναι κρυπτογραφημένη E2E, πράγμα που σημαίνει ότι οποιοσδήποτε έχει πρόσβαση στη βάση δεδομένων SimpleLogin μπορεί να τη διαβάσει."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -118514,6 +118640,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Det viste navn, når der sendes en e-mail fra dette alias."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το εμφανιζόμενο όνομα κατά την αποστολή ενός μηνύματος ηλεκτρονικού ταχυδρομείου από αυτό το ψευδώνυμο."
           }
         },
         "en" : {
@@ -124839,6 +124971,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Forstått, jeg kommer aldri til å trenge dem"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begrepen, ik zal ze nooit nodig hebben"
           }
         },
         "ro" : {
@@ -134719,7 +134857,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сістэма выявіла, што ў вашых наладах аўтэнтыфікацыі па біяметрыі адбыліся змяненні. У мэтах бяспекі, вам неабходна паўторна ўвайсці ў сістэму."
+            "value" : "Сістэма выявіла, што ў вашых наладах аўтэнтыфікацыі па біяметрыі адбыліся змяненні. У мэтах бяспекі вам неабходна паўторна ўвайсці ў сістэму."
           }
         },
         "cs" : {
@@ -135995,6 +136133,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Was ist eine SimpleLogin-Notiz?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Τι είναι μια σημείωση SimpleLogin;"
           }
         },
         "en" : {
@@ -138580,6 +138724,24 @@
             }
           }
         },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Πρόκειται να διαγράψετε οριστικά %lld ψευδώνυμο"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Πρόκειται να διαγράψετε οριστικά %lld ψευδώνυμα"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -138700,6 +138862,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აპირებთ, სამუდამოდ წაშალოთ %lld ფსევდონიმი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "აპირებთ, სამუდამოდ წაშალოთ %lld ფსევდონიმი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -138725,6 +138905,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Du er i ferd med å slette permanent %lld aliaser"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "U staat op het punt %lld alias permanent te verwijderen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "U staat op het punt %lld aliassen permanent te verwijderen"
                 }
               }
             }
