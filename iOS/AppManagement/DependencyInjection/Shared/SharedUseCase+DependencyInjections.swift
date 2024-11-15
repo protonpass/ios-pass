@@ -395,7 +395,8 @@ extension SharedUseCasesContainer {
                                        spotlightVaultDatasource: container.localSpotlightVaultDatasource(),
                                        telemetryEventDatasource: container.localTelemetryEventDatasource(),
                                        userDataDatasource: container.localUserDataDatasource(),
-                                       userPreferencesDatasource: container.userPreferencesDatasource())
+                                       userPreferencesDatasource: container.userPreferencesDatasource(),
+                                       inAppNotificationDatasource: container.localInAppNotificationDatasource())
         }
     }
 

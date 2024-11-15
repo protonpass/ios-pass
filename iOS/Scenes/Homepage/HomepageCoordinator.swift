@@ -56,7 +56,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private let paymentsManager = resolve(\ServiceContainer.paymentManager)
     let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
-    private let urlOpener = UrlOpener()
+    let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
@@ -76,10 +76,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedToolingContainer.authManager) var authManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
-    let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     let revokeCurrentSession = resolve(\SharedUseCasesContainer.revokeCurrentSession)
     private let makeAccountSettingsUrl = resolve(\UseCasesContainer.makeAccountSettingsUrl)
     private let refreshUserSettings = resolve(\SharedUseCasesContainer.refreshUserSettings)
@@ -92,8 +92,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
     @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
     var addAndSwitchToNewUserAccount
-
+    @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -118,6 +119,10 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     weak var delegate: (any HomepageCoordinatorDelegate)?
     weak var homepageTabDelegate: (any HomepageTabDelegate)?
 
+    var inAppNotificationEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passInAppMessagesV1)
+    }
+
     override init() {
         super.init()
         SharedViewContainer.shared.register(rootViewController: rootViewController)
@@ -130,6 +135,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshAccessAndMonitorStateSync()
         refreshSettings()
         refreshFeatureFlags()
+        refreshInAppNotifications()
         sendAllEventsIfApplicable()
         doLogOutExcessFreeAccounts()
     }
@@ -251,6 +257,7 @@ private extension HomepageCoordinator {
                         refreshAccessAndMonitorStateSync()
                         refreshSettings()
                         refreshFeatureFlags()
+                        refreshInAppNotifications()
                         doLogOutExcessFreeAccounts()
                     } catch {
                         logger.error(error)
@@ -1665,6 +1672,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
                 guard let self else {
                     return
                 }
+
                 await refresh()
             }
         } else {
