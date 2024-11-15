@@ -57,9 +57,9 @@ struct TelemetryEventTypeTests {
                           .monitorItemDetailFromReusedPassword,
                           .multiAccountAddAccount,
                           .multiAccountRemoveAccount,
-                          .passNotificationDisplayNotification(notificationKey: "exampleKey"),
-                          .passNotificationChangeNotificationStatus(notificationKey: "exampleKey", notificationStatus: 1),
-                          .passNotificationNotificationCtaClick(notificationKey: "exampleKey")
+                          .notificationDisplayNotification(notificationKey: "exampleKey"),
+                          .notificationChangeNotificationStatus(notificationKey: "exampleKey", notificationStatus: 1),
+                          .notificationNotificationCtaClick(notificationKey: "exampleKey")
                       ])
     func encodingDecodingTelemetryEventType(type: TelemetryEventType) throws {
                     // Test encoding

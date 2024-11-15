@@ -40,7 +40,7 @@ public protocol CoordinatorProtocol: AnyObject {
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func dismissAllViewControllers(animated: Bool, completion: (() -> Void)?)
     func coordinatorDidDismiss()
-    func updateFloatingView(floatingView: UIView?, shouldAdd: Bool)
+    func updateFloatingView(floatingView: UIView?)
 }
 
 public extension CoordinatorProtocol {
@@ -103,33 +103,31 @@ public extension CoordinatorProtocol {
 
     func coordinatorDidDismiss() {}
 
-    func updateFloatingView(floatingView: UIView?, shouldAdd: Bool) {
+    func updateFloatingView(floatingView: UIView?) {
         let viewTag = 1
         // Locate the UITabBarController in the view hierarchy
         if let tabBarController = findTabBarController(in: rootViewController), let floatingView {
-            if shouldAdd {
-                if tabBarController.view.viewWithTag(viewTag) == nil {
-                    floatingView.tag = viewTag
-                    floatingView.backgroundColor = UIColor.clear
-                    // Check if the floating view is already added
-                    if floatingView.superview == nil {
-                        // Customize the floating view's appearance and position above the tab bar
-                        floatingView.translatesAutoresizingMaskIntoConstraints = false
-                        tabBarController.view.addSubview(floatingView)
+            if tabBarController.view.viewWithTag(viewTag) == nil {
+                floatingView.tag = viewTag
+                floatingView.backgroundColor = UIColor.clear
+                // Check if the floating view is already added
+                if floatingView.superview == nil {
+                    // Customize the floating view's appearance and position above the tab bar
+                    floatingView.translatesAutoresizingMaskIntoConstraints = false
+                    tabBarController.view.addSubview(floatingView)
 
-                        // Position the floating view above the tab bar
-                        NSLayoutConstraint.activate([
-                            floatingView.centerXAnchor.constraint(equalTo: tabBarController.view.centerXAnchor),
-                            floatingView.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor,
-                                                                 constant: -10),
-                            floatingView.leadingAnchor
-                                .constraint(equalTo: tabBarController.view.leadingAnchor,
-                                            constant: 16),
-                            floatingView.trailingAnchor
-                                .constraint(equalTo: tabBarController.view.trailingAnchor,
-                                            constant: -16)
-                        ])
-                    }
+                    // Position the floating view above the tab bar
+                    NSLayoutConstraint.activate([
+                        floatingView.centerXAnchor.constraint(equalTo: tabBarController.view.centerXAnchor),
+                        floatingView.bottomAnchor.constraint(equalTo: tabBarController.tabBar.topAnchor,
+                                                             constant: -10),
+                        floatingView.leadingAnchor
+                            .constraint(equalTo: tabBarController.view.leadingAnchor,
+                                        constant: 16),
+                        floatingView.trailingAnchor
+                            .constraint(equalTo: tabBarController.view.trailingAnchor,
+                                        constant: -16)
+                    ])
                 }
             } else {
                 if let floatingView = tabBarController.view.viewWithTag(viewTag) {
@@ -138,10 +136,8 @@ public extension CoordinatorProtocol {
                 }
             }
         } else {
-            if !shouldAdd {
-                if let floatingView = rootViewController.view.window?.viewWithTag(viewTag) {
-                    floatingView.removeFromSuperview()
-                }
+            if let floatingView = rootViewController.view.window?.viewWithTag(viewTag) {
+                floatingView.removeFromSuperview()
             }
         }
     }
