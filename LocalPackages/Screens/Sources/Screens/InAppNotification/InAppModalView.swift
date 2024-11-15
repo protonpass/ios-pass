@@ -72,8 +72,11 @@ public struct InAppModalView: View {
                                       titleColor: PassColor.textInvert,
                                       backgroundColor: PassColor.interactionNormMajor2,
                                       height: 48,
-                                      action: { onTap(notification) })
-                        .padding(.horizontal, DesignConstant.sectionPadding)
+                                      action: {
+                                          dismiss()
+                                          onTap(notification)
+                                      })
+                                      .padding(.horizontal, DesignConstant.sectionPadding)
                     Spacer()
                 }
             }
