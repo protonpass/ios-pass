@@ -35,6 +35,7 @@ extension SharedPreferences {
               appLockTime: AppLockTime.random()!,
               clipboardExpiration: ClipboardExpiration.random()!,
               shareClipboard: .random(),
-              alwaysShowUsernameField: .random())
+              alwaysShowUsernameField: .random(),
+              lastActiveTimestamp: .random(in: 1..1000))
     }
 }
