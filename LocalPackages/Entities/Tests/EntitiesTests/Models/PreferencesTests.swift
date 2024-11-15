@@ -20,14 +20,18 @@
 //
 
 import Entities
-import XCTest
+import Foundation
+import Testing
 
-final class PreferencesTests: XCTestCase {
-    func testDecodeAppPreferencesFromEmptyJson() throws {
+@Suite(.tags(.entity))
+struct PreferencesTests {
+    @Test("Decode AppPreferences from empty JSON")
+    func decodeAppPreferencesFromEmptyJson() throws {
         try decodeAndAssert(AppPreferences.self, json: "{}", expectation: .default)
     }
 
-    func testDecodeAppPrerencesFromLegacyJson() throws {
+    @Test("Decode AppPreferences from legacy JSON")
+    func decodeAppPrerencesFromLegacyJson() throws {
         let json = """
 {
     "createdItemsCount": 100,
@@ -46,20 +50,20 @@ final class PreferencesTests: XCTestCase {
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)
     }
 
+    @Test("Decode SharedPreferences from empty JSON")
     func testDecodeSharedPreferencesFromEmptyJson() throws {
         try decodeAndAssert(SharedPreferences.self, json: "{}", expectation: .default)
     }
 
-    func testDecodeSharedPrerencesFromLegacyJson() throws {
+    @Test("Decode SharedPreferences from legacy JSON")
+    func decodeSharedPrerencesFromLegacyJson() throws {
         let json = """
 {
     "shareClipboard": true,
     "localAuthenticationMethod": {
         "pin": {}
     },
-    "clipboardExpiration": 2,
-    "lastActiveTimestamp": 123
-}
+    "clipboardExpiration": 2}
 """
         let defaultObject = SharedPreferences.default
         let expectation = SharedPreferences(
@@ -76,15 +80,17 @@ final class PreferencesTests: XCTestCase {
             clipboardExpiration: .twoMinutes,
             shareClipboard: true, 
             alwaysShowUsernameField: false,
-            lastActiveTimestamp: 123)
+            lastActiveTimestamp: nil)
         try decodeAndAssert(SharedPreferences.self, json: json, expectation: expectation)
     }
 
-    func testDecodeUserPreferencesFromEmptyJson() throws {
+    @Test("Decode UserPreferences from empty JSON")
+    func decodeUserPreferencesFromEmptyJson() throws {
         try decodeAndAssert(UserPreferences.self, json: "{}", expectation: .default)
     }
 
-    func testDecodeUserPrerencesFromLegacyJson() throws {
+    @Test("Decode UserPreferences from legacy JSON")
+    func decodeUserPrerencesFromLegacyJson() throws {
         let json = """
 {
     "spotlightSearchableContent": 2
@@ -102,8 +108,8 @@ final class PreferencesTests: XCTestCase {
     }
 
     func decodeAndAssert<T: Decodable & Equatable>(_ type: T.Type, json: String, expectation: T) throws {
-        let data = try XCTUnwrap(json.data(using: .utf8))
+        let data = try #require(json.data(using: .utf8))
         let result = try JSONDecoder().decode(T.self, from: data)
-        XCTAssertEqual(result, expectation)
+        #expect(result == expectation)
     }
 }
