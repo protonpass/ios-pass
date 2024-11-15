@@ -25,6 +25,9 @@ import SwiftUI
 
 extension HomepageCoordinator {
     func refreshInAppNotifications() {
+        guard inAppNotificationEnabled else {
+            return
+        }
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -38,7 +41,7 @@ extension HomepageCoordinator {
         }
     }
 
-    func displayNotification(_ notification: InAppNotification) {
+    private func displayNotification(_ notification: InAppNotification) {
         addTelemetryEvent(with: .notificationDisplayNotification(notificationKey: notification
                 .notificationKey))
 
