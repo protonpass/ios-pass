@@ -65,7 +65,7 @@ public extension LocalTelemetryEventDatasource {
         let batchInsertRequest =
             newBatchInsertRequest(entity: TelemetryEventEntity.entity(context: taskContext),
                                   sourceItems: [event]) { managedObject, event in
-                (managedObject as? TelemetryEventEntity)?.hydrate(from: event, userId: userId)
+                try? (managedObject as? TelemetryEventEntity)?.hydrate(from: event, userId: userId)
             }
 
         try await execute(batchInsertRequest: batchInsertRequest, context: taskContext)

@@ -44,6 +44,8 @@ private struct TelemetryEventUiModel: Identifiable {
     }
 }
 
+// swiftlint:disable force_unwrapping
+
 @MainActor
 private final class TelemetryEventsViewModel: ObservableObject {
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
@@ -160,22 +162,13 @@ private struct EventView: View {
 private extension TelemetryEventType {
     var icon: UIImage {
         switch self {
-        case let .create(type):
-            type.regularIcon
-        case let .read(type):
-            type.regularIcon
-        case let .update(type):
-            type.regularIcon
-        case let .delete(type):
+        case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.regularIcon
         case .autofillDisplay, .autofillTriggeredFromApp, .autofillTriggeredFromSource:
-            // swiftlint:disable:next force_unwrapping
             UIImage(systemName: "rectangle.and.pencil.and.ellipsis")!
         case .searchClick, .searchTriggered:
-            // swiftlint:disable:next force_unwrapping
             UIImage(systemName: "magnifyingglass")!
         case .twoFaCreation, .twoFaUpdate:
-            // swiftlint:disable:next force_unwrapping
             UIImage(systemName: "2.circle")!
         case .passkeyAuth, .passkeyCreate, .passkeyDisplay:
             PassIcon.passkey
@@ -191,23 +184,18 @@ private extension TelemetryEventType {
              .monitorItemDetailFromMissing2FA,
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword:
-            // swiftlint:disable:next force_unwrapping
             UIImage(systemName: "person.badge.shield.checkmark.fill")!
         case .multiAccountAddAccount, .multiAccountRemoveAccount:
-            // swiftlint:disable:next force_unwrapping
             UIImage(systemName: "person.3.fill")!
+        case .notificationChangeNotificationStatus, .notificationDisplayNotification,
+             .notificationNotificationCtaClick:
+            UIImage(systemName: "envelope.fill")!
         }
     }
 
     var iconColor: UIColor {
         switch self {
-        case let .create(type):
-            type.normMajor1Color
-        case let .read(type):
-            type.normMajor1Color
-        case let .update(type):
-            type.normMajor1Color
-        case let .delete(type):
+        case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.normMajor1Color
         case .autofillDisplay,
              .autofillTriggeredFromApp,
@@ -235,18 +223,16 @@ private extension TelemetryEventType {
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMajor1Color
+        case .notificationChangeNotificationStatus,
+             .notificationDisplayNotification,
+             .notificationNotificationCtaClick:
+            ItemContentType.creditCard.normMajor1Color
         }
     }
 
     var backgroundColor: UIColor {
         switch self {
-        case let .create(type):
-            type.normMinor1Color
-        case let .read(type):
-            type.normMinor1Color
-        case let .update(type):
-            type.normMinor1Color
-        case let .delete(type):
+        case let .create(type), let .delete(type), let .read(type), let .update(type):
             type.normMinor1Color
         case .autofillDisplay,
              .autofillTriggeredFromApp,
@@ -274,6 +260,9 @@ private extension TelemetryEventType {
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMinor1Color
+        case .notificationChangeNotificationStatus, .notificationDisplayNotification,
+             .notificationNotificationCtaClick:
+            ItemContentType.creditCard.normMinor1Color
         }
     }
 
@@ -335,6 +324,14 @@ private extension TelemetryEventType {
             "Add new account"
         case .multiAccountRemoveAccount:
             "Remove an account"
+        case .notificationDisplayNotification:
+            "Display notification"
+        case .notificationChangeNotificationStatus:
+            "Change notification status"
+        case .notificationNotificationCtaClick:
+            "Notification Cta clicked"
         }
     }
 }
+
+// swiftlint:enable force_unwrapping

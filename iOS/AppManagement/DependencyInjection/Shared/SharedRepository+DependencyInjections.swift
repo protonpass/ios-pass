@@ -216,6 +216,14 @@ extension SharedRepositoryContainer {
     var localTextAutoFillHistoryEntryDatasource: Factory<any LocalTextAutoFillHistoryEntryDatasourceProtocol> {
         self { LocalTextAutoFillHistoryEntryDatasource(databaseService: self.databaseService) }
     }
+
+    var localInAppNotificationDatasource: Factory<any LocalInAppNotificationDatasourceProtocol> {
+        self { LocalInAppNotificationDatasource(databaseService: self.databaseService) }
+    }
+
+    var remoteInAppNotificationDatasource: Factory<any RemoteInAppNotificationDatasourceProtocol> {
+        self { RemoteInAppNotificationDatasource(apiServicing: self.apiManager) }
+    }
 }
 
 // MARK: Repositories
@@ -370,6 +378,12 @@ extension SharedRepositoryContainer {
                                        remoteDatasource: self.remoteItemReadEventDatasource(),
                                        currentDateProvider: self.currentDateProvider,
                                        logManager: self.logManager) }
+    }
+
+    var inAppNotificationRepository: Factory<any InAppNotificationRepositoryProtocol> {
+        self { InAppNotificationRepository(localDatasource: self.localInAppNotificationDatasource(),
+                                           remoteDatasource: self.remoteInAppNotificationDatasource(),
+                                           logManager: self.logManager) }
     }
 }
 
