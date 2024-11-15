@@ -28,6 +28,7 @@ import SwiftUI
 extension Notification.Name {
     static let lockAppToRemoveLocalAuth = Notification.Name(rawValue: "lockAppToRemoveLocalAuth")
     static let lockAppToDefinePIN = Notification.Name(rawValue: "lockAppToDefinePIN")
+    static let recordLastActiveTimestamp = Notification.Name(rawValue: "recordLastActiveTimestamp")
 }
 
 enum LocalAuthenticationSuccessMode {
@@ -155,6 +156,21 @@ struct LocalAuthenticationModifier: ViewModifier {
         .onReceive(.lockAppToRemoveLocalAuth) {
             successMode = .removeLocalAuth
             authenticated = false
+        }
+        .onReceive(.recordLastActiveTimestamp) {
+            if authenticated {
+                Task {
+                    do {
+                        try await preferencesManager
+                            .updateSharedPreferences(\.lastActiveTimestamp,
+                                                     value: Date.now.timeIntervalSince1970)
+                    } catch {
+                        #if DEBUG
+                        print(error.localizedDescription)
+                        #endif
+                    }
+                }
+            }
         }
     }
 }
