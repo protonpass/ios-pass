@@ -63,6 +63,10 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
     /// Always display username field when creating or editing login items
     public var alwaysShowUsernameField: Bool
 
+    /// The timestamp of the last usage (host app or any extensions)
+    /// This is used as an additional information to decide whether to ask for local authentication or not
+    public var lastActiveTimestamp: TimeInterval?
+
     public var localAuthenticationPolicy: LAPolicy {
         fallbackToPasscode ? .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
     }
@@ -79,7 +83,8 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
                 appLockTime: AppLockTime,
                 clipboardExpiration: ClipboardExpiration,
                 shareClipboard: Bool,
-                alwaysShowUsernameField: Bool) {
+                alwaysShowUsernameField: Bool,
+                lastActiveTimestamp: TimeInterval?) {
         self.quickTypeBar = quickTypeBar
         self.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         self.theme = theme
@@ -93,6 +98,7 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
         self.clipboardExpiration = clipboardExpiration
         self.shareClipboard = shareClipboard
         self.alwaysShowUsernameField = alwaysShowUsernameField
+        self.lastActiveTimestamp = lastActiveTimestamp
     }
 }
 
@@ -111,6 +117,7 @@ private extension SharedPreferences {
         static let clipboardExpiration: ClipboardExpiration = .default
         static let shareClipboard = false
         static let alwaysShowUsernameField = false
+        static let lastActiveTimestamp: TimeInterval? = nil
     }
 
     enum CodingKeys: String, CodingKey {
@@ -127,6 +134,7 @@ private extension SharedPreferences {
         case clipboardExpiration
         case shareClipboard
         case alwaysShowUsernameField
+        case lastActiveTimestamp
     }
 }
 
@@ -149,6 +157,7 @@ public extension SharedPreferences {
                                                                 forKey: .clipboardExpiration)
         let shareClipboard = try container.decodeIfPresent(Bool.self, forKey: .shareClipboard)
         let alwaysShowUsernameField = try container.decodeIfPresent(Bool.self, forKey: .alwaysShowUsernameField)
+        let lastActiveTimestamp = try container.decodeIfPresent(TimeInterval.self, forKey: .lastActiveTimestamp)
         self.init(quickTypeBar: quickTypeBar ?? Default.quickTypeBar,
                   automaticallyCopyTotpCode: automaticallyCopyTotpCode ?? Default.automaticallyCopyTotpCode,
                   theme: theme ?? Default.theme,
@@ -161,7 +170,8 @@ public extension SharedPreferences {
                   appLockTime: appLockTime ?? Default.appLockTime,
                   clipboardExpiration: clipboardExpiration ?? Default.clipboardExpiration,
                   shareClipboard: shareClipboard ?? Default.shareClipboard,
-                  alwaysShowUsernameField: alwaysShowUsernameField ?? Default.alwaysShowUsernameField)
+                  alwaysShowUsernameField: alwaysShowUsernameField ?? Default.alwaysShowUsernameField,
+                  lastActiveTimestamp: lastActiveTimestamp ?? Default.lastActiveTimestamp)
     }
 }
 
@@ -179,6 +189,7 @@ extension SharedPreferences: Defaultable {
               appLockTime: Default.appLockTime,
               clipboardExpiration: Default.clipboardExpiration,
               shareClipboard: Default.shareClipboard,
-              alwaysShowUsernameField: Default.alwaysShowUsernameField)
+              alwaysShowUsernameField: Default.alwaysShowUsernameField,
+              lastActiveTimestamp: Default.lastActiveTimestamp)
     }
 }
