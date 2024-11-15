@@ -500,12 +500,32 @@ private struct MailboxDeletionView: View {
                 Text("Delete mailbox")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .fontWeight(.semibold)
+                    .layoutPriority(1)
 
                 // swiftlint:disable:next line_length
                 Text("All aliases using the mailbox **\(mailbox.email)** will be also deleted. To keep receiving emails transfer these aliases to a different mailbox:")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .multilineTextAlignment(.center)
+                    .minimumScaleFactor(0.90)
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .layoutPriority(1)
+
+                if mailbox.aliasCount > 0, !wantToTransferAliases {
+                    HStack {
+                        Image(uiImage: IconProvider.infoCircleFilled)
+                            .resizable()
+                            .frame(width: 25, height: 25)
+                            .foregroundStyle(PassColor.textWeak.toColor)
+
+                        Text("Please note that once deleted, aliases cannot be restored.")
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .minimumScaleFactor(0.90)
+                    }
+                    .padding(DesignConstant.sectionPadding)
+                    .roundedEditableSection()
+                    .layoutPriority(1)
+                }
 
                 if !otherMailboxes.isEmpty {
                     Toggle(isOn: $wantToTransferAliases) {
@@ -513,33 +533,34 @@ private struct MailboxDeletionView: View {
                             .foregroundStyle(PassColor.textNorm.toColor)
                     }
                     .toggleStyle(SwitchToggleStyle.pass)
+                    .layoutPriority(1)
 
-                    Group {
-                        Divider()
-                        HStack {
-                            Text("To mailbox")
-                                .foregroundStyle(PassColor.textNorm.toColor)
+                    if wantToTransferAliases {
+                        Group {
+                            Divider()
+                            HStack {
+                                Text("To mailbox")
+                                    .foregroundStyle(PassColor.textNorm.toColor)
 
-                            Spacer()
+                                Spacer()
 
-                            Picker("Mailbox", selection: $selectedTransferMailbox) {
-                                ForEach(otherMailboxes) { mailbox in
-                                    Text(mailbox.email)
-                                        .tag(mailbox)
-                                        .fontWeight(.bold)
+                                Picker("Mailbox", selection: $selectedTransferMailbox) {
+                                    ForEach(otherMailboxes) { mailbox in
+                                        Text(mailbox.email)
+                                            .tag(mailbox)
+                                            .fontWeight(.bold)
+                                    }
                                 }
+                                .padding(4)
+                                .tint(PassColor.textNorm.toColor)
+                                .background(PassColor.interactionNormMinor1.toColor)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                             }
-                            .padding(4)
-                            .tint(PassColor.textNorm.toColor)
-                            .background(PassColor.interactionNormMinor1.toColor)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
+                        .layoutPriority(1)
                     }
-                    .hidden(!wantToTransferAliases)
                 }
             }
-
-            Spacer()
 
             CapsuleTextButton(title: wantToTransferAliases ? #localized("Transfer and delete mailbox") :
                 #localized("Delete mailbox"),
@@ -553,13 +574,14 @@ private struct MailboxDeletionView: View {
                         delete(mailbox, nil)
                     }
                     dismiss()
-                })
+                }).layoutPriority(1)
 
             CapsuleTextButton(title: #localized("Cancel"),
                               titleColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1,
                               height: 48,
                               action: { dismiss() })
+                .layoutPriority(1)
         }
         .animation(.default, value: wantToTransferAliases)
         .padding(24)
