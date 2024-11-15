@@ -57,7 +57,8 @@ final class PreferencesTests: XCTestCase {
     "localAuthenticationMethod": {
         "pin": {}
     },
-    "clipboardExpiration": 2
+    "clipboardExpiration": 2,
+    "lastActiveTimestamp": 123
 }
 """
         let defaultObject = SharedPreferences.default
@@ -74,7 +75,8 @@ final class PreferencesTests: XCTestCase {
             appLockTime: defaultObject.appLockTime,
             clipboardExpiration: .twoMinutes,
             shareClipboard: true, 
-            alwaysShowUsernameField: false)
+            alwaysShowUsernameField: false,
+            lastActiveTimestamp: 123)
         try decodeAndAssert(SharedPreferences.self, json: json, expectation: expectation)
     }
 
