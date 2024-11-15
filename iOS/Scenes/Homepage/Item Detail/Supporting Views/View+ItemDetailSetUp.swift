@@ -25,6 +25,7 @@ import SwiftUI
 /// e.g. navigation bar, background color, toolbar, delete item alert...
 struct ItemDetailSetUpModifier: ViewModifier {
     @ObservedObject var viewModel: BaseItemDetailViewModel
+    @Environment(\.dismiss) private var dismiss
 
     private var tintColor: UIColor {
         viewModel.itemContent.type.normMajor2Color
@@ -41,7 +42,10 @@ struct ItemDetailSetUpModifier: ViewModifier {
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }
             .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBeDeleted,
                                                     onDisableAlias: { viewModel.disableAlias() },
-                                                    onDelete: { viewModel.permanentlyDelete() }))
+                                                    onDelete: {
+                                                        dismiss()
+                                                        viewModel.permanentlyDelete()
+                                                    }))
     }
 }
 
