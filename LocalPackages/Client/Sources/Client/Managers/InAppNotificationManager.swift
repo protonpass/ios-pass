@@ -31,6 +31,11 @@ public protocol InAppNotificationManagerProtocol: Sendable {
     func fetchNotifications(offsetId: String?, reset: Bool) async throws -> [InAppNotification]
     func getNotificationToDisplay() async throws -> InAppNotification?
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws
+
+    // MARK: - Qa only accessible function to test mock notifications
+
+    @_spi(QA) func addMockNotification(notification: InAppNotification) async
+    @_spi(QA) func removeMockNotification() async
 }
 
 public extension InAppNotificationManagerProtocol {
@@ -50,6 +55,8 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
     private let delayBetweenNotifications: TimeInterval
     private nonisolated(unsafe) var cancellables: Set<AnyCancellable> = []
     private nonisolated(unsafe) var task: Task<Void, Never>?
+
+    private var mockNotification: InAppNotification?
 
     public init(repository: any InAppNotificationRepositoryProtocol,
                 userManager: any UserManagerProtocol,
@@ -81,6 +88,9 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
     }
 
     public func getNotificationToDisplay() async throws -> InAppNotification? {
+        if let mockNotification {
+            return mockNotification
+        }
         guard shouldDisplayNotifications else {
             return nil
         }
@@ -94,16 +104,33 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
     }
 
     public func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {
-        let userId = try await userManager.getActiveUserId()
-        try await repository.changeNotificationStatus(notificationId: notificationId,
-                                                      newStatus: newState,
-                                                      userId: userId)
-        if newState == .dismissed {
-            try await repository.remove(notificationId: notificationId, userId: userId)
+        if mockNotification == nil {
+            let userId = try await userManager.getActiveUserId()
+            try await repository.changeNotificationStatus(notificationId: notificationId,
+                                                          newStatus: newState,
+                                                          userId: userId)
+            if newState == .dismissed {
+                try await repository.remove(notificationId: notificationId, userId: userId)
+            }
+            if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
+                notifications[index].state = newState.rawValue
+            }
+        } else {
+            mockNotification?.state = newState.rawValue
         }
-        if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
-            notifications[index].state = newState.rawValue
-        }
+    }
+}
+
+// MARK: - QA features
+
+public extension InAppNotificationManager {
+    @_spi(QA) func addMockNotification(notification: InAppNotification) async {
+        mockNotification = notification
+    }
+
+    @_spi(QA) func removeMockNotification() async {
+        notifications.removeAll(where: { $0.id == mockNotification?.id })
+        mockNotification = nil
     }
 }
 
