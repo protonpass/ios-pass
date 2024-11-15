@@ -32,7 +32,7 @@ public struct TelemetryEvent: Sendable {
     }
 }
 
-public enum TelemetryEventType: Sendable, Equatable {
+public enum TelemetryEventType: Sendable, Equatable, Codable {
     case create(ItemContentType)
     case read(ItemContentType)
     case update(ItemContentType)
@@ -61,68 +61,9 @@ public enum TelemetryEventType: Sendable, Equatable {
     case monitorItemDetailFromReusedPassword
     case multiAccountAddAccount
     case multiAccountRemoveAccount
-
-    /// For local storage only as we store events locally before sending to the BE in batch
-    public var rawValue: String {
-        switch self {
-        case let .create(type):
-            "create.\(type.rawValue)"
-        case let .read(type):
-            "read.\(type.rawValue)"
-        case let .update(type):
-            "update.\(type.rawValue)"
-        case let .delete(type):
-            "delete.\(type.rawValue)"
-        case .autofillDisplay:
-            "autofill.display"
-        case .autofillTriggeredFromSource:
-            "autofill.triggered.source"
-        case .autofillTriggeredFromApp:
-            "autofill.triggered.app"
-        case .searchTriggered:
-            "search.triggered"
-        case .searchClick:
-            "search.click"
-        case .twoFaCreation:
-            "2fa.creation"
-        case .twoFaUpdate:
-            "2fa.update"
-        case .passkeyCreate:
-            "passkey.create"
-        case .passkeyAuth:
-            "passkey.auth"
-        case .passkeyDisplay:
-            "passkey.display"
-        case .monitorDisplayHome:
-            "monitor.display.home"
-        case .monitorDisplayWeakPasswords:
-            "monitor.display.weak.passwords"
-        case .monitorDisplayReusedPasswords:
-            "monitor.display.reused.passwords"
-        case .monitorDisplayMissing2FA:
-            "monitor.display.missing.2fa"
-        case .monitorDisplayExcludedItems:
-            "monitor.display.excluded.items"
-        case .monitorDisplayDarkWebMonitoring:
-            "monitor.display.dark.web.monitoring"
-        case .monitorDisplayMonitoringProtonAddresses:
-            "monitor.display.monitoring.proton.addresses"
-        case .monitorDisplayMonitoringEmailAliases:
-            "monitor.display.monitoring.email.aliases"
-        case .monitorAddCustomEmailFromSuggestion:
-            "monitor.add.custom.email.from.suggestion"
-        case .monitorItemDetailFromWeakPassword:
-            "monitor.item.detail.from.weak.password"
-        case .monitorItemDetailFromMissing2FA:
-            "monitor.item.detail.from.missing.2fa"
-        case .monitorItemDetailFromReusedPassword:
-            "monitor.item.detail.from.reused.password"
-        case .multiAccountAddAccount:
-            "multi.account.add.account"
-        case .multiAccountRemoveAccount:
-            "multi.account.remove.account"
-        }
-    }
+    case notificationDisplayNotification(notificationKey: String)
+    case notificationChangeNotificationStatus(notificationKey: String, notificationStatus: Int)
+    case notificationNotificationCtaClick(notificationKey: String)
 
     // swiftlint:disable:next cyclomatic_complexity
     public init?(rawValue: String) {
@@ -141,39 +82,39 @@ public enum TelemetryEventType: Sendable, Equatable {
             self = .twoFaCreation
         case "2fa.update":
             self = .twoFaUpdate
-        case "passkey.create":
+        case "passkey.create", "passkey.create_done":
             self = .passkeyCreate
-        case "passkey.auth":
+        case "passkey.auth", "passkey.auth_done":
             self = .passkeyAuth
-        case "passkey.display":
+        case "passkey.display", "passkey.display_all_passkeys":
             self = .passkeyDisplay
-        case "monitor.display.home":
+        case "monitor.display.home", "pass_monitor.display_home":
             self = .monitorDisplayHome
-        case "monitor.display.weak.passwords":
+        case "monitor.display.weak.passwords", "pass_monitor.display_weak_passwords":
             self = .monitorDisplayWeakPasswords
-        case "monitor.display.reused.passwords":
+        case "monitor.display.reused.passwords", "pass_monitor.display_reused_passwords":
             self = .monitorDisplayReusedPasswords
-        case "monitor.display.missing.2fa":
+        case "monitor.display.missing.2fa", "pass_monitor.display_missing_2fa":
             self = .monitorDisplayMissing2FA
-        case "monitor.display.excluded.items":
+        case "monitor.display.excluded.items", "pass_monitor.display_excluded_items":
             self = .monitorDisplayExcludedItems
-        case "monitor.display.dark.web.monitoring":
+        case "monitor.display.dark.web.monitoring", "pass_monitor.display_dark_web_monitoring":
             self = .monitorDisplayDarkWebMonitoring
-        case "monitor.display.monitoring.proton.addresses":
+        case "monitor.display.monitoring.proton.addresses", "pass_monitor.display_monitoring_proton_addresses":
             self = .monitorDisplayMonitoringProtonAddresses
-        case "monitor.display.monitoring.email.aliases":
+        case "monitor.display.monitoring.email.aliases", "pass_monitor.display_monitoring_email_aliases":
             self = .monitorDisplayMonitoringEmailAliases
-        case "monitor.add.custom.email.from.suggestion":
+        case "monitor.add.custom.email.from.suggestion", "pass_monitor.add_custom_email_from_suggestion":
             self = .monitorAddCustomEmailFromSuggestion
-        case "monitor.item.detail.from.weak.password":
+        case "monitor.item.detail.from.weak.password", "pass_monitor.item_detail_from_weak_password":
             self = .monitorItemDetailFromWeakPassword
-        case "monitor.item.detail.from.missing.2fa":
+        case "monitor.item.detail.from.missing.2fa", "pass_monitor.item_detail_from_missing_2fa":
             self = .monitorItemDetailFromMissing2FA
-        case "monitor.item.detail.from.reused.password":
+        case "monitor.item.detail.from.reused.password", "pass_monitor.item_detail_from_reused_password":
             self = .monitorItemDetailFromReusedPassword
-        case "multi.account.add.account":
+        case "multi.account.add.account", "pass_multi_account.add_account":
             self = .multiAccountAddAccount
-        case "multi.account.remove.account":
+        case "multi.account.remove.account", "pass_multi_account.remove_account":
             self = .multiAccountRemoveAccount
         default:
             if let crudEvent = Self.crudEvent(rawValue: rawValue) {
@@ -202,6 +143,72 @@ public enum TelemetryEventType: Sendable, Equatable {
             return .delete(itemType)
         default:
             return nil
+        }
+    }
+
+    // The event name sent to the BE
+    public var eventName: String {
+        switch self {
+        case .create:
+            "item.creation"
+        case .read:
+            "item.read"
+        case .update:
+            "item.update"
+        case .delete:
+            "item.deletion"
+        case .autofillDisplay:
+            "autofill.display"
+        case .autofillTriggeredFromApp, .autofillTriggeredFromSource:
+            "autofill.triggered"
+        case .searchClick:
+            "search.click"
+        case .searchTriggered:
+            "search.triggered"
+        case .twoFaCreation:
+            "2fa.creation"
+        case .twoFaUpdate:
+            "2fa.update"
+        case .passkeyCreate:
+            "passkey.create_done"
+        case .passkeyAuth:
+            "passkey.auth_done"
+        case .passkeyDisplay:
+            "passkey.display_all_passkeys"
+        case .monitorDisplayHome:
+            "pass_monitor.display_home"
+        case .monitorDisplayWeakPasswords:
+            "pass_monitor.display_weak_passwords"
+        case .monitorDisplayReusedPasswords:
+            "pass_monitor.display_reused_passwords"
+        case .monitorDisplayMissing2FA:
+            "pass_monitor.display_missing_2fa"
+        case .monitorDisplayExcludedItems:
+            "pass_monitor.display_excluded_items"
+        case .monitorDisplayDarkWebMonitoring:
+            "pass_monitor.display_dark_web_monitoring"
+        case .monitorDisplayMonitoringProtonAddresses:
+            "pass_monitor.display_monitoring_proton_addresses"
+        case .monitorDisplayMonitoringEmailAliases:
+            "pass_monitor.display_monitoring_email_aliases"
+        case .monitorAddCustomEmailFromSuggestion:
+            "pass_monitor.add_custom_email_from_suggestion"
+        case .monitorItemDetailFromWeakPassword:
+            "pass_monitor.item_detail_from_weak_password"
+        case .monitorItemDetailFromMissing2FA:
+            "pass_monitor.item_detail_from_missing_2fa"
+        case .monitorItemDetailFromReusedPassword:
+            "pass_monitor.item_detail_from_reused_password"
+        case .multiAccountAddAccount:
+            "pass_multi_account.add_account"
+        case .multiAccountRemoveAccount:
+            "pass_multi_account.remove_account"
+        case .notificationDisplayNotification:
+            "pass_notification.display_notification"
+        case .notificationChangeNotificationStatus:
+            "pass_notification.change_notification_status"
+        case .notificationNotificationCtaClick:
+            "pass_notification.notification_cta_click"
         }
     }
 }

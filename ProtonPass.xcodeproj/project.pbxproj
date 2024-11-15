@@ -506,6 +506,7 @@
 		5B62931E2CDA27C6006C3C67 /* AliasContactsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62931D2CDA27C4006C3C67 /* AliasContactsEmptyView.swift */; };
 		5B6293212CDA287E006C3C67 /* AliasExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6293202CDA287D006C3C67 /* AliasExplanationView.swift */; };
 		5B6293232CDA299B006C3C67 /* AliasContactsSkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6293222CDA2998006C3C67 /* AliasContactsSkeletonView.swift */; };
+		5B6293252CDCC7B7006C3C67 /* HomeCoordinator+InAppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6293242CDCC7A5006C3C67 /* HomeCoordinator+InAppNotification.swift */; };
 		5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */; };
 		5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */; };
 		5B66395E2B4D88290029F8DA /* ItemHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B66395C2B4D88290029F8DA /* ItemHistoryView.swift */; };
@@ -549,6 +550,7 @@
 		5BBE1CA72C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE1CA52C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift */; };
 		5BBE1CA82C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBE1CA62C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift */; };
 		5BC03E992C175FE50028516E /* HomepageCoordinator+Sharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */; };
+		5BC4F6782CE639F6005D49FC /* InAppNotificationSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */; };
 		5BCB2EA52B1F89E80072345F /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */; };
 		5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
 		5BCF61A02ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
@@ -1020,6 +1022,7 @@
 		5B62931D2CDA27C4006C3C67 /* AliasContactsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsEmptyView.swift; sourceTree = "<group>"; };
 		5B6293202CDA287D006C3C67 /* AliasExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasExplanationView.swift; sourceTree = "<group>"; };
 		5B6293222CDA2998006C3C67 /* AliasContactsSkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsSkeletonView.swift; sourceTree = "<group>"; };
+		5B6293242CDCC7A5006C3C67 /* HomeCoordinator+InAppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeCoordinator+InAppNotification.swift"; sourceTree = "<group>"; };
 		5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultView.swift; sourceTree = "<group>"; };
 		5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultViewModel.swift; sourceTree = "<group>"; };
 		5B66395C2B4D88290029F8DA /* ItemHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemHistoryView.swift; sourceTree = "<group>"; };
@@ -1054,6 +1057,7 @@
 		5BBE1CA52C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLoginAliasActivationView.swift; sourceTree = "<group>"; };
 		5BBE1CA62C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleLoginAliasActivationViewModel.swift; sourceTree = "<group>"; };
 		5BC03E982C175FE50028516E /* HomepageCoordinator+Sharing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+Sharing.swift"; sourceTree = "<group>"; };
+		5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppNotificationSection.swift; sourceTree = "<group>"; };
 		5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelAutoFill.swift; sourceTree = "<group>"; };
@@ -1274,6 +1278,7 @@
 		353739DF29EAE84000A3255E /* QA Features */ = {
 			isa = PBXGroup;
 			children = (
+				5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */,
 				358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */,
 				356CE7722A2289C80043DC62 /* BannersSection.swift */,
 				3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */,
@@ -1897,6 +1902,7 @@
 		35F8CCFE29B617510017DBC6 /* Homepage */ = {
 			isa = PBXGroup;
 			children = (
+				5B6293242CDCC7A5006C3C67 /* HomeCoordinator+InAppNotification.swift */,
 				35F8CCFF29B617670017DBC6 /* HomepageCoordinator.swift */,
 				351225A62C502602007D266E /* HomepageCoordinator+AddAccount.swift */,
 				355A2E722C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift */,
@@ -3359,6 +3365,7 @@
 				3572E52929940C1900775FAC /* CreateEditItemToolbar.swift in Sources */,
 				35B089DC288E8A34000D2ECB /* CreateEditNoteViewModel.swift in Sources */,
 				356A1F032B88AEB800561950 /* PasskeyDetailRow.swift in Sources */,
+				5BC4F6782CE639F6005D49FC /* InAppNotificationSection.swift in Sources */,
 				35AABE1B28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift in Sources */,
 				35EC5C9A2AE015DE0050614F /* ShareInviteeView.swift in Sources */,
 				5B5DBF192B68048600F72F6C /* TotpLoginsViewModel.swift in Sources */,
@@ -3493,6 +3500,7 @@
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				5BE809302C07358200D3A707 /* IdentityFields.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
+				5B6293252CDCC7B7006C3C67 /* HomeCoordinator+InAppNotification.swift in Sources */,
 				35C0D1C72B20B567005D48A6 /* TOTPRow.swift in Sources */,
 				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
 				35661CB429B8BFCD003BBAD6 /* EditableVaultListViewModel.swift in Sources */,

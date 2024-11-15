@@ -25,4 +25,7 @@ extension Tag {
     @Tag static var localDatasource: Self
     @Tag static var remoteDatasource: Self
     @Tag static var repository: Self
+    @Tag static var manager: Self
+    @Tag static var endpoint: Self
+    @Tag static var models: Self
 }

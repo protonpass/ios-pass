@@ -116,6 +116,13 @@ extension SharedServiceContainer {
     var cachedFavIconsManager: Factory<any CachedFavIconsManagerProtocol> {
         self { CachedFavIconsManager() }
     }
+
+    var inAppNotificationManager: Factory<any InAppNotificationManagerProtocol> {
+        self { InAppNotificationManager(repository: SharedRepositoryContainer.shared.inAppNotificationRepository(),
+                                        userManager: self.userManager(),
+                                        userDefault: kSharedUserDefaults,
+                                        logManager: self.logManager) }
+    }
 }
 
 // MARK: - User
