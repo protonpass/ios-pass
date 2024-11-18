@@ -46,12 +46,14 @@ struct ItemDetailToolbar: ToolbarContent {
             switch viewModel.itemContent.item.itemState {
             case .active:
                 HStack(spacing: 0) {
-                    CapsuleLabelButton(icon: IconProvider.pencil,
-                                       title: #localized("Edit"),
-                                       titleColor: PassColor.textInvert,
-                                       backgroundColor: itemContentType.normMajor1Color,
-                                       isDisabled: !viewModel.isAllowedToEdit,
-                                       action: { viewModel.edit() })
+                    if viewModel.canModify() {
+                        CapsuleLabelButton(icon: IconProvider.pencil,
+                                           title: #localized("Edit"),
+                                           titleColor: PassColor.textInvert,
+                                           backgroundColor: itemContentType.normMajor1Color,
+                                           isDisabled: !viewModel.isAllowedToEdit,
+                                           action: { viewModel.edit() })
+                    }
 
                     CircleButton(icon: IconProvider.usersPlus,
                                  iconColor: itemContentType.normMajor2Color,
