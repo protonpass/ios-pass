@@ -20,6 +20,7 @@
 
 public struct Alias: Decodable, Sendable, Equatable, Hashable {
     public let email: String
+    public let modify: Bool
     public let mailboxes: [AliasLinkedMailbox]
     public let availableMailboxes: [AliasLinkedMailbox]
     public let note: String?
