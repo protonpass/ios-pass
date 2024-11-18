@@ -92,7 +92,7 @@ extension ItemContextMenuHandler {
             let userId = try await userManager.getActiveUserId()
             try await itemRepository.deleteItems(userId: userId, [encryptedItem], skipTrash: false)
             bannerManager.displayBottomInfoMessage(item.type.deleteMessage)
-            await router.display(element: .successMessage(config: .refresh(with: .delete(item.type))))
+            await router.display(element: .successMessage(config: .dismissAndRefresh(with: .delete(item.type))))
         }
     }
 
