@@ -20,12 +20,14 @@
 
 public struct Alias: Decodable, Sendable, Equatable, Hashable {
     public let email: String
+    public let modify: Bool
     public let mailboxes: [AliasLinkedMailbox]
     public let availableMailboxes: [AliasLinkedMailbox]
     public let note: String?
     public let name: String?
     public let displayName: String
     public let stats: AliasStats
+    public let contactCount: Int
 }
 
 public struct AliasStats: Decodable, Sendable, Equatable, Hashable {

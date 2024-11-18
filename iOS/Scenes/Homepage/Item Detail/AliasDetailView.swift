@@ -78,7 +78,7 @@ struct AliasDetailView: View {
                                 .padding(.bottom, 8)
                         }
 
-                        if viewModel.contacts != nil {
+                        if viewModel.contacts != nil, viewModel.canModify() {
                             contactRow
 
                             // swiftlint:disable:next line_length
@@ -276,8 +276,8 @@ struct AliasDetailView: View {
                     .contentShape(.rect)
                     .padding(.vertical, 8)
 
-                if let contacts = viewModel.contacts, !contacts.contacts.isEmpty {
-                    Text(verbatim: "\(contacts.total)")
+                if let totalContacts = viewModel.aliasInfos?.contactCount, totalContacts > 0 {
+                    Text(verbatim: "\(totalContacts)")
                         .fontWeight(.medium)
                         .padding(.vertical, 4)
                         .padding(.horizontal, 11)

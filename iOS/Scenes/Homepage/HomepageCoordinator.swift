@@ -1705,6 +1705,10 @@ private extension HomepageCoordinator {
         }
         if let event = config.telemetryEvent {
             addNewEvent(type: event)
+
+            if case .delete = event {
+                itemDetailCoordinator = nil
+            }
         }
 
         if config.refresh {
