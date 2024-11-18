@@ -1,3 +1,16 @@
+# Version 1.14.0
+Features:
+- Advanced alias management part 2 (behind feature flags)
+
+Improvements:
+- Improved app launch and search performance with large item sets
+
+Others:
+- Core libraries upgraded from 26.1.2 to 26.5.0
+- Enabled Swift 6 mode
+- Removed PassAccountSwitchV1 feature flag
+- Added support for toggling feature flags dynamically
+
 # Version 1.13.3
 Show warning when deleting aliases
 
