@@ -27,6 +27,7 @@ public struct Alias: Decodable, Sendable, Equatable, Hashable {
     public let name: String?
     public let displayName: String
     public let stats: AliasStats
+    public let contactCount: Int
 }
 
 public struct AliasStats: Decodable, Sendable, Equatable, Hashable {
