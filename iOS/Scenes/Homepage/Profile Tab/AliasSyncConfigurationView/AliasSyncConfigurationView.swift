@@ -81,7 +81,7 @@ struct AliasSyncConfigurationView: View {
                                                       viewModel.setDefaultMailBox(mailbox: mailbox)
                                                   },
                                                   delete: { mailbox in
-                                                      if mailbox.verified {
+                                                      if mailbox.verified, mailbox.aliasCount > 0 {
                                                           mailboxToDelete = mailbox
                                                       } else {
                                                           viewModel.delete(mailbox: mailbox,
@@ -285,7 +285,7 @@ private struct MailboxElementRow: View {
                             .buttonEmbeded { setDefault(mailBox) }
                     } else {
                         Label(title: { Text("Verify") },
-                              icon: { Image(uiImage: IconProvider.star) })
+                              icon: { Image(uiImage: IconProvider.checkmarkCircle) })
                             .buttonEmbeded { verify(mailBox) }
                     }
 
@@ -508,7 +508,7 @@ private struct MailboxDeletionView: View {
                     .multilineTextAlignment(.center)
                     .minimumScaleFactor(0.90)
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .layoutPriority(1)
+                    .layoutPriority(2)
 
                 if mailbox.aliasCount > 0, !wantToTransferAliases {
                     HStack {
@@ -520,7 +520,7 @@ private struct MailboxDeletionView: View {
                         Text("Please note that once deleted, aliases cannot be restored.")
                             .foregroundStyle(PassColor.textWeak.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                            .minimumScaleFactor(0.90)
+                            .minimumScaleFactor(0.75)
                     }
                     .padding(DesignConstant.sectionPadding)
                     .roundedEditableSection()
@@ -583,6 +583,7 @@ private struct MailboxDeletionView: View {
                               action: { dismiss() })
                 .layoutPriority(1)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .animation(.default, value: wantToTransferAliases)
         .padding(24)
         .background(PassColor.backgroundWeak.toColor)
