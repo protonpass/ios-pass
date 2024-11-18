@@ -144,7 +144,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                              contacts: contacts)
     }
 
-    override func showEdit() -> Bool {
+    override func canModify() -> Bool {
         guard let aliasInfos else {
             return false
         }
