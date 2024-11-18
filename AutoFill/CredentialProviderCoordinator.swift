@@ -216,11 +216,13 @@ private extension CredentialProviderCoordinator {
                     throw ASExtensionError(.credentialIdentityNotFound)
                 }
 
-                let localAuthenticationMethod = getSharedPreferences().localAuthenticationMethod
+                let prefs = getSharedPreferences()
                 try await checkAndAutoFill(request,
                                            userId: item.userId,
                                            context: context,
-                                           localAuthenticationMethod: localAuthenticationMethod)
+                                           localAuthenticationMethod: prefs.localAuthenticationMethod,
+                                           appLockTime: prefs.appLockTime,
+                                           lastActiveTimestamp: prefs.lastActiveTimestamp)
             } catch {
                 logger.error(error)
                 cancelAutoFill(reason: .failed, context: context)
