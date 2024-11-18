@@ -143,6 +143,13 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                              alias: aliasInfos,
                              contacts: contacts)
     }
+
+    override func showEdit() -> Bool {
+        guard let aliasInfos else {
+            return false
+        }
+        return aliasInfos.modify
+    }
 }
 
 private extension AliasDetailViewModel {
