@@ -4801,6 +4801,36 @@
             }
           }
         },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Przekierowano %lld"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Przekierowano %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Przekierowano %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Przekierowano %lld"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -5190,6 +5220,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld doorgestuurd"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Przekierowano %lld"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Przekierowano %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Przekierowano %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Przekierowano %lld"
                 }
               }
             }
@@ -14228,6 +14288,12 @@
             "value" : "Se crea un contacto por cada dirección que envía o recibe correos electrónicos desde %@"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yhteystieto luodaan jokaiselle sähköpostiosoitteelle, joka lähettää tai vastaanottaa sähköposteja osoitteelta %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14268,6 +14334,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Een contactpersoon wordt gemaakt voor elk e-mailadres dat e-mails naar of ontvangt van %@"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt jest tworzony dla każdego adresu e-mail, który wysyła lub odbiera wiadomości z adresu %@"
           }
         },
         "ro" : {
@@ -44271,6 +44343,12 @@
             "value" : "Verwijder het, ik heb het nooit nodig"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń go. Nigdy nie będę go potrzebować"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48476,6 +48554,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-mail dit adres en het zal lijken te worden verzonden van %@."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiadomość wysłana na ten adres będzie wyglądała na wysłaną z adresu %@."
           }
         },
         "pt-BR" : {
@@ -65214,6 +65298,12 @@
             "value" : "In Pass is een artikelnotitie versleuteld met de artikelversleutelingssleutel en alleen gebruikers die toegang hebben tot het item kunnen de notitie bekijken."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "W Proton Pass notatka elementu jest szyfrowana za pomocą klucza szyfrowania elementu i tylko użytkownicy, którzy mają dostęp do elementu, mogą ją wyświetlić."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65447,7 +65537,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Käytöstä poistetut linkit"
+            "value" : "Käyttämättömät linkit"
           }
         },
         "fr" : {
@@ -74847,7 +74937,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Postilaatikko on paikka, johon aliakselle lähetetyt sähköpostit ohjataan. Se on tuttu postilaatikkosi, esim. Gmail, Outlook, Proton Mail jne."
+            "value" : "Postilaatikko on paikka, johon aliakselle lähetetyt sähköpostit välitetään. Se on tuttu postilaatikkosi, esim. Gmail, Outlook, Proton Mail jne."
           }
         },
         "fr" : {
@@ -81687,6 +81777,12 @@
             "value" : "Zelfs Proton of SimpleLogin kan het niet zien."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nawet Proton lub SimpleLogin nie mogą tego zobaczyć."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84289,6 +84385,12 @@
             "value" : "Una vez sincronizado, al eliminar los alias en Pass también se eliminarán en SimpleLogin."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synkronoinnin jälkeen aliasten poistaminen Passista poistaa ne myös SimpleLoginista."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84323,6 +84425,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eenmaal gesynchroniseerd, zal het verwijderen van aliassen in Pass ze ook verwijderen in SimpleLogin."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po synchronizacji usunięte aliasy w Proton Pass zostaną również usunięte w SimpleLogin."
           }
         },
         "ro" : {
@@ -92090,6 +92198,12 @@
             "value" : "Revise la carpeta spam y busque un correo electrónico que contenga «Confirma tu buzón %@»\n\nSi no puede encontrar el correo electrónico, puede [solicitar un código nuevo](https://proton.me)."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varmista, ettei roskapostistasi löydy sähköpostia otsikolla \"Vahvista postilaatikkosi %@\".\n\nJos et löydä sellaista sähköpostia, voit [pyytää uuden koodin](https://proton.me)."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92896,6 +93010,12 @@
             "value" : "Let op: de alias kan niet worden hersteld. Misschien wilt u de alias in plaats daarvan uitschakelen?"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pamiętaj, że usuniętego aliasu nie można przywrócić. Czy chcesz, zamiast tego wyłączyć alias?"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93014,6 +93134,12 @@
             "value" : "Let op: de alias kan niet worden hersteld. De alias is al uitgeschakeld en zal geen e-mails doorsturen naar uw mailbox."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pamiętaj, że usuniętego aliasu nie można przywrócić. Alias jest wyłączony i nie przekierowuje wiadomości do skrzynki odbiorczej."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93090,6 +93216,12 @@
             "value" : "Tome nota que una vez eliminados, los alias no pueden ser restaurados"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huomaa, että poistettuja aliaksia ei voi palauttaa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93132,6 +93264,12 @@
             "value" : "Let op: deze aliassen kunnen niet worden hersteld"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pamiętaj, że raz usunięte aliasy nie mogą zostać przywrócone"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93164,6 +93302,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please note that once deleted, aliases cannot be restored."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una vez eliminados, los alias no se pueden restaurar."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una vez eliminados, los alias no se pueden restaurar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une fois supprimé, un alias ne peut pas être restauré."
           }
         }
       }
@@ -95739,6 +95895,12 @@
             "value" : "Proton Pass zal een doorschakeladres genereren (ook aangeduid als reverse alias)."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass wygeneruje adres przekierowania (określany również jako odwrócony alias)."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97790,7 +97952,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poista kaikki käytöstä poistetut linkit"
+            "value" : "Poista kaikki käyttämättömät linkit"
           }
         },
         "fr" : {
@@ -98406,7 +98568,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poista käytöstä poistettu linkki"
+            "value" : "Poista käyttämätön linkki"
           }
         },
         "fr" : {
@@ -113952,7 +114114,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SimpleLogin-muistiinpano tallennetaan samaan paikkaan alias-osoitteen kanssa. Vaikka se on suojattu salauksella levossa, sitä ei ole E2E-salattu, joten kuka tahansa, jolla on pääsy SimpleLogin-tietokantaan, voi lukea sen."
+            "value" : "SimpleLogin-muistiinpano tallennetaan samaan paikkaan alias-osoitteen kanssa. Vaikka se on suojattu salauksella levossa, sitä ei ole päästä päähän -salattu, joten kuka tahansa SimpleLogin-tietokantaan pääsevä voi lukea sen."
           }
         },
         "fr" : {
@@ -113989,6 +114151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin note wordt samen opgeslagen op dezelfde locatie met alias adres en terwijl het beschermd is door encryptie in de rest het is niet E2E versleuteld wat betekent dat iedereen die toegang heeft tot SimpleLogin database dit kan lezen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notatka SimpleLogin jest przechowywana wraz z adresem aliasu i nie jest szyfrowana end-to-end. Każdy, kto ma dostęp do bazy danych SimpleLogin, może ją odczytać."
           }
         },
         "pt-BR" : {
@@ -118666,6 +118834,12 @@
             "value" : "El nombre a mostrar cuando se envía un correo desde este alias."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näyttönimi, kun lähetät sähköpostia tästä aliaksesta."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -118706,6 +118880,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "De weergavenaam bij het verzenden van een e-mail van deze alias."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa wyświetlana podczas wysyłania wiadomości z tego aliasu."
           }
         },
         "ro" : {
@@ -124977,6 +125157,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Begrepen, ik zal ze nooit nodig hebben"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrozumiałem. Nigdy nie będę ich potrzebować"
           }
         },
         "ro" : {
@@ -138923,6 +139109,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "U staat op het punt %lld aliassen permanent te verwijderen"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zamierzasz trwale usunąć %lld aliasy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zamierzasz trwale usunąć %lld aliasów"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zamierzasz trwale usunąć %lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zamierzasz trwale usunąć %lld aliasów"
                 }
               }
             }
