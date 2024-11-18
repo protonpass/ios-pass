@@ -145,6 +145,7 @@ extension AutoFillUseCaseContainer {
     var checkAndAutoFill: Factory<any CheckAndAutoFillUseCase> {
         self { CheckAndAutoFill(credentialProvider: SharedDataContainer.shared.credentialProvider(),
                                 userManager: SharedServiceContainer.shared.userManager(),
+                                canSkipLocalAuthentication: self.canSkipLocalAuthentication(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
                                 completeAutoFill: self.completeAutoFill()) }
@@ -208,5 +209,11 @@ extension AutoFillUseCaseContainer {
                                            localShareDatasource: SharedRepositoryContainer.shared
                                                .localShareDatasource(),
                                            reindexLoginItem: self.reindexLoginItem()) }
+    }
+
+    var canSkipLocalAuthentication: Factory<any CanSkipLocalAuthenticationUseCase> {
+        self {
+            CanSkipLocalAuthentication(currentDateProvider: SharedToolingContainer.shared.currentDateProvider())
+        }
     }
 }
