@@ -34,6 +34,7 @@ final class CredentialProviderViewController: ASCredentialProviderViewController
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        NotificationCenter.default.post(name: .recordLastActiveTimestamp, object: nil)
         resetFactory()
     }
 
