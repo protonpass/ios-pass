@@ -259,7 +259,7 @@ class BaseItemDetailViewModel: ObservableObject {
         router.display(element: .displayErrorBanner(error))
     }
 
-    func showEdit() -> Bool {
+    func canModify() -> Bool {
         true
     }
 }
