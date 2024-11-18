@@ -27,6 +27,7 @@ extension HomepageCoordinator {
             assertionFailure("Root UIWindow not injected")
             return
         }
+        NotificationCenter.default.post(name: .recordLastActiveTimestamp, object: nil)
         if appCoverView == nil {
             let appCoverViewController = makeAppCoverViewController(windowSize: window.frame.size)
             guard let appCoverView = appCoverViewController.view else {
