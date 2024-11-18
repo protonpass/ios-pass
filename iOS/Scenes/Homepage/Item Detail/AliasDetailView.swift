@@ -78,7 +78,7 @@ struct AliasDetailView: View {
                                 .padding(.bottom, 8)
                         }
 
-                        if viewModel.contacts != nil {
+                        if viewModel.contacts != nil, let aliasInfos = viewModel.aliasInfos, aliasInfos.modify {
                             contactRow
 
                             // swiftlint:disable:next line_length
