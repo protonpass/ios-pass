@@ -36,6 +36,6 @@ extension SharedPreferences {
               clipboardExpiration: ClipboardExpiration.random()!,
               shareClipboard: .random(),
               alwaysShowUsernameField: .random(),
-              lastActiveTimestamp: .random(in: 1..1000))
+              lastActiveTimestamp: .random(in: 1...1000))
     }
 }

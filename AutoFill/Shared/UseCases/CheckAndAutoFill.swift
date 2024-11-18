@@ -22,28 +22,37 @@ import AuthenticationServices
 import Client
 import Entities
 import Foundation
+import UseCases
 
+// swiftlint:disable function_parameter_count
 protocol CheckAndAutoFillUseCase: Sendable {
     func execute(_ request: AutoFillRequest,
                  userId: String,
                  context: ASCredentialProviderExtensionContext,
-                 localAuthenticationMethod: LocalAuthenticationMethod) async throws
+                 localAuthenticationMethod: LocalAuthenticationMethod,
+                 appLockTime: AppLockTime,
+                 lastActiveTimestamp: TimeInterval?) async throws
 }
 
 extension CheckAndAutoFillUseCase {
     func callAsFunction(_ request: AutoFillRequest,
                         userId: String,
                         context: ASCredentialProviderExtensionContext,
-                        localAuthenticationMethod: LocalAuthenticationMethod) async throws {
+                        localAuthenticationMethod: LocalAuthenticationMethod,
+                        appLockTime: AppLockTime,
+                        lastActiveTimestamp: TimeInterval?) async throws {
         try await execute(request,
                           userId: userId,
                           context: context,
-                          localAuthenticationMethod: localAuthenticationMethod)
+                          localAuthenticationMethod: localAuthenticationMethod,
+                          appLockTime: appLockTime,
+                          lastActiveTimestamp: lastActiveTimestamp)
     }
 }
 
 final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     private let credentialProvider: any AuthManagerProtocol
+    private let canSkipLocalAuthentication: any CanSkipLocalAuthenticationUseCase
     private let generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
@@ -51,10 +60,12 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
 
     init(credentialProvider: any AuthManagerProtocol,
          userManager: any UserManagerProtocol,
+         canSkipLocalAuthentication: any CanSkipLocalAuthenticationUseCase,
          generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,
          completeAutoFill: any CompleteAutoFillUseCase) {
         self.credentialProvider = credentialProvider
+        self.canSkipLocalAuthentication = canSkipLocalAuthentication
         self.generateAuthorizationCredential = generateAuthorizationCredential
         self.cancelAutoFill = cancelAutoFill
         self.completeAutoFill = completeAutoFill
@@ -64,8 +75,13 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     func execute(_ request: AutoFillRequest,
                  userId: String,
                  context: ASCredentialProviderExtensionContext,
-                 localAuthenticationMethod: LocalAuthenticationMethod) async throws {
-        guard credentialProvider.isAuthenticated(userId: userId), localAuthenticationMethod == .none else {
+                 localAuthenticationMethod: LocalAuthenticationMethod,
+                 appLockTime: AppLockTime,
+                 lastActiveTimestamp: TimeInterval?) async throws {
+        let canSkip = canSkipLocalAuthentication(appLockTime: appLockTime,
+                                                 lastActiveTimestamp: lastActiveTimestamp)
+        guard credentialProvider.isAuthenticated(userId: userId),
+              localAuthenticationMethod == .none || canSkip else {
             cancelAutoFill(reason: .userInteractionRequired, context: context)
             return
         }
@@ -77,3 +93,5 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
                                    context: context)
     }
 }
+
+// swiftlint:enable function_parameter_count
