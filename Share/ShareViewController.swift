@@ -33,4 +33,9 @@ final class ShareViewController: UIViewController {
             await coordinator.start()
         }
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.post(name: .recordLastActiveTimestamp, object: nil)
+    }
 }
