@@ -158,17 +158,15 @@ struct LocalAuthenticationModifier: ViewModifier {
             authenticated = false
         }
         .onReceive(.recordLastActiveTimestamp) {
-            if authenticated {
-                Task {
-                    do {
-                        try await preferencesManager
-                            .updateSharedPreferences(\.lastActiveTimestamp,
-                                                     value: Date.now.timeIntervalSince1970)
-                    } catch {
-                        #if DEBUG
-                        print(error.localizedDescription)
-                        #endif
-                    }
+            Task {
+                do {
+                    let timestamp = authenticated ? Date.now.timeIntervalSince1970 : nil
+                    try await preferencesManager.updateSharedPreferences(\.lastActiveTimestamp,
+                                                                         value: timestamp)
+                } catch {
+                    #if DEBUG
+                    print(error.localizedDescription)
+                    #endif
                 }
             }
         }
