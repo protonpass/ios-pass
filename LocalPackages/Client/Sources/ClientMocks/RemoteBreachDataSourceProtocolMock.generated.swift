@@ -104,40 +104,40 @@ public final class RemoteBreachDataSourceProtocolMock: @unchecked Sendable, Remo
         closureVerifyCustomEmail()
     }
     // MARK: - getAllBreachesForEmail
-    public var getAllBreachesForEmailUserIdEmailThrowableError5: Error?
+    public var getAllBreachesForEmailUserIdEmailIdThrowableError5: Error?
     public var closureGetAllBreachesForEmail: () -> () = {}
     public var invokedGetAllBreachesForEmailfunction = false
     public var invokedGetAllBreachesForEmailCount = 0
-    public var invokedGetAllBreachesForEmailParameters: (userId: String, email: CustomEmail)?
-    public var invokedGetAllBreachesForEmailParametersList = [(userId: String, email: CustomEmail)]()
+    public var invokedGetAllBreachesForEmailParameters: (userId: String, emailId: String)?
+    public var invokedGetAllBreachesForEmailParametersList = [(userId: String, emailId: String)]()
     public var stubbedGetAllBreachesForEmailResult: EmailBreaches!
 
-    public func getAllBreachesForEmail(userId: String, email: CustomEmail) async throws -> EmailBreaches {
+    public func getAllBreachesForEmail(userId: String, emailId: String) async throws -> EmailBreaches {
         invokedGetAllBreachesForEmailfunction = true
         invokedGetAllBreachesForEmailCount += 1
-        invokedGetAllBreachesForEmailParameters = (userId, email)
-        invokedGetAllBreachesForEmailParametersList.append((userId, email))
-        if let error = getAllBreachesForEmailUserIdEmailThrowableError5 {
+        invokedGetAllBreachesForEmailParameters = (userId, emailId)
+        invokedGetAllBreachesForEmailParametersList.append((userId, emailId))
+        if let error = getAllBreachesForEmailUserIdEmailIdThrowableError5 {
             throw error
         }
         closureGetAllBreachesForEmail()
         return stubbedGetAllBreachesForEmailResult
     }
     // MARK: - getAllBreachesForProtonAddress
-    public var getAllBreachesForProtonAddressUserIdAddressThrowableError6: Error?
+    public var getAllBreachesForProtonAddressUserIdAddressIdThrowableError6: Error?
     public var closureGetAllBreachesForProtonAddress: () -> () = {}
     public var invokedGetAllBreachesForProtonAddressfunction = false
     public var invokedGetAllBreachesForProtonAddressCount = 0
-    public var invokedGetAllBreachesForProtonAddressParameters: (userId: String, address: ProtonAddress)?
-    public var invokedGetAllBreachesForProtonAddressParametersList = [(userId: String, address: ProtonAddress)]()
+    public var invokedGetAllBreachesForProtonAddressParameters: (userId: String, addressId: String)?
+    public var invokedGetAllBreachesForProtonAddressParametersList = [(userId: String, addressId: String)]()
     public var stubbedGetAllBreachesForProtonAddressResult: EmailBreaches!
 
-    public func getAllBreachesForProtonAddress(userId: String, address: ProtonAddress) async throws -> EmailBreaches {
+    public func getAllBreachesForProtonAddress(userId: String, addressId: String) async throws -> EmailBreaches {
         invokedGetAllBreachesForProtonAddressfunction = true
         invokedGetAllBreachesForProtonAddressCount += 1
-        invokedGetAllBreachesForProtonAddressParameters = (userId, address)
-        invokedGetAllBreachesForProtonAddressParametersList.append((userId, address))
-        if let error = getAllBreachesForProtonAddressUserIdAddressThrowableError6 {
+        invokedGetAllBreachesForProtonAddressParameters = (userId, addressId)
+        invokedGetAllBreachesForProtonAddressParametersList.append((userId, addressId))
+        if let error = getAllBreachesForProtonAddressUserIdAddressIdThrowableError6 {
             throw error
         }
         closureGetAllBreachesForProtonAddress()
