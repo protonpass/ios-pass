@@ -18,30 +18,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import UseCases
 import Client
 import Core
+import CryptoKit
+import Entities
 import Foundation
-import ProtonCoreFeatureFlags
+import ProtonCoreKeymaker
 
-public final class GetFeatureFlagStatusUseCaseMock: @unchecked Sendable, GetFeatureFlagStatusUseCase {
+public final class NonAsyncSymmetricKeyProviderMock: @unchecked Sendable, NonAsyncSymmetricKeyProvider {
 
     public init() {}
 
-    // MARK: - execute
-    public var closureExecute: () -> () = {}
-    public var invokedExecutefunction = false
-    public var invokedExecuteCount = 0
-    public var invokedExecuteParameters: (flag: any FeatureFlagTypeProtocol, Void)?
-    public var invokedExecuteParametersList = [(flag: any FeatureFlagTypeProtocol, Void)]()
-    public var stubbedExecuteResult: Bool!
+    // MARK: - getSymmetricKey
+    public var getSymmetricKeyThrowableError1: Error?
+    public var closureGetSymmetricKey: () -> () = {}
+    public var invokedGetSymmetricKeyfunction = false
+    public var invokedGetSymmetricKeyCount = 0
+    public var stubbedGetSymmetricKeyResult: SymmetricKey!
 
-    public func execute(for flag: any FeatureFlagTypeProtocol) -> Bool {
-        invokedExecutefunction = true
-        invokedExecuteCount += 1
-        invokedExecuteParameters = (flag, ())
-        invokedExecuteParametersList.append((flag, ()))
-        closureExecute()
-        return stubbedExecuteResult
+    public func getSymmetricKey() throws -> SymmetricKey {
+        invokedGetSymmetricKeyfunction = true
+        invokedGetSymmetricKeyCount += 1
+        if let error = getSymmetricKeyThrowableError1 {
+            throw error
+        }
+        closureGetSymmetricKey()
+        return stubbedGetSymmetricKeyResult
     }
 }
