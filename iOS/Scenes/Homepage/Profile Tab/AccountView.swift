@@ -59,19 +59,17 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
-                if viewModel.canShowSecurityKeys {
-                    VStack(spacing: 0) {
-                        OptionRow(action: { viewModel.showSecurityKeys() },
-                                  height: .tall,
-                                  content: {
-                                      Text("Security keys")
-                                          .foregroundStyle(PassColor.textNorm.toColor)
-                                  },
-                                  trailing: { ChevronRight() })
-                    }
-                    .roundedEditableSection()
-                    .padding(.top)
+                VStack(spacing: 0) {
+                    OptionRow(action: { viewModel.showSecurityKeys() },
+                              height: .tall,
+                              content: {
+                                  Text("Security keys")
+                                      .foregroundStyle(PassColor.textNorm.toColor)
+                              },
+                              trailing: { ChevronRight() })
                 }
+                .roundedEditableSection()
+                .padding(.top)
 
                 if viewModel.canChangePassword {
                     VStack(spacing: 0) {
