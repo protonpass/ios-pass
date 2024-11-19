@@ -1611,6 +1611,26 @@
         }
       }
     },
+    "Choose a file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a file"
+          }
+        }
+      }
+    },
+    "Choose a photo or video" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a photo or video"
+          }
+        }
+      }
+    },
     "Close" : {
       "localizations" : {
         "be" : {
@@ -5418,6 +5438,16 @@
         }
       }
     },
+    "Scan documents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan documents"
+          }
+        }
+      }
+    },
     "Seamlessly search for items via your home screen. Open Settings → Spotlight to enable." : {
       "localizations" : {
         "be" : {
@@ -6992,6 +7022,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma adları eşitle"
+          }
+        }
+      }
+    },
+    "Take a photo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take a photo"
           }
         }
       }
