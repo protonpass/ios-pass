@@ -210,9 +210,11 @@ struct ProfileTabView: View {
                     PassDivider()
 
                     OptionRow(height: .tall) {
-                        StaticToggle(type.fallbackToPasscodeMessage,
-                                     isOn: viewModel.fallbackToPasscode,
-                                     action: { viewModel.toggleFallbackToPasscode() })
+                        if let message = type.fallbackToPasscodeMessage {
+                            StaticToggle(.localized(message),
+                                         isOn: viewModel.fallbackToPasscode,
+                                         action: { viewModel.toggleFallbackToPasscode() })
+                        }
                     }
 
                 case .pin:
@@ -269,7 +271,7 @@ struct ProfileTabView: View {
         VStack {
             VStack(spacing: 0) {
                 OptionRow(height: .medium) {
-                    StaticToggle("QuickType bar suggestions",
+                    StaticToggle(.localized("QuickType bar suggestions"),
                                  isOn: viewModel.quickTypeBar,
                                  action: { viewModel.toggleQuickTypeBar() })
                 }
@@ -277,7 +279,7 @@ struct ProfileTabView: View {
                 PassSectionDivider()
 
                 OptionRow(height: .medium) {
-                    StaticToggle("Copy 2FA code",
+                    StaticToggle(.localized("Copy 2FA code"),
                                  isOn: viewModel.automaticallyCopyTotpCode,
                                  action: { viewModel.toggleAutomaticCopyTotpCode() })
                 }
