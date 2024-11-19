@@ -28,16 +28,17 @@ public enum InternalNavigationDestination: Equatable, Sendable {
     case addressBreach(addressID: String)
     case upgrade
     case viewItem(shareID: String, itemID: String)
+    case unknown(urlString: String)
 
     /// Parse the URL and return the corresponding enum case with parameters
-    public static func parse(urlString: String) -> InternalNavigationDestination? {
-        guard let url = URLComponents(string: urlString) else { return nil }
+    public static func parse(urlString: String) -> InternalNavigationDestination {
+        guard let url = URLComponents(string: urlString) else { return .unknown(urlString: urlString) }
 
         // Extract the path
         let path = url.path.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
         let components = path.split(separator: "/")
 
-        guard components.count == 2, components.first == "internal" else { return nil }
+        guard components.count == 2, components.first == "internal" else { return .unknown(urlString: urlString) }
 
         let destinationString = String(components[1])
         let queryParams = url.queryItems?.reduce(into: [String: String]()) { result, item in
@@ -71,10 +72,10 @@ public enum InternalNavigationDestination: Equatable, Sendable {
                 return .viewItem(shareID: shareID, itemID: itemID)
             }
         default:
-            return nil
+            return .unknown(urlString: urlString)
         }
 
-        return nil
+        return .unknown(urlString: urlString)
     }
 }
 

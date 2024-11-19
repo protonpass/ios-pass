@@ -22,8 +22,8 @@
 import Testing
 import Foundation
 
-struct InternalNavigationDestinationTestCase: Sendable {
-   let name: String
+fileprivate struct InternalNavigationDestinationTestCase: Sendable {
+    let name: String
     let input:String
     let expectation: InternalNavigationDestination?
 }
@@ -65,12 +65,12 @@ struct InternalNavigationDestinationTests {
             InternalNavigationDestinationTestCase(
                 name: "Unknown route",
                 input: "/internal/unknown_route",
-                expectation: nil
+                expectation: .unknown(urlString: "/internal/unknown_route")
             ),
             InternalNavigationDestinationTestCase(
                 name: "Missing parameters",
                 input: "/internal/share_members",
-                expectation: nil
+                expectation: .unknown(urlString: "/internal/share_members")
             ),
             InternalNavigationDestinationTestCase(
                 name: "Extra parameters",
@@ -78,7 +78,7 @@ struct InternalNavigationDestinationTests {
                 expectation: .viewVaultMembers(shareID: "a1b2c3d4==")
             )
             ])
-    func encodingDecodingTelemetryEventType(testCase: InternalNavigationDestinationTestCase) {
+    fileprivate func encodingDecodingTelemetryEventType(testCase: InternalNavigationDestinationTestCase) {
         let expectation = InternalNavigationDestination.parse(urlString: testCase.input)
         #expect(expectation == testCase.expectation)
     }
