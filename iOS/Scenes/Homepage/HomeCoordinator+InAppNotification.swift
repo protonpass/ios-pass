@@ -118,9 +118,7 @@ private extension HomepageCoordinator {
                 if case let .externalNavigation(url) = notification.cta {
                     urlOpener.open(urlString: url)
                 } else if case let .internalNavigation(url) = notification.cta {
-                    guard let destination = InternalNavigationDestination.parse(urlString: url) else {
-                        return
-                    }
+                    let destination = InternalNavigationDestination.parse(urlString: url)
                     navigate(to: destination)
                 }
             } catch {
@@ -149,6 +147,8 @@ private extension HomepageCoordinator {
                     router.present(for: .upgradeFlow)
                 case let .viewItem(shareID, itemID):
                     try await itemDetail(shareID: shareID, itemID: itemID)
+                case let .unknown(url):
+                    logger.trace("Unknown navigation destination: \(url)")
                 }
             } catch {
                 handle(error: error)
