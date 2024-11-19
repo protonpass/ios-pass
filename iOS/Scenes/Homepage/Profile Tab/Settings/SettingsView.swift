@@ -106,7 +106,7 @@ private extension SettingsView {
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                StaticToggle("Show website thumbnails",
+                StaticToggle(.localized("Show website thumbnails"),
                              isOn: viewModel.displayFavIcons,
                              action: { viewModel.toggleDisplayFavIcons() })
             }
@@ -114,7 +114,7 @@ private extension SettingsView {
             PassSectionDivider()
 
             OptionRow(height: .tall) {
-                StaticToggle("Always show username field",
+                StaticToggle(.localized("Always show username field"),
                              isOn: viewModel.alwaysShowUsernameField,
                              action: { viewModel.toggleAlwaysShowUsernameField() })
             }
@@ -143,7 +143,7 @@ private extension SettingsView {
                 PassSectionDivider()
 
                 OptionRow(height: .tall) {
-                    StaticToggle("Share clipboard between devices",
+                    StaticToggle(.localized("Share clipboard between devices"),
                                  isOn: viewModel.shareClipboard,
                                  action: { viewModel.toggleShareClipboard() })
                 }
@@ -163,7 +163,7 @@ private extension SettingsView {
 
             VStack(spacing: 0) {
                 OptionRow(height: .tall) {
-                    StaticToggle("Show content in search",
+                    StaticToggle(.localized("Show content in search"),
                                  isOn: viewModel.spotlightEnabled,
                                  action: { viewModel.toggleSpotlight() })
                 }

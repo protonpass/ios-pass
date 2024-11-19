@@ -52,6 +52,10 @@ private extension CreateEditCreditCardView {
                 VStack {
                     if viewModel.shouldUpgrade {
                         upsellBanner
+                    } else {
+                        FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                                              onTap: { print(#function) },
+                                              onClose: { viewModel.dismissFileAttachmentsBanner() })
                     }
 
                     CreateEditItemTitleSection(title: $viewModel.title,
@@ -68,6 +72,7 @@ private extension CreateEditCreditCardView {
                                     field: .note)
                 }
                 .padding()
+                .animation(.default, value: viewModel.showFileAttachmentsBanner)
             }
         }
         .onFirstAppear {
