@@ -20,6 +20,7 @@
 
 import Core
 import DesignSystem
+import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -37,6 +38,10 @@ struct QAFeaturesView: View {
 
     @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
     private var useSwiftUIList = false
+
+    @State private var dismissedFileAttachmentsBanner = false
+
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
     var body: some View {
         NavigationStack {
@@ -81,6 +86,17 @@ struct QAFeaturesView: View {
                         .foregroundStyle(.secondary)
                         // swiftlint:enable line_length
                     }
+
+                    StaticToggle(.verbatim("Dismissed file attachments banner"),
+                                 isOn: dismissedFileAttachmentsBanner,
+                                 action: {
+                                     Task {
+                                         try? await preferencesManager
+                                             .updateAppPreferences(\.dismissedFileAttachmentsBanner,
+                                                                   value: false)
+                                         dismissedFileAttachmentsBanner = false
+                                     }
+                                 })
                 }
                 if #available(iOS 17, *) {
                     TipKitSection()
@@ -98,5 +114,9 @@ struct QAFeaturesView: View {
             }
         }
         .tint(PassColor.interactionNorm.toColor)
+        .task {
+            dismissedFileAttachmentsBanner =
+                preferencesManager.appPreferences.unwrapped().dismissedFileAttachmentsBanner
+        }
     }
 }

@@ -30,6 +30,7 @@ extension AppPreferences {
               dismissedCustomDomainExplanation: .random(),
               didMigratePreferences: .random(), 
               dismissedAliasesSyncExplanation: .random(),
-              hasVisitedContactPage: false)
+              hasVisitedContactPage: false,
+              dismissedFileAttachmentsBanner: false)
     }
 }

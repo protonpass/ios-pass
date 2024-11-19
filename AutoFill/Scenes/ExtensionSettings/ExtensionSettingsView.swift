@@ -40,7 +40,7 @@ struct ExtensionSettingsView: View {
             ScrollView {
                 VStack {
                     OptionRow(height: .medium) {
-                        StaticToggle("QuickType bar suggestions",
+                        StaticToggle(.localized("QuickType bar suggestions"),
                                      isOn: viewModel.quickTypeBar,
                                      action: { viewModel.toggleQuickTypeBar() })
                     }
@@ -53,7 +53,7 @@ struct ExtensionSettingsView: View {
                         .frame(height: 24)
 
                     OptionRow(height: .medium) {
-                        StaticToggle("Copy 2FA code",
+                        StaticToggle(.localized("Copy 2FA code"),
                                      isOn: viewModel.automaticallyCopyTotpCode,
                                      action: { viewModel.toggleAutomaticCopy2FACode() })
                     }

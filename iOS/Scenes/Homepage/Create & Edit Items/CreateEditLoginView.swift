@@ -64,6 +64,9 @@ struct CreateEditLoginView: View {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(spacing: DesignConstant.sectionPadding / 2) {
+                        FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                                              onTap: { print(#function) },
+                                              onClose: { viewModel.dismissFileAttachmentsBanner() })
                         CreateEditItemTitleSection(title: $viewModel.title,
                                                    focusedField: $focusedField,
                                                    field: .title,
@@ -108,6 +111,7 @@ struct CreateEditLoginView: View {
                     .animation(.default, value: viewModel.emailUsernameExpanded)
                     .animation(.default, value: viewModel.passkeys.count)
                     .animation(.default, value: viewModel.isAlias)
+                    .animation(.default, value: viewModel.showFileAttachmentsBanner)
                     .showSpinner(viewModel.loading)
                 }
                 // swiftformat:disable all
