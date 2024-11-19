@@ -218,9 +218,9 @@ private extension DetailMonitoredItemViewModel {
             breaches = try await passMonitorRepository.getBreachesForAlias(sharedId: alias.shareId,
                                                                            itemId: alias.itemId)
         case let .customEmail(customEmail):
-            breaches = try await passMonitorRepository.getAllBreachesForEmail(email: customEmail)
+            breaches = try await passMonitorRepository.getAllBreachesForEmail(emailId: customEmail.customEmailID)
         case let .protonAddress(address):
-            breaches = try await passMonitorRepository.getAllBreachesForProtonAddress(address: address)
+            breaches = try await passMonitorRepository.getAllBreachesForProtonAddress(addressId: address.addressID)
         }
         let linkedItems: [ItemUiModel] = switch state {
         case let .fetched(uiModel):

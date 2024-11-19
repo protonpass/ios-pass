@@ -41,7 +41,15 @@ extension HomepageCoordinator {
         }
     }
 
-    private func displayNotification(_ notification: InAppNotification) {
+    func presentBreachDetail(breach: Breach) {
+        present(BreachDetailView(breach: breach))
+    }
+}
+
+// MARK: - Notification actions
+
+private extension HomepageCoordinator {
+    func displayNotification(_ notification: InAppNotification) {
         addTelemetryEvent(with: .notificationDisplayNotification(notificationKey: notification
                 .notificationKey))
 
@@ -76,7 +84,7 @@ extension HomepageCoordinator {
         }
     }
 
-    private func close(_ notification: InAppNotification) {
+    func close(_ notification: InAppNotification) {
         Task { [weak self] in
             guard let self else { return }
             if notification.displayType == .banner {
@@ -95,7 +103,7 @@ extension HomepageCoordinator {
         }
     }
 
-    private func ctaFlow(_ notification: InAppNotification) {
+    func ctaFlow(_ notification: InAppNotification) {
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -107,12 +115,97 @@ extension HomepageCoordinator {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
 
-                if case let .externalNavigation(url) = notification.cta, let url {
+                if case let .externalNavigation(url) = notification.cta {
                     urlOpener.open(urlString: url)
+                } else if case let .internalNavigation(url) = notification.cta {
+                    let destination = InternalNavigationDestination.parse(urlString: url)
+                    navigate(to: destination)
                 }
             } catch {
                 handle(error: error)
             }
         }
+    }
+}
+
+// MARK: - In app navigation
+
+private extension HomepageCoordinator {
+    func navigate(to destination: InternalNavigationDestination) {
+        Task {
+            do {
+                switch destination {
+                case let .viewVaultMembers(sharedId):
+                    try await vaultMembers(shareID: sharedId)
+                case let .aliasBreach(sharedId, itemId):
+                    try await aliasBreach(shareID: sharedId, itemID: itemId)
+                case let .customEmailBreach(customEmailId):
+                    try await customEmailBreach(customEmail: customEmailId)
+                case let .addressBreach(addressID):
+                    try await protonAddressBreach(protonAddress: addressID)
+                case .upgrade:
+                    router.present(for: .upgradeFlow)
+                case let .viewItem(shareID, itemID):
+                    try await itemDetail(shareID: shareID, itemID: itemID)
+                case let .unknown(url):
+                    logger.trace("Unknown navigation destination: \(url)")
+                }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func itemDetail(shareID: String, itemID: String) async throws {
+        guard let itemContent = try await itemRepository.getItemContent(shareId: shareID, itemId: itemID) else {
+            return
+        }
+        router.present(for: .itemDetail(itemContent))
+    }
+
+    func vaultMembers(shareID: String) async throws {
+        guard let vault = try await shareRepository.getVault(shareId: shareID) else {
+            return
+        }
+        router.present(for: .manageShareVault(vault, .none))
+    }
+
+    func aliasBreach(shareID: String, itemID: String) async throws {
+        let breaches = try await passMonitorRepository.getBreachesForAlias(sharedId: shareID,
+                                                                           itemId: itemID)
+        guard let breach = breaches.breaches.mostSevereAndLatest else {
+            return
+        }
+        router.present(for: .breachDetail(breach))
+    }
+
+    func customEmailBreach(customEmail: String) async throws {
+        let breaches = try await passMonitorRepository.getAllBreachesForEmail(emailId: customEmail)
+        guard let breach = breaches.breaches.mostSevereAndLatest else {
+            return
+        }
+        router.present(for: .breachDetail(breach))
+    }
+
+    func protonAddressBreach(protonAddress: String) async throws {
+        let breaches = try await passMonitorRepository.getAllBreachesForProtonAddress(addressId: protonAddress)
+        guard let breach = breaches.breaches.mostSevereAndLatest else {
+            return
+        }
+        router.present(for: .breachDetail(breach))
+    }
+}
+
+private extension [Breach] {
+    // Example function to filter the most severe and latest unresolved breach
+    var mostSevereAndLatest: Breach? {
+        self.filter { !$0.isResolved }
+            .max {
+                // Compare by severity first, then by createdAt if severities are equal
+                if $0.severity == $1.severity {
+                    return $0.createdAt < $1.createdAt // Later createdAt is greater
+                }
+                return $0.severity < $1.severity // Higher severity is greater
+            }
     }
 }
