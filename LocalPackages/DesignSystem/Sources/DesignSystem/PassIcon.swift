@@ -47,6 +47,9 @@ public extension PassIcon {
     static let extraPassword = Self.icon(named: "ExtraPassword")
 
     static let fileAttachments = Self.icon(named: "FileAttachments")
+    static let documentScan = Self.icon(named: "DocumentScan")
+    static let images = Self.icon(named: "Images")
+
     static let filterFilled = Self.icon(named: "FilterFilled")
     static let infoBannerAliases = Self.icon(named: "InfoBannerAliases")
     static let infoBannerAutoFill = Self.icon(named: "InfoBannerAutoFill")
