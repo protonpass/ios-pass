@@ -54,8 +54,8 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
     func removeEmailFromBreachMonitoring(email: CustomEmail) async throws
     func resendEmailVerification(email: CustomEmail) async throws
     func getBreachesForAlias(sharedId: String, itemId: String) async throws -> EmailBreaches
-    func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches
-    func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches
+    func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches
+    func getAllBreachesForProtonAddress(addressId: String) async throws -> EmailBreaches
     func markAliasAsResolved(sharedId: String, itemId: String) async throws
     func markProtonAddressAsResolved(address: ProtonAddress) async throws
     func markCustomEmailAsResolved(email: CustomEmail) async throws -> CustomEmail
@@ -239,16 +239,16 @@ public extension PassMonitorRepository {
         return try await remoteDataSource.getBreachesForAlias(userId: userId, sharedId: sharedId, itemId: itemId)
     }
 
-    func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches {
+    func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDataSource.getAllBreachesForEmail(userId: userId, email: email)
+        return try await remoteDataSource.getAllBreachesForEmail(userId: userId, emailId: emailId)
     }
 
-    func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches {
+    func getAllBreachesForProtonAddress(addressId: String) async throws -> EmailBreaches {
         try Task.checkCancellation()
         let userId = try await userManager.getActiveUserId()
-        return try await remoteDataSource.getAllBreachesForProtonAddress(userId: userId, address: address)
+        return try await remoteDataSource.getAllBreachesForProtonAddress(userId: userId, addressId: addressId)
     }
 
     func markAliasAsResolved(sharedId: String, itemId: String) async throws {

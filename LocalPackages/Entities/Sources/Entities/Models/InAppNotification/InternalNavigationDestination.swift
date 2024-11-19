@@ -20,7 +20,7 @@
 
 import Foundation
 
-// swiflint:disable cyclomatic_complexity
+// swiftlint:disable cyclomatic_complexity
 public enum InternalNavigationDestination: Equatable, Sendable {
     case viewVaultMembers(shareID: String)
     case aliasBreach(shareID: String, itemID: String)
@@ -78,4 +78,4 @@ public enum InternalNavigationDestination: Equatable, Sendable {
     }
 }
 
-// swiflint:enable cyclomatic_complexity
+// swiftlint:enable cyclomatic_complexity
