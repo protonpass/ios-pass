@@ -117,10 +117,6 @@ extension AccountViewModel {
         featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
     }
 
-    var canShowSecurityKeys: Bool {
-        featureFlagsRepository.isEnabled(CoreFeatureFlagType.fidoKeys, reloadValue: true)
-    }
-
     var canChangeMailboxPassword: Bool {
         guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
         else { return false }
