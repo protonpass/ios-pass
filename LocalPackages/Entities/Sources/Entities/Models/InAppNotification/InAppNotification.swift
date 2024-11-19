@@ -64,7 +64,7 @@ public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Ident
     public var cta: InAppNotificationCtaType? {
         guard let cta = content.cta else { return nil }
         if cta.type == "internal_navigation" {
-            return .internalNavigation
+            return .internalNavigation(cta.ref)
         } else {
             return .externalNavigation(cta.ref)
         }
@@ -121,8 +121,8 @@ public struct InAppNotificationCTA: Decodable, Sendable, Equatable, Hashable {
 }
 
 public enum InAppNotificationCtaType: Sendable {
-    case internalNavigation
-    case externalNavigation(String?)
+    case internalNavigation(String)
+    case externalNavigation(String)
 }
 
 public enum InAppNotificationDisplayType: Sendable {
