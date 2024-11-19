@@ -280,40 +280,40 @@ public final class PassMonitorRepositoryProtocolMock: @unchecked Sendable, PassM
         return stubbedGetBreachesForAliasResult
     }
     // MARK: - getAllBreachesForEmail
-    public var getAllBreachesForEmailEmailThrowableError11: Error?
+    public var getAllBreachesForEmailEmailIdThrowableError11: Error?
     public var closureGetAllBreachesForEmail: () -> () = {}
     public var invokedGetAllBreachesForEmailfunction = false
     public var invokedGetAllBreachesForEmailCount = 0
-    public var invokedGetAllBreachesForEmailParameters: (email: CustomEmail, Void)?
-    public var invokedGetAllBreachesForEmailParametersList = [(email: CustomEmail, Void)]()
+    public var invokedGetAllBreachesForEmailParameters: (emailId: String, Void)?
+    public var invokedGetAllBreachesForEmailParametersList = [(emailId: String, Void)]()
     public var stubbedGetAllBreachesForEmailResult: EmailBreaches!
 
-    public func getAllBreachesForEmail(email: CustomEmail) async throws -> EmailBreaches {
+    public func getAllBreachesForEmail(emailId: String) async throws -> EmailBreaches {
         invokedGetAllBreachesForEmailfunction = true
         invokedGetAllBreachesForEmailCount += 1
-        invokedGetAllBreachesForEmailParameters = (email, ())
-        invokedGetAllBreachesForEmailParametersList.append((email, ()))
-        if let error = getAllBreachesForEmailEmailThrowableError11 {
+        invokedGetAllBreachesForEmailParameters = (emailId, ())
+        invokedGetAllBreachesForEmailParametersList.append((emailId, ()))
+        if let error = getAllBreachesForEmailEmailIdThrowableError11 {
             throw error
         }
         closureGetAllBreachesForEmail()
         return stubbedGetAllBreachesForEmailResult
     }
     // MARK: - getAllBreachesForProtonAddress
-    public var getAllBreachesForProtonAddressAddressThrowableError12: Error?
+    public var getAllBreachesForProtonAddressAddressIdThrowableError12: Error?
     public var closureGetAllBreachesForProtonAddress: () -> () = {}
     public var invokedGetAllBreachesForProtonAddressfunction = false
     public var invokedGetAllBreachesForProtonAddressCount = 0
-    public var invokedGetAllBreachesForProtonAddressParameters: (address: ProtonAddress, Void)?
-    public var invokedGetAllBreachesForProtonAddressParametersList = [(address: ProtonAddress, Void)]()
+    public var invokedGetAllBreachesForProtonAddressParameters: (addressId: String, Void)?
+    public var invokedGetAllBreachesForProtonAddressParametersList = [(addressId: String, Void)]()
     public var stubbedGetAllBreachesForProtonAddressResult: EmailBreaches!
 
-    public func getAllBreachesForProtonAddress(address: ProtonAddress) async throws -> EmailBreaches {
+    public func getAllBreachesForProtonAddress(addressId: String) async throws -> EmailBreaches {
         invokedGetAllBreachesForProtonAddressfunction = true
         invokedGetAllBreachesForProtonAddressCount += 1
-        invokedGetAllBreachesForProtonAddressParameters = (address, ())
-        invokedGetAllBreachesForProtonAddressParametersList.append((address, ()))
-        if let error = getAllBreachesForProtonAddressAddressThrowableError12 {
+        invokedGetAllBreachesForProtonAddressParameters = (addressId, ())
+        invokedGetAllBreachesForProtonAddressParametersList.append((addressId, ()))
+        if let error = getAllBreachesForProtonAddressAddressIdThrowableError12 {
             throw error
         }
         closureGetAllBreachesForProtonAddress()
