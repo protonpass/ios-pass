@@ -77,6 +77,9 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) var upgradeChecker
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) var itemRepository
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) var shareRepository
+    @LazyInjected(\SharedRepositoryContainer.passMonitorRepository) var passMonitorRepository
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -571,6 +574,8 @@ extension HomepageCoordinator {
                     present(AliasSyncConfigurationView())
                 case .loginsWith2fa:
                     presentLoginsWith2faView()
+                case let .breachDetail(breach):
+                    presentBreachDetail(breach: breach)
                 }
             }
             .store(in: &cancellables)

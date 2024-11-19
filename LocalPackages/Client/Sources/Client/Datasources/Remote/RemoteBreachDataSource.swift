@@ -26,8 +26,8 @@ public protocol RemoteBreachDataSourceProtocol: Sendable {
     func getAllCustomEmailForUser(userId: String) async throws -> [CustomEmail]
     func addEmailToBreachMonitoring(userId: String, email: String) async throws -> CustomEmail
     func verifyCustomEmail(userId: String, emailId: String, code: String) async throws
-    func getAllBreachesForEmail(userId: String, email: CustomEmail) async throws -> EmailBreaches
-    func getAllBreachesForProtonAddress(userId: String, address: ProtonAddress) async throws -> EmailBreaches
+    func getAllBreachesForEmail(userId: String, emailId: String) async throws -> EmailBreaches
+    func getAllBreachesForProtonAddress(userId: String, addressId: String) async throws -> EmailBreaches
     func removeEmailFromBreachMonitoring(userId: String, emailId: String) async throws
     func getBreachesForAlias(userId: String, sharedId: String, itemId: String) async throws -> EmailBreaches
     func resendEmailVerification(userId: String, emailId: String) async throws
@@ -67,14 +67,14 @@ public extension RemoteBreachDataSource {
         _ = try await exec(userId: userId, endpoint: endpoint)
     }
 
-    func getAllBreachesForEmail(userId: String, email: CustomEmail) async throws -> EmailBreaches {
-        let endpoint = GetBreachesForCustomEmailEndpoint(emailId: email.customEmailID)
+    func getAllBreachesForEmail(userId: String, emailId: String) async throws -> EmailBreaches {
+        let endpoint = GetBreachesForCustomEmailEndpoint(emailId: emailId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.breaches
     }
 
-    func getAllBreachesForProtonAddress(userId: String, address: ProtonAddress) async throws -> EmailBreaches {
-        let endpoint = GetAllBreachesForProtonAddressEndpoint(addressId: address.addressID)
+    func getAllBreachesForProtonAddress(userId: String, addressId: String) async throws -> EmailBreaches {
+        let endpoint = GetAllBreachesForProtonAddressEndpoint(addressId: addressId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.breaches
     }
