@@ -1440,6 +1440,16 @@
         }
       }
     },
+    "Attachments" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attachments"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "comment" : "Accessibility label",
       "localizations" : {
@@ -7756,6 +7766,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "You can attach files to items for a better organization" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can attach files to items for a better organization"
           }
         }
       }

@@ -47,6 +47,8 @@ public struct AppPreferences: Codable, Equatable, Sendable {
 
     public var hasVisitedContactPage: Bool
 
+    public var dismissedFileAttachmentsBanner: Bool
+
     public init(onboarded: Bool,
                 telemetryThreshold: TimeInterval?,
                 createdItemsCount: Int,
@@ -54,7 +56,8 @@ public struct AppPreferences: Codable, Equatable, Sendable {
                 dismissedCustomDomainExplanation: Bool,
                 didMigratePreferences: Bool,
                 dismissedAliasesSyncExplanation: Bool,
-                hasVisitedContactPage: Bool) {
+                hasVisitedContactPage: Bool,
+                dismissedFileAttachmentsBanner: Bool) {
         self.onboarded = onboarded
         self.telemetryThreshold = telemetryThreshold
         self.createdItemsCount = createdItemsCount
@@ -63,6 +66,7 @@ public struct AppPreferences: Codable, Equatable, Sendable {
         self.didMigratePreferences = didMigratePreferences
         self.dismissedAliasesSyncExplanation = dismissedAliasesSyncExplanation
         self.hasVisitedContactPage = hasVisitedContactPage
+        self.dismissedFileAttachmentsBanner = dismissedFileAttachmentsBanner
     }
 }
 
@@ -76,6 +80,7 @@ private extension AppPreferences {
         static let didMigratePreferences = false
         static let dismissedAliasesSyncExplanation = false
         static let hasVisitedContactPage = false
+        static let dismissedFileAttachmentsBanner = false
     }
 
     enum CodingKeys: String, CodingKey {
@@ -87,6 +92,7 @@ private extension AppPreferences {
         case didMigratePreferences
         case dismissedAliasesSyncExplanation
         case hasVisitedContactPage
+        case dismissedFileAttachmentsBanner
     }
 }
 
@@ -107,7 +113,8 @@ public extension AppPreferences {
 
         let hasVisitedContactPage = try container.decodeIfPresent(Bool.self,
                                                                   forKey: .hasVisitedContactPage)
-
+        let dismissedFileAttachmentsBanner =
+            try container.decodeIfPresent(Bool.self, forKey: .dismissedFileAttachmentsBanner)
         self.init(onboarded: onboarded ?? Default.onboarded,
                   telemetryThreshold: telemetryThreshold ?? Default.telemetryThreshold,
                   createdItemsCount: createdItemsCount ?? Default.createdItemsCount,
@@ -117,7 +124,9 @@ public extension AppPreferences {
                   didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences,
                   dismissedAliasesSyncExplanation: dismissedAliasesSyncExplanation ?? Default
                       .dismissedAliasesSyncExplanation,
-                  hasVisitedContactPage: hasVisitedContactPage ?? Default.hasVisitedContactPage)
+                  hasVisitedContactPage: hasVisitedContactPage ?? Default.hasVisitedContactPage,
+                  dismissedFileAttachmentsBanner: dismissedFileAttachmentsBanner ?? Default
+                      .dismissedFileAttachmentsBanner)
     }
 }
 
@@ -130,6 +139,7 @@ extension AppPreferences: Defaultable {
               dismissedCustomDomainExplanation: Default.dismissedCustomDomainExplanation,
               didMigratePreferences: Default.didMigratePreferences,
               dismissedAliasesSyncExplanation: Default.dismissedAliasesSyncExplanation,
-              hasVisitedContactPage: Default.hasVisitedContactPage)
+              hasVisitedContactPage: Default.hasVisitedContactPage,
+              dismissedFileAttachmentsBanner: Default.dismissedFileAttachmentsBanner)
     }
 }

@@ -144,6 +144,10 @@ struct CreateEditIdentityView: View {
 private extension CreateEditIdentityView {
     var mainContainer: some View {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
+            FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                                  onTap: { print(#function) },
+                                  onClose: { viewModel.dismissFileAttachmentsBanner() })
+
             CreateEditItemTitleSection(title: $viewModel.title,
                                        focusedField: $focusedField,
                                        field: .title,
@@ -189,6 +193,7 @@ private extension CreateEditIdentityView {
         .animation(.default, value: viewModel.extraWorkDetails)
         .animation(.default, value: viewModel.extraAddressDetails)
         .animation(.default, value: viewModel.extraContactDetails)
+        .animation(.default, value: viewModel.showFileAttachmentsBanner)
         .scrollViewEmbeded(maxWidth: .infinity)
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)

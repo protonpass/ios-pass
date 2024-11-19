@@ -85,6 +85,10 @@ struct CreateEditAliasView: View {
                 LazyVStack(spacing: 8) {
                     if viewModel.shouldUpgrade {
                         AliasLimitView(backgroundColor: PassColor.aliasInteractionNormMinor1)
+                    } else {
+                        FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                                              onTap: { print(#function) },
+                                              onClose: { viewModel.dismissFileAttachmentsBanner() })
                     }
 
                     CreateEditItemTitleSection(title: $viewModel.title,
@@ -148,6 +152,7 @@ struct CreateEditAliasView: View {
                 .animation(.default, value: isShowingAdvancedOptions)
                 .animation(.default, value: viewModel.mailboxSelection)
                 .animation(.default, value: viewModel.alias)
+                .animation(.default, value: viewModel.showFileAttachmentsBanner)
             }
             .onChange(of: focusedField) { focusedField in
                 if case .note = focusedField {
