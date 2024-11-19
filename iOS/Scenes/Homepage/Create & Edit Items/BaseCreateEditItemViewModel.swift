@@ -125,9 +125,12 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
+    var fileAttachmentsEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
+    }
+
     var showFileAttachmentsBanner: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1) &&
-            !dismissedFileAttachmentsBanner
+        fileAttachmentsEnabled && !dismissedFileAttachmentsBanner
     }
 
     var hasEmptyCustomField: Bool {
