@@ -1,7 +1,7 @@
 //
-// Vault.swift
-// Proton Pass - Created on 18/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// ShareItem.swift
+// Proton Pass - Created on 19/11/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,15 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 
-public struct Vault: ShareElementProtocol {
-    public let id: String
+//TODO: maybe missing userid
+public struct ShareItem: ShareElementProtocol {
+    public let itemUuid: String
+    public let vaultID: String
     public let shareId: String
     public let addressId: String
     public let name: String
-    public let description: String
-    public let displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences
     public let isOwner: Bool
     /// Role given to the user when invited with sharing feature
     public let shareRole: ShareRole
@@ -51,12 +50,14 @@ public struct Vault: ShareElementProtocol {
 
     public let canAutoFill: Bool
 
-    public init(id: String,
+    public let note: String
+    public let contentData: ItemContentData
+
+    public init(itemUuid: String,
+                vaultID: String,
                 shareId: String,
                 addressId: String,
                 name: String,
-                description: String,
-                displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences,
                 isOwner: Bool,
                 shareRole: ShareRole,
                 members: Int,
@@ -65,13 +66,16 @@ public struct Vault: ShareElementProtocol {
                 newUserInvitesReady: Int,
                 shared: Bool,
                 createTime: Int64,
-                canAutoFill: Bool) {
-        self.id = id
+                canAutoFill: Bool,
+                note: String,
+                contentData: ItemContentData) {
+        self.note = note
+        self.contentData = contentData
+        self.itemUuid = itemUuid
+        self.vaultID = vaultID
         self.shareId = shareId
-        self.name = name
-        self.description = description
-        self.displayPreferences = displayPreferences
         self.addressId = addressId
+        self.name = name
         self.isOwner = isOwner
         self.shareRole = shareRole
         self.members = members
@@ -82,28 +86,21 @@ public struct Vault: ShareElementProtocol {
         self.createTime = createTime
         self.canAutoFill = canAutoFill
     }
+
+    public var id: String {
+        "\(itemUuid)" + "\(shareId)"
+    }
 }
 
-// MARK: - Computed properties
-
-public extension Vault {
-    var totalOverallMembers: Int {
-        members + pendingInvites
-    }
-
-    var reachedSharingLimit: Bool {
-        maxMembers <= totalOverallMembers
-    }
-
-    var isAdmin: Bool {
-        shareRole == ShareRole.admin
-    }
-
-    var canEdit: Bool {
-        shareRole != ShareRole.read
-    }
-
-    var canShareVaultWithMorePeople: Bool {
-        isAdmin && !reachedSharingLimit
+public extension ShareElementProtocol {
+    var type: TargetType {
+        switch self {
+        case is Vault:
+            .vault
+        case is ShareItem:
+            .item
+        default:
+            .unknown
+        }
     }
 }
