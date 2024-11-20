@@ -47,7 +47,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }
 
-    //TODO: this will have to be not dependent on vault but shares
+    // TODO: this will have to be not dependent on vault but shares
     var canShareItem: Bool {
         vault.vault.isOwner && vault.vault.isAdmin
     }
@@ -110,7 +110,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     func shareItem() {
         Task {
             do {
-                guard let share = try await shareRepository.getShareItem(shareId: itemContent.shareId) else {
+                guard let share = try await shareRepository.getShare(shareId: itemContent.shareId) else {
                     router.display(element: .errorMessage("Could not find a share linked to this item"))
                     return
                 }
