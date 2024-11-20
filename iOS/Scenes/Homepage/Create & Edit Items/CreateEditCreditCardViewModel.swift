@@ -37,6 +37,16 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
     @Published var year: Int?
     @Published var note = ""
 
+    // For swapping section title color purpose
+    // We're only interested in the emptiness of the string, not the format
+    var monthYear: String {
+        if let month, let year {
+            "\(month) / \(year)"
+        } else {
+            ""
+        }
+    }
+
     override func itemContentType() -> ItemContentType { .creditCard }
 
     override var isSaveable: Bool { !title.isEmpty }
