@@ -50,7 +50,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     @Published private(set) var invalidEmails: [String] = []
     @Published private(set) var canContinue = false
     @Published var goToNextStep = false
-    @Published private(set) var vault: SharingVaultData?
+    @Published private(set) var element: SharingElementData?
     @Published private(set) var recommendationsState: RecommendationsState = .loaded(nil)
     @Published private(set) var isChecking = false
     @Published private(set) var isFetchingMore = false
@@ -114,11 +114,11 @@ final class UserEmailViewModel: ObservableObject, Sendable {
             isChecking = true
             guard appendCurrentEmail() else { return false }
 
-            guard let vault else {
+            guard let element else {
                 throw PassError.sharing(.incompleteInformation)
             }
 
-            let result = try await checkAddressesForInvite(shareId: vault.shareId,
+            let result = try await checkAddressesForInvite(shareId: element.shareId,
                                                            emails: selectedEmails)
             if case let .invalid(invalidEmails) = result {
                 self.invalidEmails = invalidEmails
@@ -139,7 +139,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
     }
 
     func customizeVault() {
-        if case let .new(vault, itemContent) = vault {
+        if case let .new(vault, itemContent) = element {
             router.present(for: .customizeNewVault(vault, itemContent))
         }
     }
@@ -162,7 +162,7 @@ final class UserEmailViewModel: ObservableObject, Sendable {
                 if Task.isCancelled {
                     return
                 }
-                guard let shareId = vault?.shareId else { return }
+                guard let shareId = element?.shareId else { return }
                 isFetchingMore = true
                 if removingCurrentRecommendations {
                     recommendationsState = .loading
@@ -211,14 +211,14 @@ private extension UserEmailViewModel {
             }
             .store(in: &cancellables)
 
-        shareInviteService.currentSelectedVault
+        shareInviteService.currentSelectedElement
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { [weak self] selectedElement in
                 guard let self else { return }
-                vault = shareInviteService.currentSelectedVault.value
+                element = selectedElement
             }
             .store(in: &cancellables)
 
-        vault = shareInviteService.currentSelectedVault.value
+        element = shareInviteService.currentSelectedElement.value
     }
 }

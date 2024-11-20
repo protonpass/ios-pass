@@ -36,6 +36,11 @@ struct ShareOrCreateNewVaultView: View {
 
             Spacer()
 
+            if viewModel.itemSharingEnabled, viewModel.canShareItem {
+                itemSharing
+                    .padding(.vertical)
+            }
+
             if !viewModel.itemContent.isAlias {
                 secureLink
             }
@@ -67,6 +72,43 @@ struct ShareOrCreateNewVaultView: View {
         .padding(.bottom, 32)
         .padding(.horizontal, 16)
         .background(PassColor.backgroundNorm.toColor)
+    }
+}
+
+private extension ShareOrCreateNewVaultView {
+    var itemSharing: some View {
+        HStack {
+            SquircleThumbnail(data: .icon(IconProvider.userPlus),
+                              tintColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1)
+            VStack(alignment: .leading) {
+                Text("Share with")
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Text("Share this item with other Proton users.")
+                    .font(.callout)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            if viewModel.isFreeUser {
+                Image(uiImage: PassIcon.passSubscriptionBadge)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 24)
+            }
+        }
+        .contentShape(.rect)
+        .onTapGesture {
+            if viewModel.isFreeUser {
+                viewModel.upsell(entryPoint: .secureLink)
+            } else {
+                viewModel.shareItem()
+            }
+        }
+        .padding()
+        .roundedEditableSection()
     }
 }
 
