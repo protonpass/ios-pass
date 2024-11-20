@@ -1,6 +1,28 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld files" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld file"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld files"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld item(s)" : {
       "localizations" : {
         "be" : {
@@ -1436,6 +1458,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Attach a file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attach a file"
           }
         }
       }
@@ -7352,6 +7384,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thử tìm kiếm bằng cách sử dụng cách viết hoặc từ khóa khác"
+          }
+        }
+      }
+    },
+    "Upload files from your device" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload files from your device"
           }
         }
       }

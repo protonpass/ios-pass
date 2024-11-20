@@ -65,7 +65,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                               viewModel.upgrade()
                                           }
                                       },
-                                      onSelectFileAttachmentMethod: { _ in },
+                                      onSelectFileAttachmentMethod: { viewModel.handle(method: $0) },
                                       onScan: { viewModel.openScanner() },
                                       onSave: { viewModel.save() })
             }
