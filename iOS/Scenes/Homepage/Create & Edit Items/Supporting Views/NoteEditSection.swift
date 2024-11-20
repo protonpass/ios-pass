@@ -35,7 +35,7 @@ struct NoteEditSection<Field: Hashable>: View {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Note")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: note)
 
                 TextEditorWithPlaceholder(text: $note,
                                           focusedField: focusedField,
