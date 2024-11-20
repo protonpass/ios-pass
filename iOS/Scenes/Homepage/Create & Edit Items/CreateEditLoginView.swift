@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable file_length
 import CodeScanner
 import Core
 import DesignSystem
@@ -39,6 +40,7 @@ struct CreateEditLoginView: View {
     @Namespace private var passwordID
     @Namespace private var websitesID
     @Namespace private var noteID
+    @Namespace private var fileAttachmentsID
     @Namespace private var bottomID
 
     init(viewModel: CreateEditLoginViewModel) {
@@ -65,7 +67,12 @@ struct CreateEditLoginView: View {
                 ScrollView {
                     LazyVStack(spacing: DesignConstant.sectionPadding / 2) {
                         FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
-                                              onTap: { print(#function) },
+                                              onTap: {
+                                                  viewModel.dismissFileAttachmentsBanner()
+                                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                                                      proxy.scrollTo(fileAttachmentsID, anchor: .bottom)
+                                                  }
+                                              },
                                               onClose: { viewModel.dismissFileAttachmentsBanner() })
                         CreateEditItemTitleSection(title: $viewModel.title,
                                                    focusedField: $focusedField,
@@ -92,6 +99,18 @@ struct CreateEditLoginView: View {
                                         focusedField: $focusedField,
                                         field: .note)
                             .id(noteID)
+
+                        if viewModel.fileAttachmentsEnabled {
+                            FileAttachmentsEditSection(files: viewModel.files,
+                                                       isUploading: viewModel.isUploadingFile,
+                                                       primaryTintColor: viewModel.itemContentType()
+                                                           .normMajor2Color,
+                                                       secondaryTintColor: viewModel.itemContentType()
+                                                           .normMinor1Color,
+                                                       onDelete: { viewModel.handleDeleteAttachments() },
+                                                       onSelect: { viewModel.handle(method: $0) })
+                                .id(fileAttachmentsID)
+                        }
 
                         EditCustomFieldSections(focusedField: $focusedField,
                                                 focusedCustomField: viewModel.recentlyAddedOrEditedField,
@@ -685,3 +704,5 @@ private struct WebsiteSection<Field: Hashable>: View {
         }
     }
 }
+
+// swiftlint:enable file_length
