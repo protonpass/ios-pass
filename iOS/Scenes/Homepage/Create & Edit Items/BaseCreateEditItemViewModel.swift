@@ -100,7 +100,9 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var canScanDocuments = false
-    @Published var dismissedFileAttachmentsBanner = false
+    @Published private(set) var files = [FileAttachment]()
+    @Published private(set) var isUploadingFile = false
+    @Published private(set) var dismissedFileAttachmentsBanner = false
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
 
     @Published var customFieldUiModels = [CustomFieldUiModel]()
@@ -348,6 +350,31 @@ extension BaseCreateEditItemViewModel {
             do {
                 try await preferencesManager.updateAppPreferences(\.dismissedFileAttachmentsBanner,
                                                                   value: true)
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func handleDeleteAttachments() {
+        print(#function)
+    }
+
+    func handle(method: FileAttachmentMethod) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                // Make periphery happy, will be removed later
+                print(method)
+                try await preferencesManager.updateAppPreferences(\.dismissedFileAttachmentsBanner,
+                                                                  value: true)
+                isUploadingFile = true
+                try await Task.sleep(seconds: 3)
+                files.append(.init(id: UUID().uuidString,
+                                   metadata: .init(name: .random(),
+                                                   mimeType: .random(),
+                                                   size: .random(in: 1...1_000_000))))
+                isUploadingFile = false
             } catch {
                 handle(error)
             }

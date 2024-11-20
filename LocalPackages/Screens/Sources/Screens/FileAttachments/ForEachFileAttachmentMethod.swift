@@ -1,6 +1,6 @@
 //
-// FileAttachmentsButton.swift
-// Proton Pass - Created on 19/11/2024.
+// ForEachFileAttachmentMethod.swift
+// Proton Pass - Created on 20/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,31 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import DesignSystem
 import Entities
-import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct FileAttachmentsButton: View {
-    let iconColor: UIColor
-    let backgroundColor: UIColor
+struct ForEachFileAttachmentMethod: View {
     let onSelect: (FileAttachmentMethod) -> Void
 
-    public init(iconColor: UIColor,
-                backgroundColor: UIColor,
-                onSelect: @escaping (FileAttachmentMethod) -> Void) {
-        self.iconColor = iconColor
-        self.backgroundColor = backgroundColor
-        self.onSelect = onSelect
-    }
-
-    public var body: some View {
-        Menu(content: {
-            ForEachFileAttachmentMethod(onSelect: onSelect)
-        }, label: {
-            CircleButton(icon: IconProvider.paperClipVertical,
-                         iconColor: iconColor,
-                         backgroundColor: backgroundColor)
-        })
+    var body: some View {
+        ForEach(FileAttachmentMethod.allCases, id: \.self) { method in
+            Label(title: {
+                Text(method.title)
+            }, icon: {
+                Image(uiImage: method.icon)
+                    .resizable()
+            })
+            .buttonEmbeded {
+                onSelect(method)
+            }
+        }
     }
 }
