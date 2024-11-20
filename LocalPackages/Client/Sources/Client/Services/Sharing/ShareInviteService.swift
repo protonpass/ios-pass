@@ -23,7 +23,7 @@ import Entities
 import Foundation
 
 public protocol ShareInviteServiceProtocol: Sendable {
-    var currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> { get }
+    var currentSelectedElement: CurrentValueSubject<SharingElementData?, Never> { get }
 
     func setCurrentSelectedVaultItem(with itemNum: Int)
     func setEmailsAndKeys(with data: [String: [PublicKey]?])
@@ -35,7 +35,7 @@ public protocol ShareInviteServiceProtocol: Sendable {
 }
 
 public final class ShareInviteService: @unchecked Sendable, ShareInviteServiceProtocol {
-    public nonisolated let currentSelectedVault: CurrentValueSubject<SharingVaultData?, Never> = .init(nil)
+    public nonisolated let currentSelectedElement: CurrentValueSubject<SharingElementData?, Never> = .init(nil)
 
     private let queue = DispatchQueue(label: "me.proton.pass.shareInviteService")
     private var safeCurrentSelectedVaultItems: Int?
@@ -76,13 +76,13 @@ public extension ShareInviteService {
     }
 
     func getSharingInfos() -> [SharingInfos] {
-        guard let vault = currentSelectedVault.value else {
+        guard let element = currentSelectedElement.value else {
             return []
         }
         var result = [SharingInfos]()
         for (email, keys) in emailsAndKeys {
             if let role = emailsAndRole[email] {
-                let info = SharingInfos(vault: vault,
+                let info = SharingInfos(shareElement: element,
                                         email: email,
                                         role: role,
                                         receiverPublicKeys: keys,
@@ -94,7 +94,7 @@ public extension ShareInviteService {
     }
 
     func resetShareInviteInformations() {
-        currentSelectedVault.send(nil)
+        currentSelectedElement.send(nil)
         currentSelectedVaultItems = nil
         emailsAndKeys.removeAll()
         emailsAndRole.removeAll()

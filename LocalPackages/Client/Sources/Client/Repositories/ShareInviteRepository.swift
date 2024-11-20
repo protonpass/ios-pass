@@ -29,25 +29,27 @@ public enum InviteeData: Sendable, Equatable {
 }
 
 extension [InviteeData] {
-    func existingUserInvitesRequests(targetType: TargetType) -> [InviteUserToShareRequest] {
+    func existingUserInvitesRequests(targetType: TargetType, itemId: String?) -> [InviteUserToShareRequest] {
         compactMap {
             if case let .existing(email, keys, role) = $0 {
                 return InviteUserToShareRequest(keys: keys,
                                                 email: email,
                                                 targetType: targetType,
-                                                shareRole: role)
+                                                shareRole: role,
+                                                itemId: itemId)
             }
             return nil
         }
     }
 
-    func newUserInvitesRequests(targetType: TargetType) -> [InviteNewUserToShareRequest] {
+    func newUserInvitesRequests(targetType: TargetType, itemId: String?) -> [InviteNewUserToShareRequest] {
         compactMap {
             if case let .new(email, signature, role) = $0 {
                 return InviteNewUserToShareRequest(email: email,
                                                    targetType: targetType,
                                                    signature: signature,
-                                                   shareRole: role)
+                                                   shareRole: role,
+                                                   itemId: itemId)
             }
             return nil
         }
@@ -59,6 +61,7 @@ public protocol ShareInviteRepositoryProtocol: Sendable {
     func getAllPendingInvites(shareId: String) async throws -> ShareInvites
 
     func sendInvites(shareId: String,
+                     itemId: String?,
                      inviteesData: [InviteeData],
                      targetType: TargetType) async throws -> Bool
 
@@ -114,10 +117,11 @@ public extension ShareInviteRepository {
     }
 
     func sendInvites(shareId: String,
+                     itemId: String?,
                      inviteesData: [InviteeData],
                      targetType: TargetType) async throws -> Bool {
-        let userInvites = inviteesData.existingUserInvitesRequests(targetType: targetType)
-        let newUserInvites = inviteesData.newUserInvitesRequests(targetType: targetType)
+        let userInvites = inviteesData.existingUserInvitesRequests(targetType: targetType, itemId: itemId)
+        let newUserInvites = inviteesData.newUserInvitesRequests(targetType: targetType, itemId: itemId)
 
         if userInvites.isEmpty, newUserInvites.isEmpty {
             return false

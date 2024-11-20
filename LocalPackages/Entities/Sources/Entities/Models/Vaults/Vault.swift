@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct Vault: Identifiable, Hashable, Equatable, Sendable {
+public struct Vault: ShareElementProtocol {
     public let id: String
     public let shareId: String
     public let addressId: String

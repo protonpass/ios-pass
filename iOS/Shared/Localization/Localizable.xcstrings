@@ -67270,6 +67270,9 @@
         }
       }
     },
+    "Item" : {
+
+    },
     "Item excluded from monitoring" : {
       "localizations" : {
         "be" : {
@@ -110342,6 +110345,9 @@
         }
       }
     },
+    "Share Item" : {
+
+    },
     "Share link" : {
       "localizations" : {
         "be" : {
@@ -110655,6 +110661,9 @@
           }
         }
       }
+    },
+    "Share this item with other Proton users." : {
+
     },
     "Share this vault" : {
       "localizations" : {
