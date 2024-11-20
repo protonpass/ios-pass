@@ -145,7 +145,7 @@ private extension CreateEditIdentityView {
     var mainContainer: some View {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
             FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
-                                  onTap: { print(#function) },
+                                  onTap: { viewModel.dismissFileAttachmentsBanner() },
                                   onClose: { viewModel.dismissFileAttachmentsBanner() })
 
             CreateEditItemTitleSection(title: $viewModel.title,
@@ -158,6 +158,17 @@ private extension CreateEditIdentityView {
 
             sections()
             PassSectionDivider()
+
+            if viewModel.fileAttachmentsEnabled {
+                FileAttachmentsEditSection(files: viewModel.files,
+                                           isUploading: viewModel.isUploadingFile,
+                                           primaryTintColor: viewModel.itemContentType()
+                                               .normMajor2Color,
+                                           secondaryTintColor: viewModel.itemContentType()
+                                               .normMinor1Color,
+                                           onDelete: { viewModel.handleDeleteAttachments() },
+                                           onSelect: { viewModel.handle(method: $0) })
+            }
 
             if viewModel.canAddMoreCustomFields {
                 CapsuleLabelButton(icon: IconProvider.plus,

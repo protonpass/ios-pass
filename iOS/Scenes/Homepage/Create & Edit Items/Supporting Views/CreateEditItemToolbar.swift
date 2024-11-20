@@ -79,15 +79,15 @@ private extension CreateEditItemToolbar {
                 vaultButton
             }
 
+            if itemContentType == .note, fileAttachmentsEnabled {
+                FileAttachmentsButton(iconColor: itemContentType.normMajor2Color,
+                                      backgroundColor: itemContentType.normMinor1Color,
+                                      onSelect: onSelectFileAttachmentMethod)
+            }
+
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
                 switch itemContentType {
                 case .creditCard, .note:
-                    if fileAttachmentsEnabled {
-                        FileAttachmentsButton(iconColor: itemContentType.normMajor2Color,
-                                              backgroundColor: itemContentType.normMinor1Color,
-                                              onSelect: onSelectFileAttachmentMethod)
-                    }
-
                     CircleButton(icon: PassIcon.scanner,
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color,

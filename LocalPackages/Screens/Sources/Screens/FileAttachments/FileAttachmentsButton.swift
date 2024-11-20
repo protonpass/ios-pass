@@ -39,17 +39,7 @@ public struct FileAttachmentsButton: View {
 
     public var body: some View {
         Menu(content: {
-            ForEach(FileAttachmentMethod.allCases, id: \.self) { method in
-                Label(title: {
-                    Text(method.title)
-                }, icon: {
-                    Image(uiImage: method.icon)
-                        .resizable()
-                })
-                .buttonEmbeded {
-                    onSelect(method)
-                }
-            }
+            ForEachFileAttachmentMethod(onSelect: onSelect)
         }, label: {
             CircleButton(icon: IconProvider.paperClipVertical,
                          iconColor: iconColor,
