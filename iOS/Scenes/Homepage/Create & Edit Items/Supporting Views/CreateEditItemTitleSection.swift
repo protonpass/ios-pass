@@ -37,7 +37,7 @@ struct CreateEditItemTitleSection<Field: Hashable>: View {
         HStack {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Title")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: title)
                 TextEditorWithPlaceholder(text: $title,
                                           focusedField: focusedField,
                                           field: field,

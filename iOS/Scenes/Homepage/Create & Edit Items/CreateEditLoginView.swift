@@ -255,9 +255,7 @@ private extension CreateEditLoginView {
 private extension CreateEditLoginView {
     @ViewBuilder
     var editablePasskeySection: some View {
-        if viewModel.passkeys.isEmpty {
-            EmptyView()
-        } else {
+        if !viewModel.passkeys.isEmpty {
             ForEach(viewModel.passkeys, id: \.keyID) {
                 passkeyRow($0)
             }
@@ -382,7 +380,7 @@ private extension CreateEditLoginView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Email or username")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.emailOrUsername)
 
                 TrimmingTextField("Add email or username", text: $viewModel.emailOrUsername)
                     .textInputAutocapitalization(.never)
@@ -413,7 +411,7 @@ private extension CreateEditLoginView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Email address")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.email)
 
                 TrimmingTextField("Add email address", text: $viewModel.email)
                     .textInputAutocapitalization(.never)
@@ -440,7 +438,7 @@ private extension CreateEditLoginView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Username")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.username)
 
                 TrimmingTextField("Add username", text: $viewModel.username)
                     .textInputAutocapitalization(.never)
@@ -470,7 +468,7 @@ private extension CreateEditLoginView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Email address")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: expanded ? viewModel.email : viewModel.emailOrUsername)
                 Text(expanded ? viewModel.email : viewModel.emailOrUsername)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
@@ -508,7 +506,8 @@ private extension CreateEditLoginView {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(viewModel.passwordStrength.sectionTitle(reuseCount: nil))
                     .font(.footnote)
-                    .foregroundStyle(viewModel.passwordStrength.sectionTitleColor)
+                    .foregroundStyle(viewModel.password.isEmpty ?
+                        PassColor.textNorm.toColor : viewModel.passwordStrength.sectionTitleColor)
 
                 SensitiveTextField(text: $viewModel.password,
                                    placeholder: #localized("Add password"),
@@ -540,7 +539,7 @@ private extension CreateEditLoginView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("2FA limit reached")
-                    .sectionTitleText()
+                    .editableSectionTitleText()
                 UpgradeButtonLite { viewModel.upgrade() }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -554,7 +553,8 @@ private extension CreateEditLoginView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("2FA secret key (TOTP)")
-                    .sectionTitleText(isValid: viewModel.totpUriErrorMessage.isEmpty)
+                    .editableSectionTitleText(for: viewModel.totpUri,
+                                              isValid: viewModel.totpUriErrorMessage.isEmpty)
 
                 SensitiveTextField(text: $viewModel.totpUri,
                                    placeholder: #localized("Add 2FA secret"),
@@ -611,7 +611,7 @@ private struct WebsiteSection<Field: Hashable>: View {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Website")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.urls.first?.value)
                 VStack(alignment: .leading) {
                     ForEach($viewModel.urls) { $url in
                         HStack {

@@ -63,7 +63,7 @@ struct PrefixSuffixSection<Field: Hashable>: View {
             HStack {
                 VStack(alignment: .leading) {
                     Text("Prefix")
-                        .sectionTitleText()
+                        .editableSectionTitleText(for: prefix)
                     TextField("Add a prefix", text: $prefix) { _ in
                         prefixManuallyEdited = true
                     }
