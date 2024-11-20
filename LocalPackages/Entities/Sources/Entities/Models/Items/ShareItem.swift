@@ -18,8 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-
-//TODO: maybe missing userid
+// TODO: maybe missing userid
 public struct ShareItem: ShareElementProtocol {
     public let itemUuid: String
     public let vaultID: String
