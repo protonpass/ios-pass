@@ -36,9 +36,20 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     var sheetHeight: CGFloat {
-        vault.vault.shared ? 290 : 400
+        vault.vault.shared ? 400 : canShareItem ? 550 : 450
+    }
+
+    var itemSharingEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
+    }
+
+    //TODO: this will have to be not dependent on vault but shares
+    var canShareItem: Bool {
+        vault.vault.isOwner && vault.vault.isAdmin
     }
 
     init(vault: VaultListUiModel, itemContent: ItemContent) {
@@ -48,7 +59,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func shareVault() {
-        complete(with: .existing(vault.vault))
+        complete(with: .vault(vault.vault))
     }
 
     func createNewVault() {
@@ -76,8 +87,8 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         router.present(for: .manageShareVault(vault.vault, .topMost))
     }
 
-    private func complete(with vault: SharingVaultData) {
-        setShareInviteVault(with: vault)
+    private func complete(with element: SharingElementData) {
+        setShareInviteVault(with: element)
         router.present(for: .sharingFlow(.topMost))
     }
 
@@ -94,6 +105,38 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
 
     func upsell(entryPoint: UpsellEntry) {
         router.present(for: .upselling(entryPoint.defaultConfiguration))
+    }
+
+    func shareItem() {
+        Task {
+            do {
+                guard let share = try await shareRepository.getShareItem(shareId: itemContent.shareId) else {
+                    router.display(element: .errorMessage("Could not find a share linked to this item"))
+                    return
+                }
+
+                let sharedItem = ShareItem(itemUuid: itemContent.itemUuid,
+                                           vaultID: share.vaultID,
+                                           shareId: share.shareID,
+                                           addressId: share.addressID,
+                                           name: itemContent.name,
+                                           isOwner: share.owner,
+                                           shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
+                                           members: Int(share.targetMembers),
+                                           maxMembers: Int(share.targetMaxMembers),
+                                           pendingInvites: Int(share.pendingInvites),
+                                           newUserInvitesReady: Int(share.newUserInvitesReady),
+                                           shared: share.shared,
+                                           createTime: share.createTime,
+                                           canAutoFill: share.canAutoFill,
+                                           note: itemContent.note,
+                                           contentData: itemContent.contentData)
+                setShareInviteVault(with: .item(itemId: itemContent.itemId, sharedItem: sharedItem))
+                router.present(for: .sharingFlow(.topMost))
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 

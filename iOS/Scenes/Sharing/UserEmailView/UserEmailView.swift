@@ -43,7 +43,7 @@ struct UserEmailView: View {
                 .padding(.horizontal, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
-                if case let .new(vault, _) = viewModel.vault {
+                if case let .new(vault, _) = viewModel.element {
                     vaultRow(vault)
                 }
 
