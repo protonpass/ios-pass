@@ -44,7 +44,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(uiModel.customField.title)
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: uiModel.customField.content)
 
                 // Remove TextField from view's hierachy before removing the custom field
                 // otherwise app crashes because of index of range error.
