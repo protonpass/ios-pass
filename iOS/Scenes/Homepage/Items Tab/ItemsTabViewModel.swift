@@ -623,6 +623,7 @@ private extension ItemsTabViewModel {
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
         do {
             var filteredItems = vaultsManager.getFilteredItems()
@@ -697,6 +698,8 @@ private extension ItemsTabViewModel {
             return nil
         }
     }
+    // swiftlint:enable cyclomatic_complexity
+
 }
 
 // MARK: - SyncEventLoopPullToRefreshDelegate
