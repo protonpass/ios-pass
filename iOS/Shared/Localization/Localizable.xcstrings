@@ -67291,7 +67291,14 @@
       }
     },
     "Item" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item"
+          }
+        }
+      }
     },
     "Item excluded from monitoring" : {
       "localizations" : {
