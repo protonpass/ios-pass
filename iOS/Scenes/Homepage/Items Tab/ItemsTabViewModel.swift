@@ -699,7 +699,6 @@ private extension ItemsTabViewModel {
         }
     }
     // swiftlint:enable cyclomatic_complexity
-
 }
 
 // MARK: - SyncEventLoopPullToRefreshDelegate
