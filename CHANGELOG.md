@@ -1,3 +1,15 @@
+# Version 1.14.1
+Features:
+- Resolved jumbled favicons issue on iOS 17
+
+Improvements:
+- Enhanced autofill to rely on system authentication if the app or autofill was recently used
+- Adjust section title color dynamically when editing items based on content emptiness
+
+Others:
+- Core libraries upgraded from 26.5.0 to 27.0.0
+- Remove FIDO2 feature flag
+
 # Version 1.14.0
 Features:
 - Advanced alias management part 2 (behind feature flags)
