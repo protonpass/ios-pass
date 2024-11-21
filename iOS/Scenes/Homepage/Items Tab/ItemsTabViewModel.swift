@@ -56,6 +56,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -623,7 +625,14 @@ private extension ItemsTabViewModel {
 
     nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
         do {
-            let filteredItems = vaultsManager.getFilteredItems()
+            var filteredItems = vaultsManager.getFilteredItems()
+
+            // TODO: filter share that are item sahre get item for itemshares and add to fitler item.
+
+            if let otherItems = await shareItemItems() {
+                filteredItems.append(contentsOf: otherItems)
+            }
+
             let sectionedItems: [SectionedItemUiModel]
             switch await selectedSortType {
             case .mostRecent:
@@ -668,6 +677,24 @@ private extension ItemsTabViewModel {
                 guard let self else { return }
                 sectionedItems = .error(error)
             }
+        }
+    }
+
+    // TODO: this should be move elsewhere
+    nonisolated func shareItemItems() async -> [ItemUiModel]? {
+        do {
+            let userId = try await userManager.getActiveUserId()
+            let shares = try await shareRepository.getShares(userId: userId).filter { $0.share.shareType == .item }
+            var items: [ItemUiModel] = []
+            for encryptedShare in shares {
+                let newItems = try await itemRepository.getRemoteItems(userId: userId,
+                                                                       shareId: encryptedShare.share.shareID)
+                items.append(contentsOf: newItems.map(\.toItemUiModel))
+            }
+            return items
+        } catch {
+            print("woot error \(error)")
+            return nil
         }
     }
 }

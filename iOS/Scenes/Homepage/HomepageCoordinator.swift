@@ -701,7 +701,7 @@ extension HomepageCoordinator {
         let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
 
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.medium,
+        viewController.setDetentType(invite.isVault ? .medium : .custom(270),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
