@@ -44,6 +44,10 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable, Sendable
         .init(rawValue: Int64(targetType)) ?? .unknown
     }
 
+    public var isVault: Bool {
+        inviteType == .vault
+    }
+
     public init(inviteToken: String,
                 remindersSent: Int,
                 targetType: Int,

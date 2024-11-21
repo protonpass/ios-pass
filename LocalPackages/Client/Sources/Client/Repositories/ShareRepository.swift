@@ -216,6 +216,7 @@ public extension ShareRepository {
 
         if eventStream != nil {
             let symmetricKey = try await getSymmetricKey()
+            // TODO: check new type of shares
             for share in encryptedShares {
                 if let vault = try share.toVault(symmetricKey: symmetricKey) {
                     eventStream?.send(.decryptedVault(vault))
