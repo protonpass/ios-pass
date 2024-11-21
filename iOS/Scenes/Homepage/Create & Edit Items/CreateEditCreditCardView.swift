@@ -114,7 +114,7 @@ private extension CreateEditCreditCardView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Cardholder name")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.cardholderName)
                 TextField("Name on card", text: $viewModel.cardholderName)
                     .textInputAutocapitalization(.words)
                     .autocorrectionDisabled()
@@ -137,7 +137,7 @@ private extension CreateEditCreditCardView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Card number")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.cardNumber)
                 WrappedUITextField(text: $viewModel.cardNumber,
                                    placeHolder: "1234 1234 1234 1234") { isEditing in
                     guard !isEditing else {
@@ -161,7 +161,7 @@ private extension CreateEditCreditCardView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Security code")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.verificationNumber)
 
                 SensitiveTextField(text: $viewModel.verificationNumber,
                                    placeholder: "123",
@@ -187,7 +187,7 @@ private extension CreateEditCreditCardView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("PIN Code")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.pin)
 
                 SensitiveTextField(text: $viewModel.pin,
                                    placeholder: "123456",
@@ -213,7 +213,7 @@ private extension CreateEditCreditCardView {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Expiration date")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.monthYear)
                 MonthYearTextField(placeholder: #localized("MM / YY"),
                                    tintColor: tintColor,
                                    month: $viewModel.month,

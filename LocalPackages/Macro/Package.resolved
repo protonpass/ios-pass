@@ -95,8 +95,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/ProtonMail/protoncore_ios",
       "state" : {
-        "revision" : "89b81f970013720e2f870f325fd21a83c4f40fb2",
-        "version" : "26.5.0"
+        "revision" : "5487ed9f5b7693597fa738e7eeea730462001a92",
+        "version" : "27.0.0"
       }
     },
     {

@@ -661,7 +661,7 @@ private extension CreateEditIdentityView {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text(title)
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: value.wrappedValue)
 
                 if isSensitive {
                     SensitiveTextField(text: value,

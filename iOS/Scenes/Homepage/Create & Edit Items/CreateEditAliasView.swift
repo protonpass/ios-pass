@@ -186,7 +186,7 @@ struct CreateEditAliasView: View {
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Display name")
-                    .sectionTitleText()
+                    .editableSectionTitleText(for: viewModel.senderName)
 
                 TrimmingTextField("Add display name", text: $viewModel.senderName)
                     .textInputAutocapitalization(.never)

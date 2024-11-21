@@ -39,9 +39,21 @@ public extension View {
 }
 
 public extension Text {
-    func sectionTitleText(isValid: Bool = true) -> Text {
+    func editableSectionTitleText(for text: String? = nil,
+                                  isValid: Bool = true) -> some View {
         font(.footnote)
-            .adaptiveForegroundStyle(isValid ? PassColor.textWeak.toColor : PassColor.signalDanger.toColor)
+            // swiftformat:disable all
+            .adaptiveForegroundStyle(isValid ?
+                (text?.isEmpty == true ? PassColor.textNorm : PassColor.textWeak).toColor :
+                PassColor.signalDanger.toColor)
+        // swiftformat:enable all
+            .animation(.default, value: isValid)
+            .animation(.default, value: text?.isEmpty)
+    }
+
+    func sectionTitleText() -> Text {
+        font(.footnote)
+            .adaptiveForegroundStyle(PassColor.textWeak.toColor)
     }
 
     func sectionContentText() -> Text {
