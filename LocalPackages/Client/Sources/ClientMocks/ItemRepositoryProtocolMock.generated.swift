@@ -758,8 +758,28 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllItemsContent()
         return stubbedGetAllItemsContentResult
     }
+    // MARK: - getRemoteItems
+    public var getRemoteItemsUserIdShareIdThrowableError38: Error?
+    public var closureGetRemoteItems: () -> () = {}
+    public var invokedGetRemoteItemsfunction = false
+    public var invokedGetRemoteItemsCount = 0
+    public var invokedGetRemoteItemsParameters: (userId: String, shareId: String)?
+    public var invokedGetRemoteItemsParametersList = [(userId: String, shareId: String)]()
+    public var stubbedGetRemoteItemsResult: [ItemContent]!
+
+    public func getRemoteItems(userId: String, shareId: String) async throws -> [ItemContent] {
+        invokedGetRemoteItemsfunction = true
+        invokedGetRemoteItemsCount += 1
+        invokedGetRemoteItemsParameters = (userId, shareId)
+        invokedGetRemoteItemsParametersList.append((userId, shareId))
+        if let error = getRemoteItemsUserIdShareIdThrowableError38 {
+            throw error
+        }
+        closureGetRemoteItems()
+        return stubbedGetRemoteItemsResult
+    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError38: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError39: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -772,7 +792,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError38 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError39 {
             throw error
         }
         closureTotpCreationDateThreshold()

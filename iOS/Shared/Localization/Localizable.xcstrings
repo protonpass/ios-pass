@@ -771,6 +771,9 @@
         }
       }
     },
+    "%@ wants to share an item with you." : {
+
+    },
     "%@%% decrypted..." : {
       "localizations" : {
         "be" : {
@@ -14687,6 +14690,9 @@
           }
         }
       }
+    },
+    "Accept and view the item" : {
+
     },
     "Access level" : {
       "comment" : "Used in sharing context",
@@ -111307,6 +111313,9 @@
         }
       }
     },
+    "Shared item invitation" : {
+
+    },
     "Shared vault" : {
       "comment" : "Used in sharing vault flow. The user has the option to create a new vault and share that new vault. This string is the default name for the vault.",
       "localizations" : {
@@ -117996,6 +118005,9 @@
           }
         }
       }
+    },
+    "Tap here for details" : {
+
     },
     "Terms of service" : {
       "localizations" : {
