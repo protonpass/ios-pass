@@ -772,7 +772,14 @@
       }
     },
     "%@ wants to share an item with you." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wants to share an item with you."
+          }
+        }
+      }
     },
     "%@%% decrypted..." : {
       "localizations" : {
@@ -14692,7 +14699,14 @@
       }
     },
     "Accept and view the item" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept and view the item"
+          }
+        }
+      }
     },
     "Access level" : {
       "comment" : "Used in sharing context",
@@ -110352,7 +110366,14 @@
       }
     },
     "Share Item" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share Item"
+          }
+        }
+      }
     },
     "Share link" : {
       "localizations" : {
@@ -110669,7 +110690,14 @@
       }
     },
     "Share this item with other Proton users." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share this item with other Proton users."
+          }
+        }
+      }
     },
     "Share this vault" : {
       "localizations" : {
@@ -111314,7 +111342,14 @@
       }
     },
     "Shared item invitation" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared item invitation"
+          }
+        }
+      }
     },
     "Shared vault" : {
       "comment" : "Used in sharing vault flow. The user has the option to create a new vault and share that new vault. This string is the default name for the vault.",
@@ -118007,7 +118042,14 @@
       }
     },
     "Tap here for details" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap here for details"
+          }
+        }
+      }
     },
     "Terms of service" : {
       "localizations" : {
