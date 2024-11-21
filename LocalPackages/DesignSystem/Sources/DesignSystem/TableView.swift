@@ -195,6 +195,10 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
                     cell.contentView.backgroundColor = .clear
                     cell.layoutMargins = .zero
                     cell.separatorInset = .zero
+                    if #unavailable(iOS 18) {
+                        // Workaround jumbled favicon issues on iOS 17
+                        cell.contentConfiguration = nil
+                    }
                     cell.contentConfiguration = UIHostingConfiguration {
                         self.parent
                             .itemView(item)
