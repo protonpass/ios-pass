@@ -427,6 +427,7 @@
 		35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */; };
 		35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
 		35FD55A22C9072DC00805584 /* ItemCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */; };
+		536CA2C42CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */; };
 		5733D3FF2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */; };
 		5733D4012AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */; };
 		575D3C252AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 575D3C242AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore */; };
@@ -967,6 +968,7 @@
 		35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemTypeListView.swift; sourceTree = "<group>"; };
 		35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemRow.swift; sourceTree = "<group>"; };
 		35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCreationInfo.swift; sourceTree = "<group>"; };
+		536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentViewerSection.swift; sourceTree = "<group>"; };
 		5B0939162C04DD250046F467 /* IdentityDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailView.swift; sourceTree = "<group>"; };
 		5B0939172C04DD250046F467 /* IdentityDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailViewModel.swift; sourceTree = "<group>"; };
 		5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedServices+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1284,6 +1286,7 @@
 				3552A28929EC29BF00ABDB6E /* CachedFavIconsSection.swift */,
 				358152022C57C3EB0054F755 /* CredentialsSection.swift */,
 				357C1D282CD8F18400703891 /* FeatureFlagsSection.swift */,
+				536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */,
 				353739E029EAE8C000A3255E /* HapticFeedbacksSection.swift */,
 				35F0BD582C1853A70062F34B /* ItemReadEventsSection.swift */,
 				353739E629EAEE6F00A3255E /* OnboardSection.swift */,
@@ -3483,6 +3486,7 @@
 				5BCB2EA52B1F89E80072345F /* PinnedItemsView.swift in Sources */,
 				354FBF612A02961D00A0B27D /* UpgradeButton.swift in Sources */,
 				356BC35529D6D6AF00F03497 /* EditDefaultBrowserView.swift in Sources */,
+				536CA2C42CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift in Sources */,
 				5B62931C2CDA215E006C3C67 /* ContactRow.swift in Sources */,
 				5B4E53E32BD8033A00E8D54A /* BreachDetailView.swift in Sources */,
 				5B1453E12A727EFF0048B022 /* AcceptRejectInviteView.swift in Sources */,
