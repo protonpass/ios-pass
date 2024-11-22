@@ -1,6 +1,28 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%lld files" : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld file"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld files"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld item(s)" : {
       "localizations" : {
         "be" : {
@@ -1440,6 +1462,26 @@
         }
       }
     },
+    "Attach a file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attach a file"
+          }
+        }
+      }
+    },
+    "Attachments" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attachments"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "comment" : "Accessibility label",
       "localizations" : {
@@ -1597,6 +1639,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hủy"
+          }
+        }
+      }
+    },
+    "Choose a file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a file"
+          }
+        }
+      }
+    },
+    "Choose a photo or video" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a photo or video"
           }
         }
       }
@@ -5408,6 +5470,16 @@
         }
       }
     },
+    "Scan documents" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan documents"
+          }
+        }
+      }
+    },
     "Seamlessly search for items via your home screen. Open Settings → Spotlight to enable." : {
       "localizations" : {
         "be" : {
@@ -6986,6 +7058,16 @@
         }
       }
     },
+    "Take a photo" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take a photo"
+          }
+        }
+      }
+    },
     "Tap here to add a field for a username." : {
       "localizations" : {
         "be" : {
@@ -7302,6 +7384,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thử tìm kiếm bằng cách sử dụng cách viết hoặc từ khóa khác"
+          }
+        }
+      }
+    },
+    "Upload files from your device" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload files from your device"
           }
         }
       }
@@ -7756,6 +7848,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "You can attach files to items for a better organization" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can attach files to items for a better organization"
           }
         }
       }
