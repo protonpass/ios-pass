@@ -29,8 +29,9 @@ import ProtonCoreUIFoundations
 final class ShareOrCreateNewVaultViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
 
-    let vault: VaultListUiModel
+    let share: any ShareElementProtocol
     let itemContent: ItemContent
+    let itemCount: Int?
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
@@ -40,26 +41,29 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     var sheetHeight: CGFloat {
-        vault.vault.shared ? 400 : canShareItem ? 550 : 450
+        share.shared ? 400 : canShareItem ? 550 : 450
     }
 
     var itemSharingEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }
 
-    // TODO: this will have to be not dependent on vault but shares
     var canShareItem: Bool {
-        vault.vault.isOwner && vault.vault.isAdmin
+        share.isOwner && share.isAdmin
     }
 
-    init(vault: VaultListUiModel, itemContent: ItemContent) {
-        self.vault = vault
+    init(share: any ShareElementProtocol, itemContent: ItemContent, itemCount: Int?) {
+        self.share = share
         self.itemContent = itemContent
+        self.itemCount = itemCount
         checkIfFreeUser()
     }
 
     func shareVault() {
-        complete(with: .vault(vault.vault))
+        guard let vault = share.vault else {
+            return
+        }
+        complete(with: .vault(vault))
     }
 
     func createNewVault() {
@@ -84,7 +88,10 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func manageAccess() {
-        router.present(for: .manageShareVault(vault.vault, .topMost))
+        guard let vault = share.vault else {
+            return
+        }
+        router.present(for: .manageShareVault(vault, .topMost))
     }
 
     private func complete(with element: SharingElementData) {

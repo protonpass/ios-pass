@@ -56,7 +56,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
-    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+//    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
 
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
@@ -84,6 +84,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\SharedRepositoryContainer.aliasRepository)
     private var aliasRepository: any AliasRepositoryProtocol
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
@@ -623,16 +624,12 @@ private extension ItemsTabViewModel {
         }
     }
 
-    // swiftlint:disable cyclomatic_complexity
     nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
         do {
             var filteredItems = vaultsManager.getFilteredItems()
 
-            // TODO: filter share that are item sahre get item for itemshares and add to fitler item.
-
-            if let otherItems = await shareItemItems() {
-                filteredItems.append(contentsOf: otherItems)
-            }
+            let otherItems = try await appContentManager.shareItemItems()
+            filteredItems.append(contentsOf: otherItems)
 
             let sectionedItems: [SectionedItemUiModel]
             switch await selectedSortType {
@@ -680,25 +677,6 @@ private extension ItemsTabViewModel {
             }
         }
     }
-
-    // TODO: this should be move elsewhere
-    nonisolated func shareItemItems() async -> [ItemUiModel]? {
-        do {
-            let userId = try await userManager.getActiveUserId()
-            let shares = try await shareRepository.getShares(userId: userId).filter { $0.share.shareType == .item }
-            var items: [ItemUiModel] = []
-            for encryptedShare in shares {
-                let newItems = try await itemRepository.getRemoteItems(userId: userId,
-                                                                       shareId: encryptedShare.share.shareID)
-                items.append(contentsOf: newItems.map(\.toItemUiModel))
-            }
-            return items
-        } catch {
-            print("woot error \(error)")
-            return nil
-        }
-    }
-    // swiftlint:enable cyclomatic_complexity
 }
 
 // MARK: - SyncEventLoopPullToRefreshDelegate

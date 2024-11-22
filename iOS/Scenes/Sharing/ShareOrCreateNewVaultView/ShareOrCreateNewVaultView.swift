@@ -45,14 +45,16 @@ struct ShareOrCreateNewVaultView: View {
                 secureLink
             }
 
-            if viewModel.vault.vault.shared {
+            if viewModel.share.shared {
                 manageAccessButton
                     .padding(.vertical)
             } else {
                 PassDivider()
                     .padding(.vertical)
 
-                currentVault
+                if let vault = viewModel.share.vault {
+                    currentVault(vault: vault)
+                }
 
                 createNewVaultButton
                     .padding(.vertical, 12)
@@ -156,11 +158,11 @@ private extension ShareOrCreateNewVaultView {
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1)
             VStack(alignment: .leading) {
-                Text(viewModel.vault.vault.canEdit ? "Manage access" : "View members")
+                Text(viewModel.share.canEdit ? "Manage access" : "View members")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("The item's vault is currently shared with \(viewModel.vault.vault.members) users")
+                Text("The item's vault is currently shared with \(viewModel.share.members) users")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .lineLimit(2)
@@ -177,18 +179,17 @@ private extension ShareOrCreateNewVaultView {
 }
 
 private extension ShareOrCreateNewVaultView {
-    var currentVault: some View {
+    func currentVault(vault: Vault) -> some View {
         HStack {
-            let vault = viewModel.vault
             VaultRow(thumbnail: {
-                         CircleButton(icon: vault.vault.displayPreferences.icon.icon.bigImage,
-                                      iconColor: vault.vault.displayPreferences.color.color.color,
-                                      backgroundColor: vault.vault.displayPreferences.color.color
+                         CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
+                                      iconColor: vault.displayPreferences.color.color.color,
+                                      backgroundColor: vault.displayPreferences.color.color
                                           .color
                                           .withAlphaComponent(0.16))
                      },
-                     title: vault.vault.name,
-                     itemCount: vault.itemCount,
+                     title: vault.name,
+                     itemCount: viewModel.itemCount ?? 0,
                      isShared: false, // No need to show share indicator
                      isSelected: false,
                      height: 74)

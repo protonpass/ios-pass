@@ -95,14 +95,6 @@ public extension Vault {
         maxMembers <= totalOverallMembers
     }
 
-    var isAdmin: Bool {
-        shareRole == ShareRole.admin
-    }
-
-    var canEdit: Bool {
-        shareRole != ShareRole.read
-    }
-
     var canShareVaultWithMorePeople: Bool {
         isAdmin && !reachedSharingLimit
     }
