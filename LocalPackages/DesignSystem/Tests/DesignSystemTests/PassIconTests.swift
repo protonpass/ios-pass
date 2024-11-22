@@ -40,6 +40,10 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.coverScreenLogo
         _ = PassIcon.extraPassword
 
+        _ = PassIcon.fileAttachments
+        _ = PassIcon.documentScan
+        _ = PassIcon.images
+
         _ = PassIcon.filterFilled
 
         _ = PassIcon.infoBannerAliases

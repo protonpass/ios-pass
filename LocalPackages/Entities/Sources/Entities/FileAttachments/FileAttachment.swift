@@ -1,6 +1,6 @@
 //
-// AppPreferences+Test.swift
-// Proton Pass - Created on 03/04/2024.
+// FileAttachment.swift
+// Proton Pass - Created on 19/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,18 +19,28 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Entities
+import Foundation
 
-extension AppPreferences {
-    static func random() -> Self {
-        .init(onboarded: .random(),
-              telemetryThreshold: .random(in: 1...1_000_000),
-              createdItemsCount: .random(in: 1...100),
-              dismissedBannerIds: .random(randomElement: .random()),
-              dismissedCustomDomainExplanation: .random(),
-              didMigratePreferences: .random(), 
-              dismissedAliasesSyncExplanation: .random(),
-              hasVisitedContactPage: false,
-              dismissedFileAttachmentsBanner: false)
+public struct FileAttachmentMetadata: Sendable, Equatable {
+    public let name: String
+    public let mimeType: String
+    public let size: Int
+
+    public init(name: String,
+                mimeType: String,
+                size: Int) {
+        self.name = name
+        self.mimeType = mimeType
+        self.size = size
+    }
+}
+
+public struct FileAttachment: Sendable, Equatable, Identifiable {
+    public let id: String
+    public let metadata: FileAttachmentMetadata
+
+    public init(id: String, metadata: FileAttachmentMetadata) {
+        self.id = id
+        self.metadata = metadata
     }
 }
