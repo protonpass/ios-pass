@@ -1,5 +1,5 @@
 //
-// FileAttachementViewer.swift
+// FileAttachementPreview.swift
 // Proton Pass - Created on 21/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,21 +21,25 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
+import QuickLook
 import SwiftUI
 
-public struct FileAttachementViewer: View {
+public struct FileAttachementPreview: View {
     @Environment(\.dismiss) private var dismiss
+    let url: URL
     let primaryTintColor: UIColor
     let secondaryTintColor: UIColor
     let onSave: () -> Void
     let onRename: () -> Void
     let onDelete: () -> Void
 
-    public init(primaryTintColor: UIColor,
+    public init(url: URL,
+                primaryTintColor: UIColor,
                 secondaryTintColor: UIColor,
                 onSave: @escaping () -> Void,
                 onRename: @escaping () -> Void,
                 onDelete: @escaping () -> Void) {
+        self.url = url
         self.primaryTintColor = primaryTintColor
         self.secondaryTintColor = secondaryTintColor
         self.onSave = onSave
@@ -44,10 +48,12 @@ public struct FileAttachementViewer: View {
     }
 
     public var body: some View {
-        VStack {
-            Spacer()
-            Text(verbatim: "File viewer")
-            Spacer()
+        ZStack {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+            QuickLookPreview(url: url)
+                .padding(.top, 8)
+                .ignoresSafeArea(edges: .bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .toolbar { toolbarContent }
@@ -55,7 +61,7 @@ public struct FileAttachementViewer: View {
     }
 }
 
-private extension FileAttachementViewer {
+private extension FileAttachementPreview {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
@@ -83,6 +89,44 @@ private extension FileAttachementViewer {
                              iconColor: primaryTintColor,
                              backgroundColor: secondaryTintColor)
             })
+        }
+    }
+}
+
+// MARK: - QuickLookPreview
+
+private struct QuickLookPreview: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: Context) -> QLPreviewController {
+        let previewController = QLPreviewController()
+        previewController.dataSource = context.coordinator
+        return previewController
+    }
+
+    func updateUIViewController(_ uiViewController: QLPreviewController,
+                                context: Context) {
+        // Not applicable
+    }
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+
+    final class Coordinator: NSObject, QLPreviewControllerDataSource {
+        let parent: QuickLookPreview
+
+        init(_ parent: QuickLookPreview) {
+            self.parent = parent
+        }
+
+        func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
+            1
+        }
+
+        func previewController(_ controller: QLPreviewController,
+                               previewItemAt index: Int) -> any QLPreviewItem {
+            parent.url as QLPreviewItem
         }
     }
 }
