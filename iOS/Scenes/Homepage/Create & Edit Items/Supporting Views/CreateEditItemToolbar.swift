@@ -21,12 +21,14 @@
 import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct CreateEditItemToolbar: ToolbarContent {
     let saveButtonTitle: String
     let isSaveable: Bool
     let isSaving: Bool
+    let fileAttachmentsEnabled: Bool
     let canScanDocuments: Bool
     let vault: Vault
     let canChangeVault: Bool
@@ -36,6 +38,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let onSelectVault: () -> Void
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
+    let onSelectFileAttachmentMethod: (FileAttachmentMethod) -> Void
     let onScan: () -> Void
     let onSave: () -> Void
 
@@ -74,6 +77,13 @@ private extension CreateEditItemToolbar {
         HStack {
             if canChangeVault {
                 vaultButton
+            }
+
+            if itemContentType == .note, fileAttachmentsEnabled {
+                FileAttachmentsButton(style: .circle,
+                                      iconColor: itemContentType.normMajor2Color,
+                                      backgroundColor: itemContentType.normMinor1Color,
+                                      onSelect: onSelectFileAttachmentMethod)
             }
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
