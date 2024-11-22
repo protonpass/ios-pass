@@ -97,6 +97,7 @@ struct QAFeaturesView: View {
                                          dismissedFileAttachmentsBanner = false
                                      }
                                  })
+                    FileAttachmentViewerSection()
                 }
                 if #available(iOS 17, *) {
                     TipKitSection()
