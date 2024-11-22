@@ -21,17 +21,25 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct FileAttachmentsButton: View {
+    let style: Style
     let iconColor: UIColor
     let backgroundColor: UIColor
     let onSelect: (FileAttachmentMethod) -> Void
 
-    public init(iconColor: UIColor,
+    public enum Style {
+        case circle, capsule
+    }
+
+    public init(style: Style,
+                iconColor: UIColor,
                 backgroundColor: UIColor,
                 onSelect: @escaping (FileAttachmentMethod) -> Void) {
+        self.style = style
         self.iconColor = iconColor
         self.backgroundColor = backgroundColor
         self.onSelect = onSelect
@@ -39,11 +47,30 @@ public struct FileAttachmentsButton: View {
 
     public var body: some View {
         Menu(content: {
-            ForEachFileAttachmentMethod(onSelect: onSelect)
+            ForEach(FileAttachmentMethod.allCases, id: \.self) { method in
+                Label(title: {
+                    Text(method.title)
+                }, icon: {
+                    Image(uiImage: method.icon)
+                        .resizable()
+                })
+                .buttonEmbeded {
+                    onSelect(method)
+                }
+            }
         }, label: {
-            CircleButton(icon: IconProvider.paperClipVertical,
-                         iconColor: iconColor,
-                         backgroundColor: backgroundColor)
+            switch style {
+            case .circle:
+                CircleButton(icon: IconProvider.paperClipVertical,
+                             iconColor: iconColor,
+                             backgroundColor: backgroundColor)
+
+            case .capsule:
+                CapsuleTextButton(title: #localized("Attach a file"),
+                                  titleColor: iconColor,
+                                  backgroundColor: backgroundColor,
+                                  height: 48)
+            }
         })
     }
 }
