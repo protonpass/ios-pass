@@ -46,7 +46,8 @@ struct PreferencesTests {
                                             AppPreferences.default.dismissedCustomDomainExplanation,
                                          didMigratePreferences: AppPreferences.default.didMigratePreferences, 
                                          dismissedAliasesSyncExplanation: AppPreferences.default.dismissedAliasesSyncExplanation,
-                                         hasVisitedContactPage: AppPreferences.default.hasVisitedContactPage)
+                                         hasVisitedContactPage: AppPreferences.default.hasVisitedContactPage,
+                                         dismissedFileAttachmentsBanner: AppPreferences.default.dismissedFileAttachmentsBanner)
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)
     }
 
