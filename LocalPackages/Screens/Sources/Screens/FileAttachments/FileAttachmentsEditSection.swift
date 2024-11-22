@@ -21,7 +21,6 @@
 
 import DesignSystem
 import Entities
-import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -87,17 +86,11 @@ public struct FileAttachmentsEditSection: View {
                 }
             }
 
-            Menu(content: {
-                ForEachFileAttachmentMethod(onSelect: onSelect)
-            }, label: {
-                CapsuleTextButton(title: #localized("Attach a file"),
-                                  titleColor: primaryTintColor,
+            FileAttachmentsButton(style: .capsule,
+                                  iconColor: primaryTintColor,
                                   backgroundColor: secondaryTintColor,
-                                  height: 48)
-                    .opacityReduced(isUploading)
-            })
-            .padding(.top)
-            .disabled(isUploading)
+                                  onSelect: onSelect)
+                .opacityReduced(isUploading)
         }
         .animation(.default, value: files)
         .animation(.default, value: isUploading)
