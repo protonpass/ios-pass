@@ -80,7 +80,8 @@ private extension CreateEditItemToolbar {
             }
 
             if itemContentType == .note, fileAttachmentsEnabled {
-                FileAttachmentsButton(iconColor: itemContentType.normMajor2Color,
+                FileAttachmentsButton(style: .circle,
+                                      iconColor: itemContentType.normMajor2Color,
                                       backgroundColor: itemContentType.normMinor1Color,
                                       onSelect: onSelectFileAttachmentMethod)
             }
