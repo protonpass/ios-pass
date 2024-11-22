@@ -50,8 +50,6 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
 
-//    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
-
     @discardableResult
     func updateUserPermission(userShareId: String,
                               shareId: String,
@@ -81,8 +79,6 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     @discardableResult
     func transferVaultOwnership(vaultShareId: String, newOwnerShareId: String) async throws -> Bool
-
-    // MARK: - Item
 }
 
 public extension ShareRepositoryProtocol {
@@ -216,6 +212,7 @@ public extension ShareRepository {
 
         if eventStream != nil {
             let symmetricKey = try await getSymmetricKey()
+            // swiftlint:disable:next todo
             // TODO: check new type of shares
             for share in encryptedShares {
                 if let vault = try share.toVault(symmetricKey: symmetricKey) {
