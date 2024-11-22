@@ -157,7 +157,8 @@ extension Preferences: @unchecked Sendable, PreferencesMigrator {
                                  dismissedCustomDomainExplanation: false,
                                  didMigratePreferences: true,
                                  dismissedAliasesSyncExplanation: false,
-                                 hasVisitedContactPage: false)
+                                 hasVisitedContactPage: false,
+                                 dismissedFileAttachmentsBanner: false)
         let shared = SharedPreferences(quickTypeBar: quickTypeBar,
                                        automaticallyCopyTotpCode: automaticallyCopyTotpCode,
                                        theme: theme,

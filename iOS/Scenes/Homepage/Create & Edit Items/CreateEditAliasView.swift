@@ -30,6 +30,7 @@ struct CreateEditAliasView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: CreateEditAliasViewModel
     @FocusState private var focusedField: Field?
+    @Namespace private var fileAttachmentsID
     @Namespace private var noteID
     @State private var isShowingAdvancedOptions = false
     @State private var isShowingSlNoteExplanation = false
@@ -80,11 +81,20 @@ struct CreateEditAliasView: View {
     }
 
     private var content: some View {
-        ScrollViewReader { value in
+        ScrollViewReader { proxy in
             ScrollView {
                 LazyVStack(spacing: 8) {
                     if viewModel.shouldUpgrade {
                         AliasLimitView(backgroundColor: PassColor.aliasInteractionNormMinor1)
+                    } else {
+                        FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                                              onTap: {
+                                                  viewModel.dismissFileAttachmentsBanner()
+                                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                                                      proxy.scrollTo(fileAttachmentsID, anchor: .bottom)
+                                                  }
+                                              },
+                                              onClose: { viewModel.dismissFileAttachmentsBanner() })
                     }
 
                     CreateEditItemTitleSection(title: $viewModel.title,
@@ -142,23 +152,36 @@ struct CreateEditAliasView: View {
                         }
                         senderNameRow
                     }
+
+                    if viewModel.fileAttachmentsEnabled {
+                        FileAttachmentsEditSection(files: viewModel.files,
+                                                   isUploading: viewModel.isUploadingFile,
+                                                   primaryTintColor: viewModel.itemContentType()
+                                                       .normMajor2Color,
+                                                   secondaryTintColor: viewModel.itemContentType()
+                                                       .normMinor1Color,
+                                                   onDelete: { viewModel.handleDeleteAttachments() },
+                                                   onSelect: { viewModel.handle(method: $0) })
+                            .id(fileAttachmentsID)
+                    }
                 }
                 .padding()
                 .animation(.default, value: viewModel.shouldUpgrade)
                 .animation(.default, value: isShowingAdvancedOptions)
                 .animation(.default, value: viewModel.mailboxSelection)
                 .animation(.default, value: viewModel.alias)
+                .animation(.default, value: viewModel.showFileAttachmentsBanner)
             }
             .onChange(of: focusedField) { focusedField in
                 if case .note = focusedField {
                     withAnimation {
-                        value.scrollTo(noteID, anchor: .bottom)
+                        proxy.scrollTo(noteID, anchor: .bottom)
                     }
                 }
             }
             .onChange(of: viewModel.note) { _ in
                 withAnimation {
-                    value.scrollTo(noteID, anchor: .bottom)
+                    proxy.scrollTo(noteID, anchor: .bottom)
                 }
             }
             .onChange(of: viewModel.isSaving) { isSaving in

@@ -51,6 +51,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                 CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
                                       isSaveable: viewModel.isSaveable,
                                       isSaving: viewModel.isSaving,
+                                      fileAttachmentsEnabled: viewModel.fileAttachmentsEnabled,
                                       canScanDocuments: viewModel.canScanDocuments,
                                       vault: viewModel.selectedVault,
                                       canChangeVault: viewModel.mode.canChangeVault,
@@ -64,6 +65,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                               viewModel.upgrade()
                                           }
                                       },
+                                      onSelectFileAttachmentMethod: { viewModel.handle(method: $0) },
                                       onScan: { viewModel.openScanner() },
                                       onSave: { viewModel.save() })
             }
