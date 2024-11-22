@@ -144,6 +144,10 @@ struct CreateEditIdentityView: View {
 private extension CreateEditIdentityView {
     var mainContainer: some View {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
+            FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                                  onTap: { viewModel.dismissFileAttachmentsBanner() },
+                                  onClose: { viewModel.dismissFileAttachmentsBanner() })
+
             CreateEditItemTitleSection(title: $viewModel.title,
                                        focusedField: $focusedField,
                                        field: .title,
@@ -154,6 +158,17 @@ private extension CreateEditIdentityView {
 
             sections()
             PassSectionDivider()
+
+            if viewModel.fileAttachmentsEnabled {
+                FileAttachmentsEditSection(files: viewModel.files,
+                                           isUploading: viewModel.isUploadingFile,
+                                           primaryTintColor: viewModel.itemContentType()
+                                               .normMajor2Color,
+                                           secondaryTintColor: viewModel.itemContentType()
+                                               .normMinor1Color,
+                                           onDelete: { viewModel.handleDeleteAttachments() },
+                                           onSelect: { viewModel.handle(method: $0) })
+            }
 
             if viewModel.canAddMoreCustomFields {
                 CapsuleLabelButton(icon: IconProvider.plus,
@@ -189,6 +204,7 @@ private extension CreateEditIdentityView {
         .animation(.default, value: viewModel.extraWorkDetails)
         .animation(.default, value: viewModel.extraAddressDetails)
         .animation(.default, value: viewModel.extraContactDetails)
+        .animation(.default, value: viewModel.showFileAttachmentsBanner)
         .scrollViewEmbeded(maxWidth: .infinity)
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
