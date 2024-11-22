@@ -36,3 +36,25 @@ public protocol ShareElementProtocol: Identifiable, Hashable, Equatable, Sendabl
     var createTime: Int64 { get }
     var canAutoFill: Bool { get }
 }
+
+public extension ShareElementProtocol {
+    var isVault: Bool {
+        self is Vault
+    }
+
+    var vault: Vault? {
+        self as? Vault
+    }
+
+    var shareItem: ShareItem? {
+        self as? ShareItem
+    }
+
+    var isAdmin: Bool {
+        shareRole == ShareRole.admin
+    }
+
+    var canEdit: Bool {
+        shareRole != ShareRole.read
+    }
+}

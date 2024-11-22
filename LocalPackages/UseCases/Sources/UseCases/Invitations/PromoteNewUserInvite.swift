@@ -23,12 +23,18 @@ import Entities
 import ProtonCoreLogin
 
 public protocol PromoteNewUserInviteUseCase: Sendable {
-    func execute(sharedElement: any ShareElementProtocol, inviteId: String, email: String) async throws
+    func execute(sharedElement: any ShareElementProtocol,
+                 inviteId: String,
+                 email: String,
+                 itemId: String?) async throws
 }
 
 public extension PromoteNewUserInviteUseCase {
-    func callAsFunction(sharedElement: any ShareElementProtocol, inviteId: String, email: String) async throws {
-        try await execute(sharedElement: sharedElement, inviteId: inviteId, email: email)
+    func callAsFunction(sharedElement: any ShareElementProtocol,
+                        inviteId: String,
+                        email: String,
+                        itemId: String? = nil) async throws {
+        try await execute(sharedElement: sharedElement, inviteId: inviteId, email: email, itemId: itemId)
     }
 }
 
@@ -48,22 +54,23 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
         self.userManager = userManager
     }
 
-    public func execute(sharedElement: any ShareElementProtocol, inviteId: String, email: String) async throws {
+    public func execute(sharedElement: any ShareElementProtocol,
+                        inviteId: String,
+                        email: String,
+                        itemId: String?) async throws {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: email)
         guard let activeKey = publicKeys.first else {
             throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
         }
-//        let vaultKey = try await passKeyManager.getLatestShareKey(userId: userData.user.ID, shareId:
-//        vault.shareId)
-        let key: any ShareKeyProtocol = if sharedElement is Vault {
+
+        let key: any ShareKeyProtocol = if sharedElement.isVault {
             try await passKeyManager.getLatestShareKey(userId: userData.user.ID,
                                                        shareId: sharedElement.shareId)
-        } else if let item = sharedElement as? ShareItem {
-            // TODO: fix need itemId and not uuid
+        } else if sharedElement is ShareItem, let itemId {
             try await passKeyManager.getLatestItemKey(userId: userData.user.ID,
                                                       shareId: sharedElement.shareId,
-                                                      itemId: item.itemUuid)
+                                                      itemId: itemId)
         } else {
             throw PassError.sharing(.failedEncryptionKeysFetching)
         }
