@@ -22,39 +22,33 @@ import DesignSystem
 import Screens
 import SwiftUI
 
-private let kTitle = "File attachment viewer"
-
 struct FileAttachmentViewerSection: View {
-    var body: some View {
-        NavigationLink(destination: { FilePickerOptions() },
-                       label: { Text(verbatim: kTitle) })
-    }
-}
-
-private struct FilePickerOptions: View {
-    @State private var showViewer = false
+    @State private var showPicker = false
+    @State private var url: URL?
 
     var body: some View {
-        Form {
-            Button(action: {
-                showViewer.toggle()
-            }, label: {
-                Text(verbatim: "Pick a photo or video")
-            })
-
-            Button(action: {
-                showViewer.toggle()
-            }, label: {
-                Text(verbatim: "Pick a file")
-            })
-        }
-        .navigationTitle(Text(verbatim: kTitle))
-        .fullScreenCover(isPresented: $showViewer) {
-            FileAttachementViewer(primaryTintColor: PassColor.interactionNormMajor1,
-                                  secondaryTintColor: PassColor.interactionNormMinor2,
-                                  onSave: { print(#function) },
-                                  onRename: { print(#function) },
-                                  onDelete: { print(#function) })
+        Button(action: {
+            showPicker.toggle()
+        }, label: {
+            Text(verbatim: "File attachment preview")
+        })
+        .fileImporter(isPresented: $showPicker,
+                      allowedContentTypes: [.item],
+                      allowsMultipleSelection: false,
+                      onCompletion: { result in
+                          if case let .success(urls) = result {
+                              url = urls.first
+                          }
+                      })
+        .fullScreenCover(isPresented: $url.mappedToBool()) {
+            if let url {
+                FileAttachementPreview(url: url,
+                                       primaryTintColor: PassColor.interactionNormMajor1,
+                                       secondaryTintColor: PassColor.interactionNormMinor2,
+                                       onSave: {},
+                                       onRename: {},
+                                       onDelete: {})
+            }
         }
     }
 }
