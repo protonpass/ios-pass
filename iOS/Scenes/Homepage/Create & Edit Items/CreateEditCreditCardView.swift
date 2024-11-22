@@ -27,6 +27,7 @@ import SwiftUI
 struct CreateEditCreditCardView: View {
     @StateObject private var viewModel: CreateEditCreditCardViewModel
     @FocusState private var focusedField: Field?
+    @Namespace private var fileAttachmentsID
 
     private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
 
@@ -47,11 +48,20 @@ struct CreateEditCreditCardView: View {
 
 private extension CreateEditCreditCardView {
     var content: some View {
-        ScrollViewReader { _ in
+        ScrollViewReader { proxy in
             ScrollView {
                 VStack {
                     if viewModel.shouldUpgrade {
                         upsellBanner
+                    } else {
+                        FileAttachmentsBanner(isShown: viewModel.showFileAttachmentsBanner,
+                                              onTap: {
+                                                  viewModel.dismissFileAttachmentsBanner()
+                                                  DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                                                      proxy.scrollTo(fileAttachmentsID, anchor: .bottom)
+                                                  }
+                                              },
+                                              onClose: { viewModel.dismissFileAttachmentsBanner() })
                     }
 
                     CreateEditItemTitleSection(title: $viewModel.title,
@@ -66,8 +76,21 @@ private extension CreateEditCreditCardView {
                     NoteEditSection(note: $viewModel.note,
                                     focusedField: $focusedField,
                                     field: .note)
+
+                    if viewModel.fileAttachmentsEnabled {
+                        FileAttachmentsEditSection(files: viewModel.files,
+                                                   isUploading: viewModel.isUploadingFile,
+                                                   primaryTintColor: viewModel.itemContentType()
+                                                       .normMajor2Color,
+                                                   secondaryTintColor: viewModel.itemContentType()
+                                                       .normMinor1Color,
+                                                   onDelete: { viewModel.handleDeleteAttachments() },
+                                                   onSelect: { viewModel.handle(method: $0) })
+                            .id(fileAttachmentsID)
+                    }
                 }
                 .padding()
+                .animation(.default, value: viewModel.showFileAttachmentsBanner)
             }
         }
         .onFirstAppear {

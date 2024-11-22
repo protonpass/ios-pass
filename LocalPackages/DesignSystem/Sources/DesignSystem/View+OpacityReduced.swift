@@ -29,6 +29,8 @@ public extension View {
     func opacityReduced(_ condition: Bool,
                         reducedOpacity: Double = 0.5,
                         disabled: Bool = true) -> some View {
-        opacity(condition ? reducedOpacity : 1).disabled(disabled && condition)
+        opacity(condition ? reducedOpacity : 1)
+            .disabled(disabled && condition)
+            .animation(.default, value: condition)
     }
 }
