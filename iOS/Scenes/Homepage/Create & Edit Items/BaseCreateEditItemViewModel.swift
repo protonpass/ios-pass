@@ -100,6 +100,9 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var canScanDocuments = false
+    @Published private(set) var files = [FileAttachment]()
+    @Published private(set) var isUploadingFile = false
+    @Published private(set) var dismissedFileAttachmentsBanner = false
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
 
     @Published var customFieldUiModels = [CustomFieldUiModel]()
@@ -121,6 +124,16 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+
+    var fileAttachmentsEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
+    }
+
+    var showFileAttachmentsBanner: Bool {
+        fileAttachmentsEnabled && !dismissedFileAttachmentsBanner
+    }
 
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
@@ -241,10 +254,23 @@ private extension BaseCreateEditItemViewModel {
                 canAddMoreCustomFields = !isFreeUser
                 canScanDocuments = DocScanner.isSupported
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
+
+        dismissedFileAttachmentsBanner =
+            preferencesManager.appPreferences.unwrapped().dismissedFileAttachmentsBanner
+
+        preferencesManager
+            .appPreferencesUpdates
+            .receive(on: DispatchQueue.main)
+            .filter(\.dismissedFileAttachmentsBanner)
+            .removeDuplicates()
+            .sink { [weak self] newValue in
+                guard let self else { return }
+                dismissedFileAttachmentsBanner = newValue
+            }
+            .store(in: &cancellables)
     }
 
     func createItem(for type: ItemContentType) async throws -> SymmetricallyEncryptedItem? {
@@ -309,11 +335,52 @@ private extension BaseCreateEditItemViewModel {
                                             shareId: oldItem.shareId)
         return true
     }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
 }
 
 // MARK: - Public APIs
 
 extension BaseCreateEditItemViewModel {
+    func dismissFileAttachmentsBanner() {
+        Task {
+            do {
+                try await preferencesManager.updateAppPreferences(\.dismissedFileAttachmentsBanner,
+                                                                  value: true)
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func handleDeleteAttachments() {
+        print(#function)
+    }
+
+    func handle(method: FileAttachmentMethod) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                // Make periphery happy, will be removed later
+                print(method)
+                try await preferencesManager.updateAppPreferences(\.dismissedFileAttachmentsBanner,
+                                                                  value: true)
+                isUploadingFile = true
+                try await Task.sleep(seconds: 3)
+                files.append(.init(id: UUID().uuidString,
+                                   metadata: .init(name: .random(),
+                                                   mimeType: .random(),
+                                                   size: .random(in: 1...1_000_000))))
+                isUploadingFile = false
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
     func addCustomField() {
         delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self, shouldDisplayTotp: true)
     }
