@@ -25,24 +25,29 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct FileAttachmentsEditSection: View {
+    @State private var showDeleteAllAlert = false
+
     let files: [FileAttachment]
     let isUploading: Bool
     let primaryTintColor: UIColor
     let secondaryTintColor: UIColor
-    let onDelete: () -> Void
+    let onDelete: (FileAttachment) -> Void
+    let onDeleteAll: () -> Void
     let onSelect: (FileAttachmentMethod) -> Void
 
     public init(files: [FileAttachment],
                 isUploading: Bool,
                 primaryTintColor: UIColor,
                 secondaryTintColor: UIColor,
-                onDelete: @escaping () -> Void,
+                onDelete: @escaping (FileAttachment) -> Void,
+                onDeleteAll: @escaping () -> Void,
                 onSelect: @escaping (FileAttachmentMethod) -> Void) {
         self.files = files
         self.isUploading = isUploading
         self.primaryTintColor = primaryTintColor
         self.secondaryTintColor = secondaryTintColor
         self.onDelete = onDelete
+        self.onDeleteAll = onDeleteAll
         self.onSelect = onSelect
     }
 
@@ -72,7 +77,8 @@ public struct FileAttachmentsEditSection: View {
                                  iconColor: primaryTintColor,
                                  iconDisabledColor: primaryTintColor,
                                  backgroundColor: secondaryTintColor,
-                                 backgroundDisabledColor: secondaryTintColor)
+                                 backgroundDisabledColor: secondaryTintColor,
+                                 action: { showDeleteAllAlert.toggle() })
                         .opacityReduced(isUploading)
                 }
             }
@@ -95,6 +101,16 @@ public struct FileAttachmentsEditSection: View {
         .animation(.default, value: files)
         .animation(.default, value: isUploading)
         .padding(DesignConstant.sectionPadding)
+        .tint(primaryTintColor.toColor)
         .roundedEditableSection()
+        .alert("Delete all attachments?",
+               isPresented: $showDeleteAllAlert,
+               actions: {
+                   Button("Delete all", role: .destructive, action: onDeleteAll)
+                   Button("Cancel", role: .cancel, action: {})
+               },
+               message: {
+                   Text("This action cannot be undone")
+               })
     }
 }

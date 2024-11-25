@@ -3453,6 +3453,26 @@
         }
       }
     },
+    "Delete all" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete all"
+          }
+        }
+      }
+    },
+    "Delete all attachments?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete all attachments?"
+          }
+        }
+      }
+    },
     "Delete file?" : {
       "localizations" : {
         "en" : {
@@ -8004,6 +8024,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ấn vào đây để thêm trường tên tài khoản"
+          }
+        }
+      }
+    },
+    "This action cannot be undone" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This action cannot be undone"
           }
         }
       }
