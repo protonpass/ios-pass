@@ -42,11 +42,11 @@ struct FileAttachmentViewerSection: View {
                       })
         .fullScreenCover(isPresented: $url.mappedToBool()) {
             if let url {
-                FileAttachementPreview(url: url,
-                                       primaryTintColor: PassColor.interactionNormMajor1,
-                                       secondaryTintColor: PassColor.interactionNormMinor2,
-                                       onRename: { _ in },
-                                       onDelete: {})
+                FileAttachmentPreview(url: url,
+                                      primaryTintColor: PassColor.interactionNormMajor1,
+                                      secondaryTintColor: PassColor.interactionNormMinor2,
+                                      onRename: { _ in },
+                                      onDelete: {})
             }
         }
     }
