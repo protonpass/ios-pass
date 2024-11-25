@@ -26,23 +26,30 @@ import SwiftUI
 
 public struct FileAttachementPreview: View {
     @Environment(\.dismiss) private var dismiss
+    @State private var name: String
+    @State private var showRenameAlert = false
+    @State private var showDeleteAlert = false
     let url: URL
     let primaryTintColor: UIColor
     let secondaryTintColor: UIColor
     let onSave: () -> Void
-    let onRename: () -> Void
+    let onShare: () -> Void
+    let onRename: (String) -> Void
     let onDelete: () -> Void
 
     public init(url: URL,
                 primaryTintColor: UIColor,
                 secondaryTintColor: UIColor,
                 onSave: @escaping () -> Void,
-                onRename: @escaping () -> Void,
+                onShare: @escaping () -> Void,
+                onRename: @escaping (String) -> Void,
                 onDelete: @escaping () -> Void) {
         self.url = url
+        _name = .init(initialValue: url.lastPathComponent)
         self.primaryTintColor = primaryTintColor
         self.secondaryTintColor = secondaryTintColor
         self.onSave = onSave
+        self.onShare = onShare
         self.onRename = onRename
         self.onDelete = onDelete
     }
@@ -56,8 +63,24 @@ public struct FileAttachementPreview: View {
                 .ignoresSafeArea(edges: .bottom)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .tint(primaryTintColor.toColor)
         .toolbar { toolbarContent }
+        .navigationBarTitleDisplayMode(.inline)
         .navigationStackEmbeded()
+        .alert("Rename file",
+               isPresented: $showRenameAlert,
+               actions: {
+                   TextField(text: $name, label: { EmptyView() })
+                   Button("Rename", action: { onRename(name) })
+                       .disabled(name.isEmpty)
+                   Button("Cancel", role: .cancel, action: {})
+               })
+        .alert("Delete file?",
+               isPresented: $showDeleteAlert,
+               actions: {
+                   Button("Delete", role: .destructive, action: onDelete)
+                   Button("Cancel", role: .cancel, action: {})
+               })
     }
 }
 
@@ -72,18 +95,28 @@ private extension FileAttachementPreview {
                          action: dismiss.callAsFunction)
         }
 
+        ToolbarItem(placement: .principal) {
+            Text(verbatim: url.lastPathComponent)
+                .lineLimit(1)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .fontWeight(.medium)
+        }
+
         ToolbarItem(placement: .topBarTrailing) {
             Menu(content: {
                 LabelButton(title: "Save",
                             icon: IconProvider.arrowDownCircle,
                             action: onSave)
+                LabelButton(title: "Share",
+                            icon: IconProvider.arrowUpFromSquare,
+                            action: onShare)
                 LabelButton(title: "Rename",
                             icon: PassIcon.rename,
-                            action: onRename)
+                            action: { showRenameAlert.toggle() })
                 Divider()
                 LabelButton(title: "Delete",
                             icon: IconProvider.trash,
-                            action: onDelete)
+                            action: { showDeleteAlert.toggle() })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: primaryTintColor,
