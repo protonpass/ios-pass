@@ -357,6 +357,7 @@ extension BaseCreateEditItemViewModel {
     }
 
     func rename(attachment: FileAttachment, newName: String) {
+        print(attachment)
         print(newName)
     }
 
