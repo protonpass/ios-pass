@@ -45,8 +45,6 @@ struct FileAttachmentViewerSection: View {
                 FileAttachementPreview(url: url,
                                        primaryTintColor: PassColor.interactionNormMajor1,
                                        secondaryTintColor: PassColor.interactionNormMinor2,
-                                       onSave: {},
-                                       onShare: {},
                                        onRename: { _ in },
                                        onDelete: {})
             }
