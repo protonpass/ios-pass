@@ -356,7 +356,11 @@ extension BaseCreateEditItemViewModel {
         }
     }
 
-    func handleDeleteAttachments() {
+    func delete(attachment: FileAttachment) {
+        print(#function)
+    }
+
+    func deleteAllAttachments() {
         print(#function)
     }
 
