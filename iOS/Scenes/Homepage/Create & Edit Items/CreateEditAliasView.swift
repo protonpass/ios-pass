@@ -160,6 +160,7 @@ struct CreateEditAliasView: View {
                                                        .normMajor2Color,
                                                    secondaryTintColor: viewModel.itemContentType()
                                                        .normMinor1Color,
+                                                   onRename: { viewModel.rename(attachment: $0, newName: $1) },
                                                    onDelete: { viewModel.delete(attachment: $0) },
                                                    onDeleteAll: { viewModel.deleteAllAttachments() },
                                                    onSelect: { viewModel.handle(method: $0) })

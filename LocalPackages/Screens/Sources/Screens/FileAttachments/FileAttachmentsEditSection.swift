@@ -31,6 +31,7 @@ public struct FileAttachmentsEditSection: View {
     let isUploading: Bool
     let primaryTintColor: UIColor
     let secondaryTintColor: UIColor
+    let onRename: (FileAttachment, String) -> Void
     let onDelete: (FileAttachment) -> Void
     let onDeleteAll: () -> Void
     let onSelect: (FileAttachmentMethod) -> Void
@@ -39,6 +40,7 @@ public struct FileAttachmentsEditSection: View {
                 isUploading: Bool,
                 primaryTintColor: UIColor,
                 secondaryTintColor: UIColor,
+                onRename: @escaping (FileAttachment, String) -> Void,
                 onDelete: @escaping (FileAttachment) -> Void,
                 onDeleteAll: @escaping () -> Void,
                 onSelect: @escaping (FileAttachmentMethod) -> Void) {
@@ -46,13 +48,14 @@ public struct FileAttachmentsEditSection: View {
         self.isUploading = isUploading
         self.primaryTintColor = primaryTintColor
         self.secondaryTintColor = secondaryTintColor
+        self.onRename = onRename
         self.onDelete = onDelete
         self.onDeleteAll = onDeleteAll
         self.onSelect = onSelect
     }
 
     public var body: some View {
-        VStack {
+        LazyVStack {
             HStack(spacing: DesignConstant.sectionPadding) {
                 ItemDetailSectionIcon(icon: IconProvider.paperClip)
 
@@ -84,9 +87,10 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                Text(file.metadata.name)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                FileAttachmentRow(file: file,
+                                  onRename: { onRename(file, $0) },
+                                  onDelete: { onDelete(file) })
+                    .padding(.vertical, DesignConstant.sectionPadding / 2)
                 if file != files.last {
                     PassDivider()
                 }
@@ -111,6 +115,65 @@ public struct FileAttachmentsEditSection: View {
                },
                message: {
                    Text("This action cannot be undone")
+               })
+    }
+}
+
+private struct FileAttachmentRow: View {
+    @State private var name: String
+    @State private var icon: UIImage?
+    @State private var showRenameAlert = false
+    let file: FileAttachment
+    let onRename: (String) -> Void
+    let onDelete: () -> Void
+
+    init(file: FileAttachment,
+         onRename: @escaping (String) -> Void,
+         onDelete: @escaping () -> Void) {
+        _name = .init(initialValue: file.metadata.name)
+        self.file = file
+        self.onRename = onRename
+        self.onDelete = onDelete
+    }
+
+    var body: some View {
+        HStack {
+            Image(uiImage: icon ?? IconProvider.fileEmpty)
+                .resizable()
+                .scaledToFit()
+                .frame(maxWidth: 20)
+
+            VStack(alignment: .leading) {
+                Text(file.metadata.name)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                Text(verbatim: "\(file.metadata.size)")
+                    .foregroundStyle(PassColor.textWeak.toColor)
+            }
+
+            Spacer()
+
+            Menu(content: {
+                LabelButton(title: "Rename",
+                            icon: PassIcon.rename,
+                            action: { showRenameAlert.toggle() })
+                Divider()
+                LabelButton(title: "Delete",
+                            icon: IconProvider.trash,
+                            action: onDelete)
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             iconColor: PassColor.textWeak,
+                             backgroundColor: .clear)
+            })
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .alert("Rename file",
+               isPresented: $showRenameAlert,
+               actions: {
+                   TextField(text: $name, label: { EmptyView() })
+                   Button("Rename", action: { onRename(name) })
+                       .disabled(name.isEmpty)
+                   Button("Cancel", role: .cancel, action: { name = file.metadata.name })
                })
     }
 }
