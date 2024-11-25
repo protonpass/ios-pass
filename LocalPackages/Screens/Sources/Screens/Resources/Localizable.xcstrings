@@ -3453,6 +3453,16 @@
         }
       }
     },
+    "Delete file?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete file?"
+          }
+        }
+      }
+    },
     "Empty" : {
       "localizations" : {
         "be" : {
@@ -6168,6 +6178,16 @@
         }
       }
     },
+    "Rename file" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename file"
+          }
+        }
+      }
+    },
     "Save" : {
       "localizations" : {
         "en" : {
@@ -6682,6 +6702,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chọn một đăng nhập có sẵn hoặc tạo một cái mới."
+          }
+        }
+      }
+    },
+    "Share" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share"
           }
         }
       }
