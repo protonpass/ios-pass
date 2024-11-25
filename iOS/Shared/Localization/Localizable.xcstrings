@@ -76,6 +76,12 @@
             "value" : "?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "?"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137,6 +143,12 @@
           }
         },
         "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "?"
+          }
+        },
+        "uk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "?"
@@ -376,6 +388,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "\"%1$@\" copiato negli appunti. La scadenza è tra %2$lld secondi."
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%1$@はクリップボードにコピーされました。%2$lld秒後に期限が切れます。"
                 }
               }
             }
@@ -689,6 +713,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ copiato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@がコピーされました"
           }
         },
         "ka" : {
@@ -1166,6 +1196,12 @@
             "value" : "%1$@, %2$@, %3$@ negli ultimi 14 giorni."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "過去 14 日間の%1$@、 %2$@、 %3$@"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1459,6 +1495,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld alias"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のエイリアス"
                 }
               }
             }
@@ -1901,6 +1949,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld alias disabilitati"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のエイリアスが無効化"
                 }
               }
             }
@@ -2378,6 +2438,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のエイリアスが有効化"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -2791,13 +2863,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld bloqué"
+                  "value" : "%lld bloqué"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld bloqués"
+                  "value" : "%lld bloqués"
                 }
               }
             }
@@ -2828,6 +2900,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld bloccati"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個のブロック済み"
                 }
               }
             }
@@ -3253,6 +3337,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld blocchi"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個ブロック"
                 }
               }
             }
@@ -4693,7 +4789,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld transféré"
+                  "value" : "%lld transféré"
                 }
               },
               "other" : {
@@ -4730,6 +4826,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld inoltri"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個の転送済み"
                 }
               }
             }
@@ -5154,6 +5262,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld inoltri"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個の転送"
                 }
               }
             }
@@ -7401,25 +7521,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementy zostały przeniesione do Kosza"
+                  "value" : "Przeniesiono %lld elementy do Kosza"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementów zostało przeniesionych do Kosza"
+                  "value" : "Przeniesiono %lld elementów do Kosza"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld element został przeniesiony do Kosza"
+                  "value" : "Przeniesiono %lld element do Kosza"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementów zostało przeniesionych do Kosza"
+                  "value" : "Przeniesiono %lld elementów do Kosza"
                 }
               }
             }
@@ -7927,25 +8047,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld elementy zostały przeniesione do sejfu « %2$@ »"
+                  "value" : "Przeniesiono %1$lld elementy do sejfu « %2$@ »"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld elementów zostało przeniesionych do sejfu « %2$@ »"
+                  "value" : "Przeniesiono %1$lld elementów do sejfu « %2$@ »"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld element został przeniesiony do sejfu « %2$@ »"
+                  "value" : "Przeniesiono %1$lld element do sejfu « %2$@ »"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld elementów zostało przeniesionych do sejfu « %2$@ »"
+                  "value" : "Przeniesiono %1$lld elementów do sejfu « %2$@ »"
                 }
               }
             }
@@ -8364,6 +8484,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld elementi fissati con successo"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のアイテムが正しくピンされました"
                 }
               }
             }
@@ -8818,6 +8950,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld elementi sbloccati con successo"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のアイテムが正しくピン解除されました"
                 }
               }
             }
@@ -12510,6 +12654,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld件の閲覧"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -14312,6 +14468,12 @@
             "value" : "Viene creato un contatto per ogni indirizzo e-mail che invia e-mail o riceve e-mail da %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "各メールアドレスについて、%@ でメールを送信したり、受信したりするたびに、連絡先が作成されます"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14340,6 +14502,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kontakt jest tworzony dla każdego adresu e-mail, który wysyła lub odbiera wiadomości z adresu %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um contato é criado para cada endereço de e-mail que envia ou recebe e-mails de %@"
           }
         },
         "ro" : {
@@ -15244,6 +15412,12 @@
             "value" : "Attività negli ultimi 14 giorni"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "過去 14 日間のアクティビティ"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15698,6 +15872,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi una sezione personalizzata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタムセクションを追加"
           }
         },
         "ka" : {
@@ -16156,6 +16336,12 @@
             "value" : "Aggiungi nome visualizzato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表示名を追加"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16452,6 +16638,12 @@
             "value" : "Aggiungi email o nome utente"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールもしくはユーザー名を追加"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16592,6 +16784,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi un campo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フィールドを追加"
           }
         },
         "ka" : {
@@ -16906,6 +17104,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aggiungi una cassetta mail"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックスを追加"
           }
         },
         "ka" : {
@@ -17684,6 +17888,12 @@
             "value" : "Dettagli dell'indirizzo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アドレスの詳細"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18299,6 +18509,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La gestione avanzata degli alias è disponibile con Pass Unlimited. Esegui l'upgrade per l'accesso immediato."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高度なエイリアス管理はPass Unlimitedで利用可能です。すぐにアクセスするにはアップグレードしてください。"
           }
         },
         "ka" : {
@@ -21080,6 +21296,12 @@
             "value" : "Contatti alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアス連絡先"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21536,6 +21758,12 @@
             "value" : "Alias ​​disabilitato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスは無効"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21676,6 +21904,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alias ​​abilitato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスは有効"
           }
         },
         "ka" : {
@@ -22762,6 +22996,12 @@
             "value" : "Gli alias nel Cestino continueranno a inoltrare le email. Se non vuoi più ricevere email su questo indirizzo, disabilitalo."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゴミ箱にあるエイリアスは引き続きメールが転送されます。このアドレスからのメールを受け取りたくない場合は、代わりに無効にしてください。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23217,6 +23457,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verranno eliminati anche tutti gli alias che utilizzano la casella di posta **%@**. Per continuare a ricevere email trasferisci questi alias in una casella di posta diversa:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "**%@**のメールボックスを使っている全てのエイリアスも削除されます。これらのエイリアスを別のメールボックスに転送して、メールを受信し続けてください："
           }
         },
         "ka" : {
@@ -24797,6 +25043,12 @@
             "value" : "Mostra sempre il campo nome utente"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー名フィールドを常に表示"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25259,6 +25511,12 @@
             "value" : "Sei sicuro di voler eliminare la seguente sezione \"%@\"?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "次のセクション\"%@\"を本当に削除してもよろしいですか？"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25412,6 +25670,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei sicuro di volerti disconnettere da %@?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当に%@をサインアウトしますか？"
           }
         },
         "ka" : {
@@ -26209,6 +26473,12 @@
             "value" : "Allega"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添付"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26350,6 +26620,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Allegati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添付ファイル"
           }
         },
         "ka" : {
@@ -27120,7 +27396,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vahvistuskoodien automaattinen kopiointi edellyttää biometrisen lukituksen tai PIN-koodin määritystä"
+            "value" : "Vahvistuskoodien automaattinen kopiointi edellyttää biometrisen lukituksen tai PIN-koodin käyttöönottoa"
           }
         },
         "fr" : {
@@ -27621,6 +27897,12 @@
             "value" : "Data di nascita"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "生年月日"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27775,6 +28057,12 @@
             "value" : "Blocca contatto"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先をブロック"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27909,6 +28197,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Indirizzi bloccati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブロックされた連絡先"
           }
         },
         "ka" : {
@@ -29124,6 +29418,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Può essere visualizzato:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閲覧可能："
           }
         },
         "ka" : {
@@ -34245,6 +34545,12 @@
             "value" : "Conferma la password aggiuntiva"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加のパスワードを確認"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34559,6 +34865,12 @@
             "value" : "Conferma la password Proton"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protonパスワードを確認"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34866,6 +35178,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contatto copiato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先がコピーされました"
           }
         },
         "ka" : {
@@ -37084,6 +37402,12 @@
             "value" : "Copia il nome completo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フルネームコピー"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -38197,6 +38521,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Provincia"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "国名"
           }
         },
         "ka" : {
@@ -39474,6 +39804,12 @@
             "value" : "Crea un'identità"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー情報を作成"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39628,6 +39964,12 @@
             "value" : "Crea contatto"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "連絡先を作成"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39720,7 +40062,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δημιουργία σύνδεσης"
+            "value" : "Δημιουργία στοιχείων σύνδεσης"
           }
         },
         "en" : {
@@ -40404,6 +40746,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Creato %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@が作成されました"
           }
         },
         "ka" : {
@@ -42142,6 +42490,12 @@
             "value" : "Campo personalizzato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタムフィールド"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42615,6 +42969,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sezione personalizzata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタムセクション"
           }
         },
         "ka" : {
@@ -43720,6 +44080,12 @@
             "value" : "Casella di posta predefinita per gli alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスのデフォルトメールボックス"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44023,6 +44389,12 @@
             "value" : "Elimina %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@を削除"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44319,6 +44691,12 @@
             "value" : "Cancellalo, non ne avrò mai bisogno"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除、もう必要ありません。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44347,6 +44725,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usuń go. Nigdy nie będę go potrzebować"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apague-o, nunca mais precisarei dele"
           }
         },
         "ro" : {
@@ -44447,6 +44831,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elimina la casella email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックスを削除"
           }
         },
         "ka" : {
@@ -45385,6 +45775,12 @@
             "value" : "Disabilita l'alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを削除"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45533,6 +45929,12 @@
             "value" : "Disattiva gli alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを無効化"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45673,6 +46075,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disabilita invece"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "代わりに無効化"
           }
         },
         "ka" : {
@@ -47422,6 +47830,12 @@
             "value" : "Modifica il titolo della sezione"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セクションタイトルを編集"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48532,6 +48946,12 @@
             "value" : "Invia un'email da questo indirizzo e sembrerà inviato da %@."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアドレスにメールを送信すると、%@から送信されたように表示されます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48987,6 +49407,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sezione vuota"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空のセクション"
           }
         },
         "ka" : {
@@ -49463,6 +49889,12 @@
             "value" : "Abilita l'alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "空のエイリアス"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49603,6 +50035,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abilita gli alias"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを有効化"
           }
         },
         "ka" : {
@@ -50022,7 +50460,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ενεργοποιήστε την παρακολούθηση για να ειδοποιηθείτε εάν τα ψευδώνυμα σας διέρρευσαν."
+            "value" : "Ενεργοποιήστε την παρακολούθηση για να ειδοποιηθείτε εάν τα ψευδώνυμά σας διέρρευσαν."
           }
         },
         "en" : {
@@ -51330,6 +51768,12 @@
             "value" : "Inserisci un nuovo titolo per la sezione"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいセクションタイトルを入力"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51959,6 +52403,12 @@
             "value" : "Inserisci l'indirizzo a cui vuoi inviare un'email."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールしたいアドレスを入力"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52093,6 +52543,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inserisci la password aggiuntiva"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加のパスワードを入力"
           }
         },
         "ka" : {
@@ -53530,6 +53986,12 @@
             "value" : "Scaduto %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に期限切れ"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53685,6 +54147,12 @@
             "value" : "Scade %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に期限切れ"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53837,6 +54305,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scade fra:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "有効期限："
           }
         },
         "ka" : {
@@ -54151,6 +54625,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password aggiuntiva disabilitata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加のパスワードが無効になりました"
           }
         },
         "ka" : {
@@ -54623,6 +55103,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "追加のパスワードは最低%lld文字である必要があります"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -54944,6 +55436,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password aggiuntiva impostata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加のパスワードが設定"
           }
         },
         "ka" : {
@@ -55822,6 +56320,12 @@
             "value" : "File"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイル"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56136,6 +56640,12 @@
             "value" : "Filtrato per alias. Gli elementi cestinati non vengono visualizzati."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスによってフィルタリングされています。ゴミ箱のアイテムは表示されません。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56264,6 +56774,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtrato per carte di credito. Gli elementi cestinati non vengono visualizzati."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クレジットカードによってフィルタリングされています。ゴミ箱のアイテムは表示されません。"
           }
         },
         "ka" : {
@@ -56396,6 +56912,12 @@
             "value" : "Filtrato per identità. Gli elementi cestinati non vengono visualizzati."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー情報によってフィルタリングされています。ゴミ箱のアイテムは表示されません。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56526,6 +57048,12 @@
             "value" : "Filtrato per accessi. Gli elementi cestinati non vengono visualizzati."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログインによってフィルタリングされています。ゴミ箱のアイテムは表示されません。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56654,6 +57182,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtrato per note. Gli elementi cestinati non vengono visualizzati."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ノートによってフィルタリングされています。ゴミ箱のアイテムは表示されません。"
           }
         },
         "ka" : {
@@ -57105,6 +57639,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Piano"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "階数"
           }
         },
         "ka" : {
@@ -58055,6 +58595,12 @@
             "value" : "Dal tuo alias <%@>"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアス<%@>から"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -58349,6 +58895,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nome completo copiato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フルネームがコピーされました"
           }
         },
         "ka" : {
@@ -58663,6 +59215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Genera un link sicuro a questo elemento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアイテムへのセキュアリンクを生成"
           }
         },
         "ka" : {
@@ -59132,6 +59690,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Genera un link sicuro"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュアリンクを生成"
           }
         },
         "ka" : {
@@ -60248,6 +60812,12 @@
             "value" : "Ottieni Pass Unlimited"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Unlimitedを入手"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61184,6 +61754,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ecco come funziona:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このような仕組みです："
           }
         },
         "ka" : {
@@ -62762,6 +63338,12 @@
             "value" : "Nascondi il numero di previdenza sociale"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "社会保障番号を非表示"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63043,7 +63625,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hide-my-email-aliasten valvonta on keskeytetty"
+            "value" : "Hide-my-email-aliasten valvonta pysäytettiin"
           }
         },
         "fr" : {
@@ -64344,6 +64926,12 @@
             "value" : "Identità creata"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー情報が生成されました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64658,6 +65246,12 @@
             "value" : "Identità eliminata definitivamente"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー情報が完全に削除されました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64812,6 +65406,12 @@
             "value" : "Identità ripristinata"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー情報が復元されました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -64964,6 +65564,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Identità aggiornata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー情報が更新されました"
           }
         },
         "ka" : {
@@ -65274,6 +65880,12 @@
             "value" : "In Pass, una nota dell'elemento viene crittografata con la chiave di crittografia dell'elemento e solo gli utenti che hanno accesso all'elemento possono visualizzare la nota."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passでは、アイテムノートはアイテム暗号化キーによって暗号化され、ノートを閲覧できるのはアクセス権を持ったユーザーだけです。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65302,6 +65914,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "W Proton Pass notatka elementu jest szyfrowana za pomocą klucza szyfrowania elementu i tylko użytkownicy, którzy mają dostęp do elementu, mogą ją wyświetlić."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No Pass, uma nota de item é criptografada com a chave de criptografia do item e somente usuários com acesso ao item podem visualizar a nota."
           }
         },
         "ro" : {
@@ -65558,6 +66176,12 @@
             "value" : "Link inattivi"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "非アクティブリンク"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65704,6 +66328,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Includi nel monitoraggio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "監視を含む"
           }
         },
         "ka" : {
@@ -67344,6 +67974,12 @@
             "value" : "Elemento escluso dal monitoraggio"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムは監視対象から除外されました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67658,6 +68294,12 @@
             "value" : "ID dell'elemento copiato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムIDがコピーされました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -67810,6 +68452,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elemento incluso nel monitoraggio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムには監視が含まれます"
           }
         },
         "ka" : {
@@ -68448,6 +69096,12 @@
             "value" : "Menu azioni elemento"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムアクションメニュー"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68762,6 +69416,12 @@
             "value" : "Menu filtro elementi"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムフィルタメニュー"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68915,6 +69575,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtraggio degli elementi e menu di ordinamento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムフィルタリングとソートメニュー"
           }
         },
         "ka" : {
@@ -69549,6 +70215,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Impiego"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "職業名"
           }
         },
         "ka" : {
@@ -71627,6 +72299,12 @@
             "value" : "Ultima violazione di dati il %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@の最新の侵害"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -72261,6 +72939,12 @@
             "value" : "Patente"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ライセンス番号"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -72573,6 +73257,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il collegamento scade dopo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "後にリンクは有効期限切れ"
           }
         },
         "ka" : {
@@ -74377,6 +75067,12 @@
             "value" : "Login con autenticazione a due fattori"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2要素認証でログイン"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74828,6 +75524,12 @@
             "value" : "Menu azioni della casella email"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックスアクションメニュー"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74956,6 +75658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La casella di posta è il luogo a cui vengono inoltrate le email inviate a un alias. È la tua solita casella di posta, ad es. Gmail, Outlook, Proton Mail, ecc."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックス とは、エイリアスに送信されたメールが転送される場所です。通常のメールボックス、例えばGmail、Outlook、Proton Mailなどです。"
           }
         },
         "ka" : {
@@ -75092,6 +75800,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Caselle di posta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックス"
           }
         },
         "ka" : {
@@ -75240,6 +75954,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rendi predefinito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デフォルトにする"
           }
         },
         "ka" : {
@@ -75852,6 +76572,12 @@
             "value" : "Gestisci i tuoi alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを管理"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76146,6 +76872,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Risultati massimi:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最大閲覧数："
           }
         },
         "ka" : {
@@ -76784,6 +77516,12 @@
             "value" : "Secondo nome"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ミドルネーム"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76936,6 +77674,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nome utente mancante"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー名が見つかりません"
           }
         },
         "ka" : {
@@ -77412,6 +78156,12 @@
             "value" : "Modifica"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "修正"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77564,6 +78314,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modifica il nome della sezione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セクション名を修正"
           }
         },
         "ka" : {
@@ -77720,6 +78476,12 @@
             "value" : "Monitorato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "監視済み"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77853,7 +78615,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Valvonta on keskeytetty"
+            "value" : "Valvonta pysäytettiin"
           }
         },
         "fr" : {
@@ -77872,6 +78634,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoraggio sospeso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "監視が停止されました"
           }
         },
         "ka" : {
@@ -78007,7 +78775,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Osoitteen %@ valvonta keskeytettiin"
+            "value" : "Osoitteen %@ valvonta pysäytettiin"
           }
         },
         "fr" : {
@@ -78026,6 +78794,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoraggio sospeso per %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@によって監視が停止されました"
           }
         },
         "ka" : {
@@ -78180,6 +78954,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoraggio ripreso per %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@によって監視が再開されました"
           }
         },
         "ka" : {
@@ -78977,6 +79757,12 @@
             "value" : "Sposta nel cestino"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゴミ箱に移動"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79606,6 +80392,12 @@
             "value" : "Nuovo codice di verifica inviato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい認証コードが送信されました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79914,6 +80706,12 @@
             "value" : "Nessuna attività negli ultimi 14 giorni."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "過去 14 日間にアクティビティはありません。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -80048,6 +80846,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessun alias"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスはありません"
           }
         },
         "ka" : {
@@ -80358,6 +81162,12 @@
             "value" : "Nessuna violazione di dati rilevata per"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "の侵害検知はありません"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -80511,6 +81321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessun articolo trovato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムが見つかりません"
           }
         },
         "ka" : {
@@ -80807,6 +81623,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessun log per %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@のログがありません"
           }
         },
         "ka" : {
@@ -81284,6 +82106,12 @@
             "value" : "Nessuna cassaforte"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫がありません"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -81393,7 +82221,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δε βρέθηκαν αδύναμοι κωδικοί πρόσβασης στα στοιχεία σύνδεσής σας"
+            "value" : "Δεν βρέθηκαν αδύναμοι κωδικοί πρόσβασης στα στοιχεία σύνδεσής σας"
           }
         },
         "en" : {
@@ -81436,6 +82264,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessuno dei tuoi elementi di login utilizza password deboli"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログインアイテムに弱いパスワードはありません"
           }
         },
         "ka" : {
@@ -81751,6 +82585,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nemmeno Proton o SimpleLogin possono vederlo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ProtonやSimpleLoginでさえ閲覧することはできません。"
           }
         },
         "ka" : {
@@ -82813,6 +83653,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nota per %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@のノート"
           }
         },
         "ka" : {
@@ -84409,6 +85255,12 @@
             "value" : "Una volta sincronizzati, l'eliminazione degli alias in Pass li eliminerà anche in SimpleLogin."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一度同期すると、Passでエイリアスを削除するとSimpleLoginでも削除されます。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -84431,6 +85283,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Po synchronizacji usunięte aliasy w Proton Pass zostaną również usunięte w SimpleLogin."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Após a sincronização, a exclusão de aliases no Pass também os excluirá no SimpleLogin."
           }
         },
         "ro" : {
@@ -84531,6 +85389,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uno dei tuoi indirizzi email o alias compare in una violazione di dati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールアドレスまたはエイリアスの一つがデータ漏洩に含まれています。"
           }
         },
         "ka" : {
@@ -84846,6 +85710,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "È consentito un solo account Proton Pass gratuito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無料のProton Pass アカウントは1つまで許可されています"
           }
         },
         "ka" : {
@@ -85323,6 +86193,12 @@
             "value" : "Apri l'alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを開く"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -85625,6 +86501,12 @@
             "value" : "Apri la carta"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クレジットカードを開く"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -85765,6 +86647,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apri l'identità"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ユーザー情報を開く"
           }
         },
         "ka" : {
@@ -85909,6 +86797,12 @@
             "value" : "Apri login"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログインを開く"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86049,6 +86943,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Apri la nota"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ノートを開く"
           }
         },
         "ka" : {
@@ -86511,6 +87411,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aperto:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "開いた："
           }
         },
         "ka" : {
@@ -89177,7 +90083,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Keskeytä valvonta"
+            "value" : "Pysäytä valvonta"
           }
         },
         "fr" : {
@@ -90001,6 +90907,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のアイテムが永久に削除されました"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -90484,6 +91402,12 @@
             "value" : "Informazioni personali"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "個人の詳細"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90636,6 +91560,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sito web personale"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "個人のウェブサイト"
           }
         },
         "ka" : {
@@ -92073,6 +93003,12 @@
             "value" : "Controlla se nella tua cartella Spam è presente un'email dal titolo \"Conferma il tuo indirizzo email per Proton Pass\"\n\nSe non riesci a trovarla, puoi [richiedere un nuovo codice](https://proton.me)."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"Proton Passのメールアドレスを確認してください\"というメールを迷惑メールで確認してください。\n\nそのようなメールが見つからない場合には、[新しいコードをリクエスト](https://proton.me)することができます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92222,6 +93158,12 @@
             "value" : "Controlla se nella posta indesiderata è presente un'e-mail denominata \"Conferma la tua casella di posta %@\"\n\nSe non riesci a trovare questa email, puoi [richiedere un nuovo codice](https://proton.me)."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"受信箱%@を確認してください\"というメールを迷惑メールで確認してください。\n\nそのようなメールが見つからない場合には、[新しいコードをリクエスト](https://proton.me)することができます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92356,6 +93298,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Contattaci per indagare sul problema"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "問題を調査するには私たちに連絡してください"
           }
         },
         "ka" : {
@@ -92832,6 +93780,12 @@
             "value" : "Effettua nuovamente l'accesso"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再度ログインしてください"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -92986,6 +93940,12 @@
             "value" : "Tieni presente che una volta eliminato, l'alias non potrà essere ripristinato. Magari preferisci disabilitare l'alias?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一度削除すると、エイリアスは復元できませんのでご注意ください。代わりにエイリアスを無効化しますか？"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93014,6 +93974,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pamiętaj, że usuniętego aliasu nie można przywrócić. Czy chcesz, zamiast tego wyłączyć alias?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, note que, uma vez excluído, o alias não pode ser restaurado. Talvez você queira desabilitar o alias em vez disso?"
           }
         },
         "ro" : {
@@ -93116,6 +94082,18 @@
             "value" : "Tieni presente che una volta eliminato, l'alias non potrà essere ripristinato. L'alias è già disabilitato e non inoltrerà le email alla tua casella di posta."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一度削除すると、エイリアスは復元できませんのでご注意ください。エイリアスはすでに無効化され、受信箱にメールを転送しません。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაიმახსოვრეთ, რომ როცა წაშლით, ფსევდონიმს ვეღარ აღადგენთ. ფსევდონიმი უკვე გამორთულია და ელფოსტებს თქვენს საგოსტო ყუთში აღარ გადააგზავნის."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93138,6 +94116,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pamiętaj, że usuniętego aliasu nie można przywrócić. Alias jest wyłączony i nie przekierowuje wiadomości do skrzynki odbiorczej."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, note que, uma vez excluído, o alias não pode ser restaurado. O alias já está desativado e não encaminhará e-mails para sua caixa de entrada."
           }
         },
         "ro" : {
@@ -93240,6 +94224,12 @@
             "value" : "Tieni presente che una volta eliminati, gli alias non potranno essere ripristinati"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一度削除すると、エイリアスは復元できませんのでご注意ください。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93270,6 +94260,12 @@
             "value" : "Pamiętaj, że raz usunięte aliasy nie mogą zostać przywrócone"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, note que, uma vez excluído, o alias não pode ser restaurado"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93298,6 +94294,24 @@
     },
     "Please note that once deleted, aliases cannot be restored." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звярніце ўвагу, што псеўданім немагчыма аднавіць пасля яго выдалення."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upozorňujeme, že jednou smazané aliasy nelze obnovit."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παρακαλώ σημειώστε ότι μετά τη διαγραφή, τα ψευδώνυμα δεν είναι δυνατό να επαναφερθούν."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93316,10 +94330,88 @@
             "value" : "Una vez eliminados, los alias no se pueden restaurar."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huomaa, että poistettuja aliaksia ei voi palauttaa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une fois supprimé, un alias ne peut pas être restauré."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tieni presente che una volta eliminati, gli alias non possono essere ripristinati."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一度削除すると、エイリアスは復元できませんのでご注意ください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაიმახსოვრეთ, მას შემდეგ, რაც ფსევდონიმს წაშლით, მას ვერ აღადგენთ."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "별칭은 한 번 삭제하면 복구할 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vær oppmerksom på at aliasene ikke kan gjenopprettes når de er slettet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd er rekening mee dat aliassen die verwijderd zijn, niet meer hersteld kunnen worden."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pamiętaj, że raz usunięty alias nie może zostać przywrócony."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por favor, note que, uma vez excluídos, os aliases não podem ser restaurados."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "După ștergere, aliasurile nu mai pot fi restaurate."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upozorňujeme, že po vymazaní sa aliasy nedajú obnoviť."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Observera att när alias har tagits bort kan de inte återställas."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Takma adların silindikten sonra geri alınamayacağını unutmayın."
           }
         }
       }
@@ -93397,6 +94489,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ti preghiamo di fornirci maggiori dettagli nella descrizione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "詳細を説明に記載してください"
           }
         },
         "ka" : {
@@ -93540,6 +94638,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seleziona un motivo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "理由を選択してください"
           }
         },
         "ka" : {
@@ -94324,6 +95428,12 @@
             "value" : "Dominio Premium"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プレミアムドメイン"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94941,6 +96051,12 @@
             "value" : "Proteggi Proton Pass con una password aggiuntiva."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加のパスワードでProton Passを保護"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -95388,7 +96504,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton-osoitteiden valvonta on keskeytetty"
+            "value" : "Proton-osoitteiden valvonta pysäytettiin"
           }
         },
         "fr" : {
@@ -95407,6 +96523,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoraggio degli indirizzi Proton sospeso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protonアドレスモニタリングは停止されました"
           }
         },
         "ka" : {
@@ -95561,6 +96683,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monitoraggio degli indirizzi Proton ripreso"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protonアドレスモニタリングは再開されました"
           }
         },
         "ka" : {
@@ -95871,6 +96999,12 @@
             "value" : "Proton Pass genererà un indirizzo di inoltro (noto anche come alias inverso)."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Passは転送アドレス(リバースエイリアスとも呼ばれます)を生成します。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -96005,6 +97139,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Password Proton"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protonパスワード"
           }
         },
         "ka" : {
@@ -96200,6 +97340,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dominio Pubblico"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "公開ドメイン"
           }
         },
         "ka" : {
@@ -97339,6 +98485,12 @@
             "value" : "Genera nuovamente la password"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスワードを再生成"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -97973,6 +99125,12 @@
             "value" : "Rimuovi tutti i link inattivi"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全ての非アクティブリンクを削除"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -98119,6 +99277,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rimuovi sezione personalizzata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全てのカスタムセクションを削除"
           }
         },
         "ka" : {
@@ -98273,6 +99437,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rimuovi la password aggiuntiva"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加のパスワードを削除"
           }
         },
         "ka" : {
@@ -98587,6 +99757,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rimuovi il link inattivo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "非アクティブリンクを削除"
           }
         },
         "ka" : {
@@ -99055,6 +100231,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ripeti la password aggiuntiva"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加のパスワードを再入力"
           }
         },
         "ka" : {
@@ -101129,6 +102311,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のアイテムが復元"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -101449,6 +102643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Limita il numero di visualizzazioni"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閲覧回数を制限"
           }
         },
         "ka" : {
@@ -103224,6 +104424,12 @@
             "value" : "Scansiona %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@をスキャン"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103379,6 +104585,12 @@
             "value" : "Screenshot"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "スクリーンショット"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103525,6 +104737,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scorri per saperne di più"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "もっとスクロール"
           }
         },
         "ka" : {
@@ -103992,6 +105210,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lldアカウント内を検索"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -104433,6 +105663,12 @@
             "value" : "Cerca nelle 2 casseforti più vecchie"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "古い 2 つの保管庫内を検索"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104747,6 +105983,12 @@
             "value" : "Casseforti ricercabili"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "検索可能な保管庫"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104899,6 +106141,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Numero di telefono secondario"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "二つ目の電話番号"
           }
         },
         "ka" : {
@@ -105055,6 +106303,12 @@
             "value" : "Link sicuro"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュアリンク"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -105209,6 +106463,12 @@
             "value" : "Link sicuro copiato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュアリンクがコピーされました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -105318,7 +106578,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ασφαλής σύνδεσμοι"
+            "value" : "Ασφαλείς σύνδεσμοι"
           }
         },
         "en" : {
@@ -107128,6 +108388,12 @@
             "value" : "Seleziona account"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウントを選択"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -107586,6 +108852,12 @@
             "value" : "Seleziona motivo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "理由を選択"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -107732,6 +109004,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Casseforti selezionate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択した保管庫"
           }
         },
         "ka" : {
@@ -108046,6 +109324,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Invia email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールを送信"
           }
         },
         "ka" : {
@@ -108503,6 +109787,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sessione scaduta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セッションは有効期限切れです"
           }
         },
         "ka" : {
@@ -109141,6 +110431,12 @@
             "value" : "Imposta la password aggiuntiva per Proton Pass"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Passに追加のパスワードを設定"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -109755,7 +111051,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tehosta suojausta määrittämällä kaksivaiheinen tunnistautuminen"
+            "value" : "Vahvista suojausta määrittämällä kaksivaiheinen tunnistautuminen"
           }
         },
         "fr" : {
@@ -110574,6 +111870,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Condividi link sicuro"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュアリンクを共有"
           }
         },
         "ka" : {
@@ -113246,6 +114548,12 @@
             "value" : "Mostra il numero di previdenza sociale"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "社会保証番号を表示"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113869,6 +115177,12 @@
             "value" : "Acceduto come %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@としてサインインしました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114005,6 +115319,12 @@
             "value" : "Gli alias SimpleLogin verranno importati in questa cassaforte."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLoginエイリアスはこの保管庫にインポートされます"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114133,6 +115453,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La nota SimpleLogin viene archiviata insieme nella stessa posizione con l'indirizzo alias e, sebbene sia protetta dalla crittografia a riposo, non è crittografata E2E, il che significa che chiunque abbia accesso al database SimpleLogin può leggerla."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLoginのノートはエイリアスアドレスと一緒に同じ場所に保存され、保存時には暗号化されていますが、E2E暗号化されていないため、SimpleLoginのデータベースにアクセスできる人は誰でもそれを読むことができます。"
           }
         },
         "ko" : {
@@ -115858,6 +117184,12 @@
             "value" : "Indirizzo o casella postale"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "番地、私書箱"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -116655,6 +117987,12 @@
             "value" : "Passa e gestisci"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "切り替えと管理"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -116802,6 +118140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei passato a %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@に切り替えました"
           }
         },
         "ka" : {
@@ -118858,6 +120202,12 @@
             "value" : "Il nome visualizzato quando si invia un'email da questo alias."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このエイリアスからメールを送信する際の表示名。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -118886,6 +120236,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nazwa wyświetlana podczas wysyłania wiadomości z tego aliasu."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O nome de exibição ao enviar um e-mail deste alias."
           }
         },
         "ro" : {
@@ -119306,6 +120662,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "L'elemento della cassaforte è attualmente condiviso con %lld utenti"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "そのアイテムの保管庫は現在%lld人のユーザーに共有されています"
                 }
               }
             }
@@ -121868,6 +123236,12 @@
             "value" : "Per mantenere il tuo indirizzo email nascosto, puoi creare un contatto alias che maschererà il tuo indirizzo"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "個人のアドレスを隠すために、アドレスを隠すためのエイリアス連絡先を作成できます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -122003,6 +123377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alla casella email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックスへ"
           }
         },
         "ka" : {
@@ -122299,6 +123679,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Troppi tentativi errati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "試行の誤りが多すぎます"
           }
         },
         "ka" : {
@@ -122803,6 +124189,12 @@
             "value" : "Trasferisci alias"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エイリアスを転送"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -122937,6 +124329,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trasferisci ed elimina la casella email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックスを転送して削除"
           }
         },
         "ka" : {
@@ -124839,6 +126237,12 @@
             "value" : "Sblocca contatto"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブロックされていない連絡先"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125135,6 +126539,12 @@
             "value" : "Capito, non ne avrò mai bisogno"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "理解しました、もう必要ありません"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -125163,6 +126573,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zrozumiałem. Nigdy nie będę ich potrzebować"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendido, eu nunca vou precisar deles"
           }
         },
         "ro" : {
@@ -125404,7 +126820,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rajaton"
+            "value" : "Unlimited"
           }
         },
         "fr" : {
@@ -127186,6 +128602,12 @@
             "value" : "Casella email non verificata"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "認証されていないメールボックス"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -128122,6 +129544,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Effettua l'upgrade per aggiungere sezioni personalizzate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップグレードしてカスタムセクションを追加"
           }
         },
         "ka" : {
@@ -130804,7 +132232,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ID Κρύπτης"
+            "value" : "Αναγνωριστικό κρύπτης"
           }
         },
         "en" : {
@@ -132452,6 +133880,12 @@
             "value" : "Tramite link sicuro"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "セキュアリンク経由"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -132912,6 +134346,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visualizza tutti i link sicuri"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全てのセキュアリンクを表示"
           }
         },
         "ka" : {
@@ -135112,6 +136552,12 @@
             "value" : "Abbiamo rilevato una modifica nelle impostazioni di autenticazione biometrica. Per motivi di sicurezza sei stato disconnesso."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "生体認証設定に変更が検出されました。セキュリティ上の理由から、ログアウトされました。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137151,6 +138597,12 @@
             "value" : "Dettagli di lavoro"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "職業詳細"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137305,6 +138757,12 @@
             "value" : "Email di lavoro"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "仕事のメール"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137451,6 +138909,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Telefono di lavoro"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "仕事の電話番号"
           }
         },
         "ka" : {
@@ -137927,6 +139391,12 @@
             "value" : "Password aggiuntiva errata"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "間違った追加のパスワード"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138069,6 +139539,12 @@
             "value" : "Password Proton errata"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "間違ったProtonパスワード"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138209,6 +139685,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nome utente di X"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xハンドル"
           }
         },
         "ka" : {
@@ -139048,6 +140530,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld個のエイリアスを完全に削除しようとしています"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -139139,6 +140633,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Zamierzasz trwale usunąć %lld aliasów"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Você está prestes a excluir permanentemente %lld alias"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Você está prestes a excluir permanentemente %lld aliases"
                 }
               }
             }
@@ -140126,6 +141638,12 @@
             "value" : "Al momento non disponi di link sicuri"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在セキュアリンクはありません"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140420,6 +141938,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Al momento non hai elementi di accesso con chiave segreta 2FA (TOTP)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在2要素認証キー(TOTP)でログインするアイテムはありません"
           }
         },
         "ka" : {
@@ -141199,6 +142723,12 @@
             "value" : "Hai raggiunto il limite di casseforti che puoi creare. Esegui l'upgrade a un piano a pagamento per poterne creare di più."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "作成できる保管庫の上限に達しました。複数の保管庫を作成するには有料プランへアップグレードしてください。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141340,6 +142870,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Devi passare a %@ per poterlo gestire"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "管理するには%@に切り替える必要があります"
           }
         },
         "ka" : {
@@ -141642,6 +143178,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verrai disconnesso e dovrai accedere nuovamente su tutti gli altri tuoi dispositivi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログアウトされ、全ての他のデバイスで再度ログインが必要になります。"
           }
         },
         "ka" : {
@@ -141948,6 +143490,12 @@
             "value" : "Sei stato disconnesso da %@"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@からログアウトしました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142095,6 +143643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sei disconnesso dagli altri account gratuiti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "他の無料アカウントからログアウトしました"
           }
         },
         "ka" : {
@@ -142563,6 +144117,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il tuo dominio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたのドメイン"
           }
         },
         "ka" : {
@@ -143838,6 +145398,12 @@
             "value" : "Il tuo piano consente di usare la compilazione automatica solamente con gli elementi nelle prime 2 casseforti."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "なたのプランでは、自動入力目的で最初の 2 つの保管庫からのみアイテムを使用できます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -144120,6 +145686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il tuo destinatario"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "宛先"
           }
         },
         "ka" : {
@@ -144737,6 +146309,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "CAP"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "郵便番号"
           }
         },
         "ka" : {
