@@ -166,7 +166,8 @@ private extension CreateEditIdentityView {
                                                .normMajor2Color,
                                            secondaryTintColor: viewModel.itemContentType()
                                                .normMinor1Color,
-                                           onDelete: { viewModel.handleDeleteAttachments() },
+                                           onDelete: { viewModel.delete(attachment: $0) },
+                                           onDeleteAll: { viewModel.deleteAllAttachments() },
                                            onSelect: { viewModel.handle(method: $0) })
             }
 
