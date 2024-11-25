@@ -1,5 +1,5 @@
 //
-// FileAttachementPreview.swift
+// FileAttachmentPreview.swift
 // Proton Pass - Created on 21/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -23,7 +23,7 @@ import DesignSystem
 import ProtonCoreUIFoundations
 import SwiftUI
 
-public struct FileAttachementPreview: View {
+public struct FileAttachmentPreview: View {
     @Environment(\.dismiss) private var dismiss
     @State private var name: String
     @State private var sheet: Sheet?
@@ -94,7 +94,7 @@ public struct FileAttachementPreview: View {
     }
 }
 
-private extension FileAttachementPreview {
+private extension FileAttachmentPreview {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
