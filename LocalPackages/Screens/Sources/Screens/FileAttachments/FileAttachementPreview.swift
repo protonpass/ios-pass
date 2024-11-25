@@ -75,7 +75,7 @@ public struct FileAttachementPreview: View {
                    TextField(text: $name, label: { EmptyView() })
                    Button("Rename", action: { onRename(name) })
                        .disabled(name.isEmpty)
-                   Button("Cancel", role: .cancel, action: {})
+                   Button("Cancel", role: .cancel, action: { name = url.lastPathComponent })
                })
         .alert("Delete file?",
                isPresented: $showDeleteAlert,
