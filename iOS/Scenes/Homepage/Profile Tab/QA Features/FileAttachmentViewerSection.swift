@@ -46,7 +46,8 @@ struct FileAttachmentViewerSection: View {
                                        primaryTintColor: PassColor.interactionNormMajor1,
                                        secondaryTintColor: PassColor.interactionNormMinor2,
                                        onSave: {},
-                                       onRename: {},
+                                       onShare: {},
+                                       onRename: { _ in },
                                        onDelete: {})
             }
         }
