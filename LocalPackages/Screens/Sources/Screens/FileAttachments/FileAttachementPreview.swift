@@ -21,35 +21,37 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
-import QuickLook
 import SwiftUI
 
 public struct FileAttachementPreview: View {
     @Environment(\.dismiss) private var dismiss
     @State private var name: String
+    @State private var sheet: Sheet?
     @State private var showRenameAlert = false
     @State private var showDeleteAlert = false
     let url: URL
     let primaryTintColor: UIColor
     let secondaryTintColor: UIColor
-    let onSave: () -> Void
-    let onShare: () -> Void
     let onRename: (String) -> Void
     let onDelete: () -> Void
+
+    private enum Sheet: String, Identifiable {
+        case save, share
+
+        var id: String {
+            rawValue
+        }
+    }
 
     public init(url: URL,
                 primaryTintColor: UIColor,
                 secondaryTintColor: UIColor,
-                onSave: @escaping () -> Void,
-                onShare: @escaping () -> Void,
                 onRename: @escaping (String) -> Void,
                 onDelete: @escaping () -> Void) {
         self.url = url
         _name = .init(initialValue: url.lastPathComponent)
         self.primaryTintColor = primaryTintColor
         self.secondaryTintColor = secondaryTintColor
-        self.onSave = onSave
-        self.onShare = onShare
         self.onRename = onRename
         self.onDelete = onDelete
     }
@@ -81,6 +83,14 @@ public struct FileAttachementPreview: View {
                    Button("Delete", role: .destructive, action: onDelete)
                    Button("Cancel", role: .cancel, action: {})
                })
+        .sheet(item: $sheet) { sheet in
+            switch sheet {
+            case .save:
+                ExportDocumentView(url: url)
+            case .share:
+                ActivityView(items: [url])
+            }
+        }
     }
 }
 
@@ -106,10 +116,10 @@ private extension FileAttachementPreview {
             Menu(content: {
                 LabelButton(title: "Save",
                             icon: IconProvider.arrowDownCircle,
-                            action: onSave)
+                            action: { sheet = .save })
                 LabelButton(title: "Share",
                             icon: IconProvider.arrowUpFromSquare,
-                            action: onShare)
+                            action: { sheet = .share })
                 LabelButton(title: "Rename",
                             icon: PassIcon.rename,
                             action: { showRenameAlert.toggle() })
@@ -122,44 +132,6 @@ private extension FileAttachementPreview {
                              iconColor: primaryTintColor,
                              backgroundColor: secondaryTintColor)
             })
-        }
-    }
-}
-
-// MARK: - QuickLookPreview
-
-private struct QuickLookPreview: UIViewControllerRepresentable {
-    let url: URL
-
-    func makeUIViewController(context: Context) -> QLPreviewController {
-        let previewController = QLPreviewController()
-        previewController.dataSource = context.coordinator
-        return previewController
-    }
-
-    func updateUIViewController(_ uiViewController: QLPreviewController,
-                                context: Context) {
-        // Not applicable
-    }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    final class Coordinator: NSObject, QLPreviewControllerDataSource {
-        let parent: QuickLookPreview
-
-        init(_ parent: QuickLookPreview) {
-            self.parent = parent
-        }
-
-        func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-            1
-        }
-
-        func previewController(_ controller: QLPreviewController,
-                               previewItemAt index: Int) -> any QLPreviewItem {
-            parent.url as QLPreviewItem
         }
     }
 }
