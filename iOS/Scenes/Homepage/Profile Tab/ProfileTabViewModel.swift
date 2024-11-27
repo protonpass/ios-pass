@@ -34,7 +34,6 @@ import UseCases
 protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowSettingsMenu()
     func profileTabViewModelWantsToShowFeedback()
-    func profileTabViewModelWantsToQaFeatures()
 }
 
 @MainActor
@@ -280,10 +279,6 @@ extension ProfileTabViewModel {
 
     func showFeedback() {
         delegate?.profileTabViewModelWantsToShowFeedback()
-    }
-
-    func qaFeatures() {
-        delegate?.profileTabViewModelWantsToQaFeatures()
     }
 
     func `switch`(to account: AccountCellDetail) {
