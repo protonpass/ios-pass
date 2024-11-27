@@ -88,11 +88,13 @@
 		</dict>
 		<dict>
 			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
+			<string>PSTextFieldSpecifier</string>
+			<key>DefaultValue</key>
+			<string></string>
 			<key>Title</key>
-			<string>Scientist environment values</string>
-			<key>File</key>
-			<string>ScientistEnvironmentValues</string>
+			<string>Environment name</string>
+			<key>Key</key>
+			<string>pref_scientist_env_name</string>
 		</dict>
 		<dict>
 			<key>Type</key>
