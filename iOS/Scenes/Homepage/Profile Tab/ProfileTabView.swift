@@ -33,6 +33,7 @@ struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
     @Namespace private var animationNamespace
     @State private var showSwitcher = false
+    @State private var showQaFeatures = false
 
     var body: some View {
         mainContainer
@@ -53,6 +54,9 @@ struct ProfileTabView: View {
                                                     onAddAccount: { viewModel.addAccount() }))
             }
             .navigationStackEmbeded()
+            .sheet(isPresented: $showQaFeatures) {
+                QAFeaturesView()
+            }
             .task {
                 await viewModel.reload()
             }
@@ -90,13 +94,14 @@ struct ProfileTabView: View {
                 helpCenterSection
                     .padding(.vertical)
 
-                if Bundle.main.isQaBuild {
-                    qaFeaturesSection
-                }
-
                 Text("Version \(Bundle.main.displayedAppVersion)")
                     .sectionTitleText()
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .onTapGesture(count: 3) {
+                        if Bundle.main.isQaBuild {
+                            showQaFeatures.toggle()
+                        }
+                    }
                 Spacer()
             }
             .padding(.top)
@@ -389,14 +394,6 @@ struct ProfileTabView: View {
             }
             .roundedEditableSection()
         }
-        .padding(.horizontal)
-    }
-
-    private var qaFeaturesSection: some View {
-        VStack(spacing: 0) {
-            TextOptionRow(title: "QA Features", action: { viewModel.qaFeatures() })
-        }
-        .roundedEditableSection()
         .padding(.horizontal)
     }
 }
