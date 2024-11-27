@@ -66,7 +66,7 @@ struct ItemDetailMoreInfoSection: View {
             }
 
             if isExpanded {
-                VStack(alignment: .leading) {
+                Grid(alignment: .topTrailing, verticalSpacing: 8) {
                     infoRow(title: #localized("Item ID"),
                             value: item.itemId,
                             copyMessage: #localized("Item ID copied"))
@@ -98,12 +98,13 @@ struct ItemDetailMoreInfoSection: View {
 
 private extension ItemDetailMoreInfoSection {
     func infoRow(title: String, value: String, copyMessage: String? = nil) -> some View {
-        HStack {
-            Text(verbatim: "\(title) :")
+        GridRow {
+            Text(verbatim: "\(title):")
                 .fontWeight(.semibold)
-                .frame(maxHeight: .infinity, alignment: .topTrailing)
+                .frame(alignment: .topTrailing)
 
             Text(value)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .if(copyMessage) { view, copyMessage in
                     view.textSelection(.enabled)
                         .onTapGesture {
@@ -113,7 +114,6 @@ private extension ItemDetailMoreInfoSection {
                         }
                 }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     func icon(from image: UIImage) -> some View {
