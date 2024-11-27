@@ -23,7 +23,8 @@ import Core
 import Entities
 import Foundation
 
-private let kInAppNotificationTimerKey = "InAppNotificationTimer"
+@_spi(QA)
+public let kInAppNotificationTimerKey = "InAppNotificationTimer"
 
 public protocol InAppNotificationManagerProtocol: Sendable {
     var notifications: [InAppNotification] { get }

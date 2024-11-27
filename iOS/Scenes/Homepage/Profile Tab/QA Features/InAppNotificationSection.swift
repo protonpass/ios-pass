@@ -41,6 +41,25 @@ private struct InAppNotificationView: View {
 
     var body: some View {
         List {
+            Section {
+                HStack {
+                    Text(verbatim: "Last threshold")
+                    Spacer()
+                    if let lastThreshold = viewModel.lastThreshold {
+                        let date = Date(timeIntervalSince1970: lastThreshold)
+                        let formatter = RelativeDateTimeFormatter()
+                        Text(verbatim: formatter.string(for: date) ?? "N/A")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text(verbatim: "N/A")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Button(action: viewModel.clearThreshold) {
+                    Text(verbatim: "Clear last threshold")
+                }
+            }
+
             Section(header: Text(verbatim: "In-app notification settings").font(.headline.bold())) {
                 TextField(text: $viewModel.notificationKey, prompt: Text(verbatim: "Notification Key")) {
                     Text(verbatim: "Notification Key")
@@ -173,6 +192,9 @@ private final class InAppNotificationViewModel {
     @ObservationIgnored
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
+    private let userDefaults: UserDefaults
+
+    var lastThreshold: Double?
     var notificationKey = "pass_user_internal_notification"
     var startDate = Date.now
     var addEndTime = false
@@ -206,7 +228,15 @@ private final class InAppNotificationViewModel {
     // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
     var ref: String = "https://en.wikipedia.org/wiki/Wikipedia"
 
-    init() {}
+    init(userDefaults: UserDefaults = kSharedUserDefaults) {
+        self.userDefaults = userDefaults
+        lastThreshold = userDefaults.double(forKey: kInAppNotificationTimerKey)
+    }
+
+    func clearThreshold() {
+        userDefaults.removeObject(forKey: kInAppNotificationTimerKey)
+        lastThreshold = nil
+    }
 
     func sendNotification() {
         Task {
