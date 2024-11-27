@@ -41,12 +41,12 @@ public struct InAppModalView: View {
     public var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 24) {
-                if let url = notification.content.imageUrl {
+                if let url = notification.content.imageUrl, !url.isEmpty {
                     AsyncImage(url: URL(string: url),
                                content: { image in
                                    image.resizable()
                                        .aspectRatio(contentMode: .fit)
-                                       .frame(height: 180)
+                                       .frame(minHeight: 150, idealHeight: 180, maxHeight: 180)
                                },
                                placeholder: {
                                    ProgressView()
@@ -61,10 +61,18 @@ public struct InAppModalView: View {
                         .font(.title.weight(.medium))
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .center)
+                        .minimumScaleFactor(0.8)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+
                     Text(verbatim: notification.content.message)
                         .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(maxWidth: .infinity, alignment: .center)
+                        .minimumScaleFactor(0.8)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(maxWidth: .infinity, alignment: .center)
 
                 Spacer()
                 if let cta = notification.content.cta {
