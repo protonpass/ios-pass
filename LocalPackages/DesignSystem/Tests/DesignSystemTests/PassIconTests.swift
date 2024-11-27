@@ -43,6 +43,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.fileAttachments
         _ = PassIcon.documentScan
         _ = PassIcon.images
+        _ = PassIcon.rename
 
         _ = PassIcon.filterFilled
 
