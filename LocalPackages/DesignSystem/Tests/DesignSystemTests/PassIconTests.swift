@@ -45,6 +45,21 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.images
         _ = PassIcon.rename
 
+        _ = PassIcon.fileTypeImage
+        _ = PassIcon.fileTypePhoto
+        _ = PassIcon.fileTypeVectorImage
+        _ = PassIcon.fileTypeVideo
+        _ = PassIcon.fileTypeAudio
+        _ = PassIcon.fileTypeKey
+        _ = PassIcon.fileTypeText
+        _ = PassIcon.fileTypeCalendar
+        _ = PassIcon.fileTypePdf
+        _ = PassIcon.fileTypeWord
+        _ = PassIcon.fileTypePowerPoint
+        _ = PassIcon.fileTypeExcel
+        _ = PassIcon.fileTypeDocument
+        _ = PassIcon.fileTypeUnknown
+
         _ = PassIcon.filterFilled
 
         _ = PassIcon.infoBannerAliases
