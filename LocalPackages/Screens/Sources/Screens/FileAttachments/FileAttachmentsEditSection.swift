@@ -24,34 +24,29 @@ import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
+@MainActor
+public protocol FileAttachmentsEditHandler {
+    var fileAttachmentsSectionPrimaryColor: UIColor { get }
+    var fileAttachmentsSectionSecondaryColor: UIColor { get }
+
+    func handle(method: FileAttachmentMethod)
+    func rename(attachment: FileAttachment, newName: String)
+    func delete(attachment: FileAttachment)
+    func deleteAllAttachments()
+}
+
 public struct FileAttachmentsEditSection: View {
     @State private var showDeleteAllAlert = false
-
     let files: [FileAttachment]
     let isUploading: Bool
-    let primaryTintColor: UIColor
-    let secondaryTintColor: UIColor
-    let onRename: (FileAttachment, String) -> Void
-    let onDelete: (FileAttachment) -> Void
-    let onDeleteAll: () -> Void
-    let onSelect: (FileAttachmentMethod) -> Void
+    let handler: any FileAttachmentsEditHandler
 
     public init(files: [FileAttachment],
                 isUploading: Bool,
-                primaryTintColor: UIColor,
-                secondaryTintColor: UIColor,
-                onRename: @escaping (FileAttachment, String) -> Void,
-                onDelete: @escaping (FileAttachment) -> Void,
-                onDeleteAll: @escaping () -> Void,
-                onSelect: @escaping (FileAttachmentMethod) -> Void) {
+                handler: any FileAttachmentsEditHandler) {
         self.files = files
         self.isUploading = isUploading
-        self.primaryTintColor = primaryTintColor
-        self.secondaryTintColor = secondaryTintColor
-        self.onRename = onRename
-        self.onDelete = onDelete
-        self.onDeleteAll = onDeleteAll
-        self.onSelect = onSelect
+        self.handler = handler
     }
 
     public var body: some View {
@@ -77,10 +72,10 @@ public struct FileAttachmentsEditSection: View {
 
                 if !files.isEmpty {
                     CircleButton(icon: IconProvider.trash,
-                                 iconColor: primaryTintColor,
-                                 iconDisabledColor: primaryTintColor,
-                                 backgroundColor: secondaryTintColor,
-                                 backgroundDisabledColor: secondaryTintColor,
+                                 iconColor: handler.fileAttachmentsSectionPrimaryColor,
+                                 iconDisabledColor: handler.fileAttachmentsSectionPrimaryColor,
+                                 backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
+                                 backgroundDisabledColor: handler.fileAttachmentsSectionSecondaryColor,
                                  action: { showDeleteAllAlert.toggle() })
                         .opacityReduced(isUploading)
                 }
@@ -88,8 +83,8 @@ public struct FileAttachmentsEditSection: View {
 
             ForEach(files) { file in
                 FileAttachmentRow(file: file,
-                                  onRename: { onRename(file, $0) },
-                                  onDelete: { onDelete(file) })
+                                  onRename: { handler.rename(attachment: file, newName: $0) },
+                                  onDelete: { handler.delete(attachment: file) })
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                 if file != files.last {
                     PassDivider()
@@ -97,20 +92,22 @@ public struct FileAttachmentsEditSection: View {
             }
 
             FileAttachmentsButton(style: .capsule,
-                                  iconColor: primaryTintColor,
-                                  backgroundColor: secondaryTintColor,
-                                  onSelect: onSelect)
+                                  iconColor: handler.fileAttachmentsSectionPrimaryColor,
+                                  backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
+                                  onSelect: { handler.handle(method: $0) })
                 .opacityReduced(isUploading)
         }
         .animation(.default, value: files)
         .animation(.default, value: isUploading)
         .padding(DesignConstant.sectionPadding)
-        .tint(primaryTintColor.toColor)
+        .tint(handler.fileAttachmentsSectionPrimaryColor.toColor)
         .roundedEditableSection()
         .alert("Delete all attachments?",
                isPresented: $showDeleteAllAlert,
                actions: {
-                   Button("Delete all", role: .destructive, action: onDeleteAll)
+                   Button("Delete all",
+                          role: .destructive,
+                          action: { handler.deleteAllAttachments() })
                    Button("Cancel", role: .cancel, action: {})
                },
                message: {
