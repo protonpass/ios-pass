@@ -42,14 +42,14 @@ struct SharingSummaryView: View {
                 emailInfo(infos: info)
                 if case let .vault(vault) = info.shareElement {
                     vaultInfo(infos: vault, itemsCount: info.itemsNum)
-                } else if case let .item(_, item) = info.shareElement {
+                } else if case let .item(item, _) = info.shareElement {
                     itemInfo(infos: item)
                 }
                 permissionInfo(infos: info)
             } else if let info = viewModel.infos.first {
                 if case let .vault(vault) = info.shareElement {
                     vaultInfo(infos: vault, itemsCount: info.itemsNum)
-                } else if case let .item(_, item) = info.shareElement {
+                } else if case let .item(item, _) = info.shareElement {
                     itemInfo(infos: item)
                 }
                 infosList
@@ -91,7 +91,7 @@ private extension SharingSummaryView {
         }
     }
 
-    func itemInfo(infos: ShareItem) -> some View {
+    func itemInfo(infos: ItemContent) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Item")
                 .font(.callout)
@@ -216,21 +216,7 @@ private extension SharingSummaryView {
     SharingSummaryView()
 }
 
-public extension ShareItem {
-    func thumbnailData() -> ItemThumbnailData {
-        switch contentData {
-        case .login:
-            let initials = name.initials()
-            if let url {
-                return .favIcon(type: type, url: url, initials: initials)
-            } else {
-                return .initials(type: type, initials: initials)
-            }
-        default:
-            return .icon(type: type)
-        }
-    }
-
+private extension ItemContent {
     var title: String { name }
 
     var url: String? {
@@ -249,7 +235,7 @@ public extension ShareItem {
         case let .login(data):
             data.authIdentifier
         case .alias:
-            ""
+            aliasEmail ?? ""
         case let .creditCard(data):
             data.number.toMaskedCreditCardNumber()
         case .note:
