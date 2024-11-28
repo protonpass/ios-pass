@@ -461,6 +461,10 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         print(#function)
     }
 
+    func handleCapturedPhoto(_ result: Result<URL, any Error>) {
+        print(result)
+    }
+
     func handle(method: FileAttachmentMethod) {
         Task { [weak self] in
             guard let self else { return }
