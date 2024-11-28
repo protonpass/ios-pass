@@ -22,7 +22,7 @@
 import XCTest
 
 final class PassIconTests: XCTestCase {
-    func testGetIconss() {
+    func testGetIcons() {
         let expectation = expectation(description: "Should be able to get icons")
 
         _ = PassIcon.autoFillOnWebPreview

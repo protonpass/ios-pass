@@ -29,7 +29,7 @@ public protocol FileAttachmentsEditHandler {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
 
-    func handle(method: FileAttachmentMethod)
+    func handleCapturedPhoto(_ result: Result<URL, any Error>)
     func rename(attachment: FileAttachment, newName: String)
     func delete(attachment: FileAttachment)
     func deleteAllAttachments()
@@ -37,6 +37,7 @@ public protocol FileAttachmentsEditHandler {
 
 public struct FileAttachmentsEditSection: View {
     @State private var showDeleteAllAlert = false
+    @State private var showCamera = false
     let files: [FileAttachment]
     let isUploading: Bool
     let handler: any FileAttachmentsEditHandler
@@ -94,7 +95,7 @@ public struct FileAttachmentsEditSection: View {
             FileAttachmentsButton(style: .capsule,
                                   iconColor: handler.fileAttachmentsSectionPrimaryColor,
                                   backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
-                                  onSelect: { handler.handle(method: $0) })
+                                  onSelect: { handle($0) })
                 .opacityReduced(isUploading)
         }
         .animation(.default, value: files)
@@ -113,6 +114,22 @@ public struct FileAttachmentsEditSection: View {
                message: {
                    Text("This action cannot be undone")
                })
+        .sheet(isPresented: $showCamera) {
+            CameraView(onTemporarilySaved: { handler.handleCapturedPhoto($0) })
+        }
+    }
+
+    private func handle(_ method: FileAttachmentMethod) {
+        switch method {
+        case .takePhoto:
+            showCamera.toggle()
+        case .scanDocuments:
+            break
+        case .choosePhotoOrVideo:
+            break
+        case .chooseFile:
+            break
+        }
     }
 }
 
