@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
+public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable, ShareElementProtocol {
     /// ID of the share
     public let shareID: String
 
@@ -29,28 +29,28 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
     public let addressID: String
 
     /// Type of share
-    public let targetType: Int64
+    public let targetType: Int
 
-    /// ID of the top shared object
+    /// ID of the top shared objec. This can be the id of a vault or an Item
     public let targetID: String
 
     /// Permissions for this share
-    public let permission: Int64
+    public let permission: Int
 
     /// Role given to the user when invited with sharing feature
     public let shareRoleID: String
 
     /// Number of people actually linked to this share through sharing. If 0 the vault is not shared
-    public let targetMembers: Int64
+    public let members: Int
 
     /// Max members allowed for the target of this share
-    public let targetMaxMembers: Int64
+    public let maxMembers: Int
 
     /// How many invites are pending of acceptance
-    public let pendingInvites: Int64
+    public let pendingInvites: Int
 
     /// How many new user invites are waiting for an admin to create the proper invite
-    public let newUserInvitesReady: Int64
+    public let newUserInvitesReady: Int
 
     /// Whether the user is owner of this vault
     public let owner: Bool
@@ -58,7 +58,7 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
     /// Whether this share is shared or not
     public let shared: Bool
 
-    /// Base64 encoded encrypted content of the share. Can be null for item shares
+    /// Base64 encoded encrypted content of the Vault. Can be null for item shares
     public let content: String?
 
     public let contentKeyRotation: Int64?
@@ -79,7 +79,26 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
         .init(rawValue: targetType) ?? .unknown
     }
 
+    public var shareRole: ShareRole {
+        .init(rawValue: shareRoleID) ?? .read
+    }
+
     public var id: String { shareID }
+
+    public var shareId: String {
+        shareID
+    }
+
+    public var addressId: String {
+        addressID
+    }
+
+    public var isOwner: Bool {
+        owner
+    }
+
+    /// Decoded vault content
+    public var vaultContent: VaultProtobuf?
 
     public init(shareID: String,
                 vaultID: String,
@@ -103,14 +122,14 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
         self.shareID = shareID
         self.vaultID = vaultID
         self.addressID = addressID
-        self.targetType = targetType
+        self.targetType = Int(targetType)
         self.targetID = targetID
-        self.permission = permission
+        self.permission = Int(permission)
         self.shareRoleID = shareRoleID
-        self.targetMembers = targetMembers
-        self.targetMaxMembers = targetMaxMembers
-        self.pendingInvites = pendingInvites
-        self.newUserInvitesReady = newUserInvitesReady
+        members = Int(targetMembers)
+        maxMembers = Int(targetMaxMembers)
+        self.pendingInvites = Int(pendingInvites)
+        self.newUserInvitesReady = Int(newUserInvitesReady)
         self.owner = owner
         self.shared = shared
         self.content = content
@@ -119,5 +138,71 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable {
         self.expireTime = expireTime
         self.createTime = createTime
         self.canAutoFill = canAutoFill
+    }
+
+    /// Custom Decodable implementation
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+
+        shareID = try container.decode(String.self, forKey: .shareID)
+        vaultID = try container.decode(String.self, forKey: .vaultID)
+        addressID = try container.decode(String.self, forKey: .addressID)
+        targetType = try container.decode(Int.self, forKey: .targetType)
+        targetID = try container.decode(String.self, forKey: .targetID)
+        permission = try container.decode(Int.self, forKey: .permission)
+        shareRoleID = try container.decode(String.self, forKey: .shareRoleID)
+        members = try container.decode(Int.self, forKey: .targetMembers)
+        maxMembers = try container.decode(Int.self, forKey: .targetMaxMembers)
+        pendingInvites = try container.decode(Int.self, forKey: .pendingInvites)
+        newUserInvitesReady = try container.decode(Int.self, forKey: .newUserInvitesReady)
+        owner = try container.decode(Bool.self, forKey: .owner)
+        shared = try container.decode(Bool.self, forKey: .shared)
+        content = try container.decodeIfPresent(String.self, forKey: .content)
+        contentKeyRotation = try container.decodeIfPresent(Int64.self, forKey: .contentKeyRotation)
+        contentFormatVersion = try container.decodeIfPresent(Int64.self, forKey: .contentFormatVersion)
+        expireTime = try container.decodeIfPresent(Int64.self, forKey: .expireTime)
+        createTime = try container.decode(Int64.self, forKey: .createTime)
+        canAutoFill = try container.decode(Bool.self, forKey: .canAutoFill)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case shareID, vaultID, addressID, targetType, targetID, permission, shareRoleID, targetMembers,
+             targetMaxMembers
+        case pendingInvites, newUserInvitesReady, owner, shared, content, contentKeyRotation, contentFormatVersion
+        case expireTime, createTime, canAutoFill
+    }
+}
+
+// MARK: - Computed properties
+
+public extension Share {
+    var isVaultRepresentation: Bool {
+        shareType == .vault
+    }
+
+    var isAdmin: Bool {
+        shareRole == ShareRole.admin
+    }
+
+    var canEdit: Bool {
+        shareRole != ShareRole.read
+    }
+
+    var totalOverallMembers: Int {
+        members + pendingInvites
+    }
+
+    var reachedSharingLimit: Bool {
+        maxMembers <= totalOverallMembers
+    }
+
+    var canShareWithMorePeople: Bool {
+        isAdmin && !reachedSharingLimit
+    }
+}
+
+public extension [Share] {
+    var representingVaults: [Share] {
+        self.filter(\.isVaultRepresentation)
     }
 }
