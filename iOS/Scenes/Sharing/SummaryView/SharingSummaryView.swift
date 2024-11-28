@@ -219,17 +219,6 @@ private extension SharingSummaryView {
 private extension ItemContent {
     var title: String { name }
 
-    var url: String? {
-        switch contentData {
-        case let .login(data):
-            data.urls.first
-        default:
-            nil
-        }
-    }
-
-    var type: ItemContentType { contentData.type }
-
     var description: String {
         switch contentData {
         case let .login(data):
