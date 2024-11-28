@@ -81,16 +81,3 @@ public struct ShareItem: ShareElementProtocol {
         "\(itemUuid)" + "\(shareId)"
     }
 }
-
-public extension ShareElementProtocol {
-    var type: TargetType {
-        switch self {
-        case is Vault:
-            .vault
-        case is ShareItem:
-            .item
-        default:
-            .unknown
-        }
-    }
-}
