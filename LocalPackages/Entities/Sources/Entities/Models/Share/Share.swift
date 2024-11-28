@@ -55,7 +55,8 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable, Sha
     /// Whether the user is owner of this vault
     public let owner: Bool
 
-    /// Whether this share is shared or not
+    /// Whether this share is shared or not this **only represents sharing if share is linked to Vaults** to know
+    /// if item is shared we need to base ourselves on `shareCount` in `Item` model.
     public let shared: Bool
 
     /// Base64 encoded encrypted content of the Vault. Can be null for item shares

@@ -97,58 +97,6 @@ final class BreachEntitiesExtensionsTests: XCTestCase {
                                       hasCustomDomains: false)
 }
 
-extension ItemContent {
-    var monitoredAlias: ItemContent {
-        ItemContent(shareId: "test",
-                    itemUuid: "test", 
-                    userId: "userIdtest",
-                    item: Item(itemID: "test",
-                               revision: 1,
-                               contentFormatVersion: 1,
-                               keyRotation: 1,
-                               content: "",
-                               itemKey: nil,
-                               state: 1,
-                               pinned: false, 
-                               pinTime: nil,
-                               aliasEmail: "test@test.com",
-                               createTime: 1,
-                               modifyTime: 1,
-                               lastUseTime: 1,
-                               revisionTime: 1,
-                               flags: 0),
-                    name: "plop",
-                    note: "",
-                    contentData: .alias,
-                    customFields: [])
-    }
-    
-    var unmonitoredAlias: ItemContent {
-        ItemContent(shareId: "test",
-                    itemUuid: "test",
-                    userId: "test",
-                    item: Item(itemID: "test",
-                               revision: 1,
-                               contentFormatVersion: 1,
-                               keyRotation: 1,
-                               content: "",
-                               itemKey: nil,
-                               state: 1,
-                               pinned: false,
-                               pinTime: nil,
-                               aliasEmail: "test@test.com",
-                               createTime: 1,
-                               modifyTime: 1,
-                               lastUseTime: 1,
-                               revisionTime: 1,
-                               flags: 1),
-                    name: "plop",
-                    note: "",
-                    contentData: .alias,
-                    customFields: [])
-    }
-}
-
 extension BreachEntitiesExtensionsTests {
     func testTopMostBreachedProtonAddresses() throws {
         let comparableArray = [
