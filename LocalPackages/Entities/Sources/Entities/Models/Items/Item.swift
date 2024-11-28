@@ -41,6 +41,9 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
 
     public let pinTime: Int?
 
+    // Number shares this item has(number of people this item is shared with)
+    public let shareCount: Int
+
     /// In case this item contains an alias, this is the email address for the alias
     public let aliasEmail: String?
 
@@ -81,7 +84,8 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
                 modifyTime: Int64,
                 lastUseTime: Int64?,
                 revisionTime: Int64,
-                flags: Int) {
+                flags: Int,
+                shareCount: Int) {
         self.itemID = itemID
         self.revision = revision
         self.contentFormatVersion = contentFormatVersion
@@ -97,6 +101,7 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
         self.lastUseTime = lastUseTime
         self.revisionTime = revisionTime
         self.flags = flags
+        self.shareCount = shareCount
     }
 }
 
