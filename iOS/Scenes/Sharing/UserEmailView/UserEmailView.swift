@@ -204,7 +204,7 @@ private extension UserEmailView {
 }
 
 private extension UserEmailView {
-    func vaultRow(_ vault: VaultProtobuf) -> some View {
+    func vaultRow(_ vault: VaultContent) -> some View {
         HStack(spacing: 16) {
             VaultRow(thumbnail: {
                          CircleButton(icon: vault.display.icon.icon.bigImage,

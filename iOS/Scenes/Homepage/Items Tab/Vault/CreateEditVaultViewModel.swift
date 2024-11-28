@@ -41,7 +41,7 @@ enum VaultColorIcon {
 enum VaultMode {
     case create
     case editExistingVault(Vault)
-    case editNewVault(VaultProtobuf, ItemContent)
+    case editNewVault(VaultContent, ItemContent)
 
     var isCreation: Bool {
         if case .create = self {
@@ -122,7 +122,7 @@ private extension CreateEditVaultViewModel {
         }
     }
 
-    func generateVaultProtobuf() -> VaultProtobuf {
+    func generateVaultProtobuf() -> VaultContent {
         .init(name: title,
               description: "",
               color: selectedColor.protobufColor,

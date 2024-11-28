@@ -69,9 +69,9 @@ public protocol ShareRepositoryProtocol: Sendable {
     func getVault(shareId: String) async throws -> Vault?
 
     @discardableResult
-    func createVault(_ vault: VaultProtobuf) async throws -> Share
+    func createVault(_ vault: VaultContent) async throws -> Share
 
-    func edit(oldVault: Vault, newVault: VaultProtobuf) async throws
+    func edit(oldVault: Vault, newVault: VaultContent) async throws
 
     /// Delete vault. If vault is not empty (0 active & trashed items)  an error is thrown.
     func deleteVault(shareId: String) async throws
@@ -94,19 +94,19 @@ public actor ShareRepository: ShareRepositoryProtocol {
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let userManager: any UserManagerProtocol
     private let localDatasource: any LocalShareDatasourceProtocol
-    private let remoteDatasouce: any RemoteShareDatasourceProtocol
+    private let remoteDatasource: any RemoteShareDatasourceProtocol
     private let passKeyManager: any PassKeyManagerProtocol
     private let logger: Logger
 
     public init(symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol,
                 localDatasource: any LocalShareDatasourceProtocol,
-                remoteDatasouce: any RemoteShareDatasourceProtocol,
+                remoteDatasource: any RemoteShareDatasourceProtocol,
                 passKeyManager: any PassKeyManagerProtocol,
                 logManager: any LogManagerProtocol) {
         self.symmetricKeyProvider = symmetricKeyProvider
         self.localDatasource = localDatasource
-        self.remoteDatasouce = remoteDatasouce
+        self.remoteDatasource = remoteDatasource
         self.passKeyManager = passKeyManager
         logger = .init(manager: logManager)
         self.userManager = userManager
@@ -141,7 +141,7 @@ public extension ShareRepository {
         -> [Share] {
         logger.trace("Getting all remote shares for user \(userId)")
         do {
-            let shares = try await remoteDatasouce.getShares(userId: userId)
+            let shares = try await remoteDatasource.getShares(userId: userId)
             eventStream?.send(.downloadedShares(shares))
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return shares
@@ -194,7 +194,7 @@ public extension ShareRepository {
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId)")
-        let users = try await remoteDatasouce.getShareLinkedUsers(userId: userId, shareId: shareId)
+        let users = try await remoteDatasource.getShareLinkedUsers(userId: userId, shareId: shareId)
         logger.trace("Got \(users.count) remote user for \(shareId)")
         return users
     }
@@ -208,7 +208,7 @@ public extension ShareRepository {
         logger.trace("Updating \(logInfo)")
         do {
             let request = UserSharePermissionRequest(shareRole: shareRole, expireTime: expireTime)
-            let updated = try await remoteDatasouce.updateUserSharePermission(userId: userId,
+            let updated = try await remoteDatasource.updateUserSharePermission(userId: userId,
                                                                               shareId: shareId,
                                                                               userShareId: userShareId,
                                                                               request: request)
@@ -225,7 +225,7 @@ public extension ShareRepository {
         let logInfo = "user \(userId), share \(shareId)"
         logger.trace("Deleting user share \(logInfo)")
         do {
-            let deleted = try await remoteDatasouce.deleteUserShare(userId: userId,
+            let deleted = try await remoteDatasource.deleteUserShare(userId: userId,
                                                                     shareId: shareId,
                                                                     userShareId: userShareId)
             logger.trace("Deleted \(deleted) user share \(logInfo)")
@@ -239,7 +239,7 @@ public extension ShareRepository {
     func deleteShare(userId: String, shareId: String) async throws -> Bool {
         let logInfo = "share \(shareId)"
         logger.trace("Deleting share \(logInfo)")
-        let deleted = try await remoteDatasouce.deleteShare(userId: userId, shareId: shareId)
+        let deleted = try await remoteDatasource.deleteShare(userId: userId, shareId: shareId)
         logger.trace("Deleted \(deleted) user share \(logInfo)")
         return deleted
     }
@@ -269,12 +269,12 @@ public extension ShareRepository {
         return try await share.toVault(symmetricKey: getSymmetricKey())
     }
 
-    func createVault(_ vault: VaultProtobuf) async throws -> Share {
+    func createVault(_ vault: VaultContent) async throws -> Share {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
-        let createdVault = try await remoteDatasouce.createVault(userId: userId, request: request)
+        let createdVault = try await remoteDatasource.createVault(userId: userId, request: request)
         let key = try await getSymmetricKey()
         let encryptedShare = try await symmetricallyEncrypt(userId: userId, createdVault, symmetricKey: key)
         logger.trace("Saving newly created vault to local for user \(userId)")
@@ -283,14 +283,14 @@ public extension ShareRepository {
         return createdVault
     }
 
-    func edit(oldVault: Vault, newVault: VaultProtobuf) async throws {
+    func edit(oldVault: Vault, newVault: VaultContent) async throws {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         logger.trace("Editing vault \(oldVault.id) for user \(userId)")
         let shareId = oldVault.shareId
         let shareKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let request = try UpdateVaultRequest(vault: newVault, shareKey: shareKey)
-        let updatedVault = try await remoteDatasouce.updateVault(userId: userId,
+        let updatedVault = try await remoteDatasource.updateVault(userId: userId,
                                                                  request: request,
                                                                  shareId: shareId)
         logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
@@ -304,7 +304,7 @@ public extension ShareRepository {
         let userId = try await userManager.getActiveUserId()
         // Remote deletion
         logger.trace("Deleting remote vault \(shareId) for user \(userId)")
-        try await remoteDatasouce.deleteVault(userId: userId, shareId: shareId)
+        try await remoteDatasource.deleteVault(userId: userId, shareId: shareId)
         logger.trace("Deleted remote vault \(shareId) for user \(userId)")
 
         // Local deletion
@@ -319,7 +319,7 @@ public extension ShareRepository {
         logger.trace("Setting new owner \(newOwnerShareId) for vault \(vaultShareId)")
         let userId = try await userManager.getActiveUserId()
         let request = TransferOwnershipVaultRequest(newOwnerShareID: newOwnerShareId)
-        let updated = try await remoteDatasouce.transferVaultOwnership(userId: userId,
+        let updated = try await remoteDatasource.transferVaultOwnership(userId: userId,
                                                                        vaultShareId: vaultShareId,
                                                                        request: request)
         logger.info("Finished transfer of ownership")
@@ -387,7 +387,7 @@ private extension SymmetricallyEncryptedShare {
 
         let decryptedContent = try symmetricKey.decrypt(encryptedContent)
         guard let decryptedContentData = try decryptedContent.base64Decode() else { return nil }
-        let vaultContent = try VaultProtobuf(data: decryptedContentData)
+        let vaultContent = try VaultContent(data: decryptedContentData)
 
         return Vault(id: share.vaultID,
                      shareId: share.shareID,

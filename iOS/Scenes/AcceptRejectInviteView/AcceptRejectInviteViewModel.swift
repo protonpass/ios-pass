@@ -30,7 +30,7 @@ import Macro
 @MainActor
 final class AcceptRejectInviteViewModel: ObservableObject {
     @Published private(set) var userInvite: UserInvite
-    @Published private(set) var vaultInfos: VaultProtobuf?
+    @Published private(set) var vaultInfos: VaultContent?
     @Published private(set) var executingAction = false
     @Published private(set) var shouldCloseSheet = false
 
