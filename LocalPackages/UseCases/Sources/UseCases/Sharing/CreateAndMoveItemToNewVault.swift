@@ -23,11 +23,11 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol CreateAndMoveItemToNewVaultUseCase: Sendable {
-    func execute(userId: String, vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault
+    func execute(userId: String, vault: VaultContent, itemContent: ItemContent) async throws -> Vault
 }
 
 public extension CreateAndMoveItemToNewVaultUseCase {
-    func callAsFunction(userId: String, vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
+    func callAsFunction(userId: String, vault: VaultContent, itemContent: ItemContent) async throws -> Vault {
         try await execute(userId: userId, vault: vault, itemContent: itemContent)
     }
 }
@@ -45,7 +45,7 @@ public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCa
         self.vaultsManager = vaultsManager
     }
 
-    public func execute(userId: String, vault: VaultProtobuf, itemContent: ItemContent) async throws -> Vault {
+    public func execute(userId: String, vault: VaultContent, itemContent: ItemContent) async throws -> Vault {
         do {
             if let vault = try await createVault(userId: userId, with: vault) {
                 try await moveItemsBetweenVaults(context: .singleItem(itemContent),

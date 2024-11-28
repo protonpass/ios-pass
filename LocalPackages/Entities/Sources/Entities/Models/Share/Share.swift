@@ -99,7 +99,7 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable, Sha
     }
 
     /// Decoded vault content
-    public var vaultContent: VaultProtobuf?
+    public var vaultContent: VaultContent?
 
     public init(shareID: String,
                 vaultID: String,
