@@ -41,8 +41,8 @@ public struct InAppModalView: View {
     public var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 24) {
-                if let url = notification.content.imageUrl, !url.isEmpty {
-                    AsyncImage(url: URL(string: url),
+                if let imageUrl = notification.content.imageUrl, let url = URL(string: imageUrl) {
+                    AsyncImage(url: url,
                                content: { image in
                                    image.resizable()
                                        .aspectRatio(contentMode: .fit)
