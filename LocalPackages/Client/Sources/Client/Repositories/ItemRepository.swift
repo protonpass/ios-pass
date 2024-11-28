@@ -152,8 +152,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
 
-    func getRemoteItems(userId: String,
-                        shareId: String) async throws -> [ItemContent]
+    func fetchAndRefreshItems(userId: String,
+                              shareId: String) async throws -> [ItemContent]
 }
 
 public extension ItemRepositoryProtocol {
@@ -246,8 +246,8 @@ public extension ItemRepository {
         return itemsContent
     }
 
-    func getRemoteItems(userId: String,
-                        shareId: String) async throws -> [ItemContent] {
+    func fetchAndRefreshItems(userId: String,
+                              shareId: String) async throws -> [ItemContent] {
         let itemRevisions = try await remoteDatasource.getItems(userId: userId, shareId: shareId, eventStream: nil)
         logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
         var encryptedItems = [SymmetricallyEncryptedItem]()

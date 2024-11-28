@@ -32,7 +32,6 @@ public protocol ShareRepositoryProtocol: Sendable {
     func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
     func getShare(shareId: String) async throws -> Share?
 
-    func getRemoteShare(userId: String, shareId: String) async throws -> Share
     /// Get all remote shares
     func getRemoteShares(userId: String,
                          eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Share]
@@ -131,26 +130,7 @@ public extension ShareRepository {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting local share with \(shareId) for user \(userId)")
         guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId) else {
-            logger.trace("Found no local share with shareID \(shareId) for user \(userId)")
-            logger.trace("Fetching remote share with shareID \(shareId) for user \(userId)")
-            let remoteShare = try await getRemoteShare(userId: userId, shareId: shareId)
-            logger.trace("Got remote share with shareID \(shareId) for user \(userId)")
-
-            let key = try await getSymmetricKey()
-            logger
-                .trace("Starting symmetrically encrypting remote share with shareID \(shareId) for user \(userId)")
-
-            guard let encryptedShare = try await symmetricallyEncryptNullable(userId: userId,
-                                                                              remoteShare,
-                                                                              symmetricKey: key) else {
-                logger
-                    .trace("Failed symmetrically encrypting remote share with shareID \(shareId) for user \(userId)")
-
-                return nil
-            }
-            logger.trace("Locally saving encrypted share with shareID \(shareId) for user \(userId)")
-            try await localDatasource.upsertShares([encryptedShare], userId: userId)
-            return remoteShare
+            return nil
         }
         logger.trace("Got local share with shareID \(shareId) for user \(userId)")
         return share.share
@@ -167,19 +147,6 @@ public extension ShareRepository {
             return shares
         } catch {
             logger.error(message: "Failed to get remote shares for user \(userId)", error: error)
-            throw error
-        }
-    }
-
-    func getRemoteShare(userId: String, shareId: String) async throws -> Share {
-        logger.trace("Getting remote share for user \(userId) and share \(shareId)")
-        do {
-            let share = try await remoteDatasouce.getShare(shareId: shareId, userId: userId)
-            logger.trace("Got remote share for user \(userId) and share \(shareId)")
-            return share
-        } catch {
-            logger.error(message: "Failed to get remote share for user \(userId) and share \(shareId)",
-                         error: error)
             throw error
         }
     }
@@ -277,10 +244,6 @@ public extension ShareRepository {
         return deleted
     }
 }
-
-// MARK: - Item
-
-public extension ShareRepository {}
 
 // MARK: - Vaults
 

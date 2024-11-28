@@ -758,25 +758,25 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllItemsContent()
         return stubbedGetAllItemsContentResult
     }
-    // MARK: - getRemoteItems
-    public var getRemoteItemsUserIdShareIdThrowableError38: Error?
-    public var closureGetRemoteItems: () -> () = {}
-    public var invokedGetRemoteItemsfunction = false
-    public var invokedGetRemoteItemsCount = 0
-    public var invokedGetRemoteItemsParameters: (userId: String, shareId: String)?
-    public var invokedGetRemoteItemsParametersList = [(userId: String, shareId: String)]()
-    public var stubbedGetRemoteItemsResult: [ItemContent]!
+    // MARK: - fetchAndRefreshItems
+    public var fetchAndRefreshItemsUserIdShareIdThrowableError38: Error?
+    public var closureFetchAndRefreshItems: () -> () = {}
+    public var invokedFetchAndRefreshItemsfunction = false
+    public var invokedFetchAndRefreshItemsCount = 0
+    public var invokedFetchAndRefreshItemsParameters: (userId: String, shareId: String)?
+    public var invokedFetchAndRefreshItemsParametersList = [(userId: String, shareId: String)]()
+    public var stubbedFetchAndRefreshItemsResult: [ItemContent]!
 
-    public func getRemoteItems(userId: String, shareId: String) async throws -> [ItemContent] {
-        invokedGetRemoteItemsfunction = true
-        invokedGetRemoteItemsCount += 1
-        invokedGetRemoteItemsParameters = (userId, shareId)
-        invokedGetRemoteItemsParametersList.append((userId, shareId))
-        if let error = getRemoteItemsUserIdShareIdThrowableError38 {
+    public func fetchAndRefreshItems(userId: String, shareId: String) async throws -> [ItemContent] {
+        invokedFetchAndRefreshItemsfunction = true
+        invokedFetchAndRefreshItemsCount += 1
+        invokedFetchAndRefreshItemsParameters = (userId, shareId)
+        invokedFetchAndRefreshItemsParametersList.append((userId, shareId))
+        if let error = fetchAndRefreshItemsUserIdShareIdThrowableError38 {
             throw error
         }
-        closureGetRemoteItems()
-        return stubbedGetRemoteItemsResult
+        closureFetchAndRefreshItems()
+        return stubbedFetchAndRefreshItemsResult
     }
     // MARK: - totpCreationDateThreshold
     public var totpCreationDateThresholdNumberOfTotpThrowableError39: Error?

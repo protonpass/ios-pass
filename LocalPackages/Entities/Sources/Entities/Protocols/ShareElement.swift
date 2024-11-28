@@ -57,4 +57,15 @@ public extension ShareElementProtocol {
     var canEdit: Bool {
         shareRole != ShareRole.read
     }
+
+    var type: TargetType {
+        switch self {
+        case is Vault:
+            .vault
+        case is ShareItem:
+            .item
+        default:
+            .unknown
+        }
+    }
 }

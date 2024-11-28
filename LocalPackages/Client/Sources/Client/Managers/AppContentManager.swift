@@ -51,8 +51,8 @@ public extension AppContentManager {
         let shares = try await shareRepository.getShares(userId: userId).filter { $0.share.shareType == .item }
         var items: [ItemUiModel] = []
         for encryptedShare in shares {
-            let newItems = try await itemRepository.getRemoteItems(userId: userId,
-                                                                   shareId: encryptedShare.share.shareID)
+            let newItems = try await itemRepository.fetchAndRefreshItems(userId: userId,
+                                                                         shareId: encryptedShare.share.shareID)
             items.append(contentsOf: newItems.map(\.toItemUiModel))
         }
         return items

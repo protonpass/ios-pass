@@ -530,7 +530,6 @@
 		5B8D20B12AA751AF00457CA3 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20B02AA751AF00457CA3 /* MBProgressHUD */; };
 		5B8D20BE2AA7639E00457CA3 /* fusion in Frameworks */ = {isa = PBXBuildFile; productRef = 5B8D20BD2AA7639E00457CA3 /* fusion */; };
 		5B92AB372C91C69E007365FC /* AliasTrashAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */; };
-		5B98D6832CEDD8A7000AE3E1 /* ShareElementProtocol+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B98D6822CEDD8A0000AE3E1 /* ShareElementProtocol+Extensions.swift */; };
 		5BA09B802CAE94D0000001B7 /* AliasContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B7F2CAE94D0000001B7 /* AliasContactsViewModel.swift */; };
 		5BA09B812CAE94D0000001B7 /* AliasContactsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B7E2CAE94D0000001B7 /* AliasContactsView.swift */; };
 		5BA09B862CAFE2DA000001B7 /* CreateContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B852CAFE2DA000001B7 /* CreateContactViewModel.swift */; };
@@ -1040,7 +1039,6 @@
 		5B8D20A22AA7499400457CA3 /* Core */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Core; path = LocalPackages/Core; sourceTree = "<group>"; };
 		5B8D20A92AA74B4700457CA3 /* DesignSystem */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = DesignSystem; path = LocalPackages/DesignSystem; sourceTree = "<group>"; };
 		5B92AB362C91C69E007365FC /* AliasTrashAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasTrashAlertModifier.swift; sourceTree = "<group>"; };
-		5B98D6822CEDD8A0000AE3E1 /* ShareElementProtocol+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareElementProtocol+Extensions.swift"; sourceTree = "<group>"; };
 		5BA09B7E2CAE94D0000001B7 /* AliasContactsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsView.swift; sourceTree = "<group>"; };
 		5BA09B7F2CAE94D0000001B7 /* AliasContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsViewModel.swift; sourceTree = "<group>"; };
 		5BA09B842CAFE2DA000001B7 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
@@ -2287,7 +2285,6 @@
 				5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */,
 				3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */,
 				5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */,
-				5B98D6822CEDD8A0000AE3E1 /* ShareElementProtocol+Extensions.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -3477,7 +3474,6 @@
 				5BAE710B2BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift in Sources */,
 				5BFE87742AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift in Sources */,
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
-				5B98D6832CEDD8A7000AE3E1 /* ShareElementProtocol+Extensions.swift in Sources */,
 				66CA928129F971CF00F2FC59 /* PaymentsConstants.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
