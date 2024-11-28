@@ -25,7 +25,6 @@ public protocol ShareElementProtocol: Identifiable, Hashable, Equatable, Sendabl
     var id: String { get }
     var shareId: String { get }
     var addressId: String { get }
-    var name: String { get }
     var isOwner: Bool { get }
     var shareRole: ShareRole { get }
     var members: Int { get }
@@ -46,26 +45,11 @@ public extension ShareElementProtocol {
         self as? Vault
     }
 
-    var shareItem: ShareItem? {
-        self as? ShareItem
-    }
-
     var isAdmin: Bool {
         shareRole == ShareRole.admin
     }
 
     var canEdit: Bool {
         shareRole != ShareRole.read
-    }
-
-    var type: TargetType {
-        switch self {
-        case is Vault:
-            .vault
-        case is ShareItem:
-            .item
-        default:
-            .unknown
-        }
     }
 }

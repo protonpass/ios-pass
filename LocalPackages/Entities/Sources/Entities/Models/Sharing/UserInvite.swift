@@ -41,7 +41,7 @@ public struct UserInvite: Decodable, Hashable, Equatable, Identifiable, Sendable
     }
 
     public var inviteType: TargetType {
-        .init(rawValue: Int64(targetType)) ?? .unknown
+        .init(rawValue: targetType) ?? .unknown
     }
 
     public var isVault: Bool {

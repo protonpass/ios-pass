@@ -20,7 +20,7 @@
 
 public enum SharingElementData: Sendable {
     case vault(Vault)
-    case item(itemId: String, sharedItem: ShareItem)
+    case item(item: ItemContent, share: Share)
     case new(VaultProtobuf, ItemContent)
 }
 
@@ -39,8 +39,8 @@ public extension SharingElementData {
         switch self {
         case let .vault(vault):
             vault.name
-        case let .item(_, sharedItem):
-            sharedItem.name
+        case let .item(item, _):
+            item.name
         case let .new(vault, _):
             vault.name
         }
@@ -61,8 +61,8 @@ public extension SharingElementData {
         switch self {
         case let .vault(vault):
             vault.shared
-        case let .item(_, sharedItem):
-            sharedItem.shared
+        case let .item(_, share):
+            share.shared
         default:
             false
         }
@@ -72,8 +72,8 @@ public extension SharingElementData {
         switch self {
         case let .vault(vault):
             vault.shareId
-        case let .item(_, sharedItem):
-            sharedItem.shareId
+        case let .item(_, share):
+            share.id
         case let .new(_, content):
             content.shareId
         }
@@ -91,7 +91,6 @@ public struct SharingInfos: Sendable, Identifiable {
     /// No public keys means external user
     public let receiverPublicKeys: [PublicKey]?
     public let itemsNum: Int
-
     public var name: String {
         shareElement.name
     }
