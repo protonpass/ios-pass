@@ -35,25 +35,21 @@ public extension Item {
             throw PassError.crypto(.failedToBase64Decode)
         }
 
-        var decryptedContentData: Data
-        // If item has itemKey it means it is linked to a vault
+        let decryptionKey: Data
         if let itemKey {
             guard let itemKeyData = try itemKey.base64Decode() else {
                 throw PassError.crypto(.failedToBase64Decode)
             }
-
-            let decryptedItemKeyData = try AES.GCM.open(itemKeyData,
-                                                        key: shareKey.keyData,
-                                                        associatedData: .itemKey)
-
-            decryptedContentData = try AES.GCM.open(contentData,
-                                                    key: decryptedItemKeyData,
-                                                    associatedData: .itemContent)
+            decryptionKey = try AES.GCM.open(itemKeyData,
+                                             key: shareKey.keyData,
+                                             associatedData: .itemKey)
         } else {
-            decryptedContentData = try AES.GCM.open(contentData,
-                                                    key: shareKey.keyData,
-                                                    associatedData: .itemContent)
+            decryptionKey = shareKey.keyData
         }
+
+        let decryptedContentData = try AES.GCM.open(contentData,
+                                                    key: decryptionKey,
+                                                    associatedData: .itemContent)
 
         return try ItemContentProtobuf(data: decryptedContentData)
     }

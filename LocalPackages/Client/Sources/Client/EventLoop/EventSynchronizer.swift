@@ -163,7 +163,8 @@ private extension EventSynchronizer {
             // Filter local shares not present in remote shares
             let deletedLocalShares = localShares.filter { !remoteShareIDs.contains($0.share.shareID) }
 
-            logger.trace("Deleting following shareIds \(deletedLocalShares)")
+            let shareIds = deletedLocalShares.map(\.share.shareID).joined(separator: ", ")
+            logger.trace("Deleting following \(shareIds.count) shareIds \(shareIds)")
 
             // Delete local shares if there are any to delete
             if !deletedLocalShares.isEmpty {

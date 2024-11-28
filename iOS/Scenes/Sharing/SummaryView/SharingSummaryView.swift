@@ -217,7 +217,7 @@ private extension SharingSummaryView {
 }
 
 public extension ShareItem {
-    internal func thumbnailData() -> ItemThumbnailData {
+    func thumbnailData() -> ItemThumbnailData {
         switch contentData {
         case .login:
             let initials = name.initials()
@@ -244,7 +244,7 @@ public extension ShareItem {
 
     var type: ItemContentType { contentData.type }
 
-    internal var description: String {
+    var description: String {
         switch contentData {
         case let .login(data):
             data.authIdentifier
