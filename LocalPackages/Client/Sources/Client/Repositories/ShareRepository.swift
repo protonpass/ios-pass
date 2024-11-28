@@ -397,38 +397,12 @@ private extension SymmetricallyEncryptedShare {
                      displayPreferences: vaultContent.display,
                      isOwner: share.owner,
                      shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
-                     members: Int(share.targetMembers),
-                     maxMembers: Int(share.targetMaxMembers),
-                     pendingInvites: Int(share.pendingInvites),
-                     newUserInvitesReady: Int(share.newUserInvitesReady),
+                     members: share.members,
+                     maxMembers: share.maxMembers,
+                     pendingInvites: share.pendingInvites,
+                     newUserInvitesReady: share.newUserInvitesReady,
                      shared: share.shared,
                      createTime: share.createTime,
                      canAutoFill: share.canAutoFill)
-    }
-
-    func toShareItem(symmetricKey: SymmetricKey) throws -> ShareItem? {
-        guard share.shareType == .item,
-              let encryptedContent else { return nil }
-
-        let decryptedContent = try symmetricKey.decrypt(encryptedContent)
-        guard let decryptedContentData = try decryptedContent.base64Decode() else { return nil }
-        let itemContent = try ItemContentProtobuf(data: decryptedContentData)
-
-        return ShareItem(itemUuid: itemContent.uuid,
-                         vaultID: share.vaultID,
-                         shareId: share.shareID,
-                         addressId: share.addressID,
-                         name: itemContent.name,
-                         isOwner: share.owner,
-                         shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
-                         members: Int(share.targetMembers),
-                         maxMembers: Int(share.targetMaxMembers),
-                         pendingInvites: Int(share.pendingInvites),
-                         newUserInvitesReady: Int(share.newUserInvitesReady),
-                         shared: share.shared,
-                         createTime: share.createTime,
-                         canAutoFill: share.canAutoFill,
-                         note: itemContent.note,
-                         contentData: itemContent.contentData)
     }
 }

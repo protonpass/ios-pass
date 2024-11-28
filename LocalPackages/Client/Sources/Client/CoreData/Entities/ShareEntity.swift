@@ -88,19 +88,19 @@ extension ShareEntity {
         createTime = share.createTime
         expireTime = share.expireTime ?? -1
         owner = share.owner
-        permission = share.permission
+        permission = Int64(share.permission)
         shareID = share.shareID
         symmetricallyEncryptedContent = symmetricallyEncryptedShare.encryptedContent
         targetID = share.targetID
-        targetType = share.targetType
+        targetType = Int64(share.targetType)
         vaultID = share.vaultID
         addressID = share.addressID
         userID = userId
         shareRoleID = share.shareRoleID
-        targetMembers = share.targetMembers
-        targetMaxMembers = share.targetMaxMembers
-        pendingInvites = share.pendingInvites
-        newUserInvitesReady = share.newUserInvitesReady
+        targetMembers = Int64(share.members)
+        targetMaxMembers = Int64(share.maxMembers)
+        pendingInvites = Int64(share.pendingInvites)
+        newUserInvitesReady = Int64(share.newUserInvitesReady)
         shared = share.shared
         canAutoFill = share.canAutoFill
     }

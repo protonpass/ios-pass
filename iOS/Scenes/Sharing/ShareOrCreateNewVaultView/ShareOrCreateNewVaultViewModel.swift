@@ -122,23 +122,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
                     return
                 }
 
-                let sharedItem = ShareItem(itemUuid: itemContent.itemUuid,
-                                           vaultID: share.vaultID,
-                                           shareId: share.shareID,
-                                           addressId: share.addressID,
-                                           name: itemContent.name,
-                                           isOwner: share.owner,
-                                           shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
-                                           members: Int(share.targetMembers),
-                                           maxMembers: Int(share.targetMaxMembers),
-                                           pendingInvites: Int(share.pendingInvites),
-                                           newUserInvitesReady: Int(share.newUserInvitesReady),
-                                           shared: share.shared,
-                                           createTime: share.createTime,
-                                           canAutoFill: share.canAutoFill,
-                                           note: itemContent.note,
-                                           contentData: itemContent.contentData)
-                setShareInviteVault(with: .item(itemId: itemContent.itemId, sharedItem: sharedItem))
+                setShareInviteVault(with: .item(item: itemContent, share: share))
                 router.present(for: .sharingFlow(.topMost))
             } catch {
                 router.display(element: .displayErrorBanner(error))

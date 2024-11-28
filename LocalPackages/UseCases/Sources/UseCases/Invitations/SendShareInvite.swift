@@ -73,9 +73,9 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         let itemId = getItemId(from: baseInfo)
         let key: any ShareKeyProtocol = if sharedElement is Vault {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: sharedElement.shareId)
-        } else if let item = sharedElement as? ShareItem, let itemId {
+        } else if let share = sharedElement as? Share, let itemId {
             try await passKeyManager.getLatestItemKey(userId: userId,
-                                                      shareId: item.shareId,
+                                                      shareId: share.id,
                                                       itemId: itemId)
         } else {
             throw PassError.sharing(.failedEncryptionKeysFetching)
@@ -89,7 +89,7 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         let invited = try await shareInviteRepository.sendInvites(shareId: sharedElement.shareId,
                                                                   itemId: itemId,
                                                                   inviteesData: inviteesData,
-                                                                  targetType: sharedElement.type)
+                                                                  targetType: getTargetType(element: sharedElement))
 
         if invited {
             syncEventLoop.forceSync()
@@ -113,10 +113,21 @@ private extension SendVaultShareInvite {
         }
     }
 
+    func getTargetType(element: any ShareElementProtocol) -> TargetType {
+        switch element {
+        case is Vault:
+            .vault
+        case is Share:
+            .item
+        default:
+            .unknown
+        }
+    }
+
     func getItemId(from info: SharingInfos) -> String? {
         switch info.shareElement {
-        case let .item(id, _):
-            id
+        case let .item(item, _):
+            item.itemId
         default:
             nil
         }

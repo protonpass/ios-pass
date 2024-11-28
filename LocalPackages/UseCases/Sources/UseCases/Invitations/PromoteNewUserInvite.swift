@@ -67,9 +67,9 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
         let key: any ShareKeyProtocol = if sharedElement.isVault {
             try await passKeyManager.getLatestShareKey(userId: userData.user.ID,
                                                        shareId: sharedElement.shareId)
-        } else if sharedElement is ShareItem, let itemId {
+        } else if let share = sharedElement as? Share, let itemId {
             try await passKeyManager.getLatestItemKey(userId: userData.user.ID,
-                                                      shareId: sharedElement.shareId,
+                                                      shareId: share.id,
                                                       itemId: itemId)
         } else {
             throw PassError.sharing(.failedEncryptionKeysFetching)
