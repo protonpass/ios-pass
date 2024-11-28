@@ -61,7 +61,7 @@ public extension PassIcon {
     static let fileTypeCalendar = Self.icon(named: "FileTypeCalendar")
     static let fileTypePdf = Self.icon(named: "FileTypePdf")
     static let fileTypeWord = Self.icon(named: "FileTypeWord")
-    static let fileTypePowerPoint = Self.icon(named: "FileTypePowerPoint")
+    static let fileTypePowerPoint = Self.icon(named: "FileTypePowerpoint")
     static let fileTypeExcel = Self.icon(named: "FileTypeExcel")
     static let fileTypeDocument = Self.icon(named: "FileTypeDocument")
     static let fileTypeUnknown = Self.icon(named: "FileTypeUnknown")
