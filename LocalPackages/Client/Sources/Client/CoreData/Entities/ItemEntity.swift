@@ -50,6 +50,7 @@ extension ItemEntity {
     @NSManaged var pinTime: Int64
     @NSManaged var symmetricallyEncryptedContent: String? // Custom field
     @NSManaged var flags: Int64
+    @NSManaged var shareCount: Int64
     @NSManaged var userID: String
 }
 
@@ -78,7 +79,8 @@ extension ItemEntity {
                         modifyTime: modifyTime,
                         lastUseTime: lastUseTime == 0 ? nil : lastUseTime,
                         revisionTime: revisionTime,
-                        flags: Int(flags))
+                        flags: Int(flags),
+                        shareCount: Int(shareCount))
 
         return .init(shareId: shareID,
                      userId: userID,
@@ -107,5 +109,6 @@ extension ItemEntity {
         state = item.state
         symmetricallyEncryptedContent = symmetricallyEncryptedItem.encryptedContent
         flags = Int64(item.flags)
+        shareCount = Int64(item.shareCount)
     }
 }
