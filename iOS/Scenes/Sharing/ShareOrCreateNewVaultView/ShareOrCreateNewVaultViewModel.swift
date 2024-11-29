@@ -114,9 +114,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         Task {
             do {
                 guard let share = try await shareRepository.getShare(shareId: itemContent.shareId) else {
-                    router
-                        .display(element: .errorMessage(#localized("Could not find a share linked to this item")))
-                    return
+                    throw PassError.sharing(.failedToInvite)
                 }
 
                 setShareInviteVault(with: .item(item: itemContent, share: share))
