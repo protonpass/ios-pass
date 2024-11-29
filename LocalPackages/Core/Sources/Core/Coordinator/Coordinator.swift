@@ -107,11 +107,8 @@ public extension CoordinatorProtocol {
                                       completion: (() -> Void)? = nil) {
         rootViewController.viewControllerWithTag(tag)?.dismiss(animated: animated) { [weak self] in
             guard let self else { return }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
                 completion?()
-                guard let self else { return }
                 coordinatorDidDismiss()
-            }
         }
     }
 
