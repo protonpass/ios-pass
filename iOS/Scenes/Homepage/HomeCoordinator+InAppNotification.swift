@@ -206,16 +206,3 @@ private extension HomepageCoordinator {
         router.present(for: .breach(.protonAddress(breach)))
     }
 }
-
-private extension [Breach] {
-    // Example function to filter the most severe and latest unresolved breach
-    var mostSevereAndLatest: Breach? {
-        self.max {
-            // Compare by severity first, then by createdAt if severities are equal
-            if $0.severity == $1.severity {
-                return $0.createdAt < $1.createdAt // Later createdAt is greater
-            }
-            return $0.severity < $1.severity // Higher severity is greater
-        }
-    }
-}
