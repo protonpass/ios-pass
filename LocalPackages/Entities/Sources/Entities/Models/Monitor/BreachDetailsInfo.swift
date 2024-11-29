@@ -1,6 +1,6 @@
 //
-// HomepageCoordinator+UniqueSheet.swift
-// Proton Pass - Created on 14/05/2024.
+// BreachDetailsInfo.swift
+// Proton Pass - Created on 29/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,11 +18,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+public enum BreachDetailsInfo: Equatable, Hashable, Sendable {
+    case alias(AliasMonitorInfo)
+    case customEmail(CustomEmail)
+    case protonAddress(ProtonAddress)
 
-extension HomepageCoordinator {
-    enum UniqueSheet: Int, Sendable {
-        case reusedPasswordList = 100
-        case inAppNotificationDisplay = 200
+    public var isMonitored: Bool {
+        switch self {
+        case let .alias(aliasInfos):
+            !aliasInfos.alias.item.monitoringDisabled
+        case let .customEmail(email):
+            !email.monitoringDisabled
+        case let .protonAddress(address):
+            !address.monitoringDisabled
+        }
     }
 }
