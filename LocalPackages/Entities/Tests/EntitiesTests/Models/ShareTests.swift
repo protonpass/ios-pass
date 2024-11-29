@@ -60,7 +60,7 @@ struct ShareTests {
         }
         """.data(using: .utf8)!
     
-    @Test("Share can decoded")
+    @Test("Share can be decoded")
     func decodingShare() throws {
         let share = try decoder.decode(Share.self, from: validVaultJSON)
         #expect(share.shareID ==  "12345")
@@ -74,6 +74,9 @@ struct ShareTests {
         #expect(share.pendingInvites == 2)
         #expect(share.contentKeyRotation == 3)
         #expect(share.contentFormatVersion == 2)
+        #expect(share.expireTime == 1699872000)
+        #expect(share.createTime == 1699785600)
+        #expect(share.canAutoFill)
     }
 
     @Test("Share can't be decoded")
