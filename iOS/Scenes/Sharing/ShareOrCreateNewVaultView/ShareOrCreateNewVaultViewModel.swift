@@ -29,26 +29,37 @@ import ProtonCoreUIFoundations
 final class ShareOrCreateNewVaultViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
 
-    let vault: VaultListUiModel
+    let share: any ShareElementProtocol
     let itemContent: ItemContent
+    let itemCount: Int?
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     var sheetHeight: CGFloat {
-        vault.vault.shared ? 290 : 400
+        share.shared ? 400 : share.canShare ? 550 : 450
     }
 
-    init(vault: VaultListUiModel, itemContent: ItemContent) {
-        self.vault = vault
+    var itemSharingEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
+    }
+
+    init(share: any ShareElementProtocol, itemContent: ItemContent, itemCount: Int?) {
+        self.share = share
         self.itemContent = itemContent
+        self.itemCount = itemCount
         checkIfFreeUser()
     }
 
     func shareVault() {
-        complete(with: .existing(vault.vault))
+        guard let vault = share.vault else {
+            return
+        }
+        complete(with: .vault(vault))
     }
 
     func createNewVault() {
@@ -73,11 +84,14 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func manageAccess() {
-        router.present(for: .manageShareVault(vault.vault, .topMost))
+        guard let vault = share.vault else {
+            return
+        }
+        router.present(for: .manageShareVault(vault, .topMost))
     }
 
-    private func complete(with vault: SharingVaultData) {
-        setShareInviteVault(with: vault)
+    private func complete(with element: SharingElementData) {
+        setShareInviteVault(with: element)
         router.present(for: .sharingFlow(.topMost))
     }
 
@@ -94,6 +108,21 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
 
     func upsell(entryPoint: UpsellEntry) {
         router.present(for: .upselling(entryPoint.defaultConfiguration))
+    }
+
+    func shareItem() {
+        Task {
+            do {
+                guard let share = try await shareRepository.getShare(shareId: itemContent.shareId) else {
+                    throw PassError.sharing(.failedToInvite)
+                }
+
+                setShareInviteVault(with: .item(item: itemContent, share: share))
+                router.present(for: .sharingFlow(.topMost))
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 

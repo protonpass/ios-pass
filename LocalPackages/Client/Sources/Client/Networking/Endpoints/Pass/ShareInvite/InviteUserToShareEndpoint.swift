@@ -40,7 +40,7 @@ public struct InviteUserToShareRequest: Sendable {
                 email: String,
                 targetType: TargetType,
                 shareRole: ShareRole,
-                itemId: String? = nil,
+                itemId: String?,
                 expirationDate: Date? = nil) {
         self.keys = keys
         self.email = email
