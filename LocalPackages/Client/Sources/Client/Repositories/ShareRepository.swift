@@ -209,9 +209,9 @@ public extension ShareRepository {
         do {
             let request = UserSharePermissionRequest(shareRole: shareRole, expireTime: expireTime)
             let updated = try await remoteDatasource.updateUserSharePermission(userId: userId,
-                                                                              shareId: shareId,
-                                                                              userShareId: userShareId,
-                                                                              request: request)
+                                                                               shareId: shareId,
+                                                                               userShareId: userShareId,
+                                                                               request: request)
             logger.trace("Updated \(logInfo)")
             return updated
         } catch {
@@ -226,8 +226,8 @@ public extension ShareRepository {
         logger.trace("Deleting user share \(logInfo)")
         do {
             let deleted = try await remoteDatasource.deleteUserShare(userId: userId,
-                                                                    shareId: shareId,
-                                                                    userShareId: userShareId)
+                                                                     shareId: shareId,
+                                                                     userShareId: userShareId)
             logger.trace("Deleted \(deleted) user share \(logInfo)")
             return deleted
         } catch {
@@ -291,8 +291,8 @@ public extension ShareRepository {
         let shareKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let request = try UpdateVaultRequest(vault: newVault, shareKey: shareKey)
         let updatedVault = try await remoteDatasource.updateVault(userId: userId,
-                                                                 request: request,
-                                                                 shareId: shareId)
+                                                                  request: request,
+                                                                  shareId: shareId)
         logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
         let key = try await getSymmetricKey()
         let encryptedShare = try await symmetricallyEncrypt(userId: userId, updatedVault, symmetricKey: key)
@@ -320,8 +320,8 @@ public extension ShareRepository {
         let userId = try await userManager.getActiveUserId()
         let request = TransferOwnershipVaultRequest(newOwnerShareID: newOwnerShareId)
         let updated = try await remoteDatasource.transferVaultOwnership(userId: userId,
-                                                                       vaultShareId: vaultShareId,
-                                                                       request: request)
+                                                                        vaultShareId: vaultShareId,
+                                                                        request: request)
         logger.info("Finished transfer of ownership")
         return updated
     }
