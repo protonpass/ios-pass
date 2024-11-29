@@ -40,7 +40,7 @@ enum VaultColorIcon {
 
 enum VaultMode {
     case create
-    case editExistingVault(Vault)
+    case editExistingVault(Share)
     case editNewVault(VaultContent, ItemContent)
 
     var isCreation: Bool {
@@ -95,8 +95,8 @@ final class CreateEditVaultViewModel: ObservableObject {
             selectedIcon = .icon1
             title = ""
         case let .editExistingVault(vault):
-            selectedColor = vault.displayPreferences.color.color
-            selectedIcon = vault.displayPreferences.icon.icon
+            selectedColor = vault.vaultContent?.display.color.color ?? .color1
+            selectedIcon = vault.vaultContent?.display.icon.icon ?? .icon1
             title = vault.name
         case let .editNewVault(vault, _):
             selectedColor = vault.display.color.color
@@ -129,7 +129,7 @@ private extension CreateEditVaultViewModel {
               icon: selectedIcon.protobufIcon)
     }
 
-    func editVault(_ oldVault: Vault) {
+    func editVault(_ oldVault: Share) {
         Task { [weak self] in
             guard let self else { return }
             defer { self.loading = false }

@@ -23,8 +23,9 @@ import Entities
 import SwiftUI
 
 // MARK: - UI helpers
+
 //
-//extension Vault {
+// extension Vault {
 //    var mainColor: Color {
 //        displayPreferences.color.color.color.toColor
 //    }
@@ -40,4 +41,4 @@ import SwiftUI
 //    var smallImage: Image {
 //        displayPreferences.icon.icon.smallImage.toImage
 //    }
-//}
+// }

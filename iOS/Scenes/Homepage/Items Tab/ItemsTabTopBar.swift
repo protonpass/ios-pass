@@ -68,9 +68,9 @@ private extension ItemsTabTopBar {
                     .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
 
             case let .precise(vault):
-                CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-                             iconColor: vault.displayPreferences.color.color.color,
-                             backgroundColor: vault.displayPreferences.color.color.color.withAlphaComponent(0.16),
+                CircleButton(icon: vault.vaultBigIcon,
+                             iconColor: vault.mainColor,
+                             backgroundColor: vault.backgroundColor,
                              action: onShowVaultList)
                     .frame(width: DesignConstant.searchBarHeight)
                     .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
@@ -93,7 +93,7 @@ private extension ItemsTabTopBar {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 20, height: 20)
-                        Text(viewModel.vaultSelection.searchBarPlacehoder)
+                        Text(viewModel.vaultSelection.searchBarPlaceholder)
                             .lineLimit(1)
                             .minimumScaleFactor(0.75)
                     }

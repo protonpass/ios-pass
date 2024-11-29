@@ -29,7 +29,7 @@ import ProtonCoreUIFoundations
 final class ShareOrCreateNewVaultViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
 
-    let share: any ShareElementProtocol
+    let share: Share
     let itemContent: ItemContent
     let itemCount: Int?
 
@@ -41,14 +41,14 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     var sheetHeight: CGFloat {
-        share.shared ? 400 : share.canShare ? 550 : 450
+        share.shared ? 400 : share.canShareWithMorePeople ? 550 : 450
     }
 
     var itemSharingEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }
 
-    init(share: any ShareElementProtocol, itemContent: ItemContent, itemCount: Int?) {
+    init(share: Share, itemContent: ItemContent, itemCount: Int?) {
         self.share = share
         self.itemContent = itemContent
         self.itemCount = itemCount
@@ -56,10 +56,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func shareVault() {
-        guard let vault = share.vault else {
-            return
-        }
-        complete(with: .vault(vault))
+        complete(with: .vault(share))
     }
 
     func createNewVault() {
@@ -84,10 +81,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func manageAccess() {
-        guard let vault = share.vault else {
-            return
-        }
-        router.present(for: .manageShareVault(vault, .topMost))
+        router.present(for: .manageShareVault(share, .topMost))
     }
 
     private func complete(with element: SharingElementData) {

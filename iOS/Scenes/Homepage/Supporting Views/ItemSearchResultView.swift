@@ -36,7 +36,7 @@ struct ItemSearchResultView: View, Equatable {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 4) {
                     if let vault = result.vault {
-                        Image(uiImage: vault.displayPreferences.icon.icon.smallImage)
+                        Image(uiImage: vault.vaultSmallIcon)
                             .resizable()
                             .scaledToFit()
                             .foregroundStyle(PassColor.textWeak.toColor)
