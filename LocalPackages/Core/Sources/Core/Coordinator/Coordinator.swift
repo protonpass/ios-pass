@@ -107,8 +107,8 @@ public extension CoordinatorProtocol {
                                       completion: (() -> Void)? = nil) {
         rootViewController.viewControllerWithTag(tag)?.dismiss(animated: animated) { [weak self] in
             guard let self else { return }
-                completion?()
-                coordinatorDidDismiss()
+            completion?()
+            coordinatorDidDismiss()
         }
     }
 
