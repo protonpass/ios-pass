@@ -126,7 +126,7 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
 }
 
 private extension GetItemsForPasskeyCreation {
-    func shouldTakeVaultIntoAccount(_ vault: Vault, allowedVaults: [Vault], plan: Plan) -> Bool {
+    func shouldTakeVaultIntoAccount(_ vault: Share, allowedVaults: [Share], plan: Plan) -> Bool {
         switch plan.planType {
         case .free:
             allowedVaults.contains(where: { $0.shareId == vault.shareId })

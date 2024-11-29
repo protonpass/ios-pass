@@ -95,7 +95,7 @@ enum ItemCreationType: Equatable, Hashable {
 
 @MainActor
 class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate, CustomFieldEditionDelegate {
-    @Published var selectedVault: Vault
+    @Published var selectedVault: Share
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
@@ -118,7 +118,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     let upgradeChecker: any UpgradeCheckerProtocol
     let logger = resolve(\SharedToolingContainer.logger)
-    let vaults: [Vault]
+    let vaults: [Share]
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let addTelemetryEvent = resolve(\SharedUseCasesContainer.addTelemetryEvent)
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
@@ -152,7 +152,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
 
     init(mode: ItemMode,
          upgradeChecker: any UpgradeCheckerProtocol,
-         vaults: [Vault]) throws {
+         vaults: [Share]) throws {
         let vaultShareId: String?
         switch mode {
         case let .create(shareId, _):

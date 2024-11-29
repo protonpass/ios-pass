@@ -23,11 +23,11 @@ import Client
 import Entities
 
 public protocol GetSpotlightVaultsUseCase: Sendable {
-    func execute() async throws -> [Vault]
+    func execute() async throws -> [Share]
 }
 
 public extension GetSpotlightVaultsUseCase {
-    func callAsFunction() async throws -> [Vault] {
+    func callAsFunction() async throws -> [Share] {
         try await execute()
     }
 }
@@ -45,12 +45,12 @@ public final class GetSpotlightVaults: GetSpotlightVaultsUseCase {
         self.localSpotlightVaultDatasource = localSpotlightVaultDatasource
     }
 
-    public func execute() async throws -> [Vault] {
+    public func execute() async throws -> [Share] {
         let userId = try await userManager.getActiveUserId()
         let selectedIds = try await localSpotlightVaultDatasource.getIds(for: userId)
         let vaults = try await shareRepository.getVaults(userId: userId)
         return vaults.filter { vault in
-            selectedIds.contains(vault.shareId)
+            selectedIds.contains(vault.id)
         }
     }
 }

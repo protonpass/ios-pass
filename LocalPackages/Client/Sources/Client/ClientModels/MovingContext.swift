@@ -23,7 +23,7 @@ import Foundation
 
 public enum MovingContext: Sendable, Equatable, Hashable {
     case singleItem(any ItemTypeIdentifiable)
-    case allItems(Vault)
+    case allItems(Share)
     case selectedItems([any ItemIdentifiable])
 }
 
@@ -32,8 +32,8 @@ public extension MovingContext {
         switch (lhs, rhs) {
         case let (.singleItem(lhsItem), .singleItem(rhsItem)):
             lhsItem.isEqual(with: rhsItem)
-        case let (.allItems(lhsVault), .allItems(rhsVault)):
-            lhsVault.shareId == rhsVault.shareId
+        case let (.allItems(lhsShare), .allItems(rhsShare)):
+            lhsShare.id == rhsShare.id
         case let (.selectedItems(lhsItems), .selectedItems(rhsItems)):
             lhsItems.count == rhsItems.count
         default:
@@ -45,8 +45,8 @@ public extension MovingContext {
         switch self {
         case let .singleItem(item):
             hasher.combine(item.shareId + item.itemId)
-        case let .allItems(vault):
-            hasher.combine(vault.shareId)
+        case let .allItems(share):
+            hasher.combine(share.id)
         case let .selectedItems(items):
             hasher.combine(items.map { $0.shareId + $0.itemId })
         }

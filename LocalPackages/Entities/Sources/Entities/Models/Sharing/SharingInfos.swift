@@ -19,26 +19,26 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public enum SharingElementData: Sendable {
-    case vault(Vault)
+    case vault(Share)
     case item(item: ItemContent, share: Share)
     case new(VaultContent, ItemContent)
 }
 
-public extension ShareElementProtocol {
-    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences? {
-        if let vault = self as? Vault {
-            vault.displayPreferences
-        } else {
-            nil
-        }
-    }
-}
+//public extension ShareElementProtocol {
+//    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences? {
+//        if let vault = self as? Vault {
+//            vault.displayPreferences
+//        } else {
+//            nil
+//        }
+//    }
+//}
 
 public extension SharingElementData {
     var name: String {
         switch self {
-        case let .vault(vault):
-            vault.name
+        case let .vault(share):
+            share.vaultContent?.name ?? ""
         case let .item(item, _):
             item.name
         case let .new(vault, _):
@@ -48,8 +48,8 @@ public extension SharingElementData {
 
     var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences? {
         switch self {
-        case let .vault(vault):
-            vault.displayPreferences
+        case let .vault(share):
+            share.vaultContent?.display
         case let .new(vault, _):
             vault.display
         default:
@@ -59,8 +59,8 @@ public extension SharingElementData {
 
     var shared: Bool {
         switch self {
-        case let .vault(vault):
-            vault.shared
+        case let .vault(share):
+            share.shared
         case let .item(_, share):
             share.shared
         default:
@@ -70,8 +70,8 @@ public extension SharingElementData {
 
     var shareId: String {
         switch self {
-        case let .vault(vault):
-            vault.shareId
+        case let .vault(share):
+            share.id
         case let .item(_, share):
             share.id
         case let .new(_, content):
