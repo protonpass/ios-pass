@@ -150,10 +150,10 @@ private extension VaultsManager {
     @MainActor
     func createDefaultVault() async throws {
         logger.trace("Creating default vault for user")
-        let vault = VaultProtobuf(name: #localized("Personal"),
-                                  description: #localized("Personal"),
-                                  color: .color1,
-                                  icon: .icon1)
+        let vault = VaultContent(name: #localized("Personal"),
+                                 description: #localized("Personal"),
+                                 color: .color1,
+                                 icon: .icon1)
         try await shareRepository.createVault(vault)
         logger.info("Created default vault for user")
     }
