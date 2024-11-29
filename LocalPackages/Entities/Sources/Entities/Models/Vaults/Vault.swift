@@ -20,7 +20,7 @@
 
 import Foundation
 
-public struct Vault: Identifiable, Hashable, Equatable, Sendable {
+public struct Vault: ShareElementProtocol {
     public let id: String
     public let shareId: String
     public let addressId: String
@@ -93,14 +93,6 @@ public extension Vault {
 
     var reachedSharingLimit: Bool {
         maxMembers <= totalOverallMembers
-    }
-
-    var isAdmin: Bool {
-        shareRole == ShareRole.admin
-    }
-
-    var canEdit: Bool {
-        shareRole != ShareRole.read
     }
 
     var canShareVaultWithMorePeople: Bool {

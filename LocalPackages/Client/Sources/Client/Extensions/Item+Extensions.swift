@@ -20,34 +20,35 @@
 
 import CryptoKit
 import Entities
+import Foundation
 import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public extension Item {
-    func getContentProtobuf(vaultKey: DecryptedShareKey) throws -> ItemContentProtobuf {
-        guard vaultKey.keyRotation == keyRotation else {
-            throw PassError.crypto(.unmatchedKeyRotation(lhsKey: vaultKey.keyRotation,
+    func getContentProtobuf(shareKey: DecryptedShareKey) throws -> ItemContentProtobuf {
+        guard shareKey.keyRotation == keyRotation else {
+            throw PassError.crypto(.unmatchedKeyRotation(lhsKey: shareKey.keyRotation,
                                                          rhsKey: keyRotation))
         }
-
-        guard let itemKey else {
-            throw PassError.crypto(.failedToDecryptContent)
-        }
-
-        guard let itemKeyData = try itemKey.base64Decode() else {
-            throw PassError.crypto(.failedToBase64Decode)
-        }
-
-        let decryptedItemKeyData = try AES.GCM.open(itemKeyData,
-                                                    key: vaultKey.keyData,
-                                                    associatedData: .itemKey)
 
         guard let contentData = try content.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
 
+        let decryptionKey: Data
+        if let itemKey {
+            guard let itemKeyData = try itemKey.base64Decode() else {
+                throw PassError.crypto(.failedToBase64Decode)
+            }
+            decryptionKey = try AES.GCM.open(itemKeyData,
+                                             key: shareKey.keyData,
+                                             associatedData: .itemKey)
+        } else {
+            decryptionKey = shareKey.keyData
+        }
+
         let decryptedContentData = try AES.GCM.open(contentData,
-                                                    key: decryptedItemKeyData,
+                                                    key: decryptionKey,
                                                     associatedData: .itemContent)
 
         return try ItemContentProtobuf(data: decryptedContentData)

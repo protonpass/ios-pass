@@ -56,6 +56,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+//    private let shareRepository = resolve(\SharedRepositoryContainer.shareRepository)
+
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -82,6 +84,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @LazyInjected(\SharedRepositoryContainer.aliasRepository)
     private var aliasRepository: any AliasRepositoryProtocol
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
@@ -623,7 +626,11 @@ private extension ItemsTabViewModel {
 
     nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
         do {
-            let filteredItems = vaultsManager.getFilteredItems()
+            var filteredItems = vaultsManager.getFilteredItems()
+
+            let otherItems = try await appContentManager.shareItemItems()
+            filteredItems.append(contentsOf: otherItems)
+
             let sectionedItems: [SectionedItemUiModel]
             switch await selectedSortType {
             case .mostRecent:

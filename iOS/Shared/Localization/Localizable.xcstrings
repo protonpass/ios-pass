@@ -801,6 +801,16 @@
         }
       }
     },
+    "%@ wants to share an item with you." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wants to share an item with you."
+          }
+        }
+      }
+    },
     "%@%% decrypted..." : {
       "localizations" : {
         "be" : {
@@ -14852,6 +14862,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Khóa truy cập sẽ được tạo cho đăng nhập \"%@\""
+          }
+        }
+      }
+    },
+    "Accept and view the item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept and view the item"
           }
         }
       }
@@ -67900,6 +67920,16 @@
         }
       }
     },
+    "Item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item"
+          }
+        }
+      }
+    },
     "Item excluded from monitoring" : {
       "localizations" : {
         "be" : {
@@ -111638,6 +111668,16 @@
         }
       }
     },
+    "Share Item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share Item"
+          }
+        }
+      }
+    },
     "Share link" : {
       "localizations" : {
         "be" : {
@@ -111954,6 +111994,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chia sẻ liên kết an toàn"
+          }
+        }
+      }
+    },
+    "Share this item with other Proton users." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share this item with other Proton users."
           }
         }
       }
@@ -112596,6 +112646,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chia sẽ với nhiều người hơn"
+          }
+        }
+      }
+    },
+    "Shared item invitation" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared item invitation"
           }
         }
       }
@@ -119328,6 +119388,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chọn **Mật khẩu**"
+          }
+        }
+      }
+    },
+    "Tap here for details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap here for details"
           }
         }
       }

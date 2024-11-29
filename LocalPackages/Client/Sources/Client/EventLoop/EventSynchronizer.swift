@@ -93,6 +93,8 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         // Need to sync 3 operations in 2 steps:
         // 1. Create & update sync
         // 2. Delete sync
+
+        logger.trace("Start sync: fetching local and remote shares + alias sync")
         async let fetchLocalShares = shareRepository.getShares(userId: userId)
         async let fetchRemoteShares = shareRepository.getRemoteShares(userId: userId)
         async let fetchAliasSync: Void = if isSimpleLoginAliasSyncActive {
@@ -106,6 +108,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         }
 
         var (localShares, remoteShares) = try await (fetchLocalShares, fetchRemoteShares)
+        logger.trace("Finished fetching local and remote shares")
 
         let updatedShares = try await removeSuperfluousLocalShares(userId: userId,
                                                                    localShares: localShares,
@@ -114,6 +117,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
             if Task.isCancelled {
                 return true
             }
+            logger.trace("Updating local shares with latest information after previous local deletion")
 
             /// Updating the local shares with the latest information as `updatedShares` notifies of local
             /// share changes.
@@ -150,6 +154,8 @@ private extension EventSynchronizer {
                                       remoteShares: [Share]) async throws -> Bool {
         // This is used to respond to sharing modifications that are not tied to events in the BE
         // making changes not visible to the user.
+        logger.trace("Started removing superfluous local shares")
+
         if !remoteShares.isLooselyEqual(to: localShares.map(\.share)) {
             // Update local shares based on remote shares that are the source of truth
             let remoteShareIDs = Set(remoteShares.map(\.shareID))
@@ -157,10 +163,14 @@ private extension EventSynchronizer {
             // Filter local shares not present in remote shares
             let deletedLocalShares = localShares.filter { !remoteShareIDs.contains($0.share.shareID) }
 
+            let shareIds = deletedLocalShares.map(\.share.shareID).joined(separator: ", ")
+            logger.trace("Deleting following \(shareIds.count) shareIds \(shareIds)")
+
             // Delete local shares if there are any to delete
             if !deletedLocalShares.isEmpty {
                 try await delete(userId: userId, shares: deletedLocalShares)
             }
+            logger.trace("Finished deleting superfluous local shares")
 
             return true
         }
@@ -192,6 +202,7 @@ private extension EventSynchronizer {
                                    localShares: [SymmetricallyEncryptedShare],
                                    remoteShares: [Share]) async throws -> Bool {
         let localShareIDs = Set(localShares.map(\.share.shareID))
+        logger.trace("Start syncCreateAndUpdateEvents function")
 
         return try await withThrowingTaskGroup(of: Bool.self, returning: Bool.self) { taskGroup in
             for remoteShare in remoteShares {
@@ -224,6 +235,8 @@ private extension EventSynchronizer {
 
     /// Handle existing share processing
     func handleExistingShare(userId: String, remoteShare: Share) async throws -> Bool {
+        logger.trace("Start update of existing shares")
+
         try await shareRepository.upsertShares(userId: userId, shares: [remoteShare])
         try Task.checkCancellation()
         return try await sync(userId: userId, share: remoteShare)
@@ -232,6 +245,7 @@ private extension EventSynchronizer {
     /// Handle new share processing
     func handleNewShare(userId: String, remoteShare: Share) async throws {
         let shareId = remoteShare.shareID
+        logger.trace("Start handle of new shares")
 
         do {
             try Task.checkCancellation()

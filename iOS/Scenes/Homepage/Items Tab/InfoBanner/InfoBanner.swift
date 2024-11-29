@@ -23,6 +23,7 @@ import Entities
 import Macro
 import SwiftUI
 
+// swiftlint:disable line_length
 enum InfoBanner: CaseIterable, Equatable, Hashable {
     static var allCases: [InfoBanner] {
         [.trial, .autofill, .aliases]
@@ -48,46 +49,51 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
     var detail: InfoBannerDetail {
         switch self {
         case .trial:
-            .init(title: #localized("Our welcome gift to you"),
-                  // swiftlint:disable:next line_length
-                  description: #localized("7 days to try premium features for free. Only during your first week of Proton Pass."),
-                  icon: nil,
-                  ctaTitle: #localized("Learn more"),
-                  backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
-                  foregroundColor: PassColor.textInvert.toColor)
+            return .init(title: #localized("Our welcome gift to you"),
+                         description: #localized("7 days to try premium features for free. Only during your first week of Proton Pass."),
+                         icon: nil,
+                         ctaTitle: #localized("Learn more"),
+                         backgroundColor: PassColor.noteInteractionNormMajor1.toColor,
+                         foregroundColor: PassColor.textInvert.toColor)
         case .autofill:
-            .init(title: #localized("Enjoy the magic of AutoFill"),
-                  description: #localized("One tap and⏤presto!⏤your username and password are filled in instantly"),
-                  icon: PassIcon.infoBannerAutoFill,
-                  ctaTitle: #localized("Turn on AutoFill"),
-                  backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
-                  foregroundColor: PassColor.textInvert.toColor)
+            return .init(title: #localized("Enjoy the magic of AutoFill"),
+                         description: #localized("One tap and⏤presto!⏤your username and password are filled in instantly"),
+                         icon: PassIcon.infoBannerAutoFill,
+                         ctaTitle: #localized("Turn on AutoFill"),
+                         backgroundColor: PassColor.aliasInteractionNormMajor1.toColor,
+                         foregroundColor: PassColor.textInvert.toColor)
         case .aliases:
-            .init(title: #localized("Goodbye spam and scams"),
-                  description: #localized("Use email aliases to protect your inbox and identity"),
-                  icon: PassIcon.infoBannerAliases,
-                  ctaTitle: #localized("Learn more"),
-                  backgroundColor: PassColor.signalSuccess.toColor,
-                  foregroundColor: PassColor.textInvert.toColor)
-        case .invite:
-            .init(title: #localized("Vault shared with you"),
-                  description: #localized("You're invited to a shared vault. Tap for details."),
-                  icon: PassIcon.inviteBannerIcon,
-                  ctaTitle: nil,
-                  backgroundColor: PassColor.backgroundMedium.toColor,
-                  foregroundColor: PassColor.textNorm.toColor)
+            return .init(title: #localized("Goodbye spam and scams"),
+                         description: #localized("Use email aliases to protect your inbox and identity"),
+                         icon: PassIcon.infoBannerAliases,
+                         ctaTitle: #localized("Learn more"),
+                         backgroundColor: PassColor.signalSuccess.toColor,
+                         foregroundColor: PassColor.textInvert.toColor)
+        case let .invite(userInvites):
+            var title = #localized("Vault shared with you")
+            var description = #localized("You're invited to a shared vault. Tap for details.")
+
+            if let invite = userInvites.first, invite.inviteType == .item {
+                title = #localized("%@ wants to share an item with you.", invite.inviterEmail)
+                description = #localized("Tap here for details")
+            }
+            return .init(title: title,
+                         description: description,
+                         icon: PassIcon.inviteBannerIcon,
+                         ctaTitle: nil,
+                         backgroundColor: PassColor.backgroundMedium.toColor,
+                         foregroundColor: PassColor.textNorm.toColor)
         case let .slSync(missingAliases):
-            .init(title: #localized("Enable SimpleLogin sync"),
-                  // swiftlint:disable:next line_length
-                  description: #localized("We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?",
-                                          missingAliases),
-                  icon: PassIcon.slSyncIcon,
-                  ctaTitle: #localized("Sync aliases"),
-                  backgroundColor: PassColor.aliasInteractionNormMinor1.toColor,
-                  foregroundColor: PassColor.textNorm.toColor,
-                  closeButtonColor: PassColor.textNorm.toColor,
-                  typeOfCtaButton: .capsule(buttonTitle: PassColor.textInvert,
-                                            buttonBackground: PassColor.aliasInteractionNormMajor1))
+            return .init(title: #localized("Enable SimpleLogin sync"),
+                         description: #localized("We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?",
+                                                 missingAliases),
+                         icon: PassIcon.slSyncIcon,
+                         ctaTitle: #localized("Sync aliases"),
+                         backgroundColor: PassColor.aliasInteractionNormMinor1.toColor,
+                         foregroundColor: PassColor.textNorm.toColor,
+                         closeButtonColor: PassColor.textNorm.toColor,
+                         typeOfCtaButton: .capsule(buttonTitle: PassColor.textInvert,
+                                                   buttonBackground: PassColor.aliasInteractionNormMajor1))
         }
     }
 
@@ -101,6 +107,8 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
         return false
     }
 }
+
+// swiftlint:enable line_length
 
 enum CtaButtonType {
     case text

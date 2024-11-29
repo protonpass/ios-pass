@@ -75,6 +75,12 @@ final class AcceptRejectInviteViewModel: ObservableObject {
             guard let self else {
                 return
             }
+            defer {
+                if !userInvite.isVault {
+                    executingAction = false
+                    shouldCloseSheet = true
+                }
+            }
 
             do {
                 executingAction = true
@@ -92,7 +98,9 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 
 private extension AcceptRejectInviteViewModel {
     func setUp() {
-        decodeVaultData()
+        if userInvite.isVault {
+            decodeVaultData()
+        }
         vaultsManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in

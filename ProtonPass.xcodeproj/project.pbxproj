@@ -2033,32 +2033,20 @@
 		5B1453E32A72BF2A0048B022 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				5B98D6812CEDD886000AE3E1 /* Entities */,
 				5BE464D12CC2567F009EDF18 /* MostRecentType+Extensions.swift */,
 				5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */,
-				3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */,
 				35A5EEDF2958B60200A09623 /* Browser+Extensions.swift */,
 				5BFE87732AF00E21004ABA1E /* ClipboardExpiration+Extensions.swift */,
 				356FBD472949246A0063978C /* Coordinator+Extensions.swift */,
-				5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */,
-				5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */,
-				3572E5222993D68800775FAC /* ItemContentType+Extensions.swift */,
-				5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */,
-				5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */,
 				5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */,
 				5BFE87772AF1003D004ABA1E /* LocalAuthenticationMethodUiModel+Extensions.swift */,
 				3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */,
-				5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */,
-				5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */,
-				5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */,
-				35219D7E2AE1C38D00868F78 /* ShareInvitee+Extensions.swift */,
-				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
 				3541C0782B68C337006B35D9 /* Spotlight+Extensions.swift */,
 				3543615B2941E1A8000CAE12 /* UIApplication+Extensions.swift */,
 				3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */,
-				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
 				3590A3382A9F9C2600622F45 /* View+Extensions.swift */,
 				5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */,
-				5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */,
 				5B4E53D92BD6A02500E8D54A /* DateFormatter+Extensions.swift */,
 				5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */,
 			);
@@ -2282,6 +2270,26 @@
 				5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */,
 			);
 			path = Authenticator;
+			sourceTree = "<group>";
+		};
+		5B98D6812CEDD886000AE3E1 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				35219D7E2AE1C38D00868F78 /* ShareInvitee+Extensions.swift */,
+				3572E5222993D68800775FAC /* ItemContentType+Extensions.swift */,
+				5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */,
+				5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */,
+				5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */,
+				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
+				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
+				5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */,
+				5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */,
+				5BECDE502B9B230C0040FCA7 /* SecurityWeakness+Extensions.swift */,
+				5B1092D62B56D5B4002621A4 /* CustomField+Extensions.swift */,
+				3575EB5229FAB017000FFD53 /* AppLockTime+Extensions.swift */,
+				5BD4A90B2B15F18100C44C08 /* PasswordStrength+Extensions.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		5BA09B7D2CAE947E000001B7 /* Contacts */ = {
