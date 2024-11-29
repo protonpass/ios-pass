@@ -23,7 +23,8 @@ import Core
 import Entities
 import Foundation
 
-private let kInAppNotificationTimerKey = "InAppNotificationTimer"
+@_spi(QA)
+public let kInAppNotificationTimerKey = "InAppNotificationTimer"
 
 public protocol InAppNotificationManagerProtocol: Sendable {
     var notifications: [InAppNotification] { get }
@@ -99,7 +100,14 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         updateTime(timestampDate)
         return notifications.filter { notification in
             notification.canBeDisplayed(timestampDate: timestampDate.toInt)
-        }.max(by: { $0.priority < $1.priority })
+        }.max(by: { lhs, rhs in
+            // Priority descending
+            if lhs.priority != rhs.priority {
+                return lhs.priority < rhs.priority
+            }
+            // StartTime ascending
+            return lhs.startTime > rhs.startTime
+        })
     }
 
     public func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {

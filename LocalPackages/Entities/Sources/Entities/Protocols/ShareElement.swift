@@ -52,4 +52,8 @@ public extension ShareElementProtocol {
     var canEdit: Bool {
         shareRole != ShareRole.read
     }
+
+    var canShare: Bool {
+        isOwner || isAdmin
+    }
 }

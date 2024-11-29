@@ -1328,11 +1328,6 @@ extension HomepageCoordinator: ProfileTabViewModelDelegate {
         let view = BugReportView(onError: errorHandler, onSuccess: successHandler)
         present(view)
     }
-
-    func profileTabViewModelWantsToQaFeatures() {
-        let view = QAFeaturesView()
-        present(view)
-    }
 }
 
 // MARK: - AccountViewModelDelegate
