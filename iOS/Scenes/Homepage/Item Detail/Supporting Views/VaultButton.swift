@@ -34,12 +34,12 @@ struct VaultButton: View {
                     Text(vault.name)
                         .font(.footnote)
                 }, icon: {
-                    vault.smallImage
+                    Image(uiImage: vault.vaultSmallIcon)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 12, height: 12)
                 })
-                .foregroundStyle(vault.mainColor)
+                .foregroundStyle(vault.mainColor.toColor)
                 Text(verbatim: "•")
                     .foregroundStyle(PassColor.textNorm.toColor)
                 Text(verbatim: "\(vault.members)")
@@ -49,7 +49,7 @@ struct VaultButton: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
         }
-        .background(vault.backgroundColor)
+        .background(vault.backgroundColor.toColor)
         .clipShape(Capsule())
     }
 }

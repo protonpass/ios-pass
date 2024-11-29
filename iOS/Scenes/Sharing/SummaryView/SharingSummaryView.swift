@@ -71,17 +71,16 @@ struct SharingSummaryView: View {
 }
 
 private extension SharingSummaryView {
-    func vaultInfo(infos: Vault, itemsCount: Int) -> some View {
+    func vaultInfo(infos: Share, itemsCount: Int) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Vault")
                 .font(.callout)
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(height: 20)
             VaultRow(thumbnail: {
-                         CircleButton(icon: infos.displayPreferences.icon.icon.bigImage,
-                                      iconColor: infos.displayPreferences.color.color.color,
-                                      backgroundColor: infos.displayPreferences.color.color.color
-                                          .withAlphaComponent(0.16))
+                         CircleButton(icon: infos.vaultBigIcon,
+                                      iconColor: infos.mainColor,
+                                      backgroundColor: infos.backgroundColor)
                      },
                      title: infos.name,
                      itemCount: itemsCount,

@@ -266,7 +266,8 @@ public extension ShareRepository {
         let userId = try await userManager.getActiveUserId()
         let symmetricKey = try await getSymmetricKey()
         logger.trace("Getting local vault with shareID \(shareId) for user \(userId)")
-        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId), share.share.isVaultRepresentation else {
+        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId),
+              share.share.isVaultRepresentation else {
             logger.trace("Found no local vault with shareID \(shareId) for user \(userId)")
             return nil
         }
@@ -387,7 +388,7 @@ private extension ShareRepository {
 }
 
 private extension SymmetricallyEncryptedShare {
-    //TODO: maybe always return share
+    // TODO: maybe always return share
     func withVaultContentDecrypted(symmetricKey: SymmetricKey) throws -> Share {
         guard share.shareType == .vault, let encryptedContent else { return share }
 

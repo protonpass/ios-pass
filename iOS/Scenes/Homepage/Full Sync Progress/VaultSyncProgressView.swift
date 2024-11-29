@@ -62,7 +62,7 @@ private extension VaultSyncProgressView {
 }
 
 private extension VaultSyncProgressView {
-    func content(vault: Vault, itemsState: VaultSyncProgress.ItemsState) -> some View {
+    func content(vault: Share, itemsState: VaultSyncProgress.ItemsState) -> some View {
         HStack(spacing: 16) {
             thumbnail(for: vault)
             detail(vault: vault, itemsState: itemsState)
@@ -81,9 +81,9 @@ private extension VaultSyncProgressView {
 
 private extension VaultSyncProgressView {
     @ViewBuilder
-    func thumbnail(for vault: Vault) -> some View {
-        let icon = vault.displayPreferences.icon.icon.bigImage
-        let color = vault.displayPreferences.color.color.color
+    func thumbnail(for vault: Share) -> some View {
+        let icon = vault.vaultBigIcon
+        let color = vault.mainColor
         CircleButton(icon: icon,
                      iconColor: color,
                      backgroundColor: color.withAlphaComponent(0.16),
@@ -92,7 +92,7 @@ private extension VaultSyncProgressView {
 }
 
 private extension VaultSyncProgressView {
-    func detail(vault: Vault, itemsState: VaultSyncProgress.ItemsState) -> some View {
+    func detail(vault: Share, itemsState: VaultSyncProgress.ItemsState) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text(vault.name)
                 .font(.headline)

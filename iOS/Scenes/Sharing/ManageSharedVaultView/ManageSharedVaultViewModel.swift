@@ -30,7 +30,7 @@ import ProtonCoreNetworking
 
 @MainActor
 final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
-    private(set) var vault: Vault
+    private(set) var vault: Share
     @Published private(set) var itemsNumber = 0
     @Published private(set) var invitations = ShareInvites.default
     @Published private(set) var members: [UserShareInfos] = []
@@ -91,7 +91,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         return reachedLimit
     }
 
-    init(vault: Vault) {
+    init(vault: Share) {
         self.vault = vault
         setUp()
     }
@@ -157,7 +157,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                                                                     and: inviteId))
 
                 case let .confirmAccess(access):
-                    try await execute(await promoteNewUserInvite(sharedElement: vault,
+                    try await execute(await promoteNewUserInvite(share: vault,
                                                                  inviteId: access.inviteId,
                                                                  email: access.email))
 

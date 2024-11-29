@@ -96,14 +96,14 @@ private extension ManageSharedVaultView {
     var headerVaultInformation: some View {
         VStack {
             ZStack {
-                viewModel.vault.backgroundColor
+                viewModel.vault.backgroundColor.toColor
                     .clipShape(Circle())
 
-                viewModel.vault.bigImage
+                Image(uiImage: viewModel.vault.vaultBigIcon)
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundStyle(viewModel.vault.mainColor)
+                    .foregroundStyle(viewModel.vault.mainColor.toColor)
                     .frame(width: 28, height: 28)
             }
             .frame(width: 64, height: 64)

@@ -30,7 +30,7 @@ struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EditableVaultListViewModel()
     @State private var vaultNameConfirmation = ""
-    @State private var vaultToDelete: Vault?
+    @State private var vaultToDelete: Share?
     @State private var isShowingEmptyTrashAlert = false
 
     var body: some View {
@@ -130,7 +130,7 @@ struct EditableVaultListView: View {
     }
 
     @ViewBuilder
-    private func vaultTrailingView(_ vault: Vault, haveItems: Bool) -> some View {
+    private func vaultTrailingView(_ vault: Share, haveItems: Bool) -> some View {
         Menu(content: {
             if viewModel.canEdit(vault: vault) {
                 Button(action: {
@@ -266,7 +266,7 @@ extension VaultSelection {
         case .all:
             PassIcon.brandPass
         case let .precise(vault):
-            vault.displayPreferences.icon.icon.bigImage
+            vault.vaultBigIcon
         case .trash:
             IconProvider.trash
         }
@@ -277,7 +277,7 @@ extension VaultSelection {
         case .all:
             PassColor.interactionNormMajor2
         case let .precise(vault):
-            vault.displayPreferences.color.color.color
+            vault.mainColor
         case .trash:
             PassColor.textWeak
         }

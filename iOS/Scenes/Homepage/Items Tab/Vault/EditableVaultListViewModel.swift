@@ -102,15 +102,15 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
         vaultsManager.isSelected(selection)
     }
 
-    func canShare(vault: Vault) -> Bool {
+    func canShare(vault: Share) -> Bool {
         getUserShareStatus(for: vault) != .cantShare && !vault.shared
     }
 
-    func canEdit(vault: Vault) -> Bool {
+    func canEdit(vault: Share) -> Bool {
         canUserPerformActionOnVault(for: vault) && vault.isOwner
     }
 
-    func canMoveItems(vault: Vault) -> Bool {
+    func canMoveItems(vault: Share) -> Bool {
         canUserPerformActionOnVault(for: vault)
     }
 }
@@ -132,7 +132,7 @@ private extension EditableVaultListViewModel {
 // MARK: - Public APIs
 
 extension EditableVaultListViewModel {
-    func delete(vault: Vault) {
+    func delete(vault: Share) {
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
@@ -153,11 +153,11 @@ extension EditableVaultListViewModel {
         router.present(for: .vaultCreateEdit(vault: nil))
     }
 
-    func edit(vault: Vault) {
+    func edit(vault: Share) {
         router.present(for: .vaultCreateEdit(vault: vault))
     }
 
-    func share(vault: Vault) {
+    func share(vault: Share) {
         if getUserShareStatus(for: vault) == .canShare {
             setShareInviteVault(with: .vault(vault))
             router.present(for: .sharingFlow(.none))
@@ -166,7 +166,7 @@ extension EditableVaultListViewModel {
         }
     }
 
-    func leaveVault(vault: Vault) {
+    func leaveVault(vault: Share) {
         Task { [weak self] in
             guard let self else { return }
             do {

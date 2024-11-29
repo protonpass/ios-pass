@@ -663,7 +663,7 @@ extension HomepageCoordinator {
         }
     }
 
-    func createEditVaultView(vault: Vault?) {
+    func createEditVaultView(vault: Share?) {
         if let vault {
             presentCreateEditVaultView(mode: .editExistingVault(vault))
         } else {
@@ -671,7 +671,7 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentManageShareVault(with vault: Vault, dismissal: SheetDismissal) {
+    func presentManageShareVault(with vault: Share, dismissal: SheetDismissal) {
         let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
 
         let completion: () -> Void = { [weak self] in
