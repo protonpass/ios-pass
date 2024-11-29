@@ -528,3 +528,19 @@ extension SharedUseCasesContainer {
                                    logManager: self.logManager) }
     }
 }
+
+// MARK: - File attachments
+
+extension SharedUseCasesContainer {
+    var generateDatedFileName: Factory<any GenerateDatedFileNameUseCase> {
+        self { GenerateDatedFileName() }
+    }
+
+    var writeToUrl: Factory<any WriteToUrlUseCase> {
+        self { WriteToUrl() }
+    }
+
+    var writeToTemporaryDirectory: Factory<any WriteToTemporaryDirectoryUseCase> {
+        self { WriteToTemporaryDirectory(writeToUrl: self.writeToUrl()) }
+    }
+}
