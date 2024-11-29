@@ -41,15 +41,11 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     var sheetHeight: CGFloat {
-        share.shared ? 400 : canShareItem ? 550 : 450
+        share.shared ? 400 : share.canShare ? 550 : 450
     }
 
     var itemSharingEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
-    }
-
-    var canShareItem: Bool {
-        share.isOwner && share.isAdmin
     }
 
     init(share: any ShareElementProtocol, itemContent: ItemContent, itemCount: Int?) {
@@ -118,8 +114,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         Task {
             do {
                 guard let share = try await shareRepository.getShare(shareId: itemContent.shareId) else {
-                    router.display(element: .errorMessage("Could not find a share linked to this item"))
-                    return
+                    throw PassError.sharing(.failedToInvite)
                 }
 
                 setShareInviteVault(with: .item(item: itemContent, share: share))

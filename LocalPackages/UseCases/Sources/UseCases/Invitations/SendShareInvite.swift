@@ -28,17 +28,17 @@ import ProtonCoreCrypto
 @preconcurrency import ProtonCoreLogin
 
 /// Make an invitation and return the shared `Vault`
-public protocol SendVaultShareInviteUseCase: Sendable {
+public protocol SendShareInviteUseCase: Sendable {
     func execute(with infos: [SharingInfos]) async throws -> any ShareElementProtocol
 }
 
-public extension SendVaultShareInviteUseCase {
+public extension SendShareInviteUseCase {
     func callAsFunction(with infos: [SharingInfos]) async throws -> any ShareElementProtocol {
         try await execute(with: infos)
     }
 }
 
-public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInviteUseCase {
+public final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase {
     private let createAndMoveItemToNewVault: any CreateAndMoveItemToNewVaultUseCase
     private let makeUnsignedSignatureForVaultSharing: any MakeUnsignedSignatureForVaultSharingUseCase
     private let shareInviteService: any ShareInviteServiceProtocol
@@ -69,7 +69,7 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         }
         let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
-        let sharedElement = try await getSharedElement(userId: userId, from: baseInfo)
+        let sharedElement = try await getShareElement(userId: userId, from: baseInfo)
         let itemId = getItemId(from: baseInfo)
         let key: any ShareKeyProtocol = if sharedElement is Vault {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: sharedElement.shareId)
@@ -84,7 +84,7 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
         let inviteesData = try await infos.asyncCompactMap { try await generateInviteeData(userData: userData,
                                                                                            from: $0,
                                                                                            element: sharedElement,
-                                                                                           sharedKey: key) }
+                                                                                           shareKey: key) }
 
         let invited = try await shareInviteRepository.sendInvites(shareId: sharedElement.shareId,
                                                                   itemId: itemId,
@@ -101,8 +101,8 @@ public final class SendVaultShareInvite: @unchecked Sendable, SendVaultShareInvi
     }
 }
 
-private extension SendVaultShareInvite {
-    func getSharedElement(userId: String, from info: SharingInfos) async throws -> any ShareElementProtocol {
+private extension SendShareInvite {
+    func getShareElement(userId: String, from info: SharingInfos) async throws -> any ShareElementProtocol {
         switch info.shareElement {
         case let .vault(vault):
             vault
@@ -136,17 +136,17 @@ private extension SendVaultShareInvite {
     func generateInviteeData(userData: UserData,
                              from info: SharingInfos,
                              element: any ShareElementProtocol,
-                             sharedKey: any ShareKeyProtocol) async throws -> InviteeData {
+                             shareKey: any ShareKeyProtocol) async throws -> InviteeData {
         let email = info.email
         if let key = info.receiverPublicKeys?.first {
             let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: element.addressId,
                                                                  publicReceiverKey: key,
                                                                  userData: userData,
-                                                                 key: sharedKey)
+                                                                 key: shareKey)
             return .existing(email: email, keys: [signedKey], role: info.role)
         } else {
             let signature = try createAndSignSignature(addressId: element.addressId,
-                                                       sharedKey: sharedKey,
+                                                       shareKey: shareKey,
                                                        email: email,
                                                        userData: userData)
             return .new(email: email, signature: signature, role: info.role)
@@ -154,7 +154,7 @@ private extension SendVaultShareInvite {
     }
 
     func createAndSignSignature(addressId: String,
-                                sharedKey: any ShareKeyProtocol,
+                                shareKey: any ShareKeyProtocol,
                                 email: String,
                                 userData: UserData) throws -> String {
         guard let addressKey = try CryptoUtils.unlockAddressKeys(addressID: addressId,
@@ -165,7 +165,7 @@ private extension SendVaultShareInvite {
         let signerKey = SigningKey(privateKey: addressKey.privateKey,
                                    passphrase: addressKey.passphrase)
         let unsignedSignature = makeUnsignedSignatureForVaultSharing(email: email,
-                                                                     vaultKey: sharedKey.keyData)
+                                                                     vaultKey: shareKey.keyData)
         let context = SignatureContext(value: Constants.newUserSharingSignatureContext,
                                        isCritical: true)
 

@@ -31,7 +31,7 @@ import SwiftUI
 struct InAppNotificationSection: View {
     var body: some View {
         NavigationLink(destination: { InAppNotificationView() },
-                       label: { Text(verbatim: "Mock In app notification") })
+                       label: { Text(verbatim: "Mock in-app notification") })
     }
 }
 
@@ -41,7 +41,26 @@ private struct InAppNotificationView: View {
 
     var body: some View {
         List {
-            Section(header: Text(verbatim: "In app notification Settings").font(.headline.bold())) {
+            Section {
+                HStack {
+                    Text(verbatim: "Last threshold")
+                    Spacer()
+                    if let lastThreshold = viewModel.lastThreshold {
+                        let date = Date(timeIntervalSince1970: lastThreshold)
+                        let formatter = RelativeDateTimeFormatter()
+                        Text(verbatim: formatter.string(for: date) ?? "N/A")
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text(verbatim: "N/A")
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                Button(action: viewModel.clearThreshold) {
+                    Text(verbatim: "Clear last threshold")
+                }
+            }
+
+            Section(header: Text(verbatim: "In-app notification settings").font(.headline.bold())) {
                 TextField(text: $viewModel.notificationKey, prompt: Text(verbatim: "Notification Key")) {
                     Text(verbatim: "Notification Key")
                 }
@@ -73,7 +92,7 @@ private struct InAppNotificationView: View {
                        }, label: { Text(verbatim: "Notification priority") })
             }
 
-            Section(header: Text(verbatim: "In app notification content Settings").font(.headline.bold())) {
+            Section(header: Text(verbatim: "In-app notification content settings").font(.headline.bold())) {
                 TextField(text: $viewModel.imageUrl, prompt: Text(verbatim: "Image url")) {
                     Text(verbatim: "Image url")
                 }
@@ -101,13 +120,13 @@ private struct InAppNotificationView: View {
 
             Section(header: Text(verbatim: "Notification Cta Settings").font(.headline.bold())) {
                 Toggle(isOn: $viewModel.addCta,
-                       label: { Text(verbatim: "Add Cta to notification") })
+                       label: { Text(verbatim: "Add CTA to notification") })
                 if viewModel.addCta {
-                    TextField(text: $viewModel.text, prompt: Text(verbatim: "Cta text")) {
-                        Text(verbatim: "Cta text")
+                    TextField(text: $viewModel.text, prompt: Text(verbatim: "CTA text")) {
+                        Text(verbatim: "CTA text")
                     }
-                    TextField(text: $viewModel.ref, prompt: Text(verbatim: "Cta link(url/deeplink)")) {
-                        Text(verbatim: "Cta link(url/deeplink)")
+                    TextField(text: $viewModel.ref, prompt: Text(verbatim: "CTA link(url/deeplink)")) {
+                        Text(verbatim: "CTA link(url/deeplink)")
                     }
 
                     Picker(selection: $viewModel.type,
@@ -115,7 +134,7 @@ private struct InAppNotificationView: View {
                                ForEach(QACTAType.allCases, id: \.self) { type in
                                    Text(verbatim: type.rawValue).tag(type)
                                }
-                           }, label: { Text(verbatim: "Cta type") })
+                           }, label: { Text(verbatim: "CTA type") })
                 }
             }
 
@@ -123,11 +142,11 @@ private struct InAppNotificationView: View {
             Text(verbatim: "Adding a mock notification will override the real ones. Don't forget to either kill the app or remove it if you want to test the real ones. To make the mock notification appear just send the app in background and come back to foreground")
 
             Button { viewModel.sendNotification() } label: {
-                Text(verbatim: "Send mock in app notification")
+                Text(verbatim: "Send mock in-app notification")
             }
 
             Button { viewModel.removeNotification() } label: {
-                Text(verbatim: "Remove mock in app notification")
+                Text(verbatim: "Remove mock in-app notification")
             }
         }
         .animation(.default, value: viewModel.addCta)
@@ -173,6 +192,9 @@ private final class InAppNotificationViewModel {
     @ObservationIgnored
     @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
 
+    private let userDefaults: UserDefaults
+
+    var lastThreshold: Double?
     var notificationKey = "pass_user_internal_notification"
     var startDate = Date.now
     var addEndTime = false
@@ -206,7 +228,15 @@ private final class InAppNotificationViewModel {
     // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
     var ref: String = "https://en.wikipedia.org/wiki/Wikipedia"
 
-    init() {}
+    init(userDefaults: UserDefaults = kSharedUserDefaults) {
+        self.userDefaults = userDefaults
+        lastThreshold = userDefaults.double(forKey: kInAppNotificationTimerKey)
+    }
+
+    func clearThreshold() {
+        userDefaults.removeObject(forKey: kInAppNotificationTimerKey)
+        lastThreshold = nil
+    }
 
     func sendNotification() {
         Task {
