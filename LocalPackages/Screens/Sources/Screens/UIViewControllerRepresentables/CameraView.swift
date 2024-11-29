@@ -23,13 +23,10 @@ import SwiftUI
 
 public struct CameraView: UIViewControllerRepresentable {
     @Environment(\.dismiss) private var dismiss
-    let onCapture: ((UIImage) -> Void)?
-    let onTemporarilySaved: ((Result<URL, any Error>) -> Void)?
+    let onCapture: ((UIImage?) -> Void)?
 
-    public init(onCapture: ((UIImage) -> Void)? = nil,
-                onTemporarilySaved: ((Result<URL, any Error>) -> Void)? = nil) {
+    public init(onCapture: @escaping (UIImage?) -> Void) {
         self.onCapture = onCapture
-        self.onTemporarilySaved = onTemporarilySaved
     }
 
     public func makeCoordinator() -> Coordinator {
@@ -59,30 +56,9 @@ public struct CameraView: UIViewControllerRepresentable {
             UIImagePickerController
                 .InfoKey: Any
         ]) {
-            defer { parent.dismiss() }
-
-            guard let image = info[.originalImage] as? UIImage else {
-                assertionFailure("Expect an UIImage but it's nil")
-                return
-            }
+            let image = info[.originalImage] as? UIImage
             parent.onCapture?(image)
-
-            guard let onTemporarilySaved = parent.onTemporarilySaved else { return }
-
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyy-MM-dd 'at' HH.mm.ss"
-            let date = formatter.string(from: .now)
-            let fileName = "Photo \(date).png"
-            let tempDirectory = FileManager.default.temporaryDirectory
-            let url = tempDirectory.appendingPathComponent(fileName)
-            if let pngData = image.pngData() {
-                do {
-                    try pngData.write(to: url)
-                    onTemporarilySaved(.success(url))
-                } catch {
-                    onTemporarilySaved(.failure(error))
-                }
-            }
+            parent.dismiss()
         }
     }
 }

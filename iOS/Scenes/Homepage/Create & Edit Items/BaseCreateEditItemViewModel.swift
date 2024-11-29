@@ -28,6 +28,7 @@ import Foundation
 import Macro
 import Screens
 import SwiftUI
+import UseCases
 
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
 
@@ -126,6 +127,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
+    @LazyInjected(\SharedUseCasesContainer.writeToTemporaryDirectory) private var writeToTemporaryDirectory
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -448,6 +451,22 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         itemContentType().normMinor1Color
     }
 
+    func provideGenerateDatedFileNameUseCase() -> any GenerateDatedFileNameUseCase {
+        generateDatedFileName
+    }
+
+    func provideWriteToTemporaryDirectoryUseCase() -> any WriteToTemporaryDirectoryUseCase {
+        writeToTemporaryDirectory
+    }
+
+    func handleAttachment(_ url: URL) {
+        print(url)
+    }
+
+    func handleAttachmentError(_ error: any Error) {
+        handle(error)
+    }
+
     func rename(attachment: FileAttachment, newName: String) {
         print(attachment)
         print(newName)
@@ -459,10 +478,6 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 
     func deleteAllAttachments() {
         print(#function)
-    }
-
-    func handleCapturedPhoto(_ result: Result<URL, any Error>) {
-        print(result)
     }
 
     func handle(method: FileAttachmentMethod) {

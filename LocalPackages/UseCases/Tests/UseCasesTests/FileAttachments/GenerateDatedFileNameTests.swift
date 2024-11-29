@@ -1,6 +1,6 @@
 //
-// FileAttachmentReason.swift
-// Proton Pass - Created on 27/11/2024.
+// GenerateDatedFileNameTests.swift
+// Proton Pass - Created on 28/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,22 +20,24 @@
 //
 
 import Foundation
+import Testing
+import UseCases
 
-public extension PassError {
-    enum FileAttachmentReason: CustomDebugStringConvertible, Sendable {
-        case noDocumentScanned
-        case noPngData
-        case noDataFound(URL)
+struct GenerateDatedFileNameTests {
+    @Test("Generate dated file name")
+    func datedFileName() {
+        // Given
+        let timestamp: Double = 1_732_802_303
+        let date = Date(timeIntervalSince1970: timestamp)
+        let sut = GenerateDatedFileName()
 
-        public var debugDescription: String {
-            switch self {
-            case .noDocumentScanned:
-                "No document scanned"
-            case .noPngData:
-                "No PNG data"
-            case let .noDataFound(url):
-                "No data found \(url.absoluteString)"
-            }
-        }
+        // When
+        let fileName = sut.execute(prefix: "Photo",
+                                   extension: "png",
+                                   date: date,
+                                   dateFormat: "yyyy-MM-dd 'at' HH:mm:ss")
+
+        // Then
+        #expect(fileName == "Photo 2024-11-28 at 14:58:23.png")
     }
 }
