@@ -30,6 +30,7 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     /// Get all local shares
     func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
+    func getShare(shareId: String) async throws -> Share?
 
     /// Get all remote shares
     func getRemoteShares(userId: String,
@@ -47,8 +48,6 @@ public protocol ShareRepositoryProtocol: Sendable {
                       eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
 
     func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
-
-//    func getUserInformations(userId: String, shareId: String) async throws -> UserShareInfos
 
     @discardableResult
     func updateUserPermission(userShareId: String,
@@ -127,6 +126,16 @@ public extension ShareRepository {
         }
     }
 
+    func getShare(shareId: String) async throws -> Share? {
+        let userId = try await userManager.getActiveUserId()
+        logger.trace("Getting local share with \(shareId) for user \(userId)")
+        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId) else {
+            return nil
+        }
+        logger.trace("Got local share with shareID \(shareId) for user \(userId)")
+        return share.share
+    }
+
     func getRemoteShares(userId: String,
                          eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
         -> [Share] {
@@ -159,16 +168,19 @@ public extension ShareRepository {
                       shares: [Share],
                       eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
+        let key = try await getSymmetricKey()
         let encryptedShares = try await shares
             .parallelMap { [weak self] in
                 // swiftlint:disable:next discouraged_optional_self
-                try await self?.symmetricallyEncryptNullable(userId: userId, $0)
+                try await self?.symmetricallyEncryptNullable(userId: userId, $0, symmetricKey: key)
             }
             .compactMap { $0 }
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
 
         if eventStream != nil {
             let symmetricKey = try await getSymmetricKey()
+            // swiftlint:disable:next todo
+            // TODO: check new type of shares
             for share in encryptedShares {
                 if let vault = try share.toVault(symmetricKey: symmetricKey) {
                     eventStream?.send(.decryptedVault(vault))
@@ -263,7 +275,8 @@ public extension ShareRepository {
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)
         let createdVault = try await remoteDatasouce.createVault(userId: userId, request: request)
-        let encryptedShare = try await symmetricallyEncrypt(userId: userId, createdVault)
+        let key = try await getSymmetricKey()
+        let encryptedShare = try await symmetricallyEncrypt(userId: userId, createdVault, symmetricKey: key)
         logger.trace("Saving newly created vault to local for user \(userId)")
         try await localDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Created vault for user \(userId)")
@@ -281,7 +294,8 @@ public extension ShareRepository {
                                                                  request: request,
                                                                  shareId: shareId)
         logger.trace("Saving updated vault \(oldVault.id) to local for user \(userId)")
-        let encryptedShare = try await symmetricallyEncrypt(userId: userId, updatedVault)
+        let key = try await getSymmetricKey()
+        let encryptedShare = try await symmetricallyEncrypt(userId: userId, updatedVault, symmetricKey: key)
         try await localDatasource.upsertShares([encryptedShare], userId: userId)
         logger.trace("Updated vault \(oldVault.id) for user \(userId)")
     }
@@ -318,7 +332,9 @@ private extension ShareRepository {
         try await symmetricKeyProvider.getSymmetricKey()
     }
 
-    func symmetricallyEncrypt(userId: String, _ share: Share) async throws -> SymmetricallyEncryptedShare {
+    func symmetricallyEncrypt(userId: String,
+                              _ share: Share,
+                              symmetricKey: SymmetricKey) async throws -> SymmetricallyEncryptedShare {
         guard let content = share.content,
               let keyRotation = share.contentKeyRotation else {
             return .init(encryptedContent: nil, share: share)
@@ -338,16 +354,18 @@ private extension ShareRepository {
         let decryptedContent = try AES.GCM.open(contentData,
                                                 key: key.keyData,
                                                 associatedData: .vaultContent)
-        let reencryptedContent = try await getSymmetricKey().encrypt(decryptedContent.encodeBase64())
+        let reencryptedContent = try symmetricKey.encrypt(decryptedContent.encodeBase64())
         return .init(encryptedContent: reencryptedContent, share: share)
     }
 
     /// Symmetrically encrypt but return `nil` when encounting inactive user key instead of throwing
     /// We don't want to throw errors and stop the whole decryption process when we find an inactive user key
     @Sendable func symmetricallyEncryptNullable(userId: String,
-                                                _ share: Share) async throws -> SymmetricallyEncryptedShare? {
+                                                _ share: Share,
+                                                symmetricKey: SymmetricKey) async throws
+        -> SymmetricallyEncryptedShare? {
         do {
-            return try await symmetricallyEncrypt(userId: userId, share)
+            return try await symmetricallyEncrypt(userId: userId, share, symmetricKey: symmetricKey)
         } catch {
             if let passError = error as? PassError,
                case let .crypto(reason) = passError,
@@ -379,10 +397,10 @@ private extension SymmetricallyEncryptedShare {
                      displayPreferences: vaultContent.display,
                      isOwner: share.owner,
                      shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
-                     members: Int(share.targetMembers),
-                     maxMembers: Int(share.targetMaxMembers),
-                     pendingInvites: Int(share.pendingInvites),
-                     newUserInvitesReady: Int(share.newUserInvitesReady),
+                     members: share.members,
+                     maxMembers: share.maxMembers,
+                     pendingInvites: share.pendingInvites,
+                     newUserInvitesReady: share.newUserInvitesReady,
                      shared: share.shared,
                      createTime: share.createTime,
                      canAutoFill: share.canAutoFill)

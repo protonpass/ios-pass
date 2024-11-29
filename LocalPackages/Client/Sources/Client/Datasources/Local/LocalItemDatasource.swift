@@ -182,7 +182,8 @@ public extension LocalItemDatasource {
                                         modifyTime: modifiedItem.modifyTime,
                                         lastUseTime: item.item.lastUseTime,
                                         revisionTime: modifiedItem.revisionTime,
-                                        flags: modifiedItem.flags)
+                                        flags: modifiedItem.flags,
+                                        shareCount: item.item.shareCount)
                 try await upsertItems([.init(shareId: item.shareId,
                                              userId: item.userId,
                                              item: modifiedItem,

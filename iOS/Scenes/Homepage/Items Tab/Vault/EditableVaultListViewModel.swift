@@ -159,7 +159,7 @@ extension EditableVaultListViewModel {
 
     func share(vault: Vault) {
         if getUserShareStatus(for: vault) == .canShare {
-            setShareInviteVault(with: .existing(vault))
+            setShareInviteVault(with: .vault(vault))
             router.present(for: .sharingFlow(.none))
         } else {
             router.present(for: .upselling(.default))

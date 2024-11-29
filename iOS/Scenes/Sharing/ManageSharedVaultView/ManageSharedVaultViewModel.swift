@@ -101,7 +101,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func shareWithMorePeople() {
-        setShareInviteVault(with: .existing(vault))
+        setShareInviteVault(with: .vault(vault))
         router.present(for: .sharingFlow(.none))
     }
 
@@ -157,7 +157,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                                                                     and: inviteId))
 
                 case let .confirmAccess(access):
-                    try await execute(await promoteNewUserInvite(vault: vault,
+                    try await execute(await promoteNewUserInvite(sharedElement: vault,
                                                                  inviteId: access.inviteId,
                                                                  email: access.email))
 
