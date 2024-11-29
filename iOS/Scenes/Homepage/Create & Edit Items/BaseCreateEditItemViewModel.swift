@@ -26,7 +26,7 @@ import Entities
 import Factory
 import Foundation
 import Macro
-import ProtonCoreLogin
+import Screens
 import SwiftUI
 
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
@@ -356,31 +356,6 @@ extension BaseCreateEditItemViewModel {
         }
     }
 
-    func handleDeleteAttachments() {
-        print(#function)
-    }
-
-    func handle(method: FileAttachmentMethod) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                // Make periphery happy, will be removed later
-                print(method)
-                try await preferencesManager.updateAppPreferences(\.dismissedFileAttachmentsBanner,
-                                                                  value: true)
-                isUploadingFile = true
-                try await Task.sleep(seconds: 3)
-                files.append(.init(id: UUID().uuidString,
-                                   metadata: .init(name: .random(),
-                                                   mimeType: .random(),
-                                                   size: .random(in: 1...1_000_000))))
-                isUploadingFile = false
-            } catch {
-                handle(error)
-            }
-        }
-    }
-
     func addCustomField() {
         delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self, shouldDisplayTotp: true)
     }
@@ -457,6 +432,52 @@ extension BaseCreateEditItemViewModel {
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+}
+
+// MARK: - FileAttachmentsEditHandler
+
+extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
+    var fileAttachmentsSectionPrimaryColor: UIColor {
+        itemContentType().normMajor2Color
+    }
+
+    var fileAttachmentsSectionSecondaryColor: UIColor {
+        itemContentType().normMinor1Color
+    }
+
+    func rename(attachment: FileAttachment, newName: String) {
+        print(attachment)
+        print(newName)
+    }
+
+    func delete(attachment: FileAttachment) {
+        print(attachment)
+    }
+
+    func deleteAllAttachments() {
+        print(#function)
+    }
+
+    func handle(method: FileAttachmentMethod) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                // Make periphery happy, will be removed later
+                print(method)
+                try await preferencesManager.updateAppPreferences(\.dismissedFileAttachmentsBanner,
+                                                                  value: true)
+                isUploadingFile = true
+                try await Task.sleep(seconds: 3)
+                files.append(.init(id: UUID().uuidString,
+                                   metadata: .init(name: .random(),
+                                                   mimeType: .random(),
+                                                   size: .random(in: 1...1_000_000))))
+                isUploadingFile = false
+            } catch {
+                handle(error)
             }
         }
     }

@@ -170,15 +170,15 @@ extension UseCasesContainer {
         self { SetShareInviteRole(shareInviteService: self.shareInviteService) }
     }
 
-    var sendVaultShareInvite: Factory<any SendVaultShareInviteUseCase> {
-        self { SendVaultShareInvite(createAndMoveItemToNewVault: self.createAndMoveItemToNewVault(),
-                                    makeUnsignedSignatureForVaultSharing: self
-                                        .makeUnsignedSignatureForVaultSharing(),
-                                    shareInviteService: self.shareInviteService,
-                                    passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
-                                    shareInviteRepository: self.shareInviteRepository,
-                                    userManager: self.userManager,
-                                    syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
+    var sendShareInvite: Factory<any SendShareInviteUseCase> {
+        self { SendShareInvite(createAndMoveItemToNewVault: self.createAndMoveItemToNewVault(),
+                               makeUnsignedSignatureForVaultSharing: self
+                                   .makeUnsignedSignatureForVaultSharing(),
+                               shareInviteService: self.shareInviteService,
+                               passKeyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                               shareInviteRepository: self.shareInviteRepository,
+                               userManager: self.userManager,
+                               syncEventLoop: SharedServiceContainer.shared.syncEventLoop()) }
     }
 
     var promoteNewUserInvite: Factory<any PromoteNewUserInviteUseCase> {

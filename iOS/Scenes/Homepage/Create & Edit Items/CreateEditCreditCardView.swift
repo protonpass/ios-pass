@@ -80,12 +80,7 @@ private extension CreateEditCreditCardView {
                     if viewModel.fileAttachmentsEnabled {
                         FileAttachmentsEditSection(files: viewModel.files,
                                                    isUploading: viewModel.isUploadingFile,
-                                                   primaryTintColor: viewModel.itemContentType()
-                                                       .normMajor2Color,
-                                                   secondaryTintColor: viewModel.itemContentType()
-                                                       .normMinor1Color,
-                                                   onDelete: { viewModel.handleDeleteAttachments() },
-                                                   onSelect: { viewModel.handle(method: $0) })
+                                                   handler: viewModel)
                             .id(fileAttachmentsID)
                     }
                 }
