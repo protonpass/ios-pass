@@ -42,7 +42,7 @@ public struct CreateVaultRequest: Sendable {
 }
 
 public extension CreateVaultRequest {
-    init(userData: UserData, vault: VaultProtobuf) throws {
+    init(userData: UserData, vault: VaultContent) throws {
         contentFormatVersion = Constants.ContentFormatVersion.vault
         addressID = userData.addresses.first?.addressID ?? ""
 

@@ -21,6 +21,7 @@
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares(userId: String) async throws -> [Share]
     func getShare(shareId: String, userId: String) async throws -> Share
