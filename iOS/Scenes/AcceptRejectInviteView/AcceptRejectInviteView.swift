@@ -91,7 +91,7 @@ private extension AcceptRejectInviteView {
 }
 
 private extension AcceptRejectInviteView {
-    func vaultInformation(infos: VaultProtobuf) -> some View {
+    func vaultInformation(infos: VaultContent) -> some View {
         VStack {
             ZStack {
                 infos.display.color.color.color.withAlphaComponent(0.16).toColor
