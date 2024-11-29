@@ -44,6 +44,15 @@ extension HomepageCoordinator {
     func presentBreachDetail(breach: Breach) {
         present(BreachDetailView(breach: breach))
     }
+
+    func presentBreach(breach: BreachDetailsInfo) {
+        present(DetailMonitoredItemView(viewModel: .init(infos: breach)))
+    }
+
+    func removeInAppNotificationDisplay() {
+        updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
+        dismissViewControllerWithTag(tag: UniqueSheet.inAppNotificationDisplay)
+    }
 }
 
 // MARK: - Notification actions
@@ -66,7 +75,7 @@ private extension HomepageCoordinator {
                                        })
             let viewController = UIHostingController(rootView: view)
             if let view = viewController.view {
-                updateFloatingView(floatingView: view)
+                updateFloatingView(floatingView: view, viewTag: UniqueSheet.inAppNotificationDisplay)
             }
         case .modal:
             let view = InAppModalView(notification: notification,
@@ -80,7 +89,7 @@ private extension HomepageCoordinator {
             let viewController = UIHostingController(rootView: view)
             viewController.setDetentType(.custom(CGFloat(490)),
                                          parentViewController: rootViewController)
-            present(viewController)
+            present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
         }
     }
 
@@ -88,7 +97,7 @@ private extension HomepageCoordinator {
         Task { [weak self] in
             guard let self else { return }
             if notification.displayType == .banner {
-                updateFloatingView(floatingView: nil)
+                updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
             }
             do {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
@@ -108,7 +117,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 if notification.displayType == .banner {
-                    updateFloatingView(floatingView: nil)
+                    updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
                 }
                 addTelemetryEvent(with: .notificationNotificationCtaClick(notificationKey: notification
                         .notificationKey))
@@ -140,9 +149,9 @@ private extension HomepageCoordinator {
                 case let .aliasBreach(sharedId, itemId):
                     try await aliasBreach(shareID: sharedId, itemID: itemId)
                 case let .customEmailBreach(customEmailId):
-                    try await customEmailBreach(customEmail: customEmailId)
+                    try await customEmailBreach(customEmailId: customEmailId)
                 case let .addressBreach(addressID):
-                    try await protonAddressBreach(protonAddress: addressID)
+                    try await protonAddressBreach(protonAddressId: addressID)
                 case .upgrade:
                     router.present(for: .upgradeFlow)
                 case let .viewItem(shareID, itemID):
@@ -171,40 +180,29 @@ private extension HomepageCoordinator {
     }
 
     func aliasBreach(shareID: String, itemID: String) async throws {
+        guard let alias = try await itemRepository.getItemContent(shareId: shareID, itemId: itemID) else {
+            return
+        }
         let breaches = try await passMonitorRepository.getBreachesForAlias(sharedId: shareID,
                                                                            itemId: itemID)
-        guard let breach = breaches.breaches.mostSevereAndLatest else {
-            return
-        }
-        router.present(for: .breachDetail(breach))
+        let aliasMonitorInfo = AliasMonitorInfo(alias: alias, breaches: breaches)
+        router.present(for: .breach(.alias(aliasMonitorInfo)))
     }
 
-    func customEmailBreach(customEmail: String) async throws {
-        let breaches = try await passMonitorRepository.getAllBreachesForEmail(emailId: customEmail)
-        guard let breach = breaches.breaches.mostSevereAndLatest else {
+    func customEmailBreach(customEmailId: String) async throws {
+        let breaches = try await passMonitorRepository
+            .refreshUserBreaches() // getAllBreachesForEmail(emailId: customEmail)
+        guard let breach = breaches.customEmails.first(where: { $0.customEmailID == customEmailId }) else {
             return
         }
-        router.present(for: .breachDetail(breach))
+        router.present(for: .breach(.customEmail(breach)))
     }
 
-    func protonAddressBreach(protonAddress: String) async throws {
-        let breaches = try await passMonitorRepository.getAllBreachesForProtonAddress(addressId: protonAddress)
-        guard let breach = breaches.breaches.mostSevereAndLatest else {
+    func protonAddressBreach(protonAddressId: String) async throws {
+        let breaches = try await passMonitorRepository.refreshUserBreaches()
+        guard let breach = breaches.addresses.first(where: { $0.addressID == protonAddressId }) else {
             return
         }
-        router.present(for: .breachDetail(breach))
-    }
-}
-
-private extension [Breach] {
-    // Example function to filter the most severe and latest unresolved breach
-    var mostSevereAndLatest: Breach? {
-        self.max {
-            // Compare by severity first, then by createdAt if severities are equal
-            if $0.severity == $1.severity {
-                return $0.createdAt < $1.createdAt // Later createdAt is greater
-            }
-            return $0.severity < $1.severity // Higher severity is greater
-        }
+        router.present(for: .breach(.protonAddress(breach)))
     }
 }
