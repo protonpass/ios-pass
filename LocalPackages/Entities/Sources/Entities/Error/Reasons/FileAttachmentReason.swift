@@ -23,10 +23,16 @@ import Foundation
 
 public extension PassError {
     enum FileAttachmentReason: CustomDebugStringConvertible, Sendable {
+        case noDocumentScanned
+        case noPngData
         case noDataFound(URL)
 
         public var debugDescription: String {
             switch self {
+            case .noDocumentScanned:
+                "No document scanned"
+            case .noPngData:
+                "No PNG data"
             case let .noDataFound(url):
                 "No data found \(url.absoluteString)"
             }

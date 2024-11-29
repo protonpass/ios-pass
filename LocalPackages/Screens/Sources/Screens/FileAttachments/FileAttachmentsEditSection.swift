@@ -20,24 +20,32 @@
 //
 
 import DesignSystem
+import DocScanner
 import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
+import UseCases
 
 @MainActor
 public protocol FileAttachmentsEditHandler {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
 
-    func handleCapturedPhoto(_ result: Result<URL, any Error>)
+    func provideGenerateDatedFileNameUseCase() -> any GenerateDatedFileNameUseCase
+    func provideWriteToTemporaryDirectoryUseCase() -> any WriteToTemporaryDirectoryUseCase
+
+    func handleAttachment(_ url: URL)
+    func handleAttachmentError(_ error: any Error)
     func rename(attachment: FileAttachment, newName: String)
     func delete(attachment: FileAttachment)
     func deleteAllAttachments()
 }
 
 public struct FileAttachmentsEditSection: View {
+    @StateObject private var viewModel: FileAttachmentsEditViewModel
     @State private var showDeleteAllAlert = false
     @State private var showCamera = false
+    @State private var showDocScanner = false
     let files: [FileAttachment]
     let isUploading: Bool
     let handler: any FileAttachmentsEditHandler
@@ -45,6 +53,7 @@ public struct FileAttachmentsEditSection: View {
     public init(files: [FileAttachment],
                 isUploading: Bool,
                 handler: any FileAttachmentsEditHandler) {
+        _viewModel = .init(wrappedValue: .init(handler: handler))
         self.files = files
         self.isUploading = isUploading
         self.handler = handler
@@ -115,7 +124,13 @@ public struct FileAttachmentsEditSection: View {
                    Text("This action cannot be undone")
                })
         .sheet(isPresented: $showCamera) {
-            CameraView(onTemporarilySaved: { handler.handleCapturedPhoto($0) })
+            CameraView {
+                viewModel.handleCapturedPhoto($0)
+            }
+        }
+        .sheet(isPresented: $showDocScanner) {
+            DocScanner(with: ScanInterpreter(type: .document),
+                       completion: { viewModel.handleScanResult($0) })
         }
     }
 
@@ -124,7 +139,7 @@ public struct FileAttachmentsEditSection: View {
         case .takePhoto:
             showCamera.toggle()
         case .scanDocuments:
-            break
+            showDocScanner.toggle()
         case .choosePhotoOrVideo:
             break
         case .chooseFile:
