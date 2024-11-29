@@ -29,7 +29,7 @@ import Client
 import ClientMocks
 
 final class SendShareInviteTests: XCTestCase {
-    var sut: SendVaultShareInviteUseCase!
+    var sut: SendShareInviteUseCase!
     var createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCaseMock!
     var makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase!
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
@@ -47,7 +47,7 @@ final class SendShareInviteTests: XCTestCase {
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         userManager = UserManagerProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
-        sut = SendVaultShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
+        sut = SendShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
                                    makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
                                    shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
