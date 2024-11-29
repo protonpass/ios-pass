@@ -207,6 +207,7 @@ public extension Share {
         (isOwner || isAdmin) && !reachedSharingLimit
     }
 
+    // swiftlint:disable:next todo
     // TODO: maybe see if none is what we want
     var name: String {
         vaultContent?.name ?? "None"

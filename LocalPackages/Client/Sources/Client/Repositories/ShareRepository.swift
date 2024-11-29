@@ -388,7 +388,6 @@ private extension ShareRepository {
 }
 
 private extension SymmetricallyEncryptedShare {
-    // TODO: maybe always return share
     func withVaultContentDecrypted(symmetricKey: SymmetricKey) throws -> Share {
         guard share.shareType == .vault, let encryptedContent else { return share }
 
