@@ -701,7 +701,7 @@ extension HomepageCoordinator {
         let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
 
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.medium,
+        viewController.setDetentType(invite.isVault ? .medium : .custom(270),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
@@ -770,7 +770,9 @@ extension HomepageCoordinator {
     }
 
     func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
-        let viewModel = ShareOrCreateNewVaultViewModel(vault: vault, itemContent: itemContent)
+        let viewModel = ShareOrCreateNewVaultViewModel(share: vault.vault,
+                                                       itemContent: itemContent,
+                                                       itemCount: vault.itemCount)
         let view = ShareOrCreateNewVaultView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 

@@ -1,7 +1,7 @@
 //
-// UpdateVaultEndpoint.swift
-// Proton Pass - Created on 24/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// GetShareEndpoint.swift
+// Proton Pass - Created on 20/11/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,23 +21,19 @@
 import Entities
 import ProtonCoreNetworking
 
-struct UpdateVaultResponse: Decodable, Sendable {
+struct GetShareResponse: Decodable, Sendable {
     let share: Share
 }
 
-struct UpdateVaultEndpoint: Endpoint {
-    typealias Body = UpdateVaultRequest
-    typealias Response = UpdateVaultResponse
+struct GetShareEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetShareResponse
 
-    var debugDescription: String
-    var path: String
-    var method: HTTPMethod
-    var body: UpdateVaultRequest?
+    let debugDescription: String
+    let path: String
 
-    init(shareId: String, request: UpdateVaultRequest) {
-        debugDescription = "Edit vault"
-        path = "/pass/v1/vault/\(shareId)"
-        method = .put
-        body = request
+    init(for shareId: String) {
+        debugDescription = "Get share for id \(shareId)"
+        path = "/pass/v1/share/\(shareId)"
     }
 }

@@ -29,7 +29,7 @@ import Client
 import ClientMocks
 
 final class SendShareInviteTests: XCTestCase {
-    var sut: SendVaultShareInviteUseCase!
+    var sut: SendShareInviteUseCase!
     var createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCaseMock!
     var makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase!
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
@@ -47,7 +47,7 @@ final class SendShareInviteTests: XCTestCase {
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         userManager = UserManagerProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
-        sut = SendVaultShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
+        sut = SendShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
                                    makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
                                    shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
@@ -60,7 +60,7 @@ final class SendShareInviteTests: XCTestCase {
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
         passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
         userManager.stubbedGetActiveUserDataResult = .preview
-        let infos = SharingInfos(vault: .existing(.random()),
+        let infos = SharingInfos(shareElement: .vault(.random()),
                                  email: "Test@test.com",
                                  role: .read,
                                  receiverPublicKeys: [PublicKey(value: "")],

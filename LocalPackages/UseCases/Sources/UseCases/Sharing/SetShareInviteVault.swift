@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol SetShareInviteVaultUseCase {
-    func execute(with vault: SharingVaultData)
+    func execute(with element: SharingElementData)
 }
 
 public extension SetShareInviteVaultUseCase {
-    func callAsFunction(with vault: SharingVaultData) {
-        execute(with: vault)
+    func callAsFunction(with element: SharingElementData) {
+        execute(with: element)
     }
 }
 
@@ -43,13 +43,15 @@ public final class SetShareInviteVault: SetShareInviteVaultUseCase {
         self.getVaultItemCount = getVaultItemCount
     }
 
-    public func execute(with vault: SharingVaultData) {
-        shareInviteService.currentSelectedVault.send(vault)
-        switch vault {
-        case let .existing(createdVault):
+    public func execute(with element: SharingElementData) {
+        shareInviteService.currentSelectedElement.send(element)
+        switch element {
+        case let .vault(createdVault):
             shareInviteService.setCurrentSelectedVaultItem(with: getVaultItemCount(for: createdVault))
         case .new:
             shareInviteService.setCurrentSelectedVaultItem(with: 1)
+        default:
+            return
         }
     }
 }
