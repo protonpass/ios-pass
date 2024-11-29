@@ -40,8 +40,8 @@ public struct InAppBannerView: View {
     public var body: some View {
         ZStack(alignment: .topTrailing) {
             HStack(spacing: DesignConstant.sectionPadding) {
-                if let url = notification.content.imageUrl {
-                    AsyncImage(url: URL(string: url),
+                if let imageUrl = notification.content.imageUrl, let url = URL(string: imageUrl) {
+                    AsyncImage(url: url,
                                content: { image in
                                    image.resizable()
                                        .aspectRatio(contentMode: .fit)
@@ -59,6 +59,8 @@ public struct InAppBannerView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                     Text(verbatim: notification.content.message)
                         .foregroundStyle(PassColor.textWeak.toColor)
+                        .minimumScaleFactor(0.8)
+                        .lineLimit(3)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

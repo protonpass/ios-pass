@@ -36,7 +36,7 @@ struct ShareOrCreateNewVaultView: View {
 
             Spacer()
 
-            if viewModel.itemSharingEnabled, viewModel.canShareItem {
+            if viewModel.itemSharingEnabled, viewModel.share.canShare {
                 itemSharing
                     .padding(.vertical)
             }

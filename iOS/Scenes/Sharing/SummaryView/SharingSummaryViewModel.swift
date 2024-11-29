@@ -24,6 +24,7 @@ import Client
 import Entities
 import Factory
 import Foundation
+import Macro
 
 @MainActor
 final class SharingSummaryViewModel: ObservableObject, Sendable {
@@ -31,13 +32,13 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
     @Published private(set) var sendingInvite = false
     @Published var showContactSupportAlert = false
 
-    private var plan: Plan?
-
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private var lastTask: Task<Void, Never>?
     private let getShareInviteInfos = resolve(\UseCasesContainer.getCurrentShareInviteInformations)
-    private let sendShareInvite = resolve(\UseCasesContainer.sendVaultShareInvite)
+    private let sendShareInvite = resolve(\UseCasesContainer.sendShareInvite)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+
+    private var lastTask: Task<Void, Never>?
+    private var plan: Plan?
 
     init() {
         setUp()
@@ -78,7 +79,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                         router.present(for: .manageShareVault(sharedVault, .topMost))
 
                     case .item:
-                        router.display(element: .successMessage("Invite sent",
+                        router.display(element: .successMessage(#localized("Invitation sent"),
                                                                 config: .init(dismissBeforeShowing: true)))
 
                     case .new:
