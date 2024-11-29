@@ -26,7 +26,7 @@ import SwiftUI
 
 struct ItemDetailTitleView: View {
     let itemContent: ItemContent
-    let vault: Vault?
+    let vault: Share?
     let shouldShowVault: Bool
 
     var body: some View {

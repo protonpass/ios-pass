@@ -20,40 +20,40 @@
 
 import Foundation
 
-// Protocol to define shared properties and behaviors
-public protocol ShareElementProtocol: Identifiable, Hashable, Equatable, Sendable {
-    var id: String { get }
-    var shareId: String { get }
-    var addressId: String { get }
-    var isOwner: Bool { get }
-    var shareRole: ShareRole { get }
-    var members: Int { get }
-    var maxMembers: Int { get }
-    var pendingInvites: Int { get }
-    var newUserInvitesReady: Int { get }
-    var shared: Bool { get }
-    var createTime: Int64 { get }
-    var canAutoFill: Bool { get }
-}
-
-public extension ShareElementProtocol {
-    var isVault: Bool {
-        self is Vault
-    }
-
-    var vault: Vault? {
-        self as? Vault
-    }
-
-    var isAdmin: Bool {
-        shareRole == ShareRole.admin
-    }
-
-    var canEdit: Bool {
-        shareRole != ShareRole.read
-    }
-
-    var canShare: Bool {
-        isOwner || isAdmin
-    }
-}
+//// Protocol to define shared properties and behaviors
+//public protocol ShareElementProtocol: Identifiable, Hashable, Equatable, Sendable {
+//    var id: String { get }
+//    var shareId: String { get }
+//    var addressId: String { get }
+//    var isOwner: Bool { get }
+//    var shareRole: ShareRole { get }
+//    var members: Int { get }
+//    var maxMembers: Int { get }
+//    var pendingInvites: Int { get }
+//    var newUserInvitesReady: Int { get }
+//    var shared: Bool { get }
+//    var createTime: Int64 { get }
+//    var canAutoFill: Bool { get }
+//}
+//
+//public extension ShareElementProtocol {
+//    var isVault: Bool {
+//        self is Vault
+//    }
+//
+//    var vault: Vault? {
+//        self as? Vault
+//    }
+//
+//    var isAdmin: Bool {
+//        shareRole == ShareRole.admin
+//    }
+//
+//    var canEdit: Bool {
+//        shareRole != ShareRole.read
+//    }
+//
+//    var canShare: Bool {
+//        isOwner || isAdmin
+//    }
+//}

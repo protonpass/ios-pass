@@ -226,9 +226,9 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
     public var invokedGetVaultsCount = 0
     public var invokedGetVaultsParameters: (userId: String, Void)?
     public var invokedGetVaultsParametersList = [(userId: String, Void)]()
-    public var stubbedGetVaultsResult: [Vault]!
+    public var stubbedGetVaultsResult: [Share]!
 
-    public func getVaults(userId: String) async throws -> [Vault] {
+    public func getVaults(userId: String) async throws -> [Share] {
         invokedGetVaultsfunction = true
         invokedGetVaultsCount += 1
         invokedGetVaultsParameters = (userId, ())
@@ -246,9 +246,9 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
     public var invokedGetVaultCount = 0
     public var invokedGetVaultParameters: (shareId: String, Void)?
     public var invokedGetVaultParametersList = [(shareId: String, Void)]()
-    public var stubbedGetVaultResult: Vault?
+    public var stubbedGetVaultResult: Share?
 
-    public func getVault(shareId: String) async throws -> Vault? {
+    public func getVault(shareId: String) async throws -> Share? {
         invokedGetVaultfunction = true
         invokedGetVaultCount += 1
         invokedGetVaultParameters = (shareId, ())
@@ -284,10 +284,10 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
     public var closureEdit: () -> () = {}
     public var invokedEditfunction = false
     public var invokedEditCount = 0
-    public var invokedEditParameters: (oldVault: Vault, newVault: VaultContent)?
-    public var invokedEditParametersList = [(oldVault: Vault, newVault: VaultContent)]()
+    public var invokedEditParameters: (oldVault: Share, newVault: VaultContent)?
+    public var invokedEditParametersList = [(oldVault: Share, newVault: VaultContent)]()
 
-    public func edit(oldVault: Vault, newVault: VaultContent) async throws {
+    public func edit(oldVault: Share, newVault: VaultContent) async throws {
         invokedEditfunction = true
         invokedEditCount += 1
         invokedEditParameters = (oldVault, newVault)

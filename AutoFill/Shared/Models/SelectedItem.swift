@@ -23,5 +23,5 @@ import Entities
 struct SelectedItem: Sendable {
     let userId: String
     let content: ItemContent
-    let vault: Vault
+    let vault: Share
 }

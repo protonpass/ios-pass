@@ -83,7 +83,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     private var searchableItems: [SearchableItem] = []
     private var filterAndSortTask: Task<Void, Never>?
 
-    private var vaults: [Vault] {
+    private var vaults: [Share] {
         results.flatMap(\.vaults)
     }
 
@@ -131,7 +131,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         await filterAndSortItemsAsync()
     }
 
-    override func getVaults(userId: String) -> [Vault]? {
+    override func getVaults(userId: String) -> [Share]? {
         results.first { $0.userId == userId }?.vaults
     }
 
@@ -155,7 +155,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         state = .loading
     }
 
-    override func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
+    override func generateItemCreationInfo(userId: String, vaults: [Share]) -> ItemCreationInfo {
         switch selectedItemType {
         case .login:
             return .init(userId: userId, vaults: vaults, data: .login(nil, nil))

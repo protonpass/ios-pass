@@ -23,18 +23,18 @@ import Entities
 import SwiftUI
 
 public struct VaultThumbnail: View {
-    private let vault: Vault
+    private let vault: Share
 
     private var iconColor: UIColor {
-        vault.displayPreferences.color.color.color
+        vault.mainColor
     }
 
-    public init(vault: Vault) {
+    public init(vault: Share) {
         self.vault = vault
     }
 
     public var body: some View {
-        CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
+        CircleButton(icon: vault.vaultBigIcon,
                      iconColor: iconColor,
                      iconDisabledColor: iconColor.withAlphaComponent(0.75),
                      backgroundColor: iconColor.withAlphaComponent(0.16),

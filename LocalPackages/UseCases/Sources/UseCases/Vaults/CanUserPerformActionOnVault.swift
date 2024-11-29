@@ -24,11 +24,11 @@ import Client
 import Entities
 
 public protocol CanUserPerformActionOnVaultUseCase: Sendable {
-    func execute(for vault: Vault) -> Bool
+    func execute(for vault: Share) -> Bool
 }
 
 public extension CanUserPerformActionOnVaultUseCase {
-    func callAsFunction(for vault: Vault) -> Bool {
+    func callAsFunction(for vault: Share) -> Bool {
         execute(for: vault)
     }
 }
@@ -45,10 +45,10 @@ public final class CanUserPerformActionOnVault: @unchecked Sendable, CanUserPerf
         setUp()
     }
 
-    public func execute(for vault: Vault) -> Bool {
+    public func execute(for vault: Share) -> Bool {
         if isFreeUser,
            !vaultsManager.currentVaults.value.autofillAllowedVaults
-           .contains(where: { $0.shareId == vault.shareId }) {
+           .contains(where: { $0.id == vault.id }) {
             return false
         }
         return vault.canEdit

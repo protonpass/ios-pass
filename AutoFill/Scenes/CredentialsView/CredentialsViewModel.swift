@@ -149,11 +149,11 @@ final class CredentialsViewModel: AutoFillViewModel<CredentialsFetchResult> {
         await filterAndSortItemsAsync()
     }
 
-    override func getVaults(userId: String) -> [Vault]? {
+    override func getVaults(userId: String) -> [Share]? {
         results.first { $0.userId == userId }?.vaults
     }
 
-    override func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
+    override func generateItemCreationInfo(userId: String, vaults: [Share]) -> ItemCreationInfo {
         .init(userId: userId, vaults: vaults, data: .login(urls.first, nil))
     }
 
