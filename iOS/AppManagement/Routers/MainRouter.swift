@@ -106,6 +106,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case aliasesSyncConfiguration
     case loginsWith2fa
     case breachDetail(Breach)
+    case breach(BreachDetailsInfo)
 }
 
 enum GenericDestination {
