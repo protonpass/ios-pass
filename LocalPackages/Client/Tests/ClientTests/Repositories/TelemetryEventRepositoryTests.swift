@@ -39,7 +39,7 @@ private struct MockedCurrentDateProvider: CurrentDateProviderProtocol {
     func getCurrentDate() -> Date { currentDate }
 }
 
-@Suite(.tags(.remoteDatasource))
+@Suite(.tags(.repository))
 struct TelemetryEventRepositoryTests {
     let localDatasource: LocalTelemetryEventDatasourceProtocol
     let localAccessDatasource: LocalAccessDatasourceProtocolMock
