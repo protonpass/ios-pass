@@ -1,6 +1,6 @@
 //
-// FileAttachmentReason.swift
-// Proton Pass - Created on 27/11/2024.
+// WriteToUrl.swift
+// Proton Pass - Created on 28/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,21 +21,24 @@
 
 import Foundation
 
-public extension PassError {
-    enum FileAttachmentReason: CustomDebugStringConvertible, Sendable {
-        case noDocumentScanned
-        case noPngData
-        case noDataFound(URL)
+public protocol WriteToUrlUseCase: Sendable {
+    @discardableResult
+    func execute(data: Data, fileName: String, baseUrl: URL) throws -> URL
+}
 
-        public var debugDescription: String {
-            switch self {
-            case .noDocumentScanned:
-                "No document scanned"
-            case .noPngData:
-                "No PNG data"
-            case let .noDataFound(url):
-                "No data found \(url.absoluteString)"
-            }
-        }
+public extension WriteToUrlUseCase {
+    @discardableResult
+    func callAsFunction(data: Data, fileName: String, baseUrl: URL) throws -> URL {
+        try execute(data: data, fileName: fileName, baseUrl: baseUrl)
+    }
+}
+
+public final class WriteToUrl: WriteToUrlUseCase {
+    public init() {}
+
+    public func execute(data: Data, fileName: String, baseUrl: URL) throws -> URL {
+        let url = baseUrl.appending(path: fileName)
+        try data.write(to: url)
+        return url
     }
 }
