@@ -126,9 +126,9 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 }
 
-private extension VaultProtobuf {
+private extension VaultContent {
     static var defaultNewSharedVault: Self {
-        var vault = VaultProtobuf()
+        var vault = VaultContent()
         vault.name = #localized("Shared vault")
         vault.display.color = .color3
         vault.display.icon = .icon9

@@ -70,7 +70,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case moveItemsBetweenVaults(MovingContext)
     case fullSync
     case shareVaultFromItemDetail(VaultListUiModel, ItemContent)
-    case customizeNewVault(VaultProtobuf, ItemContent)
+    case customizeNewVault(VaultContent, ItemContent)
     case setPINCode
     case history(ItemContent)
     case restoreHistory

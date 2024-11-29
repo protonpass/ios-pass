@@ -21,7 +21,7 @@
 public enum SharingElementData: Sendable {
     case vault(Vault)
     case item(item: ItemContent, share: Share)
-    case new(VaultProtobuf, ItemContent)
+    case new(VaultContent, ItemContent)
 }
 
 public extension ShareElementProtocol {

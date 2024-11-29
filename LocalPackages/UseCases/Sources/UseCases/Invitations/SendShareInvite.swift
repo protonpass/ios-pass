@@ -108,8 +108,8 @@ private extension SendShareInvite {
             vault
         case let .item(_, item):
             item
-        case let .new(vaultProtobuf, itemContent):
-            try await createAndMoveItemToNewVault(userId: userId, vault: vaultProtobuf, itemContent: itemContent)
+        case let .new(vaultContent, itemContent):
+            try await createAndMoveItemToNewVault(userId: userId, vault: vaultContent, itemContent: itemContent)
         }
     }
 

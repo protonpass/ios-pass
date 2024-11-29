@@ -29,11 +29,11 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public protocol DecodeShareVaultInformationUseCase: Sendable {
-    func execute(with userInvite: UserInvite) async throws -> VaultProtobuf
+    func execute(with userInvite: UserInvite) async throws -> VaultContent
 }
 
 public extension DecodeShareVaultInformationUseCase {
-    func callAsFunction(with userInvite: UserInvite) async throws -> VaultProtobuf {
+    func callAsFunction(with userInvite: UserInvite) async throws -> VaultContent {
         try await execute(with: userInvite)
     }
 }
@@ -54,7 +54,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
         logger = .init(manager: logManager)
     }
 
-    public func execute(with userInvite: UserInvite) async throws -> VaultProtobuf {
+    public func execute(with userInvite: UserInvite) async throws -> VaultContent {
         logger.trace("Start decoding invitation share information for invitee user \(userInvite.invitedEmail)")
 
         do {
@@ -95,7 +95,7 @@ public final class DecodeShareVaultInformation: @unchecked Sendable, DecodeShare
             let decryptedContent = try AES.GCM.open(content,
                                                     key: decode.content,
                                                     associatedData: .vaultContent)
-            let vaultContent = try VaultProtobuf(data: decryptedContent)
+            let vaultContent = try VaultContent(data: decryptedContent)
             logger.trace("Finished decoding vault content")
             return vaultContent
         } catch {
