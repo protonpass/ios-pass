@@ -26,7 +26,7 @@ import SwiftUI
 
 struct VaultSelectorView: View {
     @Environment(\.dismiss) private var dismiss
-    @Binding var selectedVault: Vault
+    @Binding var selectedVault: Share
     let isFreeUser: Bool
     let onUpgrade: () -> Void
 

@@ -1,7 +1,7 @@
 //
-// Vault+Extensions.swift
-// Proton Pass - Created on 02/08/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Share+Extensions.swift
+// Proton Pass - Created on 29/11/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,24 +20,23 @@
 
 import DesignSystem
 import Entities
+import UIKit
 import SwiftUI
 
-// MARK: - UI helpers
-//
-//extension Vault {
-//    var mainColor: Color {
-//        displayPreferences.color.color.color.toColor
-//    }
-//
-//    var backgroundColor: Color {
-//        mainColor.opacity(0.16)
-//    }
-//
-//    var bigImage: Image {
-//        displayPreferences.icon.icon.bigImage.toImage
-//    }
-//
-//    var smallImage: Image {
-//        displayPreferences.icon.icon.smallImage.toImage
-//    }
-//}
+public extension Share {
+    var mainColor: UIColor {
+        vaultContent?.display.color.color.color ?? PassColor.vaultMercury
+    }
+    
+    var backgroundColor: Color {
+        mainColor.toColor.opacity(0.16)
+    }
+    
+    var vaultBigIcon: UIImage {
+        vaultContent?.display.icon.icon.bigImage ?? VaultIcon.icon1.bigImage
+    }
+    
+    var vaultSmallIcon: UIImage {
+        vaultContent?.display.icon.icon.smallImage ?? VaultIcon.icon1.smallImage
+    }
+}

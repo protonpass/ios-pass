@@ -31,13 +31,13 @@ private struct Batch: Sendable {
 
 public protocol LoadVaultDatasUseCase: Sendable {
     func execute(symmetricKey: SymmetricKey,
-                 vaults: [Vault],
+                 vaults: [Share],
                  items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel
 }
 
 public extension LoadVaultDatasUseCase {
     func callAsFunction(symmetricKey: SymmetricKey,
-                        vaults: [Vault],
+                        vaults: [Share],
                         items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel {
         try await execute(symmetricKey: symmetricKey, vaults: vaults, items: items)
     }
@@ -47,7 +47,7 @@ public final class LoadVaultDatas: LoadVaultDatasUseCase {
     public init() {}
 
     public func execute(symmetricKey: SymmetricKey,
-                        vaults: [Vault],
+                        vaults: [Share],
                         items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel {
         let batches = try await withThrowingTaskGroup(of: Batch.self,
                                                       returning: [Batch].self) { @Sendable group in
@@ -79,7 +79,7 @@ public final class LoadVaultDatas: LoadVaultDatasUseCase {
         }
 
         // ShareID -> ItemUiModel
-        var vaultDict = Dictionary(uniqueKeysWithValues: vaults.map { ($0.shareId, [ItemUiModel]()) })
+        var vaultDict = Dictionary(uniqueKeysWithValues: vaults.map { ($0.id, [ItemUiModel]()) })
         var trashedItems = [ItemUiModel]()
 
         for batch in batches {
@@ -93,7 +93,8 @@ public final class LoadVaultDatas: LoadVaultDatasUseCase {
         }
 
         let vaultContentUiModels = vaults
-            .sorted { $0.name < $1.name }
+        //TODO: what should be done now with items shares with no name
+//            .sorted { $0.vaultContent?.name < $1.vaultContent?.name }
             .compactMap { vault -> VaultContentUiModel? in
                 guard let items = vaultDict[vault.shareId] else {
                     assertionFailure("Items for share \(vault.shareId) should not be nil")

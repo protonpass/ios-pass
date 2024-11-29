@@ -21,10 +21,10 @@
 
 import Entities
 
-public extension [Vault] {
+public extension [Share] {
     /// Deduplicate the ones that share the same `VaultID`
     /// keeping the most permissive one
-    var deduplicated: [Vault] {
+    var deduplicated: [Share] {
         sorted(by: { $0.shareRole > $1.shareRole }).deduplicate(by: \.id)
     }
 }
