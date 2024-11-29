@@ -93,7 +93,7 @@ public final class LoadVaultDatas: LoadVaultDatasUseCase {
         }
 
         let vaultContentUiModels = vaults
-        //TODO: what should be done now with items shares with no name
+            // TODO: what should be done now with items shares with no name
 //            .sorted { $0.vaultContent?.name < $1.vaultContent?.name }
             .compactMap { vault -> VaultContentUiModel? in
                 guard let items = vaultDict[vault.shareId] else {

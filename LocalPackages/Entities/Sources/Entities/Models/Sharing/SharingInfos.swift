@@ -24,7 +24,7 @@ public enum SharingElementData: Sendable {
     case new(VaultContent, ItemContent)
 }
 
-//public extension ShareElementProtocol {
+// public extension ShareElementProtocol {
 //    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences? {
 //        if let vault = self as? Vault {
 //            vault.displayPreferences
@@ -32,7 +32,7 @@ public enum SharingElementData: Sendable {
 //            nil
 //        }
 //    }
-//}
+// }
 
 public extension SharingElementData {
     var name: String {

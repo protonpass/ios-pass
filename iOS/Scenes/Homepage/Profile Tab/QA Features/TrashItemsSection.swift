@@ -67,8 +67,8 @@ private struct TrashItemsView: View {
             Section(content: {
                 ForEach(uiModels, id: \.hashValue) { uiModel in
                     let vault = uiModel.vault
-                    let icon = vault.displayPreferences.icon.icon.bigImage
-                    let color = vault.displayPreferences.color.color.color
+                    let icon = vault.vaultBigIcon
+                    let color = vault.mainColor
 
                     VStack {
                         Button(action: {
@@ -161,7 +161,7 @@ private final class TrashItemsViewModel: ObservableObject {
         }
     }
 
-    func trashItems(for vault: Vault) {
+    func trashItems(for vault: Share) {
         Task { [weak self] in
             guard let self else { return }
             do {

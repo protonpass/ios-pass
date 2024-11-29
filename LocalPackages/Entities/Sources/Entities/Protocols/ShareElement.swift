@@ -21,7 +21,7 @@
 import Foundation
 
 //// Protocol to define shared properties and behaviors
-//public protocol ShareElementProtocol: Identifiable, Hashable, Equatable, Sendable {
+// public protocol ShareElementProtocol: Identifiable, Hashable, Equatable, Sendable {
 //    var id: String { get }
 //    var shareId: String { get }
 //    var addressId: String { get }
@@ -34,9 +34,9 @@ import Foundation
 //    var shared: Bool { get }
 //    var createTime: Int64 { get }
 //    var canAutoFill: Bool { get }
-//}
+// }
 //
-//public extension ShareElementProtocol {
+// public extension ShareElementProtocol {
 //    var isVault: Bool {
 //        self is Vault
 //    }
@@ -56,4 +56,4 @@ import Foundation
 //    var canShare: Bool {
 //        isOwner || isAdmin
 //    }
-//}
+// }

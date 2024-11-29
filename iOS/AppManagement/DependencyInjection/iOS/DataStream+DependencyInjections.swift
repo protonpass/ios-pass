@@ -38,7 +38,7 @@ extension DataStreamContainer {
         self { .init([]) }
     }
 
-    var currentSpotlightSelectedVaults: Factory<CurrentValueSubject<[Vault], Never>> {
+    var currentSpotlightSelectedVaults: Factory<CurrentValueSubject<[Share], Never>> {
         self { .init([]) }
     }
 
