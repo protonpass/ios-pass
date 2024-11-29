@@ -23,21 +23,21 @@ import Entities
 import SwiftUI
 
 // MARK: - UI helpers
-
-extension Vault {
-    var mainColor: Color {
-        displayPreferences.color.color.color.toColor
-    }
-
-    var backgroundColor: Color {
-        mainColor.opacity(0.16)
-    }
-
-    var bigImage: Image {
-        displayPreferences.icon.icon.bigImage.toImage
-    }
-
-    var smallImage: Image {
-        displayPreferences.icon.icon.smallImage.toImage
-    }
-}
+//
+//extension Vault {
+//    var mainColor: Color {
+//        displayPreferences.color.color.color.toColor
+//    }
+//
+//    var backgroundColor: Color {
+//        mainColor.opacity(0.16)
+//    }
+//
+//    var bigImage: Image {
+//        displayPreferences.icon.icon.bigImage.toImage
+//    }
+//
+//    var smallImage: Image {
+//        displayPreferences.icon.icon.smallImage.toImage
+//    }
+//}

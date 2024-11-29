@@ -82,7 +82,7 @@ final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintabl
     @AppStorage(Constants.incompleteFullSyncUserId, store: kSharedUserDefaults)
     private(set) var incompleteFullSyncUserId: String?
 
-    let currentVaults: CurrentValueSubject<[Vault], Never> = .init([])
+    let currentVaults: CurrentValueSubject<[Share], Never> = .init([])
 
     let vaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>(.initialization)
 
@@ -158,7 +158,7 @@ private extension VaultsManager {
         logger.info("Created default vault for user")
     }
 
-    func loadContents(userId: String, for vaults: [Vault]) async throws {
+    func loadContents(userId: String, for vaults: [Share]) async throws {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
 
@@ -347,7 +347,7 @@ extension VaultsManager {
         vaultSelection == selection
     }
 
-    func getItems(for vault: Vault) -> [ItemUiModel] {
+    func getItems(for vault: Share) -> [ItemUiModel] {
         guard case let .loaded(uiModel) = state else { return [] }
         return uiModel.vaults.first { $0.vault.id == vault.id }?.items ?? []
     }
@@ -367,7 +367,7 @@ extension VaultsManager {
         getAllVaultContents().filter(\.vault.canEdit)
     }
 
-    func delete(vault: Vault) async throws {
+    func delete(vault: Share) async throws {
         let shareId = vault.shareId
         logger.trace("Deleting vault \(shareId)")
         try await shareRepository.deleteVault(shareId: shareId)
@@ -400,7 +400,7 @@ extension VaultsManager {
         logger.info("Permanently deleted all trashed items")
     }
 
-    func getOldestOwnedVault() -> Vault? {
+    func getOldestOwnedVault() -> Share? {
         guard case let .loaded(uiModel) = state else { return nil }
         let vaults = uiModel.vaults.map(\.vault)
         return vaults.oldestOwned
@@ -499,7 +499,7 @@ extension VaultsManager: LimitationCounterProtocol {
 // MARK: - VaultsProvider
 
 extension VaultsManager: VaultsProvider {
-    func getAllVaults() -> [Vault] {
+    func getAllVaults() -> [Share] {
         guard case let .loaded(uiModel) = state else { return [] }
         return uiModel.vaults.map(\.vault)
     }

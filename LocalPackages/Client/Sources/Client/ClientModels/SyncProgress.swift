@@ -59,7 +59,7 @@ public enum VaultSyncProgressEvent: Sendable {
     /// stage
     case downloadedShares([Share])
     /// A share is decrypted so we have the `Vault` object with all its visual info like  name and icon
-    case decryptedVault(Vault)
+    case decryptedVault(Share)
     /// Fetching remote items of a share
     case getRemoteItems(GetRemoteItemsProgress)
     /// Decrypting fetched remote items of a share
@@ -79,17 +79,17 @@ public struct VaultSyncProgress: Sendable {
     }
 
     public let shareId: String
-    public let vault: Vault?
+    public let vault: Share?
     public let itemsState: ItemsState
 
-    public init(shareId: String, vault: Vault?, itemsState: ItemsState) {
+    public init(shareId: String, vault: Share?, itemsState: ItemsState) {
         self.shareId = shareId
         self.vault = vault
         self.itemsState = itemsState
     }
 
     /// Make a copy of the progress with a new `VaultState`
-    public func copy(vault: Vault?) -> Self {
+    public func copy(vault: Share?) -> Self {
         .init(shareId: shareId, vault: vault, itemsState: itemsState)
     }
 

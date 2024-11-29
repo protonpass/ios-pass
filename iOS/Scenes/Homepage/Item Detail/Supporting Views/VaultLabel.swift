@@ -23,7 +23,7 @@ import Entities
 import SwiftUI
 
 struct VaultLabel: View {
-    let vault: Vault
+    let vault: Share
 
     var body: some View {
         Label(title: {

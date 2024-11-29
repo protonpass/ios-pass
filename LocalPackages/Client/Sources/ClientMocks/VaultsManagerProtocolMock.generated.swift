@@ -49,12 +49,12 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     // MARK: - currentVaults
     public var invokedCurrentVaultsSetter = false
     public var invokedCurrentVaultsSetterCount = 0
-    public var invokedCurrentVaults: CurrentValueSubject<[Vault], Never>?
-    public var invokedCurrentVaultsList = [CurrentValueSubject<[Vault], Never>?]()
+    public var invokedCurrentVaults: CurrentValueSubject<[Share], Never>?
+    public var invokedCurrentVaultsList = [CurrentValueSubject<[Share], Never>?]()
     public var invokedCurrentVaultsGetter = false
     public var invokedCurrentVaultsGetterCount = 0
-    public var stubbedCurrentVaults: CurrentValueSubject<[Vault], Never>!
-    public var currentVaults: CurrentValueSubject<[Vault], Never> {
+    public var stubbedCurrentVaults: CurrentValueSubject<[Share], Never>!
+    public var currentVaults: CurrentValueSubject<[Share], Never> {
         set {
             invokedCurrentVaultsSetter = true
             invokedCurrentVaultsSetterCount += 1
@@ -156,11 +156,11 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public var closureGetItems: () -> () = {}
     public var invokedGetItemsfunction = false
     public var invokedGetItemsCount = 0
-    public var invokedGetItemsParameters: (vault: Vault, Void)?
-    public var invokedGetItemsParametersList = [(vault: Vault, Void)]()
+    public var invokedGetItemsParameters: (vault: Share, Void)?
+    public var invokedGetItemsParametersList = [(vault: Share, Void)]()
     public var stubbedGetItemsResult: [ItemUiModel]!
 
-    public func getItems(for vault: Vault) -> [ItemUiModel] {
+    public func getItems(for vault: Share) -> [ItemUiModel] {
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (vault, ())
@@ -172,9 +172,9 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public var closureGetAllVaults: () -> () = {}
     public var invokedGetAllVaultsfunction = false
     public var invokedGetAllVaultsCount = 0
-    public var stubbedGetAllVaultsResult: [Vault]!
+    public var stubbedGetAllVaultsResult: [Share]!
 
-    public func getAllVaults() -> [Vault] {
+    public func getAllVaults() -> [Share] {
         invokedGetAllVaultsfunction = true
         invokedGetAllVaultsCount += 1
         closureGetAllVaults()
@@ -202,9 +202,9 @@ public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManager
     public var closureGetOldestOwnedVault: () -> () = {}
     public var invokedGetOldestOwnedVaultfunction = false
     public var invokedGetOldestOwnedVaultCount = 0
-    public var stubbedGetOldestOwnedVaultResult: Vault?
+    public var stubbedGetOldestOwnedVaultResult: Share?
 
-    public func getOldestOwnedVault() -> Vault? {
+    public func getOldestOwnedVault() -> Share? {
         invokedGetOldestOwnedVaultfunction = true
         invokedGetOldestOwnedVaultCount += 1
         closureGetOldestOwnedVault()

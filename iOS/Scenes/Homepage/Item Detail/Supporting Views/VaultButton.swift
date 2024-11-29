@@ -25,7 +25,7 @@ import SwiftUI
 
 struct VaultButton: View {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    let vault: Vault
+    let vault: Share
 
     var body: some View {
         Button { router.present(for: .manageShareVault(vault, .none)) } label: {

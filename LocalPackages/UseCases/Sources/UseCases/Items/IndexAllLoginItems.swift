@@ -76,7 +76,7 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
 
         // Step 1: get all the vaults from all users
         // Filterting out the duplicated and keep the most permissive ones
-        var allUsersVaults = [Vault]()
+        var allUsersVaults = [Share]()
         for userId in userIds {
             let vaults = try await shareRepository.getVaults(userId: userId)
             allUsersVaults.append(contentsOf: vaults)
@@ -107,7 +107,7 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
 
 private extension IndexAllLoginItems {
     func filterItems(userId: String,
-                     applicableVaults: [Vault]) async throws -> [SymmetricallyEncryptedItem] {
+                     applicableVaults: [Share]) async throws -> [SymmetricallyEncryptedItem] {
         guard let access = try await localAccessDatasource.getAccess(userId: userId) else {
             return []
         }
@@ -117,10 +117,10 @@ private extension IndexAllLoginItems {
         var applicableShareIds = [String]()
         if access.access.plan.isFreeUser {
             let vaults = try await shareRepository.getVaults(userId: userId)
-            let ids = vaults.autofillAllowedVaults.map(\.shareId)
+            let ids = vaults.autofillAllowedVaults.map(\.id)
             applicableShareIds.append(contentsOf: ids)
         } else {
-            applicableShareIds = applicableVaults.map(\.shareId)
+            applicableShareIds = applicableVaults.map(\.id)
         }
 
         return items.filter { applicableShareIds.contains($0.shareId) }
