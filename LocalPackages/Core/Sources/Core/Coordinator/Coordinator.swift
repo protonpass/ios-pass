@@ -39,8 +39,9 @@ public protocol CoordinatorProtocol: AnyObject {
                  uniquenessTag: (any RawRepresentable<Int>)?)
     func dismissTopMostViewController(animated: Bool, completion: (() -> Void)?)
     func dismissAllViewControllers(animated: Bool, completion: (() -> Void)?)
+    func dismissViewControllerWithTag(tag: any RawRepresentable<Int>, animated: Bool, completion: (() -> Void)?)
     func coordinatorDidDismiss()
-    func updateFloatingView(floatingView: UIView?)
+    func updateFloatingView(floatingView: UIView?, viewTag: any RawRepresentable<Int>)
 }
 
 public extension CoordinatorProtocol {
@@ -101,14 +102,26 @@ public extension CoordinatorProtocol {
         }
     }
 
+    func dismissViewControllerWithTag(tag: any RawRepresentable<Int>,
+                                      animated: Bool = true,
+                                      completion: (() -> Void)? = nil) {
+        rootViewController.viewControllerWithTag(tag)?.dismiss(animated: animated) { [weak self] in
+            guard let self else { return }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                completion?()
+                guard let self else { return }
+                coordinatorDidDismiss()
+            }
+        }
+    }
+
     func coordinatorDidDismiss() {}
 
-    func updateFloatingView(floatingView: UIView?) {
-        let viewTag = 1
+    func updateFloatingView(floatingView: UIView?, viewTag: any RawRepresentable<Int>) {
         // Locate the UITabBarController in the view hierarchy
         if let tabBarController = findTabBarController(in: rootViewController), let floatingView {
-            if tabBarController.view.viewWithTag(viewTag) == nil {
-                floatingView.tag = viewTag
+            if tabBarController.view.viewWithTag(viewTag.rawValue) == nil {
+                floatingView.tag = viewTag.rawValue
                 floatingView.backgroundColor = UIColor.clear
                 // Check if the floating view is already added
                 if floatingView.superview == nil {
@@ -130,13 +143,13 @@ public extension CoordinatorProtocol {
                     ])
                 }
             } else {
-                if let floatingView = tabBarController.view.viewWithTag(viewTag) {
+                if let floatingView = tabBarController.view.viewWithTag(viewTag.rawValue) {
                     // Remove the floating view if present
                     floatingView.removeFromSuperview()
                 }
             }
         } else {
-            if let floatingView = rootViewController.view.window?.viewWithTag(viewTag) {
+            if let floatingView = rootViewController.view.window?.viewWithTag(viewTag.rawValue) {
                 floatingView.removeFromSuperview()
             }
         }

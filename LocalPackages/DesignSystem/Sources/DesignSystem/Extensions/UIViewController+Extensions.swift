@@ -68,6 +68,21 @@ public extension UIViewController {
         }
         return false
     }
+
+    func viewControllerWithTag(_ tag: any RawRepresentable<Int>) -> UIViewController? {
+        var topMostViewController = self
+        while true {
+            if let presentedViewController = topMostViewController.presentedViewController {
+                if presentedViewController.view.tag == tag.rawValue {
+                    return presentedViewController
+                }
+                topMostViewController = presentedViewController
+            } else {
+                break
+            }
+        }
+        return nil
+    }
 }
 
 private extension UIViewController {
