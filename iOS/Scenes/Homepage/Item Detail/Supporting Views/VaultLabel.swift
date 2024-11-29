@@ -30,7 +30,7 @@ struct VaultLabel: View {
             Text(vault.name)
                 .font(.footnote)
         }, icon: {
-            Image(uiImage: vault.displayPreferences.icon.icon.smallImage)
+            Image(uiImage: vault.vaultSmallIcon)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 12, height: 12)

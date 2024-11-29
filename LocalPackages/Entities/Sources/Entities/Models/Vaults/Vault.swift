@@ -20,7 +20,7 @@
 
 import Foundation
 
-//public struct Vault: ShareElementProtocol {
+// public struct Vault: ShareElementProtocol {
 //    public let id: String
 //    public let shareId: String
 //    public let addressId: String
@@ -82,11 +82,11 @@ import Foundation
 //        self.createTime = createTime
 //        self.canAutoFill = canAutoFill
 //    }
-//}
+// }
 //
 //// MARK: - Computed properties
 //
-//public extension Vault {
+// public extension Vault {
 //    var totalOverallMembers: Int {
 //        members + pendingInvites
 //    }
@@ -98,4 +98,4 @@ import Foundation
 //    var canShareVaultWithMorePeople: Bool {
 //        isAdmin && !reachedSharingLimit
 //    }
-//}
+// }

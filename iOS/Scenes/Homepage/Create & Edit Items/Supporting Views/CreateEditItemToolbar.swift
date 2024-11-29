@@ -115,7 +115,7 @@ private extension CreateEditItemToolbar {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 18)
-            Text(vault.name ?? "None")
+            Text(vault.name)
             Image(systemName: "chevron.down")
                 .resizable()
                 .scaledToFit()
@@ -124,7 +124,7 @@ private extension CreateEditItemToolbar {
         .frame(height: 40)
         .foregroundStyle(vault.mainColor.toColor)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(vault.backgroundColor)
+        .background(vault.backgroundColor.toColor)
         .clipShape(Capsule())
         .if(isPhone) { view in
             view.frame(maxWidth: 150, alignment: .trailing)

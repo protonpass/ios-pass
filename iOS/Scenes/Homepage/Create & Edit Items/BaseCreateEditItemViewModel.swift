@@ -162,7 +162,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
             customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         }
 
-        let lastCreatedItemVault: Vault? = if let shareId = getUserPreferences().lastCreatedItemShareId {
+        let lastCreatedItemVault: Share? = if let shareId = getUserPreferences().lastCreatedItemShareId {
             vaults.first { $0.shareId == shareId && $0.canEdit }
         } else {
             nil

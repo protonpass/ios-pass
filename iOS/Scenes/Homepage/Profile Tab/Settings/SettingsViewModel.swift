@@ -67,7 +67,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var spotlightEnabled: Bool
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
-    @Published private(set) var spotlightVaults: [Vault]?
+    @Published private(set) var spotlightVaults: [Share]?
 
     weak var delegate: (any SettingsViewModelDelegate)?
     private var cancellables = Set<AnyCancellable>()

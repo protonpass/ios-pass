@@ -21,21 +21,20 @@
 import DesignSystem
 import Entities
 import UIKit
-import SwiftUI
 
 public extension Share {
     var mainColor: UIColor {
         vaultContent?.display.color.color.color ?? PassColor.vaultMercury
     }
-    
-    var backgroundColor: Color {
-        mainColor.toColor.opacity(0.16)
+
+    var backgroundColor: UIColor {
+        mainColor.withAlphaComponent(0.16)
     }
-    
+
     var vaultBigIcon: UIImage {
         vaultContent?.display.icon.icon.bigImage ?? VaultIcon.icon1.bigImage
     }
-    
+
     var vaultSmallIcon: UIImage {
         vaultContent?.display.icon.icon.smallImage ?? VaultIcon.icon1.smallImage
     }

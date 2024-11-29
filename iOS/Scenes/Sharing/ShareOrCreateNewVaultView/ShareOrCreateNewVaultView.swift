@@ -36,7 +36,7 @@ struct ShareOrCreateNewVaultView: View {
 
             Spacer()
 
-            if viewModel.itemSharingEnabled, viewModel.share.canShare {
+            if viewModel.itemSharingEnabled, viewModel.share.canShareWithMorePeople {
                 itemSharing
                     .padding(.vertical)
             }
@@ -52,8 +52,8 @@ struct ShareOrCreateNewVaultView: View {
                 PassDivider()
                     .padding(.vertical)
 
-                if let vault = viewModel.share.vault {
-                    currentVault(vault: vault)
+                if viewModel.share.isVaultRepresentation {
+                    currentVault(vault: viewModel.share)
                 }
 
                 createNewVaultButton
@@ -179,14 +179,12 @@ private extension ShareOrCreateNewVaultView {
 }
 
 private extension ShareOrCreateNewVaultView {
-    func currentVault(vault: Vault) -> some View {
+    func currentVault(vault: Share) -> some View {
         HStack {
             VaultRow(thumbnail: {
-                         CircleButton(icon: vault.displayPreferences.icon.icon.bigImage,
-                                      iconColor: vault.displayPreferences.color.color.color,
-                                      backgroundColor: vault.displayPreferences.color.color
-                                          .color
-                                          .withAlphaComponent(0.16))
+                         CircleButton(icon: vault.vaultBigIcon,
+                                      iconColor: vault.mainColor,
+                                      backgroundColor: vault.backgroundColor)
                      },
                      title: vault.name,
                      itemCount: viewModel.itemCount ?? 0,
