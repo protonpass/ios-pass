@@ -62,6 +62,7 @@ public struct InAppModalView: View {
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .minimumScaleFactor(0.8)
+                        .multilineTextAlignment(.center)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
 
@@ -69,6 +70,7 @@ public struct InAppModalView: View {
                         .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .minimumScaleFactor(0.8)
+                        .multilineTextAlignment(.center)
                         .lineLimit(2)
                         .fixedSize(horizontal: false, vertical: true)
                 }
