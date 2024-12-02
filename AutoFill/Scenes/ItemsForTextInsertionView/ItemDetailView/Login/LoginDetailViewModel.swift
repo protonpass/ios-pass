@@ -79,8 +79,8 @@ extension LoginDetailViewModel {
             do {
                 if let alias = try await itemRepository.getItemContent(shareId: aliasItem.shareId,
                                                                        itemId: aliasItem.itemId),
-                    let vault = try await shareRepository.getVault(shareId: alias.shareId) {
-                    selectedAlias = .init(userId: item.userId, content: alias, vault: vault)
+                    let share = try await shareRepository.getDecryptedShare(shareId: alias.shareId) {
+                    selectedAlias = .init(userId: item.userId, content: alias, vault: share)
                 }
             } catch {
                 handle(error)

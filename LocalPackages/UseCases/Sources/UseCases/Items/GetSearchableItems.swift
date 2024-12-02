@@ -52,10 +52,10 @@ public final class GetSearchableItems: GetSearchableItemsUseCase {
     }
 
     public func execute(userId: String, for searchMode: SearchMode) async throws -> [SearchableItem] {
-        async let getVaults = shareRepository.getVaults(userId: userId)
+        async let getShares = shareRepository.getDecryptedShares(userId: userId)
         async let getItems = getEncryptedItems(userId: userId, searchMode: searchMode)
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
-        let (vaults, items, symmetricKey) = try await (getVaults, getItems, getSymmetricKey)
+        let (vaults, items, symmetricKey) = try await (getShares, getItems, getSymmetricKey)
 
         return try await withThrowingTaskGroup(of: [SearchableItem].self,
                                                returning: [SearchableItem].self) { @Sendable group in

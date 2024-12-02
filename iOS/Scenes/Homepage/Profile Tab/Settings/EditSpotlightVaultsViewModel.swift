@@ -24,15 +24,12 @@ import Foundation
 
 final class EditSpotlightVaultsViewModel: ObservableObject {
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let currentSpotlightSelectedVaults = resolve(\DataStreamContainer
-        .currentSpotlightSelectedVaults)
     @Published private(set) var selectedVaults = [Share]()
 
     let allVaults: [VaultListUiModel]
 
     init() {
         allVaults = vaultsManager.getAllVaultContents().map { .init(vaultContent: $0) }
-        selectedVaults = currentSpotlightSelectedVaults.value
     }
 
     func toggleSelection(vault: Share) {
@@ -41,7 +38,7 @@ final class EditSpotlightVaultsViewModel: ObservableObject {
         } else {
             selectedVaults.append(vault)
         }
-        currentSpotlightSelectedVaults.send(selectedVaults)
+        vaultsManager.currentSpotlightSelectedVaults.send(selectedVaults)
     }
 
     func isSelected(vault: Share) -> Bool {

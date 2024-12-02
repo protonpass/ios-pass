@@ -626,10 +626,7 @@ private extension ItemsTabViewModel {
 
     nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
         do {
-            var filteredItems = vaultsManager.getFilteredItems()
-
-            let otherItems = try await appContentManager.shareItemItems()
-            filteredItems.append(contentsOf: otherItems)
+            let filteredItems = vaultsManager.getFilteredItems()
 
             let sectionedItems: [SectionedItemUiModel]
             switch await selectedSortType {

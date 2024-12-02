@@ -38,10 +38,6 @@ extension DataStreamContainer {
         self { .init([]) }
     }
 
-    var currentSpotlightSelectedVaults: Factory<CurrentValueSubject<[Share], Never>> {
-        self { .init([]) }
-    }
-
     var monitorStateStream: Factory<MonitorStateStream> {
         self { MonitorStateStream(.default) }
     }
