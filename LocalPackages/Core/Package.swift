@@ -56,6 +56,7 @@ let package = Package(name: "Core",
                                       dependencies: [
                                           "Core",
                                           "CoreMocks",
+                                          .product(name: "EntitiesMocks", package: "Entities"),
                                           .product(name: "ProtonCoreTestingToolkitUnitTestsCore",
                                                    package: "protoncore_ios")
 
