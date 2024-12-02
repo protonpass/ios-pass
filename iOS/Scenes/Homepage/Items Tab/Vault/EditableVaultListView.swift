@@ -46,8 +46,8 @@ struct EditableVaultListView: View {
 
                         PassDivider()
 
-                        ForEach(uiModel.vaults) { vault in
-                            vaultRow(for: .precise(vault.vault))
+                        ForEach(uiModel.filteredOrderedVaults) { vault in
+                            vaultRow(for: .precise(vault))
                             PassDivider()
                         }
 
