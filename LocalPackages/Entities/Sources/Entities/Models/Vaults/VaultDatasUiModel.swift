@@ -29,4 +29,17 @@ public struct VaultDatasUiModel: Hashable, Sendable {
         self.vaults = vaults
         self.trashedItems = trashedItems
     }
+
+    public var filteredOrderedVaults: [Share] {
+        vaults
+            .compactMap { vault -> Share? in
+                guard vault.vault.vaultContent?.name != nil else { return nil }
+                return vault.vault
+            }
+            .sorted { lhs, rhs in
+                guard let lhsName = lhs.vaultContent?.name,
+                      let rhsName = rhs.vaultContent?.name else { return false }
+                return lhsName < rhsName
+            }
+    }
 }
