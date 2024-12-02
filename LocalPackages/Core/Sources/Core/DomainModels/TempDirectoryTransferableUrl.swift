@@ -1,6 +1,6 @@
 //
-// GenerateDatedFileNameTests.swift
-// Proton Pass - Created on 28/11/2024.
+// TempDirectoryTransferableUrl.swift
+// Proton Pass - Created on 29/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,27 +17,22 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
+import CoreTransferable
+import Entities
 import Foundation
-import Testing
-import UseCases
 
-struct GenerateDatedFileNameTests {
-    @Test("Generate dated file name")
-    func datedFileName() {
-        // Given
-        let timestamp: Double = 1_732_802_303
-        let date = Date(timeIntervalSince1970: timestamp)
-        let sut = GenerateDatedFileName()
+public struct TempDirectoryTransferableUrl: Sendable, Transferable {
+    public let value: URL
 
-        // When
-        let fileName = sut.execute(prefix: "Photo",
-                                   extension: "png",
-                                   date: date,
-                                   dateFormat: "yyyy-MM-dd")
-
-        // Then
-        #expect(fileName == "Photo 2024-11-28.png")
+    public static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(contentType: .data,
+                           exporting: { data in
+                               SentTransferredFile(data.value)
+                           },
+                           importing: { received in
+                               let url = try received.file.copyFileToTempDirectory()
+                               return Self(value: url)
+                           })
     }
 }
