@@ -77,7 +77,9 @@ struct ManageSharedVaultView: View {
 private extension ManageSharedVaultView {
     var mainContainer: some View {
         VStack {
-            headerVaultInformation
+            if let vaultContent = viewModel.vault.vaultContent {
+                headerVaultInformation(vaultContent: vaultContent)
+            }
             if viewModel.fetching {
                 VStack {
                     Spacer()
@@ -93,22 +95,22 @@ private extension ManageSharedVaultView {
 }
 
 private extension ManageSharedVaultView {
-    var headerVaultInformation: some View {
+    func headerVaultInformation(vaultContent: VaultContent) -> some View {
         VStack {
             ZStack {
-                viewModel.vault.backgroundColor.toColor
+                vaultContent.backgroundColor.toColor
                     .clipShape(Circle())
 
-                Image(uiImage: viewModel.vault.vaultBigIcon)
+                Image(uiImage: vaultContent.vaultBigIcon)
                     .resizable()
                     .renderingMode(.template)
                     .scaledToFit()
-                    .foregroundStyle(viewModel.vault.mainColor.toColor)
+                    .foregroundStyle(vaultContent.mainColor.toColor)
                     .frame(width: 28, height: 28)
             }
             .frame(width: 64, height: 64)
 
-            Text(viewModel.vault.name)
+            Text(vaultContent.name)
                 .font(.title2.bold())
                 .foregroundStyle(PassColor.textNorm.toColor)
             Text("\(viewModel.itemsNumber) item(s)")

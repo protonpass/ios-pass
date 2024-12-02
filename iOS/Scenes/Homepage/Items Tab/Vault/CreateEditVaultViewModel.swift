@@ -97,7 +97,7 @@ final class CreateEditVaultViewModel: ObservableObject {
         case let .editExistingVault(vault):
             selectedColor = vault.vaultContent?.display.color.color ?? .color1
             selectedIcon = vault.vaultContent?.display.icon.icon ?? .icon1
-            title = vault.name
+            title = vault.name ?? ""
         case let .editNewVault(vault, _):
             selectedColor = vault.display.color.color
             selectedIcon = vault.display.icon.icon

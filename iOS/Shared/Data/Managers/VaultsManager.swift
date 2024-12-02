@@ -83,8 +83,8 @@ final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintabl
     private(set) var incompleteFullSyncUserId: String?
 
     let currentVaults: CurrentValueSubject<[Share], Never> = .init([])
-
     let vaultSyncEventStream = CurrentValueSubject<VaultSyncProgressEvent, Never>(.initialization)
+    let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
 
     // The filter option after switching vaults
     private var pendingItemTypeFilterOption: ItemTypeFilterOption?
@@ -246,8 +246,8 @@ extension VaultsManager {
                 logger.info("Crypto error occurred. Done full sync")
             } else {
                 logger.info("Not manual login, getting local shares & items")
-                let vaults = try await shareRepository.getVaults(userId: userId)
-                try await loadContents(userId: userId, for: vaults)
+                let shares = try await shareRepository.getDecryptedShares(userId: userId)
+                try await loadContents(userId: userId, for: shares)
                 logger.info("Not manual login, done getting local shares & items")
             }
         } catch {
@@ -255,6 +255,7 @@ extension VaultsManager {
         }
     }
 
+    // TODO: optimize the following function
     // Delete everything and download again
     func fullSync(userId: String) async {
         await MainActor.run { [weak self] in
@@ -291,18 +292,18 @@ extension VaultsManager {
             }
 
             // 4. Load vaults and their contents
-            var vaults = try await shareRepository.getVaults(userId: userId)
+            var shares = try await shareRepository.getDecryptedShares(userId: userId)
 
             // 5. Check if in "forgot password" scenario. Create a new default vault if applicable
             let hasRemoteVaults = remoteShares.contains(where: { $0.shareType == .vault })
             // We see that there are remote vaults but we can't decrypt any of them
             // => "forgot password" happened
-            if hasRemoteVaults, vaults.isEmpty {
+            if hasRemoteVaults, shares.isEmpty {
                 try await createDefaultVault()
-                vaults = try await shareRepository.getVaults(userId: userId)
+                shares = try await shareRepository.getDecryptedShares(userId: userId)
             }
 
-            try await loadContents(userId: userId, for: vaults)
+            try await loadContents(userId: userId, for: shares)
         } catch {
             await MainActor.run { [weak self] in
                 guard let self else { return }
@@ -319,9 +320,9 @@ extension VaultsManager {
     }
 
     func localFullSync(userId: String) async throws {
-        let vaults = try await shareRepository.getVaults(userId: userId)
+        let shares = try await shareRepository.getDecryptedShares(userId: userId)
         state = .loading
-        try await loadContents(userId: userId, for: vaults)
+        try await loadContents(userId: userId, for: shares)
     }
 
     func select(_ selection: VaultSelection, filterOption: ItemTypeFilterOption? = nil) {
@@ -364,7 +365,7 @@ extension VaultsManager {
     }
 
     func getAllEditableVaultContents() -> [VaultContentUiModel] {
-        getAllVaultContents().filter(\.vault.canEdit)
+        getAllVaultContents().filter { $0.vault.vaultContent != nil && $0.vault.canEdit }
     }
 
     func delete(vault: Share) async throws {

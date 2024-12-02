@@ -31,6 +31,8 @@ public protocol ShareRepositoryProtocol: Sendable {
     /// Get all local shares
     func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
     func getShare(shareId: String) async throws -> Share?
+    func getDecryptedShares(userId: String) async throws -> [Share]
+    func getDecryptedShare(shareId: String) async throws -> Share?
 
     /// Get all remote shares
     func getRemoteShares(userId: String,
@@ -61,12 +63,6 @@ public protocol ShareRepositoryProtocol: Sendable {
     func deleteShare(userId: String, shareId: String) async throws -> Bool
 
     // MARK: - Vault Functions
-
-    /// Get all local vaults
-    func getVaults(userId: String) async throws -> [Share]
-
-    /// Get local vault by ID
-    func getVault(shareId: String) async throws -> Share?
 
     @discardableResult
     func createVault(_ vault: VaultContent) async throws -> Share
@@ -134,6 +130,30 @@ public extension ShareRepository {
         }
         logger.trace("Got local share with shareID \(shareId) for user \(userId)")
         return share.share
+    }
+
+    func getDecryptedShares(userId: String) async throws -> [Share] {
+        logger.trace("Getting local shares for user \(userId)")
+
+        let shares = try await getShares(userId: userId)
+        let symmetricKey = try await getSymmetricKey()
+        let decriptedShares = try shares.map { share -> Share in
+            try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
+        }
+        logger.trace("Got \(decriptedShares.count) local shares for user \(userId)")
+        return decriptedShares
+    }
+
+    func getDecryptedShare(shareId: String) async throws -> Share? {
+        let userId = try await userManager.getActiveUserId()
+        let symmetricKey = try await getSymmetricKey()
+        logger.trace("Getting local share with shareID \(shareId) for user \(userId)")
+        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId) else {
+            logger.trace("Found no local share with shareID \(shareId) for user \(userId)")
+            return nil
+        }
+        logger.trace("Got local share with shareID \(shareId) for user \(userId)")
+        return try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
     }
 
     func getRemoteShares(userId: String,
@@ -249,32 +269,6 @@ public extension ShareRepository {
 // MARK: - Vaults
 
 public extension ShareRepository {
-    func getVaults(userId: String) async throws -> [Share] {
-        logger.trace("Getting local vaults for user \(userId)")
-
-        let shares = try await getShares(userId: userId)
-        let symmetricKey = try await getSymmetricKey()
-        let vaults = try shares.compactMap { share -> Share? in
-            guard share.share.isVaultRepresentation else { return nil }
-            return try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
-        }
-        logger.trace("Got \(vaults.count) local vaults for user \(userId)")
-        return vaults
-    }
-
-    func getVault(shareId: String) async throws -> Share? {
-        let userId = try await userManager.getActiveUserId()
-        let symmetricKey = try await getSymmetricKey()
-        logger.trace("Getting local vault with shareID \(shareId) for user \(userId)")
-        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId),
-              share.share.isVaultRepresentation else {
-            logger.trace("Found no local vault with shareID \(shareId) for user \(userId)")
-            return nil
-        }
-        logger.trace("Got local vault with shareID \(shareId) for user \(userId)")
-        return try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
-    }
-
     func createVault(_ vault: VaultContent) async throws -> Share {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID

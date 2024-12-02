@@ -32,10 +32,9 @@ struct VaultSelectorView: View {
 
     private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
 
-    private var vaults: [VaultListUiModel] {
+    private var vaults: [VaultContentUiModel] {
         vaultsManager
             .getAllEditableVaultContents()
-            .map { .init(vaultContent: $0) }
     }
 
     var body: some View {
@@ -49,7 +48,9 @@ struct VaultSelectorView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         ForEach(vaults) { vault in
-                            view(for: vault)
+                            if let vaultContent = vault.vault.vaultContent {
+                                view(for: vault, vaultContent: vaultContent)
+                            }
                             if vault != vaults.last {
                                 PassDivider()
                                     .padding(.horizontal)
@@ -69,17 +70,16 @@ struct VaultSelectorView: View {
         }
     }
 
-    @MainActor
-    private func view(for vault: VaultListUiModel) -> some View {
+    private func view(for vaultInfos: VaultContentUiModel, vaultContent: VaultContent) -> some View {
         Button(action: {
-            selectedVault = vault.vault
+            selectedVault = vaultInfos.vault
             dismiss()
         }, label: {
-            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
-                     title: vault.vault.name,
-                     itemCount: vault.itemCount,
-                     isShared: vault.vault.shared,
-                     isSelected: selectedVault == vault.vault,
+            VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
+                     title: vaultContent.name,
+                     itemCount: vaultInfos.itemCount,
+                     isShared: vaultInfos.vault.shared,
+                     isSelected: selectedVault == vaultInfos.vault,
                      height: 74)
                 .padding(.horizontal)
         })

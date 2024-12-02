@@ -34,7 +34,7 @@ extension VaultSelection {
         case .all:
             #localized("Show all vaults")
         case let .precise(vault):
-            #localized("Show %@ vault", vault.name)
+            #localized("Show %@ vault", vault.name ?? "")
         case .trash:
             #localized("Show trash")
         }

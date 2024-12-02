@@ -47,8 +47,11 @@ public final class GetSpotlightVaults: GetSpotlightVaultsUseCase {
 
     public func execute() async throws -> [Share] {
         let userId = try await userManager.getActiveUserId()
-        let selectedIds = try await localSpotlightVaultDatasource.getIds(for: userId)
-        let vaults = try await shareRepository.getVaults(userId: userId)
+        async let getSelectedIds = try await localSpotlightVaultDatasource.getIds(for: userId)
+        async let getShares = try await shareRepository.getDecryptedShares(userId: userId)
+
+        let (vaults, selectedIds) = try await (getShares, getSelectedIds)
+
         return vaults.filter { vault in
             selectedIds.contains(vault.id)
         }

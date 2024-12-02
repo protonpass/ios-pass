@@ -23,14 +23,14 @@ import Entities
 import SwiftUI
 
 struct VaultLabel: View {
-    let vault: Share
+    let vaultContent: VaultContent
 
     var body: some View {
         Label(title: {
-            Text(vault.name)
+            Text(vaultContent.name)
                 .font(.footnote)
         }, icon: {
-            Image(uiImage: vault.vaultSmallIcon)
+            Image(uiImage: vaultContent.vaultSmallIcon)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 12, height: 12)

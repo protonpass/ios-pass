@@ -45,8 +45,8 @@ public struct SelectedSyncVaultRow: View {
 
     private var selectedVault: some View {
         HStack(spacing: 16) {
-            if let vault {
-                VaultThumbnail(vault: vault)
+            if let vaultContent = vault?.vaultContent {
+                VaultThumbnail(vaultContent: vaultContent)
             }
 
             VStack(alignment: .leading) {

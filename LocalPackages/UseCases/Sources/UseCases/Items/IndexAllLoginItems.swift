@@ -62,6 +62,7 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         logger = .init(manager: logManager)
     }
 
+    // TODO: optimize the following
     public func execute() async throws {
         let start = Date()
         logger.trace("Indexing all login items")
@@ -78,7 +79,7 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         // Filterting out the duplicated and keep the most permissive ones
         var allUsersVaults = [Share]()
         for userId in userIds {
-            let vaults = try await shareRepository.getVaults(userId: userId)
+            let vaults = try await shareRepository.getDecryptedShares(userId: userId)
             allUsersVaults.append(contentsOf: vaults)
         }
         let applicableVaults = allUsersVaults.deduplicated
@@ -116,7 +117,7 @@ private extension IndexAllLoginItems {
 
         var applicableShareIds = [String]()
         if access.access.plan.isFreeUser {
-            let vaults = try await shareRepository.getVaults(userId: userId)
+            let vaults = try await shareRepository.getDecryptedShares(userId: userId)
             let ids = vaults.autofillAllowedVaults.map(\.id)
             applicableShareIds.append(contentsOf: ids)
         } else {

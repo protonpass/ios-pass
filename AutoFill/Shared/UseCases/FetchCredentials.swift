@@ -71,7 +71,7 @@ final class FetchCredentials: FetchCredentialsUseCase {
                  params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult {
         async let symmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let plan = accessRepository.getPlan(userId: userId)
-        async let vaults = shareRepository.getVaults(userId: userId)
+        async let shares = shareRepository.getDecryptedShares(userId: userId)
         async let encryptedItems = itemRepository.getActiveLogInItems(userId: userId)
         try await logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
@@ -79,14 +79,14 @@ final class FetchCredentials: FetchCredentialsUseCase {
             return try await fetchPasskeys(userId: userId,
                                            params: params,
                                            symmetricKey: symmetricKey,
-                                           vaults: vaults,
+                                           vaults: shares,
                                            encryptedItems: encryptedItems,
                                            plan: plan)
         }
         return try await fetchPasswords(userId: userId,
                                         identifiers: identifiers,
                                         symmetricKey: symmetricKey,
-                                        vaults: vaults,
+                                        vaults: shares,
                                         encryptedItems: encryptedItems,
                                         plan: plan)
     }

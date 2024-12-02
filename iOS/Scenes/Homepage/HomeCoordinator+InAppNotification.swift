@@ -163,8 +163,9 @@ private extension HomepageCoordinator {
         router.present(for: .itemDetail(itemContent))
     }
 
+    // TODO: renname with and the router destination
     func vaultMembers(shareID: String) async throws {
-        guard let vault = try await shareRepository.getVault(shareId: shareID) else {
+        guard let vault = try await shareRepository.getDecryptedShare(shareId: shareID) else {
             return
         }
         router.present(for: .manageShareVault(vault, .none))
