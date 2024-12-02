@@ -547,4 +547,16 @@ extension SharedUseCasesContainer {
     var getFileSize: Factory<any GetFileSizeUseCase> {
         self { GetFileSize() }
     }
+
+    var getMimeType: Factory<any GetMimeTypeUseCase> {
+        self { GetMimeType() }
+    }
+
+    var getFileGroup: Factory<any GetFileGroupUseCase> {
+        self { GetFileGroup() }
+    }
+
+    var formatFileAttachmentSize: Factory<any FormatFileAttachmentSizeUseCase> {
+        self { FormatFileAttachmentSize() }
+    }
 }
