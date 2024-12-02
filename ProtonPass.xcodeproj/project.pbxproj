@@ -537,6 +537,7 @@
 		5BA09B872CAFE2DA000001B7 /* CreateContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B842CAFE2DA000001B7 /* CreateContactView.swift */; };
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
 		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
+		5BAB7A5F2CFDAB69001C8815 /* EntitiesMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5BAB7A5E2CFDAB69001C8815 /* EntitiesMocks */; };
 		5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
 		5BAE710B2BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71092BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift */; };
 		5BAE710C2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE710A2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift */; };
@@ -1182,6 +1183,7 @@
 				57F59FB22AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation in Frameworks */,
 				35855C112AC8743F00794DB4 /* UseCases in Frameworks */,
 				5B8D20AB2AA74B5E00457CA3 /* DesignSystem in Frameworks */,
+				5BAB7A5F2CFDAB69001C8815 /* EntitiesMocks in Frameworks */,
 				354192842AC1CB9B001F2996 /* Macro in Frameworks */,
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
 				5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */,
@@ -2806,6 +2808,7 @@
 				359A229A2BA3702D0005C750 /* CoreMocks */,
 				578AA8782BB1DC85003FA50B /* ProtonCoreAccountRecovery */,
 				8B7078632BD1205A00E920D7 /* ProtonCorePasswordChange */,
+				5BAB7A5E2CFDAB69001C8815 /* EntitiesMocks */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -5775,6 +5778,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */;
 			productName = fusion;
+		};
+		5BAB7A5E2CFDAB69001C8815 /* EntitiesMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EntitiesMocks;
 		};
 		8B7078632BD1205A00E920D7 /* ProtonCorePasswordChange */ = {
 			isa = XCSwiftPackageProductDependency;

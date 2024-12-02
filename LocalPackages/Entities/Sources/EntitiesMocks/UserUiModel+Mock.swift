@@ -1,6 +1,6 @@
 //
-// UserUiModel+Random.swift
-// Proton Pass - Created on 10/09/2024.
+// UserUiModel+Mock.swift
+// Proton Pass - Created on 02/12/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,11 +17,10 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Entities
 
-extension UserUiModel {
+public extension UserUiModel {
     static func random() -> UserUiModel {
         .init(id: .random(),
               displayName: .random(),
