@@ -21,6 +21,7 @@
 
 @testable import Core
 import Entities
+import EntitiesMocks
 import XCTest
 
 final class ShareIdToUserManagerTests: XCTestCase {
@@ -44,7 +45,7 @@ final class ShareIdToUserManagerTests: XCTestCase {
 extension ShareIdToUserManagerTests {
     func testGetUser() throws {
         // Given
-        let vault = Vault.random()
+        let vault = Share.random()
         let item1 = Item.random()
         let user = UserUiModel.random()
 
