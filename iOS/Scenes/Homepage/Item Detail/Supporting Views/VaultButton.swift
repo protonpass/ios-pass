@@ -26,20 +26,21 @@ import SwiftUI
 struct VaultButton: View {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     let vault: Share
+    let vaultContent: VaultContent
 
     var body: some View {
         Button { router.present(for: .manageShareVault(vault, .none)) } label: {
             HStack {
                 Label(title: {
-                    Text(vault.name)
+                    Text(vaultContent.name)
                         .font(.footnote)
                 }, icon: {
-                    Image(uiImage: vault.vaultSmallIcon)
+                    Image(uiImage: vaultContent.vaultSmallIcon)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 12, height: 12)
                 })
-                .foregroundStyle(vault.mainColor.toColor)
+                .foregroundStyle(vaultContent.mainColor.toColor)
                 Text(verbatim: "•")
                     .foregroundStyle(PassColor.textNorm.toColor)
                 Text(verbatim: "\(vault.members)")
@@ -49,7 +50,7 @@ struct VaultButton: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
         }
-        .background(vault.backgroundColor.toColor)
+        .background(vaultContent.backgroundColor.toColor)
         .clipShape(Capsule())
     }
 }

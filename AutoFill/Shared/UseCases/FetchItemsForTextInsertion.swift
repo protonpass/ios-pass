@@ -57,7 +57,7 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
     func execute(userId: String) async throws -> ItemsForTextInsertion {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let getPlan = accessRepository.getPlan(userId: userId)
-        async let getVaults = shareRepository.getVaults(userId: userId)
+        async let getShares = shareRepository.getDecryptedShares(userId: userId)
         async let getEncryptedItems = itemRepository.getItems(userId: userId, state: .active)
         async let getHistory =
             textAutoFillHistoryEntryDatasource.getMostRecentEntries(userId: userId,
@@ -67,7 +67,7 @@ final class FetchItemsForTextInsertion: FetchItemsForTextInsertionUseCase {
              plan,
              vaults,
              encryptedItems,
-             history) = try await (getSymmetricKey, getPlan, getVaults, getEncryptedItems, getHistory)
+             history) = try await (getSymmetricKey, getPlan, getShares, getEncryptedItems, getHistory)
 
         let applicableVaults = if plan.isFreeUser {
             vaults.autofillAllowedVaults

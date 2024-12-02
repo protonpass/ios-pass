@@ -103,6 +103,13 @@ public struct SharingInfos: Sendable, Identifiable {
         shareElement.shared
     }
 
+    public var shareTargetType: TargetType {
+        if case .item = shareElement {
+            return .item
+        }
+        return .vault
+    }
+
     public var isItem: Bool {
         if case .item = shareElement {
             return true

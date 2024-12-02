@@ -44,11 +44,12 @@ struct ItemDetailTitleView: View {
                     .lineLimit(1)
                     .foregroundStyle(PassColor.textNorm.toColor)
 
-                if let vault {
+                // TODO: this shows a vault button will  have to add item share button
+                if let vault, let vaultContent = vault.vaultContent {
                     if vault.shared {
-                        VaultButton(vault: vault)
+                        VaultButton(vault: vault, vaultContent: vaultContent)
                     } else if shouldShowVault {
-                        VaultLabel(vault: vault)
+                        VaultLabel(vaultContent: vaultContent)
                     }
                 }
             }

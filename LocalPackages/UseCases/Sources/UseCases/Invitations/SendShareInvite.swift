@@ -71,7 +71,7 @@ public final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase 
         let userId = userData.user.ID
         let share = try await getShare(userId: userId, from: baseInfo)
         let itemId = getItemId(from: baseInfo)
-        let key: any ShareKeyProtocol = if share.isVaultRepresentation {
+        let key: any ShareKeyProtocol = if baseInfo.shareTargetType == .vault {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)
         } else if let itemId {
             try await passKeyManager.getLatestItemKey(userId: userId,
@@ -89,7 +89,7 @@ public final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase 
         let invited = try await shareInviteRepository.sendInvites(shareId: share.id,
                                                                   itemId: itemId,
                                                                   inviteesData: inviteesData,
-                                                                  targetType: share.shareType)
+                                                                  targetType: baseInfo.shareTargetType)
 
         if invited {
             syncEventLoop.forceSync()
