@@ -20,7 +20,6 @@
 //
 
 import DesignSystem
-import DocScanner
 import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -42,12 +41,7 @@ public protocol FileAttachmentsEditHandler {
 }
 
 public struct FileAttachmentsEditSection: View {
-    @StateObject private var viewModel: FileAttachmentsEditViewModel
     @State private var showDeleteAllAlert = false
-    @State private var showCamera = false
-    @State private var showDocScanner = false
-    @State private var showPhotosPicker = false
-    @State private var showFileImporter = false
 
     let files: [FileAttachment]
     let isUploading: Bool
@@ -56,7 +50,6 @@ public struct FileAttachmentsEditSection: View {
     public init(files: [FileAttachment],
                 isUploading: Bool,
                 handler: any FileAttachmentsEditHandler) {
-        _viewModel = .init(wrappedValue: .init(handler: handler))
         self.files = files
         self.isUploading = isUploading
         self.handler = handler
@@ -104,10 +97,7 @@ public struct FileAttachmentsEditSection: View {
                 }
             }
 
-            FileAttachmentsButton(style: .capsule,
-                                  iconColor: handler.fileAttachmentsSectionPrimaryColor,
-                                  backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
-                                  onSelect: { handle($0) })
+            FileAttachmentsButton(style: .capsule, handler: handler)
                 .opacityReduced(isUploading)
         }
         .animation(.default, value: files)
@@ -126,44 +116,6 @@ public struct FileAttachmentsEditSection: View {
                message: {
                    Text("This action cannot be undone")
                })
-        .sheet(isPresented: $showCamera) {
-            CameraView {
-                viewModel.handleCapturedPhoto($0)
-            }
-        }
-        .sheet(isPresented: $showDocScanner) {
-            DocScanner(with: ScanInterpreter(type: .document),
-                       completion: { viewModel.handleScanResult($0) })
-        }
-        .photosPicker(isPresented: $showPhotosPicker,
-                      selection: $viewModel.selectedPhotos,
-                      maxSelectionCount: 1)
-        .fileImporter(isPresented: $showFileImporter,
-                      allowedContentTypes: [.item],
-                      allowsMultipleSelection: false,
-                      onCompletion: { result in
-                          switch result {
-                          case let .success(urls):
-                              if let url = urls.first {
-                                  handler.handleAttachment(url)
-                              }
-                          case let .failure(error):
-                              handler.handleAttachmentError(error)
-                          }
-                      })
-    }
-
-    private func handle(_ method: FileAttachmentMethod) {
-        switch method {
-        case .takePhoto:
-            showCamera.toggle()
-        case .scanDocuments:
-            showDocScanner.toggle()
-        case .choosePhotoOrVideo:
-            showPhotosPicker.toggle()
-        case .chooseFile:
-            showFileImporter.toggle()
-        }
     }
 }
 

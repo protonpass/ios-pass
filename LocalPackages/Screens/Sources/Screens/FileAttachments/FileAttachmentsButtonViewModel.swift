@@ -1,5 +1,5 @@
 //
-// FileAttachmentsEditViewModel.swift
+// FileAttachmentsButtonViewModel.swift
 // Proton Pass - Created on 29/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -28,7 +28,7 @@ import SwiftUI
 import UseCases
 
 @MainActor
-final class FileAttachmentsEditViewModel: ObservableObject {
+final class FileAttachmentsButtonViewModel: ObservableObject {
     @Published var selectedPhotos = [PhotosPickerItem]()
 
     private var selectedPhotosTask: Task<Void, Never>?
@@ -72,17 +72,14 @@ final class FileAttachmentsEditViewModel: ObservableObject {
         do {
             switch result {
             case let .success(scanResult):
-                guard let document = scanResult as? ScannedDocument else {
-                    throw PassError.fileAttachment(.noDocumentScanned)
-                }
+                guard let document = scanResult as? ScannedDocument else { return }
                 let text = document.scannedPages.flatMap(\.text).joined(separator: "\n")
+                guard !text.isEmpty else { return }
                 let fileName = generateDatedFileName(prefix: "Document",
                                                      extension: "txt",
                                                      date: .now)
 
-                guard let data = text.data(using: .utf8) else {
-                    throw PassError.fileAttachment(.noDocumentScanned)
-                }
+                guard let data = text.data(using: .utf8) else { return }
                 let url = try writeToTemporaryDirectory(data: data, fileName: fileName)
                 handler.handleAttachment(url)
             case let .failure(error):
@@ -94,7 +91,7 @@ final class FileAttachmentsEditViewModel: ObservableObject {
     }
 }
 
-private extension FileAttachmentsEditViewModel {
+private extension FileAttachmentsButtonViewModel {
     func handleSelectedPhotos(_ photos: [PhotosPickerItem]) {
         selectedPhotosTask?.cancel()
         selectedPhotosTask = Task { [weak self] in
