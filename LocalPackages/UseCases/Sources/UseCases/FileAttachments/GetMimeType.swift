@@ -41,6 +41,10 @@ public final class GetMimeType: GetMimeTypeUseCase {
     }
 
     public func execute(of url: URL, byteCount: Int) throws -> String {
+        _ = url.startAccessingSecurityScopedResource()
+        defer {
+            url.stopAccessingSecurityScopedResource()
+        }
         let fileHandle = try FileHandle(forReadingFrom: url)
         guard let data = try fileHandle.read(upToCount: byteCount) else {
             throw PassError.fileAttachment(.noDataFound(url))
