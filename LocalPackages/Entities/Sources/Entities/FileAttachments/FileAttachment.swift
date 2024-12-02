@@ -22,16 +22,24 @@
 import Foundation
 
 public struct FileAttachmentMetadata: Sendable, Equatable {
+    public let url: URL
     public let name: String
     public let mimeType: String
-    public let size: Int
+    public let fileGroup: FileGroup
+    public let size: UInt64
+    public let formattedSize: String?
 
-    public init(name: String,
+    public init(url: URL,
                 mimeType: String,
-                size: Int) {
-        self.name = name
+                fileGroup: FileGroup,
+                size: UInt64,
+                formattedSize: String?) {
+        self.url = url
+        name = url.lastPathComponent
         self.mimeType = mimeType
+        self.fileGroup = fileGroup
         self.size = size
+        self.formattedSize = formattedSize
     }
 }
 

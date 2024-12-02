@@ -169,7 +169,6 @@ public struct FileAttachmentsEditSection: View {
 
 private struct FileAttachmentRow: View {
     @State private var name: String
-    @State private var icon: UIImage?
     @State private var showRenameAlert = false
     let file: FileAttachment
     let onRename: (String) -> Void
@@ -186,7 +185,7 @@ private struct FileAttachmentRow: View {
 
     var body: some View {
         HStack {
-            Image(uiImage: icon ?? IconProvider.fileEmpty)
+            Image(uiImage: file.metadata.fileGroup.icon)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 20)
@@ -194,8 +193,10 @@ private struct FileAttachmentRow: View {
             VStack(alignment: .leading) {
                 Text(file.metadata.name)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                Text(verbatim: "\(file.metadata.size)")
-                    .foregroundStyle(PassColor.textWeak.toColor)
+                if let formattedSize = file.metadata.formattedSize {
+                    Text(verbatim: formattedSize)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                }
             }
 
             Spacer()
