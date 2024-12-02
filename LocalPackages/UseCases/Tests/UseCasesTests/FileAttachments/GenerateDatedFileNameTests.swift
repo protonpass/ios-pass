@@ -35,9 +35,9 @@ struct GenerateDatedFileNameTests {
         let fileName = sut.execute(prefix: "Photo",
                                    extension: "png",
                                    date: date,
-                                   dateFormat: "yyyy-MM-dd 'at' HH:mm:ss")
+                                   dateFormat: "yyyy-MM-dd")
 
         // Then
-        #expect(fileName == "Photo 2024-11-28 at 14:58:23.png")
+        #expect(fileName == "Photo 2024-11-28.png")
     }
 }

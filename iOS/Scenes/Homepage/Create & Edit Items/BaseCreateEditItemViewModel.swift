@@ -129,6 +129,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
     @LazyInjected(\SharedUseCasesContainer.writeToTemporaryDirectory) private var writeToTemporaryDirectory
+    @LazyInjected(\SharedUseCasesContainer.getFileSize) private var getFileSize
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -341,7 +342,15 @@ private extension BaseCreateEditItemViewModel {
 
     func handle(_ error: any Error) {
         logger.error(error)
-        router.display(element: .displayErrorBanner(error))
+        if let passError = error as? PassError,
+           case let .fileAttachment(reason) = passError,
+           case .fileTooLarge = reason {
+            let message =
+                #localized("The selected file exceeds the size limit. Please choose a file smaller than 100MB.")
+            router.display(element: .errorMessage(message))
+        } else {
+            router.display(element: .displayErrorBanner(error))
+        }
     }
 }
 
@@ -460,7 +469,18 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func handleAttachment(_ url: URL) {
-        print(url)
+        do {
+            let fileSize = try getFileSize(for: url)
+            if fileSize > Constants.Utils.maxFileSizeInBytes {
+                // Optionally remove the file, we don't care if errors occur here
+                // because it should be in temporary directory which is cleaned up
+                // by the system anyway
+                try? FileManager.default.removeItem(at: url)
+                throw PassError.fileAttachment(.fileTooLarge(fileSize))
+            }
+        } catch {
+            handle(error)
+        }
     }
 
     func handleAttachmentError(_ error: any Error) {

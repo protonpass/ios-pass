@@ -46,6 +46,9 @@ public struct FileAttachmentsEditSection: View {
     @State private var showDeleteAllAlert = false
     @State private var showCamera = false
     @State private var showDocScanner = false
+    @State private var showPhotosPicker = false
+    @State private var showFileImporter = false
+
     let files: [FileAttachment]
     let isUploading: Bool
     let handler: any FileAttachmentsEditHandler
@@ -132,6 +135,22 @@ public struct FileAttachmentsEditSection: View {
             DocScanner(with: ScanInterpreter(type: .document),
                        completion: { viewModel.handleScanResult($0) })
         }
+        .photosPicker(isPresented: $showPhotosPicker,
+                      selection: $viewModel.selectedPhotos,
+                      maxSelectionCount: 1)
+        .fileImporter(isPresented: $showFileImporter,
+                      allowedContentTypes: [.item],
+                      allowsMultipleSelection: false,
+                      onCompletion: { result in
+                          switch result {
+                          case let .success(urls):
+                              if let url = urls.first {
+                                  handler.handleAttachment(url)
+                              }
+                          case let .failure(error):
+                              handler.handleAttachmentError(error)
+                          }
+                      })
     }
 
     private func handle(_ method: FileAttachmentMethod) {
@@ -141,9 +160,9 @@ public struct FileAttachmentsEditSection: View {
         case .scanDocuments:
             showDocScanner.toggle()
         case .choosePhotoOrVideo:
-            break
+            showPhotosPicker.toggle()
         case .chooseFile:
-            break
+            showFileImporter.toggle()
         }
     }
 }
