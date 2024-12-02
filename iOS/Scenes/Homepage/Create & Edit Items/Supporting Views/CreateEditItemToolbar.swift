@@ -38,7 +38,6 @@ struct CreateEditItemToolbar: ToolbarContent {
     let onSelectVault: () -> Void
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
-    let onSelectFileAttachmentMethod: (FileAttachmentMethod) -> Void
     let onScan: () -> Void
     let onSave: () -> Void
 
@@ -83,7 +82,7 @@ private extension CreateEditItemToolbar {
                 FileAttachmentsButton(style: .circle,
                                       iconColor: itemContentType.normMajor2Color,
                                       backgroundColor: itemContentType.normMinor1Color,
-                                      onSelect: onSelectFileAttachmentMethod)
+                                      onSelect: { _ in })
             }
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
