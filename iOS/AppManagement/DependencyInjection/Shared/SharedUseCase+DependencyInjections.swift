@@ -543,4 +543,8 @@ extension SharedUseCasesContainer {
     var writeToTemporaryDirectory: Factory<any WriteToTemporaryDirectoryUseCase> {
         self { WriteToTemporaryDirectory(writeToUrl: self.writeToUrl()) }
     }
+
+    var getFileSize: Factory<any GetFileSizeUseCase> {
+        self { GetFileSize() }
+    }
 }

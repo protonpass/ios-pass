@@ -19,17 +19,23 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
+import Entities
 import Foundation
 
 public protocol WriteToTemporaryDirectoryUseCase: Sendable {
     @discardableResult
-    func execute(data: Data, fileName: String) throws -> URL
+    func execute(data: Data,
+                 fileName: String,
+                 maxFileSize: UInt64) throws -> URL
 }
 
 public extension WriteToTemporaryDirectoryUseCase {
     @discardableResult
-    func callAsFunction(data: Data, fileName: String) throws -> URL {
-        try execute(data: data, fileName: fileName)
+    func callAsFunction(data: Data,
+                        fileName: String,
+                        maxFileSize: UInt64 = Constants.Utils.maxFileSizeInBytes) throws -> URL {
+        try execute(data: data, fileName: fileName, maxFileSize: maxFileSize)
     }
 }
 
@@ -40,7 +46,15 @@ public final class WriteToTemporaryDirectory: WriteToTemporaryDirectoryUseCase {
         self.writeToUrl = writeToUrl
     }
 
-    public func execute(data: Data, fileName: String) throws -> URL {
-        try writeToUrl(data: data, fileName: fileName, baseUrl: FileManager.default.temporaryDirectory)
+    public func execute(data: Data,
+                        fileName: String,
+                        maxFileSize: UInt64) throws -> URL {
+        let fileSize = UInt64(data.count)
+        guard fileSize < maxFileSize else {
+            throw PassError.fileAttachment(.fileTooLarge(fileSize))
+        }
+        return try writeToUrl(data: data,
+                              fileName: fileName,
+                              baseUrl: FileManager.default.temporaryDirectory)
     }
 }

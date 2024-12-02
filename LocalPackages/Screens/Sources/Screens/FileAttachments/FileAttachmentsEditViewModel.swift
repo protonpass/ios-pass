@@ -19,13 +19,20 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Combine
+import Core
 import DocScanner
 import Entities
-import UIKit
+import PhotosUI
+import SwiftUI
 import UseCases
 
 @MainActor
 final class FileAttachmentsEditViewModel: ObservableObject {
+    @Published var selectedPhotos = [PhotosPickerItem]()
+
+    private var selectedPhotosTask: Task<Void, Never>?
+    private var cancellable = Set<AnyCancellable>()
     let handler: any FileAttachmentsEditHandler
 
     private var generateDatedFileName: any GenerateDatedFileNameUseCase {
@@ -38,6 +45,14 @@ final class FileAttachmentsEditViewModel: ObservableObject {
 
     init(handler: any FileAttachmentsEditHandler) {
         self.handler = handler
+
+        $selectedPhotos
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] photos in
+                guard let self else { return }
+                handleSelectedPhotos(photos)
+            }
+            .store(in: &cancellable)
     }
 
     func handleCapturedPhoto(_ image: UIImage?) {
@@ -75,6 +90,23 @@ final class FileAttachmentsEditViewModel: ObservableObject {
             }
         } catch {
             handler.handleAttachmentError(error)
+        }
+    }
+}
+
+private extension FileAttachmentsEditViewModel {
+    func handleSelectedPhotos(_ photos: [PhotosPickerItem]) {
+        selectedPhotosTask?.cancel()
+        selectedPhotosTask = Task { [weak self] in
+            guard let self, let photo = photos.first else { return }
+            do {
+                guard let url = try await photo.loadTransferable(type: TempDirectoryTransferableUrl.self) else {
+                    throw PassError.fileAttachment(.failedToProcessPickedPhotos)
+                }
+                handler.handleAttachment(url.value)
+            } catch {
+                handler.handleAttachmentError(error)
+            }
         }
     }
 }

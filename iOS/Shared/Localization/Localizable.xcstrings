@@ -120963,6 +120963,16 @@
         }
       }
     },
+    "The selected file exceeds the size limit. Please choose a file smaller than 100MB." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected file exceeds the size limit. Please choose a file smaller than 100MB."
+          }
+        }
+      }
+    },
     "Theme" : {
       "localizations" : {
         "be" : {
