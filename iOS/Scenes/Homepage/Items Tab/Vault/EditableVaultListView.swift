@@ -82,7 +82,7 @@ struct EditableVaultListView: View {
                },
                message: { vault in
                    // swiftlint:disable:next line_length
-                   Text("This will permanently delete the vault « \(vault.name) » and all its contents. Enter the vault name to confirm deletion.")
+                   Text("This will permanently delete the vault « \(vault.name ?? "") » and all its contents. Enter the vault name to confirm deletion.")
                })
     }
 
@@ -255,7 +255,7 @@ extension VaultSelection {
         case .all:
             #localized("All vaults")
         case let .precise(vault):
-            vault.name
+            vault.name ?? ""
         case .trash:
             #localized("Trash")
         }
@@ -266,7 +266,7 @@ extension VaultSelection {
         case .all:
             PassIcon.brandPass
         case let .precise(vault):
-            vault.vaultBigIcon
+            vault.vaultBigIcon ?? PassIcon.vaultIcon1Big
         case .trash:
             IconProvider.trash
         }
@@ -277,7 +277,7 @@ extension VaultSelection {
         case .all:
             PassColor.interactionNormMajor2
         case let .precise(vault):
-            vault.mainColor
+            vault.mainColor ?? PassColor.textWeak
         case .trash:
             PassColor.textWeak
         }

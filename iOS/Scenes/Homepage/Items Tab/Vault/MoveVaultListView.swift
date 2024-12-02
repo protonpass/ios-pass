@@ -59,9 +59,11 @@ struct MoveVaultListView: View {
             ScrollView {
                 VStack(spacing: 0) {
                     ForEach(viewModel.allVaults, id: \.hashValue) { vault in
-                        vaultRow(for: vault)
-                        if vault != viewModel.allVaults.last {
-                            PassDivider()
+                        if let vaultContent = vault.vault.vaultContent {
+                            vaultRow(for: vault, vaultContent: vaultContent)
+                            if vault != viewModel.allVaults.last {
+                                PassDivider()
+                            }
                         }
                     }
                 }
@@ -91,12 +93,12 @@ struct MoveVaultListView: View {
         .animation(.default, value: viewModel.isFreeUser)
     }
 
-    private func vaultRow(for vault: VaultContentUiModel) -> some View {
+    private func vaultRow(for vault: VaultContentUiModel, vaultContent: VaultContent) -> some View {
         Button(action: {
             viewModel.selectedVault = vault
         }, label: {
-            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
-                     title: vault.vault.name,
+            VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
+                     title: vaultContent.name,
                      itemCount: vault.itemCount,
                      isShared: vault.vault.shared,
                      isSelected: viewModel.selectedVault == vault)

@@ -50,6 +50,6 @@ public final class CreateVault: CreateVaultUseCase {
         let share = try await repository.createVault(vault)
         vaultsManager.refresh(userId: userId)
 
-        return try await repository.getVault(shareId: share.shareID)
+        return try await repository.getDecryptedShare(shareId: share.shareID)
     }
 }

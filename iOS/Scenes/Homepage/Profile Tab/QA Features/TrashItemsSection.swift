@@ -67,8 +67,8 @@ private struct TrashItemsView: View {
             Section(content: {
                 ForEach(uiModels, id: \.hashValue) { uiModel in
                     let vault = uiModel.vault
-                    let icon = vault.vaultBigIcon
-                    let color = vault.mainColor
+                    let icon = vault.vaultBigIcon ?? PassIcon.vaultIcon1Big
+                    let color = vault.mainColor ?? PassColor.textWeak
 
                     VStack {
                         Button(action: {
@@ -79,7 +79,7 @@ private struct TrashItemsView: View {
                                                       iconColor: color,
                                                       backgroundColor: color.withAlphaComponent(0.16))
                                      },
-                                     title: vault.name,
+                                     title: vault.name ?? "Share link to item",
                                      itemCount: uiModel.itemCount,
                                      isShared: uiModel.vault.shared,
                                      isSelected: false,
@@ -115,7 +115,7 @@ private struct TrashItemsView: View {
                },
                message: {
                    if let selectedVault {
-                       Text(verbatim: "Vault \"\(selectedVault.vault.name)\" with \(selectedVault.itemCount) item(s)")
+                       Text(verbatim: "Vault \"\(selectedVault.vault.name ?? "Item share")\" with \(selectedVault.itemCount) item(s)")
                    }
                })
     }
@@ -147,7 +147,7 @@ private final class TrashItemsViewModel: ObservableObject {
                 state = .loading
                 let userId = try await userManager.getActiveUserId()
                 let items = try await itemRepository.getAllItems(userId: userId)
-                let vaults = try await shareRepository.getVaults(userId: userId)
+                let vaults = try await shareRepository.getDecryptedShares(userId: userId)
 
                 let vaultListUiModels: [VaultListUiModel] = vaults.map { vault in
                     let activeItems =
@@ -165,12 +165,12 @@ private final class TrashItemsViewModel: ObservableObject {
         Task { [weak self] in
             guard let self else { return }
             do {
-                bannerManager.displayBottomInfoMessage("Trashing all items of \"\(vault.name)\"")
+                bannerManager.displayBottomInfoMessage("Trashing all items of \"\(vault.name ?? "Item Share")\"")
                 let items = try await itemRepository.getItems(shareId: vault.shareId,
                                                               state: .active)
                 try await itemRepository.trashItems(items)
                 loadVaults()
-                bannerManager.displayBottomSuccessMessage("Trashed all items of \"\(vault.name)\"")
+                bannerManager.displayBottomSuccessMessage("Trashed all items of \"\(vault.name ?? "Item share")\"")
             } catch {
                 bannerManager.displayTopErrorMessage(error)
             }

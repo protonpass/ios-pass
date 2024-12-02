@@ -246,7 +246,7 @@ private extension SettingsView {
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
-                Text(verbatim: vaults.map(\.name).joined(separator: ", "))
+                Text(verbatim: vaults.compactMap(\.vaultContent?.name).joined(separator: ", "))
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .lineLimit(1)

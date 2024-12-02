@@ -133,6 +133,7 @@ private extension EditableVaultListViewModel {
 
 extension EditableVaultListViewModel {
     func delete(vault: Share) {
+        guard let vaultContent = vault.vaultContent else { return }
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
@@ -141,7 +142,7 @@ extension EditableVaultListViewModel {
                 let userId = try await userManager.getActiveUserId()
                 try await vaultsManager.delete(vault: vault)
                 vaultsManager.refresh(userId: userId)
-                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vault.name)))
+                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))

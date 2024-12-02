@@ -68,12 +68,14 @@ private extension ItemsTabTopBar {
                     .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
 
             case let .precise(vault):
-                CircleButton(icon: vault.vaultBigIcon,
-                             iconColor: vault.mainColor,
-                             backgroundColor: vault.backgroundColor,
-                             action: onShowVaultList)
-                    .frame(width: DesignConstant.searchBarHeight)
-                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
+                if let vaultContent = vault.vaultContent {
+                    CircleButton(icon: vaultContent.vaultBigIcon,
+                                 iconColor: vaultContent.mainColor,
+                                 backgroundColor: vaultContent.backgroundColor,
+                                 action: onShowVaultList)
+                        .frame(width: DesignConstant.searchBarHeight)
+                        .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
+                }
 
             case .trash:
                 CircleButton(icon: IconProvider.trash,

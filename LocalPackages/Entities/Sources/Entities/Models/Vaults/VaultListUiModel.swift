@@ -22,7 +22,7 @@ public struct VaultListUiModel: Hashable, Sendable, Identifiable {
     public let vault: Share
     public let itemCount: Int
 
-    public var id: Int { hashValue }
+    public var id: String { vault.id }
 
     public init(vault: Share, itemCount: Int) {
         self.vault = vault

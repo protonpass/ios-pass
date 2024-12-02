@@ -23,8 +23,26 @@ import Entities
 import UIKit
 
 public extension Share {
+    var mainColor: UIColor? {
+        vaultContent?.display.color.color.color
+    }
+
+    var backgroundColor: UIColor? {
+        mainColor?.withAlphaComponent(0.16)
+    }
+
+    var vaultBigIcon: UIImage? {
+        vaultContent?.display.icon.icon.bigImage
+    }
+
+    var vaultSmallIcon: UIImage? {
+        vaultContent?.display.icon.icon.smallImage
+    }
+}
+
+public extension VaultContent {
     var mainColor: UIColor {
-        vaultContent?.display.color.color.color ?? PassColor.vaultMercury
+        display.color.color.color
     }
 
     var backgroundColor: UIColor {
@@ -32,10 +50,10 @@ public extension Share {
     }
 
     var vaultBigIcon: UIImage {
-        vaultContent?.display.icon.icon.bigImage ?? VaultIcon.icon1.bigImage
+        display.icon.icon.bigImage
     }
 
     var vaultSmallIcon: UIImage {
-        vaultContent?.display.icon.icon.smallImage ?? VaultIcon.icon1.smallImage
+        display.icon.icon.smallImage
     }
 }

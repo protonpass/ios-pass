@@ -23,22 +23,22 @@ import Entities
 import SwiftUI
 
 public struct VaultThumbnail: View {
-    private let vault: Share
+    private let vaultContent: VaultContent
 
     private var iconColor: UIColor {
-        vault.mainColor
+        vaultContent.mainColor
     }
 
-    public init(vault: Share) {
-        self.vault = vault
+    public init(vaultContent: VaultContent) {
+        self.vaultContent = vaultContent
     }
 
     public var body: some View {
-        CircleButton(icon: vault.vaultBigIcon,
+        CircleButton(icon: vaultContent.vaultBigIcon,
                      iconColor: iconColor,
                      iconDisabledColor: iconColor.withAlphaComponent(0.75),
                      backgroundColor: iconColor.withAlphaComponent(0.16),
                      backgroundDisabledColor: iconColor.withAlphaComponent(0.08))
-            .animation(.default, value: vault)
+            .animation(.default, value: vaultContent)
     }
 }
