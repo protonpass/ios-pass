@@ -58,6 +58,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       itemContentType: viewModel.itemContentType(),
                                       shouldUpgrade: viewModel.shouldUpgrade,
                                       isPhone: viewModel.isPhone,
+                                      fileAttachmentsEditHandler: viewModel,
                                       onSelectVault: { viewModel.isShowingVaultSelector.toggle() },
                                       onGoBack: { viewModel.isShowingDiscardAlert.toggle() },
                                       onUpgrade: {
