@@ -277,7 +277,9 @@ private extension ItemsForTextInsertionViewModel {
                                 at: 0)
             }
 
-            let itemCount = ItemCount(items: allItems, sharedByMe: searchableItems.itemSharedByMeCount, sharedWithMe: searchableItems.itemSharedWithMeCount)
+            let itemCount = ItemCount(items: allItems,
+                                      sharedByMe: searchableItems.itemSharedByMeCount,
+                                      sharedWithMe: searchableItems.itemSharedWithMeCount)
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.searchableItems = searchableItems
@@ -366,7 +368,7 @@ private extension [SearchableItem] {
     var itemSharedByMeCount: Int {
         self.filter { $0.shared && $0.owner }.count
     }
-    
+
     var itemSharedWithMeCount: Int {
         self.filter { $0.shared && !$0.owner }.count
     }
