@@ -86,9 +86,7 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                         // When sharing a new vault from item detail page,
                         // as the item is moved to the new vault, the last item detail sheet is stale
                         // so we dismiss all sheets
-//                        if let sharedVault = sharedElement as? Vault {
                         router.present(for: .manageSharedShare(sharedElement, .all))
-//                        }
                     }
                 }
             } catch {
