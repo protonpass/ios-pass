@@ -50,7 +50,7 @@ struct ManageSharedShareView: View {
                                   })
             }
         }
-        .onAppear {
+        .task {
             viewModel.fetchShareInformation(displayFetchingLoader: true)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

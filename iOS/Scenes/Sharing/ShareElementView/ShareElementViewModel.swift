@@ -26,7 +26,7 @@ import Macro
 import ProtonCoreUIFoundations
 
 @MainActor
-final class ShareOrCreateNewVaultViewModel: ObservableObject {
+final class ShareElementViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
 
     let share: Share
@@ -41,7 +41,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     var sheetHeight: CGFloat {
-        share.shared ? 400 : share.canShareWithMorePeople ? 550 : 450
+        350
     }
 
     var itemSharingEnabled: Bool {
@@ -57,23 +57,6 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
 
     func shareVault() {
         complete(with: .vault(share))
-    }
-
-    func createNewVault() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                if try await reachedVaultLimit() {
-                    router.present(for: .upselling(.default))
-                } else {
-                    complete(with: .new(.defaultNewSharedVault, itemContent))
-                }
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
     }
 
     func secureLinkSharing() {

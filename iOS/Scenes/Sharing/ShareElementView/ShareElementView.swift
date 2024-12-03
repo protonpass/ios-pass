@@ -25,8 +25,8 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 @MainActor
-struct ShareOrCreateNewVaultView: View {
-    let viewModel: ShareOrCreateNewVaultViewModel
+struct ShareElementView: View {
+    let viewModel: ShareElementViewModel
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -48,24 +48,10 @@ struct ShareOrCreateNewVaultView: View {
             if viewModel.share.shared {
                 manageAccessButton
                     .padding(.vertical)
-            } else {
-                PassDivider()
-                    .padding(.vertical)
-
-                if viewModel.share.isVaultRepresentation,
-                   let vaultContent = viewModel.share.vaultContent {
-                    currentVault(vaultContent: vaultContent)
-                }
-
-                createNewVaultButton
-                    .padding(.vertical, 12)
-
-                Text("The item will be moved to the new vault")
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .font(.callout)
-                    .fixedSize(horizontal: false, vertical: true)
+            } else if viewModel.share.isVaultRepresentation,
+                      let vaultContent = viewModel.share.vaultContent {
+                currentVault(vaultContent: vaultContent)
+                    .padding(.top, 22)
             }
 
             Spacer()
@@ -78,7 +64,7 @@ struct ShareOrCreateNewVaultView: View {
     }
 }
 
-private extension ShareOrCreateNewVaultView {
+private extension ShareElementView {
     var itemSharing: some View {
         HStack {
             SquircleThumbnail(data: .icon(IconProvider.userPlus),
@@ -115,7 +101,7 @@ private extension ShareOrCreateNewVaultView {
     }
 }
 
-private extension ShareOrCreateNewVaultView {
+private extension ShareElementView {
     var secureLink: some View {
         HStack {
             SquircleThumbnail(data: .icon(IconProvider.link),
@@ -152,7 +138,7 @@ private extension ShareOrCreateNewVaultView {
     }
 }
 
-private extension ShareOrCreateNewVaultView {
+private extension ShareElementView {
     var manageAccessButton: some View {
         HStack {
             SquircleThumbnail(data: .icon(IconProvider.users),
@@ -171,7 +157,6 @@ private extension ShareOrCreateNewVaultView {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(.rect)
         .padding()
         .roundedEditableSection()
@@ -179,48 +164,12 @@ private extension ShareOrCreateNewVaultView {
     }
 }
 
-private extension ShareOrCreateNewVaultView {
+private extension ShareElementView {
     func currentVault(vaultContent: VaultContent) -> some View {
-        HStack {
-            VaultRow(thumbnail: {
-                         CircleButton(icon: vaultContent.vaultBigIcon,
-                                      iconColor: vaultContent.mainColor,
-                                      backgroundColor: vaultContent.backgroundColor)
-                     },
-                     title: vaultContent.name,
-                     itemCount: viewModel.itemCount ?? 0,
-                     isShared: false, // No need to show share indicator
-                     isSelected: false,
-                     height: 74)
-
-            Spacer()
-
-            CapsuleTextButton(title: #localized("Share this vault"),
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              action: { viewModel.shareVault() })
-                .fixedSize(horizontal: true, vertical: true)
-        }
-        .padding(.horizontal)
-        .roundedEditableSection()
-    }
-}
-
-private extension ShareOrCreateNewVaultView {
-    var createNewVaultButton: some View {
-        Button { viewModel.createNewVault() } label: {
-            Label(title: {
-                Text("Create a new vault to share")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-            }, icon: {
-                CircleButton(icon: IconProvider.plus,
-                             iconColor: PassColor.interactionNormMajor2,
-                             backgroundColor: PassColor.interactionNormMinor1)
-            })
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 72)
-            .padding(.horizontal)
-            .roundedEditableSection(borderColor: PassColor.interactionNormMajor2)
+        Button { viewModel.shareVault() } label: {
+            Text("Share entire vault instead?")
+                .foregroundStyle(PassColor.interactionNorm.toColor)
+                .frame(maxWidth: .infinity, alignment: .center)
         }
     }
 }
