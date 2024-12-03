@@ -1,6 +1,6 @@
 //
 // FileAttachment.swift
-// Proton Pass - Created on 19/11/2024.
+// Proton Pass - Created on 03/12/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,34 +21,96 @@
 
 import Foundation
 
-public struct FileAttachmentMetadata: Sendable, Equatable {
-    public let url: URL
-    public let name: String
-    public let mimeType: String
-    public let fileGroup: FileGroup
-    public let size: UInt64
-    public let formattedSize: String?
+public enum FileAttachment: Sendable, Equatable, Identifiable {
+    case pending(PendingFileAttachment)
+    case item(ItemFile)
 
-    public init(url: URL,
-                mimeType: String,
-                fileGroup: FileGroup,
-                size: UInt64,
-                formattedSize: String?) {
-        self.url = url
-        name = url.lastPathComponent
-        self.mimeType = mimeType
-        self.fileGroup = fileGroup
-        self.size = size
-        self.formattedSize = formattedSize
+    public var id: String {
+        switch self {
+        case let .pending(file):
+            file.id
+        case let .item(file):
+            file.id
+        }
+    }
+
+    public func toUiModel() -> FileAttachmentUiModel {
+        switch self {
+        case let .pending(item):
+            .init(id: item.id,
+                  url: item.metadata.url,
+                  state: item.uploadState,
+                  name: item.metadata.name,
+                  group: item.metadata.fileGroup,
+                  formattedSize: item.metadata.formattedSize)
+        case let .item(item):
+            .init(id: item.id,
+                  url: nil,
+                  state: .uploaded(remoteId: item.id),
+                  name: "",
+                  group: .unknown,
+                  formattedSize: nil)
+        }
     }
 }
 
-public struct FileAttachment: Sendable, Equatable, Identifiable {
-    public let id: String
-    public let metadata: FileAttachmentMetadata
+public enum FileAttachmentUploadState: Sendable, Equatable {
+    case uploading
+    /// `remoteID` is given by the BE after uploading
+    case uploaded(remoteId: String)
+    case error(any Error)
 
-    public init(id: String, metadata: FileAttachmentMetadata) {
-        self.id = id
-        self.metadata = metadata
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.uploading, .uploading):
+            true
+        case let (.uploaded(lId), .uploaded(rId)):
+            lId == rId
+        case let (.error(lError), .error(rError)):
+            lError.localizedDescription == rError.localizedDescription
+        default:
+            false
+        }
+    }
+
+    public var isError: Bool {
+        if case .error = self {
+            true
+        } else {
+            false
+        }
+    }
+
+    public var remoteId: String? {
+        if case let .uploaded(remoteId) = self {
+            remoteId
+        } else {
+            nil
+        }
+    }
+}
+
+public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
+    public let id: String
+    /// Local URL to the file
+    public let url: URL?
+    public let state: FileAttachmentUploadState
+    public let name: String
+    public let group: FileGroup
+    public let formattedSize: String?
+}
+
+public extension [FileAttachment] {
+    mutating func updateState(id: String, newState: FileAttachmentUploadState) {
+        guard let index = self.firstIndex(where: { $0.id == id }) else { return }
+        let file = self[index]
+        switch file {
+        case var .pending(pendingFile):
+            pendingFile.update(newState)
+            self[index] = .pending(pendingFile)
+        case .item:
+            // Not applicable
+            return
+        }
     }
 }
