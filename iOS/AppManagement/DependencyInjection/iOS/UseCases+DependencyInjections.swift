@@ -319,10 +319,6 @@ extension UseCasesContainer {
         self { PermanentlyDeleteSelectedItems(repository: self.itemRepository) }
     }
 
-    var getVaultContentForVault: Factory<any GetVaultContentForVaultUseCase> {
-        self { GetVaultContentForVault(vaultsManager: self.vaultsManager) }
-    }
-
     var createVault: Factory<any CreateVaultUseCase> {
         self { CreateVault(vaultsManager: self.vaultsManager,
                            repository: self.shareRepository) }
