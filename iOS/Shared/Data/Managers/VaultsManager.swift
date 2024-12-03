@@ -31,8 +31,17 @@ import SwiftUI
 
 enum VaultManagerState {
     case loading
-    case loaded(VaultDatasUiModel)
+    case loaded(SharesData)
     case error(any Error)
+
+    var loadedContent: SharesData? {
+        switch self {
+        case let .loaded(content):
+            content
+        default:
+            nil
+        }
+    }
 }
 
 // swiftlint:disable:next todo
@@ -134,19 +143,45 @@ private extension VaultsManager {
     }
 
     func updateItemCount() {
-        guard case let .loaded(uiModel) = state else { return }
-        let items: [any ItemTypeIdentifiable] = switch vaultSelection {
+//        guard let sharesData = state.loadedContent else { return }
+//        let items: [any ItemTypeIdentifiable] = switch vaultSelection {
+//        case .all:
+//            sharesData.shares.flatMap(\.items)
+//        case let .precise(selectedVault):
+//            sharesData.shares
+//                .filter { $0.share.shareId == selectedVault.shareId }
+//                .flatMap(\.items)
+//        case .trash:
+//            sharesData.trashedItems
+//        }
+//
+//        itemCount = ItemCount(items: items, sharedByMe: <#T##Int#>, sharedWithMe: <#T##Int#>)
+//
+//
+        guard let sharesData = state.loadedContent else { return }
+        var sharedByMe = 0
+        var sharedWithMe = 0
+        var items: [any ItemTypeIdentifiable] = []
+        switch vaultSelection {
         case .all:
-            uiModel.vaults.flatMap(\.items)
-        case let .precise(selectedVault):
-            uiModel.vaults
-                .filter { $0.vault.shareId == selectedVault.shareId }
+            items = sharesData.shares.flatMap(\.items)
+            sharedByMe = sharesData.itemsSharedByMe.count
+            sharedWithMe = sharesData.itemsSharedWithMe.count
+        case let .precise(selectedShare):
+            let filteredShare = sharesData.shares
+                .filter { $0.id == selectedShare.id }
+            items = filteredShare
                 .flatMap(\.items)
+            sharedByMe = filteredShare
+                .filter { !$0.share.isVaultRepresentation && $0.share.owner }
+                .flatMap(\.items).count
+            sharedWithMe = filteredShare
+                .filter { !$0.share.isVaultRepresentation && !$0.share.owner }.flatMap(\.items).count
         case .trash:
-            uiModel.trashedItems
+            items = sharesData.trashedItems
         }
 
-        itemCount = .init(items: items)
+        itemCount = .init(items: items, sharedByMe: sharedByMe, sharedWithMe: sharedWithMe)
     }
 
     @MainActor
@@ -351,24 +386,30 @@ extension VaultsManager {
         vaultSelection == selection
     }
 
+    func getShareContent(for shareId: String) -> ShareContent? {
+        guard let sharesData = state.loadedContent else { return nil }
+        return sharesData.shares.first { $0.share.id == shareId }
+    }
+
     func getItems(for vault: Share) -> [ItemUiModel] {
-        guard case let .loaded(uiModel) = state else { return [] }
-        return uiModel.vaults.first { $0.vault.id == vault.id }?.items ?? []
+        guard let sharesData = state.loadedContent else { return [] }
+        return sharesData.shares.first { $0.share.id == vault.id }?.items ?? []
     }
 
     func getAllActiveAndTrashedItems() -> [ItemUiModel] {
-        guard case let .loaded(uiModel) = state else { return [] }
-        let activeItems = uiModel.vaults.flatMap(\.items)
-        return activeItems + uiModel.trashedItems
+        guard let sharesData = state.loadedContent else { return [] }
+        let activeItems = sharesData.shares.flatMap(\.items)
+        return activeItems + sharesData.trashedItems
     }
 
-    func getAllVaultContents() -> [VaultContentUiModel] {
-        guard case let .loaded(uiModel) = state else { return [] }
-        return uiModel.vaults
+    // TODO: Rename
+    func getAllVaultContents() -> [ShareContent] {
+        guard let sharesData = state.loadedContent else { return [] }
+        return sharesData.shares
     }
 
-    func getAllEditableVaultContents() -> [VaultContentUiModel] {
-        getAllVaultContents().filter { $0.vault.vaultContent != nil && $0.vault.canEdit }
+    func getAllEditableVaultContents() -> [ShareContent] {
+        getAllVaultContents().filter { $0.share.vaultContent != nil && $0.share.canEdit }
     }
 
     func delete(vault: Share) async throws {
@@ -405,22 +446,22 @@ extension VaultsManager {
     }
 
     func getOldestOwnedVault() -> Share? {
-        guard case let .loaded(uiModel) = state else { return nil }
-        let vaults = uiModel.vaults.map(\.vault)
-        return vaults.oldestOwned
+        guard let sharesData = state.loadedContent else { return nil }
+        let shares = sharesData.shares.map(\.share)
+        return shares.oldestOwned
     }
 
     func getFilteredItems() -> [ItemUiModel] {
-        guard case let .loaded(uiModel) = state else { return [] }
+        guard let sharesData = state.loadedContent else { return [] }
         let items: [ItemUiModel] = switch vaultSelection {
         case .all:
-            uiModel.vaults.flatMap(\.items)
+            sharesData.shares.flatMap(\.items)
         case let .precise(selectedVault):
-            uiModel.vaults
-                .filter { $0.vault.shareId == selectedVault.shareId }
+            sharesData.shares
+                .filter { $0.share.shareId == selectedVault.shareId }
                 .flatMap(\.items)
         case .trash:
-            uiModel.trashedItems
+            sharesData.trashedItems
         }
 
         switch filterOption {
@@ -428,6 +469,10 @@ extension VaultsManager {
             return items
         case let .precise(type):
             return items.filter { $0.type == type }
+        case .itemSharedWithMe:
+            return sharesData.itemsSharedWithMe
+        case .itemSharedByMe:
+            return sharesData.itemsSharedByMe
         }
     }
 
@@ -440,19 +485,17 @@ extension VaultsManager {
         switch vaultSelection {
         case .all:
             true
-
         case let .precise(vault):
             if vault.shareId == item.shareId {
                 switch filterOption {
-                case .all:
-                    true
                 case let .precise(filterType):
                     filterType == type
+                default:
+                    true
                 }
             } else {
                 false
             }
-
         case .trash:
             false
         }
@@ -461,7 +504,7 @@ extension VaultsManager {
 
 private extension VaultsManager {
     func getAllEditableTrashedItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
-        let editableShareIds = getAllEditableVaultContents().map(\.vault.shareId)
+        let editableShareIds = getAllEditableVaultContents().map(\.share.shareId)
         let trashedItems = try await itemRepository.getItems(userId: userId, state: .trashed)
         return trashedItems.filter { item in
             editableShareIds.contains(where: { $0 == item.shareId })
@@ -474,9 +517,9 @@ private extension VaultsManager {
 extension VaultsManager: LimitationCounterProtocol {
     func getAliasCount() -> Int {
         switch state {
-        case let .loaded(uiModel):
-            let activeAliases = uiModel.vaults.flatMap(\.items).filter(\.isAlias)
-            let trashedAliases = uiModel.trashedItems.filter(\.isAlias)
+        case let .loaded(sharesData):
+            let activeAliases = sharesData.shares.flatMap(\.items).filter(\.isAlias)
+            let trashedAliases = sharesData.trashedItems.filter(\.isAlias)
             return activeAliases.count + trashedAliases.count
         default:
             return 0
@@ -484,16 +527,16 @@ extension VaultsManager: LimitationCounterProtocol {
     }
 
     func getTOTPCount() -> Int {
-        guard case let .loaded(uiModel) = state else { return 0 }
-        let activeItemsWithTotpUri = uiModel.vaults.flatMap(\.items).filter(\.hasTotpUri).count
-        let trashedItemsWithTotpUri = uiModel.trashedItems.filter(\.hasTotpUri).count
+        guard let sharesData = state.loadedContent else { return 0 }
+        let activeItemsWithTotpUri = sharesData.shares.flatMap(\.items).filter(\.hasTotpUri).count
+        let trashedItemsWithTotpUri = sharesData.trashedItems.filter(\.hasTotpUri).count
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
     }
 
     func getVaultCount() -> Int {
         switch state {
-        case let .loaded(uiModel):
-            uiModel.vaults.count
+        case let .loaded(sharesData):
+            sharesData.shares.count
         default:
             0
         }
@@ -504,8 +547,8 @@ extension VaultsManager: LimitationCounterProtocol {
 
 extension VaultsManager: VaultsProvider {
     func getAllVaults() -> [Share] {
-        guard case let .loaded(uiModel) = state else { return [] }
-        return uiModel.vaults.map(\.vault)
+        guard let sharesData = state.loadedContent else { return [] }
+        return sharesData.shares.map(\.share)
     }
 }
 
