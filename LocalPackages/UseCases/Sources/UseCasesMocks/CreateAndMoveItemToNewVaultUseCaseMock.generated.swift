@@ -33,9 +33,9 @@ public final class CreateAndMoveItemToNewVaultUseCaseMock: @unchecked Sendable, 
     public var invokedExecuteCount = 0
     public var invokedExecuteParameters: (userId: String, vault: VaultContent, itemContent: ItemContent)?
     public var invokedExecuteParametersList = [(userId: String, vault: VaultContent, itemContent: ItemContent)]()
-    public var stubbedExecuteResult: Vault!
+    public var stubbedExecuteResult: Share!
 
-    public func execute(userId: String, vault: VaultContent, itemContent: ItemContent) async throws -> Vault {
+    public func execute(userId: String, vault: VaultContent, itemContent: ItemContent) async throws -> Share {
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (userId, vault, itemContent)

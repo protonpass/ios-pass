@@ -75,7 +75,8 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func doMove() {
-        guard let selectedVault else {
+        guard let selectedVault, selectedVault.vault.isVaultRepresentation,
+              let vaultContent = selectedVault.vault.vaultContent else {
             assertionFailure("Should have a selected vault")
             return
         }
@@ -86,7 +87,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
                 router.display(element: .globalLoading(shouldShow: true))
                 try await moveItemsBetweenVaults(context: context,
                                                  to: selectedVault.vault.shareId)
-                router.display(element: successMessage(toVaultName: selectedVault.vault.name))
+                router.display(element: successMessage(toVaultName: vaultContent.name))
                 currentSelectedItems.send([])
             } catch {
                 logger.error(error)
@@ -103,7 +104,8 @@ private extension MoveVaultListViewModel {
             let message = #localized("Item moved to vault « %@ »", toVaultName)
             return .successMessage(message, config: .dismissAndRefresh(with: .update(item.type)))
         case let .allItems(fromVault):
-            let message = #localized("Items from « %@ » moved to vault « %@ »", fromVault.name, toVaultName)
+            let message = #localized("Items from « %@ » moved to vault « %@ »", fromVault.vaultName ?? "",
+                                     toVaultName)
             return .successMessage(message, config: .dismissAndRefresh)
         case let .selectedItems(items):
             let message = #localized("%lld items moved to vault « %@ »", items.count, toVaultName)

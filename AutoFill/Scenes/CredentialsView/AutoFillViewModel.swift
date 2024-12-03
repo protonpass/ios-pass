@@ -97,7 +97,7 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     }
 
     /// Vautls of all users keeping only the first one of the ones sharing the same `VaultID`
-    private var uniqueVaults: [Vault] {
+    private var uniqueVaults: [Share] {
         results.flatMap(\.vaults).deduplicated
     }
 
@@ -127,11 +127,11 @@ class AutoFillViewModel<T: AutoFillCredentialsFetchResult>: ObservableObject {
     }
 
     // swiftlint:disable unavailable_function
-    func getVaults(userId: String) -> [Vault]? {
+    func getVaults(userId: String) -> [Share]? {
         fatalError("Must be overridden by subclasses")
     }
 
-    func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
+    func generateItemCreationInfo(userId: String, vaults: [Share]) -> ItemCreationInfo {
         fatalError("Must be overridden by subclasses")
     }
 

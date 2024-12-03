@@ -30,7 +30,7 @@ struct CreateEditItemToolbar: ToolbarContent {
     let isSaving: Bool
     let fileAttachmentsEnabled: Bool
     let canScanDocuments: Bool
-    let vault: Vault
+    let vault: Share
     let canChangeVault: Bool
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
@@ -75,8 +75,8 @@ struct CreateEditItemToolbar: ToolbarContent {
 private extension CreateEditItemToolbar {
     var buttons: some View {
         HStack {
-            if canChangeVault {
-                vaultButton
+            if canChangeVault, let vaultContent = vault.vaultContent {
+                vaultButton(vaultContent: vaultContent)
             }
 
             if itemContentType == .note, fileAttachmentsEnabled {
@@ -109,22 +109,22 @@ private extension CreateEditItemToolbar {
         }
     }
 
-    var vaultButton: some View {
+    func vaultButton(vaultContent: VaultContent) -> some View {
         HStack {
-            Image(uiImage: vault.displayPreferences.icon.icon.bigImage)
+            Image(uiImage: vaultContent.vaultBigIcon)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 18)
-            Text(vault.name)
+            Text(vaultContent.name)
             Image(systemName: "chevron.down")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 12)
         }
         .frame(height: 40)
-        .foregroundStyle(vault.displayPreferences.color.color.color.toColor)
+        .foregroundStyle(vaultContent.mainColor.toColor)
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .background(vault.displayPreferences.color.color.color.toColor.opacity(0.16))
+        .background(vaultContent.backgroundColor.toColor)
         .clipShape(Capsule())
         .if(isPhone) { view in
             view.frame(maxWidth: 150, alignment: .trailing)

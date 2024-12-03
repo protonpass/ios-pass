@@ -105,9 +105,11 @@ private extension SearchView {
                     case .all:
                         NoSearchResultsInAllVaultView(query: query)
                     case let .precise(vault):
-                        NoSearchResultsInPreciseVaultView(query: query,
-                                                          vaultName: vault.name,
-                                                          action: { viewModel.searchInAllVaults() })
+                        if let name = vault.vaultContent?.name {
+                            NoSearchResultsInPreciseVaultView(query: query,
+                                                              vaultName: name,
+                                                              action: { viewModel.searchInAllVaults() })
+                        }
                     case .trash:
                         NoSearchResultsInTrashView(query: query)
                     }

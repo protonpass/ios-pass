@@ -27,7 +27,7 @@ public extension SearchMode {
         case .pinned:
             #localized("Search pinned items", bundle: .module)
         case let .all(selection):
-            selection.searchBarPlacehoder
+            selection.searchBarPlaceholder
         }
     }
 }

@@ -61,7 +61,7 @@ class GetSearchableItemsTests: XCTestCase {
         // Given
         let itemToPin = SymmetricallyEncryptedItem.random()
         getAllPinnedItems.stubbedExecuteAsyncResult2 = [itemToPin]
-        shareRepository.stubbedGetVaultsResult = []
+        shareRepository.stubbedGetDecryptedSharesResult = []
 
         // When
 //        do {

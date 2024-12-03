@@ -1,7 +1,7 @@
 //
-// VaultButton.swift
-// Proton Pass - Created on 02/08/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ShareItemButton.swift
+// Proton Pass - Created on 03/12/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,36 +21,30 @@
 import DesignSystem
 import Entities
 import Factory
+import ProtonCoreUIFoundations
 import SwiftUI
 
-struct VaultButton: View {
+struct ShareItemButton: View {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    let vault: Share
-    let vaultContent: VaultContent
+    let share: Share
+    let itemContent: ItemContent
 
     var body: some View {
-        Button { router.present(for: .manageSharedShare(vault, .none)) } label: {
+        Button { router.present(for: .manageSharedShare(share, .none)) } label: {
             HStack {
-                Label(title: {
-                    Text(vaultContent.name)
-                        .font(.footnote)
-                }, icon: {
-                    Image(uiImage: vaultContent.vaultSmallIcon)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 12, height: 12)
-                })
-                .foregroundStyle(vaultContent.mainColor.toColor)
-                Text(verbatim: "•")
+                Image(uiImage: IconProvider.usersFilled)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 12, height: 12)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                Text(verbatim: "\(vault.members)")
+                Text(verbatim: "\(share.members + 1)")
                     .font(.footnote)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
         }
-        .background(vaultContent.backgroundColor.toColor)
+        .background(itemContent.contentData.type.normMinor1Color.toColor)
         .clipShape(Capsule())
     }
 }

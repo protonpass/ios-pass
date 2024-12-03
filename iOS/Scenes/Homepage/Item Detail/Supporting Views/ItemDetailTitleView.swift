@@ -21,12 +21,13 @@
 import Client
 import DesignSystem
 import Entities
+import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemDetailTitleView: View {
     let itemContent: ItemContent
-    let vault: Vault?
+    let vault: Share?
     let shouldShowVault: Bool
 
     var body: some View {
@@ -45,10 +46,14 @@ struct ItemDetailTitleView: View {
                     .foregroundStyle(PassColor.textNorm.toColor)
 
                 if let vault {
-                    if vault.shared {
-                        VaultButton(vault: vault)
-                    } else if shouldShowVault {
-                        VaultLabel(vault: vault)
+                    if let vaultContent = vault.vaultContent {
+                        if vault.shared {
+                            VaultButton(vault: vault, vaultContent: vaultContent)
+                        } else if shouldShowVault {
+                            VaultLabel(vaultContent: vaultContent)
+                        }
+                    } else {
+                        ShareItemButton(share: vault, itemContent: itemContent)
                     }
                 }
             }

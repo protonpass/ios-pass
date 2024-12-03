@@ -22,6 +22,7 @@ import Combine
 import XCTest
 import ProtonCoreLogin
 import Entities
+import EntitiesMocks
 import UseCases
 import UseCasesMocks
 @testable import Proton_Pass
@@ -71,25 +72,5 @@ final class SendShareInviteTests: XCTestCase {
         } catch {
             XCTAssertTrue(error is PassError)
         }
-    }
-}
-
-extension Vault {
-    static func random() -> Self {
-        .init(id: .random(),
-              shareId: .random(),
-              addressId: .random(),
-              name: .random(),
-              description: .random(),
-              displayPreferences: .init(),
-              isOwner: false,
-              shareRole: .read,
-              members: 0,
-              maxMembers: 10, 
-              pendingInvites: 3,
-              newUserInvitesReady: 0,
-              shared: false,
-              createTime: 0,
-              canAutoFill: .random())
     }
 }
