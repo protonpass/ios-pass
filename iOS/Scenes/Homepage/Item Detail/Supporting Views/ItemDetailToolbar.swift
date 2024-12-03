@@ -62,9 +62,11 @@ struct ItemDetailToolbar: ToolbarContent {
                                  action: { viewModel.share() })
 
                     Menu(content: {
-                        Label("Move to another vault", uiImage: IconProvider.folderArrowIn)
-                            .buttonEmbeded { viewModel.moveToAnotherVault() }
-                            .hidden(!viewModel.isAllowedToEdit)
+                        if let vault = viewModel.vault?.vault, vault.isVaultRepresentation {
+                            Label("Move to another vault", uiImage: IconProvider.folderArrowIn)
+                                .buttonEmbeded { viewModel.moveToAnotherVault() }
+                                .hidden(!viewModel.isAllowedToEdit)
+                        }
 
                         Label(viewModel.itemContent.item.pinTitle,
                               uiImage: viewModel.itemContent.item.pinIcon)
@@ -75,7 +77,9 @@ struct ItemDetailToolbar: ToolbarContent {
                                 .buttonEmbeded { viewModel.copyNoteContent() }
                         }
 
-                        if viewModel.itemContent.type != .alias {
+                        if viewModel.itemContent.type != .alias,
+                            let vault = viewModel.vault?.vault,
+                           vault.isVaultRepresentation {
                             Label("Clone", image: IconProvider.squares)
                                 .buttonEmbeded { viewModel.clone() }
                         }
