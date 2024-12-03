@@ -21,6 +21,7 @@
 public enum SharingElementData: Sendable {
     case vault(Share)
     case item(item: ItemContent, share: Share)
+    // swiftlint:disable:next todo
     // TODO: remove this use case
     case new(VaultContent, ItemContent)
 }
