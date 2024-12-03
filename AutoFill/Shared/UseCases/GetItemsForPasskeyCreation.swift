@@ -51,35 +51,37 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
         self.accessRepository = accessRepository
     }
 
+    // swiftlint:disable:next todo
+    // TODO: revoir le async let ecoute et voir si on ne peux pas avoir vaultmanger a la place de tt ces repos
     func execute(userId: String,
                  _ request: PasskeyCredentialRequest) async throws -> CredentialsForPasskeyCreation {
         async let getSymmetricKey = symmetricKeyProvider.getSymmetricKey()
-        async let getVaults = shareRepository.getVaults(userId: userId)
+        async let getShares = shareRepository.getDecryptedShares(userId: userId)
         async let getActiveLogInItems = itemRepositiry.getActiveLogInItems(userId: userId)
         async let getPlan = accessRepository.getPlan(userId: userId)
 
-        let symmetricKey = try await getSymmetricKey
-        let vaults = try await getVaults
-        let items = try await getActiveLogInItems
-        let plan = try await getPlan
+        let results = try await (symmetricKey: getSymmetricKey,
+                                 shares: getShares,
+                                 items: getActiveLogInItems,
+                                 plan: getPlan)
 
         var searchableItems = [SearchableItem]()
         var includedItems = [SymmetricallyEncryptedItem]()
 
-        let allowedVaults = vaults.autofillAllowedVaults
-        for item in items {
-            guard let vault = vaults.first(where: { $0.shareId == item.shareId }),
-                  shouldTakeVaultIntoAccount(vault, allowedVaults: allowedVaults, plan: plan) else {
+        let allowedVaults = results.shares.autofillAllowedVaults
+        for item in results.items {
+            guard let vault = results.shares.first(where: { $0.shareId == item.shareId }),
+                  shouldTakeVaultIntoAccount(vault, allowedVaults: allowedVaults, plan: results.plan) else {
                 continue
             }
             includedItems.append(item)
             try searchableItems.append(.init(from: item,
-                                             symmetricKey: symmetricKey,
-                                             allVaults: vaults))
+                                             symmetricKey: results.symmetricKey,
+                                             allVaults: results.shares))
         }
 
         let uiModels = try await includedItems
-            .parallelMap { try $0.getItemContent(symmetricKey: symmetricKey) }
+            .parallelMap { try $0.getItemContent(symmetricKey: results.symmetricKey) }
             .sorted { lhs, rhs in
                 let lhsMatched = lhs
                     .loginIdentifiableFields
@@ -119,14 +121,14 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
             .map(\.toItemUiModel)
         assert(searchableItems.count == includedItems.count, "Should have the same amount of items")
         return .init(userId: userId,
-                     vaults: vaults,
+                     vaults: results.shares,
                      searchableItems: searchableItems,
                      items: uiModels)
     }
 }
 
 private extension GetItemsForPasskeyCreation {
-    func shouldTakeVaultIntoAccount(_ vault: Vault, allowedVaults: [Vault], plan: Plan) -> Bool {
+    func shouldTakeVaultIntoAccount(_ vault: Share, allowedVaults: [Share], plan: Plan) -> Bool {
         switch plan.planType {
         case .free:
             allowedVaults.contains(where: { $0.shareId == vault.shareId })

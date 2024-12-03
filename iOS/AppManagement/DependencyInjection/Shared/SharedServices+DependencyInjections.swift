@@ -132,13 +132,15 @@ extension SharedServiceContainer {
                                         logManager: self.logManager) }
     }
 
-    var appContentManager: Factory<any AppContentManagerServicing> {
-        self { AppContentManager(userManager: self.userManager(),
-                                 itemRepository: self.itemRepository,
-                                 shareRepository: self.shareRepository,
-                                 logManager: self.logManager)
-        }
-    }
+    // swiftlint:disable:next todo
+    // TODO: transform vault Manager
+//    var appContentManager: Factory<any AppContentManagerServicing> {
+//        self { AppContentManager(userManager: self.userManager(),
+//                                 itemRepository: self.itemRepository,
+//                                 shareRepository: self.shareRepository,
+//                                 logManager: self.logManager)
+//        }
+//    }
 }
 
 // MARK: - User

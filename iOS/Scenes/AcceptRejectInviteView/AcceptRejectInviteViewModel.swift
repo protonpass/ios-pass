@@ -98,7 +98,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
 
 private extension AcceptRejectInviteViewModel {
     func setUp() {
-        if userInvite.isVault {
+        if userInvite.isVault, userInvite.vaultData != nil {
             decodeVaultData()
         }
         vaultsManager.$state

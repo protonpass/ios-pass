@@ -24,11 +24,11 @@ import Client
 import Entities
 
 public protocol GetUserShareStatusUseCase: Sendable {
-    func execute(for vault: Vault) -> UserShareStatus
+    func execute(for vault: Share) -> UserShareStatus
 }
 
 public extension GetUserShareStatusUseCase {
-    func callAsFunction(for vault: Vault) -> UserShareStatus {
+    func callAsFunction(for vault: Share) -> UserShareStatus {
         execute(for: vault)
     }
 }
@@ -51,7 +51,7 @@ public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUs
         }
     }
 
-    public func execute(for vault: Vault) -> UserShareStatus {
+    public func execute(for vault: Share) -> UserShareStatus {
         guard let plan, vault.isAdmin || vault.isOwner else {
             return .cantShare
         }
@@ -59,6 +59,6 @@ public final class GetUserShareStatus: @unchecked Sendable, GetUserShareStatusUs
         if plan.isFreeUser {
             return vault.totalOverallMembers >= 3 ? .upsell : .canShare
         }
-        return vault.canShareVaultWithMorePeople ? .canShare : .cantShare
+        return vault.canShareWithMorePeople ? .canShare : .cantShare
     }
 }

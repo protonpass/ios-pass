@@ -339,7 +339,6 @@
 		3597F0D22CB5D57B00384874 /* ItemDetailMoreInfoSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */; };
 		3597F0D32CB5D6F400384874 /* ItemDetailTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */; };
 		3597F0D42CB5D76200384874 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
-		3597F0D52CB5D78000384874 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
 		35983C982C3691A000A82080 /* HomepageCoordinator+SignOut.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35983C972C3691A000A82080 /* HomepageCoordinator+SignOut.swift */; };
 		35983C9A2C36CBE300A82080 /* HomepageCoordinator+ManageAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35983C992C36CBE300A82080 /* HomepageCoordinator+ManageAccount.swift */; };
 		35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
@@ -508,8 +507,8 @@
 		5B6293212CDA287E006C3C67 /* AliasExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6293202CDA287D006C3C67 /* AliasExplanationView.swift */; };
 		5B6293232CDA299B006C3C67 /* AliasContactsSkeletonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6293222CDA2998006C3C67 /* AliasContactsSkeletonView.swift */; };
 		5B6293252CDCC7B7006C3C67 /* HomeCoordinator+InAppNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6293242CDCC7A5006C3C67 /* HomeCoordinator+InAppNotification.swift */; };
-		5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */; };
-		5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */; };
+		5B653AF72A7A600F00D6869A /* ManageSharedShareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF52A7A600F00D6869A /* ManageSharedShareView.swift */; };
+		5B653AF82A7A600F00D6869A /* ManageSharedShareViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B653AF62A7A600F00D6869A /* ManageSharedShareViewModel.swift */; };
 		5B66395E2B4D88290029F8DA /* ItemHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B66395C2B4D88290029F8DA /* ItemHistoryView.swift */; };
 		5B66395F2B4D88290029F8DA /* ItemHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B66395D2B4D88290029F8DA /* ItemHistoryViewModel.swift */; };
 		5B6639612B4D9A4F0029F8DA /* ItemDetailHistorySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6639602B4D9A4F0029F8DA /* ItemDetailHistorySection.swift */; };
@@ -536,7 +535,7 @@
 		5BA09B862CAFE2DA000001B7 /* CreateContactViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B852CAFE2DA000001B7 /* CreateContactViewModel.swift */; };
 		5BA09B872CAFE2DA000001B7 /* CreateContactView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA09B842CAFE2DA000001B7 /* CreateContactView.swift */; };
 		5BA663E72A7A8C5B0049EA68 /* VaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */; };
-		5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */; };
+		5BAB7A5F2CFDAB69001C8815 /* EntitiesMocks in Frameworks */ = {isa = PBXBuildFile; productRef = 5BAB7A5E2CFDAB69001C8815 /* EntitiesMocks */; };
 		5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
 		5BAE710B2BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71092BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift */; };
 		5BAE710C2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE710A2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift */; };
@@ -555,6 +554,8 @@
 		5BCB2EA52B1F89E80072345F /* PinnedItemsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */; };
 		5BCF619F2ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
 		5BCF61A02ABB1171002AD351 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */; };
+		5BCFE9252CFF0724009FC3C2 /* ShareItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE9242CFF0717009FC3C2 /* ShareItemButton.swift */; };
+		5BCFE9262CFF0724009FC3C2 /* ShareItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BCFE9242CFF0717009FC3C2 /* ShareItemButton.swift */; };
 		5BD4A8FA2B10C1B200C44C08 /* CancelAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */; };
 		5BD4A8FC2B10C1B900C44C08 /* ResetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FB2B10C1B900C44C08 /* ResetFactory.swift */; };
 		5BD4A8FE2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
@@ -1025,8 +1026,8 @@
 		5B6293202CDA287D006C3C67 /* AliasExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasExplanationView.swift; sourceTree = "<group>"; };
 		5B6293222CDA2998006C3C67 /* AliasContactsSkeletonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsSkeletonView.swift; sourceTree = "<group>"; };
 		5B6293242CDCC7A5006C3C67 /* HomeCoordinator+InAppNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeCoordinator+InAppNotification.swift"; sourceTree = "<group>"; };
-		5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultView.swift; sourceTree = "<group>"; };
-		5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedVaultViewModel.swift; sourceTree = "<group>"; };
+		5B653AF52A7A600F00D6869A /* ManageSharedShareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedShareView.swift; sourceTree = "<group>"; };
+		5B653AF62A7A600F00D6869A /* ManageSharedShareViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageSharedShareViewModel.swift; sourceTree = "<group>"; };
 		5B66395C2B4D88290029F8DA /* ItemHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemHistoryView.swift; sourceTree = "<group>"; };
 		5B66395D2B4D88290029F8DA /* ItemHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemHistoryViewModel.swift; sourceTree = "<group>"; };
 		5B6639602B4D9A4F0029F8DA /* ItemDetailHistorySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailHistorySection.swift; sourceTree = "<group>"; };
@@ -1046,7 +1047,6 @@
 		5BA09B842CAFE2DA000001B7 /* CreateContactView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactView.swift; sourceTree = "<group>"; };
 		5BA09B852CAFE2DA000001B7 /* CreateContactViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateContactViewModel.swift; sourceTree = "<group>"; };
 		5BA663E62A7A8C5B0049EA68 /* VaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VaultButton.swift; sourceTree = "<group>"; };
-		5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Vault+Extensions.swift"; sourceTree = "<group>"; };
 		5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UpsellingViewConfiguration+Extensions.swift"; sourceTree = "<group>"; };
 		5BAE71092BCEDAEC00F579E4 /* DarkWebMonitorHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkWebMonitorHomeView.swift; sourceTree = "<group>"; };
 		5BAE710A2BCEDAEC00F579E4 /* DarkWebMonitorHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkWebMonitorHomeViewModel.swift; sourceTree = "<group>"; };
@@ -1062,6 +1062,7 @@
 		5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppNotificationSection.swift; sourceTree = "<group>"; };
 		5BCB2EA42B1F89E80072345F /* PinnedItemsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinnedItemsView.swift; sourceTree = "<group>"; };
 		5BCF619E2ABB1171002AD351 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		5BCFE9242CFF0717009FC3C2 /* ShareItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareItemButton.swift; sourceTree = "<group>"; };
 		5BD4A8F92B10C1B100C44C08 /* CancelAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CancelAutoFill.swift; sourceTree = "<group>"; };
 		5BD4A8FB2B10C1B900C44C08 /* ResetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetFactory.swift; sourceTree = "<group>"; };
 		5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemTypeIdentifiable+Extensions.swift"; sourceTree = "<group>"; };
@@ -1182,6 +1183,7 @@
 				57F59FB22AE5C4DE002EFDFD /* ProtonCoreCryptoGoImplementation in Frameworks */,
 				35855C112AC8743F00794DB4 /* UseCases in Frameworks */,
 				5B8D20AB2AA74B5E00457CA3 /* DesignSystem in Frameworks */,
+				5BAB7A5F2CFDAB69001C8815 /* EntitiesMocks in Frameworks */,
 				354192842AC1CB9B001F2996 /* Macro in Frameworks */,
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
 				5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */,
@@ -1646,6 +1648,7 @@
 		3572E5262994043C00775FAC /* Supporting Views */ = {
 			isa = PBXGroup;
 			children = (
+				5BCFE9242CFF0717009FC3C2 /* ShareItemButton.swift */,
 				35703F272A279B950088C287 /* CustomFieldSections.swift */,
 				35283E4F2927B55D002F5B84 /* FullScreenView.swift */,
 				355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */,
@@ -1978,7 +1981,7 @@
 				5BF9F9522C183E8500EF0627 /* SecureLinkDetailView */,
 				35B0F7852C0738A100A89E93 /* SecureLink */,
 				5BAD39612AF52B31009FD5A3 /* ShareOrCreateNewVaultView */,
-				5B653AF42A7A5FEF00D6869A /* ManageSharedVaultView */,
+				5B653AF42A7A5FEF00D6869A /* ManageSharedShareView */,
 				5B1453AE2A69814C0048B022 /* SummaryView */,
 				5B1453962A69382E0048B022 /* UserPermissionView */,
 				5B1453912A68321B0048B022 /* UserEmailView */,
@@ -2217,14 +2220,14 @@
 			path = Subviews;
 			sourceTree = "<group>";
 		};
-		5B653AF42A7A5FEF00D6869A /* ManageSharedVaultView */ = {
+		5B653AF42A7A5FEF00D6869A /* ManageSharedShareView */ = {
 			isa = PBXGroup;
 			children = (
-				5B653AF52A7A600F00D6869A /* ManageSharedVaultView.swift */,
-				5B653AF62A7A600F00D6869A /* ManageSharedVaultViewModel.swift */,
+				5B653AF52A7A600F00D6869A /* ManageSharedShareView.swift */,
+				5B653AF62A7A600F00D6869A /* ManageSharedShareViewModel.swift */,
 				35EC5C992AE015DE0050614F /* ShareInviteeView.swift */,
 			);
-			path = ManageSharedVaultView;
+			path = ManageSharedShareView;
 			sourceTree = "<group>";
 		};
 		5B66395A2B4D87730029F8DA /* ItemHistory */ = {
@@ -2280,7 +2283,6 @@
 				5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */,
 				5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */,
 				5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */,
-				5BA663E82A7A8DEC0049EA68 /* Vault+Extensions.swift */,
 				5B1453E42A72BF570048B022 /* ShareRole+Extensions.swift */,
 				5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */,
 				5BF35D6D2B21FB1800D3E297 /* Pinnable+Extensions.swift */,
@@ -2806,6 +2808,7 @@
 				359A229A2BA3702D0005C750 /* CoreMocks */,
 				578AA8782BB1DC85003FA50B /* ProtonCoreAccountRecovery */,
 				8B7078632BD1205A00E920D7 /* ProtonCorePasswordChange */,
+				5BAB7A5E2CFDAB69001C8815 /* EntitiesMocks */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -3125,6 +3128,7 @@
 				3564DE9D299A4EC00002DDFA /* CreateEditItemTitleSection.swift in Sources */,
 				35AC9A692A0C189000FBCEEC /* EditCustomFieldView.swift in Sources */,
 				355BDED9299E789A009FDBB1 /* CreateEditAliasViewModel.swift in Sources */,
+				5BCFE9262CFF0724009FC3C2 /* ShareItemButton.swift in Sources */,
 				5BD4A9102B15FC2600C44C08 /* PasswordStrengthIcon.swift in Sources */,
 				5BD4A8FC2B10C1B900C44C08 /* ResetFactory.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
@@ -3184,7 +3188,6 @@
 				3577746F2B8FD71D0087A275 /* FetchCredentials.swift in Sources */,
 				359DB2A52A700A6D00549466 /* VaultsManager.swift in Sources */,
 				359A90342B90D01C00A50138 /* SelectPasskeyViewModel.swift in Sources */,
-				3597F0D52CB5D78000384874 /* Vault+Extensions.swift in Sources */,
 				3552D0C92CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift in Sources */,
 				3571B59829BF1573008D4350 /* HighlightText.swift in Sources */,
 				5B3AD42E2ACDB86600E1A07D /* ItemUiModel+Extensions.swift in Sources */,
@@ -3398,11 +3401,12 @@
 				35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */,
 				35F6D0C62A20A93800C8E395 /* InfoBanner.swift in Sources */,
 				5BBE1CA72C6109A7009F5DDC /* SimpleLoginAliasActivationView.swift in Sources */,
+				5BCFE9252CFF0724009FC3C2 /* ShareItemButton.swift in Sources */,
 				5BBE1CA82C6109A7009F5DDC /* SimpleLoginAliasActivationViewModel.swift in Sources */,
 				355C138929DB71D800264CD0 /* HomepageTabbarView.swift in Sources */,
 				355723C22BF37F5E00C76244 /* HomepageCoordinator+UniqueSheet.swift in Sources */,
 				3556949F29D46001005DD2EB /* MoveVaultListViewModel.swift in Sources */,
-				5B653AF72A7A600F00D6869A /* ManageSharedVaultView.swift in Sources */,
+				5B653AF72A7A600F00D6869A /* ManageSharedShareView.swift in Sources */,
 				5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */,
 				5B14539A2A6938660048B022 /* UserPermissionViewModel.swift in Sources */,
 				351225A72C502602007D266E /* HomepageCoordinator+AddAccount.swift in Sources */,
@@ -3573,7 +3577,6 @@
 				5BDDEABD2C5916590068B9DF /* SearchViewModifier.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
 				5B1453B22A69816C0048B022 /* SharingSummaryViewModel.swift in Sources */,
-				5BA663E92A7A8DEC0049EA68 /* Vault+Extensions.swift in Sources */,
 				5B5DBF112B67FAEB00F72F6C /* DeepLinkRoutingService.swift in Sources */,
 				3552F49028D3469E00547146 /* AliasDetailViewModel.swift in Sources */,
 				35CEA8ED2A61EEC400343A4E /* SecuritySettingsCoordinator.swift in Sources */,
@@ -3623,7 +3626,7 @@
 				357101EE2CBFAC020073A291 /* LoginsWith2faView.swift in Sources */,
 				5BA09B862CAFE2DA000001B7 /* CreateContactViewModel.swift in Sources */,
 				5BA09B872CAFE2DA000001B7 /* CreateContactView.swift in Sources */,
-				5B653AF82A7A600F00D6869A /* ManageSharedVaultViewModel.swift in Sources */,
+				5B653AF82A7A600F00D6869A /* ManageSharedShareViewModel.swift in Sources */,
 				359EB88C2A20CF74009588A9 /* InfoBannerView.swift in Sources */,
 				3552A28D29EC8B5200ABDB6E /* URL+Extensions.swift in Sources */,
 				35702C972A1E80660089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
@@ -5775,6 +5778,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5B8D20BC2AA7639E00457CA3 /* XCRemoteSwiftPackageReference "apple-fusion" */;
 			productName = fusion;
+		};
+		5BAB7A5E2CFDAB69001C8815 /* EntitiesMocks */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EntitiesMocks;
 		};
 		8B7078632BD1205A00E920D7 /* ProtonCorePasswordChange */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -71,7 +71,7 @@ final class FetchCredentials: FetchCredentialsUseCase {
                  params: (any PasskeyRequestParametersProtocol)?) async throws -> CredentialsFetchResult {
         async let symmetricKey = symmetricKeyProvider.getSymmetricKey()
         async let plan = accessRepository.getPlan(userId: userId)
-        async let vaults = shareRepository.getVaults(userId: userId)
+        async let shares = shareRepository.getDecryptedShares(userId: userId)
         async let encryptedItems = itemRepository.getActiveLogInItems(userId: userId)
         try await logger.debug("Mapping \(encryptedItems.count) encrypted items")
 
@@ -79,14 +79,14 @@ final class FetchCredentials: FetchCredentialsUseCase {
             return try await fetchPasskeys(userId: userId,
                                            params: params,
                                            symmetricKey: symmetricKey,
-                                           vaults: vaults,
+                                           vaults: shares,
                                            encryptedItems: encryptedItems,
                                            plan: plan)
         }
         return try await fetchPasswords(userId: userId,
                                         identifiers: identifiers,
                                         symmetricKey: symmetricKey,
-                                        vaults: vaults,
+                                        vaults: shares,
                                         encryptedItems: encryptedItems,
                                         plan: plan)
     }
@@ -95,7 +95,7 @@ final class FetchCredentials: FetchCredentialsUseCase {
 private extension FetchCredentials {
     /// When in free plan, only take 2 oldest vaults into account (suggestions & search)
     /// Otherwise take everything into account
-    func shouldTakeIntoAccount(_ vault: Vault, allowedVaults: [Vault], withPlan plan: Plan) -> Bool {
+    func shouldTakeIntoAccount(_ vault: Share, allowedVaults: [Share], withPlan plan: Plan) -> Bool {
         switch plan.planType {
         case .free:
             allowedVaults.contains(where: { $0.shareId == vault.shareId })
@@ -110,7 +110,7 @@ private extension FetchCredentials {
     func fetchPasswords(userId: String,
                         identifiers: [ASCredentialServiceIdentifier],
                         symmetricKey: SymmetricKey,
-                        vaults: [Vault],
+                        vaults: [Share],
                         encryptedItems: [SymmetricallyEncryptedItem],
                         plan: Plan) async throws -> CredentialsFetchResult {
         let urls = identifiers.compactMap(mapServiceIdentifierToURL.callAsFunction)
@@ -173,7 +173,7 @@ private extension FetchCredentials {
     func fetchPasskeys(userId: String,
                        params: any PasskeyRequestParametersProtocol,
                        symmetricKey: SymmetricKey,
-                       vaults: [Vault],
+                       vaults: [Share],
                        encryptedItems: [SymmetricallyEncryptedItem],
                        plan: Plan) async throws -> CredentialsFetchResult {
         var searchableItems = [SearchableItem]()
