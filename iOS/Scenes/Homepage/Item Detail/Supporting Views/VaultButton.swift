@@ -29,7 +29,7 @@ struct VaultButton: View {
     let vaultContent: VaultContent
 
     var body: some View {
-        Button { router.present(for: .manageShareVault(vault, .none)) } label: {
+        Button { router.present(for: .manageSharedShare(vault, .none)) } label: {
             HStack {
                 Label(title: {
                     Text(vaultContent.name)

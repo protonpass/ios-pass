@@ -81,7 +81,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func manageAccess() {
-        router.present(for: .manageShareVault(share, .topMost))
+        router.present(for: .manageSharedShare(share, .topMost))
     }
 
     private func complete(with element: SharingElementData) {

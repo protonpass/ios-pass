@@ -492,8 +492,8 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .sharingFlow(dismissal):
                     presentSharingFlow(dismissal: dismissal)
-                case let .manageShareVault(vault, dismissal):
-                    presentManageShareVault(with: vault, dismissal: dismissal)
+                case let .manageSharedShare(share, dismissal):
+                    presentManageSharedShare(with: share, dismissal: dismissal)
                 case let .acceptRejectInvite(invite):
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
@@ -635,6 +635,15 @@ extension HomepageCoordinator {
                     handleSignOut(userId: userId)
                 case let .deleteAccount(userId):
                     deleteAccount(userId: userId)
+                case let .screenDismissal(dismissal):
+                    switch dismissal {
+                    case .none:
+                        return
+                    case .topMost:
+                        dismissTopMostViewController(animated: true, completion: nil)
+                    case .all:
+                        dismissAllViewControllers(animated: true, completion: nil)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -671,25 +680,25 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentManageShareVault(with vault: Share, dismissal: SheetDismissal) {
-        let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
+    func presentManageSharedShare(with share: Share, dismissal: SheetDismissal) {
+        let manageShareShareView = ManageSharedShareView(viewModel: ManageSharedShareViewModel(share: share))
 
         let completion: () -> Void = { [weak self] in
             guard let self else {
                 return
             }
             if let host = rootViewController
-                .topMostViewController as? UIHostingController<ManageSharedVaultView> {
+                .topMostViewController as? UIHostingController<ManageSharedShareView> {
                 /// Updating share data circumventing the onAppear not being called after a sheet presentation
                 host.rootView.refresh()
                 return
             }
-            present(manageShareVaultView)
+            present(manageShareShareView)
         }
 
         switch dismissal {
         case .none:
-            present(manageShareVaultView)
+            present(manageShareShareView)
         case .topMost:
             dismissTopMostViewController(animated: true, completion: completion)
         case .all:
