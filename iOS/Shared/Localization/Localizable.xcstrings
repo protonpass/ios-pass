@@ -72575,6 +72575,16 @@
         }
       }
     },
+    "Leave" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leave"
+          }
+        }
+      }
+    },
     "Leave vault" : {
       "localizations" : {
         "be" : {
@@ -77308,6 +77318,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thành viên"
+          }
+        }
+      }
+    },
+    "Members (%lld)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Members (%lld)"
           }
         }
       }
@@ -112817,6 +112837,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kho lưu trữ được chia sẻ"
+          }
+        }
+      }
+    },
+    "Shared with" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared with"
           }
         }
       }

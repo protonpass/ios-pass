@@ -1,6 +1,6 @@
 //
-// VaultThumbnail.swift
-// Proton Pass - Created on 06/08/2024.
+// Share+Extensions.swift
+// Proton Pass - Created on 29/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,25 +20,40 @@
 
 import DesignSystem
 import Entities
-import SwiftUI
+import UIKit
 
-public struct VaultThumbnail: View {
-    private let vaultContent: VaultContent
-
-    private var iconColor: UIColor {
-        vaultContent.mainColor
+public extension Share {
+    var mainColor: UIColor? {
+        vaultContent?.display.color.color.color
     }
 
-    public init(vaultContent: VaultContent) {
-        self.vaultContent = vaultContent
+    var backgroundColor: UIColor? {
+        mainColor?.withAlphaComponent(0.16)
     }
 
-    public var body: some View {
-        CircleButton(icon: vaultContent.vaultBigIcon,
-                     iconColor: iconColor,
-                     iconDisabledColor: iconColor.withAlphaComponent(0.75),
-                     backgroundColor: iconColor.withAlphaComponent(0.16),
-                     backgroundDisabledColor: iconColor.withAlphaComponent(0.08))
-            .animation(.default, value: vaultContent)
+    var vaultBigIcon: UIImage? {
+        vaultContent?.display.icon.icon.bigImage
+    }
+
+    var vaultSmallIcon: UIImage? {
+        vaultContent?.display.icon.icon.smallImage
+    }
+}
+
+public extension VaultContent {
+    var mainColor: UIColor {
+        display.color.color.color
+    }
+
+    var backgroundColor: UIColor {
+        mainColor.withAlphaComponent(0.16)
+    }
+
+    var vaultBigIcon: UIImage {
+        display.icon.icon.bigImage
+    }
+
+    var vaultSmallIcon: UIImage {
+        display.icon.icon.smallImage
     }
 }

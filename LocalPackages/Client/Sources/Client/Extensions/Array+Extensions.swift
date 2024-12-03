@@ -20,15 +20,15 @@
 
 import Entities
 
-public extension [Vault] {
+public extension [Share] {
     /// This canAutoFill params has been computed on the BE side to determined if a vault should be accessible to
     /// use in autofill
     /// This should replace the previous client logic calculating the oldest 2 vaults of the user.
-    var autofillAllowedVaults: [Vault] {
+    var autofillAllowedVaults: [Share] {
         self.filter(\.canAutoFill)
     }
 
-    var oldestOwned: Vault? {
+    var oldestOwned: Share? {
         if self.isEmpty {
             return nil
         }

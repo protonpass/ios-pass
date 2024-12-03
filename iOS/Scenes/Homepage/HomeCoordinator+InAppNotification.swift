@@ -136,7 +136,7 @@ private extension HomepageCoordinator {
             do {
                 switch destination {
                 case let .viewVaultMembers(sharedId):
-                    try await vaultMembers(shareID: sharedId)
+                    try await shareMembers(shareID: sharedId)
                 case let .aliasBreach(sharedId, itemId):
                     try await aliasBreach(shareID: sharedId, itemID: itemId)
                 case let .customEmailBreach(customEmailId):
@@ -163,11 +163,11 @@ private extension HomepageCoordinator {
         router.present(for: .itemDetail(itemContent))
     }
 
-    func vaultMembers(shareID: String) async throws {
-        guard let vault = try await shareRepository.getVault(shareId: shareID) else {
+    func shareMembers(shareID: String) async throws {
+        guard let vault = try await shareRepository.getDecryptedShare(shareId: shareID) else {
             return
         }
-        router.present(for: .manageShareVault(vault, .none))
+        router.present(for: .manageSharedShare(vault, .none))
     }
 
     func aliasBreach(shareID: String, itemID: String) async throws {

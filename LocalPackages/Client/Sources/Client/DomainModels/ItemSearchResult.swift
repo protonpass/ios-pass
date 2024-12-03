@@ -86,7 +86,7 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
     // but always nil because not applicable to search results
     public var totpUri: String?
     public let url: String?
-    public let vault: Vault?
+    public let vault: Share?
     public let lastUseTime: Int64
     public let modifyTime: Int64
     public let pinned: Bool
@@ -101,7 +101,7 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
                 title: SearchResultEither,
                 detail: [SearchResultEither],
                 url: String?,
-                vault: Vault?,
+                vault: Share?,
                 lastUseTime: Int64,
                 modifyTime: Int64,
                 pinned: Bool) {

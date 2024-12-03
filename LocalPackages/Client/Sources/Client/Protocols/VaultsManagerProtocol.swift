@@ -24,16 +24,16 @@ import Entities
 // sourcery: AutoMockable
 public protocol VaultsManagerProtocol: Sendable {
     nonisolated var vaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never> { get }
-    var currentVaults: CurrentValueSubject<[Vault], Never> { get }
+    var currentVaults: CurrentValueSubject<[Share], Never> { get }
     var vaultSelection: VaultSelection { get }
     var hasOnlyOneOwnedVault: Bool { get }
 
     func refresh(userId: String)
     func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
-    func getItems(for vault: Vault) -> [ItemUiModel]
-    func getAllVaults() -> [Vault]
+    func getItems(for vault: Share) -> [ItemUiModel]
+    func getAllVaults() -> [Share]
     func delete(userId: String, shareId: String) async throws
-    func getOldestOwnedVault() -> Vault?
+    func getOldestOwnedVault() -> Share?
     func reset() async
 }

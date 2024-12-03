@@ -19,19 +19,19 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct VaultContentUiModel: Identifiable, Hashable, Sendable {
-    public let vault: Vault
+    public let vault: Share
     /// `Active` items only
     public let items: [ItemUiModel]
 
     public var id: String {
-        vault.shareId
+        vault.id
     }
 
     public var itemCount: Int {
         items.count
     }
 
-    public init(vault: Vault, items: [ItemUiModel]) {
+    public init(vault: Share, items: [ItemUiModel]) {
         self.vault = vault
         self.items = items
     }

@@ -22,5 +22,5 @@
 import Foundation
 
 public protocol VaultsProvider: Sendable {
-    func getAllVaults() async -> [Vault]
+    func getAllVaults() async -> [Share]
 }
