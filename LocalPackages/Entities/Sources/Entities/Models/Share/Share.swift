@@ -173,7 +173,7 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* ,
         case expireTime, createTime, canAutoFill
     }
 
-    public func update(with vaultContent: VaultContent?) -> Share {
+    public func copy(with vaultContent: VaultContent?) -> Share {
         var updated = self
         updated.vaultContent = vaultContent
         return updated
@@ -207,7 +207,7 @@ public extension Share {
         (isOwner || isAdmin) && !reachedSharingLimit
     }
 
-    var name: String? {
+    var vaultName: String? {
         vaultContent?.name
     }
 }

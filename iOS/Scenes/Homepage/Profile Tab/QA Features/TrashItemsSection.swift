@@ -79,7 +79,7 @@ private struct TrashItemsView: View {
                                                       iconColor: color,
                                                       backgroundColor: color.withAlphaComponent(0.16))
                                      },
-                                     title: vault.name ?? "Share link to item",
+                                     title: vault.vaultName ?? "Share link to item",
                                      itemCount: uiModel.itemCount,
                                      isShared: uiModel.vault.shared,
                                      isSelected: false,
@@ -116,7 +116,7 @@ private struct TrashItemsView: View {
                message: {
                    if let selectedVault {
                        // swiftlint:disable:next line_length
-                       Text(verbatim: "Vault \"\(selectedVault.vault.name ?? "Item share")\" with \(selectedVault.itemCount) item(s)")
+                       Text(verbatim: "Vault \"\(selectedVault.vault.vaultName ?? "Item share")\" with \(selectedVault.itemCount) item(s)")
                    }
                })
     }
@@ -166,12 +166,14 @@ private final class TrashItemsViewModel: ObservableObject {
         Task { [weak self] in
             guard let self else { return }
             do {
-                bannerManager.displayBottomInfoMessage("Trashing all items of \"\(vault.name ?? "Item Share")\"")
+                bannerManager
+                    .displayBottomInfoMessage("Trashing all items of \"\(vault.vaultName ?? "Item Share")\"")
                 let items = try await itemRepository.getItems(shareId: vault.shareId,
                                                               state: .active)
                 try await itemRepository.trashItems(items)
                 loadVaults()
-                bannerManager.displayBottomSuccessMessage("Trashed all items of \"\(vault.name ?? "Item share")\"")
+                bannerManager
+                    .displayBottomSuccessMessage("Trashed all items of \"\(vault.vaultName ?? "Item share")\"")
             } catch {
                 bannerManager.displayTopErrorMessage(error)
             }

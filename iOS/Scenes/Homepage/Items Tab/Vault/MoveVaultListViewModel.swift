@@ -104,7 +104,8 @@ private extension MoveVaultListViewModel {
             let message = #localized("Item moved to vault « %@ »", toVaultName)
             return .successMessage(message, config: .dismissAndRefresh(with: .update(item.type)))
         case let .allItems(fromVault):
-            let message = #localized("Items from « %@ » moved to vault « %@ »", fromVault.name ?? "", toVaultName)
+            let message = #localized("Items from « %@ » moved to vault « %@ »", fromVault.vaultName ?? "",
+                                     toVaultName)
             return .successMessage(message, config: .dismissAndRefresh)
         case let .selectedItems(items):
             let message = #localized("%lld items moved to vault « %@ »", items.count, toVaultName)

@@ -389,6 +389,6 @@ private extension SymmetricallyEncryptedShare {
         guard let decryptedContentData = try decryptedContent.base64Decode() else { return share }
         let vaultContent = try VaultContent(data: decryptedContentData)
 
-        return share.update(with: vaultContent)
+        return share.copy(with: vaultContent)
     }
 }
