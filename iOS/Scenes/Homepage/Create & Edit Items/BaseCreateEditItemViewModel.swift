@@ -157,6 +157,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     weak var delegate: (any CreateEditItemViewModelDelegate)?
     var cancellables = Set<AnyCancellable>()
 
+    private var uploadFileTask: Task<Void, Never>?
+
     init(mode: ItemMode,
          upgradeChecker: any UpgradeCheckerProtocol,
          vaults: [Vault]) throws {
@@ -472,31 +474,52 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func handleAttachment(_ url: URL) {
-        do {
-            let fileSize = try getFileSize(for: url)
-            if fileSize > Constants.Utils.maxFileSizeInBytes {
-                // Optionally remove the file, we don't care if errors occur here
-                // because it should be in temporary directory which is cleaned up
-                // by the system anyway
-                try? FileManager.default.removeItem(at: url)
-                throw PassError.fileAttachment(.fileTooLarge(fileSize))
+        uploadFileTask?.cancel()
+        uploadFileTask = Task { [weak self] in
+            guard let self else { return }
+            defer {
+                isUploadingFile = false
             }
-            let mimeType = try getMimeType(of: url)
-            let fileGroup = getFileGroup(mimeType: mimeType)
-            let formattedFileSize = formatFileAttachmentSize(fileSize)
-            files.append(.init(id: UUID().uuidString,
-                               metadata: .init(url: url,
-                                               mimeType: mimeType,
-                                               fileGroup: fileGroup,
-                                               size: fileSize,
-                                               formattedSize: formattedFileSize)))
-        } catch {
-            handle(error)
+            let fileId = UUID().uuidString
+            do {
+                isUploadingFile = true
+                let fileSize = try getFileSize(for: url)
+                if fileSize > Constants.Utils.maxFileSizeInBytes {
+                    // Optionally remove the file, we don't care if errors occur here
+                    // because it should be in temporary directory which is cleaned up
+                    // by the system anyway
+                    try? FileManager.default.removeItem(at: url)
+                    throw PassError.fileAttachment(.fileTooLarge(fileSize))
+                }
+                let mimeType = try getMimeType(of: url)
+                let fileGroup = getFileGroup(mimeType: mimeType)
+                let formattedFileSize = formatFileAttachmentSize(fileSize)
+                let file = PendingFileAttachment(id: fileId,
+                                                 metadata: .init(url: url,
+                                                                 mimeType: mimeType,
+                                                                 fileGroup: fileGroup,
+                                                                 size: fileSize,
+                                                                 formattedSize: formattedFileSize))
+                files.append(.pending(file))
+                try await Task.sleep(seconds: 0.5)
+                if Bool.random() {
+                    files.updateState(id: fileId, newState: .uploaded(remoteId: ""))
+                } else {
+                    throw PassError.fileAttachment(.noPngData)
+                }
+            } catch {
+                files.updateState(id: fileId, newState: .error(error))
+                handle(error)
+            }
         }
     }
 
     func handleAttachmentError(_ error: any Error) {
         handle(error)
+    }
+
+    func retryUpload(attachment: FileAttachment) {
+        files.updateState(id: attachment.id, newState: .uploaded(remoteId: ""))
     }
 
     func rename(attachment: FileAttachment, newName: String) {
