@@ -232,7 +232,9 @@ private extension SearchViewModel {
                 case .newestToOldest, .oldestToNewest:
                     try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
                 }
-            await updateState(.results(ItemCount(items: results), filteredAndSortedResults))
+            await updateState(.results(ItemCount(items: results, sharedByMe: filteredResults.itemSharedByMeCount,
+                                                 sharedWithMe: filteredResults.itemSharedWithMeCount),
+                                       filteredAndSortedResults))
         } catch {
             if error is CancellationError {
                 print("Cancelled \(#function)")
@@ -395,5 +397,15 @@ extension SearchViewState: Equatable {
         default:
             false
         }
+    }
+}
+
+private extension [ItemSearchResult] {
+    var itemSharedByMeCount: Int {
+        self.filter { $0.shared && $0.owner }.count
+    }
+
+    var itemSharedWithMeCount: Int {
+        self.filter { $0.shared && !$0.owner }.count
     }
 }

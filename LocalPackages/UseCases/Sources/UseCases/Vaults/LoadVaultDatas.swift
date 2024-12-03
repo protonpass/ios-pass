@@ -32,13 +32,13 @@ private struct Batch: Sendable {
 public protocol LoadVaultDatasUseCase: Sendable {
     func execute(symmetricKey: SymmetricKey,
                  vaults: [Share],
-                 items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel
+                 items: [SymmetricallyEncryptedItem]) async throws -> SharesData
 }
 
 public extension LoadVaultDatasUseCase {
     func callAsFunction(symmetricKey: SymmetricKey,
                         vaults: [Share],
-                        items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel {
+                        items: [SymmetricallyEncryptedItem]) async throws -> SharesData {
         try await execute(symmetricKey: symmetricKey, vaults: vaults, items: items)
     }
 }
@@ -48,7 +48,7 @@ public final class LoadVaultDatas: LoadVaultDatasUseCase {
 
     public func execute(symmetricKey: SymmetricKey,
                         vaults: [Share],
-                        items: [SymmetricallyEncryptedItem]) async throws -> VaultDatasUiModel {
+                        items: [SymmetricallyEncryptedItem]) async throws -> SharesData {
         let batches = try await withThrowingTaskGroup(of: Batch.self,
                                                       returning: [Batch].self) { @Sendable group in
             let itemBatches = items.chunked(into: Constants.Utils.batchSize)
@@ -92,15 +92,15 @@ public final class LoadVaultDatas: LoadVaultDatasUseCase {
             trashedItems.append(contentsOf: batch.trashed)
         }
 
-        let vaultContentUiModels = vaults
-            .compactMap { vault -> VaultContentUiModel? in
+        let shareContents = vaults
+            .compactMap { vault -> ShareContent? in
                 guard let items = vaultDict[vault.shareId] else {
                     assertionFailure("Items for share \(vault.shareId) should not be nil")
                     return nil
                 }
-                return .init(vault: vault, items: items)
+                return .init(share: vault, items: items)
             }
 
-        return .init(vaults: vaultContentUiModels, trashedItems: trashedItems)
+        return .init(shares: shareContents, trashedItems: trashedItems)
     }
 }

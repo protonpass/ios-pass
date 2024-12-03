@@ -83,6 +83,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
               data: contentData,
               customFields: customFields)
     }
+
+    public var shared: Bool { item.shareCount > 0 }
 }
 
 extension ItemContent: ItemIdentifiable {

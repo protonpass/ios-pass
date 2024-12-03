@@ -98,7 +98,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
         let allVaults = vaultsManager.getAllVaultContents()
         vault = allVaults
-            .first { $0.vault.shareId == itemContent.shareId }
+            .first { $0.share.shareId == itemContent.shareId }
             .map { VaultListUiModel(vaultContent: $0) }
         shouldShowVault = allVaults.count > 1
 

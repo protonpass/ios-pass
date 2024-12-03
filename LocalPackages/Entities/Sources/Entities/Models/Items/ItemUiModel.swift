@@ -39,6 +39,7 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
     public let modifyTime: Int64
     public let state: ItemState
     public let pinned: Bool
+    public let isShared: Bool
 
     public var hasTotpUri: Bool { totpUri?.isEmpty == false }
 
@@ -58,7 +59,8 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
                 modifyTime: Int64,
                 state: ItemState,
                 pinned: Bool,
-                isAliasEnabled: Bool) {
+                isAliasEnabled: Bool,
+                isShared: Bool) {
         // We precompute and cache the hash value
         // because we rely on it a lot to drive SwiftUI's rerendering process
         // the faster we can hash this object, the better the UI performance
@@ -108,6 +110,9 @@ public struct ItemUiModel: PrecomputedHashable, Equatable, Sendable, Pinnable {
 
         self.isAliasEnabled = isAliasEnabled
         hasher.combine(isAliasEnabled)
+
+        self.isShared = isShared
+        hasher.combine(isShared)
 
         precomputedHash = hasher.finalize()
     }

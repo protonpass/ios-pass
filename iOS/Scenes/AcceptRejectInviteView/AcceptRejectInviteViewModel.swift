@@ -104,8 +104,8 @@ private extension AcceptRejectInviteViewModel {
         vaultsManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
-                guard let self, case let .loaded(uiModel) = state,
-                      uiModel.vaults.map(\.vault.id).contains(self.userInvite.targetID) else {
+                guard let self, let sharesData = state.loadedContent,
+                      sharesData.shares.map(\.share.id).contains(self.userInvite.targetID) else {
                     return
                 }
                 executingAction = false

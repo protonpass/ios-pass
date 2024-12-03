@@ -78,7 +78,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         }
 
                         if viewModel.itemContent.type != .alias,
-                            let vault = viewModel.vault?.vault,
+                           let vault = viewModel.vault?.vault,
                            vault.isVaultRepresentation {
                             Label("Clone", image: IconProvider.squares)
                                 .buttonEmbeded { viewModel.clone() }
