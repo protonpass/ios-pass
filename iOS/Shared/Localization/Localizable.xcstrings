@@ -5457,6 +5457,24 @@
             }
           }
         },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vidarebefordrad"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vidarebefordrade"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -18510,7 +18528,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edistynyt aliashallinta on saatavilla Pass Unlimitedillä. Päivitä tilauksesi käyttääksesi sitä heti."
+            "value" : "Edistynyt aliashallinta sisältyy Pass Unlimitediin. Hanki se heti päivittämällä tilauksesi."
           }
         },
         "fr" : {
@@ -25326,7 +25344,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Είστε βέβαιοι ότι θέλετε να προσθέσετε ένα μυστικό 2FA στο \"%@\";"
+            "value" : "Θέλετε σίγουρα να προσθέσετε ένα μυστικό 2FA στο \"%@\";"
           }
         },
         "en" : {
@@ -25486,7 +25504,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Είστε βέβαιοι ότι θέλετε να διαγράψετε την ακόλουθη ενότητα \"%@\";"
+            "value" : "Θέλετε σίγουρα να διαγράψετε την ακόλουθη ενότητα \"%@\";"
           }
         },
         "en" : {
@@ -25647,7 +25665,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Είστε βέβαιοι ότι θέλετε να αποσυνδεθείτε από %@;"
+            "value" : "Θέλετε σίγουρα να αποσυνδεθείτε από %@;"
           }
         },
         "en" : {
@@ -29763,7 +29781,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この保管庫へのアクセスを許可および取り消すことができる"
+            "value" : "この保管庫へのアクセスを許可および取り消すことができます"
           }
         },
         "ka" : {
@@ -29924,7 +29942,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この保管庫のアイテムを見ることができる"
+            "value" : "この保管庫のアイテムは閲覧可能"
           }
         },
         "ka" : {
@@ -34628,7 +34646,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bekräfta extra lösenord"
+            "value" : "Bekräfta extralösenord"
           }
         },
         "tr" : {
@@ -38813,7 +38831,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erstellen und automatisch ausfüllen"
+            "value" : "Erstellen & ausfüllen"
           }
         },
         "el" : {
@@ -52628,7 +52646,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ange ditt extra lösenord"
+            "value" : "Ange ditt extralösenord"
           }
         },
         "tr" : {
@@ -54550,7 +54568,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extra lösenord"
+            "value" : "Extralösenord"
           }
         },
         "tr" : {
@@ -54704,7 +54722,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extra lösenord inaktiverat"
+            "value" : "Extralösenord inaktiverat"
           }
         },
         "tr" : {
@@ -54864,7 +54882,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extra lösenord för Proton Pass"
+            "value" : "Extralösenord för Proton Pass"
           }
         },
         "tr" : {
@@ -55309,13 +55327,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Extra lösenord måste ha minst %lld tecken"
+                  "value" : "Extralösenord måste ha minst %lld tecken"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Extra lösenord måste ha minst %lld tecken"
+                  "value" : "Extralösenord måste ha minst %lld tecken"
                 }
               }
             }
@@ -55515,7 +55533,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Extra lösenord inställt"
+            "value" : "Extralösenord inställt"
           }
         },
         "tr" : {
@@ -77889,7 +77907,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "MM / YY (月/年)"
+            "value" : "月/年"
           }
         },
         "ka" : {
@@ -85309,6 +85327,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "一度同期すると、Passでエイリアスを削除するとSimpleLoginでも削除されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "როცა სინქრონიზაცია დასრულდება, Pass-ში ფსევდონიმების წაშლა მათ SimpleLogin-დანაც წაშლის."
           }
         },
         "ko" : {
@@ -94356,6 +94380,12 @@
             "value" : "Upozorňujeme, že jednou smazané aliasy nelze obnovit."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bemærk, at aliasser ikke kan gendannes, når de er slettet."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94392,6 +94422,12 @@
             "value" : "Une fois supprimé, un alias ne peut pas être restauré."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mohon diperhatikan bahwa setelah dihapus, alias tidak dapat lagi dipulihkan."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94413,7 +94449,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "별칭은 한 번 삭제하면 복구할 수 없습니다."
+            "value" : "한 번 삭제한 별칭은 복구할 수 없습니다."
           }
         },
         "nb" : {
@@ -96158,7 +96194,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skydda Proton Pass med ett extra lösenord."
+            "value" : "Skydda Proton Pass med ett extralösenord."
           }
         },
         "tr" : {
@@ -99552,7 +99588,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ta bort extra lösenord"
+            "value" : "Ta bort extralösenord"
           }
         },
         "tr" : {
@@ -100340,7 +100376,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Repetera extra lösenord"
+            "value" : "Repetera extralösenord"
           }
         },
         "tr" : {
@@ -110384,7 +110420,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ställ in extra lösenord"
+            "value" : "Ställ in extralösenord"
           }
         },
         "tr" : {
@@ -110544,7 +110580,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ställ in extra lösenord för Proton Pass"
+            "value" : "Ställ in extralösenord för Proton Pass"
           }
         },
         "tr" : {
@@ -111101,7 +111137,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vahvista suojausta määrittämällä kaksivaiheinen tunnistautuminen"
+            "value" : "Vahvista suojausta määrittämällä 2FA"
           }
         },
         "fr" : {
@@ -125059,7 +125095,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ごみ箱は空です"
+            "value" : "ごみ箱は空っぽです"
           }
         },
         "ka" : {
@@ -139548,7 +139584,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fel extra lösenord"
+            "value" : "Fel extralösenord"
           }
         },
         "tr" : {
