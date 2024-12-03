@@ -181,6 +181,7 @@ private extension HomepageCoordinator {
                 isFirstLaunched = false
 
                 bannerManager.displayBottomInfoMessage(message)
+                removeInAppNotificationDisplay()
             }
             .store(in: &cancellables)
 
@@ -576,6 +577,8 @@ extension HomepageCoordinator {
                     presentLoginsWith2faView()
                 case let .breachDetail(breach):
                     presentBreachDetail(breach: breach)
+                case let .breach(breach):
+                    presentBreach(breach: breach)
                 }
             }
             .store(in: &cancellables)
