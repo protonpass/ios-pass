@@ -69,7 +69,7 @@ private extension PassRustCore.FileGroup {
         case .word:
             .word
         case .powerPoint:
-            .pdf
+            .powerPoint
         case .excel:
             .excel
         case .document:
