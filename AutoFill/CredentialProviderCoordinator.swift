@@ -445,7 +445,7 @@ private extension CredentialProviderCoordinator {
     }
 
     func presentCreateLoginView(shareId: String,
-                                vaults: [Vault],
+                                vaults: [Share],
                                 url: URL?,
                                 request: PasskeyCredentialRequest?) {
         do {
@@ -466,7 +466,7 @@ private extension CredentialProviderCoordinator {
         }
     }
 
-    func presentCreateAliasView(shareId: String, vaults: [Vault]) {
+    func presentCreateAliasView(shareId: String, vaults: [Share]) {
         do {
             let viewModel = try CreateEditAliasViewModel(mode: .create(shareId: shareId,
                                                                        type: .alias),

@@ -60,9 +60,9 @@ enum SheetDismissal {
 
 enum SheetDestination: Equatable, Hashable, Sendable {
     case sharingFlow(SheetDismissal)
-    case manageShareVault(Vault, SheetDismissal)
+    case manageSharedShare(Share, SheetDismissal)
     case acceptRejectInvite(UserInvite)
-    case vaultCreateEdit(vault: Vault?)
+    case vaultCreateEdit(vault: Share?)
     case upgradeFlow
     case upselling(UpsellingViewConfiguration, SheetDismissal = .all)
     case logView(module: PassModule)
@@ -131,6 +131,7 @@ enum ActionDestination: Sendable {
     case manage(userId: String)
     case signOut(userId: String)
     case deleteAccount(userId: String)
+    case screenDismissal(SheetDismissal)
 }
 
 enum DeeplinkDestination: Sendable {

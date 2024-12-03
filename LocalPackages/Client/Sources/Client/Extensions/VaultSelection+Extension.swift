@@ -22,12 +22,12 @@ import Entities
 import Macro
 
 public extension VaultSelection {
-    var searchBarPlacehoder: String {
+    var searchBarPlaceholder: String {
         switch self {
         case .all:
             #localized("Search in all vaults...", bundle: .module)
-        case let .precise(vault):
-            #localized("Search in %@...", bundle: .module, vault.name)
+        case let .precise(share):
+            #localized("Search in %@...", bundle: .module, share.vaultContent?.name ?? "")
         case .trash:
             #localized("Search in Trash...", bundle: .module)
         }

@@ -31,6 +31,8 @@ public protocol ShareRepositoryProtocol: Sendable {
     /// Get all local shares
     func getShares(userId: String) async throws -> [SymmetricallyEncryptedShare]
     func getShare(shareId: String) async throws -> Share?
+    func getDecryptedShares(userId: String) async throws -> [Share]
+    func getDecryptedShare(shareId: String) async throws -> Share?
 
     /// Get all remote shares
     func getRemoteShares(userId: String,
@@ -62,16 +64,10 @@ public protocol ShareRepositoryProtocol: Sendable {
 
     // MARK: - Vault Functions
 
-    /// Get all local vaults
-    func getVaults(userId: String) async throws -> [Vault]
-
-    /// Get local vault by ID
-    func getVault(shareId: String) async throws -> Vault?
-
     @discardableResult
     func createVault(_ vault: VaultContent) async throws -> Share
 
-    func edit(oldVault: Vault, newVault: VaultContent) async throws
+    func edit(oldVault: Share, newVault: VaultContent) async throws
 
     /// Delete vault. If vault is not empty (0 active & trashed items)  an error is thrown.
     func deleteVault(shareId: String) async throws
@@ -136,6 +132,30 @@ public extension ShareRepository {
         return share.share
     }
 
+    func getDecryptedShares(userId: String) async throws -> [Share] {
+        logger.trace("Getting local shares for user \(userId)")
+
+        let shares = try await getShares(userId: userId)
+        let symmetricKey = try await getSymmetricKey()
+        let decriptedShares = try shares.map { share -> Share in
+            try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
+        }
+        logger.trace("Got \(decriptedShares.count) local shares for user \(userId)")
+        return decriptedShares
+    }
+
+    func getDecryptedShare(shareId: String) async throws -> Share? {
+        let userId = try await userManager.getActiveUserId()
+        let symmetricKey = try await getSymmetricKey()
+        logger.trace("Getting local share with shareID \(shareId) for user \(userId)")
+        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId) else {
+            logger.trace("Found no local share with shareID \(shareId) for user \(userId)")
+            return nil
+        }
+        logger.trace("Got local share with shareID \(shareId) for user \(userId)")
+        return try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
+    }
+
     func getRemoteShares(userId: String,
                          eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
         -> [Share] {
@@ -181,9 +201,10 @@ public extension ShareRepository {
             let symmetricKey = try await getSymmetricKey()
             // swiftlint:disable:next todo
             // TODO: check new type of shares
-            for share in encryptedShares {
-                if let vault = try share.toVault(symmetricKey: symmetricKey) {
-                    eventStream?.send(.decryptedVault(vault))
+            for share in encryptedShares where share.share.isVaultRepresentation {
+                let updatedShare = try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
+                if updatedShare.vaultContent != nil {
+                    eventStream?.send(.decryptedVault(updatedShare))
                 }
             }
         }
@@ -248,27 +269,6 @@ public extension ShareRepository {
 // MARK: - Vaults
 
 public extension ShareRepository {
-    func getVaults(userId: String) async throws -> [Vault] {
-        logger.trace("Getting local vaults for user \(userId)")
-
-        let shares = try await getShares(userId: userId)
-        let symmetricKey = try await getSymmetricKey()
-        let vaults = try shares.compactMap { try $0.toVault(symmetricKey: symmetricKey) }
-        logger.trace("Got \(vaults.count) local vaults for user \(userId)")
-        return vaults
-    }
-
-    func getVault(shareId: String) async throws -> Vault? {
-        let userId = try await userManager.getActiveUserId()
-        logger.trace("Getting local vault with shareID \(shareId) for user \(userId)")
-        guard let share = try await localDatasource.getShare(userId: userId, shareId: shareId) else {
-            logger.trace("Found no local vault with shareID \(shareId) for user \(userId)")
-            return nil
-        }
-        logger.trace("Got local vault with shareID \(shareId) for user \(userId)")
-        return try await share.toVault(symmetricKey: getSymmetricKey())
-    }
-
     func createVault(_ vault: VaultContent) async throws -> Share {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
@@ -283,11 +283,11 @@ public extension ShareRepository {
         return createdVault
     }
 
-    func edit(oldVault: Vault, newVault: VaultContent) async throws {
+    func edit(oldVault: Share, newVault: VaultContent) async throws {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let userId = userData.user.ID
         logger.trace("Editing vault \(oldVault.id) for user \(userId)")
-        let shareId = oldVault.shareId
+        let shareId = oldVault.id
         let shareKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let request = try UpdateVaultRequest(vault: newVault, shareKey: shareKey)
         let updatedVault = try await remoteDatasource.updateVault(userId: userId,
@@ -382,27 +382,13 @@ private extension ShareRepository {
 }
 
 private extension SymmetricallyEncryptedShare {
-    func toVault(symmetricKey: SymmetricKey) throws -> Vault? {
-        guard share.shareType == .vault, let encryptedContent else { return nil }
+    func withVaultContentDecrypted(symmetricKey: SymmetricKey) throws -> Share {
+        guard share.shareType == .vault, let encryptedContent else { return share }
 
         let decryptedContent = try symmetricKey.decrypt(encryptedContent)
-        guard let decryptedContentData = try decryptedContent.base64Decode() else { return nil }
+        guard let decryptedContentData = try decryptedContent.base64Decode() else { return share }
         let vaultContent = try VaultContent(data: decryptedContentData)
 
-        return Vault(id: share.vaultID,
-                     shareId: share.shareID,
-                     addressId: share.addressID,
-                     name: vaultContent.name,
-                     description: vaultContent.description_p,
-                     displayPreferences: vaultContent.display,
-                     isOwner: share.owner,
-                     shareRole: ShareRole(rawValue: share.shareRoleID) ?? .read,
-                     members: share.members,
-                     maxMembers: share.maxMembers,
-                     pendingInvites: share.pendingInvites,
-                     newUserInvitesReady: share.newUserInvitesReady,
-                     shared: share.shared,
-                     createTime: share.createTime,
-                     canAutoFill: share.canAutoFill)
+        return share.copy(with: vaultContent)
     }
 }

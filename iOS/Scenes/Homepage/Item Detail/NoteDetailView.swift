@@ -60,12 +60,16 @@ struct NoteDetailView: View {
 
                     HStack {
                         if let vault = viewModel.vault?.vault {
-                            if !vault.shared {
-                                VaultLabel(vault: vault)
-                                    .padding(.top, 4)
+                            if let vaultContent = vault.vaultContent {
+                                if vault.shared {
+                                    VaultButton(vault: vault, vaultContent: vaultContent)
+                                        .padding(.top, 4)
+                                } else {
+                                    VaultLabel(vaultContent: vaultContent)
+                                        .padding(.top, 4)
+                                }
                             } else {
-                                VaultButton(vault: vault)
-                                    .padding(.top, 4)
+                                ShareItemButton(share: vault, itemContent: itemContent)
                             }
                         }
                         Spacer()

@@ -40,15 +40,15 @@ struct SharingSummaryView: View {
                 .foregroundStyle(PassColor.textNorm.toColor)
             if viewModel.hasSingleInvite, let info = viewModel.infos.first {
                 emailInfo(infos: info)
-                if case let .vault(vault) = info.shareElement {
-                    vaultInfo(infos: vault, itemsCount: info.itemsNum)
+                if case let .vault(vault) = info.shareElement, let vaultContent = vault.vaultContent {
+                    vaultInfo(infos: vault, vaultContent: vaultContent, itemsCount: info.itemsNum)
                 } else if case let .item(item, _) = info.shareElement {
                     itemInfo(infos: item)
                 }
                 permissionInfo(infos: info)
             } else if let info = viewModel.infos.first {
-                if case let .vault(vault) = info.shareElement {
-                    vaultInfo(infos: vault, itemsCount: info.itemsNum)
+                if case let .vault(vault) = info.shareElement, let vaultContent = vault.vaultContent {
+                    vaultInfo(infos: vault, vaultContent: vaultContent, itemsCount: info.itemsNum)
                 } else if case let .item(item, _) = info.shareElement {
                     itemInfo(infos: item)
                 }
@@ -71,19 +71,18 @@ struct SharingSummaryView: View {
 }
 
 private extension SharingSummaryView {
-    func vaultInfo(infos: Vault, itemsCount: Int) -> some View {
+    func vaultInfo(infos: Share, vaultContent: VaultContent, itemsCount: Int) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Vault")
                 .font(.callout)
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(height: 20)
             VaultRow(thumbnail: {
-                         CircleButton(icon: infos.displayPreferences.icon.icon.bigImage,
-                                      iconColor: infos.displayPreferences.color.color.color,
-                                      backgroundColor: infos.displayPreferences.color.color.color
-                                          .withAlphaComponent(0.16))
+                         CircleButton(icon: vaultContent.vaultBigIcon,
+                                      iconColor: vaultContent.mainColor,
+                                      backgroundColor: vaultContent.backgroundColor)
                      },
-                     title: infos.name,
+                     title: vaultContent.name,
                      itemCount: itemsCount,
                      isShared: infos.shared,
                      isSelected: false,

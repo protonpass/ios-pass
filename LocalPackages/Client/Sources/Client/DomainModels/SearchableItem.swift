@@ -28,7 +28,7 @@ import Foundation
 public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let shareId: String
     public let itemId: String
-    public let vault: Vault? // Optional because we only show vault when there're more than 1 vault
+    public let vault: Share? // Optional because we only show vault when there're more than 1 vault
     public let type: ItemContentType
     public let aliasEmail: String?
     public let aliasEnabled: Bool
@@ -47,14 +47,14 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
 
     public init(from item: SymmetricallyEncryptedItem,
                 symmetricKey: SymmetricKey,
-                allVaults: [Vault]) throws {
+                allVaults: [Share]) throws {
         let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
 
         self.init(from: itemContent, allVaults: allVaults)
     }
 
     public init(from itemContent: ItemContent,
-                allVaults: [Vault]) {
+                allVaults: [Share]) {
         itemId = itemContent.item.itemID
         shareId = itemContent.shareId
 

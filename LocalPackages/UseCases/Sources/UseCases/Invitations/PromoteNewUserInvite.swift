@@ -23,18 +23,18 @@ import Entities
 import ProtonCoreLogin
 
 public protocol PromoteNewUserInviteUseCase: Sendable {
-    func execute(sharedElement: any ShareElementProtocol,
+    func execute(share: Share,
                  inviteId: String,
                  email: String,
                  itemId: String?) async throws
 }
 
 public extension PromoteNewUserInviteUseCase {
-    func callAsFunction(sharedElement: any ShareElementProtocol,
+    func callAsFunction(share: Share,
                         inviteId: String,
                         email: String,
                         itemId: String? = nil) async throws {
-        try await execute(sharedElement: sharedElement, inviteId: inviteId, email: email, itemId: itemId)
+        try await execute(share: share, inviteId: inviteId, email: email, itemId: itemId)
     }
 }
 
@@ -54,7 +54,7 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
         self.userManager = userManager
     }
 
-    public func execute(sharedElement: any ShareElementProtocol,
+    public func execute(share: Share,
                         inviteId: String,
                         email: String,
                         itemId: String?) async throws {
@@ -64,10 +64,10 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
             throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
         }
 
-        let key: any ShareKeyProtocol = if sharedElement.isVault {
+        let key: any ShareKeyProtocol = if share.isVaultRepresentation {
             try await passKeyManager.getLatestShareKey(userId: userData.user.ID,
-                                                       shareId: sharedElement.shareId)
-        } else if let share = sharedElement as? Share, let itemId {
+                                                       shareId: share.id)
+        } else if let itemId {
             try await passKeyManager.getLatestItemKey(userId: userData.user.ID,
                                                       shareId: share.id,
                                                       itemId: itemId)
@@ -75,11 +75,11 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
             throw PassError.sharing(.failedEncryptionKeysFetching)
         }
 
-        let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: sharedElement.addressId,
+        let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: share.addressId,
                                                              publicReceiverKey: activeKey,
                                                              userData: userData,
                                                              key: key)
-        let promoted = try await shareInviteRepository.promoteNewUserInvite(shareId: sharedElement.shareId,
+        let promoted = try await shareInviteRepository.promoteNewUserInvite(shareId: share.id,
                                                                             inviteId: inviteId,
                                                                             keys: [signedKey])
         if !promoted {

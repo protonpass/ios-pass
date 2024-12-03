@@ -24,12 +24,12 @@ import Foundation
 
 protocol AutoFillCredentialsFetchResult: Equatable, Sendable {
     var userId: String { get }
-    var vaults: [Vault] { get }
+    var vaults: [Share] { get }
 }
 
 struct CredentialsFetchResult: AutoFillCredentialsFetchResult {
     let userId: String
-    let vaults: [Vault]
+    let vaults: [Share]
     let searchableItems: [SearchableItem]
     let matchedItems: [ItemUiModel]
     let notMatchedItems: [ItemUiModel]
@@ -37,14 +37,14 @@ struct CredentialsFetchResult: AutoFillCredentialsFetchResult {
 
 struct CredentialsForPasskeyCreation: AutoFillCredentialsFetchResult {
     let userId: String
-    let vaults: [Vault]
+    let vaults: [Share]
     let searchableItems: [SearchableItem]
     let items: [ItemUiModel]
 }
 
 struct ItemsForTextInsertion: AutoFillCredentialsFetchResult {
     let userId: String
-    let vaults: [Vault]
+    let vaults: [Share]
     let history: [HistoryItemUiModel]
     let searchableItems: [SearchableItem]
     let items: [ItemUiModel]

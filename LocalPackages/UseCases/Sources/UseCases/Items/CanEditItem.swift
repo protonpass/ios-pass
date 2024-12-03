@@ -23,11 +23,11 @@ import Entities
 import Foundation
 
 public protocol CanEditItemUseCase: Sendable {
-    func execute(vaults: [Vault], item: any ItemIdentifiable) -> Bool
+    func execute(vaults: [Share], item: any ItemIdentifiable) -> Bool
 }
 
 public extension CanEditItemUseCase {
-    func callAsFunction(vaults: [Vault], item: any ItemIdentifiable) -> Bool {
+    func callAsFunction(vaults: [Share], item: any ItemIdentifiable) -> Bool {
         execute(vaults: vaults, item: item)
     }
 }
@@ -35,7 +35,7 @@ public extension CanEditItemUseCase {
 public final class CanEditItem: CanEditItemUseCase {
     public init() {}
 
-    public func execute(vaults: [Vault], item: any ItemIdentifiable) -> Bool {
-        vaults.first { $0.shareId == item.shareId }?.canEdit ?? false
+    public func execute(vaults: [Share], item: any ItemIdentifiable) -> Bool {
+        vaults.first { $0.id == item.shareId }?.canEdit ?? false
     }
 }

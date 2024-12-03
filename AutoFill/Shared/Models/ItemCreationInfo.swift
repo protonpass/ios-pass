@@ -28,6 +28,6 @@ struct ItemCreationInfo: Sendable {
     }
 
     let userId: String
-    let vaults: [Vault]
+    let vaults: [Share]
     let data: Data
 }

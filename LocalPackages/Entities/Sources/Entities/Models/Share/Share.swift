@@ -18,7 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable, ShareElementProtocol {
+public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable /* , ShareElementProtocol */ {
     /// ID of the share
     public let shareID: String
 
@@ -172,6 +172,12 @@ public struct Share: Decodable, Hashable, Equatable, Sendable, Identifiable, Sha
         case pendingInvites, newUserInvitesReady, owner, shared, content, contentKeyRotation, contentFormatVersion
         case expireTime, createTime, canAutoFill
     }
+
+    public func copy(with vaultContent: VaultContent?) -> Share {
+        var updated = self
+        updated.vaultContent = vaultContent
+        return updated
+    }
 }
 
 // MARK: - Computed properties
@@ -198,7 +204,11 @@ public extension Share {
     }
 
     var canShareWithMorePeople: Bool {
-        isAdmin && !reachedSharingLimit
+        (isOwner || isAdmin) && !reachedSharingLimit
+    }
+
+    var vaultName: String? {
+        vaultContent?.name
     }
 }
 
