@@ -68,8 +68,11 @@ struct NoteDetailView: View {
                                     VaultLabel(vaultContent: vaultContent)
                                         .padding(.top, 4)
                                 }
-                            } else {
+                            }
+
+                            if itemContent.shared {
                                 ShareItemButton(share: vault, itemContent: itemContent)
+                                    .padding(.top, 4)
                             }
                         }
                         Spacer()

@@ -512,7 +512,7 @@ extension HomepageCoordinator {
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 case let .shareVaultFromItemDetail(vault, itemContent):
-                    presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
+                    presentShareElementView(for: vault, itemContent: itemContent)
                 case let .customizeNewVault(vault, itemContent):
                     presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
                 case .setPINCode:
@@ -781,11 +781,11 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
-        let viewModel = ShareOrCreateNewVaultViewModel(share: vault.vault,
-                                                       itemContent: itemContent,
-                                                       itemCount: vault.itemCount)
-        let view = ShareOrCreateNewVaultView(viewModel: viewModel)
+    func presentShareElementView(for vault: VaultListUiModel, itemContent: ItemContent) {
+        let viewModel = ShareElementViewModel(share: vault.vault,
+                                              itemContent: itemContent,
+                                              itemCount: vault.itemCount)
+        let view = ShareElementView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
         viewController.setDetentType(.custom(viewModel.sheetHeight),
