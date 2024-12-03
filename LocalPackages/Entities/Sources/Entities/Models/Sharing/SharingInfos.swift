@@ -30,7 +30,7 @@ public extension SharingElementData {
     var name: String {
         switch self {
         case let .vault(share):
-            share.vaultContent?.name ?? ""
+            share.vaultName ?? ""
         case let .item(item, _):
             item.name
         case let .new(vault, _):
