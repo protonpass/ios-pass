@@ -22,23 +22,6 @@ import Client
 import Entities
 import SwiftUI
 
-enum BreachDetailsInfo: Equatable, Hashable {
-    case alias(AliasMonitorInfo)
-    case customEmail(CustomEmail)
-    case protonAddress(ProtonAddress)
-
-    var isMonitored: Bool {
-        switch self {
-        case let .alias(aliasInfos):
-            !aliasInfos.alias.item.monitoringDisabled
-        case let .customEmail(email):
-            !email.monitoringDisabled
-        case let .protonAddress(address):
-            !address.monitoringDisabled
-        }
-    }
-}
-
 struct ContactsInfos: Hashable {
     let itemId: String
     let shareId: String
