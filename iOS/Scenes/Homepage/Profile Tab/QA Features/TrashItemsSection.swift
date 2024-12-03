@@ -115,6 +115,7 @@ private struct TrashItemsView: View {
                },
                message: {
                    if let selectedVault {
+                       // swiftlint:disable:next line_length
                        Text(verbatim: "Vault \"\(selectedVault.vault.name ?? "Item share")\" with \(selectedVault.itemCount) item(s)")
                    }
                })

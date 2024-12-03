@@ -1,6 +1,6 @@
 //
 //
-// ManageSharedVaultViewModel.swift
+// ManageSharedShareViewModel.swift
 // Proton Pass - Created on 02/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -29,8 +29,8 @@ import Macro
 import ProtonCoreNetworking
 
 @MainActor
-final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
-    private(set) var vault: Share
+final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
+    private(set) var share: Share
     @Published private(set) var itemsNumber = 0
     @Published private(set) var invitations = ShareInvites.default
     @Published private(set) var members: [UserShareInfos] = []
@@ -59,17 +59,18 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
+    private let leaveShare = resolve(\UseCasesContainer.leaveShare)
 
     var reachedLimit: Bool {
         numberOfInvitesLeft <= 0
     }
 
     var isViewOnly: Bool {
-        !vault.isAdmin
+        !share.isAdmin
     }
 
     var numberOfInvitesLeft: Int {
-        max(vault.maxMembers - (members.count + invitations.totalNumberOfInvites), 0)
+        max(share.maxMembers - (members.count + invitations.totalNumberOfInvites), 0)
     }
 
     var showInvitesLeft: Bool {
@@ -91,8 +92,8 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
         return reachedLimit
     }
 
-    init(vault: Share) {
-        self.vault = vault
+    init(share: Share) {
+        self.share = share
         setUp()
     }
 
@@ -101,7 +102,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func shareWithMorePeople() {
-        setShareInviteVault(with: .vault(vault))
+        setShareInviteVault(with: .vault(share))
         router.present(for: .sharingFlow(.none))
     }
 
@@ -133,7 +134,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func canTransferOwnership(to invitee: any ShareInvitee) -> Bool {
-        canUserTransferVaultOwnership(for: vault, to: invitee)
+        canUserTransferVaultOwnership(for: share, to: invitee)
     }
 
     // swiftformat:disable all
@@ -144,32 +145,32 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
             do {
                 switch option {
                 case let .remindExistingUserInvitation(inviteId):
-                    try await execute(await sendInviteReminder(with: vault.shareId,
+                    try await execute(await sendInviteReminder(with: share.shareId,
                                                                and: inviteId),
                                       shouldForceSync: false)
 
                 case let .cancelExistingUserInvitation(inviteId):
-                    try await execute(await revokeInvitation(with: vault.shareId,
+                    try await execute(await revokeInvitation(with: share.shareId,
                                                              and: inviteId))
 
                 case let .cancelNewUserInvitation(inviteId):
-                    try await execute(await revokeNewUserInvitation(with: vault.shareId,
+                    try await execute(await revokeNewUserInvitation(with: share.shareId,
                                                                     and: inviteId))
 
                 case let .confirmAccess(access):
-                    try await execute(await promoteNewUserInvite(share: vault,
+                    try await execute(await promoteNewUserInvite(share: share,
                                                                  inviteId: access.inviteId,
                                                                  email: access.email))
 
                 case let .updateRole(shareId, role):
                     try await execute(await updateUserShareRole(userShareId: shareId,
-                                                                shareId: vault.shareId,
+                                                                shareId: share.shareId,
                                                                 shareRole: role),
                                       shouldForceSync: false)
 
                 case let .revokeAccess(shareId):
                     try await execute(await revokeUserShareAccess(with: shareId,
-                                                                  and: vault.shareId))
+                                                                  and: share.shareId))
 
                 case let .confirmTransferOwnership(newOwner):
                     self.newOwner = newOwner
@@ -180,7 +181,7 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
                         config: nil)
                     try await execute(
                         await transferVaultOwnership(newOwnerID: newOwner.shareId,
-                                                     shareId: vault.shareId),
+                                                     shareId: share.shareId),
                         elementDisplay: element)
                 }
             } catch {
@@ -194,9 +195,26 @@ final class ManageSharedVaultViewModel: ObservableObject, @unchecked Sendable {
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
+
+    func leaveVault() {
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                try await leaveShare(userId: userId, with: share.shareId)
+                syncEventLoop.forceSync()
+                router.action(.screenDismissal(.all))
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
 }
 
-private extension ManageSharedVaultViewModel {
+private extension ManageSharedShareViewModel {
     @MainActor
     func execute(_ action: @Sendable @autoclosure () async throws -> Void,
                  shouldForceSync: Bool = true,
@@ -218,19 +236,19 @@ private extension ManageSharedVaultViewModel {
 
     @MainActor
     func doFetchShareInformation() async throws {
-        itemsNumber = getVaultItemCount(for: vault)
+        itemsNumber = getVaultItemCount(for: share)
         if Task.isCancelled {
             return
         }
-        let shareId = vault.shareId
-        if vault.isAdmin {
+        let shareId = share.shareId
+        if share.isAdmin {
             invitations = try await getPendingInvitationsForShare(with: shareId)
         }
         members = try await getUsersLinkedToShare(with: shareId)
     }
 }
 
-private extension ManageSharedVaultViewModel {
+private extension ManageSharedShareViewModel {
     func setUp() {
         Task { [weak self] in
             guard let self else {
