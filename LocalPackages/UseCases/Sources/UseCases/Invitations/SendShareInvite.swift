@@ -113,17 +113,6 @@ private extension SendShareInvite {
         }
     }
 
-//    func getTargetType(element: any ShareElementProtocol) -> TargetType {
-//        switch element {
-//        case is Vault:
-//            .vault
-//        case is Share:
-//            .item
-//        default:
-//            .unknown
-//        }
-//    }
-
     func getItemId(from info: SharingInfos) -> String? {
         switch info.shareElement {
         case let .item(item, _):
