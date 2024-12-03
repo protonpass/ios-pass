@@ -23,7 +23,6 @@ import CryptoKit
 import Entities
 import Foundation
 
-// swiftlint:disable cyclomatic_complexity
 /// Items that live in memory for search purpose
 public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let shareId: String
@@ -267,5 +266,3 @@ public extension [SearchableItem] {
         self.map(\.toItemSearchResult)
     }
 }
-
-// swiftlint:enable cyclomatic_complexity

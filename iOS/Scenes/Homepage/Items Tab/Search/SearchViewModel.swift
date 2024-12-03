@@ -232,7 +232,8 @@ private extension SearchViewModel {
                 case .newestToOldest, .oldestToNewest:
                     try filteredResults.monthYearSortResult(direction: selectedSortType.sortDirection)
                 }
-            await updateState(.results(ItemCount(items: results, sharedByMe: filteredResults.itemSharedByMeCount,
+            await updateState(.results(ItemCount(items: results,
+                                                 sharedByMe: filteredResults.itemSharedByMeCount,
                                                  sharedWithMe: filteredResults.itemSharedWithMeCount),
                                        filteredAndSortedResults))
         } catch {

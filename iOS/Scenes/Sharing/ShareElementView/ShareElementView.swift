@@ -1,5 +1,5 @@
 //
-// ShareOrCreateNewVaultView.swift
+// ShareElementView.swift
 // Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -48,9 +48,8 @@ struct ShareElementView: View {
             if viewModel.share.shared {
                 manageAccessButton
                     .padding(.vertical)
-            } else if viewModel.share.isVaultRepresentation,
-                      let vaultContent = viewModel.share.vaultContent {
-                currentVault(vaultContent: vaultContent)
+            } else if viewModel.share.isVaultRepresentation {
+                currentVault
                     .padding(.top, 22)
             }
 
@@ -165,7 +164,7 @@ private extension ShareElementView {
 }
 
 private extension ShareElementView {
-    func currentVault(vaultContent: VaultContent) -> some View {
+    var currentVault: some View {
         Button { viewModel.shareVault() } label: {
             Text("Share entire vault instead?")
                 .foregroundStyle(PassColor.interactionNorm.toColor)
