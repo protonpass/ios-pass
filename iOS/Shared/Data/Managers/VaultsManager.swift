@@ -35,6 +35,8 @@ enum VaultManagerState {
     case error(any Error)
 }
 
+// swiftlint:disable:next todo
+// TODO: transform vault Manager
 final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintable, VaultsManagerProtocol {
     deinit { print(deinitMessage) }
 
@@ -255,6 +257,7 @@ extension VaultsManager {
         }
     }
 
+    // swiftlint:disable:next todo
     // TODO: optimize the following function
     // Delete everything and download again
     func fullSync(userId: String) async {
