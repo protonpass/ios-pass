@@ -52,7 +52,7 @@ enum ItemTypeFilterOption: Equatable, Hashable {
             .itemSharedWithMe,
             .itemSharedByMe
         ]
-        assert(allCases.count == ItemContentType.allCases.count + 1, "Some type is missing")
+        assert(allCases.count == ItemContentType.allCases.count + 3, "Some type is missing")
         return allCases
     }
 

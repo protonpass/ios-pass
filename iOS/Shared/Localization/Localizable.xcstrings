@@ -112706,6 +112706,16 @@
         }
       }
     },
+    "Shared by me" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared by me"
+          }
+        }
+      }
+    },
     "Shared item invitation" : {
       "localizations" : {
         "en" : {
@@ -112883,6 +112893,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shared with"
+          }
+        }
+      }
+    },
+    "Shared with me" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shared with me"
           }
         }
       }
