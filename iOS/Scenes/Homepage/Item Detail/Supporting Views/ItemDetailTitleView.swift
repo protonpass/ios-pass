@@ -45,14 +45,16 @@ struct ItemDetailTitleView: View {
                     .lineLimit(1)
                     .foregroundStyle(PassColor.textNorm.toColor)
 
-                if let vault, let vaultContent = vault.vaultContent {
-                    if vault.shared {
-                        VaultButton(vault: vault, vaultContent: vaultContent)
-                    } else if shouldShowVault {
-                        VaultLabel(vaultContent: vaultContent)
+                if let vault {
+                    if let vaultContent = vault.vaultContent {
+                        if vault.shared {
+                            VaultButton(vault: vault, vaultContent: vaultContent)
+                        } else if shouldShowVault {
+                            VaultLabel(vaultContent: vaultContent)
+                        }
+                    } else {
+                        ShareItemButton(share: vault, itemContent: itemContent)
                     }
-                } else if let share = vault {
-                    ShareItemButton(share: share, itemContent: itemContent)
                 }
             }
         }

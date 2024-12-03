@@ -62,6 +62,7 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         logger = .init(manager: logManager)
     }
 
+    // swiftlint:disable:next todo
     // TODO: optimize the following
     public func execute() async throws {
         let start = Date()

@@ -52,7 +52,6 @@ struct ShareOrCreateNewVaultView: View {
                 PassDivider()
                     .padding(.vertical)
 
-                // TODO: add or remove depending of type of share
                 if viewModel.share.isVaultRepresentation,
                    let vaultContent = viewModel.share.vaultContent {
                     currentVault(vaultContent: vaultContent)

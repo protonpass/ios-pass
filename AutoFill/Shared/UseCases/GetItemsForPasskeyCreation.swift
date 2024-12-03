@@ -51,6 +51,7 @@ final class GetItemsForPasskeyCreation: GetItemsForPasskeyCreationUseCase {
         self.accessRepository = accessRepository
     }
 
+    // swiftlint:disable:next todo
     // TODO: revoir le async let ecoute et voir si on ne peux pas avoir vaultmanger a la place de tt ces repos
     func execute(userId: String,
                  _ request: PasskeyCredentialRequest) async throws -> CredentialsForPasskeyCreation {
