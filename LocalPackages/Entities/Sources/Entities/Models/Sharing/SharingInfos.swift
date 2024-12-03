@@ -21,18 +21,9 @@
 public enum SharingElementData: Sendable {
     case vault(Share)
     case item(item: ItemContent, share: Share)
+    // TODO: remove this use case
     case new(VaultContent, ItemContent)
 }
-
-// public extension ShareElementProtocol {
-//    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences? {
-//        if let vault = self as? Vault {
-//            vault.displayPreferences
-//        } else {
-//            nil
-//        }
-//    }
-// }
 
 public extension SharingElementData {
     var name: String {
@@ -43,17 +34,6 @@ public extension SharingElementData {
             item.name
         case let .new(vault, _):
             vault.name
-        }
-    }
-
-    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences? {
-        switch self {
-        case let .vault(share):
-            share.vaultContent?.display
-        case let .new(vault, _):
-            vault.display
-        default:
-            nil
         }
     }
 
@@ -93,10 +73,6 @@ public struct SharingInfos: Sendable, Identifiable {
     public let itemsNum: Int
     public var name: String {
         shareElement.name
-    }
-
-    public var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences? {
-        shareElement.displayPreferences
     }
 
     public var shared: Bool {

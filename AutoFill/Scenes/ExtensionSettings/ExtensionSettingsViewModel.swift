@@ -87,8 +87,6 @@ final class ExtensionSettingsViewModel: ObservableObject {
 // MARK: - Private APIs
 
 private extension ExtensionSettingsViewModel {
-    // swiftlint:disable:next todo
-    // TODO: will have to be for all accounts
     func reindexCredentials(_ indexable: Bool) async throws {
         logger.trace("Reindexing credentials")
         if indexable {

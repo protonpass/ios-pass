@@ -1,6 +1,6 @@
 //
 //
-// ManageSharedVaultView.swift
+// ManageSharedShareView.swift
 // Proton Pass - Created on 02/08/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -27,18 +27,27 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct ManageSharedVaultView: View {
+struct ManageSharedShareView: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var viewModel: ManageSharedVaultViewModel
+    @ObservedObject var viewModel: ManageSharedShareViewModel
     @State private var showFreeSharingLimit = false
 
     var body: some View {
         ZStack(alignment: .bottom) {
             mainContainer
-                .padding(.bottom, viewModel.vault.isAdmin ? 70 : 0) // Avoid the bottom button
+                .padding(.bottom, viewModel.share.isAdmin ? 70 : 0) // Avoid the bottom button
 
             if !viewModel.fetching, !viewModel.isViewOnly {
                 shareButtonAndInfos
+            }
+
+            if !viewModel.share.isVaultRepresentation, !viewModel.share.owner {
+                CapsuleTextButton(title: #localized("Leave"),
+                                  titleColor: PassColor.interactionNormMajor2,
+                                  backgroundColor: PassColor.interactionNormMinor1,
+                                  action: {
+                                      viewModel.leaveVault()
+                                  })
             }
         }
         .onAppear {
@@ -74,11 +83,13 @@ struct ManageSharedVaultView: View {
     }
 }
 
-private extension ManageSharedVaultView {
+private extension ManageSharedShareView {
     var mainContainer: some View {
         VStack {
-            if let vaultContent = viewModel.vault.vaultContent {
+            if let vaultContent = viewModel.share.vaultContent {
                 headerVaultInformation(vaultContent: vaultContent)
+            } else {
+                itemShareHeader
             }
             if viewModel.fetching {
                 VStack {
@@ -94,7 +105,15 @@ private extension ManageSharedVaultView {
     }
 }
 
-private extension ManageSharedVaultView {
+private extension ManageSharedShareView {
+    var itemShareHeader: some View {
+        Text("Shared with")
+            .font(.title.bold())
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.bottom, 22)
+    }
+
     func headerVaultInformation(vaultContent: VaultContent) -> some View {
         VStack {
             ZStack {
@@ -120,7 +139,7 @@ private extension ManageSharedVaultView {
     }
 }
 
-private extension ManageSharedVaultView {
+private extension ManageSharedShareView {
     var inviteeList: some View {
         ScrollView {
             VStack(spacing: 32) {
@@ -129,7 +148,7 @@ private extension ManageSharedVaultView {
                 }
 
                 if !viewModel.members.isEmpty {
-                    inviteesSection(for: viewModel.members, title: "Members")
+                    inviteesSection(for: viewModel.members, title: "Members (\(viewModel.members.count))")
                 }
             }
             .frame(maxWidth: .infinity)
@@ -147,7 +166,7 @@ private extension ManageSharedVaultView {
             LazyVStack {
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
                     ShareInviteeView(invitee: invitee,
-                                     isAdmin: viewModel.vault.isAdmin,
+                                     isAdmin: viewModel.share.isAdmin,
                                      isCurrentUser: viewModel.isCurrentUser(invitee),
                                      canTransferOwnership: viewModel.canTransferOwnership(to: invitee),
                                      onSelect: { viewModel.handle(option: $0) })
@@ -163,7 +182,7 @@ private extension ManageSharedVaultView {
     }
 }
 
-private extension ManageSharedVaultView {
+private extension ManageSharedShareView {
     var shareButtonAndInfos: some View {
         VStack {
             DisablableCapsuleTextButton(title: #localized("Share with more people"),
@@ -199,7 +218,7 @@ private extension ManageSharedVaultView {
     }
 }
 
-private extension ManageSharedVaultView {
+private extension ManageSharedShareView {
     var vaultLimitReachedMessage: some View {
         ZStack {
             Text("You have reached the limit of users in this vault.")
@@ -217,7 +236,7 @@ private extension ManageSharedVaultView {
     }
 }
 
-private extension ManageSharedVaultView {
+private extension ManageSharedShareView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
