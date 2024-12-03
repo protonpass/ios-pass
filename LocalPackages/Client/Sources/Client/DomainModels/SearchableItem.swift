@@ -30,6 +30,8 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
     public let itemId: String
     public let vault: Share? // Optional because we only show vault when there're more than 1 vault
     public let type: ItemContentType
+    public let owner: Bool
+    public let shared: Bool
     public let aliasEmail: String?
     public let aliasEnabled: Bool
     public let name: String
@@ -58,11 +60,11 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
         itemId = itemContent.item.itemID
         shareId = itemContent.shareId
 
-        if allVaults.count > 1 {
-            vault = allVaults.first { $0.shareId == itemContent.shareId }
-        } else {
-            vault = nil
-        }
+        let linkedVault = allVaults.first { $0.shareId == itemContent.shareId }
+        vault = allVaults.count > 1 ? linkedVault : nil
+
+        owner = linkedVault?.isOwner ?? false
+        shared = itemContent.shared
 
         type = itemContent.contentData.type
         aliasEmail = itemContent.item.aliasEmail
@@ -211,7 +213,9 @@ private extension SearchableItem {
                      vault: vault,
                      lastUseTime: lastUseTime,
                      modifyTime: modifyTime,
-                     pinned: pinned)
+                     pinned: pinned,
+                     owner: owner,
+                     shared: shared)
     }
 
     var toItemSearchResult: ItemSearchResult {
@@ -226,7 +230,9 @@ private extension SearchableItem {
                          vault: vault,
                          lastUseTime: lastUseTime,
                          modifyTime: modifyTime,
-                         pinned: pinned)
+                         pinned: pinned,
+                         owner: owner,
+                         shared: shared)
     }
 }
 

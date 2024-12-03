@@ -18,21 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct VaultContentUiModel: Identifiable, Hashable, Sendable {
-    public let vault: Share
+public struct ShareContent: Identifiable, Hashable, Sendable {
+    public let share: Share
     /// `Active` items only
     public let items: [ItemUiModel]
 
     public var id: String {
-        vault.id
+        share.id
     }
 
     public var itemCount: Int {
         items.count
     }
 
-    public init(vault: Share, items: [ItemUiModel]) {
-        self.vault = vault
+    public init(share: Share, items: [ItemUiModel]) {
+        self.share = share
         self.items = items
     }
 }

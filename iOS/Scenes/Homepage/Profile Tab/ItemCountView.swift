@@ -174,11 +174,12 @@ private final class ItemCountViewModel: ObservableObject {
 }
 
 private extension ItemCountViewModel {
-    nonisolated func refreshAsync(_ uiModel: VaultDatasUiModel) async {
+    nonisolated func refreshAsync(_ sharesData: SharesData) async {
         if Task.isCancelled { return }
-        let activeItems = uiModel.vaults.flatMap(\.items)
-        let allItems = activeItems + uiModel.trashedItems
-        let itemCount = ItemCount(items: allItems)
+        let activeItems = sharesData.shares.flatMap(\.items)
+        let allItems = activeItems + sharesData.trashedItems
+        let itemCount = ItemCount(items: allItems, sharedByMe: sharesData.itemsSharedByMe.count,
+                                  sharedWithMe: sharesData.itemsSharedWithMe.count)
         await MainActor.run { [weak self] in
             guard let self else { return }
             object = .fetched(itemCount)
