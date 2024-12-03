@@ -1,5 +1,5 @@
 //
-// ShareOrCreateNewVaultViewModel.swift
+// ShareElementViewModel.swift
 // Proton Pass - Created on 10/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -35,7 +35,6 @@ final class ShareElementViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
@@ -100,15 +99,5 @@ final class ShareElementViewModel: ObservableObject {
                 router.display(element: .displayErrorBanner(error))
             }
         }
-    }
-}
-
-private extension VaultContent {
-    static var defaultNewSharedVault: Self {
-        var vault = VaultContent()
-        vault.name = #localized("Shared vault")
-        vault.display.color = .color3
-        vault.display.icon = .icon9
-        return vault
     }
 }

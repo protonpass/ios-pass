@@ -178,7 +178,8 @@ private extension ItemCountViewModel {
         if Task.isCancelled { return }
         let activeItems = sharesData.shares.flatMap(\.items)
         let allItems = activeItems + sharesData.trashedItems
-        let itemCount = ItemCount(items: allItems, sharedByMe: sharesData.itemsSharedByMe.count,
+        let itemCount = ItemCount(items: allItems,
+                                  sharedByMe: sharesData.itemsSharedByMe.count,
                                   sharedWithMe: sharesData.itemsSharedWithMe.count)
         await MainActor.run { [weak self] in
             guard let self else { return }
