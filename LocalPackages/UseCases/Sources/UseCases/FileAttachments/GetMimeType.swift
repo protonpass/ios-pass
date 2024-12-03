@@ -28,7 +28,9 @@ public protocol GetMimeTypeUseCase: Sendable {
 }
 
 public extension GetMimeTypeUseCase {
-    func callAsFunction(of url: URL, byteCount: Int = 100) throws -> String {
+    // Default byteCount value is the highest needed by the Rust library
+    // to cover most of the common file types
+    func callAsFunction(of url: URL, byteCount: Int = 1_051_827) throws -> String {
         try execute(of: url, byteCount: byteCount)
     }
 }
