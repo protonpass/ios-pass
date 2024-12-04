@@ -25,7 +25,9 @@ import Foundation
 public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares(userId: String) async throws -> [Share]
     func getShare(shareId: String, userId: String) async throws -> Share
-    func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos]
+    func getUsersLinkedToVaultShare(userId: String, shareId: String) async throws -> [UserShareInfos]
+    func getUsersLinkedToItemShare(userId: String, shareId: String, itemId: String) async throws
+        -> [UserShareInfos]
     func updateUserSharePermission(userId: String,
                                    shareId: String,
                                    userShareId: String,
@@ -59,8 +61,17 @@ public extension RemoteShareDatasource {
         return getSharesResponse.shares
     }
 
-    func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos] {
-        let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
+    // TODO: the 2 following should be paginated calls
+    func getUsersLinkedToVaultShare(userId: String, shareId: String) async throws -> [UserShareInfos] {
+        let endpoint = GetUsersLinkedToVaultShareEndpoint(for: shareId)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.shares
+    }
+
+    func getUsersLinkedToItemShare(userId: String,
+                                   shareId: String,
+                                   itemId: String) async throws -> [UserShareInfos] {
+        let endpoint = GetUsersLinkedToItemShareEndpoint(for: shareId, itemId: itemId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.shares
     }

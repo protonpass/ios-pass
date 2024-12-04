@@ -398,14 +398,23 @@ extension AppContentManager {
         return activeItems + sharesData.trashedItems
     }
 
-    // TODO: Rename
-    func getAllVaultContents() -> [ShareContent] {
+    func getAllSharesContent() -> [ShareContent] {
         guard let sharesData = state.loadedContent else { return [] }
         return sharesData.shares
     }
 
+    func getAllSharesWithVaultContent() -> [ShareContent] {
+        guard let sharesData = state.loadedContent else { return [] }
+        return sharesData.shares.filter { $0.share.vaultContent != nil }
+    }
+
+    func getAllSharesItems() -> [ItemUiModel] {
+        guard let sharesData = state.loadedContent else { return [] }
+        return sharesData.shares.flatMap(\.items)
+    }
+
     func getAllEditableVaultContents() -> [ShareContent] {
-        getAllVaultContents().filter { $0.share.vaultContent != nil && $0.share.canEdit }
+        getAllSharesContent().filter { $0.share.vaultContent != nil && $0.share.canEdit }
     }
 
     func delete(vault: Share) async throws {
