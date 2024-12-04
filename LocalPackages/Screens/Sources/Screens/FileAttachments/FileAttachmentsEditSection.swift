@@ -30,8 +30,8 @@ public protocol FileAttachmentsEditHandler {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
 
-    func provideGenerateDatedFileNameUseCase() -> any GenerateDatedFileNameUseCase
-    func provideWriteToTemporaryDirectoryUseCase() -> any WriteToTemporaryDirectoryUseCase
+    func generateDatedFileName(prefix: String, extension: String) -> String
+    func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL
 
     func handleAttachment(_ url: URL)
     func handleAttachmentError(_ error: any Error)
