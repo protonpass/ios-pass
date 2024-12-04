@@ -41,8 +41,8 @@ public struct InAppModalView: View {
     public var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 24) {
-                if let imageUrl = notification.content.imageUrl, let url = URL(string: imageUrl) {
-                    AsyncImage(url: url,
+                if let imageUrl = notification.content.safeImageUrl {
+                    AsyncImage(url: imageUrl,
                                content: { image in
                                    image.resizable()
                                        .aspectRatio(contentMode: .fit)
@@ -51,32 +51,24 @@ public struct InAppModalView: View {
                                placeholder: {
                                    ProgressView()
                                })
-                               .padding(.top, 30)
                 }
 
-                Spacer()
+                Text(verbatim: notification.content.title)
+                    .font(.title.weight(.medium))
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .minimumScaleFactor(0.8)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
 
-                VStack(spacing: 12) {
-                    Text(verbatim: notification.content.title)
-                        .font(.title.weight(.medium))
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .minimumScaleFactor(0.8)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                        .fixedSize(horizontal: false, vertical: true)
+                Text(verbatim: notification.content.message)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity,
+                           maxHeight: .infinity,
+                           alignment: notification.content.safeImageUrl == nil ? .center : .top)
+                    .minimumScaleFactor(0.8)
+                    .multilineTextAlignment(.center)
 
-                    Text(verbatim: notification.content.message)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .minimumScaleFactor(0.8)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
-
-                Spacer()
                 if let cta = notification.content.cta {
                     CapsuleTextButton(title: cta.text,
                                       titleColor: PassColor.textInvert,
@@ -87,7 +79,6 @@ public struct InAppModalView: View {
                                           onTap(notification)
                                       })
                                       .padding(.horizontal, DesignConstant.sectionPadding)
-                    Spacer()
                 }
             }
             .padding(DesignConstant.sectionPadding)

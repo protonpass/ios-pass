@@ -87,7 +87,7 @@ private extension HomepageCoordinator {
                                           close(notification)
                                       })
             let viewController = UIHostingController(rootView: view)
-            viewController.setDetentType(.custom(CGFloat(490)),
+            viewController.setDetentType(.medium,
                                          parentViewController: rootViewController)
             present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
         }
@@ -102,6 +102,7 @@ private extension HomepageCoordinator {
             do {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
+                try await inAppNotificationManager.updateNotificationTime(.now)
                 addTelemetryEvent(with: .notificationChangeNotificationStatus(notificationKey: notification
                         .notificationKey,
                     notificationStatus: notification
@@ -123,7 +124,7 @@ private extension HomepageCoordinator {
                         .notificationKey))
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
-
+                try await inAppNotificationManager.updateNotificationTime(.now)
                 if case let .externalNavigation(url) = notification.cta {
                     urlOpener.open(urlString: url)
                 } else if case let .internalNavigation(url) = notification.cta {
