@@ -61,6 +61,7 @@ public extension RemoteShareDatasource {
         return getSharesResponse.shares
     }
 
+    // swiftlint:disable:next todo
     // TODO: the 2 following should be paginated calls
     func getUsersLinkedToVaultShare(userId: String, shareId: String) async throws -> [UserShareInfos] {
         let endpoint = GetUsersLinkedToVaultShareEndpoint(for: shareId)
