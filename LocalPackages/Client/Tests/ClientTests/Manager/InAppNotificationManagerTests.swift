@@ -69,19 +69,17 @@ final class MockInAppNotificationRepository: @unchecked Sendable, InAppNotificat
 struct InAppNotificationManagerTests {
     var manager: InAppNotificationManager!
     var mockRepository: MockInAppNotificationRepository!
+    var timeDatasource: (any LocalNotificationTimeDatasourceProtocol)!
     let userManager: UserManagerProtocolMock
-    var userDefaults: UserDefaults!
-    
+
     init() {
         userManager = .init()
         userManager.stubbedGetActiveUserDataResult = .preview
         mockRepository = MockInAppNotificationRepository()
-        userDefaults = UserDefaults(suiteName: "TestDefaults")
-        userDefaults.removePersistentDomain(forName: "TestDefaults")
-        
+        timeDatasource = LocalNotificationTimeDatasource(databaseService: DatabaseService(inMemory: true))
         manager = InAppNotificationManager(repository: mockRepository,
+                                           timeDatasource: timeDatasource,
                                            userManager: userManager,
-                                           userDefault: userDefaults,
                                            delayBetweenNotifications: 0,
                                            logManager: LogManagerProtocolMock())
     }
@@ -195,12 +193,9 @@ struct InAppNotificationManagerTests {
     
     @Test("Showing notifications only after a certain delay that we set")
     func checkDelayOfNotificationDisplay() async throws {
-        let userDefault = UserDefaults(suiteName: "checkDelayOfNotificationDisplay")
-        userDefaults.removePersistentDomain(forName: "checkDelayOfNotificationDisplay")
-        
         let sut = InAppNotificationManager(repository: mockRepository,
+                                           timeDatasource: timeDatasource,
                                            userManager: userManager,
-                                           userDefault: userDefault!,
                                            delayBetweenNotifications: 2,
                                            logManager: LogManagerProtocolMock())
         
@@ -213,6 +208,7 @@ struct InAppNotificationManagerTests {
         let notificationToDisplay = try await sut.getNotificationToDisplay()
         
         #expect(notificationToDisplay == notification)
+        try await sut.updateNotificationTime(.now)
 
         let notificationShouldBeNil = try await sut.getNotificationToDisplay()
         
