@@ -35,19 +35,19 @@ public extension CanUserPerformActionOnVaultUseCase {
 
 public final class CanUserPerformActionOnVault: @unchecked Sendable, CanUserPerformActionOnVaultUseCase {
     private let accessRepository: any AccessRepositoryProtocol
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
     private var isFreeUser = true
 
     public init(accessRepository: any AccessRepositoryProtocol,
-                vaultsManager: any VaultsManagerProtocol) {
+                appContentManager: any AppContentManagerProtocol) {
         self.accessRepository = accessRepository
-        self.vaultsManager = vaultsManager
+        self.appContentManager = appContentManager
         setUp()
     }
 
     public func execute(for vault: Share) -> Bool {
         if isFreeUser,
-           !vaultsManager.currentVaults.value.autofillAllowedVaults
+           !appContentManager.currentVaults.value.autofillAllowedVaults
            .contains(where: { $0.id == vault.id }) {
             return false
         }

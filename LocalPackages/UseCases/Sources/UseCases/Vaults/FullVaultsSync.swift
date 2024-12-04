@@ -34,17 +34,17 @@ public extension FullVaultsSyncUseCase {
 
 public final class FullVaultsSync: FullVaultsSyncUseCase {
     private let syncEventLoop: any SyncEventLoopProtocol
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
     public init(syncEventLoop: any SyncEventLoopProtocol,
-                vaultsManager: any VaultsManagerProtocol) {
+                appContentManager: any AppContentManagerProtocol) {
         self.syncEventLoop = syncEventLoop
-        self.vaultsManager = vaultsManager
+        self.appContentManager = appContentManager
     }
 
     public func execute(userId: String) async {
         syncEventLoop.stop()
-        await vaultsManager.fullSync(userId: userId)
+        await appContentManager.fullSync(userId: userId)
         syncEventLoop.start()
     }
 }

@@ -37,8 +37,8 @@ private extension EditableVaultListViewModel {
         let vaultCounts: [VaultCount]
         let trashed: Int
 
-        init(vaultsManager: VaultsManager) {
-            guard let sharesData = vaultsManager.state.loadedContent else {
+        init(appContentManager: AppContentManager) {
+            guard let sharesData = appContentManager.state.loadedContent else {
                 all = 0
                 vaultCounts = []
                 trashed = 0
@@ -60,7 +60,7 @@ private extension EditableVaultListViewModel {
 @MainActor
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
-    @Published private(set) var state = VaultManagerState.loading
+    @Published private(set) var state = AppContentState.loading
     private let count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -71,7 +71,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
@@ -81,25 +81,25 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var trashedAliasesCount: Int {
-        guard case let .loaded(uiModel) = vaultsManager.state else {
+        guard let sharesDatas = appContentManager.state.loadedContent else {
             return 0
         }
-        return uiModel.trashedItems.filter(\.isAlias).count
+        return sharesDatas.trashedItems.filter(\.isAlias).count
     }
 
     init() {
-        count = .init(vaultsManager: vaultsManager)
+        count = .init(appContentManager: appContentManager)
         setUp()
     }
 
     deinit { print(deinitMessage) }
 
     func select(_ selection: VaultSelection) {
-        vaultsManager.select(selection)
+        appContentManager.select(selection)
     }
 
     func isSelected(_ selection: VaultSelection) -> Bool {
-        vaultsManager.isSelected(selection)
+        appContentManager.isSelected(selection)
     }
 
     func canShare(vault: Share) -> Bool {
@@ -119,7 +119,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
 private extension EditableVaultListViewModel {
     func setUp() {
-        vaultsManager.$state
+        appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newState in
                 guard let self else { return }
@@ -140,8 +140,8 @@ extension EditableVaultListViewModel {
             do {
                 loading = true
                 let userId = try await userManager.getActiveUserId()
-                try await vaultsManager.delete(vault: vault)
-                vaultsManager.refresh(userId: userId)
+                try await appContentManager.delete(vault: vault)
+                appContentManager.refresh(userId: userId)
                 router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
             } catch {
                 logger.error(error)
@@ -189,7 +189,7 @@ extension EditableVaultListViewModel {
                 logger.trace("Restoring all trashed items")
                 loading = true
                 let userId = try await userManager.getActiveUserId()
-                try await vaultsManager.restoreAllTrashedItems(userId: userId)
+                try await appContentManager.restoreAllTrashedItems(userId: userId)
                 router.display(element: .successMessage(#localized("All items restored"),
                                                         config: .refresh))
                 logger.info("Restored all trashed items")
@@ -208,7 +208,7 @@ extension EditableVaultListViewModel {
                 logger.trace("Emptying all trashed items")
                 loading = true
                 let userId = try await userManager.getActiveUserId()
-                try await vaultsManager.permanentlyDeleteAllTrashedItems(userId: userId)
+                try await appContentManager.permanentlyDeleteAllTrashedItems(userId: userId)
                 router.display(element: .infosMessage(#localized("All items permanently deleted"),
                                                       config: .refresh))
                 logger.info("Emptied all trashed items")

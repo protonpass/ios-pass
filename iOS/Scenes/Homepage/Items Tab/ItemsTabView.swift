@@ -89,7 +89,7 @@ struct ItemsTabView: View {
                 ItemsTabTopBar(searchMode: $searchMode,
                                animationNamespace: animationNamespace,
                                isEditMode: $viewModel.isEditMode,
-                               onSearch: { searchMode = .all(viewModel.vaultsManager.vaultSelection) },
+                               onSearch: { searchMode = .all(viewModel.appContentManager.vaultSelection) },
                                onShowVaultList: { viewModel.presentVaultList() },
                                onPin: { viewModel.pinSelectedItems() },
                                onUnpin: { viewModel.unpinSelectedItems() },
@@ -119,7 +119,7 @@ struct ItemsTabView: View {
                 }
 
                 if let pinnedItems = viewModel.pinnedItems, !pinnedItems.isEmpty, !viewModel.isEditMode,
-                   viewModel.vaultsManager.vaultSelection != .trash {
+                   viewModel.appContentManager.vaultSelection != .trash {
                     PinnedItemsView(pinnedItems: pinnedItems,
                                     onSearch: { searchMode = .pinned },
                                     action: { viewModel.viewDetail(of: $0) })
@@ -127,7 +127,7 @@ struct ItemsTabView: View {
                 }
 
                 if sections.isEmpty {
-                    switch viewModel.vaultsManager.vaultSelection {
+                    switch viewModel.appContentManager.vaultSelection {
                     case .all:
                         EmptyVaultView(canCreateItems: true,
                                        onCreate: { viewModel.createNewItem(type: $0) })
@@ -147,8 +147,8 @@ struct ItemsTabView: View {
             }
             .ignoresSafeArea(edges: .bottom)
             .edgesIgnoringSafeArea(.bottom)
-            .animation(.default, value: viewModel.vaultsManager.state)
-            .animation(.default, value: viewModel.vaultsManager.filterOption)
+            .animation(.default, value: viewModel.appContentManager.state)
+            .animation(.default, value: viewModel.appContentManager.filterOption)
             .animation(.default, value: viewModel.banners.count)
             .animation(.default, value: viewModel.pinnedItems)
             .animation(.default, value: viewModel.isEditMode)
@@ -235,7 +235,7 @@ private extension ItemsTabView {
 
     @ViewBuilder
     func itemRow(_ item: ItemUiModel) -> ItemRow {
-        let isTrashed = viewModel.vaultsManager.vaultSelection == .trash
+        let isTrashed = viewModel.appContentManager.vaultSelection == .trash
         let isEditable = viewModel.isEditable(item)
         let isSelected = viewModel.isSelected(item)
         ItemRow(item: item,

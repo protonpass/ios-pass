@@ -53,7 +53,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
@@ -278,7 +278,7 @@ private extension SettingsViewModel {
             }
             .store(in: &cancellables)
 
-        vaultsManager.currentSpotlightSelectedVaults
+        appContentManager.currentSpotlightSelectedVaults
             .receive(on: DispatchQueue.main)
             .dropFirst() // Drop first event when the stream is init
             // Debouncing 1.5 secs because this will trigger expensive database operations
@@ -307,7 +307,8 @@ private extension SettingsViewModel {
             }
             .store(in: &cancellables)
 
-        vaultsManager.attach(to: self, storeIn: &cancellables)
+        // TODO: maybe change the observable of appContentManager
+        appContentManager.attach(to: self, storeIn: &cancellables)
         refreshSpotlightVaults()
     }
 
@@ -335,7 +336,7 @@ private extension SettingsViewModel {
                 logger.trace("Refreshing spotlight vaults")
                 let vaults = try await getSpotlightVaults()
                 spotlightVaults = vaults
-                vaultsManager.currentSpotlightSelectedVaults.send(vaults)
+                appContentManager.currentSpotlightSelectedVaults.send(vaults)
                 logger.trace("Found \(spotlightVaults?.count ?? 0) spotlight vaults")
             } catch {
                 handle(error)
