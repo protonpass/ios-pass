@@ -23,6 +23,8 @@ import CoreData
 public protocol LocalNotificationTimeDatasourceProtocol: Sendable {
     func getNotificationTime(for userId: String) async throws -> TimeInterval?
     func upsertNotificationTime(_ timestamp: TimeInterval, for userId: String) async throws
+    @_spi(QA)
+    func removeNotificationTime(for userId: String) async throws
 }
 
 public final class LocalNotificationTimeDatasource:
@@ -48,5 +50,13 @@ public extension LocalNotificationTimeDatasource {
             }
 
         try await execute(batchInsertRequest: request, context: context)
+    }
+
+    func removeNotificationTime(for userId: String) async throws {
+        let context = newTaskContext(type: .delete)
+        let request = NSFetchRequest<any NSFetchRequestResult>(entityName: "NotificationTimeEntity")
+        request.predicate = .init(format: "userID = %@", userId)
+        try await execute(batchDeleteRequest: .init(fetchRequest: request),
+                          context: context)
     }
 }

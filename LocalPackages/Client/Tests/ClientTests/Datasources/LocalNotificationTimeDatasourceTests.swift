@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@_spi(QA)
 @testable import Client
 import Testing
 
@@ -29,8 +30,8 @@ struct LocalNotificationTimeDatasourceTests {
         sut = LocalNotificationTimeDatasource(databaseService: DatabaseService(inMemory: true))
     }
 
-    @Test("Get and upsert timestamp")
-    func getAndUpsert() async throws {
+    @Test("Get, upsert and remove timestamp")
+    func getUpsertAndRemove() async throws {
         let userId1 = String.random()
         let userId2 = String.random()
 
@@ -43,5 +44,12 @@ struct LocalNotificationTimeDatasourceTests {
 
         let result2 = try await sut.getNotificationTime(for: userId2)
         #expect(result2 == 3)
+
+        try await sut.removeNotificationTime(for: userId1)
+        let result3 = try await sut.getNotificationTime(for: userId1)
+        #expect(result3 == nil)
+
+        let result4 = try await sut.getNotificationTime(for: userId2)
+        #expect(result4 == 3)
     }
 }
