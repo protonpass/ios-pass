@@ -18,43 +18,43 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
-import Entities
-
-public protocol AppContentManagerServicing: Actor {
-    func shareItemItems() async throws -> [ItemUiModel]
-}
-
-/// This manager contains all the logic to handle and display app content shares/items/vaults
-public actor AppContentManager: AppContentManagerServicing {
-    private let userManager: any UserManagerProtocol
-    private let itemRepository: any ItemRepositoryProtocol
-    private let shareRepository: any ShareRepositoryProtocol
-    private let logger: Logger
-
-    public init(userManager: any UserManagerProtocol,
-                itemRepository: any ItemRepositoryProtocol,
-                shareRepository: any ShareRepositoryProtocol,
-                logManager: any LogManagerProtocol) {
-        self.userManager = userManager
-        self.itemRepository = itemRepository
-        self.shareRepository = shareRepository
-        logger = .init(manager: logManager)
-    }
-}
-
-// MARK: - Item share
-
-public extension AppContentManager {
-    func shareItemItems() async throws -> [ItemUiModel] {
-        let userId = try await userManager.getActiveUserId()
-        let shares = try await shareRepository.getShares(userId: userId).filter { $0.share.shareType == .item }
-        var items: [ItemUiModel] = []
-        for encryptedShare in shares {
-            let newItems = try await itemRepository.fetchAndRefreshItems(userId: userId,
-                                                                         shareId: encryptedShare.share.shareID)
-            items.append(contentsOf: newItems.map(\.toItemUiModel))
-        }
-        return items
-    }
-}
+// import Core
+// import Entities
+//
+// public protocol AppContentManagerServicing: Actor {
+//    func shareItemItems() async throws -> [ItemUiModel]
+// }
+//
+///// This manager contains all the logic to handle and display app content shares/items/vaults
+// public actor AppContentManager: AppContentManagerServicing {
+//    private let userManager: any UserManagerProtocol
+//    private let itemRepository: any ItemRepositoryProtocol
+//    private let shareRepository: any ShareRepositoryProtocol
+//    private let logger: Logger
+//
+//    public init(userManager: any UserManagerProtocol,
+//                itemRepository: any ItemRepositoryProtocol,
+//                shareRepository: any ShareRepositoryProtocol,
+//                logManager: any LogManagerProtocol) {
+//        self.userManager = userManager
+//        self.itemRepository = itemRepository
+//        self.shareRepository = shareRepository
+//        logger = .init(manager: logManager)
+//    }
+// }
+//
+//// MARK: - Item share
+//
+// public extension AppContentManager {
+//    func shareItemItems() async throws -> [ItemUiModel] {
+//        let userId = try await userManager.getActiveUserId()
+//        let shares = try await shareRepository.getShares(userId: userId).filter { $0.share.shareType == .item }
+//        var items: [ItemUiModel] = []
+//        for encryptedShare in shares {
+//            let newItems = try await itemRepository.fetchAndRefreshItems(userId: userId,
+//                                                                         shareId: encryptedShare.share.shareID)
+//            items.append(contentsOf: newItems.map(\.toItemUiModel))
+//        }
+//        return items
+//    }
+// }

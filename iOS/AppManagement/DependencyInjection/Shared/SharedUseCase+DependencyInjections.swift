@@ -218,10 +218,9 @@ extension SharedUseCasesContainer {
         self { GetMainVault(appContentManager: self.appContentManager) }
     }
 
-    // TODO: rename
-    var fullVaultsSync: Factory<any FullVaultsSyncUseCase> {
-        self { FullVaultsSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
-                              appContentManager: self.appContentManager) }
+    var fullContentSync: Factory<any FullContentSyncUseCase> {
+        self { FullContentSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                               appContentManager: self.appContentManager) }
     }
 
     var loadVaultDatas: Factory<any LoadVaultDatasUseCase> {
@@ -417,7 +416,7 @@ extension SharedUseCasesContainer {
                                             authManager: self.authManager,
                                             preferencesManager: self.preferencesManager,
                                             apiManager: self.apiManager,
-                                            fullVaultsSync: self.fullVaultsSync(),
+                                            fullContentSync: self.fullContentSync(),
                                             refreshFeatureFlags: self.refreshFeatureFlags(),
                                             inviteRepository: self.inviteRepository) }
     }
