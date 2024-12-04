@@ -35,10 +35,10 @@ struct CreateEditItemToolbar: ToolbarContent {
     let itemContentType: ItemContentType
     let shouldUpgrade: Bool
     let isPhone: Bool
+    let fileAttachmentsEditHandler: any FileAttachmentsEditHandler
     let onSelectVault: () -> Void
     let onGoBack: () -> Void
     let onUpgrade: () -> Void
-    let onSelectFileAttachmentMethod: (FileAttachmentMethod) -> Void
     let onScan: () -> Void
     let onSave: () -> Void
 
@@ -80,10 +80,7 @@ private extension CreateEditItemToolbar {
             }
 
             if itemContentType == .note, fileAttachmentsEnabled {
-                FileAttachmentsButton(style: .circle,
-                                      iconColor: itemContentType.normMajor2Color,
-                                      backgroundColor: itemContentType.normMinor1Color,
-                                      onSelect: onSelectFileAttachmentMethod)
+                FileAttachmentsButton(style: .circle, handler: fileAttachmentsEditHandler)
             }
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {

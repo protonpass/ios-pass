@@ -1,7 +1,7 @@
 //
-// URL+Extensions.swift
-// Proton Pass - Created on 16/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// FileGroup.swift
+// Proton Pass - Created on 27/11/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,16 +17,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-import Core
 import Foundation
 
-extension URL {
-    static func favIconsContainerURL() -> URL {
-        guard let fileContainer = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup) else {
-            fatalError("Can not create folder for fav icons")
-        }
-        return fileContainer.appendingPathComponent("FavIcons", isDirectory: true)
-    }
+public enum FileGroup: Sendable {
+    case image
+    case photo
+    case vectorImage
+    case video
+    case audio
+    case key
+    case text
+    case calendar
+    case pdf
+    case word
+    case powerPoint
+    case excel
+    case document
+    case unknown
 }

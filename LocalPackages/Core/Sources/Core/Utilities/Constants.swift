@@ -45,6 +45,7 @@ public enum Constants {
 
         public static let defaultPageSize = 100
         public static let batchSize = 500
+        public static let maxFileSizeInBytes: UInt64 = 100 * 1_024 * 1_024 // 100MB
     }
 
     public enum ContentFormatVersion {
