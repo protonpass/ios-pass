@@ -190,9 +190,20 @@ private enum QADisplayType: String, CaseIterable {
 @Observable
 private final class InAppNotificationViewModel {
     @ObservationIgnored
-    @LazyInjected(\SharedServiceContainer.inAppNotificationManager) var inAppNotificationManager
+    @LazyInjected(\SharedServiceContainer.inAppNotificationManager)
+    private var inAppNotificationManager
 
-    private let userDefaults: UserDefaults
+    @ObservationIgnored
+    @LazyInjected(\SharedRepositoryContainer.localNotificationTimeDatasource)
+    private var localNotificationTimeDatasource
+
+    @ObservationIgnored
+    @LazyInjected(\SharedServiceContainer.userManager)
+    private var userManager
+
+    @ObservationIgnored
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private var router
 
     var lastThreshold: Double?
     var notificationKey = "pass_user_internal_notification"
@@ -228,14 +239,29 @@ private final class InAppNotificationViewModel {
     // Destination of the CTA. If type=external_link, it's a URL. If type=internal_navigation, it's a deeplink
     var ref: String = "https://en.wikipedia.org/wiki/Wikipedia"
 
-    init(userDefaults: UserDefaults = kSharedUserDefaults) {
-        self.userDefaults = userDefaults
-        lastThreshold = userDefaults.double(forKey: kInAppNotificationTimerKey)
+    init() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                lastThreshold = try await localNotificationTimeDatasource.getNotificationTime(for: userId)
+            } catch {
+                router.display(element: .errorMessage(error.localizedDescription))
+            }
+        }
     }
 
     func clearThreshold() {
-        userDefaults.removeObject(forKey: kInAppNotificationTimerKey)
-        lastThreshold = nil
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                try await localNotificationTimeDatasource.removeNotificationTime(for: userId)
+                lastThreshold = nil
+            } catch {
+                router.display(element: .errorMessage(error.localizedDescription))
+            }
+        }
     }
 
     func sendNotification() {
