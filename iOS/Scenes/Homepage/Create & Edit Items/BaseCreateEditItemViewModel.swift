@@ -28,6 +28,7 @@ import Foundation
 import Macro
 import Screens
 import SwiftUI
+import UseCases
 
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
 
@@ -126,6 +127,12 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
+    @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
+    @LazyInjected(\SharedUseCasesContainer.getFileSize) private var getFileSize
+    @LazyInjected(\SharedUseCasesContainer.getMimeType) private var getMimeType
+    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -149,6 +156,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
 
     weak var delegate: (any CreateEditItemViewModelDelegate)?
     var cancellables = Set<AnyCancellable>()
+
+    private var uploadFileTask: Task<Void, Never>?
 
     init(mode: ItemMode,
          upgradeChecker: any UpgradeCheckerProtocol,
@@ -338,7 +347,15 @@ private extension BaseCreateEditItemViewModel {
 
     func handle(_ error: any Error) {
         logger.error(error)
-        router.display(element: .displayErrorBanner(error))
+        if let passError = error as? PassError,
+           case let .fileAttachment(reason) = passError,
+           case .fileTooLarge = reason {
+            let message =
+                #localized("The selected file exceeds the size limit. Please choose a file smaller than 100 MB.")
+            router.display(element: .errorMessage(message))
+        } else {
+            router.display(element: .displayErrorBanner(error))
+        }
     }
 }
 
@@ -448,6 +465,69 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         itemContentType().normMinor1Color
     }
 
+    func generateDatedFileName(prefix: String, extension: String) -> String {
+        generateDatedFileName(prefix: prefix, extension: `extension`, date: .now)
+    }
+
+    func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL {
+        let fileSize = UInt64(data.count)
+        guard fileSize < Constants.Utils.maxFileSizeInBytes else {
+            throw PassError.fileAttachment(.fileTooLarge(fileSize))
+        }
+        return try writeToUrl(data: data,
+                              fileName: fileName,
+                              baseUrl: FileManager.default.temporaryDirectory)
+    }
+
+    func handleAttachment(_ url: URL) {
+        uploadFileTask?.cancel()
+        uploadFileTask = Task { [weak self] in
+            guard let self else { return }
+            defer {
+                isUploadingFile = false
+            }
+            let fileId = UUID().uuidString
+            do {
+                isUploadingFile = true
+                let fileSize = try getFileSize(for: url)
+                if fileSize > Constants.Utils.maxFileSizeInBytes {
+                    // Optionally remove the file, we don't care if errors occur here
+                    // because it should be in temporary directory which is cleaned up
+                    // by the system anyway
+                    try? FileManager.default.removeItem(at: url)
+                    throw PassError.fileAttachment(.fileTooLarge(fileSize))
+                }
+                let mimeType = try getMimeType(of: url)
+                let fileGroup = getFileGroup(mimeType: mimeType)
+                let formattedFileSize = formatFileAttachmentSize(fileSize)
+                let file = PendingFileAttachment(id: fileId,
+                                                 metadata: .init(url: url,
+                                                                 mimeType: mimeType,
+                                                                 fileGroup: fileGroup,
+                                                                 size: fileSize,
+                                                                 formattedSize: formattedFileSize))
+                files.append(.pending(file))
+                try await Task.sleep(seconds: 0.5)
+                if Bool.random() {
+                    files.updateState(id: fileId, newState: .uploaded(remoteId: ""))
+                } else {
+                    throw PassError.fileAttachment(.noPngData)
+                }
+            } catch {
+                files.updateState(id: fileId, newState: .error(error))
+                handle(error)
+            }
+        }
+    }
+
+    func handleAttachmentError(_ error: any Error) {
+        handle(error)
+    }
+
+    func retryUpload(attachment: FileAttachment) {
+        files.updateState(id: attachment.id, newState: .uploaded(remoteId: ""))
+    }
+
     func rename(attachment: FileAttachment, newName: String) {
         print(attachment)
         print(newName)
@@ -459,26 +539,5 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 
     func deleteAllAttachments() {
         print(#function)
-    }
-
-    func handle(method: FileAttachmentMethod) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                // Make periphery happy, will be removed later
-                print(method)
-                try await preferencesManager.updateAppPreferences(\.dismissedFileAttachmentsBanner,
-                                                                  value: true)
-                isUploadingFile = true
-                try await Task.sleep(seconds: 3)
-                files.append(.init(id: UUID().uuidString,
-                                   metadata: .init(name: .random(),
-                                                   mimeType: .random(),
-                                                   size: .random(in: 1...1_000_000))))
-                isUploadingFile = false
-            } catch {
-                handle(error)
-            }
-        }
     }
 }
