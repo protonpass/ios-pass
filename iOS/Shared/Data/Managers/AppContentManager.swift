@@ -116,7 +116,7 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     }
 
     var hasOnlyOneOwnedVault: Bool {
-        getAllVaults().numberOfOwnedVault <= 1
+        getAllShares().numberOfOwnedVault <= 1
     }
 
     @MainActor
@@ -403,6 +403,16 @@ extension AppContentManager {
         return sharesData.shares
     }
 
+    func getAllShares() -> [Share] {
+        guard let sharesData = state.loadedContent else { return [] }
+        return sharesData.shares.map(\.share)
+    }
+
+    func getAllSharesLinkToVault() -> [Share] {
+        guard let sharesData = state.loadedContent else { return [] }
+        return sharesData.filteredOrderedVaults
+    }
+
     func getAllSharesWithVaultContent() -> [ShareContent] {
         guard let sharesData = state.loadedContent else { return [] }
         return sharesData.shares.filter { $0.share.vaultContent != nil }
@@ -538,21 +548,23 @@ extension AppContentManager: LimitationCounterProtocol {
         return activeItemsWithTotpUri + trashedItemsWithTotpUri
     }
 
-    func getVaultCount() -> Int {
-        switch state {
-        case let .loaded(sharesData):
-            sharesData.shares.count
-        default:
-            0
-        }
+    func getSharesCount() -> Int {
+        guard let sharesData = state.loadedContent else { return 0 }
+        return sharesData.shares.count
+    }
+
+    func getVaultsCount() -> Int {
+        guard let sharesData = state.loadedContent else { return 0 }
+        return sharesData.filteredOrderedVaults.count
     }
 }
 
-// MARK: - VaultsProvider
-
-extension AppContentManager: VaultsProvider {
-    func getAllVaults() -> [Share] {
-        guard let sharesData = state.loadedContent else { return [] }
-        return sharesData.shares.map(\.share)
-    }
-}
+//
+//// MARK: - VaultsProvider
+//
+// extension AppContentManager: VaultsProvider {
+//    func getAllVaults() -> [Share] {
+//        guard let sharesData = state.loadedContent else { return [] }
+//        return sharesData.shares.map(\.share)
+//    }
+// }
