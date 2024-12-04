@@ -18455,120 +18455,120 @@
         }
       }
     },
-    "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access." : {
+    "Advanced alias management is available with Pass Plus. Upgrade for immediate access." : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пашыранае кіраванне псеўданімамі даступна з Pass Unlimited. Палепшыце, каб атрымаць доступ да гэтай функцыі."
+            "value" : "Пашыранае кіраванне псеўданімамі даступна з Pass Plus. Палепшыце, каб атрымаць доступ да гэтай функцыі."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pokročilá správa aliasů je k dispozici v Pass Unlimited. Navyšte pro okamžitý přístup."
+            "value" : "Pokročilá správa aliasů je k dispozici v Pass Plus. Navyšte pro okamžitý přístup."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avanceret alias-administration er tilgængelig med Pass Unlimited. Opgrader for øjeblikkelig adgang."
+            "value" : "Avanceret alias-administration er tilgængelig med Pass Plus. Opgrader for øjeblikkelig adgang."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die erweiterte Alias-Verwaltung ist mit Pass Unlimited verfügbar. Upgrade für sofortigen Zugriff."
+            "value" : "Die erweiterte Alias-Verwaltung ist mit Pass Plus verfügbar. Upgrade für sofortigen Zugriff."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Η προηγμένη διαχείριση ψευδωνύμων είναι διαθέσιμη με το Pass Unlimited. Αναβαθμίστε για άμεση πρόσβαση."
+            "value" : "Η προηγμένη διαχείριση ψευδωνύμων είναι διαθέσιμη με το Pass Plus. Αναβαθμίστε για άμεση πρόσβαση."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Advanced alias management is available with Pass Unlimited. Upgrade for immediate access."
+            "value" : "Advanced alias management is available with Pass Plus. Upgrade for immediate access."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La gestión avanzada de alias está disponible con Pass Unlimited. Actualice para obtener acceso inmediato."
+            "value" : "La gestión avanzada de alias está disponible con Pass Plus. Actualice para obtener acceso inmediato."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La gestión avanzada de alias está disponible con Pass Unlimited. Actualice para obtener acceso inmediato."
+            "value" : "La gestión avanzada de alias está disponible con Pass Plus. Actualice para obtener acceso inmediato."
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edistynyt aliashallinta sisältyy Pass Unlimitediin. Hanki se heti päivittämällä tilauksesi."
+            "value" : "Edistynyt aliashallinta sisältyy Pass Plus. Hanki se heti päivittämällä tilauksesi."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass Unlimited permet la gestion avancée des alias. Améliorez votre abonnement pour en profiter immédiatement."
+            "value" : "Pass Plus permet la gestion avancée des alias. Améliorez votre abonnement pour en profiter immédiatement."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pengelolaan alias bertingkat lanjut tersedia dengan Pass Unlimited. Tingkatkan untuk akses segera."
+            "value" : "Pengelolaan alias bertingkat lanjut tersedia dengan Pass Plus. Tingkatkan untuk akses segera."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La gestione avanzata degli alias è disponibile con Pass Unlimited. Esegui l'upgrade per l'accesso immediato."
+            "value" : "La gestione avanzata degli alias è disponibile con Pass Plus. Esegui l'upgrade per l'accesso immediato."
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "高度なエイリアス管理はPass Unlimitedで利用可能です。すぐにアクセスするにはアップグレードしてください。"
+            "value" : "高度なエイリアス管理はPass Plusで利用可能です。すぐにアクセスするにはアップグレードしてください。"
           }
         },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "დამატებითი ფსევდონიმების მართვა Pass Unlimited-ს აქვს. ასწიეთ სატარიფო გეგმა მასთან წვდომისთვის."
+            "value" : "დამატებითი ფსევდონიმების მართვა Pass Plus-ს აქვს. ასწიეთ სატარიფო გეგმა მასთან წვდომისთვის."
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "고급 별칭 관리가 Pass Unlimited에서 지원됩니다. 업그레이드하여 즉시 이용하세요."
+            "value" : "고급 별칭 관리가 Pass Plus에서 지원됩니다. 업그레이드하여 즉시 이용하세요."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avansert aliasadministrasjon er tilgjengelig med Pass Unlimited. Oppgrader for umiddelbar tilgang."
+            "value" : "Avansert aliasadministrasjon er tilgjengelig med Pass Plus. Oppgrader for umiddelbar tilgang."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Geavanceerd alias beheer is beschikbaar met Pass Onbeperkt. Upgrade voor directe toegang."
+            "value" : "Geavanceerd alias beheer is beschikbaar met Pass Plus. Upgrade voor directe toegang."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zaawansowane zarządzanie aliasami jest dostępne w planie Pass Unlimited. Ulepsz konto, aby uzyskać natychmiastowy dostęp."
+            "value" : "Zaawansowane zarządzanie aliasami jest dostępne w planie Pass Plus. Ulepsz konto, aby uzyskać natychmiastowy dostęp."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O gerenciamento avançado de alias está disponível com o Pass Unlimited. Faça o upgrade para obter acesso imediato."
+            "value" : "O gerenciamento avançado de alias está disponível com o Pass Plus. Faça o upgrade para obter acesso imediato."
           }
         },
         "ro" : {
@@ -18580,19 +18580,19 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rozšírená správa aliasov je k dispozícii v pláne Pass Unlimited. Upgradujte a získajte okamžitý prístup."
+            "value" : "Rozšírená správa aliasov je k dispozícii v pláne Pass Plus. Upgradujte a získajte okamžitý prístup."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avancerad hantering av alias är tillgängligt med Pass Unlimited. Uppgradera för omedelbar åtkomst."
+            "value" : "Avancerad hantering av alias är tillgängligt med Pass Plus. Uppgradera för omedelbar åtkomst."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gelişmiş takma ad yönetimi Pass Unlimited ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
+            "value" : "Gelişmiş takma ad yönetimi Pass Plus ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
           }
         }
       }
