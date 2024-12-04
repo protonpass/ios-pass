@@ -73,8 +73,8 @@ private extension SharedUseCasesContainer {
         SharedRepositoryContainer.shared.accessRepository()
     }
 
-    var vaultsManager: any VaultsManagerProtocol {
-        SharedServiceContainer.shared.vaultsManager()
+    var appContentManager: any AppContentManagerProtocol {
+        SharedServiceContainer.shared.appContentManager()
     }
 
     var apiManager: any APIManagerProtocol {
@@ -215,12 +215,13 @@ extension SharedUseCasesContainer {
     }
 
     var getMainVault: Factory<any GetMainVaultUseCase> {
-        self { GetMainVault(vaultsManager: self.vaultsManager) }
+        self { GetMainVault(appContentManager: self.appContentManager) }
     }
 
+    // TODO: rename
     var fullVaultsSync: Factory<any FullVaultsSyncUseCase> {
         self { FullVaultsSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
-                              vaultsManager: self.vaultsManager) }
+                              appContentManager: self.appContentManager) }
     }
 
     var loadVaultDatas: Factory<any LoadVaultDatasUseCase> {
@@ -300,7 +301,7 @@ extension SharedUseCasesContainer {
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
                        accessRepository: SharedRepositoryContainer.shared.accessRepository(),
-                       vaultsManager: self.vaultsManager,
+                       appContentManager: self.appContentManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
                        credentialManager: SharedServiceContainer.shared.credentialManager(),
@@ -402,7 +403,7 @@ extension SharedUseCasesContainer {
 
     var switchUser: Factory<any SwitchUserUseCase> {
         self { SwitchUser(userManager: self.userManager,
-                          vaultsManager: self.vaultsManager,
+                          appContentManager: self.appContentManager,
                           preferencesManager: self.preferencesManager,
                           apiManager: self.apiManager,
                           syncEventLoop: self.syncEventLoop,
@@ -428,7 +429,7 @@ extension SharedUseCasesContainer {
                                  removeUserLocalData: self.removeUserLocalData(),
                                  featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                                  passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
-                                 vaultsManager: self.vaultsManager,
+                                 appContentManager: self.appContentManager,
                                  apiManager: self.apiManager,
                                  authManager: self.authManager,
                                  credentialManager: SharedServiceContainer.shared.credentialManager(),

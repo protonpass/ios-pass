@@ -77,7 +77,7 @@ final class ShareCoordinator {
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
     @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
@@ -251,11 +251,11 @@ private extension ShareCoordinator {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                if vaultsManager.getAllVaultContents().isEmpty {
-                    try await vaultsManager.asyncRefresh(userId: userId)
+                if appContentManager.getAllVaultContents().isEmpty {
+                    try await appContentManager.asyncRefresh(userId: userId)
                 }
                 let shareId = await getMainVault()?.shareId ?? ""
-                let vaults = vaultsManager.getAllVaults()
+                let vaults = appContentManager.getAllVaults()
                 let title = content.title(for: type)
 
                 let viewController: UIViewController

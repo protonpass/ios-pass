@@ -146,13 +146,13 @@ private extension ItemContentType {
 @MainActor
 private final class ItemCountViewModel: ObservableObject {
     @Published private(set) var object: FetchableObject<ItemCount> = .fetching
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private var cancellables = Set<AnyCancellable>()
 
     private var task: Task<Void, Never>?
 
     init() {
-        vaultsManager.$state
+        appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self else { return }

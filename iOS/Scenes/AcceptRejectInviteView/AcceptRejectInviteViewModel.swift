@@ -40,7 +40,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let updateCachedInvitations = resolve(\UseCasesContainer.updateCachedInvitations)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
@@ -101,7 +101,7 @@ private extension AcceptRejectInviteViewModel {
         if userInvite.isVault, userInvite.vaultData != nil {
             decodeVaultData()
         }
-        vaultsManager.$state
+        appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self, let sharesData = state.loadedContent,

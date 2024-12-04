@@ -36,7 +36,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let moveItemsBetweenVaults = resolve(\UseCasesContainer.moveItemsBetweenVaults)
 //    private let getVaultContentForVault = resolve(\UseCasesContainer.getVaultContentForVault)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
-    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
     @Published private(set) var isFreeUser = false
     @Published var selectedVault: ShareContent?
@@ -57,7 +57,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
         }
 
         if let fromShareId {
-            selectedVault = vaultsManager
+            selectedVault = appContentManager
                 .getShareContent(for: fromShareId) // getVaultContentForVault(for: fromShareId)
         }
 

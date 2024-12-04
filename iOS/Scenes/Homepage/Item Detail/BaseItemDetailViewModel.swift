@@ -63,7 +63,7 @@ class BaseItemDetailViewModel: ObservableObject {
     let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
 
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
@@ -96,7 +96,7 @@ class BaseItemDetailViewModel: ObservableObject {
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
 
-        let allVaults = vaultsManager.getAllVaultContents()
+        let allVaults = appContentManager.getAllVaultContents()
         vault = allVaults
             .first { $0.share.shareId == itemContent.shareId }
             .map { VaultListUiModel(vaultContent: $0) }

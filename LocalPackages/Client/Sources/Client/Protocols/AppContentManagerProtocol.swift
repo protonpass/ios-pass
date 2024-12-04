@@ -1,5 +1,5 @@
 //
-// VaultsManagerProtocol.swift
+// AppContentManagerProtocol.swift
 // Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -22,7 +22,7 @@ import Combine
 import Entities
 
 // sourcery: AutoMockable
-public protocol VaultsManagerProtocol: Sendable {
+public protocol AppContentManagerProtocol: Sendable {
     nonisolated var vaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never> { get }
     var currentVaults: CurrentValueSubject<[Share], Never> { get }
     var vaultSelection: VaultSelection { get }

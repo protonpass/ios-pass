@@ -35,14 +35,14 @@ public extension CreateAndMoveItemToNewVaultUseCase {
 public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCase {
     private let createVault: any CreateVaultUseCase
     private let moveItemsBetweenVaults: any MoveItemsBetweenVaultsUseCase
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
     public init(createVault: any CreateVaultUseCase,
                 moveItemsBetweenVaults: any MoveItemsBetweenVaultsUseCase,
-                vaultsManager: any VaultsManagerProtocol) {
+                appContentManager: any AppContentManagerProtocol) {
         self.createVault = createVault
         self.moveItemsBetweenVaults = moveItemsBetweenVaults
-        self.vaultsManager = vaultsManager
+        self.appContentManager = appContentManager
     }
 
     public func execute(userId: String, vault: VaultContent, itemContent: ItemContent) async throws -> Share {
@@ -50,7 +50,7 @@ public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCa
             if let vault = try await createVault(userId: userId, with: vault) {
                 try await moveItemsBetweenVaults(context: .singleItem(itemContent),
                                                  to: vault.shareId)
-                vaultsManager.refresh(userId: userId)
+                appContentManager.refresh(userId: userId)
                 return vault
             } else {
                 throw PassError.sharing(.failedToCreateNewVault)
