@@ -212,7 +212,7 @@ private extension HomepageCoordinator {
                 var createButtonDisabled = false
                 switch selection {
                 case .all, .trash:
-                    let vaults = appContentManager.getAllVaults()
+                    let vaults = appContentManager.getAllShares()
                     createButtonDisabled = !vaults.contains(where: \.canEdit)
                 case let .precise(vault):
                     createButtonDisabled = !vault.canEdit
@@ -1253,7 +1253,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
         // Num of vaults + all items + trash + create vault button
         let rowHeight = 74
-        let customHeight = rowHeight * appContentManager.getVaultCount() + rowHeight + rowHeight + 120
+        let customHeight = rowHeight * appContentManager.getSharesCount() + rowHeight + rowHeight + 120
         viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 

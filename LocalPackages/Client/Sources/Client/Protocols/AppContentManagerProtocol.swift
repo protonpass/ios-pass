@@ -32,7 +32,7 @@ public protocol AppContentManagerProtocol: Sendable {
     func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
     func getItems(for vault: Share) -> [ItemUiModel]
-    func getAllVaults() -> [Share]
+//    func getAllVaults() -> [Share]
     func delete(userId: String, shareId: String) async throws
     func getOldestOwnedVault() -> Share?
     func reset() async

@@ -402,7 +402,7 @@ extension ItemsTabViewModel {
     }
 
     func isEditable(_ item: any ItemIdentifiable) -> Bool {
-        canEditItem(vaults: appContentManager.getAllVaults(), item: item)
+        canEditItem(vaults: appContentManager.getAllShares(), item: item)
     }
 
     // False negative on unhandled_throwing_task rule. Double check later with newer version of SwiftLint

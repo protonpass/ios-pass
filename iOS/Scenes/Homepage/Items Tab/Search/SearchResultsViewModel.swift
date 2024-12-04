@@ -62,6 +62,6 @@ extension SearchResultsViewModel {
     }
 
     func isEditable(_ item: any ItemIdentifiable) -> Bool {
-        canEditItem(vaults: appContentManager.getAllVaults(), item: item)
+        canEditItem(vaults: appContentManager.getAllShares(), item: item)
     }
 }

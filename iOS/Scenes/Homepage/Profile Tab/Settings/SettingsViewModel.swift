@@ -51,7 +51,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync
+    @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
@@ -203,7 +203,7 @@ extension SettingsViewModel {
                 router.present(for: .fullSync)
                 logger.info("Doing full sync")
                 let userId = try await userManager.getActiveUserId()
-                await fullVaultsSync(userId: userId)
+                await fullContentSync(userId: userId)
                 logger.info("Done full sync")
                 router.display(element: .successMessage(config: .refresh))
             } catch {
@@ -307,6 +307,7 @@ private extension SettingsViewModel {
             }
             .store(in: &cancellables)
 
+        // swiftlint:disable:next todo
         // TODO: maybe change the observable of appContentManager
         appContentManager.attach(to: self, storeIn: &cancellables)
         refreshSpotlightVaults()
