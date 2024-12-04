@@ -87,7 +87,7 @@ private extension HomepageCoordinator {
                                           close(notification)
                                       })
             let viewController = UIHostingController(rootView: view)
-            viewController.setDetentType(.custom(CGFloat(490)),
+            viewController.setDetentType(.medium,
                                          parentViewController: rootViewController)
             present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
         }
