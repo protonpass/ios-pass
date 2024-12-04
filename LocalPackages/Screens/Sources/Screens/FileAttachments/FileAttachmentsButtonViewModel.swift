@@ -25,7 +25,6 @@ import DocScanner
 import Entities
 import PhotosUI
 import SwiftUI
-import UseCases
 
 @MainActor
 final class FileAttachmentsButtonViewModel: ObservableObject {
@@ -34,14 +33,6 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
     private var selectedPhotosTask: Task<Void, Never>?
     private var cancellable = Set<AnyCancellable>()
     let handler: any FileAttachmentsEditHandler
-
-    private var generateDatedFileName: any GenerateDatedFileNameUseCase {
-        handler.provideGenerateDatedFileNameUseCase()
-    }
-
-    private var writeToTemporaryDirectory: any WriteToTemporaryDirectoryUseCase {
-        handler.provideWriteToTemporaryDirectoryUseCase()
-    }
 
     init(handler: any FileAttachmentsEditHandler) {
         self.handler = handler
@@ -60,8 +51,8 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
             guard let pngData = image?.pngData() else {
                 throw PassError.fileAttachment(.noPngData)
             }
-            let fileName = generateDatedFileName(prefix: "Photo", extension: "png", date: .now)
-            let url = try writeToTemporaryDirectory(data: pngData, fileName: fileName)
+            let fileName = handler.generateDatedFileName(prefix: "Photo", extension: "png")
+            let url = try handler.writeToTemporaryDirectory(data: pngData, fileName: fileName)
             handler.handleAttachment(url)
         } catch {
             handler.handleAttachmentError(error)
@@ -75,12 +66,10 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
                 guard let document = scanResult as? ScannedDocument else { return }
                 let text = document.scannedPages.flatMap(\.text).joined(separator: "\n")
                 guard !text.isEmpty else { return }
-                let fileName = generateDatedFileName(prefix: "Document",
-                                                     extension: "txt",
-                                                     date: .now)
+                let fileName = handler.generateDatedFileName(prefix: "Document", extension: "txt")
 
                 guard let data = text.data(using: .utf8) else { return }
-                let url = try writeToTemporaryDirectory(data: data, fileName: fileName)
+                let url = try handler.writeToTemporaryDirectory(data: data, fileName: fileName)
                 handler.handleAttachment(url)
             case let .failure(error):
                 handler.handleAttachmentError(error)
