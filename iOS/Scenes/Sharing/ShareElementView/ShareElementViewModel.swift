@@ -63,7 +63,7 @@ final class ShareElementViewModel: ObservableObject {
     }
 
     func manageAccess() {
-        router.present(for: .manageSharedShare(share, .topMost))
+        router.present(for: .manageSharedShare(share, nil, .topMost))
     }
 
     private func complete(with element: SharingElementData) {

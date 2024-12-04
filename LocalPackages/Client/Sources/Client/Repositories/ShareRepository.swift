@@ -49,7 +49,8 @@ public protocol ShareRepositoryProtocol: Sendable {
                       shares: [Share],
                       eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
 
-    func getUsersLinked(to shareId: String) async throws -> [UserShareInfos]
+    func getUsersLinkedToVaultShare(to shareId: String) async throws -> [UserShareInfos]
+    func getUsersLinkedToItemShare(to shareId: String, itemId: String) async throws -> [UserShareInfos]
 
     @discardableResult
     func updateUserPermission(userShareId: String,
@@ -212,11 +213,21 @@ public extension ShareRepository {
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
 
-    func getUsersLinked(to shareId: String) async throws -> [UserShareInfos] {
+    func getUsersLinkedToVaultShare(to shareId: String) async throws -> [UserShareInfos] {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId)")
-        let users = try await remoteDatasource.getShareLinkedUsers(userId: userId, shareId: shareId)
+        let users = try await remoteDatasource.getUsersLinkedToVaultShare(userId: userId, shareId: shareId)
         logger.trace("Got \(users.count) remote user for \(shareId)")
+        return users
+    }
+
+    func getUsersLinkedToItemShare(to shareId: String, itemId: String) async throws -> [UserShareInfos] {
+        let userId = try await userManager.getActiveUserId()
+        logger.trace("Getting all users linked to shareId \(shareId), itemId \(itemId)")
+        let users = try await remoteDatasource.getUsersLinkedToItemShare(userId: userId,
+                                                                         shareId: shareId,
+                                                                         itemId: itemId)
+        logger.trace("Got \(users.count) remote user for \(shareId), itemId \(itemId)")
         return users
     }
 

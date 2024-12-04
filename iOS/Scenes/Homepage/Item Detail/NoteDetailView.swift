@@ -62,7 +62,7 @@ struct NoteDetailView: View {
                         if let vault = viewModel.vault?.vault {
                             if let vaultContent = vault.vaultContent {
                                 if vault.shared {
-                                    VaultButton(vault: vault, vaultContent: vaultContent)
+                                    VaultButton(vault: vault, vaultContent: vaultContent, itemContent: itemContent)
                                         .padding(.top, 4)
                                 } else {
                                     VaultLabel(vaultContent: vaultContent)

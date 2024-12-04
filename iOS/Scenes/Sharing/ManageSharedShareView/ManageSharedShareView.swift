@@ -86,7 +86,7 @@ struct ManageSharedShareView: View {
 private extension ManageSharedShareView {
     var mainContainer: some View {
         VStack {
-            if let vaultContent = viewModel.share.vaultContent {
+            if let vaultContent = viewModel.share.vaultContent, viewModel.share.shared {
                 headerVaultInformation(vaultContent: vaultContent)
             } else {
                 itemShareHeader
@@ -147,14 +147,21 @@ private extension ManageSharedShareView {
                     inviteesSection(for: viewModel.invitations.invitees, title: "Invitations")
                 }
 
-                if !viewModel.members.isEmpty {
-                    inviteesSection(for: viewModel.members, title: "Members (\(viewModel.members.count))")
+                if !viewModel.vaultMembers.isEmpty {
+                    inviteesSection(for: viewModel.vaultMembers,
+                                    title: " Vault share Members (\(viewModel.vaultMembers.count))")
+                }
+
+                if !viewModel.itemMembers.isEmpty {
+                    inviteesSection(for: viewModel.itemMembers,
+                                    title: " Item share Members (\(viewModel.itemMembers.count))")
                 }
             }
             .frame(maxWidth: .infinity)
         }
         .animation(.default, value: viewModel.invitations)
-        .animation(.default, value: viewModel.members)
+        .animation(.default, value: viewModel.vaultMembers)
+        .animation(.default, value: viewModel.itemMembers)
     }
 
     func inviteesSection(for invitees: [any ShareInvitee], title: LocalizedStringKey) -> some View {
