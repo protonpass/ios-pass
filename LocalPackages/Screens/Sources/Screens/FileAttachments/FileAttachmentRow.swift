@@ -29,27 +29,17 @@ public struct FileAttachmentRow: View {
     @State private var showRenameAlert = false
     @State private var showFilePreview = false
 
-    let uiModel: FileAttachmentUiModel
-    let primaryTintColor: UIColor
-    let secondaryTintColor: UIColor
-    let onRename: (String) -> Void
-    let onRetryUpload: () -> Void
-    let onDelete: () -> Void
+    private let file: FileAttachment
+    private let uiModel: FileAttachmentUiModel
+    private let handler: any FileAttachmentsEditHandler
 
     public init(file: FileAttachment,
-                primaryTintColor: UIColor,
-                secondaryTintColor: UIColor,
-                onRename: @escaping (String) -> Void,
-                onRetryUpload: @escaping () -> Void,
-                onDelete: @escaping () -> Void) {
-        let uiModel = file.toUiModel()
+                handler: any FileAttachmentsEditHandler) {
+        let uiModel = file.toUiModel
         _name = .init(initialValue: uiModel.name)
+        self.file = file
         self.uiModel = uiModel
-        self.primaryTintColor = primaryTintColor
-        self.secondaryTintColor = secondaryTintColor
-        self.onRename = onRename
-        self.onRetryUpload = onRetryUpload
-        self.onDelete = onDelete
+        self.handler = handler
     }
 
     public var body: some View {
@@ -85,14 +75,15 @@ public struct FileAttachmentRow: View {
                     Divider()
                     LabelButton(title: "Delete",
                                 icon: IconProvider.trash,
-                                action: onDelete)
+                                action: { handler.delete(attachment: file) })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.textWeak,
                                  backgroundColor: .clear)
                 })
             case .error:
-                RetryButton(tintColor: primaryTintColor, onRetry: onRetryUpload)
+                RetryButton(tintColor: handler.fileAttachmentsSectionPrimaryColor,
+                            onRetry: { handler.retryUpload(attachment: file) })
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -104,17 +95,18 @@ public struct FileAttachmentRow: View {
                isPresented: $showRenameAlert,
                actions: {
                    TextField(text: $name, label: { EmptyView() })
-                   Button("Rename", action: { onRename(name) })
+                   Button("Rename", action: { handler.rename(attachment: file, newName: name) })
                        .disabled(name.isEmpty)
                    Button("Cancel", role: .cancel, action: { name = uiModel.name })
                })
         .fullScreenCover(isPresented: $showFilePreview) {
             if let url = uiModel.url {
                 FileAttachmentPreview(url: url,
-                                      primaryTintColor: primaryTintColor,
-                                      secondaryTintColor: secondaryTintColor,
-                                      onRename: { onRename($0) },
-                                      onDelete: onDelete)
+                                      primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
+                                      secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor,
+                                      onRename: { handler.rename(attachment: file,
+                                                                 newName: $0) },
+                                      onDelete: { handler.delete(attachment: file) })
             }
         }
     }

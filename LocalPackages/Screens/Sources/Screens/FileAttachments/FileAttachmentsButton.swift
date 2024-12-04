@@ -33,8 +33,8 @@ public struct FileAttachmentsButton: View {
     @State private var showPhotosPicker = false
     @State private var showFileImporter = false
 
-    let style: Style
-    let handler: any FileAttachmentsEditHandler
+    private let style: Style
+    private let handler: any FileAttachmentsEditHandler
 
     public enum Style {
         case circle, capsule
