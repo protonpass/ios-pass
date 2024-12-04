@@ -34,7 +34,7 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
         }
     }
 
-    public func toUiModel() -> FileAttachmentUiModel {
+    public var toUiModel: FileAttachmentUiModel {
         switch self {
         case let .pending(item):
             .init(id: item.id,
