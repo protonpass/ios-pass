@@ -1,5 +1,5 @@
 //
-// VaultsManager.swift
+// AppContentManager.swift
 // Proton Pass - Created on 07/03/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -29,7 +29,7 @@ import Macro
 import ProtonCoreLogin
 import SwiftUI
 
-enum VaultManagerState {
+enum AppContentState: Equatable {
     case loading
     case loaded(SharesData)
     case error(any Error)
@@ -42,11 +42,22 @@ enum VaultManagerState {
             nil
         }
     }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs, rhs) {
+        case (.loading, .loading):
+            true
+        case let (.loaded(lhsUiModel), .loaded(rhsUiModel)):
+            lhsUiModel.hashValue == rhsUiModel.hashValue
+        case let (.error(lhsError), .error(rhsError)):
+            lhsError.localizedDescription == rhsError.localizedDescription
+        default:
+            false
+        }
+    }
 }
 
-// swiftlint:disable:next todo
-// TODO: transform vault Manager
-final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintable, VaultsManagerProtocol {
+final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrintable, AppContentManagerProtocol {
     deinit { print(deinitMessage) }
 
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -83,7 +94,7 @@ final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintabl
 
     private var cancellables = Set<AnyCancellable>()
 
-    @Published private(set) var state = VaultManagerState.loading
+    @Published private(set) var state = AppContentState.loading
     @Published private(set) var vaultSelection = VaultSelection.all
     @Published private(set) var itemCount = ItemCount.zero
 
@@ -120,7 +131,7 @@ final class VaultsManager: ObservableObject, @unchecked Sendable, DeinitPrintabl
 
 // MARK: - Private APIs
 
-private extension VaultsManager {
+private extension AppContentManager {
     func setUp() {
         $state
             .removeDuplicates()
@@ -143,21 +154,6 @@ private extension VaultsManager {
     }
 
     func updateItemCount() {
-//        guard let sharesData = state.loadedContent else { return }
-//        let items: [any ItemTypeIdentifiable] = switch vaultSelection {
-//        case .all:
-//            sharesData.shares.flatMap(\.items)
-//        case let .precise(selectedVault):
-//            sharesData.shares
-//                .filter { $0.share.shareId == selectedVault.shareId }
-//                .flatMap(\.items)
-//        case .trash:
-//            sharesData.trashedItems
-//        }
-//
-//        itemCount = ItemCount(items: items, sharedByMe: <#T##Int#>, sharedWithMe: <#T##Int#>)
-//
-//
         guard let sharesData = state.loadedContent else { return }
         var sharedByMe = 0
         var sharedWithMe = 0
@@ -245,7 +241,7 @@ private extension VaultsManager {
 
 // MARK: - Public APIs
 
-extension VaultsManager {
+extension AppContentManager {
     func refresh(userId: String) {
         guard !isRefreshing else { return }
 
@@ -502,7 +498,7 @@ extension VaultsManager {
     }
 }
 
-private extension VaultsManager {
+private extension AppContentManager {
     func getAllEditableTrashedItems(userId: String) async throws -> [SymmetricallyEncryptedItem] {
         let editableShareIds = getAllEditableVaultContents().map(\.share.shareId)
         let trashedItems = try await itemRepository.getItems(userId: userId, state: .trashed)
@@ -514,7 +510,7 @@ private extension VaultsManager {
 
 // MARK: - LimitationCounterProtocol
 
-extension VaultsManager: LimitationCounterProtocol {
+extension AppContentManager: LimitationCounterProtocol {
     func getAliasCount() -> Int {
         switch state {
         case let .loaded(sharesData):
@@ -545,24 +541,9 @@ extension VaultsManager: LimitationCounterProtocol {
 
 // MARK: - VaultsProvider
 
-extension VaultsManager: VaultsProvider {
+extension AppContentManager: VaultsProvider {
     func getAllVaults() -> [Share] {
         guard let sharesData = state.loadedContent else { return [] }
         return sharesData.shares.map(\.share)
-    }
-}
-
-extension VaultManagerState: Equatable {
-    static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        case (.loading, .loading):
-            true
-        case let (.loaded(lhsUiModel), .loaded(rhsUiModel)):
-            lhsUiModel.hashValue == rhsUiModel.hashValue
-        case let (.error(lhsError), .error(rhsError)):
-            lhsError.localizedDescription == rhsError.localizedDescription
-        default:
-            false
-        }
     }
 }

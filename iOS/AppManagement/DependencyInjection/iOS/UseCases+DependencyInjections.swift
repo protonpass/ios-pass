@@ -79,8 +79,8 @@ private extension UseCasesContainer {
         SharedRepositoryContainer.shared.publicKeyRepository()
     }
 
-    var vaultsManager: any VaultsManagerProtocol {
-        SharedServiceContainer.shared.vaultsManager()
+    var appContentManager: any AppContentManagerProtocol {
+        SharedServiceContainer.shared.appContentManager()
     }
 
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
@@ -148,7 +148,7 @@ extension UseCasesContainer {
     var createAndMoveItemToNewVault: Factory<any CreateAndMoveItemToNewVaultUseCase> {
         self { CreateAndMoveItemToNewVault(createVault: self.createVault(),
                                            moveItemsBetweenVaults: self.moveItemsBetweenVaults(),
-                                           vaultsManager: self.vaultsManager) }
+                                           appContentManager: self.appContentManager) }
     }
 
     var getCurrentShareInviteInformations: Factory<any GetCurrentShareInviteInformationsUseCase> {
@@ -201,7 +201,7 @@ extension UseCasesContainer {
     }
 
     var leaveShare: Factory<any LeaveShareUseCase> {
-        self { LeaveShare(vaultManager: self.vaultsManager) }
+        self { LeaveShare(appContentManager: self.appContentManager) }
     }
 
     var getUsersLinkedToShare: Factory<any GetUsersLinkedToShareUseCase> {
@@ -229,7 +229,7 @@ extension UseCasesContainer {
     var canUserPerformActionOnVault: Factory<any CanUserPerformActionOnVaultUseCase> {
         self {
             CanUserPerformActionOnVault(accessRepository: self.accessRepository,
-                                        vaultsManager: self.vaultsManager)
+                                        appContentManager: self.appContentManager)
         }
     }
 }
@@ -284,7 +284,7 @@ extension UseCasesContainer {
     }
 
     var canUserTransferVaultOwnership: Factory<any CanUserTransferVaultOwnershipUseCase> {
-        self { CanUserTransferVaultOwnership(vaultsManager: self.vaultsManager) }
+        self { CanUserTransferVaultOwnership(appContentManager: self.appContentManager) }
     }
 
     var makeUnsignedSignatureForVaultSharing: Factory<any MakeUnsignedSignatureForVaultSharingUseCase> {
@@ -296,7 +296,7 @@ extension UseCasesContainer {
 
 extension UseCasesContainer {
     var getVaultItemCount: Factory<any GetVaultItemCountUseCase> {
-        self { GetVaultItemCount(vaultsManager: self.vaultsManager) }
+        self { GetVaultItemCount(appContentManager: self.appContentManager) }
     }
 
     var transferVaultOwnership: Factory<any TransferVaultOwnershipUseCase> {
@@ -320,7 +320,7 @@ extension UseCasesContainer {
     }
 
     var createVault: Factory<any CreateVaultUseCase> {
-        self { CreateVault(vaultsManager: self.vaultsManager,
+        self { CreateVault(appContentManager: self.appContentManager,
                            repository: self.shareRepository) }
     }
 

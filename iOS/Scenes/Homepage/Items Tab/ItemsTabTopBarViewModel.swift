@@ -76,7 +76,7 @@ enum ExtraBulkActionOption {
 
 @MainActor
 final class ItemsTabTopBarViewModel: ObservableObject {
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var cancellables = Set<AnyCancellable>()
@@ -92,15 +92,15 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     }
 
     var vaultSelection: VaultSelection {
-        vaultsManager.vaultSelection
+        appContentManager.vaultSelection
     }
 
     var highlighted: Bool {
-        !vaultsManager.filterOption.isDefault || !selectedSortType.isDefault
+        !appContentManager.filterOption.isDefault || !selectedSortType.isDefault
     }
 
     var selectable: Bool {
-        switch vaultsManager.vaultSelection {
+        switch appContentManager.vaultSelection {
         case .all, .trash:
             true
         case let .precise(vault):
@@ -109,15 +109,15 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     }
 
     var selectedFilterOption: ItemTypeFilterOption {
-        vaultsManager.filterOption
+        appContentManager.filterOption
     }
 
     var itemCount: ItemCount {
-        vaultsManager.itemCount
+        appContentManager.itemCount
     }
 
     init() {
-        vaultsManager.attach(to: self, storeIn: &cancellables)
+        appContentManager.attach(to: self, storeIn: &cancellables)
         actionsDisabled = currentSelectedItems.value.isEmpty
 
         let aliasSyncEnabled = getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
@@ -154,11 +154,11 @@ extension ItemsTabTopBarViewModel {
     }
 
     func update(_ filterOption: ItemTypeFilterOption) {
-        vaultsManager.updateItemTypeFilterOption(filterOption)
+        appContentManager.updateItemTypeFilterOption(filterOption)
     }
 
     func resetFilters() {
-        vaultsManager.updateItemTypeFilterOption(.all)
+        appContentManager.updateItemTypeFilterOption(.all)
         selectedSortType = .mostRecent
     }
 }

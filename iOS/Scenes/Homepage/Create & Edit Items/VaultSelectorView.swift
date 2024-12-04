@@ -30,10 +30,10 @@ struct VaultSelectorView: View {
     let isFreeUser: Bool
     let onUpgrade: () -> Void
 
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
 
     private var vaults: [ShareContent] {
-        vaultsManager
+        appContentManager
             .getAllEditableVaultContents()
     }
 

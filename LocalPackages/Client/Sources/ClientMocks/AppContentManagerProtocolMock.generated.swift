@@ -22,7 +22,7 @@ import Client
 import Combine
 import Entities
 
-public final class VaultsManagerProtocolMock: @unchecked Sendable, VaultsManagerProtocol {
+public final class AppContentManagerProtocolMock: @unchecked Sendable, AppContentManagerProtocol {
 
     public init() {}
 
