@@ -23,15 +23,13 @@ import Core
 import Entities
 import Foundation
 
-@_spi(QA)
-public let kInAppNotificationTimerKey = "InAppNotificationTimer"
-
 public protocol InAppNotificationManagerProtocol: Sendable {
     var notifications: [InAppNotification] { get }
 
     func fetchNotifications(offsetId: String?, reset: Bool) async throws -> [InAppNotification]
     func getNotificationToDisplay() async throws -> InAppNotification?
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws
+    func updateNotificationTime(_ date: Date) async throws
 
     // MARK: - Qa only accessible function to test mock notifications
 
@@ -47,7 +45,7 @@ public extension InAppNotificationManagerProtocol {
 
 public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerProtocol {
     private let repository: any InAppNotificationRepositoryProtocol
-    private let userDefault: UserDefaults
+    private let timeDatasource: any LocalNotificationTimeDatasourceProtocol
     private let userManager: any UserManagerProtocol
     private let logger: Logger
     public private(set) var notifications: [InAppNotification] = []
@@ -60,12 +58,12 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
     private var mockNotification: InAppNotification?
 
     public init(repository: any InAppNotificationRepositoryProtocol,
+                timeDatasource: any LocalNotificationTimeDatasourceProtocol,
                 userManager: any UserManagerProtocol,
-                userDefault: UserDefaults,
                 delayBetweenNotifications: TimeInterval = 1_800,
                 logManager: any LogManagerProtocol) {
-        self.userDefault = userDefault
         self.repository = repository
+        self.timeDatasource = timeDatasource
         self.userManager = userManager
         self.delayBetweenNotifications = delayBetweenNotifications
         logger = .init(manager: logManager)
@@ -94,10 +92,9 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         if let mockNotification {
             return mockNotification.canBeDisplayed(timestampDate: timestampDate.toInt) ? mockNotification : nil
         }
-        guard shouldDisplayNotifications else {
+        guard try await shouldDisplayNotification() else {
             return nil
         }
-        updateTime(timestampDate)
         return notifications.filter { notification in
             notification.canBeDisplayed(timestampDate: timestampDate.toInt)
         }.max(by: { lhs, rhs in
@@ -125,6 +122,11 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         if let index = notifications.firstIndex(where: { $0.id == notificationId }) {
             notifications[index].state = newState.rawValue
         }
+    }
+
+    public func updateNotificationTime(_ date: Date) async throws {
+        let userId = try await userManager.getActiveUserId()
+        try await timeDatasource.upsertNotificationTime(date.timeIntervalSince1970, for: userId)
     }
 }
 
@@ -168,23 +170,12 @@ private extension InAppNotificationManager {
     /// Display notification at most once every 30 minutes
     /// - Returns: A bool equals to `true` when there is more than 30 minutes past since last notification
     /// displayed
-    var shouldDisplayNotifications: Bool {
-        guard let timeInterval = getTimeForLastNotificationDisplay() else {
+    func shouldDisplayNotification() async throws -> Bool {
+        let userId = try await userManager.getActiveUserId()
+        guard let timeInterval = try await timeDatasource.getNotificationTime(for: userId) else {
             return true
         }
         return (Date.now.timeIntervalSince1970 - timeInterval) >= delayBetweenNotifications
-    }
-
-    func getTimeForLastNotificationDisplay() -> Double? {
-        userDefault.double(forKey: kInAppNotificationTimerKey)
-    }
-
-    func updateTime(_ time: Double) {
-        userDefault.set(time, forKey: kInAppNotificationTimerKey)
-    }
-
-    func removeTime() {
-        userDefault.removeObject(forKey: kInAppNotificationTimerKey)
     }
 }
 
