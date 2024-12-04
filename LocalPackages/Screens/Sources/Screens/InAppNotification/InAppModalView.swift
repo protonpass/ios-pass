@@ -41,8 +41,8 @@ public struct InAppModalView: View {
     public var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack(spacing: 24) {
-                if let imageUrl = notification.content.imageUrl, let url = URL(string: imageUrl) {
-                    AsyncImage(url: url,
+                if let imageUrl = notification.content.safeImageUrl {
+                    AsyncImage(url: imageUrl,
                                content: { image in
                                    image.resizable()
                                        .aspectRatio(contentMode: .fit)
@@ -53,31 +53,23 @@ public struct InAppModalView: View {
                                })
                 }
 
-                Spacer()
+                Text(verbatim: notification.content.title)
+                    .font(.title.weight(.medium))
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .minimumScaleFactor(0.8)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
 
-                VStack {
-                    Text(verbatim: notification.content.title)
-                        .font(.title.weight(.medium))
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .minimumScaleFactor(0.8)
-                        .multilineTextAlignment(.center)
-                        .lineLimit(2)
-
-                    Spacer()
-
-                    Text(verbatim: notification.content.message)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .minimumScaleFactor(0.8)
-                        .multilineTextAlignment(.center)
-
-                    Spacer()
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                Text(verbatim: notification.content.message)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity,
+                           maxHeight: .infinity,
+                           alignment: notification.content.safeImageUrl == nil ? .center : .top)
+                    .minimumScaleFactor(0.8)
+                    .multilineTextAlignment(.center)
 
                 if let cta = notification.content.cta {
-                    Spacer()
                     CapsuleTextButton(title: cta.text,
                                       titleColor: PassColor.textInvert,
                                       backgroundColor: PassColor.interactionNormMajor2,
