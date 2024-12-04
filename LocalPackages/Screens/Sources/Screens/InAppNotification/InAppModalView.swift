@@ -51,12 +51,11 @@ public struct InAppModalView: View {
                                placeholder: {
                                    ProgressView()
                                })
-                               .padding(.top, 30)
                 }
 
                 Spacer()
 
-                VStack(spacing: 12) {
+                VStack {
                     Text(verbatim: notification.content.title)
                         .font(.title.weight(.medium))
                         .foregroundStyle(PassColor.textNorm.toColor)
@@ -64,20 +63,21 @@ public struct InAppModalView: View {
                         .minimumScaleFactor(0.8)
                         .multilineTextAlignment(.center)
                         .lineLimit(2)
-                        .fixedSize(horizontal: false, vertical: true)
+
+                    Spacer()
 
                     Text(verbatim: notification.content.message)
                         .foregroundStyle(PassColor.textWeak.toColor)
                         .frame(maxWidth: .infinity, alignment: .center)
                         .minimumScaleFactor(0.8)
                         .multilineTextAlignment(.center)
-                        .lineLimit(2)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .infinity, alignment: .center)
 
-                Spacer()
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+
                 if let cta = notification.content.cta {
+                    Spacer()
                     CapsuleTextButton(title: cta.text,
                                       titleColor: PassColor.textInvert,
                                       backgroundColor: PassColor.interactionNormMajor2,
@@ -87,7 +87,6 @@ public struct InAppModalView: View {
                                           onTap(notification)
                                       })
                                       .padding(.horizontal, DesignConstant.sectionPadding)
-                    Spacer()
                 }
             }
             .padding(DesignConstant.sectionPadding)
