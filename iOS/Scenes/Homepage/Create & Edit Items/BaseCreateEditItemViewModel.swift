@@ -128,7 +128,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
-    @LazyInjected(\SharedUseCasesContainer.writeToTemporaryDirectory) private var writeToTemporaryDirectory
+    @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
     @LazyInjected(\SharedUseCasesContainer.getFileSize) private var getFileSize
     @LazyInjected(\SharedUseCasesContainer.getMimeType) private var getMimeType
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
@@ -465,12 +465,18 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         itemContentType().normMinor1Color
     }
 
-    func provideGenerateDatedFileNameUseCase() -> any GenerateDatedFileNameUseCase {
-        generateDatedFileName
+    func generateDatedFileName(prefix: String, extension: String) -> String {
+        generateDatedFileName(prefix: prefix, extension: `extension`, date: .now)
     }
 
-    func provideWriteToTemporaryDirectoryUseCase() -> any WriteToTemporaryDirectoryUseCase {
-        writeToTemporaryDirectory
+    func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL {
+        let fileSize = UInt64(data.count)
+        guard fileSize < Constants.Utils.maxFileSizeInBytes else {
+            throw PassError.fileAttachment(.fileTooLarge(fileSize))
+        }
+        return try writeToUrl(data: data,
+                              fileName: fileName,
+                              baseUrl: FileManager.default.temporaryDirectory)
     }
 
     func handleAttachment(_ url: URL) {
