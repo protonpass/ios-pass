@@ -44,9 +44,9 @@ public protocol FileAttachmentsEditHandler {
 public struct FileAttachmentsEditSection: View {
     @State private var showDeleteAllAlert = false
 
-    let files: [FileAttachment]
-    let isUploading: Bool
-    let handler: any FileAttachmentsEditHandler
+    private let files: [FileAttachment]
+    private let isUploading: Bool
+    private let handler: any FileAttachmentsEditHandler
 
     public init(files: [FileAttachment],
                 isUploading: Bool,
@@ -89,12 +89,7 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                FileAttachmentRow(file: file,
-                                  primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                  secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor,
-                                  onRename: { handler.rename(attachment: file, newName: $0) },
-                                  onRetryUpload: { handler.retryUpload(attachment: file) },
-                                  onDelete: { handler.delete(attachment: file) })
+                FileAttachmentRow(file: file, handler: handler)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                     .disabled(isUploading)
                 if file != files.last {
