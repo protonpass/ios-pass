@@ -128,7 +128,7 @@ private final class ItemReadEventsViewModel: ObservableObject {
             let userId = try await userManager.getActiveUserId()
             let events = try await repository.getAllEvents(userId: userId).reversed()
             let formatter = RelativeDateTimeFormatter()
-            let itemUiModels = appContentManager.getAllVaultContents().flatMap(\.items)
+            let itemUiModels = appContentManager.getAllSharesItems()
             uiModels = events.compactMap { event -> ItemReadEventsUiModel? in
                 if let uiModel = itemUiModels
                     .first(where: { $0.itemId == event.itemId && $0.shareId == event.shareId }) {

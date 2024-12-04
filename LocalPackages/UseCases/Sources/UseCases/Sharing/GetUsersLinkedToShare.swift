@@ -24,12 +24,12 @@ import Client
 import Entities
 
 public protocol GetUsersLinkedToShareUseCase: Sendable {
-    func execute(with shareId: String) async throws -> [UserShareInfos]
+    func execute(with share: Share, itemId: String?) async throws -> [UserShareInfos]
 }
 
 public extension GetUsersLinkedToShareUseCase {
-    func callAsFunction(with shareId: String) async throws -> [UserShareInfos] {
-        try await execute(with: shareId)
+    func callAsFunction(with share: Share, itemId: String? = nil) async throws -> [UserShareInfos] {
+        try await execute(with: share, itemId: itemId)
     }
 }
 
@@ -40,7 +40,11 @@ public final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
         self.repository = repository
     }
 
-    public func execute(with shareId: String) async throws -> [UserShareInfos] {
-        try await repository.getUsersLinked(to: shareId)
+    public func execute(with share: Share, itemId: String?) async throws -> [UserShareInfos] {
+        if let itemId {
+            try await repository.getUsersLinkedToItemShare(to: share.id, itemId: itemId)
+        } else {
+            try await repository.getUsersLinkedToVaultShare(to: share.id)
+        }
     }
 }

@@ -49,7 +49,7 @@ struct ItemDetailTitleView: View {
                     HStack {
                         if let vaultContent = vault.vaultContent {
                             if vault.shared {
-                                VaultButton(vault: vault, vaultContent: vaultContent)
+                                VaultButton(vault: vault, vaultContent: vaultContent, itemContent: itemContent)
                             } else if shouldShowVault {
                                 VaultLabel(vaultContent: vaultContent)
                             }

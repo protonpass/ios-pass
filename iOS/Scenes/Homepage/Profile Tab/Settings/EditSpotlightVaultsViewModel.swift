@@ -29,7 +29,7 @@ final class EditSpotlightVaultsViewModel: ObservableObject {
     let allVaults: [VaultListUiModel]
 
     init() {
-        allVaults = appContentManager.getAllVaultContents().map { .init(vaultContent: $0) }
+        allVaults = appContentManager.getAllSharesWithVaultContent().map { .init(vaultContent: $0) }
     }
 
     func toggleSelection(vault: Share) {

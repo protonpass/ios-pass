@@ -160,7 +160,7 @@ struct EditableVaultListView: View {
 
             if vault.shared {
                 Button(action: {
-                    viewModel.router.present(for: .manageSharedShare(vault, .none))
+                    viewModel.router.present(for: .manageSharedShare(vault, nil, .none))
                 }, label: {
                     Label(title: {
                         Text(vault.isAdmin ? "Manage access" : "View members")

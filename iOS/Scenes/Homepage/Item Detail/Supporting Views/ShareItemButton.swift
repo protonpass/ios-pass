@@ -30,7 +30,7 @@ struct ShareItemButton: View {
     let itemContent: ItemContent
 
     var body: some View {
-        Button { router.present(for: .manageSharedShare(share, .none)) } label: {
+        Button { router.present(for: .manageSharedShare(share, itemContent, .none)) } label: {
             HStack {
                 Image(uiImage: IconProvider.usersFilled)
                     .resizable()

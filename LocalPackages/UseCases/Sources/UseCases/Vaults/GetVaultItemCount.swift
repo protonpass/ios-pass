@@ -40,7 +40,6 @@ public final class GetVaultItemCount: @unchecked Sendable, GetVaultItemCountUseC
         self.appContentManager = appContentManager
     }
 
-    // TODO: get the itemcount from the ShareContent directly from appCOntentManager
     public func execute(for vault: Share, and type: ItemContentType?) -> Int {
         if let type {
             return appContentManager.getItems(for: vault).filter { $0.type == type }.count

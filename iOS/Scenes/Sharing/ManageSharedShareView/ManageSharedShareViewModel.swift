@@ -31,9 +31,12 @@ import ProtonCoreNetworking
 @MainActor
 final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     private(set) var share: Share
+    private let item: ItemContent?
     @Published private(set) var itemsNumber = 0
     @Published private(set) var invitations = ShareInvites.default
-    @Published private(set) var members: [UserShareInfos] = []
+    @Published private(set) var vaultMembers: [UserShareInfos] = []
+    @Published private(set) var itemMembers: [UserShareInfos] = []
+
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
     @Published private(set) var isFreeUser = true
@@ -70,7 +73,7 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     }
 
     var numberOfInvitesLeft: Int {
-        max(share.maxMembers - (members.count + invitations.totalNumberOfInvites), 0)
+        max(share.maxMembers - (vaultMembers.count + invitations.totalNumberOfInvites), 0)
     }
 
     var showInvitesLeft: Bool {
@@ -92,8 +95,9 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
         return reachedLimit
     }
 
-    init(share: Share) {
+    init(share: Share, item: ItemContent?) {
         self.share = share
+        self.item = item
         setUp()
     }
 
@@ -244,7 +248,13 @@ private extension ManageSharedShareViewModel {
         if share.isAdmin {
             invitations = try await getPendingInvitationsForShare(with: shareId)
         }
-        members = try await getUsersLinkedToShare(with: shareId)
+        if share.shared {
+            vaultMembers = try await getUsersLinkedToShare(with: share)
+        }
+
+        if let item, item.shared {
+            itemMembers = try await getUsersLinkedToShare(with: share, itemId: item.itemId)
+        }
     }
 }
 

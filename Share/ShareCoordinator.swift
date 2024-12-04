@@ -251,7 +251,7 @@ private extension ShareCoordinator {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                if appContentManager.getAllVaultContents().isEmpty {
+                if appContentManager.getAllSharesContent().isEmpty {
                     try await appContentManager.asyncRefresh(userId: userId)
                 }
                 let shareId = await getMainVault()?.shareId ?? ""
