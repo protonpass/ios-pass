@@ -43,7 +43,7 @@ public final class MoveItemsBetweenVaults: MoveItemsBetweenVaultsUseCase {
     public func execute(context: MovingContext, to shareId: ShareID) async throws {
         switch context {
         case let .singleItem(item):
-            try await repository.move(item: item, toShareId: shareId)
+            try await repository.move(items: [item], toShareId: shareId)
         case let .allItems(fromVault):
             try await repository.move(currentShareId: fromVault.shareId, toShareId: shareId)
         case let .selectedItems(items):
