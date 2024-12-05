@@ -78,7 +78,10 @@ private extension HomepageCoordinator {
                 updateFloatingView(floatingView: view, viewTag: UniqueSheet.inAppNotificationDisplay)
             }
         case .modal:
+            var viewController: UIViewController?
+            let viewModel = InAppModalViewModel()
             let view = InAppModalView(notification: notification,
+                                      viewModel: viewModel,
                                       onTap: { [weak self] notification in
                                           guard let self else { return }
                                           ctaFlow(notification)
@@ -86,10 +89,13 @@ private extension HomepageCoordinator {
                                           guard let self else { return }
                                           close(notification)
                                       })
-            let viewController = UIHostingController(rootView: view)
-            viewController.setDetentType(.medium,
-                                         parentViewController: rootViewController)
-            present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
+            viewController = UIHostingController(rootView: view)
+            viewController?.setDetentType(.medium,
+                                          parentViewController: rootViewController)
+            viewModel.sheetPresentation = viewController?.sheetPresentationController
+            if let viewController {
+                present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
+            }
         }
     }
 
