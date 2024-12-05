@@ -60,9 +60,12 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 
     /// Get the latest key of an item to encrypt item content
     func getLatestItemKey(userId: String, shareId: String, itemId: String) async throws -> DecryptedItemKey
+
+    /// Get all decrypted item keys
+    func getItemKeys(userId: String, shareId: String, itemId: String) async throws -> [DecryptedItemKey]
 }
 
-public actor PassKeyManager {
+public actor PassKeyManager: PassKeyManagerProtocol {
     private var decryptedShareKeys = Set<DecryptedShareKey>()
     private let userManager: any UserManagerProtocol
     private let shareKeyRepository: any ShareKeyRepositoryProtocol
@@ -83,10 +86,10 @@ public actor PassKeyManager {
     }
 }
 
-extension PassKeyManager: PassKeyManagerProtocol {
-    public func getShareKey(userId: String,
-                            shareId: String,
-                            keyRotation: Int64) async throws -> DecryptedShareKey {
+public extension PassKeyManager {
+    func getShareKey(userId: String,
+                     shareId: String,
+                     keyRotation: Int64) async throws -> DecryptedShareKey {
         // ⚠️ Do not add logs to this function because it's supposed to be called all the time
         // when decrypting items. As IO operations caused by the log system take time
         // this will slow down dramatically the decryping process
@@ -103,15 +106,15 @@ extension PassKeyManager: PassKeyManagerProtocol {
         return try await decryptAndCache(encryptedShareKey)
     }
 
-    public func getLatestShareKey(userId: String, shareId: String) async throws -> DecryptedShareKey {
+    func getLatestShareKey(userId: String, shareId: String) async throws -> DecryptedShareKey {
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
         let latestShareKey = try allEncryptedShareKeys.latestKey()
         return try await decryptAndCache(latestShareKey)
     }
 
-    public func getLatestItemKey(userId: String,
-                                 shareId: String,
-                                 itemId: String) async throws -> DecryptedItemKey {
+    func getLatestItemKey(userId: String,
+                          shareId: String,
+                          itemId: String) async throws -> DecryptedItemKey {
         let keyDescription = "shareId \"\(shareId)\", itemId: \"\(itemId)\""
         logger.trace("Getting latest item key \(keyDescription)")
         let latestItemKey = try await itemKeyDatasource.getLatestKey(userId: userId,
@@ -119,25 +122,32 @@ extension PassKeyManager: PassKeyManagerProtocol {
                                                                      itemId: itemId)
 
         logger.trace("Decrypting latest item key \(keyDescription)")
-
-        let vaultKey = try await getShareKey(userId: userId,
-                                             shareId: shareId,
-                                             keyRotation: latestItemKey.keyRotation)
-
-        guard let encryptedItemKeyData = try latestItemKey.key.base64Decode() else {
-            logger.trace("Failed to base 64 decode latest item key \(keyDescription)")
-            throw PassError.crypto(.failedToBase64Decode)
-        }
-
-        let decryptedItemKeyData = try AES.GCM.open(encryptedItemKeyData,
-                                                    key: vaultKey.keyData,
-                                                    associatedData: .itemKey)
-
+        let decryptedItemKey = try await decrypt(itemKey: latestItemKey,
+                                                 userId: userId,
+                                                 shareId: shareId,
+                                                 itemId: itemId)
         logger.trace("Decrypted latest item key \(keyDescription)")
-        return .init(shareId: shareId,
-                     itemId: itemId,
-                     keyRotation: latestItemKey.keyRotation,
-                     keyData: decryptedItemKeyData)
+        return decryptedItemKey
+    }
+
+    func getItemKeys(userId: String,
+                     shareId: String,
+                     itemId: String) async throws -> [DecryptedItemKey] {
+        logger.trace("Getting all item keys itemId \(itemId), shareId \(shareId)")
+        let encryptedKeys = try await itemKeyDatasource.getAllKeys(userId: userId,
+                                                                   shareId: shareId,
+                                                                   itemId: itemId)
+        logger.trace("Decrypting \(encryptedKeys.count) item keys itemId \(itemId), shareId \(shareId)")
+        var decryptedKeys = [DecryptedItemKey]()
+        for encryptedKey in encryptedKeys {
+            let decryptedKey = try await decrypt(itemKey: encryptedKey,
+                                                 userId: userId,
+                                                 shareId: shareId,
+                                                 itemId: itemId)
+            decryptedKeys.append(decryptedKey)
+        }
+        logger.trace("Decrypted \(encryptedKeys.count) item keys itemId \(itemId), shareId \(shareId)")
+        return decryptedKeys
     }
 }
 
@@ -159,5 +169,27 @@ private extension PassKeyManager {
 
         logger.info("Decrypted & cached share key share \(keyDescription)")
         return decryptedShareKey
+    }
+
+    func decrypt(itemKey: ItemKey,
+                 userId: String,
+                 shareId: String,
+                 itemId: String) async throws -> DecryptedItemKey {
+        let vaultKey = try await getShareKey(userId: userId,
+                                             shareId: shareId,
+                                             keyRotation: itemKey.keyRotation)
+
+        guard let encryptedItemKeyData = try itemKey.key.base64Decode() else {
+            throw PassError.crypto(.failedToBase64Decode)
+        }
+
+        let decryptedItemKeyData = try AES.GCM.open(encryptedItemKeyData,
+                                                    key: vaultKey.keyData,
+                                                    associatedData: .itemKey)
+
+        return .init(shareId: shareId,
+                     itemId: itemId,
+                     keyRotation: itemKey.keyRotation,
+                     keyData: decryptedItemKeyData)
     }
 }

@@ -89,4 +89,24 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         closureGetLatestItemKey()
         return stubbedGetLatestItemKeyResult
     }
+    // MARK: - getItemKeys
+    public var getItemKeysUserIdShareIdItemIdThrowableError4: Error?
+    public var closureGetItemKeys: () -> () = {}
+    public var invokedGetItemKeysfunction = false
+    public var invokedGetItemKeysCount = 0
+    public var invokedGetItemKeysParameters: (userId: String, shareId: String, itemId: String)?
+    public var invokedGetItemKeysParametersList = [(userId: String, shareId: String, itemId: String)]()
+    public var stubbedGetItemKeysResult: [DecryptedItemKey]!
+
+    public func getItemKeys(userId: String, shareId: String, itemId: String) async throws -> [DecryptedItemKey] {
+        invokedGetItemKeysfunction = true
+        invokedGetItemKeysCount += 1
+        invokedGetItemKeysParameters = (userId, shareId, itemId)
+        invokedGetItemKeysParametersList.append((userId, shareId, itemId))
+        if let error = getItemKeysUserIdShareIdItemIdThrowableError4 {
+            throw error
+        }
+        closureGetItemKeys()
+        return stubbedGetItemKeysResult
+    }
 }
