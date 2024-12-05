@@ -1,6 +1,6 @@
 //
-// MoveItemEndpoint.swift
-// Proton Pass - Created on 29/03/2023.
+// GetItemKeysEndpoint.swift
+// Proton Pass - Created on 24/02/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,23 +21,23 @@
 import Entities
 import ProtonCoreNetworking
 
-struct MoveItemResponse: Decodable, Sendable {
-    let item: Item
+struct GetItemKeysResponse: Decodable, Sendable {
+    let keys: ItemKeys
 }
 
-struct MoveItemEndpoint: Endpoint {
-    typealias Body = MoveItemRequest
-    typealias Response = MoveItemResponse
+struct ItemKeys: Decodable, Equatable, Hashable, Sendable {
+    let keys: [ItemKey]
+}
+
+struct GetItemKeysEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetItemKeysResponse
 
     var debugDescription: String
     var path: String
-    var method: HTTPMethod
-    var body: MoveItemRequest?
 
-    init(request: MoveItemRequest, itemId: String, fromShareId: String) {
-        debugDescription = "Move item"
-        path = "/pass/v1/share/\(fromShareId)/item/\(itemId)/share"
-        method = .put
-        body = request
+    init(shareId: String, itemId: String) {
+        debugDescription = "Get all keys for item"
+        path = "/pass/v1/share/\(shareId)/item/\(itemId)/key"
     }
 }
