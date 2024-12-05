@@ -24,15 +24,20 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct InAppModalView: View {
-    let notification: InAppNotification
-    let borderColor: UIColor = PassColor.inputBorderNorm
-    let onTap: (InAppNotification) -> Void
-    let onClose: (InAppNotification) -> Void
     @Environment(\.dismiss) private var dismiss
+    @State private var contentHeight: CGFloat = 0
+
+    @StateObject private var viewModel: InAppModalViewModel
+    private let notification: InAppNotification
+    private let borderColor: UIColor = PassColor.inputBorderNorm
+    private let onTap: (InAppNotification) -> Void
+    private let onClose: (InAppNotification) -> Void
 
     public init(notification: InAppNotification,
+                viewModel: InAppModalViewModel,
                 onTap: @escaping (InAppNotification) -> Void,
                 onClose: @escaping (InAppNotification) -> Void) {
+        _viewModel = .init(wrappedValue: viewModel)
         self.notification = notification
         self.onTap = onTap
         self.onClose = onClose
@@ -47,6 +52,12 @@ public struct InAppModalView: View {
                                    image.resizable()
                                        .aspectRatio(contentMode: .fit)
                                        .frame(minHeight: 150, idealHeight: 180, maxHeight: 180)
+                                       .background(GeometryReader { proxy in
+                                           Color.clear
+                                               .onAppear {
+                                                   contentHeight += proxy.size.height
+                                               }
+                                       })
                                },
                                placeholder: {
                                    ProgressView()
@@ -64,7 +75,6 @@ public struct InAppModalView: View {
                 Text(verbatim: notification.content.message)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity,
-                           maxHeight: .infinity,
                            alignment: notification.content.safeImageUrl == nil ? .center : .top)
                     .minimumScaleFactor(0.8)
                     .multilineTextAlignment(.center)
@@ -83,7 +93,13 @@ public struct InAppModalView: View {
             }
             .padding(DesignConstant.sectionPadding)
             .background(PassColor.backgroundWeak.toColor)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .frame(maxWidth: .infinity)
+            .background(GeometryReader { proxy in
+                Color.clear
+                    .onAppear {
+                        contentHeight += proxy.size.height
+                    }
+            })
 
             CircleButton(icon: IconProvider.cross,
                          iconColor: PassColor.backgroundNorm,
@@ -97,6 +113,28 @@ public struct InAppModalView: View {
                          .padding()
         }
         .background(PassColor.backgroundWeak.toColor)
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
+        .onChange(of: contentHeight) { value in
+            viewModel.updateSheetHeight(value)
+        }
+    }
+}
+
+@MainActor
+public final class InAppModalViewModel: ObservableObject {
+    public weak var sheetPresentation: UISheetPresentationController?
+
+    public init() {}
+
+    func updateSheetHeight(_ height: CGFloat) {
+        guard let sheetPresentation else {
+            return
+        }
+        let custom = UISheetPresentationController.Detent.custom { _ in
+            CGFloat(height)
+        }
+        sheetPresentation.animateChanges {
+            sheetPresentation.detents = [custom]
+        }
     }
 }
