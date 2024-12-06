@@ -78,7 +78,6 @@ private extension HomepageCoordinator {
                 updateFloatingView(floatingView: view, viewTag: UniqueSheet.inAppNotificationDisplay)
             }
         case .modal:
-            var viewController: UIViewController?
             let viewModel = InAppModalViewModel()
             let view = InAppModalView(notification: notification,
                                       viewModel: viewModel,
@@ -89,13 +88,11 @@ private extension HomepageCoordinator {
                                           guard let self else { return }
                                           close(notification)
                                       })
-            viewController = UIHostingController(rootView: view)
-            viewController?.setDetentType(.medium,
-                                          parentViewController: rootViewController)
-            viewModel.sheetPresentation = viewController?.sheetPresentationController
-            if let viewController {
-                present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
-            }
+            let viewController = UIHostingController(rootView: view)
+            viewController.setDetentType(.medium,
+                                         parentViewController: rootViewController)
+            viewModel.sheetPresentation = viewController.sheetPresentationController
+            present(viewController, uniquenessTag: UniqueSheet.inAppNotificationDisplay)
         }
     }
 
