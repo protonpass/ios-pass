@@ -23,18 +23,23 @@ import Core
 import Entities
 import Foundation
 
-public protocol InAppNotificationManagerProtocol: Sendable {
-    var notifications: [InAppNotification] { get }
+public enum InAppNotificationDisplayState: Sendable {
+    case inactive, active
+}
 
+public protocol InAppNotificationManagerProtocol: Sendable {
     func fetchNotifications(offsetId: String?, reset: Bool) async throws -> [InAppNotification]
     func getNotificationToDisplay() async throws -> InAppNotification?
     func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws
     func updateNotificationTime(_ date: Date) async throws
+    func updateDisplayState(_ state: InAppNotificationDisplayState) async
 
     // MARK: - Qa only accessible function to test mock notifications
 
     @_spi(QA) func addMockNotification(notification: InAppNotification) async
     @_spi(QA) func removeMockNotification() async
+
+    @_spi(Test) func getCurrentNofications() async -> [InAppNotification]
 }
 
 public extension InAppNotificationManagerProtocol {
@@ -43,13 +48,14 @@ public extension InAppNotificationManagerProtocol {
     }
 }
 
-public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerProtocol {
+public actor InAppNotificationManager: InAppNotificationManagerProtocol {
     private let repository: any InAppNotificationRepositoryProtocol
     private let timeDatasource: any LocalNotificationTimeDatasourceProtocol
     private let userManager: any UserManagerProtocol
     private let logger: Logger
-    public private(set) var notifications: [InAppNotification] = []
+    private var notifications: [InAppNotification] = []
     private var lastId: String?
+    private var displayState: InAppNotificationDisplayState = .inactive
 
     private let delayBetweenNotifications: TimeInterval
     private nonisolated(unsafe) var cancellables: Set<AnyCancellable> = []
@@ -68,9 +74,11 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         self.delayBetweenNotifications = delayBetweenNotifications
         logger = .init(manager: logManager)
     }
+}
 
-    public func fetchNotifications(offsetId: String?,
-                                   reset: Bool) async throws -> [InAppNotification] {
+public extension InAppNotificationManager {
+    func fetchNotifications(offsetId: String?,
+                            reset: Bool) async throws -> [InAppNotification] {
         let userId = try await userManager.getActiveUserId()
         let paginatedNotifications = try await repository
             .getPaginatedNotifications(lastNotificationId: offsetId,
@@ -86,7 +94,8 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         return notifications
     }
 
-    public func getNotificationToDisplay() async throws -> InAppNotification? {
+    func getNotificationToDisplay() async throws -> InAppNotification? {
+        guard displayState == .inactive else { return nil }
         let timestampDate = Date().timeIntervalSince1970
 
         if let mockNotification {
@@ -107,7 +116,7 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         })
     }
 
-    public func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {
+    func updateNotificationState(notificationId: String, newState: InAppNotificationState) async throws {
         guard mockNotification == nil else {
             mockNotification?.state = newState.rawValue
             return
@@ -124,9 +133,13 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
         }
     }
 
-    public func updateNotificationTime(_ date: Date) async throws {
+    func updateNotificationTime(_ date: Date) async throws {
         let userId = try await userManager.getActiveUserId()
         try await timeDatasource.upsertNotificationTime(date.timeIntervalSince1970, for: userId)
+    }
+
+    func updateDisplayState(_ state: InAppNotificationDisplayState) async {
+        displayState = state
     }
 }
 
@@ -140,6 +153,12 @@ public actor InAppNotificationManager: @preconcurrency InAppNotificationManagerP
     func removeMockNotification() async {
         notifications.removeAll(where: { $0.id == mockNotification?.id })
         mockNotification = nil
+    }
+}
+
+@_spi(Test) public extension InAppNotificationManager {
+    func getCurrentNofications() async -> [InAppNotification] {
+        notifications
     }
 }
 
