@@ -61,9 +61,9 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
     case monitorItemDetailFromReusedPassword
     case multiAccountAddAccount
     case multiAccountRemoveAccount
-    case notificationDisplayNotification(notificationKey: String)
-    case notificationChangeNotificationStatus(notificationKey: String, notificationStatus: Int)
-    case notificationNotificationCtaClick(notificationKey: String)
+    case notificationDisplay(key: String)
+    case notificationChangeStatus(key: String, status: Int)
+    case notificationCtaClick(key: String)
 
     // swiftlint:disable:next cyclomatic_complexity
     public init?(rawValue: String) {
@@ -203,11 +203,11 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
             "pass_multi_account.add_account"
         case .multiAccountRemoveAccount:
             "pass_multi_account.remove_account"
-        case .notificationDisplayNotification:
+        case .notificationDisplay:
             "pass_notification.display_notification"
-        case .notificationChangeNotificationStatus:
+        case .notificationChangeStatus:
             "pass_notification.change_notification_status"
-        case .notificationNotificationCtaClick:
+        case .notificationCtaClick:
             "pass_notification.notification_cta_click"
         }
     }

@@ -49,7 +49,10 @@ struct DimensionsTests {
     
     @Test("Test event info telemetry with generic dimension encoding conversion")
     func testEvenInfoConversions() throws {
-        let telemetrie = TelemetryEvent(uuid: "idTest", time: 0, type: .notificationChangeNotificationStatus(notificationKey: "notificationKey", notificationStatus: 3))
+        let telemetrie = TelemetryEvent(uuid: "idTest",
+                                        time: 0,
+                                        type: .notificationChangeStatus(key: "notificationKey",
+                                                                        status: 3))
         let event = EventInfo(event: telemetrie, userTier: "user tier")
         
         let encoder = JSONEncoder()
