@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Screens
@@ -33,7 +34,15 @@ extension HomepageCoordinator {
             do {
                 _ = try await inAppNotificationManager.fetchNotifications()
                 if let notification = try await inAppNotificationManager.getNotificationToDisplay() {
-                    displayNotification(notification)
+                    display(notification,
+                            onAppear: { [weak self] in
+                                guard let self else { return }
+                                updateDisplayState(.active)
+                            },
+                            onDisappear: { [weak self] in
+                                guard let self else { return }
+                                updateDisplayState(.inactive)
+                            })
                 }
             } catch {
                 handle(error: error)
@@ -58,13 +67,17 @@ extension HomepageCoordinator {
 // MARK: - Notification actions
 
 private extension HomepageCoordinator {
-    func displayNotification(_ notification: InAppNotification) {
+    func display(_ notification: InAppNotification,
+                 onAppear: @escaping () -> Void,
+                 onDisappear: @escaping () -> Void) {
         addTelemetryEvent(with: .notificationDisplayNotification(notificationKey: notification
                 .notificationKey))
 
         switch notification.displayType {
         case .banner:
             let view = InAppBannerView(notification: notification,
+                                       onAppear: onAppear,
+                                       onDisappear: onDisappear,
                                        onTap: { [weak self] notification in
                                            guard let self else { return }
                                            ctaFlow(notification)
@@ -81,6 +94,8 @@ private extension HomepageCoordinator {
             let viewModel = InAppModalViewModel()
             let view = InAppModalView(notification: notification,
                                       viewModel: viewModel,
+                                      onAppear: onAppear,
+                                      onDisappear: onDisappear,
                                       onTap: { [weak self] notification in
                                           guard let self else { return }
                                           ctaFlow(notification)
@@ -137,6 +152,13 @@ private extension HomepageCoordinator {
             } catch {
                 handle(error: error)
             }
+        }
+    }
+
+    func updateDisplayState(_ state: InAppNotificationDisplayState) {
+        Task { [weak self] in
+            guard let self else { return }
+            await inAppNotificationManager.updateDisplayState(state)
         }
     }
 }
