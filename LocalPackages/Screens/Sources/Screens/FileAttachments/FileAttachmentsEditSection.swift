@@ -30,6 +30,7 @@ public protocol FileAttachmentsEditHandler {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
 
+    func itemContentType() -> ItemContentType
     func generateDatedFileName(prefix: String, extension: String) -> String
     func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL
 
@@ -89,7 +90,7 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                FileAttachmentRow(file: file, handler: handler)
+                FileAttachmentRow(mode: .edit, file: file, handler: handler)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                     .disabled(isUploading)
                 if file != files.last {
