@@ -187,8 +187,7 @@ private extension TelemetryEventType {
             UIImage(systemName: "person.badge.shield.checkmark.fill")!
         case .multiAccountAddAccount, .multiAccountRemoveAccount:
             UIImage(systemName: "person.3.fill")!
-        case .notificationChangeNotificationStatus, .notificationDisplayNotification,
-             .notificationNotificationCtaClick:
+        case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             UIImage(systemName: "envelope.fill")!
         }
     }
@@ -223,9 +222,7 @@ private extension TelemetryEventType {
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMajor1Color
-        case .notificationChangeNotificationStatus,
-             .notificationDisplayNotification,
-             .notificationNotificationCtaClick:
+        case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMajor1Color
         }
     }
@@ -260,8 +257,7 @@ private extension TelemetryEventType {
              .multiAccountAddAccount,
              .multiAccountRemoveAccount:
             ItemContentType.note.normMinor1Color
-        case .notificationChangeNotificationStatus, .notificationDisplayNotification,
-             .notificationNotificationCtaClick:
+        case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMinor1Color
         }
     }
@@ -324,11 +320,11 @@ private extension TelemetryEventType {
             "Add new account"
         case .multiAccountRemoveAccount:
             "Remove an account"
-        case .notificationDisplayNotification:
+        case .notificationDisplay:
             "Display notification"
-        case .notificationChangeNotificationStatus:
+        case .notificationChangeStatus:
             "Change notification status"
-        case .notificationNotificationCtaClick:
+        case .notificationCtaClick:
             "Notification Cta clicked"
         }
     }
