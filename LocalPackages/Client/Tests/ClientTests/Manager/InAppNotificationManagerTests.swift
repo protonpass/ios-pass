@@ -129,7 +129,7 @@ struct InAppNotificationManagerTests {
         let endDatePassedNotification = InAppNotification.mock(endTime: Int(Date().addingTimeInterval(-60000000).timeIntervalSince1970), priority: 12)
         let startTimeNotYetNotification = InAppNotification.mock(startTime: Int(Date().addingTimeInterval(60000000).timeIntervalSince1970), priority: 12)
         mockRepository.mockPaginatedNotifications = PaginatedInAppNotifications(notifications: [lowPriorityNotification,
-                                                                                                 highPriorityNotification,
+                                                                                                highPriorityNotification,
                                                                                                 alreadyReadNotification,
                                                                                                 dismissedNotification,
                                                                                                 endDatePassedNotification,

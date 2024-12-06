@@ -70,8 +70,7 @@ private extension HomepageCoordinator {
     func display(_ notification: InAppNotification,
                  onAppear: @escaping () -> Void,
                  onDisappear: @escaping () -> Void) {
-        addTelemetryEvent(with: .notificationDisplayNotification(notificationKey: notification
-                .notificationKey))
+        addTelemetryEvent(with: .notificationDisplay(key: notification.notificationKey))
 
         switch notification.displayType {
         case .banner:
@@ -121,10 +120,9 @@ private extension HomepageCoordinator {
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
                 try await inAppNotificationManager.updateNotificationTime(.now)
-                addTelemetryEvent(with: .notificationChangeNotificationStatus(notificationKey: notification
-                        .notificationKey,
-                    notificationStatus: notification
-                        .removedState.rawValue))
+                let key = notification.notificationKey
+                let status = notification.removedState.rawValue
+                addTelemetryEvent(with: .notificationChangeStatus(key: key, status: status))
             } catch {
                 logger.error(error)
             }
@@ -138,8 +136,7 @@ private extension HomepageCoordinator {
                 if notification.displayType == .banner {
                     updateFloatingView(floatingView: nil, viewTag: UniqueSheet.inAppNotificationDisplay)
                 }
-                addTelemetryEvent(with: .notificationNotificationCtaClick(notificationKey: notification
-                        .notificationKey))
+                addTelemetryEvent(with: .notificationCtaClick(key: notification.notificationKey))
                 try await inAppNotificationManager.updateNotificationState(notificationId: notification.id,
                                                                            newState: notification.removedState)
                 try await inAppNotificationManager.updateNotificationTime(.now)
