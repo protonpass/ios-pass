@@ -29,12 +29,39 @@ public struct FileAttachmentRow: View {
     @State private var showRenameAlert = false
     @State private var showFilePreview = false
 
+    private let mode: Mode
     private let file: FileAttachment
     private let uiModel: FileAttachmentUiModel
     private let handler: any FileAttachmentsEditHandler
 
-    public init(file: FileAttachment,
+    public enum Mode: Sendable {
+        case view, edit
+    }
+
+    enum Style: Sendable {
+        /// Used in both view and edit mode for all item types except note
+        case borderless
+        /// Used in view mode for note item type
+        case bordered
+        /// Used in edit mode for note item type
+        case borderedWithBackground
+
+        var backgroundColor: Color? {
+            switch self {
+            case .borderless:
+                nil
+            case .bordered:
+                .clear
+            case .borderedWithBackground:
+                PassColor.inputBackgroundNorm.toColor
+            }
+        }
+    }
+
+    public init(mode: Mode,
+                file: FileAttachment,
                 handler: any FileAttachmentsEditHandler) {
+        self.mode = mode
         let uiModel = file.toUiModel
         _name = .init(initialValue: uiModel.name)
         self.file = file
@@ -43,6 +70,7 @@ public struct FileAttachmentRow: View {
     }
 
     public var body: some View {
+        let style = handler.itemContentType().style(for: mode)
         HStack {
             Image(uiImage: uiModel.state.isError ?
                 IconProvider.exclamationCircleFilled : uiModel.group.icon)
@@ -88,6 +116,8 @@ public struct FileAttachmentRow: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(.rect)
+        .padding(style == .borderless ? 0 : DesignConstant.sectionPadding)
+        .background(background(for: style))
         .buttonEmbeded {
             showFilePreview.toggle()
         }
@@ -108,6 +138,33 @@ public struct FileAttachmentRow: View {
                                                                  newName: $0) },
                                       onDelete: { handler.delete(attachment: file) })
             }
+        }
+    }
+}
+
+private extension FileAttachmentRow {
+    @ViewBuilder
+    func background(for style: Style) -> some View {
+        if let backgroundColor = style.backgroundColor {
+            backgroundColor
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .overlay(RoundedRectangle(cornerRadius: 16)
+                    .stroke(PassColor.inputBorderNorm.toColor, lineWidth: 1))
+        }
+    }
+}
+
+private extension ItemContentType {
+    func style(for mode: FileAttachmentRow.Mode) -> FileAttachmentRow.Style {
+        if case .note = self {
+            switch mode {
+            case .view:
+                .bordered
+            case .edit:
+                .borderedWithBackground
+            }
+        } else {
+            .borderless
         }
     }
 }
