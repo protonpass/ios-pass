@@ -45,6 +45,7 @@ public struct InAppModalView: View {
 
     public var body: some View {
         ZStack(alignment: .topTrailing) {
+            PassColor.backgroundWeak.toColor
             VStack(spacing: 24) {
                 if let imageUrl = notification.content.safeImageUrl {
                     AsyncImage(url: imageUrl,
@@ -112,8 +113,8 @@ public struct InAppModalView: View {
                          })
                          .padding()
         }
-        .background(PassColor.backgroundWeak.toColor)
         .frame(maxWidth: .infinity)
+        .interactiveDismissDisabled()
         .onChange(of: contentHeight) { value in
             viewModel.updateSheetHeight(value)
         }
