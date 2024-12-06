@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@_spi(Test)
 @testable import Client
 import ClientMocks
 import Combine
@@ -99,7 +100,7 @@ struct InAppNotificationManagerTests {
         #expect(mockRepository.removeAllCalled == true)
         #expect(mockRepository.upsertCalled == true)
     }
-    
+
     @Test("Fetch notifications appending data operations")
     func fetchNotificationsAppendsNotifications() async throws {
         // Arrange
@@ -117,7 +118,7 @@ struct InAppNotificationManagerTests {
         #expect(notifications.first?.ID == initialNotification.ID)
         #expect(notifications.last?.ID == newNotification.ID)
     }
-    
+
     @Test("Get the highest prio in app notification to display")
     func getNotificationToDisplayReturnsHighestPriorityUnreadNotification() async throws {
         // Arrange
@@ -128,7 +129,7 @@ struct InAppNotificationManagerTests {
         let endDatePassedNotification = InAppNotification.mock(endTime: Int(Date().addingTimeInterval(-60000000).timeIntervalSince1970), priority: 12)
         let startTimeNotYetNotification = InAppNotification.mock(startTime: Int(Date().addingTimeInterval(60000000).timeIntervalSince1970), priority: 12)
         mockRepository.mockPaginatedNotifications = PaginatedInAppNotifications(notifications: [lowPriorityNotification,
-                                                                                                highPriorityNotification,
+                                                                                                 highPriorityNotification,
                                                                                                 alreadyReadNotification,
                                                                                                 dismissedNotification,
                                                                                                 endDatePassedNotification,
@@ -137,12 +138,20 @@ struct InAppNotificationManagerTests {
         _ = try await manager.fetchNotifications()
 
         // Act
-        let notificationToDisplay = try await manager.getNotificationToDisplay()
-        
-        #expect(notificationToDisplay == highPriorityNotification)
+        await manager.updateDisplayState(.active)
+        let notificationToDisplay1 = try await manager.getNotificationToDisplay()
+
         // Assert
+        #expect(notificationToDisplay1 == nil)
+
+        // Act
+        await manager.updateDisplayState(.inactive)
+        let notificationToDisplay2 = try await manager.getNotificationToDisplay()
+
+        // Assert
+        #expect(notificationToDisplay2 == highPriorityNotification)
     }
-    
+
     @Test("Read notifications are not shown")
     func getNotificationToDisplayReturnsNilWhenAllRead() async throws {
         // Arrange
@@ -157,7 +166,7 @@ struct InAppNotificationManagerTests {
         #expect(notificationToDisplay == nil)
 
     }
-    
+
     @Test("Update state of notifications")
     func updateNotificationStateUpdatesStateAndCallsRepository() async throws {
         // Arrange
@@ -171,9 +180,10 @@ struct InAppNotificationManagerTests {
         
         // Assert
         #expect(mockRepository.changeNotificationStatusCalled == true)
-        await #expect(manager.notifications.first?.state == InAppNotificationState.read.rawValue)
+        let notifications = await manager.getCurrentNofications()
+        #expect(notifications.first?.state == InAppNotificationState.read.rawValue)
     }
-    
+
     @Test("Dismissed notifications are removed locally")
     func updateNotificationStateRemovesNotificationIfDismissed() async throws {
         // Arrange
@@ -187,10 +197,10 @@ struct InAppNotificationManagerTests {
         
         // Assert
         #expect(mockRepository.removeCalled == true)
-        await #expect(manager.notifications.first?.state == InAppNotificationState.dismissed.rawValue)
+        let notifications = await manager.getCurrentNofications()
+        #expect(notifications.first?.state == InAppNotificationState.dismissed.rawValue)
     }
-    
-    
+
     @Test("Showing notifications only after a certain delay that we set")
     func checkDelayOfNotificationDisplay() async throws {
         let sut = InAppNotificationManager(repository: mockRepository,
