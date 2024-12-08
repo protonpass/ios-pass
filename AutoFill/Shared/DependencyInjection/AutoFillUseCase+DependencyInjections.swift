@@ -125,6 +125,7 @@ extension AutoFillUseCaseContainer {
 
     var createAndAssociatePasskey: Factory<any CreateAndAssociatePasskeyUseCase> {
         self { CreateAndAssociatePasskey(itemRepository: self.itemRepository,
+                                         shareRepository: self.shareRepository,
                                          userManager: self.userManager,
                                          createPasskey: self.createPasskey,
                                          updateLastUseTimeAndReindex: self.updateLastUseTimeAndReindex(),
@@ -165,6 +166,7 @@ extension AutoFillUseCaseContainer {
 
     var associateUrlAndAutoFill: Factory<any AssociateUrlAndAutoFillUseCase> {
         self { AssociateUrlAndAutoFill(itemRepository: self.itemRepository,
+                                       shareRepository: self.shareRepository,
                                        totpService: self.totpService,
                                        completeAutoFill: self.completeAutoFill()) }
     }

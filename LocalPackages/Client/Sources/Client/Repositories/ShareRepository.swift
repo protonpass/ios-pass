@@ -22,6 +22,7 @@
 import Core
 @preconcurrency import CryptoKit
 import Entities
+import Foundation
 @preconcurrency import ProtonCoreLogin
 
 // sourcery: AutoMockable
@@ -34,9 +35,8 @@ public protocol ShareRepositoryProtocol: Sendable {
     func getDecryptedShares(userId: String) async throws -> [Share]
     func getDecryptedShare(shareId: String) async throws -> Share?
 
-    /// Get all remote shares
-    func getRemoteShares(userId: String,
-                         eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Share]
+    /// Get all remote shares this decrypts the content of vault and fills up the vaultcontent of sahre if possible
+    func getRemoteShares(userId: String) async throws -> [Share]
 
     /// Delete all local shares
     func deleteAllCurrentUserSharesLocally() async throws
@@ -78,10 +78,6 @@ public protocol ShareRepositoryProtocol: Sendable {
 }
 
 public extension ShareRepositoryProtocol {
-    func getRemoteShares(userId: String) async throws -> [Share] {
-        try await getRemoteShares(userId: userId, eventStream: nil)
-    }
-
     func upsertShares(userId: String, shares: [Share]) async throws {
         try await upsertShares(userId: userId, shares: shares, eventStream: nil)
     }
@@ -157,15 +153,21 @@ public extension ShareRepository {
         return try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
     }
 
-    func getRemoteShares(userId: String,
-                         eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
-        -> [Share] {
+    /// Get all remote shares for a user. This function decrypts the content of vault and fills up the
+    /// `vaultContent`
+    /// of share if possible
+    func getRemoteShares(userId: String) async throws -> [Share] {
         logger.trace("Getting all remote shares for user \(userId)")
         do {
             let shares = try await remoteDatasource.getShares(userId: userId)
-            eventStream?.send(.downloadedShares(shares))
+            let updatedShares = try await shares
+                .parallelMap { [weak self] in
+                    guard let self else { return $0 }
+                    return try await decryptVaultContent(userId: userId, $0)
+                }
+
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
-            return shares
+            return updatedShares
         } catch {
             logger.error(message: "Failed to get remote shares for user \(userId)", error: error)
             throw error
@@ -192,23 +194,12 @@ public extension ShareRepository {
         let key = try await getSymmetricKey()
         let encryptedShares = try await shares
             .parallelMap { [weak self] in
+                eventStream?.send(.decryptedVault($0))
                 // swiftlint:disable:next discouraged_optional_self
-                try await self?.symmetricallyEncryptNullable(userId: userId, $0, symmetricKey: key)
+                return try await self?.symmetricallyEncryptNullable(userId: userId, $0, symmetricKey: key)
             }
             .compactMap { $0 }
         try await localDatasource.upsertShares(encryptedShares, userId: userId)
-
-        if eventStream != nil {
-            let symmetricKey = try await getSymmetricKey()
-            // swiftlint:disable:next todo
-            // TODO: check new type of shares
-            for share in encryptedShares where share.share.isVaultRepresentation {
-                let updatedShare = try share.withVaultContentDecrypted(symmetricKey: symmetricKey)
-                if updatedShare.vaultContent != nil {
-                    eventStream?.send(.decryptedVault(updatedShare))
-                }
-            }
-        }
 
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
@@ -339,16 +330,11 @@ public extension ShareRepository {
 }
 
 private extension ShareRepository {
-    func getSymmetricKey() async throws -> SymmetricKey {
-        try await symmetricKeyProvider.getSymmetricKey()
-    }
-
-    func symmetricallyEncrypt(userId: String,
-                              _ share: Share,
-                              symmetricKey: SymmetricKey) async throws -> SymmetricallyEncryptedShare {
-        guard let content = share.content,
+    func decryptVaultContent(userId: String, _ share: Share) async throws -> Share {
+        guard share.isVaultRepresentation,
+              let content = share.content,
               let keyRotation = share.contentKeyRotation else {
-            return .init(encryptedContent: nil, share: share)
+            return share
         }
 
         guard let contentData = try content.base64Decode() else {
@@ -365,6 +351,43 @@ private extension ShareRepository {
         let decryptedContent = try AES.GCM.open(contentData,
                                                 key: key.keyData,
                                                 associatedData: .vaultContent)
+        var updatedShare = share
+        updatedShare.vaultContent = try VaultContent(data: decryptedContent)
+
+        return updatedShare
+    }
+
+    func getSymmetricKey() async throws -> SymmetricKey {
+        try await symmetricKeyProvider.getSymmetricKey()
+    }
+
+    func symmetricallyEncrypt(userId: String,
+                              _ share: Share,
+                              symmetricKey: SymmetricKey) async throws -> SymmetricallyEncryptedShare {
+        let decryptedContent: Data
+        if let vaultContent = share.vaultContent {
+            decryptedContent = try vaultContent.data()
+        } else {
+            guard let content = share.content,
+                  let keyRotation = share.contentKeyRotation else {
+                return .init(encryptedContent: nil, share: share)
+            }
+
+            guard let contentData = try content.base64Decode() else {
+                throw PassError.crypto(.failedToBase64Decode)
+            }
+
+            guard contentData.count > 12 else {
+                throw PassError.crypto(.corruptedShareContent(shareID: share.shareID))
+            }
+
+            let key = try await passKeyManager.getShareKey(userId: userId,
+                                                           shareId: share.shareID,
+                                                           keyRotation: keyRotation)
+            decryptedContent = try AES.GCM.open(contentData,
+                                                key: key.keyData,
+                                                associatedData: .vaultContent)
+        }
         let reencryptedContent = try symmetricKey.encrypt(decryptedContent.encodeBase64())
         return .init(encryptedContent: reencryptedContent, share: share)
     }

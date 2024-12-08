@@ -651,7 +651,7 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
                 // especially when creating new login items we need to check some limitations
                 // (login with 2FA, custom fields...)
                 try await userManager.switchActiveUser(with: info.userId, onMemory: true)
-                try await appContentManager.asyncRefresh(userId: info.userId)
+                try await appContentManager.refresh(userId: info.userId)
 
                 switch info.data {
                 case let .login(url, passkeyCredentialRequest):

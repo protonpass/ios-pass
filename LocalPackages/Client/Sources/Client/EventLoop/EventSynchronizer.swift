@@ -267,15 +267,14 @@ private extension EventSynchronizer {
 
     /// Sync a single share. Can be a recursion if share has many events
     func sync(userId: String, share: Share) async throws -> Bool {
-        let shareId = share.shareID
-        logger.trace("Syncing share \(shareId)")
-        return try await performSyncOperations(userId: userId, shareId: shareId)
+        logger.trace("Syncing share \(share.shareId)")
+        return try await performSyncOperations(userId: userId, share: share)
     }
 
     /// Perform synchronization operations
-    func performSyncOperations(userId: String, shareId: ShareID) async throws -> Bool {
+    func performSyncOperations(userId: String, share: Share) async throws -> Bool {
         try Task.checkCancellation()
-
+        let shareId = share.shareId
         let lastEventId = try await shareEventIDRepository.getLastEventId(forceRefresh: false,
                                                                           userId: userId,
                                                                           shareId: shareId)
@@ -289,28 +288,30 @@ private extension EventSynchronizer {
                                                            lastEventId: events.latestEventID)
         try Task.checkCancellation()
 
-        let hasNewEvents = try await processEvents(userId: userId, events: events, shareId: shareId)
+        let hasNewEvents = try await processEvents(userId: userId, events: events, share: share)
 
         if events.eventsPending {
             logger.trace("Still have more events for share \(shareId)")
-            return try await performSyncOperations(userId: userId, shareId: shareId)
+            return try await performSyncOperations(userId: userId, share: share)
         }
         return hasNewEvents
     }
 
     /// Process the events from synchronization
-    func processEvents(userId: String, events: SyncEvents, shareId: ShareID) async throws -> Bool {
+    func processEvents(userId: String, events: SyncEvents, share: Share) async throws -> Bool {
         if events.fullRefresh {
-            logger.info("Force full sync for share \(shareId)")
-            try await itemRepository.refreshItems(userId: userId, shareId: shareId)
+            logger.info("Force full sync for share \(share.shareId)")
+            try await itemRepository.refreshItems(userId: userId, shareId: share.shareId)
             return true
         } else {
-            return try await processEventDetails(userId: userId, events: events, shareId: shareId)
+            return try await processEventDetails(userId: userId, events: events, share: share)
         }
     }
 
     /// Process the detailed parts of the events
-    func processEventDetails(userId: String, events: SyncEvents, shareId: ShareID) async throws -> Bool {
+    func processEventDetails(userId: String, events: SyncEvents, share: Share) async throws -> Bool {
+        let shareId = share.shareId
+
         var hasNewEvents = false
         try Task.checkCancellation()
         if let updatedShare = events.updatedShare {
@@ -334,7 +335,8 @@ private extension EventSynchronizer {
                 }
                 try await itemRepository.upsertItems(userId: userId,
                                                      items: events.updatedItems,
-                                                     shareId: shareId)
+                                                     shareId: shareId,
+                                                     isShareItem: !share.isVaultRepresentation)
             }
         }
 

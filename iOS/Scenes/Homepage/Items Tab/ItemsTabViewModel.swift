@@ -119,7 +119,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             }
             do {
                 let userId = try await userManager.getActiveUserId()
-                appContentManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
             } catch {
                 handle(error: error)
             }

@@ -22,7 +22,7 @@ import Entities
 
 public protocol RemoteInviteDatasourceProtocol: Sendable {
     func getPendingInvitesForUser(userId: String) async throws -> [UserInvite]
-    func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Bool
+    func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Share
     func rejectInvite(userId: String, inviteToken: String) async throws -> Bool
 }
 
@@ -36,10 +36,10 @@ public extension RemoteInviteDatasource {
         return getSharesResponse.invites
     }
 
-    func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Bool {
+    func acceptInvite(userId: String, inviteToken: String, request: AcceptInviteRequest) async throws -> Share {
         let endpoint = AcceptInviteEndpoint(with: inviteToken, and: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
-        return response.isSuccessful
+        return response.share
     }
 
     func rejectInvite(userId: String, inviteToken: String) async throws -> Bool {

@@ -39,6 +39,7 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -84,6 +85,9 @@ extension DetailHistoryViewModel {
             restoringItem = true
             do {
                 let userId = try await userManager.getActiveUserId()
+                guard let share = try await shareRepository.getShare(shareId: currentRevision.shareId) else {
+                    return
+                }
                 let protobuff = ItemContentProtobuf(name: pastRevision.name,
                                                     note: pastRevision.note,
                                                     itemUuid: pastRevision.itemUuid,
@@ -92,7 +96,8 @@ extension DetailHistoryViewModel {
                 try await itemRepository.updateItem(userId: userId,
                                                     oldItem: currentRevision.item,
                                                     newItemContent: protobuff,
-                                                    shareId: currentRevision.shareId)
+                                                    shareId: currentRevision.shareId,
+                                                    isSharedItem: !share.isVaultRepresentation)
                 router.present(for: .restoreHistory)
             } catch {
                 router.display(element: .displayErrorBanner(error))

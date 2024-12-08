@@ -312,7 +312,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.asyncRefresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 eventLoop.forceSync()
                 eventLoop.start()
             } catch {
@@ -377,7 +377,7 @@ private extension HomepageCoordinator {
             }
             do {
                 let userId = try await userManager.getActiveUserId()
-                appContentManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 if exitEditMode {
                     itemsTabViewModel?.isEditMode = false
                 }
@@ -1539,7 +1539,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                     }
                 }
                 let userId = try await userManager.getActiveUserId()
-                try await appContentManager.asyncRefresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
             } catch {
@@ -1560,7 +1560,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                 }
                 addNewEvent(type: .update(type))
                 let userId = try await userManager.getActiveUserId()
-                appContentManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 itemDetailCoordinator?.refresh()
                 dismissTopMostViewController { [weak self] in
                     guard let self else { return }
@@ -1641,7 +1641,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
                     bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
                 }
                 let userId = try await userManager.getActiveUserId()
-                appContentManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
             } catch {
                 bannerManager.displayTopErrorMessage(error)
             }

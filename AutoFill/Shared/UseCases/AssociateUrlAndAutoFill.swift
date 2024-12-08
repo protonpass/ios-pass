@@ -47,15 +47,18 @@ extension AssociateUrlAndAutoFillUseCase {
 
 final class AssociateUrlAndAutoFill: AssociateUrlAndAutoFillUseCase {
     private let itemRepository: any ItemRepositoryProtocol
+    private let shareRepository: any ShareRepositoryProtocol
     private let totpService: any TOTPServiceProtocol
     private let completeAutoFill: any CompleteAutoFillUseCase
 
     init(itemRepository: any ItemRepositoryProtocol,
+         shareRepository: any ShareRepositoryProtocol,
          totpService: any TOTPServiceProtocol,
          completeAutoFill: any CompleteAutoFillUseCase) {
         self.itemRepository = itemRepository
         self.totpService = totpService
         self.completeAutoFill = completeAutoFill
+        self.shareRepository = shareRepository
     }
 
     func execute(item: any ItemIdentifiable,
@@ -69,7 +72,9 @@ final class AssociateUrlAndAutoFill: AssociateUrlAndAutoFillUseCase {
 
         guard let oldContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                        itemId: item.itemId),
-            let oldData = oldContent.loginItem else {
+            let oldData = oldContent.loginItem,
+            let share = try await shareRepository.getShare(shareId: item.shareId)
+        else {
             throw PassError.itemNotFound(item)
         }
 
@@ -88,7 +93,8 @@ final class AssociateUrlAndAutoFill: AssociateUrlAndAutoFillUseCase {
         try await itemRepository.updateItem(userId: oldContent.userId,
                                             oldItem: oldContent.item,
                                             newItemContent: newContent,
-                                            shareId: oldContent.shareId)
+                                            shareId: oldContent.shareId,
+                                            isSharedItem: !share.isVaultRepresentation)
         let credential: any ASAuthorizationCredential
         if #available(iOS 18, *), case .oneTimeCodes = mode {
             let token = try totpService.generateTotpToken(uri: oldData.totpUri)

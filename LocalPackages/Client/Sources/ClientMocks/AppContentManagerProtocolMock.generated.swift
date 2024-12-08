@@ -107,17 +107,21 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         }
     }
     // MARK: - refresh
+    public var refreshUserIdThrowableError1: Error?
     public var closureRefresh: () -> () = {}
     public var invokedRefreshfunction = false
     public var invokedRefreshCount = 0
     public var invokedRefreshParameters: (userId: String, Void)?
     public var invokedRefreshParametersList = [(userId: String, Void)]()
 
-    public func refresh(userId: String) {
+    public func refresh(userId: String) async throws {
         invokedRefreshfunction = true
         invokedRefreshCount += 1
         invokedRefreshParameters = (userId, ())
         invokedRefreshParametersList.append((userId, ()))
+        if let error = refreshUserIdThrowableError1 {
+            throw error
+        }
         closureRefresh()
     }
     // MARK: - fullSync
@@ -168,20 +172,8 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         closureGetItems()
         return stubbedGetItemsResult
     }
-    // MARK: - getAllVaults
-    public var closureGetAllVaults: () -> () = {}
-    public var invokedGetAllVaultsfunction = false
-    public var invokedGetAllVaultsCount = 0
-    public var stubbedGetAllVaultsResult: [Share]!
-
-    public func getAllVaults() -> [Share] {
-        invokedGetAllVaultsfunction = true
-        invokedGetAllVaultsCount += 1
-        closureGetAllVaults()
-        return stubbedGetAllVaultsResult
-    }
     // MARK: - delete
-    public var deleteUserIdShareIdThrowableError6: Error?
+    public var deleteUserIdShareIdThrowableError5: Error?
     public var closureDelete: () -> () = {}
     public var invokedDeletefunction = false
     public var invokedDeleteCount = 0
@@ -193,7 +185,7 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
         invokedDeleteCount += 1
         invokedDeleteParameters = (userId, shareId)
         invokedDeleteParametersList.append((userId, shareId))
-        if let error = deleteUserIdShareIdThrowableError6 {
+        if let error = deleteUserIdShareIdThrowableError5 {
             throw error
         }
         closureDelete()

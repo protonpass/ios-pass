@@ -110,20 +110,20 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         return stubbedGetDecryptedShareResult
     }
     // MARK: - getRemoteShares
-    public var getRemoteSharesUserIdEventStreamThrowableError5: Error?
+    public var getRemoteSharesUserIdThrowableError5: Error?
     public var closureGetRemoteShares: () -> () = {}
     public var invokedGetRemoteSharesfunction = false
     public var invokedGetRemoteSharesCount = 0
-    public var invokedGetRemoteSharesParameters: (userId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
-    public var invokedGetRemoteSharesParametersList = [(userId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
+    public var invokedGetRemoteSharesParameters: (userId: String, Void)?
+    public var invokedGetRemoteSharesParametersList = [(userId: String, Void)]()
     public var stubbedGetRemoteSharesResult: [Share]!
 
-    public func getRemoteShares(userId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Share] {
+    public func getRemoteShares(userId: String) async throws -> [Share] {
         invokedGetRemoteSharesfunction = true
         invokedGetRemoteSharesCount += 1
-        invokedGetRemoteSharesParameters = (userId, eventStream)
-        invokedGetRemoteSharesParametersList.append((userId, eventStream))
-        if let error = getRemoteSharesUserIdEventStreamThrowableError5 {
+        invokedGetRemoteSharesParameters = (userId, ())
+        invokedGetRemoteSharesParametersList.append((userId, ()))
+        if let error = getRemoteSharesUserIdThrowableError5 {
             throw error
         }
         closureGetRemoteShares()
