@@ -84,6 +84,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
               customFields: customFields)
     }
 
+    // Must be careful because this does not always represent a shared item that was accepted by user as it also
+    // show in send
     public var shared: Bool { item.shareCount > 0 }
 }
 

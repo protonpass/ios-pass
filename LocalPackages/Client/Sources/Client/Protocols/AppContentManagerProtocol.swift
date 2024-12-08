@@ -28,11 +28,10 @@ public protocol AppContentManagerProtocol: Sendable {
     var vaultSelection: VaultSelection { get }
     var hasOnlyOneOwnedVault: Bool { get }
 
-    func refresh(userId: String)
+    func refresh(userId: String) async throws
     func fullSync(userId: String) async
     func localFullSync(userId: String) async throws
     func getItems(for vault: Share) -> [ItemUiModel]
-//    func getAllVaults() -> [Share]
     func delete(userId: String, shareId: String) async throws
     func getOldestOwnedVault() -> Share?
     func reset() async

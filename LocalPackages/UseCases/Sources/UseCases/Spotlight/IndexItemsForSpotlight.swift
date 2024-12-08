@@ -61,25 +61,36 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
         let userId = try await userManager.getActiveUserId()
 
         logger.trace("Begin to index items for Spotlight")
+        let content = settings.spotlightSearchableContent
+
         let allItems = try await itemRepository.getAllItemContents(userId: userId)
 
         logger.trace("Found \(allItems.count) items")
 
-        let selectedItems: [ItemContent]
+        let searchableItems: [CSSearchableItem]
         switch settings.spotlightSearchableVaults {
         case .all:
-            selectedItems = allItems
-            logger.trace("Indexing \(selectedItems.count) items in all vaults for Spotlight")
+            searchableItems = try allItems.map { try $0.toSearchableItem(content: content) }
+            logger.trace("Indexing \(searchableItems.count) items in all vaults for Spotlight")
         case .selected:
-            let ids = try await datasource.getIds(for: userId)
-            selectedItems = allItems.filter { ids.contains($0.shareId) }
-            logger.trace("Indexing \(selectedItems.count) items in \(ids.count) vaults for Spotlight")
+            let ids = try await datasource.getIds(for: userId).toSet
+            searchableItems = try allItems.compactMap { item in
+                guard ids.contains(item.shareId) else {
+                    return nil
+                }
+                return try item.toSearchableItem(content: content)
+            }
+            logger.trace("Indexing \(searchableItems.count) items in \(ids.count) vaults for Spotlight")
         }
 
-        let content = settings.spotlightSearchableContent
-        let searchableItems = try selectedItems.map { try $0.toSearchableItem(content: content) }
         try await CSSearchableIndex.default().deleteAllSearchableItems()
         try await CSSearchableIndex.default().indexSearchableItems(searchableItems)
-        logger.info("Finish indexing \(selectedItems.count) items for Spotlight")
+        logger.info("Finish indexing \(searchableItems.count) items for Spotlight")
+    }
+}
+
+extension Array where Element: Hashable {
+    var toSet: Set<Element> {
+        Set(self)
     }
 }

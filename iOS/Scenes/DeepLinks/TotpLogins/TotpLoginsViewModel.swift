@@ -134,10 +134,14 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
             do {
                 loading = true
                 let userId = try await userManager.getActiveUserId()
+                guard let share = try await shareRepository.getShare(shareId: selectedItem.shareId) else {
+                    return
+                }
                 try await itemRepository.updateItem(userId: userId,
                                                     oldItem: selectedItem.item,
                                                     newItemContent: selectedItem.updateTotp(uri: totpUri).protobuf,
-                                                    shareId: selectedItem.shareId)
+                                                    shareId: selectedItem.shareId,
+                                                    isSharedItem: !share.isVaultRepresentation)
                 if let token = totpManager.totpData?.code {
                     copyTotpToken(token)
                 }

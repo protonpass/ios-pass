@@ -50,7 +50,7 @@ public final class CreateAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCa
             if let vault = try await createVault(userId: userId, with: vault) {
                 try await moveItemsBetweenVaults(context: .singleItem(itemContent),
                                                  to: vault.shareId)
-                appContentManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 return vault
             } else {
                 throw PassError.sharing(.failedToCreateNewVault)

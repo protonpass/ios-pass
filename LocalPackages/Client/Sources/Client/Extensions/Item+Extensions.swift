@@ -25,7 +25,8 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public extension Item {
-    func getContentProtobuf(shareKey: DecryptedShareKey) throws -> ItemContentProtobuf {
+    func getContentProtobuf(shareKey: any ShareKeyProtocol,
+                            shouldDecryptKey: Bool = true) throws -> ItemContentProtobuf {
         guard shareKey.keyRotation == keyRotation else {
             throw PassError.crypto(.unmatchedKeyRotation(lhsKey: shareKey.keyRotation,
                                                          rhsKey: keyRotation))
@@ -34,9 +35,9 @@ public extension Item {
         guard let contentData = try content.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
         }
-
+        
         let decryptionKey: Data
-        if let itemKey {
+        if let itemKey, shouldDecryptKey {
             guard let itemKeyData = try itemKey.base64Decode() else {
                 throw PassError.crypto(.failedToBase64Decode)
             }
