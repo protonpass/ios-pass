@@ -37,7 +37,7 @@ struct ShareItemButton: View {
                     .scaledToFit()
                     .frame(width: 12, height: 12)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                Text(verbatim: "\(share.members + 1)")
+                Text(verbatim: "\(share.members)")
                     .font(.footnote)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }

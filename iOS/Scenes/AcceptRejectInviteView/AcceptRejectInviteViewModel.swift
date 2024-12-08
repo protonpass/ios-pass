@@ -75,17 +75,18 @@ final class AcceptRejectInviteViewModel: ObservableObject {
             guard let self else {
                 return
             }
-            defer {
-                if !userInvite.isVault {
-                    executingAction = false
-                    shouldCloseSheet = true
-                }
-            }
+//            defer {
+//                if !userInvite.isVault {
+//                    executingAction = false
+//                    shouldCloseSheet = true
+//                }
+//            }
 
             do {
                 executingAction = true
                 _ = try await acceptInvitation(with: userInvite)
                 await updateCachedInvitations(for: userInvite.inviteToken)
+//                try await appContentManager.refresh(userId: <#T##String#>)
                 syncEventLoop.forceSync()
             } catch {
                 logger.error(message: "Could not accept invitation \(userInvite)", error: error)
@@ -104,10 +105,12 @@ private extension AcceptRejectInviteViewModel {
         appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
-                guard let self, let sharesData = state.loadedContent,
-                      sharesData.shares.map(\.share.id).contains(self.userInvite.targetID) else {
+                guard let self,
+                      let sharesData = state.loadedContent,
+                      sharesData.shares.map(\.share.targetID).contains(self.userInvite.targetID) else {
                     return
                 }
+                //TODO: if item sharing route to item page with id
                 executingAction = false
                 shouldCloseSheet = true
             }.store(in: &cancellables)

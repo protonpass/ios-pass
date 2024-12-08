@@ -141,7 +141,7 @@ extension EditableVaultListViewModel {
                 loading = true
                 let userId = try await userManager.getActiveUserId()
                 try await appContentManager.delete(vault: vault)
-                appContentManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
             } catch {
                 logger.error(error)
