@@ -482,6 +482,36 @@
               }
             }
           }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файлів"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файлів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файл"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld файли"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2043,7 +2073,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Załącz plik"
+            "value" : "Dodaj plik"
           }
         },
         "pt-BR" : {
@@ -2630,7 +2660,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wybierz zdjęcie lub plik wideo"
+            "value" : "Wybierz zdjęcie lub wideo"
           }
         },
         "pt-BR" : {
@@ -10039,7 +10069,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PC에서 드라이브에 파일을 업로드"
+            "value" : "장치에서 파일 업로드"
           }
         },
         "nb" : {
@@ -10642,6 +10672,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do elementów możesz dodać pliki"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você pode anexar arquivos para itens para melhor organização"
           }
         },
         "ro" : {
