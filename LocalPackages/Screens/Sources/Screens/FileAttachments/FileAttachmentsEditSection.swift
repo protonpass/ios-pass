@@ -26,7 +26,7 @@ import SwiftUI
 import UseCases
 
 @MainActor
-public protocol FileAttachmentsEditHandler {
+public protocol FileAttachmentsEditHandler: AnyObject {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
 
