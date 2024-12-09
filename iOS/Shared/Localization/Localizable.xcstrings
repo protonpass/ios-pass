@@ -153,6 +153,12 @@
             "state" : "translated",
             "value" : "?"
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "?"
+          }
         }
       }
     },
@@ -634,6 +640,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "«%1$@» скопійовано до буфера обміну. Термін дії мине через %2$lld секунд."
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "\"%1$@\" đã được sao chép vào bộ nhớ tạm. Hết hạn trong %2$lld giây."
                 }
               }
             }
@@ -1261,6 +1279,12 @@
             "state" : "translated",
             "value" : "Son 14 günde %1$@, %2$@, %3$@."
           }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@ trong 14 ngày đần đây."
+          }
         }
       }
     },
@@ -1711,6 +1735,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld takma ad"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bí danh"
                 }
               }
             }
@@ -2199,6 +2235,18 @@
               }
             }
           }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bí danh đã vô hiệu hóa"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2679,6 +2727,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Ввімкнено %lld псевдонімів"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bí danh đã được kích hoạt"
                 }
               }
             }
@@ -3517,6 +3577,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld zablokovaných"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blockerad"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blockerade"
                 }
               }
             }
@@ -8687,6 +8765,24 @@
             }
           }
         },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt har fästs"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt har fästs"
+                }
+              }
+            }
+          }
+        },
         "tr" : {
           "variations" : {
             "plural" : {
@@ -9148,6 +9244,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld položiek bolo úspešne odopnutých"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt har avfästs"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld objekt har avfästs"
                 }
               }
             }
@@ -18472,13 +18586,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Avanceret alias-administration er tilgængelig med Pass Plus. Opgrader for øjeblikkelig adgang."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Die erweiterte Alias-Verwaltung ist mit Pass Plus verfügbar. Upgrade für sofortigen Zugriff."
+            "value" : "Avanceret alias-administration er tilgængelig med Pass Plus. Opgrader for at få adgang med det samme."
           }
         },
         "el" : {
@@ -18496,31 +18604,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La gestión avanzada de alias está disponible con Pass Plus. Actualice para obtener acceso inmediato."
+            "value" : "La gestión avanzada de alias está disponible con Pass Plus. Mejora tu plan para obtener acceso inmediato."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La gestión avanzada de alias está disponible con Pass Plus. Actualice para obtener acceso inmediato."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edistynyt aliashallinta sisältyy Pass Plus. Hanki se heti päivittämällä tilauksesi."
+            "value" : "La gestión avanzada de alias está disponible con Pass Plus. Mejore su plan para obtener acceso inmediato."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass Plus permet la gestion avancée des alias. Améliorez votre abonnement pour en profiter immédiatement."
+            "value" : "Pass Plus permet la gestion avancée des alias. Changez d'abonnement pour en profiter immédiatement."
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pengelolaan alias bertingkat lanjut tersedia dengan Pass Plus. Tingkatkan untuk akses segera."
+            "value" : "Pengelolaan alias tingkat lanjut tersedia dengan Pass Plus. Tingkatkan akun Anda untuk memperoleh akses ke fitur ini dengan segera."
           }
         },
         "it" : {
@@ -18532,13 +18634,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "高度なエイリアス管理はPass Plusで利用可能です。すぐにアクセスするにはアップグレードしてください。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "დამატებითი ფსევდონიმების მართვა Pass Plus-ს აქვს. ასწიეთ სატარიფო გეგმა მასთან წვდომისთვის."
+            "value" : "高度なエイリアス管理はPass Plusで利用可能です。即時アクセスのためにアップグレードしてください。"
           }
         },
         "ko" : {
@@ -18553,28 +18649,10 @@
             "value" : "Avansert aliasadministrasjon er tilgjengelig med Pass Plus. Oppgrader for umiddelbar tilgang."
           }
         },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geavanceerd alias beheer is beschikbaar met Pass Plus. Upgrade voor directe toegang."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zaawansowane zarządzanie aliasami jest dostępne w planie Pass Plus. Ulepsz konto, aby uzyskać natychmiastowy dostęp."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "O gerenciamento avançado de alias está disponível com o Pass Plus. Faça o upgrade para obter acesso imediato."
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gestionarea avansată a aliasurilor este disponibilă cu Pass Unlimited. Treceți la alt plan pentru acces imediat."
+            "value" : "Gestionarea avansată a aliasurilor este disponibilă cu Pass Plus. Treceți la alt plan pentru acces imediat."
           }
         },
         "sk" : {
@@ -18587,12 +18665,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avancerad hantering av alias är tillgängligt med Pass Plus. Uppgradera för omedelbar åtkomst."
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gelişmiş takma ad yönetimi Pass Plus ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
           }
         }
       }
@@ -21359,7 +21431,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Contactele aliasului"
+            "value" : "Contacte alias"
           }
         },
         "sk" : {
@@ -35403,7 +35475,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontaktdetaljer"
+            "value" : "Kontaktuppgifter"
           }
         },
         "tr" : {
@@ -43212,7 +43284,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Övervakning mörka webben"
+            "value" : "Övervakning av mörka webben"
           }
         },
         "tr" : {
@@ -48072,7 +48144,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redaktör"
+            "value" : "Redigerare"
           }
         },
         "tr" : {
@@ -56712,6 +56784,12 @@
             "value" : "Filtrované podľa aliasov. Položky v koši nie sú zobrazené."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrerat efter alias. Kastade objekt visas inte."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56846,6 +56924,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtrované podľa platobných kariet. Položky v koši nie sú zobrazené."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrerat efter kreditkort. Kastade objekt visas inte."
           }
         },
         "tr" : {
@@ -56984,6 +57068,12 @@
             "value" : "Filtrované podľa identít. Položky v koši nie sú zobrazené."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrerat efter identiteter. Kastade objekt visas inte."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57120,6 +57210,12 @@
             "value" : "Filtrované podľa prihlásenia. Položky v koši nie sú zobrazené."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrerat efter inloggningar. Kastade objekt visas inte."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57254,6 +57350,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Filtrované podľa poznámok. Položky v koši nie sú zobrazené."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrerat efter anteckningar. Kastade objekt visas inte."
           }
         },
         "tr" : {
@@ -58628,7 +58730,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "당신의 별칭 <%@>에서"
+            "value" : "나의 별칭 <%@>에서"
           }
         },
         "nb" : {
@@ -65952,6 +66054,12 @@
             "value" : "V aplikácii Pass je poznámka k položke zašifrovaná pomocou šifrovacieho kľúča položky a poznámku môžu zobraziť len používatelia, ktorí majú prístup k položke."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I Pass så objektanteckning krypterad med objektets krypteringsnyckel och endast användare som har tillgång till objektet kan se anteckningen."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66931,7 +67039,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Integrerad 2FA-autentisering"
+            "value" : "Integrerad 2FA-autentiserare"
           }
         },
         "tr" : {
@@ -71580,7 +71688,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sista autofyll"
+            "value" : "Senast autofylld"
           }
         },
         "tr" : {
@@ -73180,7 +73288,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ljus"
+            "value" : "Ljust"
           }
         },
         "tr" : {
@@ -111011,7 +111119,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ställ in 2FA"
+            "value" : "Konfigurera 2FA"
           }
         },
         "tr" : {
@@ -111171,7 +111279,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ställ in 2FA för mer säkerhet"
+            "value" : "Konfigurera 2FA för mer säkerhet"
           }
         },
         "tr" : {
@@ -115537,6 +115645,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Poznámka SimpleLogin je uložená na rovnakom mieste, ako adresa aliasu a hoci je chránená šifrovaním v pokoji, nie je šifrovaná E2E, čo znamená, že ju môže čítať ktokoľvek, kto má prístup k databáze SimpleLogin."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SimpleLogin-anteckningar lagras tillsammans på samma ställe som e-postalias och medan de skyddas med kryptering under vila så är de inte E2E-krypterade vilket betyder att vem som helst med åtkomst till SimpleLogin-databasen kan läsa dem."
           }
         },
         "tr" : {
@@ -120965,10 +121079,100 @@
     },
     "The selected file exceeds the size limit. Please choose a file smaller than 100 MB." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Памер выбранага файла занадта вялікі. Выберыце файл менш за 100 МБ."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vybraný soubor překračuje limit velikosti. Vyberte prosím soubor menší než 100 MB."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den valgte fil overskrider størrelsesgrænsen. Vælg venligst en fil, der er mindre end 100 MB."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το επιλεγμένο αρχείο υπερβαίνει το όριο μεγέθους. Επιλέξτε ένα αρχείο μικρότερο από 100 MB."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The selected file exceeds the size limit. Please choose a file smaller than 100 MB."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El archivo seleccionado supera el límite de tamaño. Elige un archivo de menos de 100 MB."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El archivo seleccionado supera el límite de tamaño. Elija un archivo de menos de 100 MB."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le fichier sélectionné dépasse la taille limite. Veuillez choisir un fichier inférieur à 100 Mo."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berkas yang dipilih melebihi batas ukuran yang berlaku. Silakan pilih berkas yang lebih kecil dari 100 MB."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il file selezionato supera il limite di dimensione. Scegli un file di dimensioni inferiori a 100 MB."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択したファイルはサイズ制限を超えています。100 MB未満のファイルを選択してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택된 파일이 크기 제한을 초과합니다. 100 MB 이하의 파일을 선택하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den valgte filen overskrider størrelsesgrensen. Velg en fil som er mindre enn 100 MB."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fișierul selectat depășește limita de dimensiune. Alegeți un fișier mai mic de 100 MiB."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vybraný súbor prekračuje limit veľkosti. Vyberte súbor menší ako 100 MB."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den valda filen överskrider storleksgränsen. Välj en fil som är mindre än 100 MB."
           }
         }
       }
@@ -123297,7 +123501,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "개인 이메일 주소를 비공개로 유지하려면 이메일 주소를 가려주는 별칭 연락처를 만드세요."
+            "value" : "개인 이메일을 비공개로 유지하려면 별칭 연락처를 만들어 보세요."
           }
         },
         "nb" : {
@@ -127110,7 +127314,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obegränsat antal e-postalias"
+            "value" : "Obegränsade e-postalias"
           }
         },
         "tr" : {
@@ -145496,6 +145700,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Váš plán umožňuje používať na automatické vypĺňanie iba položky z prvých 2 trezorov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ditt paket tillåter bara användning av objekt från dina 2 första valv i autofyllsyfte."
           }
         },
         "tr" : {

@@ -458,7 +458,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mörk"
+            "value" : "Mörkt"
           }
         },
         "tr" : {
@@ -618,7 +618,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ljus"
+            "value" : "Ljust"
           }
         },
         "tr" : {
