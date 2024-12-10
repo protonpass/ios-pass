@@ -26,6 +26,7 @@ public extension PassError {
         case noPngData
         case noDataFound(URL)
         case failedToProcessPickedPhotos
+        case failedToEncryptMetadata
         case fileTooLarge(UInt64)
 
         public var debugDescription: String {
@@ -36,6 +37,8 @@ public extension PassError {
                 "No data found \(url.absoluteString)"
             case .failedToProcessPickedPhotos:
                 "Failed to process picked photos"
+            case .failedToEncryptMetadata:
+                "Failed to encrypt metadata"
             case let .fileTooLarge(size):
                 "File too large (\(size) bytes)"
             }
