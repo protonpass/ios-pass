@@ -499,12 +499,13 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                 let mimeType = try getMimeType(of: url)
                 let fileGroup = getFileGroup(mimeType: mimeType)
                 let formattedFileSize = formatFileAttachmentSize(fileSize)
-                let file = PendingFileAttachment(id: fileId,
-                                                 metadata: .init(url: url,
-                                                                 mimeType: mimeType,
-                                                                 fileGroup: fileGroup,
-                                                                 size: fileSize,
-                                                                 formattedSize: formattedFileSize))
+                let file = try PendingFileAttachment(id: fileId,
+                                                     key: .random(),
+                                                     metadata: .init(url: url,
+                                                                     mimeType: mimeType,
+                                                                     fileGroup: fileGroup,
+                                                                     size: fileSize,
+                                                                     formattedSize: formattedFileSize))
                 files.append(.pending(file))
                 try await Task.sleep(seconds: 0.5)
                 if Bool.random() {

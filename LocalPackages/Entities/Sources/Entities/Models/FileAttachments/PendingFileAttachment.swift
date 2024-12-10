@@ -24,11 +24,14 @@ import Foundation
 public struct PendingFileAttachment: Sendable, Equatable, Identifiable {
     /// A local unique random ID attributed to a file when it's added
     public let id: String
+    /// Random AES256-GCM key
+    public let key: Data
     public var uploadState: FileAttachmentUploadState = .uploading
     public let metadata: Metadata
 
-    public init(id: String, metadata: Metadata) {
+    public init(id: String, key: Data, metadata: Metadata) {
         self.id = id
+        self.key = key
         self.metadata = metadata
     }
 
