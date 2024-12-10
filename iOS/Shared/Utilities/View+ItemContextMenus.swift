@@ -130,7 +130,7 @@ enum ItemContextMenu {
                                       icon: IconProvider.squares,
                                       action: onCopyAlias))
 
-            if aliasSyncEnabled {
+            if aliasSyncEnabled, isEditable {
                 if item.aliasEnabled {
                     firstOptions.append(.init(title: "Disable alias",
                                               icon: PassIcon.aliasSlash.toImage,
