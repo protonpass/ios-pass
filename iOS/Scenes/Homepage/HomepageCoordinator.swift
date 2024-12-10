@@ -182,6 +182,7 @@ private extension HomepageCoordinator {
 
                 bannerManager.displayBottomInfoMessage(message)
                 removeInAppNotificationDisplay()
+                refreshInAppNotifications()
             }
             .store(in: &cancellables)
 
