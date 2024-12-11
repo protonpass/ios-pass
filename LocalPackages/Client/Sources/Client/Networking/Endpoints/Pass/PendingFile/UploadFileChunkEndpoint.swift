@@ -1,5 +1,5 @@
 //
-// RemotePendingFile.swift
+// UploadFileChunkEndpoint.swift
 // Proton Pass - Created on 10/12/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -17,12 +17,34 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
+import Entities
 import Foundation
+import ProtonCoreNetworking
 
-/// Object returned by the BE after creating a pending file
-/// `fileId` is used to further upload the encrypted content of the file
-public struct RemotePendingFile: Decodable, Sendable {
-    public let fileID: String
+struct UploadFileChunkRequest: Encodable, Sendable {
+    let chunkIndex: Int
+    let chunkData: Data
+
+    enum CodingKeys: String, CodingKey {
+        case chunkIndex = "ChunkIndex"
+        case chunkData = "ChunkData"
+    }
+}
+
+struct UploadFileChunkEndpoint: Endpoint {
+    typealias Body = UploadFileChunkRequest
+    typealias Response = CodeOnlyResponse
+
+    var debugDescription: String
+    var path: String
+    var method: HTTPMethod
+    var body: UploadFileChunkRequest?
+
+    init(fileId: String, data: Data) {
+        debugDescription = "Upload chunk for pending file"
+        path = "/pass/v1/file/\(fileId)/chunk"
+        method = .post
+        body = .init(chunkIndex: 0, chunkData: data)
+    }
 }

@@ -27,6 +27,9 @@ public extension PassError {
         case noDataFound(URL)
         case failedToProcessPickedPhotos
         case failedToEncryptMetadata
+        case failedToEncryptFile
+        case failedToUploadMissingRemoteId
+        case failedToUploadMissingEncryptedData
         case fileTooLarge(UInt64)
 
         public var debugDescription: String {
@@ -39,6 +42,12 @@ public extension PassError {
                 "Failed to process picked photos"
             case .failedToEncryptMetadata:
                 "Failed to encrypt metadata"
+            case .failedToEncryptFile:
+                "Failed to encrypt file"
+            case .failedToUploadMissingRemoteId:
+                "Failed to upload because of missing remote ID"
+            case .failedToUploadMissingEncryptedData:
+                "Failed to upload because of missing encrypted data"
             case let .fileTooLarge(size):
                 "File too large (\(size) bytes)"
             }

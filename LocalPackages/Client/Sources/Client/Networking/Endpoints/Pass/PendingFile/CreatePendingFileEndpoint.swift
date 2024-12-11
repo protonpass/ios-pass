@@ -23,6 +23,10 @@ import ProtonCoreNetworking
 
 struct CreatePendingFileRequest: Encodable, Sendable {
     let metadata: String
+
+    enum CodingKeys: String, CodingKey {
+        case metadata = "Metadata"
+    }
 }
 
 struct CreatePendingFileResponse: Decodable, Sendable {
@@ -41,7 +45,7 @@ struct CreatePendingFileEndpoint: Endpoint {
     init(metadata: String) {
         debugDescription = "Create a new pending file"
         path = "/pass/v1/file"
-        method = .put
+        method = .post
         body = .init(metadata: metadata)
     }
 }

@@ -39,12 +39,9 @@ struct EncryptFileTests {
         let data = try Data.random(byteCount: 10 * 1_024 * 1_024) // 10 MB
         let sourceUrl = FileManager.default.temporaryDirectory.appending(path: "plain.data")
         FileManager.default.createFile(atPath: sourceUrl.path(), contents: data)
-        let destinationUrl = FileManager.default.temporaryDirectory.appending(path: "encrypted.data")
 
         // When
-        try await sut(key: key, sourceUrl: sourceUrl, destinationUrl: destinationUrl)
-
-        let encryptedData = try Data(contentsOf: destinationUrl)
+        let encryptedData = try await sut(key: key, sourceUrl: sourceUrl)
         let decryptedData = try AES.GCM.open(encryptedData, key: key, associatedData: .fileData)
 
         // Then

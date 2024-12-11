@@ -126,6 +126,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
     @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
@@ -133,6 +134,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.getMimeType) private var getMimeType
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\SharedUseCasesContainer.encryptFile) private var encryptFile
+    @LazyInjected(\SharedUseCasesContainer.decryptFile) private var decryptFile
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -506,15 +509,13 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                                                                      fileGroup: fileGroup,
                                                                      size: fileSize,
                                                                      formattedSize: formattedFileSize))
-                files.append(.pending(file))
-                try await Task.sleep(seconds: 0.5)
-                if Bool.random() {
-                    files.updateState(id: fileId, newState: .uploaded(remoteId: ""))
-                } else {
-                    throw PassError.fileAttachment(.noPngData)
-                }
+                try await createEncryptAndUpload(file)
             } catch {
-                files.updateState(id: fileId, newState: .error(error))
+                if let file = files.first(where: { $0.id == fileId }),
+                   case var .pending(pendingFile) = file {
+                    pendingFile.uploadState = .error(error)
+                    files.upsert(pendingFile)
+                }
                 handle(error)
             }
         }
@@ -525,7 +526,22 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func retryUpload(attachment: FileAttachment) {
-        files.updateState(id: attachment.id, newState: .uploaded(remoteId: ""))
+        guard case var .pending(file) = attachment else { return }
+        uploadFileTask?.cancel()
+        uploadFileTask = Task { [weak self] in
+            guard let self else { return }
+            defer {
+                isUploadingFile = false
+            }
+            do {
+                isUploadingFile = true
+                try await createEncryptAndUpload(file)
+            } catch {
+                file.uploadState = .error(error)
+                files.upsert(file)
+                handle(error)
+            }
+        }
     }
 
     func rename(attachment: FileAttachment, newName: String) {
@@ -539,5 +555,29 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 
     func deleteAllAttachments() {
         print(#function)
+    }
+}
+
+private extension BaseCreateEditItemViewModel {
+    func createEncryptAndUpload(_ file: PendingFileAttachment) async throws {
+        var file = file
+
+        file.uploadState = .uploading
+        files.upsert(file)
+
+        let userId = try await userManager.getActiveUserId()
+        let remoteFile = try await fileRepository.createPendingFile(userId: userId,
+                                                                    file: file)
+        file.remoteId = remoteFile.fileID
+
+        if file.encryptedData == nil {
+            file.encryptedData = try await encryptFile(key: file.key, sourceUrl: file.metadata.url)
+        }
+
+        files.upsert(file)
+
+        try await fileRepository.uploadChunk(userId: userId, file: file)
+        file.uploadState = .uploaded
+        files.upsert(file)
     }
 }
