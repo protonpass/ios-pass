@@ -77,7 +77,7 @@ struct CreateEditLoginView: View {
                         CreateEditItemTitleSection(title: $viewModel.title,
                                                    focusedField: $focusedField,
                                                    field: .title,
-                                                   itemContentType: viewModel.itemContentType(),
+                                                   itemContentType: viewModel.itemContentType,
                                                    isEditMode: viewModel.mode.isEditMode,
                                                    onSubmit: {
                                                        if viewModel.emailUsernameExpanded {
@@ -504,8 +504,8 @@ private extension CreateEditLoginView {
                     }
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: viewModel.itemContentType().normMajor1Color,
-                             backgroundColor: viewModel.itemContentType().normMinor1Color,
+                             iconColor: viewModel.itemContentType.normMajor1Color,
+                             backgroundColor: viewModel.itemContentType.normMinor1Color,
                              accessibilityLabel: "Alias action menu")
             })
         }

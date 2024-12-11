@@ -70,7 +70,7 @@ public struct FileAttachmentRow: View {
     }
 
     public var body: some View {
-        let style = handler.itemContentType().style(for: mode)
+        let style = handler.itemContentType.style(for: mode)
         HStack {
             Image(uiImage: uiModel.state.isError ?
                 IconProvider.exclamationCircleFilled : uiModel.group.icon)
