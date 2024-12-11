@@ -29,8 +29,8 @@ import UseCases
 public protocol FileAttachmentsEditHandler: AnyObject {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
+    var itemContentType: ItemContentType { get }
 
-    func itemContentType() -> ItemContentType
     func generateDatedFileName(prefix: String, extension: String) -> String
     func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL
 
