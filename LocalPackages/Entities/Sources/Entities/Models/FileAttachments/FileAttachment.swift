@@ -46,7 +46,7 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
         case let .item(item):
             .init(id: item.id,
                   url: nil,
-                  state: .uploaded(remoteId: item.id),
+                  state: .uploaded,
                   name: "",
                   group: .unknown,
                   formattedSize: nil)
@@ -56,16 +56,14 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
 
 public enum FileAttachmentUploadState: Sendable, Equatable {
     case uploading
-    /// `remoteID` is given by the BE after uploading
-    case uploaded(remoteId: String)
+    case uploaded
     case error(any Error)
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.uploading, .uploading):
+        case (.uploaded, .uploaded),
+             (.uploading, .uploading):
             true
-        case let (.uploaded(lId), .uploaded(rId)):
-            lId == rId
         case let (.error(lError), .error(rError)):
             lError.localizedDescription == rError.localizedDescription
         default:
@@ -78,14 +76,6 @@ public enum FileAttachmentUploadState: Sendable, Equatable {
             true
         } else {
             false
-        }
-    }
-
-    public var remoteId: String? {
-        if case let .uploaded(remoteId) = self {
-            remoteId
-        } else {
-            nil
         }
     }
 }
@@ -101,16 +91,11 @@ public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
 }
 
 public extension [FileAttachment] {
-    mutating func updateState(id: String, newState: FileAttachmentUploadState) {
-        guard let index = self.firstIndex(where: { $0.id == id }) else { return }
-        let file = self[index]
-        switch file {
-        case var .pending(pendingFile):
-            pendingFile.update(newState)
-            self[index] = .pending(pendingFile)
-        case .item:
-            // Not applicable
+    mutating func upsert(_ file: PendingFileAttachment) {
+        guard let index = self.firstIndex(where: { $0.id == file.id }) else {
+            append(.pending(file))
             return
         }
+        self[index] = .pending(file)
     }
 }

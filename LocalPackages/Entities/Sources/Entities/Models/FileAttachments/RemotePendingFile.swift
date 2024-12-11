@@ -24,9 +24,5 @@ import Foundation
 /// Object returned by the BE after creating a pending file
 /// `fileId` is used to further upload the encrypted content of the file
 public struct RemotePendingFile: Decodable, Sendable {
-    public let fileId: String
-
-    enum CodingKeys: String, CodingKey {
-        case fileId = "FileID"
-    }
+    public let fileID: String
 }
