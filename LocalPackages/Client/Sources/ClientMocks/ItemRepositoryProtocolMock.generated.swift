@@ -253,10 +253,10 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureRefreshItems: () -> () = {}
     public var invokedRefreshItemsfunction = false
     public var invokedRefreshItemsCount = 0
-    public var invokedRefreshItemsParameters: (userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
-    public var invokedRefreshItemsParametersList = [(userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
+    public var invokedRefreshItemsParameters: (userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)?
+    public var invokedRefreshItemsParametersList = [(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)]()
 
-    public func refreshItems(userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
+    public func refreshItems(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
         invokedRefreshItemsfunction = true
         invokedRefreshItemsCount += 1
         invokedRefreshItemsParameters = (userId, shareId, eventStream)
@@ -455,37 +455,37 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureDelete()
     }
     // MARK: - updateItem
-    public var updateItemUserIdOldItemNewItemContentShareIdIsSharedItemThrowableError21: Error?
+    public var updateItemUserIdOldItemNewItemContentShareIdThrowableError21: Error?
     public var closureUpdateItem: () -> () = {}
     public var invokedUpdateItemfunction = false
     public var invokedUpdateItemCount = 0
-    public var invokedUpdateItemParameters: (userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, isSharedItem: Bool)?
-    public var invokedUpdateItemParametersList = [(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, isSharedItem: Bool)]()
+    public var invokedUpdateItemParameters: (userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String)?
+    public var invokedUpdateItemParametersList = [(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String)]()
 
-    public func updateItem(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String, isSharedItem: Bool) async throws {
+    public func updateItem(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String) async throws {
         invokedUpdateItemfunction = true
         invokedUpdateItemCount += 1
-        invokedUpdateItemParameters = (userId, oldItem, newItemContent, shareId, isSharedItem)
-        invokedUpdateItemParametersList.append((userId, oldItem, newItemContent, shareId, isSharedItem))
-        if let error = updateItemUserIdOldItemNewItemContentShareIdIsSharedItemThrowableError21 {
+        invokedUpdateItemParameters = (userId, oldItem, newItemContent, shareId)
+        invokedUpdateItemParametersList.append((userId, oldItem, newItemContent, shareId))
+        if let error = updateItemUserIdOldItemNewItemContentShareIdThrowableError21 {
             throw error
         }
         closureUpdateItem()
     }
     // MARK: - upsertItems
-    public var upsertItemsUserIdItemsShareIdIsShareItemThrowableError22: Error?
+    public var upsertItemsUserIdItemsShareIdThrowableError22: Error?
     public var closureUpsertItems: () -> () = {}
     public var invokedUpsertItemsfunction = false
     public var invokedUpsertItemsCount = 0
-    public var invokedUpsertItemsParameters: (userId: String, items: [Item], shareId: String, isShareItem: Bool)?
-    public var invokedUpsertItemsParametersList = [(userId: String, items: [Item], shareId: String, isShareItem: Bool)]()
+    public var invokedUpsertItemsParameters: (userId: String, items: [Item], shareId: String)?
+    public var invokedUpsertItemsParametersList = [(userId: String, items: [Item], shareId: String)]()
 
-    public func upsertItems(userId: String, items: [Item], shareId: String, isShareItem: Bool) async throws {
+    public func upsertItems(userId: String, items: [Item], shareId: String) async throws {
         invokedUpsertItemsfunction = true
         invokedUpsertItemsCount += 1
-        invokedUpsertItemsParameters = (userId, items, shareId, isShareItem)
-        invokedUpsertItemsParametersList.append((userId, items, shareId, isShareItem))
-        if let error = upsertItemsUserIdItemsShareIdIsShareItemThrowableError22 {
+        invokedUpsertItemsParameters = (userId, items, shareId)
+        invokedUpsertItemsParametersList.append((userId, items, shareId))
+        if let error = upsertItemsUserIdItemsShareIdThrowableError22 {
             throw error
         }
         closureUpsertItems()

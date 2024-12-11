@@ -59,6 +59,10 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
             return
         }
         Task { @MainActor in
+            let currentDisplayedBanners = PMBanner.getBanners(in: container.topMostViewController)
+            guard !currentDisplayedBanners.contains(where: { $0.message == message }) else {
+                return
+            }
             let banner = PMBanner(message: message, style: style)
             banner.show(at: position, on: container.topMostViewController)
         }

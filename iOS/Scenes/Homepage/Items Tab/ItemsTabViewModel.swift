@@ -167,6 +167,7 @@ private extension ItemsTabViewModel {
             .store(in: &cancellables)
 
         appContentManager.vaultSyncEventStream
+            .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
@@ -379,9 +380,6 @@ private extension ItemsTabViewModel {
 
 extension ItemsTabViewModel {
     func filterAndSortItems(sortType: SortType? = nil) {
-        if sortType == nil {
-            sectionedItems = .fetching
-        }
         let sortType = sortType ?? selectedSortType
         sortTask?.cancel()
         sortTask = Task { [weak self] in

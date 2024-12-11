@@ -23,7 +23,7 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol AppContentManagerProtocol: Sendable {
-    nonisolated var vaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never> { get }
+    nonisolated var vaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never> { get }
     var currentVaults: CurrentValueSubject<[Share], Never> { get }
     var vaultSelection: VaultSelection { get }
     var hasOnlyOneOwnedVault: Bool { get }

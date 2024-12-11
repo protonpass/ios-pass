@@ -335,8 +335,7 @@ private extension EventSynchronizer {
                 }
                 try await itemRepository.upsertItems(userId: userId,
                                                      items: events.updatedItems,
-                                                     shareId: shareId,
-                                                     isShareItem: !share.isVaultRepresentation)
+                                                     shareId: shareId)
             }
         }
 

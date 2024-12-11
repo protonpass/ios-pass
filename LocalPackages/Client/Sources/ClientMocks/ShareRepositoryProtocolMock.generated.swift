@@ -23,6 +23,7 @@ import Combine
 import Core
 import CryptoKit
 import Entities
+import Foundation
 import ProtonCoreLogin
 
 public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareRepositoryProtocol {
@@ -166,10 +167,10 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
     public var closureUpsertShares: () -> () = {}
     public var invokedUpsertSharesfunction = false
     public var invokedUpsertSharesCount = 0
-    public var invokedUpsertSharesParameters: (userId: String, shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
-    public var invokedUpsertSharesParametersList = [(userId: String, shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
+    public var invokedUpsertSharesParameters: (userId: String, shares: [Share], eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)?
+    public var invokedUpsertSharesParametersList = [(userId: String, shares: [Share], eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)]()
 
-    public func upsertShares(userId: String, shares: [Share], eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
+    public func upsertShares(userId: String, shares: [Share], eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
         invokedUpsertSharesfunction = true
         invokedUpsertSharesCount += 1
         invokedUpsertSharesParameters = (userId, shares, eventStream)

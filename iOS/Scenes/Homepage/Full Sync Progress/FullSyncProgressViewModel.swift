@@ -45,8 +45,8 @@ final class FullSyncProgressViewModel: ObservableObject {
 
     init(mode: Mode) {
         self.mode = mode
-
         appContentManager.vaultSyncEventStream
+            .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
