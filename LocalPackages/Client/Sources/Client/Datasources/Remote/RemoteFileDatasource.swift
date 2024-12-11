@@ -19,9 +19,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Foundation
 
 public protocol RemoteFileDatasourceProtocol: Sendable {
     func createPendingFile(userId: String, metadata: String) async throws -> RemotePendingFile
+    func uploadChunk(userId: String, fileId: String, data: Data) async throws
 }
 
 public final class RemoteFileDatasource:
@@ -32,5 +34,10 @@ public extension RemoteFileDatasource {
         let endpoint = CreatePendingFileEndpoint(metadata: metadata)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.file
+    }
+
+    func uploadChunk(userId: String, fileId: String, data: Data) async throws {
+        let endpoint = UploadFileChunkEndpoint(fileId: fileId, data: data)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }

@@ -228,6 +228,10 @@ extension SharedRepositoryContainer {
     var localNotificationTimeDatasource: Factory<any LocalNotificationTimeDatasourceProtocol> {
         self { LocalNotificationTimeDatasource(databaseService: self.databaseService) }
     }
+
+    var remoteFileDatasource: Factory<any RemoteFileDatasourceProtocol> {
+        self { RemoteFileDatasource(apiServicing: self.apiManager) }
+    }
 }
 
 // MARK: Repositories
@@ -388,6 +392,10 @@ extension SharedRepositoryContainer {
         self { InAppNotificationRepository(localDatasource: self.localInAppNotificationDatasource(),
                                            remoteDatasource: self.remoteInAppNotificationDatasource(),
                                            logManager: self.logManager) }
+    }
+
+    var fileAttachmentRepository: Factory<any FileAttachmentRepositoryProtocol> {
+        self { FileAttachmentRepository(remoteDatasource: self.remoteFileDatasource()) }
     }
 }
 

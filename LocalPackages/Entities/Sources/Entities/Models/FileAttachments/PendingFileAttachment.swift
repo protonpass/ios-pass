@@ -24,25 +24,23 @@ import Foundation
 public struct PendingFileAttachment: Sendable, Equatable, Identifiable {
     /// A local unique random ID attributed to a file when it's added
     public let id: String
+    public var remoteId: String?
     /// Random AES256-GCM key
     public let key: Data
+    public var encryptedData: Data?
     public var uploadState: FileAttachmentUploadState = .uploading
-    public let metadata: Metadata
+    public var metadata: Metadata
 
     public init(id: String, key: Data, metadata: Metadata) {
         self.id = id
         self.key = key
         self.metadata = metadata
     }
-
-    public mutating func update(_ state: FileAttachmentUploadState) {
-        uploadState = state
-    }
 }
 
 public extension PendingFileAttachment {
     struct Metadata: Sendable, Equatable {
-        /// The local path to the file
+        /// The local path to the unencrypted file
         public let url: URL
         public let name: String
         public let mimeType: String

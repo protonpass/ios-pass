@@ -20,10 +20,13 @@
 
 import CryptoKit
 import Entities
+import Foundation
 
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
+
+    func uploadChunk(userId: String, file: PendingFileAttachment) async throws
 }
 
 public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
@@ -47,6 +50,20 @@ public extension FileAttachmentRepository {
         }
         return try await remoteDatasource.createPendingFile(userId: userId,
                                                             metadata: metadata)
+    }
+
+    func uploadChunk(userId: String, file: PendingFileAttachment) async throws {
+        guard let remoteId = file.remoteId else {
+            throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
+        }
+
+        guard let encryptedData = file.encryptedData else {
+            throw PassError.fileAttachment(.failedToUploadMissingEncryptedData)
+        }
+
+        try await remoteDatasource.uploadChunk(userId: userId,
+                                               fileId: remoteId,
+                                               data: encryptedData)
     }
 }
 

@@ -21,26 +21,30 @@
 
 import Client
 import CryptoKit
+import Entities
 import Foundation
 
-/// Symetrically encrypt a file at a given URL and save to a destination URL
+/// Symetrically encrypt a file at a given URL
 public protocol EncryptFileUseCase: Sendable {
-    func execute(key: Data, sourceUrl: URL, destinationUrl: URL) async throws
+    func execute(key: Data, sourceUrl: URL) async throws -> Data
 }
 
 public extension EncryptFileUseCase {
-    func callAsFunction(key: Data, sourceUrl: URL, destinationUrl: URL) async throws {
-        try await execute(key: key, sourceUrl: sourceUrl, destinationUrl: destinationUrl)
+    func callAsFunction(key: Data, sourceUrl: URL) async throws -> Data {
+        try await execute(key: key, sourceUrl: sourceUrl)
     }
 }
 
 public final class EncryptFile: EncryptFileUseCase {
     public init() {}
 
-    public func execute(key: Data, sourceUrl: URL, destinationUrl: URL) async throws {
+    public func execute(key: Data, sourceUrl: URL) async throws -> Data {
         let data = try Data(contentsOf: sourceUrl)
-        let encryptedData = try AES.GCM.seal(data, key: key, associatedData: .fileData)
-        FileManager.default.createFile(atPath: destinationUrl.path(),
-                                       contents: encryptedData.combined)
+        guard let encryptedData = try AES.GCM.seal(data,
+                                                   key: key,
+                                                   associatedData: .fileData).combined else {
+            throw PassError.fileAttachment(.failedToEncryptFile)
+        }
+        return encryptedData
     }
 }
