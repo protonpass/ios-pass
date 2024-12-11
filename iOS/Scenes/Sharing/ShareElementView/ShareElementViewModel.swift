@@ -40,7 +40,7 @@ final class ShareElementViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     var sheetHeight: CGFloat {
-        350
+        400
     }
 
     var itemSharingEnabled: Bool {

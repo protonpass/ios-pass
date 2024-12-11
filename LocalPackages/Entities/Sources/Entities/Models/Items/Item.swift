@@ -103,6 +103,10 @@ public struct Item: Decodable, Equatable, Sendable, Hashable {
         self.flags = flags
         self.shareCount = shareCount
     }
+
+    public var isASharedWithMeItem: Bool {
+        itemKey == nil && shareCount > 0
+    }
 }
 
 extension Item: ItemFlagable {}

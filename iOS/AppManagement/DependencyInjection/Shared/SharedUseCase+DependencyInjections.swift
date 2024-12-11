@@ -222,10 +222,6 @@ extension SharedUseCasesContainer {
         self { FullContentSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
                                appContentManager: self.appContentManager) }
     }
-
-    var loadVaultDatas: Factory<any LoadVaultDatasUseCase> {
-        self { LoadVaultDatas() }
-    }
 }
 
 // MARK: - Feature Flags

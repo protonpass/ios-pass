@@ -96,9 +96,8 @@ class BaseItemDetailViewModel: ObservableObject {
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
 
-        let allShares = appContentManager.getAllSharesContent()
+        shouldShowVault = appContentManager.getAllSharesContent().count > 1
         vault = appContentManager.getShareContent(for: itemContent.shareId)?.toVaultListUiModel
-        shouldShowVault = allShares.count > 1
 
         bindValues()
         checkIfFreeUser()

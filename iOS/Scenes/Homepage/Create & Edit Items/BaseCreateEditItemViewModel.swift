@@ -332,8 +332,7 @@ private extension BaseCreateEditItemViewModel {
         try await itemRepository.updateItem(userId: oldItem.userId,
                                             oldItem: oldItem.item,
                                             newItemContent: newItemContent,
-                                            shareId: oldItem.shareId,
-                                            isSharedItem: !selectedVault.isVaultRepresentation)
+                                            shareId: oldItem.shareId)
         return true
     }
 

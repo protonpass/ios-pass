@@ -29,12 +29,12 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
     // MARK: - vaultSyncEventStream
     public var invokedVaultSyncEventStreamSetter = false
     public var invokedVaultSyncEventStreamSetterCount = 0
-    public var invokedVaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?
-    public var invokedVaultSyncEventStreamList = [CurrentValueSubject<VaultSyncProgressEvent, Never>?]()
+    public var invokedVaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?
+    public var invokedVaultSyncEventStreamList = [PassthroughSubject<VaultSyncProgressEvent, Never>?]()
     public var invokedVaultSyncEventStreamGetter = false
     public var invokedVaultSyncEventStreamGetterCount = 0
-    public var stubbedVaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>!
-    public var vaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never> {
+    public var stubbedVaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never>!
+    public var vaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never> {
         set {
             invokedVaultSyncEventStreamSetter = true
             invokedVaultSyncEventStreamSetterCount += 1

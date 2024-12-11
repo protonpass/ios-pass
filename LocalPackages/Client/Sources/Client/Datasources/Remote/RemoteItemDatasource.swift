@@ -28,7 +28,7 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
     /// Get all item revisions of a share
     func getItems(userId: String,
                   shareId: String,
-                  eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+                  eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
         -> [Item]
     func getItemRevisions(userId: String, shareId: String, itemId: String, lastToken: String?) async throws
         -> Paginated<Item>
@@ -68,7 +68,7 @@ public final class RemoteItemDatasource: RemoteDatasource, RemoteItemDatasourceP
 public extension RemoteItemDatasource {
     func getItems(userId: String,
                   shareId: String,
-                  eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
+                  eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
         var itemRevisions = [Item]()
         var sinceToken: String?
         while true {

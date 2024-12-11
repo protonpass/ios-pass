@@ -47,7 +47,7 @@ public protocol ShareRepositoryProtocol: Sendable {
     /// Re-encrypt and then upserting shares, emit `decryptedVault` events if `eventStream` is provided
     func upsertShares(userId: String,
                       shares: [Share],
-                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
 
     func getUsersLinkedToVaultShare(to shareId: String) async throws -> [UserShareInfos]
     func getUsersLinkedToItemShare(to shareId: String, itemId: String) async throws -> [UserShareInfos]
@@ -189,7 +189,7 @@ public extension ShareRepository {
 
     func upsertShares(userId: String,
                       shares: [Share],
-                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
+                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
         logger.trace("Upserting \(shares.count) shares for user \(userId)")
         let key = try await getSymmetricKey()
         let encryptedShares = try await shares
