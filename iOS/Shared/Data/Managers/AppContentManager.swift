@@ -209,20 +209,6 @@ extension AppContentManager {
                 try await createDefaultVault()
             }
 
-            // TODO: recheck all upsert edit of sharerepos to optimize the process of
-
-//            // 4. Load vaults and their contents
-//            var shares = try await shareRepository.getDecryptedShares(userId: userId)
-//
-//            // 5. Check if in "forgot password" scenario. Create a new default vault if applicable
-//            let hasRemoteVaults = remoteShares.contains(where: { $0.shareType == .vault })
-//            // We see that there are remote vaults but we can't decrypt any of them
-//            // => "forgot password" happened
-//            if hasRemoteVaults, shares.isEmpty {
-//                try await createDefaultVault()
-//                shares = try await shareRepository.getDecryptedShares(userId: userId)
-//            }
-
             try await loadContents(userId: userId, for: remoteShares)
         } catch {
 //            await MainActor.run { [weak self] in
