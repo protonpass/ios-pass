@@ -39,7 +39,6 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
     private var cancellables = Set<AnyCancellable>()
 
