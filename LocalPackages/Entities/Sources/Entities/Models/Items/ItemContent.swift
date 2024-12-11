@@ -85,7 +85,8 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     }
 
     // Must be careful because this does not always represent a shared item that was accepted by user as it also
-    // show in send
+    // show in send. To know if an item was share with me we need to check this one and check that item.itemkey is
+    // nil
     public var shared: Bool { item.shareCount > 0 }
 }
 

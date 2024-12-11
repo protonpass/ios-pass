@@ -31,20 +31,40 @@ struct ShareItemButton: View {
 
     var body: some View {
         Button { router.present(for: .manageSharedShare(share, itemContent, .none)) } label: {
-            HStack {
+            HStack(spacing: 3) {
                 Image(uiImage: IconProvider.usersFilled)
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 12, height: 12)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                Text(verbatim: "\(share.members)")
-                    .font(.footnote)
-                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(width: 16, height: 16)
+                    .foregroundStyle(itemContent.contentData.type.normMajor2Color
+                        .toColor)
+                    .padding(.leading, 8)
+                Text(verbatim: "\(getShareNumbers)")
+                    .font(.caption.weight(.medium))
+                    .fontWeight(.medium)
+                    .foregroundStyle(itemContent.contentData.type.normMinor1Color
+                        .toColor)
+                    .padding(.horizontal, 7)
+                    .background(itemContent.contentData.type.normMajor2Color.toColor)
+                    .clipShape(Circle())
+                    .padding(.trailing, 4)
             }
-            .padding(.horizontal, 8)
             .padding(.vertical, 4)
+            .frame(minHeight: 30)
         }
         .background(itemContent.contentData.type.normMinor1Color.toColor)
         .clipShape(Capsule())
+    }
+
+    private var getShareNumbers: Int {
+        var members = 0
+        if share.isVaultRepresentation, share.shared {
+            members = share.members
+        }
+        if itemContent.item.shareCount > members {
+            members += itemContent.item.shareCount
+        }
+
+        return members
     }
 }

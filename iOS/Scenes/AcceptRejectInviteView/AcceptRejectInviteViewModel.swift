@@ -75,18 +75,11 @@ final class AcceptRejectInviteViewModel: ObservableObject {
             guard let self else {
                 return
             }
-//            defer {
-//                if !userInvite.isVault {
-//                    executingAction = false
-//                    shouldCloseSheet = true
-//                }
-//            }
 
             do {
                 executingAction = true
                 _ = try await acceptInvitation(with: userInvite)
                 await updateCachedInvitations(for: userInvite.inviteToken)
-//                try await appContentManager.refresh(userId: <#T##String#>)
                 syncEventLoop.forceSync()
             } catch {
                 logger.error(message: "Could not accept invitation \(userInvite)", error: error)
@@ -107,12 +100,13 @@ private extension AcceptRejectInviteViewModel {
             .sink { [weak self] state in
                 guard let self,
                       let sharesData = state.loadedContent,
-                      sharesData.shares.map(\.share.targetID).contains(self.userInvite.targetID) else {
+                      let shareContent = sharesData.shares
+                      .first(where: { $0.share.targetID == self.userInvite.targetID }) else {
                     return
                 }
-                //TODO: if item sharing route to item page with id
                 executingAction = false
                 shouldCloseSheet = true
+                displayItemPage(shareContent: shareContent)
             }.store(in: &cancellables)
     }
 
@@ -132,5 +126,26 @@ private extension AcceptRejectInviteViewModel {
 
     func display(error: any Error) {
         router.display(element: .displayErrorBanner(error))
+    }
+
+    func displayItemPage(shareContent: ShareContent) {
+        guard !userInvite.isVault,
+              let item = shareContent.items.first else {
+            return
+        }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                guard let itemContent = try await appContentManager.getItemContent(shareId: item.shareId,
+                                                                                   itemId: item.itemId) else {
+                    return
+                }
+                router.present(for: .itemDetail(itemContent))
+            } catch {
+                logger.error(message: "Error displaying item detail after accepting item invitation", error: error)
+            }
+        }
     }
 }

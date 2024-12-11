@@ -40,14 +40,12 @@ extension CreateAndAssociatePasskeyUseCase {
 
 final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
     private let itemRepository: any ItemRepositoryProtocol
-    private let shareRepository: any ShareRepositoryProtocol
     private let createPasskey: any CreatePasskeyUseCase
     private let updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase
     private let completePasskeyRegistration: any CompletePasskeyRegistrationUseCase
     private let userManager: any UserManagerProtocol
 
     init(itemRepository: any ItemRepositoryProtocol,
-         shareRepository: any ShareRepositoryProtocol,
          userManager: any UserManagerProtocol,
          createPasskey: any CreatePasskeyUseCase,
          updateLastUseTimeAndReindex: any UpdateLastUseTimeAndReindexUseCase,
@@ -57,7 +55,6 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
         self.updateLastUseTimeAndReindex = updateLastUseTimeAndReindex
         self.completePasskeyRegistration = completePasskeyRegistration
         self.userManager = userManager
-        self.shareRepository = shareRepository
     }
 
     func execute(item: any ItemIdentifiable,
@@ -65,9 +62,7 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
                  context: ASCredentialProviderExtensionContext) async throws {
         guard let oldItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                            itemId: item.itemId),
-            let oldLoginData = oldItemContent.loginItem,
-            let share = try await shareRepository.getShare(shareId: item.shareId)
-        else {
+            let oldLoginData = oldItemContent.loginItem else {
             throw PassError.itemNotFound(item)
         }
 
@@ -93,8 +88,7 @@ final class CreateAndAssociatePasskey: CreateAndAssociatePasskeyUseCase {
         try await itemRepository.updateItem(userId: oldItemContent.userId,
                                             oldItem: oldItemContent.item,
                                             newItemContent: newContent,
-                                            shareId: item.shareId,
-                                            isSharedItem: !share.isVaultRepresentation)
+                                            shareId: item.shareId)
         if let updatedItemContent = try await itemRepository.getItemContent(shareId: item.shareId,
                                                                             itemId: item.itemId) {
             try await updateLastUseTimeAndReindex(item: updatedItemContent,
