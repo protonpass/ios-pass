@@ -36,7 +36,7 @@ struct CreateEditAliasView: View {
     @State private var isShowingSlNoteExplanation = false
     @State private var sheetState: AliasOptionsSheetState?
 
-    private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
+    private var tintColor: UIColor { viewModel.itemContentType.normMajor1Color }
 
     init(viewModel: CreateEditAliasViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -100,7 +100,7 @@ struct CreateEditAliasView: View {
                     CreateEditItemTitleSection(title: $viewModel.title,
                                                focusedField: $focusedField,
                                                field: .title,
-                                               itemContentType: viewModel.itemContentType(),
+                                               itemContentType: viewModel.itemContentType,
                                                isEditMode: viewModel.mode.isEditMode,
                                                onSubmit: {
                                                    if case .create = viewModel.mode, isShowingAdvancedOptions {
@@ -278,7 +278,7 @@ struct CreateEditAliasView: View {
                         Text(viewModel.prefix)
                             .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
                             Text(viewModel.suffix)
-                            .adaptiveForegroundStyle(viewModel.itemContentType().normMajor2Color.toColor)
+                            .adaptiveForegroundStyle(viewModel.itemContentType.normMajor2Color.toColor)
                     }
                 }
             }
