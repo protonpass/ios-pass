@@ -78,7 +78,7 @@ struct AliasDetailView: View {
                                 .padding(.bottom, 8)
                         }
 
-                        if viewModel.contacts != nil, viewModel.canModify() {
+                        if viewModel.contacts != nil, viewModel.isAliasOwner {
                             contactRow
 
                             // swiftlint:disable:next line_length
@@ -138,7 +138,7 @@ struct AliasDetailView: View {
     private var aliasMailboxesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             aliasRow
-            if viewModel.isAllowedToEdit {
+            if viewModel.showMailboxesRow {
                 PassSectionDivider()
                 mailboxesRow
             }
@@ -164,7 +164,7 @@ struct AliasDetailView: View {
             .onTapGesture { viewModel.copyAliasEmail() }
             .layoutPriority(1)
 
-            if viewModel.aliasSyncEnabled, viewModel.isAllowedToEdit {
+            if viewModel.aliasSyncEnabled, viewModel.isAliasOwner {
                 Group {
                     if viewModel.togglingAliasStatus {
                         ProgressView()
