@@ -23,6 +23,11 @@ import Foundation
 
 public protocol RemoteFileDatasourceProtocol: Sendable {
     func createPendingFile(userId: String, metadata: String) async throws -> RemotePendingFile
+    func updateFileMetadata(userId: String,
+                            shareId: String,
+                            itemId: String,
+                            fileId: String,
+                            metadata: String) async throws -> ItemFile
 }
 
 public final class RemoteFileDatasource:
@@ -31,6 +36,19 @@ public final class RemoteFileDatasource:
 public extension RemoteFileDatasource {
     func createPendingFile(userId: String, metadata: String) async throws -> RemotePendingFile {
         let endpoint = CreatePendingFileEndpoint(metadata: metadata)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.file
+    }
+
+    func updateFileMetadata(userId: String,
+                            shareId: String,
+                            itemId: String,
+                            fileId: String,
+                            metadata: String) async throws -> ItemFile {
+        let endpoint = UpdateFileMetadataEndpoint(shareId: shareId,
+                                                  itemId: itemId,
+                                                  fileId: fileId,
+                                                  metadata: metadata)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.file
     }
