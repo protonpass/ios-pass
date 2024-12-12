@@ -30,6 +30,7 @@ public extension PassError {
         case failedToEncryptFile
         case failedToUploadMissingRemoteId
         case failedToUploadMissingEncryptedData
+        case failedToUpload(Int)
         case fileTooLarge(UInt64)
 
         public var debugDescription: String {
@@ -48,6 +49,8 @@ public extension PassError {
                 "Failed to upload because of missing remote ID"
             case .failedToUploadMissingEncryptedData:
                 "Failed to upload because of missing encrypted data"
+            case let .failedToUpload(code):
+                "Failed to upload (\(code))"
             case let .fileTooLarge(size):
                 "File too large (\(size) bytes)"
             }
