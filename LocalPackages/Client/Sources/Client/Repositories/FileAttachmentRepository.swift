@@ -21,6 +21,21 @@
 import CryptoKit
 import Entities
 import Foundation
+@preconcurrency import ProtonCoreDoh
+
+// Redundant with `CodeOnlyReponse` on purpose because `CodeOnlyReponse` is used by
+// core's network layer which has custom decode logic.
+private struct UploadMultipartResponse: Decodable {
+    let code: Int
+
+    var isSuccesful: Bool {
+        code == 1_000
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case code = "Code"
+    }
+}
 
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
@@ -31,9 +46,12 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
 
 public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
     private let remoteDatasource: any RemoteFileDatasourceProtocol
+    private let apiServiceLite: any ApiServiceLiteProtocol
 
-    public init(remoteDatasource: any RemoteFileDatasourceProtocol) {
+    public init(remoteDatasource: any RemoteFileDatasourceProtocol,
+                apiServiceLite: any ApiServiceLiteProtocol) {
         self.remoteDatasource = remoteDatasource
+        self.apiServiceLite = apiServiceLite
     }
 }
 
@@ -61,9 +79,24 @@ public extension FileAttachmentRepository {
             throw PassError.fileAttachment(.failedToUploadMissingEncryptedData)
         }
 
-        try await remoteDatasource.uploadChunk(userId: userId,
-                                               fileId: remoteId,
-                                               data: encryptedData)
+        // 48 is the ASCII code of 0, we want to pass ChunkIndex as integer data
+        // converting to UTF8 string doesn't work
+        let zero = Data([48])
+        let infos: [MultipartInfo] = [
+            .init(name: "ChunkIndex", data: zero),
+            .init(name: "ChunkData",
+                  fileName: "no-op", // Not used by the BE but required
+                  contentType: "application/octet-stream",
+                  data: encryptedData)
+        ]
+
+        let response: UploadMultipartResponse =
+            try await apiServiceLite.uploadMultipart(path: "/pass/v1/file/\(remoteId)/chunk",
+                                                     userId: userId,
+                                                     infos: infos)
+        if !response.isSuccesful {
+            throw PassError.fileAttachment(.failedToUpload(response.code))
+        }
     }
 }
 

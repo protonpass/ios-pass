@@ -496,7 +496,9 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                     // Optionally remove the file, we don't care if errors occur here
                     // because it should be in temporary directory which is cleaned up
                     // by the system anyway
+                    #if !targetEnvironment(simulator)
                     try? FileManager.default.removeItem(at: url)
+                    #endif
                     throw PassError.fileAttachment(.fileTooLarge(fileSize))
                 }
                 let mimeType = try getMimeType(of: url)
