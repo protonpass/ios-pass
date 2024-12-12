@@ -21,13 +21,16 @@
 import Foundation
 
 public extension PassError {
-    enum APIFailureReason: CustomDebugStringConvertible, Sendable {
+    enum APIFailureReason: CustomDebugStringConvertible, Sendable, Equatable {
         case noApiServiceLinkedToUserId
+        case invalidApiHost(String)
 
         public var debugDescription: String {
             switch self {
             case .noApiServiceLinkedToUserId:
                 "Could not find any apiservice linked to the user id"
+            case let .invalidApiHost(url):
+                "Invalid API host \(url)"
             }
         }
     }
