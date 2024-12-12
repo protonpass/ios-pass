@@ -21,10 +21,19 @@
 
 import Foundation
 
-public struct ItemFile: Sendable, Equatable {
-    public let id: String
+public struct ItemFile: Decodable, Sendable, Equatable {
+    public let fileID: String
+    public let size: Int
+    public let metadata: String
+    public let fileKey: String
+    public let itemKeyRotation: String
+    public let chunks: [FileChunk]
+    public let createTime: Int
+    public let modifyTime: Int
+}
 
-    public init(id: String) {
-        self.id = id
-    }
+public struct FileChunk: Decodable, Sendable, Equatable {
+    public let chunkID: String
+    public let index: Int
+    public let size: Int
 }
