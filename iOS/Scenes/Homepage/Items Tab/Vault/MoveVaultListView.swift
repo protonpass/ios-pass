@@ -100,7 +100,8 @@ struct MoveVaultListView: View {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vault.itemCount,
-                     isShared: vault.share.shared,
+//                     isShared: vault.share.shared,
+//                     shareMembers: vault.share.members,
                      isSelected: viewModel.selectedVault == vault)
         })
         .buttonStyle(.plain)

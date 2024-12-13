@@ -26,6 +26,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SharingSummaryView: View {
@@ -84,7 +85,6 @@ private extension SharingSummaryView {
                      },
                      title: vaultContent.name,
                      itemCount: itemsCount,
-                     isShared: infos.shared,
                      isSelected: false,
                      height: 60)
         }

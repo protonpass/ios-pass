@@ -47,6 +47,10 @@ final class ShareElementViewModel: ObservableObject {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }
 
+    var isShared: Bool {
+        share.shared || itemContent.shared
+    }
+
     init(share: Share, itemContent: ItemContent, itemCount: Int?) {
         self.share = share
         self.itemContent = itemContent
@@ -63,7 +67,7 @@ final class ShareElementViewModel: ObservableObject {
     }
 
     func manageAccess() {
-        router.present(for: .manageSharedShare(share, nil, .topMost))
+        router.present(for: .manageSharedShare(.item(share, itemContent), .topMost))
     }
 
     private func complete(with element: SharingElementData) {

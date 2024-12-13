@@ -48,15 +48,15 @@ struct ItemDetailTitleView: View {
                 if let vault {
                     HStack {
                         if let vaultContent = vault.vaultContent {
-                            if vault.shared {
-                                VaultButton(vault: vault, vaultContent: vaultContent, itemContent: itemContent)
-                            } else if shouldShowVault {
-                                VaultLabel(vaultContent: vaultContent)
-                            }
+//                            if vault.shared {
+//                                VaultButton(vault: vault, vaultContent: vaultContent, itemContent: itemContent)
+//                            } else if shouldShowVault {
+                            VaultLabel(vaultContent: vaultContent)
+//                            }
                         }
-                        if itemContent.shared {
-                            ShareItemButton(share: vault, itemContent: itemContent)
-                        }
+//                        if itemContent.shared {
+//                            ShareItemButton(share: vault, itemContent: itemContent)
+//                        }
                         Spacer()
                     }
                 }

@@ -37,18 +37,18 @@ struct ManageSharedShareView: View {
             mainContainer
                 .padding(.bottom, viewModel.share.isAdmin ? 70 : 0) // Avoid the bottom button
 
-            if !viewModel.fetching, !viewModel.isViewOnly {
-                shareButtonAndInfos
-            }
-
-            if !viewModel.share.isVaultRepresentation, !viewModel.share.owner {
-                CapsuleTextButton(title: #localized("Leave"),
-                                  titleColor: PassColor.interactionNormMajor2,
-                                  backgroundColor: PassColor.interactionNormMinor1,
-                                  action: {
-                                      viewModel.leaveVault()
-                                  })
-            }
+//            if !viewModel.fetching, !viewModel.isViewOnly {
+//                shareButtonAndInfos
+//            }
+//
+//            if !viewModel.share.isVaultRepresentation, !viewModel.share.owner {
+//                CapsuleTextButton(title: #localized("Leave"),
+//                                  titleColor: PassColor.interactionNormMajor2,
+//                                  backgroundColor: PassColor.interactionNormMinor1,
+//                                  action: {
+//                                      viewModel.leaveVault()
+//                                  })
+//            }
         }
         .task {
             viewModel.fetchShareInformation(displayFetchingLoader: true)
@@ -86,11 +86,7 @@ struct ManageSharedShareView: View {
 private extension ManageSharedShareView {
     var mainContainer: some View {
         VStack {
-            if let vaultContent = viewModel.share.vaultContent, viewModel.share.shared {
-                headerVaultInformation(vaultContent: vaultContent)
-            } else {
-                itemShareHeader
-            }
+            itemShareHeader
             if viewModel.fetching {
                 VStack {
                     Spacer()
@@ -107,7 +103,7 @@ private extension ManageSharedShareView {
 
 private extension ManageSharedShareView {
     var itemShareHeader: some View {
-        Text("Shared with")
+        Text("Shared via")
             .font(.title.bold())
             .foregroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -143,38 +139,73 @@ private extension ManageSharedShareView {
     var inviteeList: some View {
         ScrollView {
             VStack(spacing: 32) {
-                if !viewModel.invitations.isEmpty {
-                    inviteesSection(for: viewModel.invitations.invitees, title: "Invitations")
+            
+                if viewModel.itemSharingEnabled, !viewModel.itemMembers.isEmpty {
+                    inviteesSection(for: viewModel.itemMembers,
+                                    isVaultSection: false,
+                                    canExecuteActions: viewModel.share.shareRole == .admin,
+                                    canSeeAccessLevel: viewModel.share.shareRole != .read,
+                                    title: " Item sharing: \(viewModel.itemMembers.count) users")
                 }
 
                 if !viewModel.vaultMembers.isEmpty {
                     inviteesSection(for: viewModel.vaultMembers,
-                                    title: " Vault share Members (\(viewModel.vaultMembers.count))")
-                }
-
-                if !viewModel.itemMembers.isEmpty {
-                    inviteesSection(for: viewModel.itemMembers,
-                                    title: " Item share Members (\(viewModel.itemMembers.count))")
+                                    isVaultSection: true,
+                                    canExecuteActions: viewModel.share.shareRole == .admin && viewModel.share
+                                        .isVaultRepresentation,
+                                    canSeeAccessLevel: viewModel.share.isVaultRepresentation,
+                                    title: " Vault sharing: \(viewModel.vaultMembers.count) members")
                 }
             }
             .frame(maxWidth: .infinity)
         }
         .animation(.default, value: viewModel.invitations)
-        .animation(.default, value: viewModel.vaultMembers)
-        .animation(.default, value: viewModel.itemMembers)
+//        .animation(.default, value: viewModel.vaultMembers)
+//        .animation(.default, value: viewModel.itemMembers)
     }
 
-    func inviteesSection(for invitees: [any ShareInvitee], title: LocalizedStringKey) -> some View {
+    func inviteesSection(for invitees: [any ShareInvitee],
+                         isVaultSection: Bool,
+                         canExecuteActions: Bool,
+                         canSeeAccessLevel: Bool,
+                         title: LocalizedStringKey) -> some View {
         VStack {
             Text(title)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .font(.caption)
                 .foregroundStyle(PassColor.textWeak.toColor)
 
-            LazyVStack {
+            LazyVStack(spacing: 0) {
+                if isVaultSection, let vaultContent = viewModel.share.vaultContent {
+                    HStack(spacing: 16) {
+                        Image(uiImage: vaultContent.vaultBigIcon)
+                            .resizable()
+                            .renderingMode(.template)
+                            .scaledToFit()
+                            .foregroundStyle(vaultContent.mainColor.toColor)
+                            .frame(width: 18, height: 18)
+                            .padding(12)
+                            .background(vaultContent.backgroundColor.toColor)
+                            .clipShape(Circle())
+                        VStack(alignment: .leading) {
+                            Text(vaultContent.name)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                            Text("\(viewModel.itemsNumber) item(s)")
+                                .foregroundStyle(PassColor.textWeak.toColor)
+                        }
+                        Spacer()
+                    }.padding(16)
+                    PassDivider()
+                }
+                if canExecuteActions {
+                    inviteMore(isVaultSharing: isVaultSection)
+                    PassDivider()
+                }
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
                     ShareInviteeView(invitee: invitee,
-                                     isAdmin: viewModel.share.isAdmin,
+                                     isAdmin: canExecuteActions,
                                      isCurrentUser: viewModel.isCurrentUser(invitee),
+                                     canSeeAccessLevel: canSeeAccessLevel,
                                      canTransferOwnership: viewModel.canTransferOwnership(to: invitee),
                                      onSelect: { viewModel.handle(option: $0) })
                         .padding(16)
@@ -189,39 +220,54 @@ private extension ManageSharedShareView {
     }
 }
 
+// private extension ManageSharedShareView {
+//    var shareButtonAndInfos: some View {
+//        VStack {
+//            DisablableCapsuleTextButton(title: #localized("Share with more people"),
+//                                        titleColor: PassColor.textInvert,
+//                                        disableTitleColor: PassColor.textInvert,
+//                                        backgroundColor: PassColor.interactionNorm,
+//                                        disableBackgroundColor: PassColor.interactionNorm
+//                                            .withAlphaComponent(0.5),
+//                                        disabled: viewModel.reachedLimit && !viewModel.isBusinessUser,
+//                                        action: { viewModel.shareWithMorePeople() })
+//
+//            if viewModel.showVaultLimitMessage {
+//                vaultLimitReachedMessage
+//            }
+//
+//            if viewModel.showInvitesLeft {
+//                Button { showFreeSharingLimit.toggle() } label: {
+//                    Label {
+//                        Text("\(viewModel.numberOfInvitesLeft) invite remaining")
+//                            .font(.caption)
+//                            .fontWeight(.semibold)
+//                    } icon: {
+//                        IconProvider.questionCircle.toImage
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 16)
+//                    }
+//                    .foregroundStyle(PassColor.textWeak.toColor)
+//                }
+//                .buttonStyle(.plain)
+//            }
+//        }
+//    }
+// }
+
 private extension ManageSharedShareView {
-    var shareButtonAndInfos: some View {
-        VStack {
-            DisablableCapsuleTextButton(title: #localized("Share with more people"),
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textInvert,
-                                        backgroundColor: PassColor.interactionNorm,
-                                        disableBackgroundColor: PassColor.interactionNorm
-                                            .withAlphaComponent(0.5),
-                                        disabled: viewModel.reachedLimit && !viewModel.isBusinessUser,
-                                        action: { viewModel.shareWithMorePeople() })
-
-            if viewModel.showVaultLimitMessage {
-                vaultLimitReachedMessage
-            }
-
-            if viewModel.showInvitesLeft {
-                Button { showFreeSharingLimit.toggle() } label: {
-                    Label {
-                        Text("\(viewModel.numberOfInvitesLeft) invite remaining")
-                            .font(.caption)
-                            .fontWeight(.semibold)
-                    } icon: {
-                        IconProvider.questionCircle.toImage
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 16)
-                    }
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                }
-                .buttonStyle(.plain)
-            }
+    func inviteMore(isVaultSharing: Bool) -> some View {
+        Button {
+            viewModel.shareWithMorePeople(iSharingVault: isVaultSharing)
+        } label: {
+            Label(isVaultSharing ? "Invite more users to the vault" : "Invite more users to the item",
+                  image: Image(uiImage: IconProvider.userPlus))
+                .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }
 
