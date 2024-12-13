@@ -1,5 +1,5 @@
 //
-// UpdateFileMetadataEndpoint.swift
+// LinkPendingFilesEndpoint.swift
 // Proton Pass - Created on 12/12/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,25 +21,34 @@
 import Entities
 import ProtonCoreNetworking
 
-typealias UpdateFileMetadataRequest = CreatePendingFileRequest
-
-struct UpdateFileMetadataResponse: Decodable, Sendable {
-    let file: ItemFile
+struct LinkPendingFilesRequest: Encodable, Sendable {
+    let itemRevision: Int64
+    let filesToAdd: [FileToAdd]
+    let filesToRemove: [String]
 }
 
-struct UpdateFileMetadataEndpoint: Endpoint {
-    typealias Body = UpdateFileMetadataRequest
-    typealias Response = UpdateFileMetadataResponse
+public struct FileToAdd: Encodable, Sendable {
+    let fileID: String
+    let fileKey: String
+}
+
+struct LinkPendingFilesEndpoint: Endpoint {
+    typealias Body = LinkPendingFilesRequest
+    typealias Response = CodeOnlyResponse
 
     var debugDescription: String
     var path: String
     var method: HTTPMethod
-    var body: UpdateFileMetadataRequest?
+    var body: LinkPendingFilesRequest?
 
-    init(item: any ItemIdentifiable, fileId: String, metadata: String) {
-        debugDescription = "Update file metadata"
-        path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(fileId)/metadata"
+    init(item: SymmetricallyEncryptedItem,
+         filesToAdd: [FileToAdd],
+         fileIdsToRemove: [String]) {
+        debugDescription = "Link pending files to item"
+        path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/link_files"
         method = .put
-        body = .init(metadata: metadata)
+        body = .init(itemRevision: item.item.revision,
+                     filesToAdd: filesToAdd,
+                     filesToRemove: fileIdsToRemove)
     }
 }

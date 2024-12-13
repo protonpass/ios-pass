@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import CryptoKit
 import Entities
 import Foundation
@@ -40,18 +41,27 @@ private struct UploadMultipartResponse: Decodable {
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
-
     func uploadChunk(userId: String, file: PendingFileAttachment) async throws
+    func linkFilesToItem(userId: String,
+                         pendingFilesToAdd: [PendingFileAttachment],
+                         existingFileIdsToRemove: [String],
+                         item: any ItemIdentifiable) async throws
 }
 
 public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
-    private let remoteDatasource: any RemoteFileDatasourceProtocol
+    private let localItemDatasource: any LocalItemDatasourceProtocol
+    private let remoteFileDatasource: any RemoteFileDatasourceProtocol
     private let apiServiceLite: any ApiServiceLiteProtocol
+    private let keyManager: any PassKeyManagerProtocol
 
-    public init(remoteDatasource: any RemoteFileDatasourceProtocol,
-                apiServiceLite: any ApiServiceLiteProtocol) {
-        self.remoteDatasource = remoteDatasource
+    public init(localItemDatasource: any LocalItemDatasourceProtocol,
+                remoteFileDatasource: any RemoteFileDatasourceProtocol,
+                apiServiceLite: any ApiServiceLiteProtocol,
+                keyManager: any PassKeyManagerProtocol) {
+        self.localItemDatasource = localItemDatasource
+        self.remoteFileDatasource = remoteFileDatasource
         self.apiServiceLite = apiServiceLite
+        self.keyManager = keyManager
     }
 }
 
@@ -66,8 +76,8 @@ public extension FileAttachmentRepository {
         guard let metadata = encryptedProtobuf.combined?.base64EncodedString() else {
             throw PassError.fileAttachment(.failedToEncryptMetadata)
         }
-        return try await remoteDatasource.createPendingFile(userId: userId,
-                                                            metadata: metadata)
+        return try await remoteFileDatasource.createPendingFile(userId: userId,
+                                                                metadata: metadata)
     }
 
     func uploadChunk(userId: String, file: PendingFileAttachment) async throws {
@@ -96,6 +106,49 @@ public extension FileAttachmentRepository {
                                                      infos: infos)
         if !response.isSuccesful {
             throw PassError.fileAttachment(.failedToUpload(response.code))
+        }
+    }
+
+    func linkFilesToItem(userId: String,
+                         pendingFilesToAdd: [PendingFileAttachment],
+                         existingFileIdsToRemove: [String],
+                         item: any ItemIdentifiable) async throws {
+        let itemKey = try await keyManager.getLatestItemKey(userId: userId,
+                                                            shareId: item.shareId,
+                                                            itemId: item.itemId)
+        var filesToAdd = [FileToAdd]()
+        for file in pendingFilesToAdd {
+            guard let remoteId = file.remoteId else {
+                throw PassError.fileAttachment(.failedToAttachMissingRemoteId)
+            }
+            let encryptedFileKey = try AES.GCM.seal(file.key,
+                                                    key: itemKey.keyData,
+                                                    associatedData: .fileKey)
+            guard let encryptedFileKeyData = encryptedFileKey.combined else {
+                throw PassError.fileAttachment(.failedToAttachMissingEncryptedFileKey)
+            }
+            filesToAdd.append(.init(fileID: remoteId,
+                                    fileKey: encryptedFileKeyData.base64EncodedString()))
+        }
+
+        var existingFileIdsToRemove = existingFileIdsToRemove
+
+        guard let item = try await localItemDatasource.getItem(shareId: item.shareId,
+                                                               itemId: item.itemId) else {
+            throw PassError.itemNotFound(item)
+        }
+        let threshold = 10
+        while true {
+            let toAdd = filesToAdd.popAndRemoveFirstElements(threshold)
+            let toRemove = existingFileIdsToRemove.popAndRemoveFirstElements(threshold)
+
+            if toAdd.isEmpty, toRemove.isEmpty {
+                break
+            }
+            try await remoteFileDatasource.linkFilesToItem(userId: userId,
+                                                           item: item,
+                                                           filesToAdd: toAdd,
+                                                           fileIdsToRemove: toRemove)
         }
     }
 }

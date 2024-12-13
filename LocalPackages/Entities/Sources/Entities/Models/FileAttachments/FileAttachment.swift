@@ -30,7 +30,7 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
         case let .pending(file):
             file.id
         case let .item(file):
-            file.id
+            file.fileID
         }
     }
 
@@ -44,7 +44,7 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
                   group: item.metadata.fileGroup,
                   formattedSize: item.metadata.formattedSize)
         case let .item(item):
-            .init(id: item.id,
+            .init(id: item.fileID,
                   url: nil,
                   state: .uploaded,
                   name: "",
