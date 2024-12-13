@@ -30,7 +30,6 @@ public struct FileAttachmentRow: View {
     @State private var showFilePreview = false
 
     private let mode: Mode
-    private let file: FileAttachment
     private let uiModel: FileAttachmentUiModel
     private let handler: any FileAttachmentsEditHandler
 
@@ -59,12 +58,10 @@ public struct FileAttachmentRow: View {
     }
 
     public init(mode: Mode,
-                file: FileAttachment,
+                uiModel: FileAttachmentUiModel,
                 handler: any FileAttachmentsEditHandler) {
         self.mode = mode
-        let uiModel = file.toUiModel
         _name = .init(initialValue: uiModel.name)
-        self.file = file
         self.uiModel = uiModel
         self.handler = handler
     }
@@ -103,7 +100,7 @@ public struct FileAttachmentRow: View {
                     Divider()
                     LabelButton(title: "Delete",
                                 icon: IconProvider.trash,
-                                action: { handler.delete(attachment: file) })
+                                action: { handler.delete(attachment: uiModel) })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.textWeak,
@@ -111,7 +108,7 @@ public struct FileAttachmentRow: View {
                 })
             case .error:
                 RetryButton(tintColor: handler.fileAttachmentsSectionPrimaryColor,
-                            onRetry: { handler.retryUpload(attachment: file) })
+                            onRetry: { handler.retryUpload(attachment: uiModel) })
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -125,7 +122,7 @@ public struct FileAttachmentRow: View {
                isPresented: $showRenameAlert,
                actions: {
                    TextField(text: $name, label: { EmptyView() })
-                   Button("Rename", action: { handler.rename(attachment: file, newName: name) })
+                   Button("Rename", action: { handler.rename(attachment: uiModel, newName: name) })
                        .disabled(name.isEmpty)
                    Button("Cancel", role: .cancel, action: { name = uiModel.name })
                })
@@ -134,9 +131,9 @@ public struct FileAttachmentRow: View {
                 FileAttachmentPreview(url: url,
                                       primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
                                       secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor,
-                                      onRename: { handler.rename(attachment: file,
+                                      onRename: { handler.rename(attachment: uiModel,
                                                                  newName: $0) },
-                                      onDelete: { handler.delete(attachment: file) })
+                                      onDelete: { handler.delete(attachment: uiModel) })
             }
         }
     }

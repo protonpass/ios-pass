@@ -160,7 +160,7 @@ private extension CreateEditIdentityView {
             PassSectionDivider()
 
             if viewModel.fileAttachmentsEnabled {
-                FileAttachmentsEditSection(files: viewModel.files,
+                FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                            isUploading: viewModel.isUploadingFile,
                                            handler: viewModel)
             }
