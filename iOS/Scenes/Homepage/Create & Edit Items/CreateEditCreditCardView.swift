@@ -78,7 +78,7 @@ private extension CreateEditCreditCardView {
                                     field: .note)
 
                     if viewModel.fileAttachmentsEnabled {
-                        FileAttachmentsEditSection(files: viewModel.files,
+                        FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                                    isUploading: viewModel.isUploadingFile,
                                                    handler: viewModel)
                             .id(fileAttachmentsID)

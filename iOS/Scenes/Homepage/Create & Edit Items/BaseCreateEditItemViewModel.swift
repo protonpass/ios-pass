@@ -159,6 +159,36 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         fileAttachmentsEnabled && !dismissedFileAttachmentsBanner
     }
 
+    var fileUiModels: [FileAttachmentUiModel] {
+        var uiModels = [FileAttachmentUiModel]()
+        for file in files {
+            switch file {
+            case let .pending(pending):
+                uiModels.append(.init(id: pending.id,
+                                      url: pending.metadata.url,
+                                      state: pending.uploadState,
+                                      name: pending.metadata.name,
+                                      group: pending.metadata.fileGroup,
+                                      formattedSize: pending.metadata.formattedSize))
+            case let .item(itemFile):
+                let formattedSize = formatFileAttachmentSize(itemFile.size)
+                if let name = itemFile.name,
+                   let mimeType = itemFile.mimeType {
+                    let fileGroup = getFileGroup(mimeType: mimeType)
+                    uiModels.append(.init(id: itemFile.fileID,
+                                          url: nil,
+                                          state: .uploaded,
+                                          name: name,
+                                          group: fileGroup,
+                                          formattedSize: formattedSize))
+                } else {
+                    assertionFailure("Missing file name and MIME type")
+                }
+            }
+        }
+        return uiModels
+    }
+
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
     }
@@ -576,8 +606,9 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         handle(error)
     }
 
-    func retryUpload(attachment: FileAttachment) {
-        guard case var .pending(file) = attachment else { return }
+    func retryUpload(attachment: FileAttachmentUiModel) {
+        guard let file = files.first(where: { $0.id == attachment.id }),
+              case var .pending(file) = file else { return }
         uploadFileTask?.cancel()
         uploadFileTask = Task { [weak self] in
             guard let self else { return }
@@ -595,12 +626,12 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         }
     }
 
-    func rename(attachment: FileAttachment, newName: String) {
+    func rename(attachment: FileAttachmentUiModel, newName: String) {
         print(attachment)
         print(newName)
     }
 
-    func delete(attachment: FileAttachment) {
+    func delete(attachment: FileAttachmentUiModel) {
         print(attachment)
     }
 

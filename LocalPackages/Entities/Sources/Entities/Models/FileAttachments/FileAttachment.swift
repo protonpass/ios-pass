@@ -33,25 +33,6 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
             file.fileID
         }
     }
-
-    public var toUiModel: FileAttachmentUiModel {
-        switch self {
-        case let .pending(item):
-            .init(id: item.id,
-                  url: item.metadata.url,
-                  state: item.uploadState,
-                  name: item.metadata.name,
-                  group: item.metadata.fileGroup,
-                  formattedSize: item.metadata.formattedSize)
-        case let .item(item):
-            .init(id: item.fileID,
-                  url: nil,
-                  state: .uploaded,
-                  name: "",
-                  group: .unknown,
-                  formattedSize: nil)
-        }
-    }
 }
 
 public enum FileAttachmentUploadState: Sendable, Equatable {
@@ -88,6 +69,20 @@ public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
     public let name: String
     public let group: FileGroup
     public let formattedSize: String?
+
+    public init(id: String,
+                url: URL?,
+                state: FileAttachmentUploadState,
+                name: String,
+                group: FileGroup,
+                formattedSize: String?) {
+        self.id = id
+        self.url = url
+        self.state = state
+        self.name = name
+        self.group = group
+        self.formattedSize = formattedSize
+    }
 }
 
 public extension [FileAttachment] {

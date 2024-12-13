@@ -36,20 +36,20 @@ public protocol FileAttachmentsEditHandler: AnyObject {
 
     func handleAttachment(_ url: URL)
     func handleAttachmentError(_ error: any Error)
-    func rename(attachment: FileAttachment, newName: String)
-    func retryUpload(attachment: FileAttachment)
-    func delete(attachment: FileAttachment)
+    func rename(attachment: FileAttachmentUiModel, newName: String)
+    func retryUpload(attachment: FileAttachmentUiModel)
+    func delete(attachment: FileAttachmentUiModel)
     func deleteAllAttachments()
 }
 
 public struct FileAttachmentsEditSection: View {
     @State private var showDeleteAllAlert = false
 
-    private let files: [FileAttachment]
+    private let files: [FileAttachmentUiModel]
     private let isUploading: Bool
     private let handler: any FileAttachmentsEditHandler
 
-    public init(files: [FileAttachment],
+    public init(files: [FileAttachmentUiModel],
                 isUploading: Bool,
                 handler: any FileAttachmentsEditHandler) {
         self.files = files
@@ -90,7 +90,7 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                FileAttachmentRow(mode: .edit, file: file, handler: handler)
+                FileAttachmentRow(mode: .edit, uiModel: file, handler: handler)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                     .disabled(isUploading)
                 if file != files.last {
