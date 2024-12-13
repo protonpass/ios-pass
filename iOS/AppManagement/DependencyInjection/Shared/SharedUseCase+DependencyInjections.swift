@@ -572,4 +572,8 @@ extension SharedUseCasesContainer {
     var decryptFile: Factory<any DecryptFileUseCase> {
         self { DecryptFile() }
     }
+
+    var getFilesToLink: Factory<any GetFilesToLinkUseCase> {
+        self { GetFilesToLink() }
+    }
 }

@@ -24,15 +24,36 @@ import Foundation
 public struct ItemFile: Decodable, Sendable, Equatable {
     public let fileID: String
     public let size: Int
-    public var formattedSize: String?
     public let metadata: String
     public let fileKey: String
-    public let itemKeyRotation: String
+    public let itemKeyRotation: Int
     public let chunks: [FileChunk]
     public let revisionAdded: Int
-    public let revisionRemoved: Int
+    public let revisionRemoved: Int?
     public let createTime: Int
     public let modifyTime: Int
+
+    public init(fileID: String,
+                size: Int,
+                metadata: String,
+                fileKey: String,
+                itemKeyRotation: Int,
+                chunks: [FileChunk],
+                revisionAdded: Int,
+                revisionRemoved: Int,
+                createTime: Int,
+                modifyTime: Int) {
+        self.fileID = fileID
+        self.size = size
+        self.metadata = metadata
+        self.fileKey = fileKey
+        self.itemKeyRotation = itemKeyRotation
+        self.chunks = chunks
+        self.revisionAdded = revisionAdded
+        self.revisionRemoved = revisionRemoved
+        self.createTime = createTime
+        self.modifyTime = modifyTime
+    }
 }
 
 public struct FileChunk: Decodable, Sendable, Equatable {

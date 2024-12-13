@@ -25,11 +25,22 @@ struct LinkPendingFilesRequest: Encodable, Sendable {
     let itemRevision: Int64
     let filesToAdd: [FileToAdd]
     let filesToRemove: [String]
+
+    enum CodingKeys: String, CodingKey {
+        case itemRevision = "ItemRevision"
+        case filesToAdd = "FilesToAdd"
+        case filesToRemove = "FilesToRemove"
+    }
 }
 
 public struct FileToAdd: Encodable, Sendable {
-    let fileID: String
+    let fileId: String
     let fileKey: String
+
+    enum CodingKeys: String, CodingKey {
+        case fileId = "FileID"
+        case fileKey = "FileKey"
+    }
 }
 
 struct LinkPendingFilesEndpoint: Endpoint {
@@ -46,7 +57,7 @@ struct LinkPendingFilesEndpoint: Endpoint {
          fileIdsToRemove: [String]) {
         debugDescription = "Link pending files to item"
         path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/link_files"
-        method = .put
+        method = .post
         body = .init(itemRevision: item.item.revision,
                      filesToAdd: filesToAdd,
                      filesToRemove: fileIdsToRemove)
