@@ -69,6 +69,9 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       onScan: { viewModel.openScanner() },
                                       onSave: { viewModel.save() })
             }
+            .task {
+                await viewModel.fetchAttachedFiles()
+            }
     }
 }
 

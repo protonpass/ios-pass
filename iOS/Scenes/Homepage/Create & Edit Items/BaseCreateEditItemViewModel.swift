@@ -45,6 +45,15 @@ enum ItemMode: Equatable, Hashable {
     case clone(ItemContent)
     case edit(ItemContent)
 
+    var itemContent: ItemContent? {
+        switch self {
+        case let .clone(content), let .edit(content):
+            content
+        default:
+            nil
+        }
+    }
+
     var isEditMode: Bool {
         switch self {
         case .edit:
@@ -101,7 +110,11 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var canScanDocuments = false
+    /// Hold the user edit list of updated files. Need to compare with the attached files in order to add and
+    /// remove accordingly
     @Published private(set) var files = [FileAttachment]()
+    /// Hold the remote files currently attached to the item
+    @Published private(set) var attachedFiles: FetchableObject<[ItemFile]>?
     @Published private(set) var isUploadingFile = false
     @Published private(set) var dismissedFileAttachmentsBanner = false
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
@@ -251,6 +264,25 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         let uiModel = CustomFieldUiModel(customField: customField)
         customFieldUiModels.append(uiModel)
         recentlyAddedOrEditedField = uiModel
+    }
+
+    func fetchAttachedFiles() async {
+        guard let itemContent = mode.itemContent else {
+            attachedFiles = nil
+            return
+        }
+        do {
+            attachedFiles = .fetching
+            let userId = try await userManager.getActiveUserId()
+            let files = try await fileRepository.getActiveItemFiles(userId: userId,
+                                                                    item: itemContent)
+            attachedFiles = .fetched(files)
+            for file in files {
+                self.files.upsert(file)
+            }
+        } catch {
+            attachedFiles = .error(error)
+        }
     }
 }
 

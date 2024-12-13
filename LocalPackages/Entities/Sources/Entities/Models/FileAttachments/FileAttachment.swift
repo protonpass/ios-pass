@@ -92,10 +92,18 @@ public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
 
 public extension [FileAttachment] {
     mutating func upsert(_ file: PendingFileAttachment) {
-        guard let index = self.firstIndex(where: { $0.id == file.id }) else {
+        guard let index = firstIndex(where: { $0.id == file.id }) else {
             append(.pending(file))
             return
         }
         self[index] = .pending(file)
+    }
+
+    mutating func upsert(_ file: ItemFile) {
+        guard let index = firstIndex(where: { $0.id == file.fileID }) else {
+            append(.item(file))
+            return
+        }
+        self[index] = .item(file)
     }
 }
