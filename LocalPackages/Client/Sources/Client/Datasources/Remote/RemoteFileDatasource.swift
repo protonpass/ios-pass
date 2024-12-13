@@ -24,10 +24,13 @@ import Foundation
 public protocol RemoteFileDatasourceProtocol: Sendable {
     func createPendingFile(userId: String, metadata: String) async throws -> RemotePendingFile
     func updateFileMetadata(userId: String,
-                            shareId: String,
-                            itemId: String,
+                            item: any ItemIdentifiable,
                             fileId: String,
                             metadata: String) async throws -> ItemFile
+    func linkFilesToItem(userId: String,
+                         item: SymmetricallyEncryptedItem,
+                         filesToAdd: [FileToAdd],
+                         fileIdsToRemove: [String]) async throws
 }
 
 public final class RemoteFileDatasource:
@@ -41,15 +44,23 @@ public extension RemoteFileDatasource {
     }
 
     func updateFileMetadata(userId: String,
-                            shareId: String,
-                            itemId: String,
+                            item: any ItemIdentifiable,
                             fileId: String,
                             metadata: String) async throws -> ItemFile {
-        let endpoint = UpdateFileMetadataEndpoint(shareId: shareId,
-                                                  itemId: itemId,
+        let endpoint = UpdateFileMetadataEndpoint(item: item,
                                                   fileId: fileId,
                                                   metadata: metadata)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.file
+    }
+
+    func linkFilesToItem(userId: String,
+                         item: SymmetricallyEncryptedItem,
+                         filesToAdd: [FileToAdd],
+                         fileIdsToRemove: [String]) async throws {
+        let endpoint = LinkPendingFilesEndpoint(item: item,
+                                                filesToAdd: filesToAdd,
+                                                fileIdsToRemove: fileIdsToRemove)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }

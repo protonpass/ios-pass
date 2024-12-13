@@ -36,9 +36,9 @@ struct UpdateFileMetadataEndpoint: Endpoint {
     var method: HTTPMethod
     var body: UpdateFileMetadataRequest?
 
-    init(shareId: String, itemId: String, fileId: String, metadata: String) {
+    init(item: any ItemIdentifiable, fileId: String, metadata: String) {
         debugDescription = "Update file metadata"
-        path = "/pass/v1/share/\(shareId)/item/\(itemId)/file/\(fileId)/metadata"
+        path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(fileId)/metadata"
         method = .put
         body = .init(metadata: metadata)
     }

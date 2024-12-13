@@ -396,8 +396,10 @@ extension SharedRepositoryContainer {
 
     var fileAttachmentRepository: Factory<any FileAttachmentRepositoryProtocol> {
         self {
-            FileAttachmentRepository(remoteDatasource: self.remoteFileDatasource(),
-                                     apiServiceLite: SharedToolingContainer.shared.apiServiceLite())
+            FileAttachmentRepository(localItemDatasource: self.localItemDatasource(),
+                                     remoteFileDatasource: self.remoteFileDatasource(),
+                                     apiServiceLite: SharedToolingContainer.shared.apiServiceLite(),
+                                     keyManager: self.passKeyManager())
         }
     }
 }
