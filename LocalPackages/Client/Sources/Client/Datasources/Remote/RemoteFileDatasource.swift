@@ -31,6 +31,9 @@ public protocol RemoteFileDatasourceProtocol: Sendable {
                          item: SymmetricallyEncryptedItem,
                          filesToAdd: [FileToAdd],
                          fileIdsToRemove: [String]) async throws
+    func getActiveFiles(userId: String,
+                        item: any ItemIdentifiable,
+                        lastId: String?) async throws -> GetActiveItemFilesResponse
 }
 
 public final class RemoteFileDatasource:
@@ -62,5 +65,12 @@ public extension RemoteFileDatasource {
                                                 filesToAdd: filesToAdd,
                                                 fileIdsToRemove: fileIdsToRemove)
         _ = try await exec(userId: userId, endpoint: endpoint)
+    }
+
+    func getActiveFiles(userId: String,
+                        item: any ItemIdentifiable,
+                        lastId: String?) async throws -> GetActiveItemFilesResponse {
+        let endpoint = GetActiveItemFilesEndpoint(item: item, lastId: lastId)
+        return try await exec(userId: userId, endpoint: endpoint)
     }
 }

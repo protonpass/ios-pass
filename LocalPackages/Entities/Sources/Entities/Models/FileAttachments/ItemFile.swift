@@ -24,10 +24,13 @@ import Foundation
 public struct ItemFile: Decodable, Sendable, Equatable {
     public let fileID: String
     public let size: Int
+    public var formattedSize: String?
     public let metadata: String
     public let fileKey: String
     public let itemKeyRotation: String
     public let chunks: [FileChunk]
+    public let revisionAdded: Int
+    public let revisionRemoved: Int
     public let createTime: Int
     public let modifyTime: Int
 }
