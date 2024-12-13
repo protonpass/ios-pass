@@ -29,28 +29,30 @@ struct ShareElementView: View {
     let viewModel: ShareElementViewModel
 
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: 12) {
             Text("Share")
                 .font(.body.bold())
                 .foregroundStyle(PassColor.textNorm.toColor)
 
             Spacer()
 
-            if viewModel.itemSharingEnabled, viewModel.share.canShareWithMorePeople {
+            if !viewModel.isFreeUser, viewModel.itemSharingEnabled, viewModel.share.canShareWithMorePeople {
                 itemSharing
-                    .padding(.vertical)
             }
+
+            if viewModel.isShared {
+                manageAccessButton
+            }
+
+            Divider()
 
             if !viewModel.itemContent.isAlias {
                 secureLink
             }
 
-            if viewModel.share.shared {
-                manageAccessButton
-                    .padding(.vertical)
-            } else if viewModel.share.isVaultRepresentation {
+            if !viewModel.isShared, viewModel.share.isVaultRepresentation {
                 currentVault
-                    .padding(.top, 22)
+                    .padding(.top, 12)
             }
 
             Spacer()
@@ -70,11 +72,11 @@ private extension ShareElementView {
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1)
             VStack(alignment: .leading) {
-                Text("Share with")
+                Text("With other Proton Pass users")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("Share this item with other Proton users.")
+                Text("Useful for permanent sharing.")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -111,7 +113,7 @@ private extension ShareElementView {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("Generate a secure link to this item")
+                Text("For one-off sharing.")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -148,11 +150,11 @@ private extension ShareElementView {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("The item's vault is currently shared with \(viewModel.share.members) users")
+                Text("See members and permission overview")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .lineLimit(2)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }

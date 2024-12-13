@@ -493,8 +493,8 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .sharingFlow(dismissal):
                     presentSharingFlow(dismissal: dismissal)
-                case let .manageSharedShare(share, item, dismissal):
-                    presentManageSharedShare(with: share, item: item, dismissal: dismissal)
+                case let .manageSharedShare(display, dismissal):
+                    presentManageSharedShare(with: display, dismissal: dismissal)
                 case let .acceptRejectInvite(invite):
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
@@ -683,9 +683,9 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentManageSharedShare(with share: Share, item: ItemContent?, dismissal: SheetDismissal) {
-        let manageShareShareView = ManageSharedShareView(viewModel: ManageSharedShareViewModel(share: share,
-                                                                                               item: item))
+    func presentManageSharedShare(with displayType: ManageSharedDisplay, dismissal: SheetDismissal) {
+        let manageShareShareView =
+            ManageSharedShareView(viewModel: ManageSharedShareViewModel(display: displayType))
 
         let completion: () -> Void = { [weak self] in
             guard let self else {

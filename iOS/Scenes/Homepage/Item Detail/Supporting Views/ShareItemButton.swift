@@ -24,47 +24,47 @@ import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct ShareItemButton: View {
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    let share: Share
-    let itemContent: ItemContent
-
-    var body: some View {
-        Button { router.present(for: .manageSharedShare(share, itemContent, .none)) } label: {
-            HStack(spacing: 3) {
-                Image(uiImage: IconProvider.usersFilled)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16, height: 16)
-                    .foregroundStyle(itemContent.contentData.type.normMajor2Color
-                        .toColor)
-                    .padding(.leading, 8)
-                Text(verbatim: "\(getShareNumbers)")
-                    .font(.caption.weight(.medium))
-                    .fontWeight(.medium)
-                    .foregroundStyle(itemContent.contentData.type.normMinor1Color
-                        .toColor)
-                    .padding(.horizontal, 7)
-                    .background(itemContent.contentData.type.normMajor2Color.toColor)
-                    .clipShape(Circle())
-                    .padding(.trailing, 4)
-            }
-            .padding(.vertical, 4)
-            .frame(minHeight: 30)
-        }
-        .background(itemContent.contentData.type.normMinor1Color.toColor)
-        .clipShape(Capsule())
-    }
-
-    private var getShareNumbers: Int {
-        var members = 0
-        if share.isVaultRepresentation, share.shared {
-            members = share.members
-        }
-        if itemContent.item.shareCount > members {
-            members += itemContent.item.shareCount
-        }
-
-        return members
-    }
-}
+// struct ShareItemButton: View {
+//    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+//    let share: Share
+//    let itemContent: ItemContent
+//
+//    var body: some View {
+//        Button { router.present(for: .manageSharedShare(share, itemContent, .none)) } label: {
+//            HStack(spacing: 3) {
+//                Image(uiImage: IconProvider.usersFilled)
+//                    .resizable()
+//                    .scaledToFit()
+//                    .frame(width: 16, height: 16)
+//                    .foregroundStyle(itemContent.contentData.type.normMajor2Color
+//                        .toColor)
+//                    .padding(.leading, 8)
+//                Text(verbatim: "\(getShareNumbers)")
+//                    .font(.caption.weight(.medium))
+//                    .fontWeight(.medium)
+//                    .foregroundStyle(itemContent.contentData.type.normMinor1Color
+//                        .toColor)
+//                    .padding(.horizontal, 7)
+//                    .background(itemContent.contentData.type.normMajor2Color.toColor)
+//                    .clipShape(Circle())
+//                    .padding(.trailing, 4)
+//            }
+//            .padding(.vertical, 4)
+//            .frame(minHeight: 30)
+//        }
+//        .background(itemContent.contentData.type.normMinor1Color.toColor)
+//        .clipShape(Capsule())
+//    }
+//
+//    private var getShareNumbers: Int {
+//        var members = 0
+//        if share.isVaultRepresentation, share.shared {
+//            members = share.members
+//        }
+//        if itemContent.item.shareCount > members {
+//            members += itemContent.item.shareCount
+//        }
+//
+//        return members
+//    }
+// }
