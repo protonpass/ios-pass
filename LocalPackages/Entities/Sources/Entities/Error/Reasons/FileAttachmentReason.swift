@@ -30,6 +30,8 @@ public extension PassError {
         case failedToEncryptFile
         case failedToUploadMissingRemoteId
         case failedToUploadMissingEncryptedData
+        case failedToAttachMissingRemoteId
+        case failedToAttachMissingEncryptedFileKey
         case failedToUpload(Int)
         case fileTooLarge(UInt64)
 
@@ -49,6 +51,10 @@ public extension PassError {
                 "Failed to upload because of missing remote ID"
             case .failedToUploadMissingEncryptedData:
                 "Failed to upload because of missing encrypted data"
+            case .failedToAttachMissingRemoteId:
+                "Failed to attach file to an item because of missing remote ID"
+            case .failedToAttachMissingEncryptedFileKey:
+                "Failed to attach file to an item because of missing encrypted file key"
             case let .failedToUpload(code):
                 "Failed to upload (\(code))"
             case let .fileTooLarge(size):

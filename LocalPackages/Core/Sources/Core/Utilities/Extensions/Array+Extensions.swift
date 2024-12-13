@@ -78,6 +78,12 @@ public extension Array {
         }
         return result
     }
+
+    mutating func popAndRemoveFirstElements(_ count: Int) -> [Element] {
+        let elements = prefix(count)
+        removeFirst(count)
+        return Array(elements)
+    }
 }
 
 public extension Array where Element: Equatable {
