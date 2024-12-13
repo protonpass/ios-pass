@@ -39,7 +39,7 @@ struct CreateEditNoteView: View {
         NavigationStack {
             CreateEditNoteContentView(title: $viewModel.title,
                                       content: $viewModel.note,
-                                      files: viewModel.files,
+                                      files: viewModel.fileUiModels,
                                       handler: viewModel,
                                       scanResponsePublisher: viewModel.scanResponsePublisher)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -56,7 +56,7 @@ struct CreateEditNoteView: View {
 private struct CreateEditNoteContentView: UIViewRepresentable {
     @Binding var title: String
     @Binding var content: String
-    let files: [FileAttachment]
+    let files: [FileAttachmentUiModel]
     let handler: any FileAttachmentsEditHandler
     weak var scanResponsePublisher: ScanResponsePublisher?
 
@@ -278,7 +278,7 @@ private extension CreateEditNoteContentUIView {
         contentPlaceholderLabel.alpha = contentTextView.text.isEmpty ? 1 : 0
     }
 
-    func update(files: [FileAttachment]) {
+    func update(files: [FileAttachmentUiModel]) {
         for view in filesStackView.arrangedSubviews {
             filesStackView.removeArrangedSubview(view)
             view.removeFromSuperview()
@@ -287,7 +287,7 @@ private extension CreateEditNoteContentUIView {
         for file in files {
             if let handler {
                 let row = FileAttachmentRow(mode: .edit,
-                                            file: file,
+                                            uiModel: file,
                                             handler: handler)
                 let viewController = UIHostingController(rootView: row)
                 viewController.view.backgroundColor = .clear

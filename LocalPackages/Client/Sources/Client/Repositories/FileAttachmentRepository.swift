@@ -156,13 +156,37 @@ public extension FileAttachmentRepository {
     func getActiveItemFiles(userId: String, item: any ItemIdentifiable) async throws -> [ItemFile] {
         var lastId: String?
         var files = [ItemFile]()
+        let itemKeys = try await keyManager.getItemKeys(userId: userId,
+                                                        shareId: item.shareId,
+                                                        itemId: item.itemId)
         while true {
             let response = try await remoteFileDatasource.getActiveFiles(userId: userId,
                                                                          item: item,
                                                                          lastId: lastId)
+            for var file in response.files {
+                guard let itemKey = itemKeys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+                    throw PassError.crypto(.missingItemKeyRotation(file.itemKeyRotation))
+                }
+
+                guard let encryptedFileKey = try file.fileKey.base64Decode(),
+                      let encryptedMetadata = try file.metadata.base64Decode() else {
+                    throw PassError.crypto(.failedToBase64Decode)
+                }
+
+                let decryptedFileKey = try AES.GCM.open(encryptedFileKey,
+                                                        key: itemKey.keyData,
+                                                        associatedData: .fileKey)
+
+                let decryptedMetadata = try AES.GCM.open(encryptedMetadata,
+                                                         key: decryptedFileKey,
+                                                         associatedData: .fileData)
+                let metadata = try FileMetadata(serializedBytes: decryptedMetadata)
+                file.name = metadata.name
+                file.mimeType = metadata.mimeType
+                files.append(file)
+            }
             lastId = response.lastID
-            files.append(contentsOf: response.files)
-            if lastId == nil || files.count == response.total {
+            if lastId == nil || files.count >= response.total {
                 return files
             }
         }

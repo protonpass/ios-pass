@@ -33,6 +33,10 @@ public struct ItemFile: Decodable, Sendable, Equatable {
     public let createTime: Int
     public let modifyTime: Int
 
+    // To be filled up once metadata is decrypted
+    public var name: String?
+    public var mimeType: String?
+
     public init(fileID: String,
                 size: Int,
                 metadata: String,
