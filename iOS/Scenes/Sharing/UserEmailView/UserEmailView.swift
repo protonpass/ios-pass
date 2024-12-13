@@ -214,7 +214,8 @@ private extension UserEmailView {
                      },
                      title: vault.name,
                      itemCount: 1,
-                     isShared: false,
+//                     isShared: false,
+//                     shareMembers: 0,
                      isSelected: false,
                      maxWidth: nil,
                      height: 74)

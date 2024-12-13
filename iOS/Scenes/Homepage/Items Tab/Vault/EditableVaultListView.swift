@@ -24,6 +24,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct EditableVaultListView: View {
@@ -101,10 +102,19 @@ struct EditableVaultListView: View {
                          },
                          title: selection.title,
                          itemCount: itemCount,
-                         isShared: selection.shared,
+                         share: selection.share,
+//                         isShared: selection.shared,
+//                         shareMembers: selection.members,
                          isSelected: viewModel.isSelected(selection),
                          showBadge: selection.showBadge,
-                         height: 74)
+                         height: 74,
+                         shareAction: { vault in
+                             if viewModel.canShare(vault: vault) {
+                                 viewModel.share(vault: vault)
+                             } else {
+                                 viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
+                             }
+                         })
             })
             .buttonStyle(.plain)
 
@@ -160,7 +170,7 @@ struct EditableVaultListView: View {
 
             if vault.shared {
                 Button(action: {
-                    viewModel.router.present(for: .manageSharedShare(vault, nil, .none))
+                    viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
                 }, label: {
                     Label(title: {
                         Text(vault.isAdmin ? "Manage access" : "View members")
@@ -253,7 +263,7 @@ extension VaultSelection {
     var title: String {
         switch self {
         case .all:
-            #localized("All vaults")
+            #localized("All items")
         case let .precise(vault):
             vault.vaultName ?? ""
         case .trash:
@@ -280,6 +290,15 @@ extension VaultSelection {
             vault.mainColor ?? PassColor.textWeak
         case .trash:
             PassColor.textWeak
+        }
+    }
+
+    var share: Share? {
+        switch self {
+        case let .precise(vault):
+            vault
+        default:
+            nil
         }
     }
 }

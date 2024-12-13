@@ -59,6 +59,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published var itemToBeDeleted: (any ItemTypeIdentifiable)?
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
+    // TODO: maybe put ShareContent data
     let vault: VaultListUiModel?
     let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
@@ -73,6 +74,9 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
+    @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
+    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
 
     var isAllowedToEdit: Bool {
         guard let vault else {
@@ -83,6 +87,22 @@ class BaseItemDetailViewModel: ObservableObject {
 
     var aliasSyncEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
+    var canShareItem: Bool {
+        vault?.vault.shareRole != .read
+    }
+
+    var numberOfSharedMembers: Int {
+        var members = 0
+        if let vault = vault?.vault, vault.isVaultRepresentation, vault.shared {
+            members = vault.members
+        }
+        if itemContent.item.shareCount > members {
+            members += itemContent.item.shareCount
+        }
+
+        return members
     }
 
     weak var delegate: (any ItemDetailViewModelDelegate)?
@@ -130,7 +150,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func share() {
-        guard let vault else { return }
+        guard let vault, vault.vault.shareRole != .read else { return }
         router.present(for: .shareVaultFromItemDetail(vault, itemContent))
     }
 
@@ -258,6 +278,26 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func canModify() -> Bool {
         true
+    }
+
+    func leaveShare() {
+        guard let share = vault?.vault else {
+            return
+        }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                try await leaveShareUsecase(userId: userId, with: share.shareId)
+                syncEventLoop.forceSync()
+                router.action(.screenDismissal(.all))
+            } catch {
+                logger.error(error)
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }
 

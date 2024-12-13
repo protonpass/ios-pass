@@ -46,6 +46,7 @@ struct ItemDetailToolbar: ToolbarContent {
             switch viewModel.itemContent.item.itemState {
             case .active:
                 HStack(spacing: 0) {
+                    Spacer()
                     if viewModel.canModify() {
                         CapsuleLabelButton(icon: IconProvider.pencil,
                                            title: #localized("Edit"),
@@ -55,11 +56,42 @@ struct ItemDetailToolbar: ToolbarContent {
                                            action: { viewModel.edit() })
                     }
 
-                    CircleButton(icon: IconProvider.usersPlus,
-                                 iconColor: itemContentType.normMajor2Color,
-                                 backgroundColor: itemContentType.normMinor1Color,
-                                 accessibilityLabel: "Share",
-                                 action: { viewModel.share() })
+                    Button {
+                        viewModel.share()
+                    } label: {
+                        ZStack(alignment: .topTrailing) {
+                            HStack(spacing: 4) {
+                                Image(uiImage: IconProvider.usersPlus)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .foregroundStyle(itemContentType.normMajor2Color.toColor)
+                                    .frame(maxHeight: 20)
+                                if viewModel.canShareItem, viewModel.numberOfSharedMembers > 0 {
+                                    Text(verbatim: "\(viewModel.numberOfSharedMembers)")
+                                        .font(.caption)
+                                        .fontWeight(.medium)
+                                        .foregroundStyle(itemContentType.normMinor1Color.toColor)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 2)
+                                        .background(itemContentType.normMajor2Color.toColor)
+                                        .cornerRadius(20)
+                                }
+                            }
+                            .padding(10)
+                            .background(itemContentType.normMinor1Color.toColor)
+                            .cornerRadius(20)
+
+                            //TODO:
+                            if viewModel.canShareItem {
+                                Circle()
+                                    .fill(PassColor.signalInfo.toColor)
+                                    .frame(width: 12, height: 12)
+                            }
+                        }
+                    }
+                    .buttonStyle(.plain)
+                    .disabled(!viewModel.canShareItem)
+                    .padding(.leading, 5)
 
                     Menu(content: {
                         if let vault = viewModel.vault?.vault, vault.isVaultRepresentation {
@@ -94,6 +126,14 @@ struct ItemDetailToolbar: ToolbarContent {
                         }
 
                         Divider()
+
+                        if let vault = viewModel.vault?.vault, !vault.isVaultRepresentation {
+                            Label("Leave", image: IconProvider.arrowOutFromRectangle)
+                                .buttonEmbeded {
+                                    viewModel.leaveShare()
+                                }
+                        }
+
                         Label("Move to Trash", image: IconProvider.trash)
                             .buttonEmbeded(action: {
                                 if viewModel.aliasSyncEnabled, viewModel.itemContent.isAlias {
