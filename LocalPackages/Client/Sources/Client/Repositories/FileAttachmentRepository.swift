@@ -46,6 +46,7 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
                          pendingFilesToAdd: [PendingFileAttachment],
                          existingFileIdsToRemove: [String],
                          item: any ItemIdentifiable) async throws
+    func getActiveItemFiles(userId: String, item: any ItemIdentifiable) async throws -> [ItemFile]
 }
 
 public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
@@ -143,12 +144,27 @@ public extension FileAttachmentRepository {
             let toRemove = existingFileIdsToRemove.popAndRemoveFirstElements(threshold)
 
             if toAdd.isEmpty, toRemove.isEmpty {
-                break
+                return
             }
             try await remoteFileDatasource.linkFilesToItem(userId: userId,
                                                            item: item,
                                                            filesToAdd: toAdd,
                                                            fileIdsToRemove: toRemove)
+        }
+    }
+
+    func getActiveItemFiles(userId: String, item: any ItemIdentifiable) async throws -> [ItemFile] {
+        var lastId: String?
+        var files = [ItemFile]()
+        while true {
+            let response = try await remoteFileDatasource.getActiveFiles(userId: userId,
+                                                                         item: item,
+                                                                         lastId: lastId)
+            lastId = response.lastID
+            files.append(contentsOf: response.files)
+            if lastId == nil {
+                return files
+            }
         }
     }
 }
