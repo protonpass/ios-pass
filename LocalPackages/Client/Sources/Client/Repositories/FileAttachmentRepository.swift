@@ -128,7 +128,7 @@ public extension FileAttachmentRepository {
             guard let encryptedFileKeyData = encryptedFileKey.combined else {
                 throw PassError.fileAttachment(.failedToAttachMissingEncryptedFileKey)
             }
-            filesToAdd.append(.init(fileID: remoteId,
+            filesToAdd.append(.init(fileId: remoteId,
                                     fileKey: encryptedFileKeyData.base64EncodedString()))
         }
 
@@ -162,7 +162,7 @@ public extension FileAttachmentRepository {
                                                                          lastId: lastId)
             lastId = response.lastID
             files.append(contentsOf: response.files)
-            if lastId == nil {
+            if lastId == nil || files.count == response.total {
                 return files
             }
         }

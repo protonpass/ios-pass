@@ -1,5 +1,6 @@
 //
 // GetActiveItemFilesEndpoint.swift
+// Friday the 13th
 // Proton Pass - Created on 13/12/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,9 +23,13 @@ import Entities
 import ProtonCoreNetworking
 
 public struct GetActiveItemFilesResponse: Decodable, Sendable {
-    let files: [ItemFile]
-    let total: Int
-    let lastID: String?
+    public let files: ActiveItemFiles
+}
+
+public struct ActiveItemFiles: Decodable, Sendable {
+    public let files: [ItemFile]
+    public let total: Int
+    public let lastID: String?
 }
 
 struct GetActiveItemFilesEndpoint: Endpoint, @unchecked Sendable {

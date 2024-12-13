@@ -149,6 +149,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.encryptFile) private var encryptFile
     @LazyInjected(\SharedUseCasesContainer.decryptFile) private var decryptFile
+    @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -357,26 +358,42 @@ private extension BaseCreateEditItemViewModel {
 
     /// Return `true` if item is edited, `false` otherwise
     func editItem(oldItemContent: ItemContent) async throws -> Bool {
-        let additionallyEdited = try await additionalEdit()
+        var edited = try await additionalEdit()
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
         guard let oldItem = try await itemRepository.getItem(shareId: shareId,
                                                              itemId: itemId) else {
             throw PassError.itemNotFound(oldItemContent)
         }
+
+        edited = try await linkFiles(to: oldItem)
+
         guard let newItemContent = await generateItemContent() else {
             logger.warning("No new item content")
-            return additionallyEdited
+            return edited
         }
         guard !oldItemContent.protobuf.isLooselyEqual(to: newItemContent) else {
             logger.trace("Skipped editing because no changes \(oldItemContent.debugDescription)")
-            return additionallyEdited
+            return edited
         }
         try await itemRepository.updateItem(userId: oldItem.userId,
                                             oldItem: oldItem.item,
                                             newItemContent: newItemContent,
                                             shareId: oldItem.shareId)
         return true
+    }
+
+    func linkFiles(to item: any ItemIdentifiable) async throws -> Bool {
+        guard case let .fetched(attachedFiles) = attachedFiles else {
+            return false
+        }
+        let userId = try await userManager.getActiveUserId()
+        let filesToLink = getFilesToLink(attachedFiles: attachedFiles, updatedFiles: files)
+        try await fileRepository.linkFilesToItem(userId: userId,
+                                                 pendingFilesToAdd: filesToLink.toAdd,
+                                                 existingFileIdsToRemove: filesToLink.toRemove,
+                                                 item: item)
+        return !filesToLink.isEmpty
     }
 
     func handle(_ error: any Error) {
