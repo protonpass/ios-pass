@@ -60,15 +60,10 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
-    private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     var reachedLimit: Bool {
         numberOfInvitesLeft <= 0
-    }
-
-    var isViewOnly: Bool {
-        !share.isAdmin
     }
 
     var numberOfInvitesLeft: Int {

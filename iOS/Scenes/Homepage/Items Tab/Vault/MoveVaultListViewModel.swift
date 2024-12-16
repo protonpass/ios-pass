@@ -34,7 +34,6 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let moveItemsBetweenVaults = resolve(\UseCasesContainer.moveItemsBetweenVaults)
-//    private let getVaultContentForVault = resolve(\UseCasesContainer.getVaultContentForVault)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
@@ -58,7 +57,7 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
 
         if let fromShareId {
             selectedVault = appContentManager
-                .getShareContent(for: fromShareId) // getVaultContentForVault(for: fromShareId)
+                .getShareContent(for: fromShareId)
         }
 
         Task { [weak self] in
