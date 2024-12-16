@@ -30,11 +30,18 @@ public struct FileAttachmentRow: View {
     @State private var showFilePreview = false
 
     private let mode: Mode
+    private let itemContentType: ItemContentType
     private let uiModel: FileAttachmentUiModel
-    private let handler: any FileAttachmentsEditHandler
+    private let primaryTintColor: UIColor
+    private let secondaryTintColor: UIColor
 
     public enum Mode: Sendable {
-        case view, edit
+        case view(onOpen: @MainActor () -> Void,
+                  onSave: @MainActor () -> Void,
+                  onShare: @MainActor () -> Void)
+        case edit(onRename: @MainActor (String) -> Void,
+                  onDelete: @MainActor () -> Void,
+                  onRetryUpload: @MainActor () -> Void)
     }
 
     enum Style: Sendable {
@@ -58,16 +65,20 @@ public struct FileAttachmentRow: View {
     }
 
     public init(mode: Mode,
+                itemContentType: ItemContentType,
                 uiModel: FileAttachmentUiModel,
-                handler: any FileAttachmentsEditHandler) {
+                primaryTintColor: UIColor,
+                secondaryTintColor: UIColor) {
         self.mode = mode
+        self.itemContentType = itemContentType
         _name = .init(initialValue: uiModel.name)
         self.uiModel = uiModel
-        self.handler = handler
+        self.primaryTintColor = primaryTintColor
+        self.secondaryTintColor = secondaryTintColor
     }
 
     public var body: some View {
-        let style = handler.itemContentType.style(for: mode)
+        let style = itemContentType.style(for: mode)
         HStack {
             Image(uiImage: uiModel.state.isError ?
                 IconProvider.exclamationCircleFilled : uiModel.group.icon)
@@ -92,23 +103,39 @@ public struct FileAttachmentRow: View {
             switch uiModel.state {
             case .uploading:
                 ProgressView()
+
             case .uploaded:
                 Menu(content: {
-                    LabelButton(title: "Rename",
-                                icon: PassIcon.rename,
-                                action: { showRenameAlert.toggle() })
-                    Divider()
-                    LabelButton(title: "Delete",
-                                icon: IconProvider.trash,
-                                action: { handler.delete(attachment: uiModel) })
+                    switch mode {
+                    case let .edit(_, onDelete, _):
+                        LabelButton(title: "Rename",
+                                    icon: PassIcon.rename,
+                                    action: { showRenameAlert.toggle() })
+                        Divider()
+                        LabelButton(title: "Delete",
+                                    icon: IconProvider.trash,
+                                    action: onDelete)
+
+                    case let .view(onOpen, onSave, onShare):
+                        LabelButton(title: "Open",
+                                    icon: IconProvider.eye,
+                                    action: onOpen)
+                        LabelButton(title: "Save",
+                                    icon: IconProvider.arrowDownCircle,
+                                    action: onSave)
+
+                        LabelButton(title: "Share",
+                                    icon: IconProvider.arrowUpFromSquare,
+                                    action: onShare)
+                    }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.textWeak,
                                  backgroundColor: .clear)
                 })
+
             case .error:
-                RetryButton(tintColor: handler.fileAttachmentsSectionPrimaryColor,
-                            onRetry: { handler.retryUpload(attachment: uiModel) })
+                RetryButton(tintColor: primaryTintColor, onRetry: retryUpload)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -124,19 +151,44 @@ public struct FileAttachmentRow: View {
                isPresented: $showRenameAlert,
                actions: {
                    TextField(text: $name, label: { EmptyView() })
-                   Button("Rename", action: { handler.rename(attachment: uiModel, newName: name) })
+                   Button("Rename", action: { rename(name) })
                        .disabled(name.isEmpty)
                    Button("Cancel", role: .cancel, action: { name = uiModel.name })
                })
         .fullScreenCover(isPresented: $showFilePreview) {
             if let url = uiModel.url {
                 FileAttachmentPreview(url: url,
-                                      primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                      secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor,
-                                      onRename: { handler.rename(attachment: uiModel,
-                                                                 newName: $0) },
-                                      onDelete: { handler.delete(attachment: uiModel) })
+                                      primaryTintColor: primaryTintColor,
+                                      secondaryTintColor: secondaryTintColor,
+                                      onRename: { rename($0) },
+                                      onDelete: delete)
             }
+        }
+    }
+}
+
+private extension FileAttachmentRow {
+    func rename(_ newName: String) {
+        if case let .edit(onRename, _, _) = mode {
+            onRename(name)
+        } else {
+            assertionFailure("Should be in edit mode in order to rename file")
+        }
+    }
+
+    func delete() {
+        if case let .edit(_, onDelete, _) = mode {
+            onDelete()
+        } else {
+            assertionFailure("Should be in edit mode in order to delete file")
+        }
+    }
+
+    func retryUpload() {
+        if case let .edit(_, _, onRetryUpload) = mode {
+            onRetryUpload()
+        } else {
+            assertionFailure("Should be in edit mode in order to retry upload file")
         }
     }
 }

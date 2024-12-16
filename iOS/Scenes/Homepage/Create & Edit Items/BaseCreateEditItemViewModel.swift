@@ -661,11 +661,11 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func delete(attachment: FileAttachmentUiModel) {
-        print(attachment)
+        files.removeAll(where: { $0.id == attachment.id })
     }
 
     func deleteAllAttachments() {
-        print(#function)
+        files.removeAll()
     }
 }
 

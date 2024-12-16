@@ -286,9 +286,14 @@ private extension CreateEditNoteContentUIView {
 
         for file in files {
             if let handler {
-                let row = FileAttachmentRow(mode: .edit,
-                                            uiModel: file,
-                                            handler: handler)
+                let row =
+                    FileAttachmentRow(mode: .edit(onRename: { handler.rename(attachment: file, newName: $0) },
+                                                  onDelete: { handler.delete(attachment: file) },
+                                                  onRetryUpload: { handler.retryUpload(attachment: file) }),
+                                      itemContentType: handler.itemContentType,
+                                      uiModel: file,
+                                      primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
+                                      secondaryTintColor: handler.fileAttachmentsSectionPrimaryColor)
                 let viewController = UIHostingController(rootView: row)
                 viewController.view.backgroundColor = .clear
                 viewController.view.translatesAutoresizingMaskIntoConstraints = false
