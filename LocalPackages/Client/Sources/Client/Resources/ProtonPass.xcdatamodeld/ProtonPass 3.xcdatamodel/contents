@@ -100,6 +100,15 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="NotificationTimeEntity" representedClassName="NotificationTimeEntity" syncable="YES">
+        <attribute name="time" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="userID" attributeType="String" defaultValueString=""/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="userID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
     <entity name="OrganizationEntity" representedClassName="OrganizationEntity" syncable="YES">
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>

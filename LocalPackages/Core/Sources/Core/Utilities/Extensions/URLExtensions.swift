@@ -48,4 +48,15 @@ public extension URL {
 
         return fileContainer.appendingPathComponent("\(databaseName).sqlite")
     }
+
+    func copyFileToTempDirectory() throws -> URL {
+        let copy = URL.temporaryDirectory.appending(path: lastPathComponent)
+
+        if FileManager.default.fileExists(atPath: copy.relativePath) {
+            try FileManager.default.removeItem(at: copy)
+        }
+
+        try FileManager.default.copyItem(at: self, to: copy)
+        return copy
+    }
 }

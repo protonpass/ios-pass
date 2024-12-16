@@ -145,7 +145,8 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
                 }
 
                 if item.loginData.totpUri.isEmpty,
-                   item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }) {
+                   item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }),
+                   item.loginData.passkeys.isEmpty {
                     weaknesses.append(.missing2FA)
                     numberOfMissing2fa += 1
                 }

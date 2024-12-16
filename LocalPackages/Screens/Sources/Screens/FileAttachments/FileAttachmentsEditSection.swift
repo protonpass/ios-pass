@@ -23,23 +23,30 @@ import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
+import UseCases
 
 @MainActor
 public protocol FileAttachmentsEditHandler {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
 
-    func handle(method: FileAttachmentMethod)
+    func generateDatedFileName(prefix: String, extension: String) -> String
+    func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL
+
+    func handleAttachment(_ url: URL)
+    func handleAttachmentError(_ error: any Error)
     func rename(attachment: FileAttachment, newName: String)
+    func retryUpload(attachment: FileAttachment)
     func delete(attachment: FileAttachment)
     func deleteAllAttachments()
 }
 
 public struct FileAttachmentsEditSection: View {
     @State private var showDeleteAllAlert = false
-    let files: [FileAttachment]
-    let isUploading: Bool
-    let handler: any FileAttachmentsEditHandler
+
+    private let files: [FileAttachment]
+    private let isUploading: Bool
+    private let handler: any FileAttachmentsEditHandler
 
     public init(files: [FileAttachment],
                 isUploading: Bool,
@@ -82,19 +89,15 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                FileAttachmentRow(file: file,
-                                  onRename: { handler.rename(attachment: file, newName: $0) },
-                                  onDelete: { handler.delete(attachment: file) })
+                FileAttachmentRow(file: file, handler: handler)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
+                    .disabled(isUploading)
                 if file != files.last {
                     PassDivider()
                 }
             }
 
-            FileAttachmentsButton(style: .capsule,
-                                  iconColor: handler.fileAttachmentsSectionPrimaryColor,
-                                  backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
-                                  onSelect: { handler.handle(method: $0) })
+            FileAttachmentsButton(style: .capsule, handler: handler)
                 .opacityReduced(isUploading)
         }
         .animation(.default, value: files)
@@ -112,65 +115,6 @@ public struct FileAttachmentsEditSection: View {
                },
                message: {
                    Text("This action cannot be undone")
-               })
-    }
-}
-
-private struct FileAttachmentRow: View {
-    @State private var name: String
-    @State private var icon: UIImage?
-    @State private var showRenameAlert = false
-    let file: FileAttachment
-    let onRename: (String) -> Void
-    let onDelete: () -> Void
-
-    init(file: FileAttachment,
-         onRename: @escaping (String) -> Void,
-         onDelete: @escaping () -> Void) {
-        _name = .init(initialValue: file.metadata.name)
-        self.file = file
-        self.onRename = onRename
-        self.onDelete = onDelete
-    }
-
-    var body: some View {
-        HStack {
-            Image(uiImage: icon ?? IconProvider.fileEmpty)
-                .resizable()
-                .scaledToFit()
-                .frame(maxWidth: 20)
-
-            VStack(alignment: .leading) {
-                Text(file.metadata.name)
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                Text(verbatim: "\(file.metadata.size)")
-                    .foregroundStyle(PassColor.textWeak.toColor)
-            }
-
-            Spacer()
-
-            Menu(content: {
-                LabelButton(title: "Rename",
-                            icon: PassIcon.rename,
-                            action: { showRenameAlert.toggle() })
-                Divider()
-                LabelButton(title: "Delete",
-                            icon: IconProvider.trash,
-                            action: onDelete)
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: PassColor.textWeak,
-                             backgroundColor: .clear)
-            })
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .alert("Rename file",
-               isPresented: $showRenameAlert,
-               actions: {
-                   TextField(text: $name, label: { EmptyView() })
-                   Button("Rename", action: { onRename(name) })
-                       .disabled(name.isEmpty)
-                   Button("Cancel", role: .cancel, action: { name = file.metadata.name })
                })
     }
 }
