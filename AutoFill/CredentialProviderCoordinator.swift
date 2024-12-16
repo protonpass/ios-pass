@@ -32,7 +32,7 @@ import SwiftUI
 typealias UserForNewItemSubject = PassthroughSubject<UserUiModel, Never>
 
 extension ASCredentialProviderExtensionContext: @unchecked @retroactive Sendable {}
-
+// swiftlint:disable file_length
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
@@ -368,6 +368,7 @@ private extension CredentialProviderCoordinator {
         present(alert)
     }
 
+    // swiftlint:disable:next cyclomatic_complexity
     func handle(error: any Error) {
         guard let context else { return }
         let defaultHandler: (any Error) -> Void = { [weak self] error in
@@ -698,3 +699,5 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
         logOut(userId: userId)
     }
 }
+
+// swiftlint:enable file_length
