@@ -258,10 +258,6 @@ class BaseItemDetailViewModel: ObservableObject {
         logger.error(error)
         router.display(element: .displayErrorBanner(error))
     }
-
-    func canModify() -> Bool {
-        true
-    }
 }
 
 // MARK: - Private APIs
