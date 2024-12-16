@@ -24,12 +24,15 @@ import Client
 import Entities
 
 public protocol GetUsersLinkedToShareUseCase: Sendable {
-    func execute(with share: Share, itemId: String?) async throws -> [UserShareInfos]
+    func execute(with share: Share, itemId: String?, lastShareId: String?) async throws
+        -> PaginatedUsersLinkedToShare
 }
 
 public extension GetUsersLinkedToShareUseCase {
-    func callAsFunction(with share: Share, itemId: String? = nil) async throws -> [UserShareInfos] {
-        try await execute(with: share, itemId: itemId)
+    func callAsFunction(with share: Share,
+                        itemId: String? = nil,
+                        lastShareId: String? = nil) async throws -> PaginatedUsersLinkedToShare {
+        try await execute(with: share, itemId: itemId, lastShareId: lastShareId)
     }
 }
 
@@ -40,11 +43,13 @@ public final class GetUsersLinkedToShare: GetUsersLinkedToShareUseCase {
         self.repository = repository
     }
 
-    public func execute(with share: Share, itemId: String?) async throws -> [UserShareInfos] {
+    public func execute(with share: Share,
+                        itemId: String?,
+                        lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
         if let itemId {
-            try await repository.getUsersLinkedToItemShare(to: share.id, itemId: itemId)
+            try await repository.getUsersLinkedToItemShare(to: share.id, itemId: itemId, lastShareId: lastShareId)
         } else {
-            try await repository.getUsersLinkedToVaultShare(to: share.id)
+            try await repository.getUsersLinkedToVaultShare(to: share.id, lastShareId: lastShareId)
         }
     }
 }

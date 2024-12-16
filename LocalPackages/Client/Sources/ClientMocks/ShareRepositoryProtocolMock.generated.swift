@@ -181,40 +181,40 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         closureUpsertShares()
     }
     // MARK: - getUsersLinkedToVaultShare
-    public var getUsersLinkedToVaultShareToThrowableError9: Error?
+    public var getUsersLinkedToVaultShareToLastShareIdThrowableError9: Error?
     public var closureGetUsersLinkedToVaultShare: () -> () = {}
     public var invokedGetUsersLinkedToVaultSharefunction = false
     public var invokedGetUsersLinkedToVaultShareCount = 0
-    public var invokedGetUsersLinkedToVaultShareParameters: (shareId: String, Void)?
-    public var invokedGetUsersLinkedToVaultShareParametersList = [(shareId: String, Void)]()
-    public var stubbedGetUsersLinkedToVaultShareResult: [UserShareInfos]!
+    public var invokedGetUsersLinkedToVaultShareParameters: (shareId: String, lastShareId: String?)?
+    public var invokedGetUsersLinkedToVaultShareParametersList = [(shareId: String, lastShareId: String?)]()
+    public var stubbedGetUsersLinkedToVaultShareResult: PaginatedUsersLinkedToShare!
 
-    public func getUsersLinkedToVaultShare(to shareId: String) async throws -> [UserShareInfos] {
+    public func getUsersLinkedToVaultShare(to shareId: String, lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
         invokedGetUsersLinkedToVaultSharefunction = true
         invokedGetUsersLinkedToVaultShareCount += 1
-        invokedGetUsersLinkedToVaultShareParameters = (shareId, ())
-        invokedGetUsersLinkedToVaultShareParametersList.append((shareId, ()))
-        if let error = getUsersLinkedToVaultShareToThrowableError9 {
+        invokedGetUsersLinkedToVaultShareParameters = (shareId, lastShareId)
+        invokedGetUsersLinkedToVaultShareParametersList.append((shareId, lastShareId))
+        if let error = getUsersLinkedToVaultShareToLastShareIdThrowableError9 {
             throw error
         }
         closureGetUsersLinkedToVaultShare()
         return stubbedGetUsersLinkedToVaultShareResult
     }
     // MARK: - getUsersLinkedToItemShare
-    public var getUsersLinkedToItemShareToItemIdThrowableError10: Error?
+    public var getUsersLinkedToItemShareToItemIdLastShareIdThrowableError10: Error?
     public var closureGetUsersLinkedToItemShare: () -> () = {}
     public var invokedGetUsersLinkedToItemSharefunction = false
     public var invokedGetUsersLinkedToItemShareCount = 0
-    public var invokedGetUsersLinkedToItemShareParameters: (shareId: String, itemId: String)?
-    public var invokedGetUsersLinkedToItemShareParametersList = [(shareId: String, itemId: String)]()
-    public var stubbedGetUsersLinkedToItemShareResult: [UserShareInfos]!
+    public var invokedGetUsersLinkedToItemShareParameters: (shareId: String, itemId: String, lastShareId: String?)?
+    public var invokedGetUsersLinkedToItemShareParametersList = [(shareId: String, itemId: String, lastShareId: String?)]()
+    public var stubbedGetUsersLinkedToItemShareResult: PaginatedUsersLinkedToShare!
 
-    public func getUsersLinkedToItemShare(to shareId: String, itemId: String) async throws -> [UserShareInfos] {
+    public func getUsersLinkedToItemShare(to shareId: String, itemId: String, lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
         invokedGetUsersLinkedToItemSharefunction = true
         invokedGetUsersLinkedToItemShareCount += 1
-        invokedGetUsersLinkedToItemShareParameters = (shareId, itemId)
-        invokedGetUsersLinkedToItemShareParametersList.append((shareId, itemId))
-        if let error = getUsersLinkedToItemShareToItemIdThrowableError10 {
+        invokedGetUsersLinkedToItemShareParameters = (shareId, itemId, lastShareId)
+        invokedGetUsersLinkedToItemShareParametersList.append((shareId, itemId, lastShareId))
+        if let error = getUsersLinkedToItemShareToItemIdLastShareIdThrowableError10 {
             throw error
         }
         closureGetUsersLinkedToItemShare()
