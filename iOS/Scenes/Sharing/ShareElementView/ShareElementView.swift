@@ -66,6 +66,8 @@ struct ShareElementView: View {
 
 private extension ShareElementView {
     var itemSharing: some View {
+        // swiftlint:disable:next todo
+        // TODO: add feature discovery
         HStack {
             SquircleThumbnail(data: .icon(IconProvider.userPlus),
                               tintColor: PassColor.interactionNormMajor2,

@@ -79,8 +79,6 @@ final class SharingSummaryViewModel: ObservableObject, Sendable {
                         router.present(for: .manageSharedShare(.vault(sharedVault), .topMost))
 
                     case .item:
-                        // swiftlint:disable:next todo
-                        // TODO: maybe show the manage share screen
                         router.display(element: .successMessage(#localized("Invitation sent"),
                                                                 config: .init(dismissBeforeShowing: true)))
 
