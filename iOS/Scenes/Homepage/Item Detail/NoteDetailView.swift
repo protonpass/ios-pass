@@ -20,6 +20,7 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct NoteDetailView: View {
@@ -76,6 +77,14 @@ struct NoteDetailView: View {
                         TextView(.constant(viewModel.note))
                             .autoDetectDataTypes(.all)
                             .isEditable(false)
+                    }
+
+                    if viewModel.showFileAttachmentsSection {
+                        FileAttachmentsViewSection(files: viewModel.files.fetchedObject ?? [],
+                                                   isFetching: viewModel.files.isFetching,
+                                                   fetchError: viewModel.files.error,
+                                                   handler: viewModel)
+                            .padding(.top, 8)
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
