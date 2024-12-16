@@ -159,6 +159,14 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         fileAttachmentsEnabled && !dismissedFileAttachmentsBanner
     }
 
+    var isFetchingAttachedFiles: Bool {
+        attachedFiles?.isFetching == true
+    }
+
+    var fetchAttachedFilesError: (any Error)? {
+        attachedFiles?.error
+    }
+
     var fileUiModels: [FileAttachmentUiModel] {
         var uiModels = [FileAttachmentUiModel]()
         for file in files {
@@ -604,6 +612,10 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 
     func handleAttachmentError(_ error: any Error) {
         handle(error)
+    }
+
+    func retryFetchAttachedFiles() {
+        print(#function)
     }
 
     func retryUpload(attachment: FileAttachmentUiModel) {
