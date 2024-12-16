@@ -49,8 +49,10 @@ public protocol ShareRepositoryProtocol: Sendable {
                       shares: [Share],
                       eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
 
-    func getUsersLinkedToVaultShare(to shareId: String) async throws -> [UserShareInfos]
-    func getUsersLinkedToItemShare(to shareId: String, itemId: String) async throws -> [UserShareInfos]
+    func getUsersLinkedToVaultShare(to shareId: String, lastShareId: String?) async throws
+        -> PaginatedUsersLinkedToShare
+    func getUsersLinkedToItemShare(to shareId: String, itemId: String, lastShareId: String?) async throws
+        -> PaginatedUsersLinkedToShare
 
     @discardableResult
     func updateUserPermission(userShareId: String,
@@ -204,22 +206,27 @@ public extension ShareRepository {
         logger.trace("Upserted \(shares.count) shares for user \(userId)")
     }
 
-    func getUsersLinkedToVaultShare(to shareId: String) async throws -> [UserShareInfos] {
+    func getUsersLinkedToVaultShare(to shareId: String,
+                                    lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId)")
-        let users = try await remoteDatasource.getUsersLinkedToVaultShare(userId: userId, shareId: shareId)
-        logger.trace("Got \(users.count) remote user for \(shareId)")
-        return users
+        let paginatedUsers = try await remoteDatasource.getUsersLinkedToVaultShare(userId: userId,
+                                                                                   shareId: shareId,
+                                                                                   lastShareId: lastShareId)
+        logger.trace("Got \(paginatedUsers.shares.count) remote user for \(shareId)")
+        return paginatedUsers
     }
 
-    func getUsersLinkedToItemShare(to shareId: String, itemId: String) async throws -> [UserShareInfos] {
+    func getUsersLinkedToItemShare(to shareId: String, itemId: String,
+                                   lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId), itemId \(itemId)")
-        let users = try await remoteDatasource.getUsersLinkedToItemShare(userId: userId,
-                                                                         shareId: shareId,
-                                                                         itemId: itemId)
-        logger.trace("Got \(users.count) remote user for \(shareId), itemId \(itemId)")
-        return users
+        let paginatedUsers = try await remoteDatasource.getUsersLinkedToItemShare(userId: userId,
+                                                                                  shareId: shareId,
+                                                                                  itemId: itemId,
+                                                                                  lastShareId: lastShareId)
+        logger.trace("Got \(paginatedUsers.shares.count) remote user for \(shareId), itemId \(itemId)")
+        return paginatedUsers
     }
 
     func updateUserPermission(userShareId: String,

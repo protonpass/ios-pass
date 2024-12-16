@@ -259,7 +259,7 @@ private extension ManageSharedShareViewModel {
 
         async let getPendingInvitations = fetchPendingInvitations()
         async let getMembers = if case .vault = displayType {
-            getUsersLinkedToShare(with: share)
+            getUsersLinkedToShare(with: share).shares
         } else {
             fetchUsersLinkedToShare()
         }
@@ -310,7 +310,7 @@ private extension ManageSharedShareViewModel {
         guard let item, item.shared else {
             return []
         }
-        return try await getUsersLinkedToShare(with: share, itemId: item.itemId)
+        return try await getUsersLinkedToShare(with: share, itemId: item.itemId).shares
     }
 
     func fetchPendingInvitations() async throws -> ShareInvites {

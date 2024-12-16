@@ -25,8 +25,10 @@ import Foundation
 public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares(userId: String) async throws -> [Share]
     func getShare(shareId: String, userId: String) async throws -> Share
-    func getUsersLinkedToVaultShare(userId: String, shareId: String, lastShareId: String?) async throws -> PaginatedUsersLinkedToShare
-    func getUsersLinkedToItemShare(userId: String, shareId: String, itemId: String, lastShareId: String?) async throws
+    func getUsersLinkedToVaultShare(userId: String, shareId: String, lastShareId: String?) async throws
+        -> PaginatedUsersLinkedToShare
+    func getUsersLinkedToItemShare(userId: String, shareId: String, itemId: String,
+                                   lastShareId: String?) async throws
         -> PaginatedUsersLinkedToShare
     func updateUserSharePermission(userId: String,
                                    shareId: String,
@@ -61,7 +63,8 @@ public extension RemoteShareDatasource {
         return getSharesResponse.shares
     }
 
-    func getUsersLinkedToVaultShare(userId: String, shareId: String, lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
+    func getUsersLinkedToVaultShare(userId: String, shareId: String,
+                                    lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
         let endpoint = GetUsersLinkedToVaultShareEndpoint(for: shareId, lastShareId: lastShareId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response
