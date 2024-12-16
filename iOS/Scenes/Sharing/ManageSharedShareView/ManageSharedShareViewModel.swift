@@ -93,7 +93,7 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
 
         return reachedLimit
     }
-    
+
     var itemSharingEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }

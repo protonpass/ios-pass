@@ -41,6 +41,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isMonitored = false // Only applicable to login items
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
+    @Published var showingLeaveShareAlert = false
 
     private var superBindValuesCalled = false
 
@@ -87,6 +88,10 @@ class BaseItemDetailViewModel: ObservableObject {
 
     var aliasSyncEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
+    var itemSharingEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }
 
     var canShareItem: Bool {

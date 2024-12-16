@@ -24,6 +24,7 @@ import Factory
 import Foundation
 import Macro
 import ProtonCoreUIFoundations
+import UIKit
 
 @MainActor
 final class ShareElementViewModel: ObservableObject {
@@ -39,8 +40,14 @@ final class ShareElementViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
+    weak var sheetPresentation: UISheetPresentationController?
+
     var sheetHeight: CGFloat {
-        400
+        if !isFreeUser {
+            isShared ? 380 : 300
+        } else {
+            isShared ? 280 : 220
+        }
     }
 
     var itemSharingEnabled: Bool {
@@ -70,16 +77,12 @@ final class ShareElementViewModel: ObservableObject {
         router.present(for: .manageSharedShare(.item(share, itemContent), .topMost))
     }
 
-    private func complete(with element: SharingElementData) {
-        setShareInviteVault(with: element)
-        router.present(for: .sharingFlow(.topMost))
-    }
-
     func checkIfFreeUser() {
         Task { [weak self] in
             guard let self else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
+                updateSheetDisplay()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
@@ -102,6 +105,27 @@ final class ShareElementViewModel: ObservableObject {
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
+        }
+    }
+}
+
+private extension ShareElementViewModel {
+    func complete(with element: SharingElementData) {
+        setShareInviteVault(with: element)
+        router.present(for: .sharingFlow(.topMost))
+    }
+
+    func updateSheetDisplay() {
+        let detent = UISheetPresentationController.Detent.custom { [weak self] _ in
+            guard let self else {
+                return 0
+            }
+            return CGFloat(sheetHeight)
+        }
+
+        sheetPresentation?.animateChanges { [weak self] in
+            guard let self else { return }
+            sheetPresentation?.detents = [detent]
         }
     }
 }
