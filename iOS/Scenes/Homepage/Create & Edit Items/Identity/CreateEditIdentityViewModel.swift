@@ -169,7 +169,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Sendable {
 
     private(set) var selectedCustomSection: CreateEditIdentitySection?
 
-    override func itemContentType() -> ItemContentType { .identity }
+    override var itemContentType: ItemContentType { .identity }
 
     override func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
         sections = sections.map { section in
