@@ -793,6 +793,8 @@ extension HomepageCoordinator {
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
+        viewModel.sheetPresentation = viewController.sheetPresentationController
+
         present(viewController)
     }
 
