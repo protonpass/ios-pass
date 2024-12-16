@@ -39,6 +39,7 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published private(set) var isMonitored = false // Only applicable to login items
+    @Published private(set) var files: FetchableObject<[FileAttachmentUiModel]> = .fetching
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
     @Published var showingLeaveShareAlert = false
@@ -74,14 +75,25 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
     @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
+    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
+    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
 
     var isAllowedToEdit: Bool {
         guard let vault else {
             return false
         }
         return canUserPerformActionOnVault(for: vault.vault)
+    }
+
+    var fileAttachmentsEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
+    }
+
+    var showFileAttachmentsSection: Bool {
+        fileAttachmentsEnabled && (!files.isFetched || files.fetchedObject?.isEmpty == false)
     }
 
     var aliasSyncEnabled: Bool {
@@ -158,6 +170,36 @@ class BaseItemDetailViewModel: ObservableObject {
     func share() {
         guard let vault, vault.vault.shareRole != .read else { return }
         router.present(for: .shareVaultFromItemDetail(vault, itemContent))
+    }
+
+    func fetchAttachments() async {
+        guard fileAttachmentsEnabled else { return }
+        do {
+            files = .fetching
+            let userId = try await userManager.getActiveUserId()
+            let files = try await fileRepository.getActiveItemFiles(userId: userId,
+                                                                    item: itemContent)
+            var uiModels = [FileAttachmentUiModel]()
+            for file in files {
+                let formattedSize = formatFileAttachmentSize(file.size)
+                if let name = file.name,
+                   let mimeType = file.mimeType {
+                    let fileGroup = getFileGroup(mimeType: mimeType)
+                    uiModels.append(.init(id: file.fileID,
+                                          url: nil,
+                                          state: .uploaded,
+                                          name: name,
+                                          group: fileGroup,
+                                          formattedSize: formattedSize))
+                } else {
+                    assertionFailure("Missing file name and MIME type")
+                }
+            }
+            self.files = .fetched(uiModels)
+        } catch {
+            files = .error(error)
+            logger.error(error)
+        }
     }
 
     func refresh() {
@@ -323,5 +365,38 @@ private extension BaseItemDetailViewModel {
             guard #available(iOS 17, *) else { return }
             await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
         }
+    }
+}
+
+extension BaseItemDetailViewModel: FileAttachmentsViewHandler {
+    var fileAttachmentsSectionPrimaryColor: UIColor {
+        itemContent.type.normMajor2Color
+    }
+
+    var fileAttachmentsSectionSecondaryColor: UIColor {
+        itemContent.type.normMinor1Color
+    }
+
+    var itemContentType: ItemContentType {
+        itemContent.type
+    }
+
+    func retryFetchingAttachments() {
+        Task { [weak self] in
+            guard let self else { return }
+            await fetchAttachments()
+        }
+    }
+
+    func open(_ file: FileAttachmentUiModel) {
+        print(#function)
+    }
+
+    func save(_ file: Entities.FileAttachmentUiModel) {
+        print(#function)
+    }
+
+    func share(_ file: Entities.FileAttachmentUiModel) {
+        print(#function)
     }
 }
