@@ -40,7 +40,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var togglingAliasStatus = false
 
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
-//    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var task: Task<Void, Never>?
 
