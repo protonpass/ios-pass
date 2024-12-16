@@ -194,8 +194,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
 
     func bindValues() {}
 
-    // swiftlint:disable:next unavailable_function
-    func itemContentType() -> ItemContentType {
+    var itemContentType: ItemContentType {
         fatalError("Must be overridden by subclasses")
     }
 
@@ -422,7 +421,7 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Editing \(oldItemContent.debugDescription)")
                     let updated = try await editItem(oldItemContent: oldItemContent)
                     logger.info("Edited \(oldItemContent.debugDescription)")
-                    router.present(for: .updateItem(type: itemContentType(), updated: updated))
+                    router.present(for: .updateItem(type: itemContentType, updated: updated))
                 }
 
                 addTelemetryEvent(with: telemetryEventTypes())
@@ -458,11 +457,11 @@ extension BaseCreateEditItemViewModel {
 
 extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     var fileAttachmentsSectionPrimaryColor: UIColor {
-        itemContentType().normMajor2Color
+        itemContentType.normMajor2Color
     }
 
     var fileAttachmentsSectionSecondaryColor: UIColor {
-        itemContentType().normMinor1Color
+        itemContentType.normMinor1Color
     }
 
     func generateDatedFileName(prefix: String, extension: String) -> String {

@@ -142,7 +142,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .store(in: &cancellables)
     }
 
-    override func itemContentType() -> ItemContentType { .alias }
+    override var itemContentType: ItemContentType { .alias }
 
     override func generateItemContent() async -> ItemContentProtobuf {
         ItemContentProtobuf(name: title,
