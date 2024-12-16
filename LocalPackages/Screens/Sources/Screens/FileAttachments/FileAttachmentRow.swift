@@ -116,7 +116,9 @@ public struct FileAttachmentRow: View {
         .padding(style == .borderless ? 0 : DesignConstant.sectionPadding)
         .background(background(for: style))
         .buttonEmbeded {
-            showFilePreview.toggle()
+            if uiModel.url != nil {
+                showFilePreview.toggle()
+            }
         }
         .alert("Rename file",
                isPresented: $showRenameAlert,
