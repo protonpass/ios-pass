@@ -80,13 +80,13 @@ struct ItemDetailToolbar: ToolbarContent {
                             .padding(10)
                             .background(itemContentType.normMinor1Color.toColor)
                             .cornerRadius(20)
-
-                            //TODO:
-                            if viewModel.canShareItem {
-                                Circle()
-                                    .fill(PassColor.signalInfo.toColor)
-                                    .frame(width: 12, height: 12)
-                            }
+                            // swiftlint:disable:next todo
+                            // TODO: Add discovering new feature
+//                            if !viewModel.isFreeUser, viewModel.itemSharingEnabled, viewModel.canShareItem {
+//                                Circle()
+//                                    .fill(PassColor.signalInfo.toColor)
+//                                    .frame(width: 12, height: 12)
+//                            }
                         }
                     }
                     .buttonStyle(.plain)
@@ -119,7 +119,8 @@ struct ItemDetailToolbar: ToolbarContent {
                         if viewModel.itemContent.type == .login {
                             let title: LocalizedStringKey = viewModel.isMonitored ?
                                 "Exclude from monitoring" : "Include for monitoring"
-                            let icon: UIImage = viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider.eye
+                            let icon: UIImage = viewModel.isMonitored ? IconProvider.eyeSlash : IconProvider
+                                .eye
 
                             Label(title, uiImage: icon)
                                 .buttonEmbeded { viewModel.toggleMonitoring() }
@@ -130,7 +131,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         if let vault = viewModel.vault?.vault, !vault.isVaultRepresentation {
                             Label("Leave", image: IconProvider.arrowOutFromRectangle)
                                 .buttonEmbeded {
-                                    viewModel.leaveShare()
+                                    viewModel.showingLeaveShareAlert.toggle()
                                 }
                         }
 
