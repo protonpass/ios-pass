@@ -224,6 +224,10 @@ extension SharedRepositoryContainer {
     var remoteInAppNotificationDatasource: Factory<any RemoteInAppNotificationDatasourceProtocol> {
         self { RemoteInAppNotificationDatasource(apiServicing: self.apiManager) }
     }
+
+    var localNotificationTimeDatasource: Factory<any LocalNotificationTimeDatasourceProtocol> {
+        self { LocalNotificationTimeDatasource(databaseService: self.databaseService) }
+    }
 }
 
 // MARK: Repositories

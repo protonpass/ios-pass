@@ -24,15 +24,21 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct InAppBannerView: View {
-    let notification: InAppNotification
-    let borderColor: UIColor = PassColor.inputBorderNorm
-    let onTap: (InAppNotification) -> Void
-    let onClose: (InAppNotification) -> Void
+    private let notification: InAppNotification
+    private let borderColor: UIColor = PassColor.inputBorderNorm
+    private let onAppear: () -> Void
+    private let onDisappear: () -> Void
+    private let onTap: (InAppNotification) -> Void
+    private let onClose: (InAppNotification) -> Void
 
     public init(notification: InAppNotification,
+                onAppear: @escaping () -> Void,
+                onDisappear: @escaping () -> Void,
                 onTap: @escaping (InAppNotification) -> Void,
                 onClose: @escaping (InAppNotification) -> Void) {
         self.notification = notification
+        self.onAppear = onAppear
+        self.onDisappear = onDisappear
         self.onTap = onTap
         self.onClose = onClose
     }
@@ -99,5 +105,7 @@ public struct InAppBannerView: View {
         }
         .frame(maxWidth: .infinity)
         .background(Color.clear)
+        .onAppear(perform: onAppear)
+        .onDisappear(perform: onDisappear)
     }
 }

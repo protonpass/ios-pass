@@ -55,6 +55,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case extraPassword(ExtraPasswordFailureReason)
     case payments(PaymentFailureReason)
     case api(APIFailureReason)
+    case fileAttachment(FileAttachmentReason)
 
     public var debugDescription: String {
         switch self {
@@ -121,6 +122,8 @@ public enum PassError: Error, CustomDebugStringConvertible {
         case let .payments(reason):
             reason.debugDescription
         case let .api(reason):
+            reason.debugDescription
+        case let .fileAttachment(reason):
             reason.debugDescription
         }
     }

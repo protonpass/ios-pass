@@ -1,0 +1,30 @@
+<svg width="48" height="50" viewBox="0 0 48 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path
+        d="M3.39001 7.82499C3.39001 4.03079 6.46582 0.954987 10.26 0.954987H27.9481C29.7183 0.954987 31.4202 1.63832 32.6989 2.8625L42.4909 12.2368C43.8445 13.5327 44.61 15.3254 44.61 17.1993V42.175C44.61 45.9692 41.5342 49.045 37.74 49.045H10.26C6.46582 49.045 3.39001 45.9692 3.39001 42.175V7.82499Z"
+        fill="#DADBE0" />
+    <path
+        d="M44.4742 15.84H35.45C32.2881 15.84 29.725 13.2768 29.725 10.115V1.18875C30.8322 1.48525 31.8572 2.05671 32.6989 2.86249L42.4908 12.2368C43.5121 13.2146 44.1987 14.4751 44.4742 15.84Z"
+        fill="#EBECF0" />
+    <path
+        d="M44.6099 17.5575H35.4499C31.3396 17.5575 28.0074 14.2254 28.0074 10.115V0.955231C28.5921 0.960284 29.1689 1.03984 29.7249 1.18874V10.115C29.7249 13.2768 32.2881 15.84 35.4499 15.84H44.4742C44.5638 16.2841 44.6099 16.7393 44.6099 17.1993V17.5575Z"
+        fill="#BABBC5" />
+    <circle cx="34" cy="25" r="2" fill="#3A3F4A" />
+    <circle cx="14" cy="25" r="2" fill="#3A3F4A" />
+    <path d="M32 34C32 29.0294 28.4183 25 24 25C19.5817 25 16 29.0294 16 34" stroke="#3A3F4A" />
+    <line x1="15" y1="25" x2="33" y2="25" stroke="#3A3F4A" />
+    <mask id="path-8-inside-1_9387_57501" fill="white">
+        <rect x="29" y="32" width="6" height="6" rx="1" />
+    </mask>
+    <rect x="29" y="32" width="6" height="6" rx="1" fill="#DADBE0" stroke="#3A3F4A" stroke-width="3"
+        mask="url(#path-8-inside-1_9387_57501)" />
+    <mask id="path-9-inside-2_9387_57501" fill="white">
+        <rect x="13" y="32" width="6" height="6" rx="1" />
+    </mask>
+    <rect x="13" y="32" width="6" height="6" rx="1" fill="#DADBE0" stroke="#3A3F4A" stroke-width="3"
+        mask="url(#path-9-inside-2_9387_57501)" />
+    <mask id="path-10-inside-3_9387_57501" fill="white">
+        <rect x="21" y="22" width="6" height="6" rx="1" />
+    </mask>
+    <rect x="21" y="22" width="6" height="6" rx="1" fill="#DADBE0" stroke="#3A3F4A" stroke-width="3"
+        mask="url(#path-10-inside-3_9387_57501)" />
+</svg>

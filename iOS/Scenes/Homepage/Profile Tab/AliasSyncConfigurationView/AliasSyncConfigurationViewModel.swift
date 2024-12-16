@@ -148,9 +148,8 @@ final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
                                                 title: #localized("Manage your aliases"),
                                                 description: UpsellEntry.aliasManagement.description,
                                                 upsellElements: UpsellEntry.aliasManagement.upsellElements,
-                                                ctaTitle: #localized("Get Pass Unlimited"))
-        router
-            .present(for: .upselling(config))
+                                                ctaTitle: #localized("Get Pass Plus"))
+        router.present(for: .upselling(config))
     }
 
     func delete(mailbox: Mailbox, transferMailboxId: Int?) {
