@@ -68644,7 +68644,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "Item sharing: %lld users"
                 }
               }
@@ -132162,7 +132162,7 @@
               },
               "other" : {
                 "stringUnit" : {
-                  "state" : "new",
+                  "state" : "translated",
                   "value" : "Vault sharing: %lld members"
                 }
               }
