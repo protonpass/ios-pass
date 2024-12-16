@@ -224,7 +224,7 @@ extension CreateEditAliasViewModel {
                     logger.info("Get alias successfully \(itemContent.debugDescription)")
                 }
 
-                if isAliasOwner {
+                if !mode.isEditMode || isAliasOwner {
                     let aliasOptions = try await getAliasOptions(shareId: shareId)
 
                     suffixSelection = .init(suffixes: aliasOptions.suffixes)
