@@ -30,7 +30,7 @@ final class ItemDetailCoordinator: DeinitPrintable {
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     private weak var itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?
-    private var currentViewModel: BaseItemDetailViewModel?
+    private weak var currentViewModel: BaseItemDetailViewModel?
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     init(itemDetailViewModelDelegate: (any ItemDetailViewModelDelegate)?) {
