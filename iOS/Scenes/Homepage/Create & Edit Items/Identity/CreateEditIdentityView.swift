@@ -151,7 +151,7 @@ private extension CreateEditIdentityView {
             CreateEditItemTitleSection(title: $viewModel.title,
                                        focusedField: $focusedField,
                                        field: .title,
-                                       itemContentType: viewModel.itemContentType(),
+                                       itemContentType: viewModel.itemContentType,
                                        isEditMode: viewModel.mode.isEditMode,
                                        onSubmit: {})
                 .padding(.vertical, DesignConstant.sectionPadding / 2)
@@ -168,8 +168,8 @@ private extension CreateEditIdentityView {
             if viewModel.canAddMoreCustomFields {
                 CapsuleLabelButton(icon: IconProvider.plus,
                                    title: #localized("Add a custom section"),
-                                   titleColor: viewModel.itemContentType().normMajor2Color,
-                                   backgroundColor: viewModel.itemContentType().normMinor1Color,
+                                   titleColor: viewModel.itemContentType.normMajor2Color,
+                                   backgroundColor: viewModel.itemContentType.normMinor1Color,
                                    height: 55) {
                     showCustomTitleAlert.toggle()
                 }
@@ -232,8 +232,8 @@ private extension CreateEditIdentityView {
     func addMoreButton(_ action: @escaping () -> Void) -> some View {
         CapsuleLabelButton(icon: IconProvider.plus,
                            title: #localized("Add more"),
-                           titleColor: viewModel.itemContentType().normMajor2Color,
-                           backgroundColor: viewModel.itemContentType().normMinor1Color,
+                           titleColor: viewModel.itemContentType.normMajor2Color,
+                           backgroundColor: viewModel.itemContentType.normMinor1Color,
                            fontWeight: .medium,
                            maxWidth: 140,
                            action: action)
