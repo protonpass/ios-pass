@@ -25,7 +25,7 @@ public struct PaginatedUsersLinkedToShare: Decodable, Sendable {
     public let shares: [UserShareInfos]
     public let total: Int
     public let lastToken: String?
-    
+
     public init(shares: [UserShareInfos], total: Int, lastToken: String?) {
         self.shares = shares
         self.total = total
