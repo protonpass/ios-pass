@@ -379,6 +379,18 @@ private extension CredentialProviderCoordinator {
             }
         }
 
+        if let error = error as? PassError,
+           case let .userManager(reason) = error {
+            switch reason {
+            case .noUserDataFound:
+                showNotLoggedInView()
+                return
+            default:
+                defaultHandler(error)
+                return
+            }
+        }
+
         guard let error = error as? PassError,
               case let .credentialProvider(reason) = error else {
             defaultHandler(error)
