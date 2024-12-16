@@ -23,7 +23,6 @@ import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
-import UseCases
 
 @MainActor
 public protocol FileAttachmentsEditHandler: AnyObject {
@@ -117,7 +116,13 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                FileAttachmentRow(mode: .edit, uiModel: file, handler: handler)
+                FileAttachmentRow(mode: .edit(onRename: { handler.rename(attachment: file, newName: $0) },
+                                              onDelete: { handler.delete(attachment: file) },
+                                              onRetryUpload: { handler.retryUpload(attachment: file) }),
+                                  itemContentType: handler.itemContentType,
+                                  uiModel: file,
+                                  primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
+                                  secondaryTintColor: handler.fileAttachmentsSectionPrimaryColor)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                     .disabled(isUploading)
                 if file != files.last {
