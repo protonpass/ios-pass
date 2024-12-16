@@ -37,6 +37,7 @@ public protocol FileAttachmentsEditHandler: AnyObject {
     func handleAttachment(_ url: URL)
     func handleAttachmentError(_ error: any Error)
     func rename(attachment: FileAttachmentUiModel, newName: String)
+    func retryFetchAttachedFiles()
     func retryUpload(attachment: FileAttachmentUiModel)
     func delete(attachment: FileAttachmentUiModel)
     func deleteAllAttachments()
@@ -46,13 +47,26 @@ public struct FileAttachmentsEditSection: View {
     @State private var showDeleteAllAlert = false
 
     private let files: [FileAttachmentUiModel]
+
+    /// Already attached files are being fetched
+    private let isFetching: Bool
+
+    /// Error while fetching already attached files
+    private let fetchError: (any Error)?
+
+    /// Newly added files are being uploaded
     private let isUploading: Bool
+
     private let handler: any FileAttachmentsEditHandler
 
     public init(files: [FileAttachmentUiModel],
+                isFetching: Bool,
+                fetchError: (any Error)?,
                 isUploading: Bool,
                 handler: any FileAttachmentsEditHandler) {
         self.files = files
+        self.isFetching = isFetching
+        self.fetchError = fetchError
         self.isUploading = isUploading
         self.handler = handler
     }
@@ -66,19 +80,32 @@ public struct FileAttachmentsEditSection: View {
                     Text("Attachments")
                         .foregroundStyle(PassColor.textNorm.toColor)
 
+                    if let fetchError {
+                        HStack {
+                            Text(fetchError.localizedDescription)
+                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
+                            Spacer()
+                            RetryButton(onRetry: handler.retryFetchAttachedFiles)
+                        }
+                    }
+
                     if !files.isEmpty {
                         Text("\(files.count) files")
                             .font(.callout)
                             .foregroundStyle(PassColor.textWeak.toColor)
-                    } else if !isUploading {
+                    } else if !isUploading, fetchError == nil {
                         Text("Upload files from your device")
                             .foregroundStyle(PassColor.textWeak.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .if(isFetching) { view in
+                                view.redacted(reason: .placeholder)
+                            }
+                            .shimmering(active: isFetching)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                if !files.isEmpty {
+                if !files.isEmpty, !isFetching, fetchError == nil {
                     CircleButton(icon: IconProvider.trash,
                                  iconColor: handler.fileAttachmentsSectionPrimaryColor,
                                  iconDisabledColor: handler.fileAttachmentsSectionPrimaryColor,
@@ -98,10 +125,14 @@ public struct FileAttachmentsEditSection: View {
                 }
             }
 
-            FileAttachmentsButton(style: .capsule, handler: handler)
-                .opacityReduced(isUploading)
+            if !isFetching, fetchError == nil {
+                FileAttachmentsButton(style: .capsule, handler: handler)
+                    .opacityReduced(isUploading)
+            }
         }
         .animation(.default, value: files)
+        .animation(.default, value: isFetching)
+        .animation(.default, value: fetchError.debugDescription)
         .animation(.default, value: isUploading)
         .padding(DesignConstant.sectionPadding)
         .tint(handler.fileAttachmentsSectionPrimaryColor.toColor)
