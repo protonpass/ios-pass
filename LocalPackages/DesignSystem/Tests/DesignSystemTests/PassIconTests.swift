@@ -22,7 +22,7 @@
 import XCTest
 
 final class PassIconTests: XCTestCase {
-    func testGetIconss() {
+    func testGetIcons() {
         let expectation = expectation(description: "Should be able to get icons")
 
         _ = PassIcon.autoFillOnWebPreview
@@ -44,6 +44,21 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.documentScan
         _ = PassIcon.images
         _ = PassIcon.rename
+
+        _ = PassIcon.fileTypeImage
+        _ = PassIcon.fileTypePhoto
+        _ = PassIcon.fileTypeVectorImage
+        _ = PassIcon.fileTypeVideo
+        _ = PassIcon.fileTypeAudio
+        _ = PassIcon.fileTypeKey
+        _ = PassIcon.fileTypeText
+        _ = PassIcon.fileTypeCalendar
+        _ = PassIcon.fileTypePdf
+        _ = PassIcon.fileTypeWord
+        _ = PassIcon.fileTypePowerPoint
+        _ = PassIcon.fileTypeExcel
+        _ = PassIcon.fileTypeDocument
+        _ = PassIcon.fileTypeUnknown
 
         _ = PassIcon.filterFilled
 

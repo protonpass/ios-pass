@@ -78,7 +78,9 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
 
         let content = settings.spotlightSearchableContent
         let searchableItems = try selectedItems.map { try $0.toSearchableItem(content: content) }
-        try await CSSearchableIndex.default().deleteAllSearchableItems()
+        // Optionally delete all indexed items because sometimes errors may arise
+        // we don't want to stop the indexation process
+        try? await CSSearchableIndex.default().deleteAllSearchableItems()
         try await CSSearchableIndex.default().indexSearchableItems(searchableItems)
         logger.info("Finish indexing \(selectedItems.count) items for Spotlight")
     }
