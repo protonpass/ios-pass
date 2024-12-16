@@ -79,12 +79,20 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
     }
 
+    var isAliasOwner: Bool {
+        alias?.mailboxes.isEmpty == false
+    }
+
     override var isSaveable: Bool {
         switch mode {
         case .clone, .create:
             !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
         case .edit:
-            !title.isEmpty && !mailboxes.isEmpty
+            if isAliasOwner {
+                !title.isEmpty && !mailboxes.isEmpty
+            } else {
+                !title.isEmpty
+            }
         }
     }
 
@@ -152,7 +160,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override func additionalEdit() async throws -> Bool {
-        guard let alias, case let .edit(itemContent) = mode else { return false }
+        guard let alias, isAliasOwner, case let .edit(itemContent) = mode else { return false }
 
         var edited = false
         if Set(alias.mailboxes) != Set(mailboxSelection.selectedMailboxes) {
@@ -204,12 +212,6 @@ extension CreateEditAliasViewModel {
                 state = .loading
 
                 let shareId = selectedVault.shareId
-                let aliasOptions = try await getAliasOptions(shareId: shareId)
-
-                suffixSelection = .init(suffixes: aliasOptions.suffixes)
-                mailboxSelection = .init(allUserMailboxes: aliasOptions.mailboxes)
-                canCreateAlias = aliasOptions.canCreateAlias
-
                 if case let .edit(itemContent) = mode {
                     let alias =
                         try await aliasRepository.getAliasDetails(shareId: shareId,
@@ -220,6 +222,14 @@ extension CreateEditAliasViewModel {
                     mailboxSelection.selectedMailboxes = alias.mailboxes
                     senderName = alias.name ?? ""
                     logger.info("Get alias successfully \(itemContent.debugDescription)")
+                }
+
+                if !mode.isEditMode || isAliasOwner {
+                    let aliasOptions = try await getAliasOptions(shareId: shareId)
+
+                    suffixSelection = .init(suffixes: aliasOptions.suffixes)
+                    mailboxSelection = .init(allUserMailboxes: aliasOptions.mailboxes)
+                    canCreateAlias = aliasOptions.canCreateAlias
                 }
 
                 state = .loaded

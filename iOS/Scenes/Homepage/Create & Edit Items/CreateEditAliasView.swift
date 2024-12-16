@@ -146,7 +146,7 @@ struct CreateEditAliasView: View {
                                     field: .note)
                         .id(noteID)
 
-                    if viewModel.isAdvancedAliasManagementActive {
+                    if viewModel.isAliasOwner, viewModel.isAdvancedAliasManagementActive {
                         if !viewModel.simpleLoginNote.isEmpty {
                             simpleLoginNoteSection
                         }
