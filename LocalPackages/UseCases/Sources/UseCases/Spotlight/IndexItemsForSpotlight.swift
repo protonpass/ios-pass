@@ -83,7 +83,9 @@ public final class IndexItemsForSpotlight: IndexItemsForSpotlightUseCase {
             logger.trace("Indexing \(searchableItems.count) items in \(ids.count) vaults for Spotlight")
         }
 
-        try await CSSearchableIndex.default().deleteAllSearchableItems()
+        // Optionally delete all indexed items because sometimes errors may arise
+        // we don't want to stop the indexation process
+        try? await CSSearchableIndex.default().deleteAllSearchableItems()
         try await CSSearchableIndex.default().indexSearchableItems(searchableItems)
         logger.info("Finish indexing \(searchableItems.count) items for Spotlight")
     }

@@ -36,7 +36,7 @@ extension UpsellEntry {
             // swiftlint:disable:next line_length
             #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.")
         case .aliasManagement:
-            #localized("Advanced alias management is available with Pass Unlimited. Upgrade for immediate access.")
+            #localized("Advanced alias management is available with Pass Plus. Upgrade for immediate access.")
         }
     }
 

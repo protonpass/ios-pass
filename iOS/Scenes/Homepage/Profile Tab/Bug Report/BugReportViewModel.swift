@@ -20,6 +20,7 @@
 
 import Client
 import Combine
+import Core
 import Factory
 import Foundation
 import Macro
@@ -43,19 +44,6 @@ enum BugReportObject: CaseIterable {
             #localized("Feature request")
         case .other:
             #localized("Other")
-        }
-    }
-}
-
-struct DataUrl: Transferable {
-    let url: URL
-
-    static var transferRepresentation: some TransferRepresentation {
-        FileRepresentation(contentType: .data) { data in
-            SentTransferredFile(data.url)
-        } importing: { received in
-            let copy = try received.file.copyFileToTempFolder()
-            return Self(url: copy)
         }
     }
 }
@@ -123,7 +111,7 @@ final class BugReportViewModel: ObservableObject {
             do {
                 for fileUrl in fileUrls {
                     _ = fileUrl.startAccessingSecurityScopedResource()
-                    currentFiles[fileUrl.lastPathComponent] = try fileUrl.copyFileToTempFolder()
+                    currentFiles[fileUrl.lastPathComponent] = try fileUrl.copyFileToTempDirectory()
                     fileUrl.stopAccessingSecurityScopedResource()
                 }
             } catch {
@@ -162,16 +150,19 @@ private extension BugReportViewModel {
     }
 
     func fetchContentUrls(_ photos: [PhotosPickerItem]) async throws -> [String: URL] {
-        try await withThrowingTaskGroup(of: DataUrl?.self, returning: [String: URL].self) { group in
+        try await withThrowingTaskGroup(of: TempDirectoryTransferableUrl?.self,
+                                        returning: [String: URL].self) { group in
             for photo in photos {
-                group.addTask { try await photo.loadTransferable(type: DataUrl.self) }
+                group.addTask {
+                    try await photo.loadTransferable(type: TempDirectoryTransferableUrl.self)
+                }
             }
 
             var contentUrls: [String: URL] = [:]
 
-            for try await result in group {
-                if let result {
-                    contentUrls["Screenshot - \(result.url.lastPathComponent)"] = result.url
+            for try await url in group {
+                if let url {
+                    contentUrls["Screenshot - \(url.value.lastPathComponent)"] = url.value
                 }
             }
 
