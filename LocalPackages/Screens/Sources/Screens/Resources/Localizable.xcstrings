@@ -1992,6 +1992,12 @@
             "value" : "Vedhæft en fil"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei anhängen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2443,6 +2449,12 @@
             "value" : "Vælg en fil"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datei wählen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2577,6 +2589,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vælg et foto eller en video"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto oder Video wählen"
           }
         },
         "el" : {
@@ -4195,6 +4213,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Slette alle vedlegg?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle bijlagen verwijderen?"
           }
         },
         "pl" : {
@@ -7180,6 +7204,12 @@
             "value" : "Gi nytt navn"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hernoemen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7214,6 +7244,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yeniden adlandır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перейменувати"
           }
         }
       }
@@ -7314,6 +7350,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gi nytt navn til fil"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestand hernoemen"
           }
         },
         "pl" : {
@@ -7532,6 +7574,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scan dokumenter"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumente scannen"
           }
         },
         "el" : {
@@ -9414,6 +9462,12 @@
             "value" : "Tag et foto"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto aufnehmen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9786,6 +9840,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Denne handlingen kan ikke angres"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze actie kan niet ongedaan worden gemaakt"
           }
         },
         "pl" : {
@@ -10618,6 +10678,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Puede adjuntar archivos a los elementos para una mejor organización."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voit liittää kohteisiin tiedostoja parempaa organisointia varten"
           }
         },
         "fr" : {
