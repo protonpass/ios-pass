@@ -138,8 +138,10 @@ struct AliasDetailView: View {
     private var aliasMailboxesSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
             aliasRow
-            PassSectionDivider()
-            mailboxesRow
+            if viewModel.isAllowedToEdit {
+                PassSectionDivider()
+                mailboxesRow
+            }
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
@@ -162,7 +164,7 @@ struct AliasDetailView: View {
             .onTapGesture { viewModel.copyAliasEmail() }
             .layoutPriority(1)
 
-            if viewModel.aliasSyncEnabled {
+            if viewModel.aliasSyncEnabled, viewModel.isAllowedToEdit {
                 Group {
                     if viewModel.togglingAliasStatus {
                         ProgressView()

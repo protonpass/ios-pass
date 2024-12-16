@@ -319,6 +319,7 @@ extension VaultsManager {
         await MainActor.run { [weak self] in
             guard let self else { return }
             vaultSyncEventStream.send(.done)
+            vaultSyncEventStream.send(.initialization)
         }
     }
 

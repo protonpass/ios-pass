@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+
 public struct InAppNotification: Decodable, Sendable, Equatable, Hashable, Identifiable {
     public let ID: String
     public let notificationKey: String
@@ -90,6 +92,13 @@ public struct InAppNotificationContent: Decodable, Sendable, Equatable, Hashable
     // Can be light or dark
     public let theme: String?
     public let cta: InAppNotificationCTA?
+
+    public var safeImageUrl: URL? {
+        if let imageUrl, let url = URL(string: imageUrl) {
+            return url
+        }
+        return nil
+    }
 
     public init(imageUrl: String?,
                 displayType: Int,

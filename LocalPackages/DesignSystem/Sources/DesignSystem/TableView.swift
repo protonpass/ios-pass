@@ -138,6 +138,7 @@ public struct TableView<Item: TableViewItemConformance, ItemView: View, HeaderVi
         tableView.layoutMargins = .zero
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: kCellId)
         tableView.delegate = context.coordinator
+        tableView.keyboardDismissMode = .onDrag
         if onRefresh != nil {
             refreshControl.addTarget(context.coordinator,
                                      action: #selector(Coordinator.handleRefresh),
