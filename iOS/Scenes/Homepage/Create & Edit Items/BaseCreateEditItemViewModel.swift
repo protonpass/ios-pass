@@ -201,7 +201,9 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
     }
 
-    var isSaveable: Bool { true }
+    var isSaveable: Bool {
+        !isUploadingFile && fileUiModels.allSatisfy { $0.state == .uploaded }
+    }
 
     var shouldUpgrade: Bool { false }
 
@@ -422,16 +424,27 @@ private extension BaseCreateEditItemViewModel {
     }
 
     func linkFiles(to item: any ItemIdentifiable) async throws -> Bool {
-        guard case let .fetched(attachedFiles) = attachedFiles else {
+        let attachedFiles = attachedFiles?.fetchedObject ?? []
+
+        let filesToLink = getFilesToLink(attachedFiles: attachedFiles, updatedFiles: files)
+        guard !filesToLink.isEmpty else {
+            logger.debug("No files to link to \(item.debugDescription)")
             return false
         }
+
         let userId = try await userManager.getActiveUserId()
-        let filesToLink = getFilesToLink(attachedFiles: attachedFiles, updatedFiles: files)
+        if !filesToLink.toAdd.isEmpty {
+            logger.debug("Linking \(filesToLink.toAdd.count) files to \(item.debugDescription)")
+        }
+        if !filesToLink.toRemove.isEmpty {
+            logger.debug("Removing \(filesToLink.toAdd.count) files to \(item.debugDescription)")
+        }
         try await fileRepository.linkFilesToItem(userId: userId,
                                                  pendingFilesToAdd: filesToLink.toAdd,
                                                  existingFileIdsToRemove: filesToLink.toRemove,
                                                  item: item)
-        return !filesToLink.isEmpty
+        logger.info("Done linking files to \(item.debugDescription)")
+        return true
     }
 
     func handle(_ error: any Error) {
@@ -492,6 +505,7 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
+                        _ = try await linkFiles(to: createdItem)
                         let passkey = try await newPasskey()
                         router.present(for: .createItem(item: createdItem,
                                                         type: type,
@@ -615,7 +629,10 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func retryFetchAttachedFiles() {
-        print(#function)
+        Task { [weak self] in
+            guard let self else { return }
+            await fetchAttachedFiles()
+        }
     }
 
     func retryUpload(attachment: FileAttachmentUiModel) {
