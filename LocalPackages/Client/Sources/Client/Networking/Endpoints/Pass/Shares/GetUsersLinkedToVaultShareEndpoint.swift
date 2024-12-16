@@ -21,20 +21,36 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetUsersLinkedToShareResponse: Decodable, Sendable {
-    let shares: [UserShareInfos]
-    let total: Int
+public struct PaginatedUsersLinkedToShare: Decodable, Sendable {
+    public let shares: [UserShareInfos]
+    public let total: Int
+    public let lastToken: String?
+    
+    public init(shares: [UserShareInfos], total: Int, lastToken: String?) {
+        self.shares = shares
+        self.total = total
+        self.lastToken = lastToken
+    }
 }
 
-struct GetUsersLinkedToVaultShareEndpoint: Endpoint {
+struct GetUsersLinkedToVaultShareEndpoint: @unchecked Sendable, Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = GetUsersLinkedToShareResponse
+    typealias Response = PaginatedUsersLinkedToShare
 
     var debugDescription: String
     var path: String
+    var queries: [String: Any]?
 
-    init(for shareId: String) {
+    init(for shareId: String, lastShareId: String? = nil, pageSize: Int? = nil) {
         debugDescription = "Get users that have access to the whole vault"
         path = "/pass/v1/share/\(shareId)/user"
+        var queries: [String: Any] = [:]
+        if let pageSize {
+            queries["PageSize"] = pageSize
+        }
+        if let lastShareId {
+            queries["Since"] = lastShareId
+        }
+        self.queries = queries
     }
 }

@@ -42,9 +42,8 @@ struct ShareElementView: View {
 
             if viewModel.isShared {
                 manageAccessButton
+                Divider()
             }
-
-            Divider()
 
             if !viewModel.itemContent.isAlias {
                 secureLink

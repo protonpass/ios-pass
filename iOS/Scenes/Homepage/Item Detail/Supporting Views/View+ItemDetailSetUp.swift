@@ -46,6 +46,16 @@ struct ItemDetailSetUpModifier: ViewModifier {
                                                         dismiss()
                                                         viewModel.permanentlyDelete()
                                                     }))
+            .alert("Leave this item?", isPresented: $viewModel.showingLeaveShareAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Leave") {
+                    viewModel.leaveShare()
+                    dismiss()
+                }
+            } message: {
+                // swiftlint:disable:next line_length
+                Text("You will lose access to this item and its details. Do you want to continue?")
+            }
     }
 }
 
