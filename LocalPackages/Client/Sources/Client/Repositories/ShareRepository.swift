@@ -217,7 +217,8 @@ public extension ShareRepository {
         return paginatedUsers
     }
 
-    func getUsersLinkedToItemShare(to shareId: String, itemId: String,
+    func getUsersLinkedToItemShare(to shareId: String,
+                                   itemId: String,
                                    lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId), itemId \(itemId)")

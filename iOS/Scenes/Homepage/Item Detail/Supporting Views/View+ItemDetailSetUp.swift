@@ -53,7 +53,6 @@ struct ItemDetailSetUpModifier: ViewModifier {
                     dismiss()
                 }
             } message: {
-                // swiftlint:disable:next line_length
                 Text("You will lose access to this item and its details. Do you want to continue?")
             }
     }

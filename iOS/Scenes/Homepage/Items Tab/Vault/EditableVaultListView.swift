@@ -103,8 +103,6 @@ struct EditableVaultListView: View {
                          title: selection.title,
                          itemCount: itemCount,
                          share: selection.share,
-//                         isShared: selection.shared,
-//                         shareMembers: selection.members,
                          isSelected: viewModel.isSelected(selection),
                          showBadge: selection.showBadge,
                          height: 74,
