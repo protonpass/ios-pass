@@ -48,6 +48,20 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
     }
 
+    // One could be an editor of an alias but not the owner
+    // Only owner can see and edit mailboxes
+    var isAliasOwner: Bool {
+        aliasInfos?.mailboxes.isEmpty == false
+    }
+
+    var showMailboxesRow: Bool {
+        if let aliasInfos {
+            !aliasInfos.mailboxes.isEmpty
+        } else {
+            true
+        }
+    }
+
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
@@ -76,7 +90,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func getAlias() {
-        guard isAllowedToEdit else { return }
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -105,6 +118,10 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                                                              itemId: itemContent.item.itemID,
                                                              lastContactId: nil)
         } catch {
+            if let apiError = error.asPassApiError, apiError == .notAllowed {
+                // Happen when alias is not created by this user so we ignore this error
+                return
+            }
             handle(error)
         }
     }
@@ -143,13 +160,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                              shareId: itemContent.shareId,
                              alias: aliasInfos,
                              contacts: contacts)
-    }
-
-    override func canModify() -> Bool {
-        guard let aliasInfos else {
-            return false
-        }
-        return aliasInfos.modify
     }
 }
 

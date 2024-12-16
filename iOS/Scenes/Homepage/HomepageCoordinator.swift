@@ -138,7 +138,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshAccessAndMonitorStateSync()
         refreshSettings()
         refreshFeatureFlags()
-        refreshInAppNotifications()
         sendAllEventsIfApplicable()
         doLogOutExcessFreeAccounts()
     }
