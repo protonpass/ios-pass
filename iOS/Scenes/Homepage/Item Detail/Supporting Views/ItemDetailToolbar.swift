@@ -128,7 +128,9 @@ struct ItemDetailToolbar: ToolbarContent {
 
                         Divider()
 
-                        if let vault = viewModel.vault?.vault, !vault.isVaultRepresentation {
+                        if let vault = viewModel.vault?.vault,
+                           !vault.isVaultRepresentation,
+                           viewModel.itemSharingEnabled {
                             Label("Leave", image: IconProvider.arrowOutFromRectangle)
                                 .buttonEmbeded {
                                     viewModel.showingLeaveShareAlert.toggle()
