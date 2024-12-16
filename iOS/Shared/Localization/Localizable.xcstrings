@@ -4963,7 +4963,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld videresendt"
+                  "value" : "%lld videresendte"
                 }
               }
             }
@@ -10898,6 +10898,42 @@
     "%lld replies" : {
       "comment" : "Number of replies from an alias",
       "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Antwort"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Antworten"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld απάντηση"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld απαντήσεις"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -10965,6 +11001,108 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld réponses"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld balasan"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld risposta"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld risposte"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld svar"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld svar"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld antwoord"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld antwoorden"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld resposta"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld respostas"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld svar"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld svar"
                 }
               }
             }
@@ -18589,6 +18727,12 @@
             "value" : "Avanceret alias-administration er tilgængelig med Pass Plus. Opgrader for at få adgang med det samme."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die erweiterte Alias-Verwaltung ist mit Pass Plus verfügbar. Upgrade für sofortigen Zugriff."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18611,6 +18755,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La gestión avanzada de alias está disponible con Pass Plus. Mejore su plan para obtener acceso inmediato."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edistynyt aliashallinta sisältyy Pass Plussaan. Hanki se heti päivittämällä tilauksesi."
           }
         },
         "fr" : {
@@ -18637,6 +18787,12 @@
             "value" : "高度なエイリアス管理はPass Plusで利用可能です。即時アクセスのためにアップグレードしてください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი ფსევდონიმების მართვა Pass Plus-ს აქვს. ასწიეთ სატარიფო გეგმა მასთან წვდომისთვის."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18647,6 +18803,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avansert aliasadministrasjon er tilgjengelig med Pass Plus. Oppgrader for umiddelbar tilgang."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geavanceerd alias beheer is beschikbaar met Pass Plus. Upgrade voor directe toegang."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O gerenciamento avançado de alias está disponível com o Pass Plus. Faça o upgrade para obter acesso imediato."
           }
         },
         "ro" : {
@@ -18665,6 +18833,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avancerad hantering av alias är tillgängligt med Pass Plus. Uppgradera för omedelbar åtkomst."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelişmiş takma ad yönetimi Pass Plus tarifesi ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
           }
         }
       }
@@ -23237,7 +23411,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カスタム ドメインを持つエイリアスは監視されません。監視用のカスタム電子メールとして追加してください。"
+            "value" : "カスタム ドメインを持つエイリアスは監視されません。監視用のカスタムメールとして追加してください。"
           }
         },
         "ka" : {
@@ -23501,6 +23675,12 @@
             "value" : "Alle aliasser, der bruger postkassen **%@** vil også blive slettet. Hvis du vil fortsætte med at modtage e-mails, skal du overføre disse aliasser til en anden postkasse:"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Aliase, die das Postfach **%@** verwenden, werden ebenfalls gelöscht. Um weiterhin E-Mails zu erhalten, übertrage diese Aliase auf ein anderes Postfach:"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23754,7 +23934,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alla nuvarande intrång kommer att markeras som lösta. I händelse av framtida dataintrång kommer du att aviseras."
+            "value" : "Alla nuvarande intrång kommer att markeras som lösta. I händelse av framtida dataintrång kommer du att notifierad."
           }
         },
         "tr" : {
@@ -29023,6 +29203,12 @@
             "value" : "Datenlecks entdeckt"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εντοπίστηκαν παραβιάσεις"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29065,6 +29251,18 @@
             "value" : "Violazioni di dati rilevate"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "侵害が検出されました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აღმოჩენილია გაჟონვები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29093,6 +29291,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Violações detetadas"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Divulgări detectate"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zistené úniky"
           }
         },
         "sl" : {
@@ -50658,7 +50868,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktivera övervakning för att bli aviserad om dina alias läckt."
+            "value" : "Aktivera övervakning för att bli notifierad om dina alias läckt."
           }
         },
         "tr" : {
@@ -50818,7 +51028,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktivera övervakning för att bli aviserad om dina Proton-adresser läckt."
+            "value" : "Aktivera övervakning för att bli notifierad om dina Proton-adresser läckt."
           }
         },
         "tr" : {
@@ -60515,7 +60725,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bli aviserad om din e-post, lösenord eller annan personlig data har läckt"
+            "value" : "Bli notifierad om din e-post, lösenord eller annan personlig data har läckt"
           }
         },
         "tr" : {
@@ -75738,6 +75948,12 @@
             "value" : "Postkasse er der, hvor e-mails sendt til et alias videresendes til. Det er din sædvanlige postkasse, f.eks. Gmail, Outlook, Proton Mail osv."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Postfach ist der Ort, an den die an einen Alias gesendeten E-Mails weitergeleitet werden. Es ist dein übliches Postfach, z.B. Gmail, Outlook, Proton Mail, etc."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -76648,6 +76864,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Administrer dine aliasser"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwalte deine Aliasse"
           }
         },
         "el" : {
@@ -80784,6 +81006,12 @@
             "value" : "Ingen aktivitet i de sidste 14 dage."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Aktivität in den letzten 14 Tagen."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83268,6 +83496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Note • SimpleLogin"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notiz • SimpleLogin"
           }
         },
         "el" : {
@@ -93242,6 +93476,12 @@
             "value" : "Tjek din spammappe efter en e-mail med titlen \"Bekræft venligst din postkasse %@\"\n\nHvis du ikke kan finde en sådan e-mail, kan du [bede om en ny kode](https://proton.me)."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte suche in deinem Spam-Ordner nach einer E-Mail mit dem Titel „Bitte bestätige deine E-Mail-Adresse %@“.\n\nWenn du eine solche E-Mail nicht finden kannst, kannst du [einen neuen Code anfordern] (https://proton.me)."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94442,6 +94682,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bemærk, at aliasser ikke kan gendannes, når de er slettet."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte beachte, dass einmal gelöschte Aliasnamen nicht wiederhergestellt werden können."
           }
         },
         "el" : {
@@ -113732,6 +113978,12 @@
             "value" : "Benutzerdefiniertes Feld anzeigen"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εμφάνιση προσαρμοσμένου πεδίου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113774,6 +114026,18 @@
             "value" : "Mostra il campo personalizzato"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მომხმარებლის ველის ჩვენება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자 지정 필드 보기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113796,6 +114060,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Exibir campos personalizados"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare câmp personal"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť vlastné pole"
           }
         },
         "sl" : {
@@ -117177,7 +117453,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "本当のメールアドレスを共有するのはやめてください。 代わりに、電子メール エイリアスを使用して非表示にします⏤Proton Pass 専用です。"
+            "value" : "本当のメールアドレスを共有するのはやめてください。 代わりに、メール エイリアスを使用して非表示にします⏤Proton Pass 専用です。"
           }
         },
         "ka" : {
@@ -121121,6 +121397,12 @@
             "value" : "El archivo seleccionado supera el límite de tamaño. Elija un archivo de menos de 100 MB."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valittu tiedosto ylittää kokorajan. Valitse tiedosto, joka on pienempi kuin 100 Mt."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121145,6 +121427,12 @@
             "value" : "選択したファイルはサイズ制限を超えています。100 MB未満のファイルを選択してください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონიშნული ფაილი ზომის ზღვარს სცდება. აირჩიეთ ფაილი, რომელიც 100 მბ-ზე პატარაა."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121155,6 +121443,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Den valgte filen overskrider størrelsesgrensen. Velg en fil som er mindre enn 100 MB."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O arquivo selecionado excede o limite de tamanho. Escolha um arquivo menor que 100 MB."
           }
         },
         "ro" : {
@@ -121173,6 +121467,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Den valda filen överskrider storleksgränsen. Välj en fil som är mindre än 100 MB."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçilmiş dosya boyutu sınırı aşıyor. Lütfen 100 MB boyutundan daha küçük bir dosya seçin."
           }
         }
       }
@@ -122695,7 +122995,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "これにより、電子メール、カレンダー、ドライブに保存されているデータを含む、プロトンアカウントとそのすべてのデータが永久に削除されます。このアカウントを再度有効にすることはできません。"
+            "value" : "これにより、メール、カレンダー、ドライブに保存されているデータを含む、プロトンアカウントとそのすべてのデータが永久に削除されます。このアカウントを再度有効にすることはできません。"
           }
         },
         "ka" : {
@@ -123436,6 +123736,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hvis du vil holde din personlige e-mailadresse skjult, kan du oprette en alias-kontakt, der maskerer din adresse."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um deine persönliche E-Mail-Adresse zu verbergen, kannst du einen Alias-Kontakt erstellen, der deine Adresse verschleiert."
           }
         },
         "el" : {
@@ -133099,7 +133405,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Абагульванне сховішча (да 10 карыстальнікаў)"
+            "value" : "Абагуленне сховішча (да 10 карыстальнікаў)"
           }
         },
         "cs" : {
@@ -144679,7 +144985,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "あなたの電子メール アドレスが %lld 件の侵害で漏洩しました"
+                  "value" : "あなたのメール アドレスが %lld 件の侵害で漏洩しました"
                 }
               }
             }
@@ -145010,7 +145316,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたの電子メール アドレスは、少なくとも 1 件のデータ侵害で漏洩しました。"
+            "value" : "あなたのメール アドレスは、少なくとも 1 件のデータ侵害で漏洩しました。"
           }
         },
         "ka" : {
@@ -145894,6 +146200,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Din modtager"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Empfänger"
           }
         },
         "el" : {
