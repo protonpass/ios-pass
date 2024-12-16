@@ -38,6 +38,7 @@ struct ItemDetailSetUpModifier: ViewModifier {
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarHidden(false)
+            .animation(.default, value: viewModel.files)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }
             .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBeDeleted,
@@ -53,6 +54,9 @@ struct ItemDetailSetUpModifier: ViewModifier {
                 }
             } message: {
                 Text("You will lose access to this item and its details. Do you want to continue?")
+            }
+            .task {
+                await viewModel.fetchAttachments()
             }
     }
 }

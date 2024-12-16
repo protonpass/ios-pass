@@ -94,6 +94,14 @@ struct AliasDetailView: View {
                         }
                     }
 
+                    if viewModel.showFileAttachmentsSection {
+                        FileAttachmentsViewSection(files: viewModel.files.fetchedObject ?? [],
+                                                   isFetching: viewModel.files.isFetching,
+                                                   fetchError: viewModel.files.error,
+                                                   handler: viewModel)
+                            .padding(.top, 8)
+                    }
+
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
                                              action: { viewModel.showItemHistory() })
 
