@@ -48,7 +48,6 @@ public protocol RemoteItemDatasourceProtocol: Sendable {
                            shareId: String,
                            itemId: String,
                            lastUseTime: TimeInterval) async throws -> Item
-    func move(userId: String, itemId: String, fromShareId: String, request: MoveItemRequest) async throws -> Item
     func move(userId: String, fromShareId: String, request: MoveItemsRequest) async throws -> [Item]
     func pin(userId: String, item: any ItemIdentifiable) async throws -> Item
     func unpin(userId: String, item: any ItemIdentifiable) async throws -> Item
@@ -161,15 +160,6 @@ public extension RemoteItemDatasource {
                                                  lastUseTime: lastUseTime)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.revision
-    }
-
-    func move(userId: String,
-              itemId: String,
-              fromShareId: String,
-              request: MoveItemRequest) async throws -> Item {
-        let endpoint = MoveItemEndpoint(request: request, itemId: itemId, fromShareId: fromShareId)
-        let response = try await exec(userId: userId, endpoint: endpoint)
-        return response.item
     }
 
     func move(userId: String, fromShareId: String, request: MoveItemsRequest) async throws -> [Item] {
