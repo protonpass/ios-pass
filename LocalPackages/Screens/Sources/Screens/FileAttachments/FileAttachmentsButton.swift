@@ -20,29 +20,31 @@
 //
 
 import DesignSystem
+import DocScanner
 import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct FileAttachmentsButton: View {
-    let style: Style
-    let iconColor: UIColor
-    let backgroundColor: UIColor
-    let onSelect: (FileAttachmentMethod) -> Void
+    @StateObject private var viewModel: FileAttachmentsButtonViewModel
+    @State private var showCamera = false
+    @State private var showDocScanner = false
+    @State private var showPhotosPicker = false
+    @State private var showFileImporter = false
+
+    private let style: Style
+    private let handler: any FileAttachmentsEditHandler
 
     public enum Style {
         case circle, capsule
     }
 
     public init(style: Style,
-                iconColor: UIColor,
-                backgroundColor: UIColor,
-                onSelect: @escaping (FileAttachmentMethod) -> Void) {
+                handler: any FileAttachmentsEditHandler) {
+        _viewModel = .init(wrappedValue: .init(handler: handler))
         self.style = style
-        self.iconColor = iconColor
-        self.backgroundColor = backgroundColor
-        self.onSelect = onSelect
+        self.handler = handler
     }
 
     public var body: some View {
@@ -55,22 +57,60 @@ public struct FileAttachmentsButton: View {
                         .resizable()
                 })
                 .buttonEmbeded {
-                    onSelect(method)
+                    handle(method)
                 }
             }
         }, label: {
             switch style {
             case .circle:
                 CircleButton(icon: IconProvider.paperClipVertical,
-                             iconColor: iconColor,
-                             backgroundColor: backgroundColor)
+                             iconColor: handler.fileAttachmentsSectionPrimaryColor,
+                             backgroundColor: handler.fileAttachmentsSectionSecondaryColor)
 
             case .capsule:
                 CapsuleTextButton(title: #localized("Attach a file"),
-                                  titleColor: iconColor,
-                                  backgroundColor: backgroundColor,
+                                  titleColor: handler.fileAttachmentsSectionPrimaryColor,
+                                  backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
                                   height: 48)
             }
         })
+        .sheet(isPresented: $showCamera) {
+            CameraView {
+                viewModel.handleCapturedPhoto($0)
+            }
+        }
+        .sheet(isPresented: $showDocScanner) {
+            DocScanner(with: ScanInterpreter(type: .document),
+                       completion: { viewModel.handleScanResult($0) })
+        }
+        .photosPicker(isPresented: $showPhotosPicker,
+                      selection: $viewModel.selectedPhotos,
+                      maxSelectionCount: 1)
+        .fileImporter(isPresented: $showFileImporter,
+                      allowedContentTypes: [.item],
+                      allowsMultipleSelection: false,
+                      onCompletion: { result in
+                          switch result {
+                          case let .success(urls):
+                              if let url = urls.first {
+                                  handler.handleAttachment(url)
+                              }
+                          case let .failure(error):
+                              handler.handleAttachmentError(error)
+                          }
+                      })
+    }
+
+    private func handle(_ method: FileAttachmentMethod) {
+        switch method {
+        case .takePhoto:
+            showCamera.toggle()
+        case .scanDocuments:
+            showDocScanner.toggle()
+        case .choosePhotoOrVideo:
+            showPhotosPicker.toggle()
+        case .chooseFile:
+            showFileImporter.toggle()
+        }
     }
 }

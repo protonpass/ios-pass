@@ -31,7 +31,7 @@ struct MoveItemsResponse: Decodable, Sendable {
 public struct MoveItemsRequest: Encodable, Sendable {
     /// Encrypted ID of the destination share
     let shareId: String
-    let items: [ItemToBeMovedContainer]
+    let items: [ItemToBeMoved]
 
     enum CodingKeys: String, CodingKey {
         case shareId = "ShareID"
@@ -39,49 +39,13 @@ public struct MoveItemsRequest: Encodable, Sendable {
     }
 }
 
-extension MoveItemsRequest {
-    init(itemsContent: [ItemContent],
-         destinationShareId: String,
-         destinationShareKey: DecryptedShareKey) throws {
-        let encryptedItems = try itemsContent.map {
-            try Self.createItemRevision(itemContent: $0, destinationShareKey: destinationShareKey)
-        }
-        self.init(shareId: destinationShareId,
-                  items: encryptedItems)
-    }
-
-    private static func createItemRevision(itemContent: ItemContent,
-                                           destinationShareKey: DecryptedShareKey) throws
-        -> ItemToBeMovedContainer {
-        let itemKey = try Data.random()
-        let encryptedContent = try AES.GCM.seal(itemContent.protobuf.data(),
-                                                key: itemKey,
-                                                associatedData: .itemContent)
-
-        guard let content = encryptedContent.combined?.base64EncodedString() else {
-            throw PassError.crypto(.failedToAESEncrypt)
-        }
-
-        let encryptedItemKey = try AES.GCM.seal(itemKey,
-                                                key: destinationShareKey.keyData,
-                                                associatedData: .itemKey)
-        let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
-        let itemToBeMoved = ItemToBeMoved(keyRotation: destinationShareKey.keyRotation,
-                                          contentFormatVersion: Constants.ContentFormatVersion.item,
-                                          content: content,
-                                          itemKey: encryptedItemKeyData.base64EncodedString())
-        return ItemToBeMovedContainer(itemId: itemContent.itemId,
-                                      item: itemToBeMoved)
-    }
-}
-
-struct ItemToBeMovedContainer: Codable, Sendable {
+struct ItemToBeMoved: Codable, Sendable {
     let itemId: String
-    let item: ItemToBeMoved
+    let itemKeys: [ItemKey]
 
     enum CodingKeys: String, CodingKey {
         case itemId = "ItemID"
-        case item = "Item"
+        case itemKeys = "ItemKeys"
     }
 }
 

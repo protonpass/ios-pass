@@ -1,6 +1,6 @@
 //
-// FileAttachment.swift
-// Proton Pass - Created on 19/11/2024.
+// GenerateDatedFileNameTests.swift
+// Proton Pass - Created on 28/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,27 +20,24 @@
 //
 
 import Foundation
+import Testing
+import UseCases
 
-public struct FileAttachmentMetadata: Sendable, Equatable {
-    public let name: String
-    public let mimeType: String
-    public let size: Int
+struct GenerateDatedFileNameTests {
+    @Test("Generate dated file name")
+    func datedFileName() {
+        // Given
+        let timestamp: Double = 1_732_802_303
+        let date = Date(timeIntervalSince1970: timestamp)
+        let sut = GenerateDatedFileName()
 
-    public init(name: String,
-                mimeType: String,
-                size: Int) {
-        self.name = name
-        self.mimeType = mimeType
-        self.size = size
-    }
-}
+        // When
+        let fileName = sut.execute(prefix: "Photo",
+                                   extension: "png",
+                                   date: date,
+                                   dateFormat: "yyyy-MM-dd")
 
-public struct FileAttachment: Sendable, Equatable, Identifiable {
-    public let id: String
-    public let metadata: FileAttachmentMetadata
-
-    public init(id: String, metadata: FileAttachmentMetadata) {
-        self.id = id
-        self.metadata = metadata
+        // Then
+        #expect(fileName == "Photo 2024-11-28.png")
     }
 }

@@ -23,6 +23,7 @@ import Foundation
 
 public protocol RemoteItemKeyDatasourceProtocol: Sendable {
     func getLatestKey(userId: String, shareId: String, itemId: String) async throws -> ItemKey
+    func getAllKeys(userId: String, shareId: String, itemId: String) async throws -> [ItemKey]
 }
 
 public final class RemoteItemKeyDatasource: RemoteDatasource, RemoteItemKeyDatasourceProtocol,
@@ -33,5 +34,11 @@ public extension RemoteItemKeyDatasource {
         let endpoint = GetLatestItemKeyEndpoint(shareId: shareId, itemId: itemId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.key
+    }
+
+    func getAllKeys(userId: String, shareId: String, itemId: String) async throws -> [ItemKey] {
+        let endpoint = GetItemKeysEndpoint(shareId: shareId, itemId: itemId)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.keys.keys
     }
 }

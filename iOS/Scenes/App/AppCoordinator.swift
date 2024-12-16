@@ -21,6 +21,7 @@
 import Client
 import Combine
 import Core
+import CoreSpotlight
 import Entities
 import Factory
 import Macro
@@ -241,6 +242,11 @@ private extension AppCoordinator {
         animateUpdateRootViewController(welcomeCoordinator.rootViewController) { [weak self] in
             guard let self else { return }
             handle(logOutReason: reason)
+        }
+
+        // When user is not logged in, remove all indexed data for Spotlight
+        Task {
+            try? await CSSearchableIndex.default().deleteAllSearchableItems()
         }
     }
 

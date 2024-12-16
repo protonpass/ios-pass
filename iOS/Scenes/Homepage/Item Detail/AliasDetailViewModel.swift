@@ -76,6 +76,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func getAlias() {
+        guard isAllowedToEdit else { return }
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -94,7 +95,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func loadContact() async {
-        guard isAdvancedAliasManagementActive else {
+        guard isAdvancedAliasManagementActive, isAllowedToEdit else {
             return
         }
         do {
