@@ -60,7 +60,6 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published var itemToBeDeleted: (any ItemTypeIdentifiable)?
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
-    // TODO: maybe put ShareContent data
     let vault: VaultListUiModel?
     let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
