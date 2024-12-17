@@ -40,6 +40,7 @@ struct CreateEditNoteView: View {
             CreateEditNoteContentView(title: $viewModel.title,
                                       content: $viewModel.note,
                                       files: viewModel.fileUiModels,
+                                      isUploadingFile: viewModel.isUploadingFile,
                                       handler: viewModel,
                                       scanResponsePublisher: viewModel.scanResponsePublisher)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -57,6 +58,7 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
     @Binding var title: String
     @Binding var content: String
     let files: [FileAttachmentUiModel]
+    let isUploadingFile: Bool
     let handler: any FileAttachmentsEditHandler
     weak var scanResponsePublisher: ScanResponsePublisher?
 
@@ -70,7 +72,7 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
     }
 
     func updateUIView(_ view: CreateEditNoteContentUIView, context: Context) {
-        view.update(files: files)
+        view.update(files: files, isUploadingFile: isUploadingFile)
     }
 
     func makeCoordinator() -> Coordinator {
@@ -278,7 +280,10 @@ private extension CreateEditNoteContentUIView {
         contentPlaceholderLabel.alpha = contentTextView.text.isEmpty ? 1 : 0
     }
 
-    func update(files: [FileAttachmentUiModel]) {
+    func update(files: [FileAttachmentUiModel], isUploadingFile: Bool) {
+        titleTextField.isUserInteractionEnabled = !isUploadingFile
+        contentTextView.isUserInteractionEnabled = !isUploadingFile
+
         for view in filesStackView.arrangedSubviews {
             filesStackView.removeArrangedSubview(view)
             view.removeFromSuperview()
@@ -294,6 +299,7 @@ private extension CreateEditNoteContentUIView {
                                       uiModel: file,
                                       primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
                                       secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)
+                    .disabled(isUploadingFile)
                 let viewController = UIHostingController(rootView: row)
                 viewController.view.backgroundColor = .clear
                 viewController.view.translatesAutoresizingMaskIntoConstraints = false

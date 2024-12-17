@@ -21,6 +21,7 @@
 
 import Client
 import CryptoKit
+import Entities
 import Foundation
 
 /// Symetrically decrypt the content of a file and save to a destination URL
@@ -38,7 +39,11 @@ public final class DecryptFile: DecryptFileUseCase {
     public init() {}
 
     public func execute(key: Data, data: Data, destinationUrl: URL) async throws {
+        let directory = destinationUrl.deletingLastPathComponent()
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         let decryptedData = try AES.GCM.open(data, key: key, associatedData: .fileData)
-        FileManager.default.createFile(atPath: destinationUrl.path(), contents: decryptedData)
+        if !FileManager.default.createFile(atPath: destinationUrl.path(), contents: decryptedData) {
+            throw PassError.fileAttachment(.failedToCreateFileOnFileSystem)
+        }
     }
 }

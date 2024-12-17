@@ -95,7 +95,7 @@ struct AliasDetailView: View {
                     }
 
                     if viewModel.showFileAttachmentsSection {
-                        FileAttachmentsViewSection(files: viewModel.files.fetchedObject ?? [],
+                        FileAttachmentsViewSection(files: viewModel.fileUiModels,
                                                    isFetching: viewModel.files.isFetching,
                                                    fetchError: viewModel.files.error,
                                                    handler: viewModel)

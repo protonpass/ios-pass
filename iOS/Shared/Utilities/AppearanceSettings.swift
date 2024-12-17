@@ -20,6 +20,7 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
+import QuickLook
 import UIKit
 
 enum AppearanceSettings {
@@ -29,6 +30,8 @@ enum AppearanceSettings {
 
             UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
                 PassColor.interactionNorm
+            UIView.appearance(whenContainedInInstancesOf: [QLPreviewController.self]).backgroundColor =
+                PassColor.backgroundNorm
             UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
 
             UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: PassColor.textNorm]

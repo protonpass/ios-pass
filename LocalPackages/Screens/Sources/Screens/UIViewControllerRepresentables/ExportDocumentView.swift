@@ -21,15 +21,19 @@
 
 import SwiftUI
 
-struct ExportDocumentView: UIViewControllerRepresentable {
+public struct ExportDocumentView: UIViewControllerRepresentable {
     let url: URL
 
-    func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
+    public init(url: URL) {
+        self.url = url
+    }
+
+    public func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         UIDocumentPickerViewController(forExporting: [url])
     }
 
-    func updateUIViewController(_ uiViewController: UIDocumentPickerViewController,
-                                context: Context) {
+    public func updateUIViewController(_ uiViewController: UIDocumentPickerViewController,
+                                       context: Context) {
         // Not applicable
     }
 }
