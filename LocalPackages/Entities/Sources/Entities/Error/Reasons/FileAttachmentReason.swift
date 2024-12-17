@@ -38,6 +38,7 @@ public extension PassError {
         case failedToAttachMissingRemoteId
         case failedToAttachMissingEncryptedFileKey
         case failedToCreateFileOnFileSystem
+        case failedToUpdateMissingMimeType
         case failedToUpload(Int)
         case fileTooLarge(UInt64)
         case missingItemKey(Int)
@@ -75,6 +76,8 @@ public extension PassError {
                 "Failed to attach file to an item because of missing encrypted file key"
             case .failedToCreateFileOnFileSystem:
                 "Failed to create file on filesystem"
+            case .failedToUpdateMissingMimeType:
+                "Failed to update because of missing MIME type"
             case let .failedToUpload(code):
                 "Failed to upload (\(code))"
             case let .fileTooLarge(size):
