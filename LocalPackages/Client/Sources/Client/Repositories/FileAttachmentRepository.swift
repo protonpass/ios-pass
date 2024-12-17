@@ -45,6 +45,10 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
     func updatePendingFileName(userId: String,
                                file: PendingFileAttachment,
                                newName: String) async throws -> Bool
+    func updateItemFileName(userId: String,
+                            item: any ItemIdentifiable,
+                            file: ItemFile,
+                            newName: String) async throws -> ItemFile
     func linkFilesToItem(userId: String,
                          pendingFilesToAdd: [PendingFileAttachment],
                          existingFileIdsToRemove: [String],
@@ -132,6 +136,48 @@ public extension FileAttachmentRepository {
         return try await remoteFileDatasource.updatePendingFileMetadata(userId: userId,
                                                                         fileId: remoteId,
                                                                         metadata: metadata)
+    }
+
+    func updateItemFileName(userId: String,
+                            item: any ItemIdentifiable,
+                            file: ItemFile,
+                            newName: String) async throws -> ItemFile {
+        guard let mimeType = file.mimeType else {
+            throw PassError.fileAttachment(.failedToUpdateMissingMimeType)
+        }
+        var metadataProtobuf = FileMetadata()
+        metadataProtobuf.name = newName
+        metadataProtobuf.mimeType = mimeType
+
+        let itemKeys = try await keyManager.getItemKeys(userId: userId,
+                                                        shareId: item.shareId,
+                                                        itemId: item.itemId)
+
+        guard let itemKey = itemKeys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+            throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
+        }
+
+        guard let encryptedFileKey = try file.fileKey.base64Decode() else {
+            throw PassError.fileAttachment(.failedToDownloadMissingDecryptedFileKey(file.fileID))
+        }
+
+        let fileKey = try AES.GCM.open(encryptedFileKey,
+                                       key: itemKey.keyData,
+                                       associatedData: .fileKey)
+
+        guard let encryptedMetadata = try AES.GCM.seal(metadataProtobuf.serializedData(),
+                                                       key: fileKey,
+                                                       associatedData: .fileData).combined else {
+            throw PassError.fileAttachment(.failedToEncryptFile)
+        }
+        let metadata = encryptedMetadata.base64EncodedString()
+        var updatedFile = try await remoteFileDatasource.updateFileMetadata(userId: userId,
+                                                                            item: item,
+                                                                            fileId: file.fileID,
+                                                                            metadata: metadata)
+        updatedFile.name = newName
+        updatedFile.mimeType = file.mimeType
+        return updatedFile
     }
 
     func linkFilesToItem(userId: String,
