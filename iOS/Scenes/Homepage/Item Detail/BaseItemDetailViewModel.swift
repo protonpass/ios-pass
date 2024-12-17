@@ -175,7 +175,10 @@ class BaseItemDetailViewModel: ObservableObject {
     func fetchAttachments() async {
         guard fileAttachmentsEnabled else { return }
         do {
-            files = .fetching
+            if files.isError {
+                files = .fetching
+            }
+
             let userId = try await userManager.getActiveUserId()
             let files = try await fileRepository.getActiveItemFiles(userId: userId,
                                                                     item: itemContent)
@@ -215,6 +218,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 }
                 itemContent = updatedItemContent
                 bindValues()
+                await fetchAttachments()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))

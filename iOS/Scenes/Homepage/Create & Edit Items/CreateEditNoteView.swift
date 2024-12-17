@@ -293,7 +293,7 @@ private extension CreateEditNoteContentUIView {
                                       itemContentType: handler.itemContentType,
                                       uiModel: file,
                                       primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                      secondaryTintColor: handler.fileAttachmentsSectionPrimaryColor)
+                                      secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)
                 let viewController = UIHostingController(rootView: row)
                 viewController.view.backgroundColor = .clear
                 viewController.view.translatesAutoresizingMaskIntoConstraints = false
