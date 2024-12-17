@@ -26,15 +26,19 @@ public extension PassError {
         case noPngData
         case noDataFound(URL)
         case noDataForChunk(String)
+        case noChunkId(String)
         case failedToProcessPickedPhotos
         case failedToEncryptMetadata
         case failedToEncryptFile
         case failedToUploadMissingRemoteId
         case failedToUploadMissingEncryptedData
+        case failedToDownloadMissingFileName(String)
+        case failedToDownloadMissingDecryptedFileKey(String)
         case failedToAttachMissingRemoteId
         case failedToAttachMissingEncryptedFileKey
         case failedToUpload(Int)
         case fileTooLarge(UInt64)
+        case missingItemKey(Int)
 
         public var debugDescription: String {
             switch self {
@@ -44,6 +48,8 @@ public extension PassError {
                 "No data found \(url.absoluteString)"
             case let .noDataForChunk(id):
                 "No data for chunk \(id)"
+            case let .noChunkId(fileId):
+                "No chunk ID for file \(fileId)"
             case .failedToProcessPickedPhotos:
                 "Failed to process picked photos"
             case .failedToEncryptMetadata:
@@ -54,6 +60,10 @@ public extension PassError {
                 "Failed to upload because of missing remote ID"
             case .failedToUploadMissingEncryptedData:
                 "Failed to upload because of missing encrypted data"
+            case let .failedToDownloadMissingFileName(id):
+                "Failed to download because of missing file name \(id)"
+            case let .failedToDownloadMissingDecryptedFileKey(id):
+                "Failed to download because of missing decrypted file key \(id)"
             case .failedToAttachMissingRemoteId:
                 "Failed to attach file to an item because of missing remote ID"
             case .failedToAttachMissingEncryptedFileKey:
@@ -62,6 +72,8 @@ public extension PassError {
                 "Failed to upload (\(code))"
             case let .fileTooLarge(size):
                 "File too large (\(size) bytes)"
+            case let .missingItemKey(rotation):
+                "Missing item key rotation \(rotation)"
             }
         }
     }
