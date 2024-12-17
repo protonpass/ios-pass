@@ -299,7 +299,7 @@ extension SharedUseCasesContainer {
                        removeUserLocalData: self.removeUserLocalData(),
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
-                       accessRepository: SharedRepositoryContainer.shared.accessRepository(),
+                       accessRepository: self.accessRepository,
                        vaultsManager: self.vaultsManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
@@ -515,6 +515,16 @@ extension SharedUseCasesContainer {
 
     var getAllAliases: Factory<any GetAllAliasesUseCase> {
         self { GetAllAliases(itemRepository: self.itemRepository) }
+    }
+
+    var sendUserMonitoringStats: Factory<any SendUserMonitoringStatsUseCase> {
+        self {
+            SendUserMonitoringStats(passMonitorRepository: SharedRepositoryContainer.shared
+                .passMonitorRepository(),
+                accessRepository: self.accessRepository,
+                userManager: self.userManager,
+                storage: kSharedUserDefaults)
+        }
     }
 }
 
