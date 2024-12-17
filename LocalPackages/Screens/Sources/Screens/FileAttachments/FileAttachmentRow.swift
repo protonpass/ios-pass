@@ -27,6 +27,7 @@ import SwiftUI
 public struct FileAttachmentRow: View {
     @State private var name: String
     @State private var showRenameAlert = false
+    @State private var showDeleteAlert = false
     @State private var showFilePreview = false
 
     private let mode: Mode
@@ -107,14 +108,14 @@ public struct FileAttachmentRow: View {
             case .uploaded:
                 Menu(content: {
                     switch mode {
-                    case let .edit(_, onDelete, _):
+                    case .edit:
                         LabelButton(title: "Rename",
                                     icon: PassIcon.rename,
                                     action: { showRenameAlert.toggle() })
                         Divider()
                         LabelButton(title: "Delete",
                                     icon: IconProvider.trash,
-                                    action: onDelete)
+                                    action: { showDeleteAlert.toggle() })
 
                     case let .view(onOpen, onSave, onShare):
                         LabelButton(title: "Open",
@@ -157,13 +158,18 @@ public struct FileAttachmentRow: View {
                        .disabled(name.isEmpty)
                    Button("Cancel", role: .cancel, action: { name = uiModel.name })
                })
+        .alert("Delete file?",
+               isPresented: $showDeleteAlert,
+               actions: {
+                   Button("Delete", role: .destructive, action: delete)
+                   Button("Cancel", role: .cancel, action: {})
+               },
+               message: { Text(verbatim: uiModel.name) })
         .fullScreenCover(isPresented: $showFilePreview) {
             if let url = uiModel.url {
                 FileAttachmentPreview(url: url,
                                       primaryTintColor: primaryTintColor,
-                                      secondaryTintColor: secondaryTintColor,
-                                      onRename: { rename($0) },
-                                      onDelete: delete)
+                                      secondaryTintColor: secondaryTintColor)
             }
         }
     }
