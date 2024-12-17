@@ -670,8 +670,18 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                         pendingFile.metadata.name = newName
                         files.upsert(pendingFile)
                     }
+
                 case let .item(itemFile):
-                    break
+                    if let itemContent = mode.itemContent {
+                        let updatedFile =
+                            try await fileRepository.updateItemFileName(userId: userId,
+                                                                        item: itemContent,
+                                                                        file: itemFile,
+                                                                        newName: newName)
+                        files.upsert(updatedFile)
+                        router.present(for: .updateItem(type: itemContentType, updated: true))
+                    }
+
                 default:
                     assertionFailure("No item with id \(attachment.id)")
                 }
