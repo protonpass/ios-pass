@@ -148,7 +148,6 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.encryptFile) private var encryptFile
-    @LazyInjected(\SharedUseCasesContainer.decryptFile) private var decryptFile
     @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
 
     var fileAttachmentsEnabled: Bool {

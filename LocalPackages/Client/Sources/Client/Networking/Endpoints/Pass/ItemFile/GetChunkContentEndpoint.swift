@@ -1,7 +1,7 @@
 //
-// GetLogoEndpoint.swift
-// Proton Pass - Created on 13/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// GetChunkContentEndpoint.swift
+// Proton Pass - Created on 17/12/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,18 +21,18 @@
 import Foundation
 import ProtonCoreNetworking
 
-struct GetLogoEndpoint: Endpoint, @unchecked Sendable {
+struct GetChunkContentEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
     typealias Response = EmptyResponse
 
     var debugDescription: String
     var path: String
-    var parameters: [String: Any]?
 
-    init(domain: String, size: Int = 32, mode: String = "dark", format: String = "png") {
-        debugDescription = "Get fav icon of a domain"
-        path = "/core/v4/images/logo"
-        let host = URL(string: domain)?.host ?? domain
-        parameters = ["Domain": host, "Size": size, "Mode": mode, "Format": format]
+    init(shareId: String,
+         itemId: String,
+         fileId: String,
+         chunkId: String) {
+        debugDescription = "Get chunk content"
+        path = "/pass/v1/share/\(shareId)/item/\(itemId)/file/\(fileId)/chunk/\(chunkId)"
     }
 }

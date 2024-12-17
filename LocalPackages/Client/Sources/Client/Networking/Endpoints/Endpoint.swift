@@ -25,6 +25,9 @@ import ProtonCoreNetworking
 /// For endpoints that have no body like GET ones
 struct EmptyRequest: Encodable, Sendable {}
 
+/// For octet-stream endpoints
+struct EmptyResponse: Decodable, Sendable {}
+
 /// Holds responses that only have `code` field
 struct CodeOnlyResponse: Decodable, Sendable {
     let code: Int
