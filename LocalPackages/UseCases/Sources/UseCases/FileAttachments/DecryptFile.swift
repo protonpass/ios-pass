@@ -23,22 +23,21 @@ import Client
 import CryptoKit
 import Foundation
 
-/// Symetrically decrypt a file at a given URL and save to a destination URL
+/// Symetrically decrypt the content of a file and save to a destination URL
 public protocol DecryptFileUseCase: Sendable {
-    func execute(key: Data, sourceUrl: URL, destinationUrl: URL) async throws
+    func execute(key: Data, data: Data, destinationUrl: URL) async throws
 }
 
 public extension DecryptFileUseCase {
-    func callAsFunction(key: Data, sourceUrl: URL, destinationUrl: URL) async throws {
-        try await execute(key: key, sourceUrl: sourceUrl, destinationUrl: destinationUrl)
+    func callAsFunction(key: Data, data: Data, destinationUrl: URL) async throws {
+        try await execute(key: key, data: data, destinationUrl: destinationUrl)
     }
 }
 
 public final class DecryptFile: DecryptFileUseCase {
     public init() {}
 
-    public func execute(key: Data, sourceUrl: URL, destinationUrl: URL) async throws {
-        let data = try Data(contentsOf: sourceUrl)
+    public func execute(key: Data, data: Data, destinationUrl: URL) async throws {
         let decryptedData = try AES.GCM.open(data, key: key, associatedData: .fileData)
         FileManager.default.createFile(atPath: destinationUrl.path(), contents: decryptedData)
     }
