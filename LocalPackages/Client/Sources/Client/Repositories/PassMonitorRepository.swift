@@ -45,6 +45,8 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
 
     func reset() async
 
+    func sendUserMonitorStats() async throws
+
     // MARK: - Breaches
 
     func refreshUserBreaches() async throws -> UserBreaches
@@ -66,6 +68,7 @@ public protocol PassMonitorRepositoryProtocol: Sendable {
 
 public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private let itemRepository: any ItemRepositoryProtocol
+    private let shareRepository: any ShareRepositoryProtocol
     private let symmetricKeyProvider: any SymmetricKeyProvider
     private let passwordScorer: any PasswordScorerProtocol
     private let twofaDomainChecker: any TwofaDomainCheckerProtocol
@@ -81,12 +84,14 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
     private var refreshTask: Task<Void, Never>?
 
     public init(itemRepository: any ItemRepositoryProtocol,
+                shareRepository: any ShareRepositoryProtocol,
                 remoteDataSource: any RemoteBreachDataSourceProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 userManager: any UserManagerProtocol,
                 passwordScorer: any PasswordScorerProtocol = PasswordScorer(),
                 twofaDomainChecker: any TwofaDomainCheckerProtocol = TwofaDomainChecker()) {
         self.itemRepository = itemRepository
+        self.shareRepository = shareRepository
         self.symmetricKeyProvider = symmetricKeyProvider
         self.passwordScorer = passwordScorer
         self.twofaDomainChecker = twofaDomainChecker
@@ -103,64 +108,24 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     public func refreshSecurityChecks() async throws {
         let userId = try await userManager.getActiveUserId()
-        var passwordCounts = [String: Int]()
-        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-        let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
-            .compactMap { encryptedItem -> InternalPassMonitorItem? in
-                guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-                      let loginItem = item.loginItem else {
-                    return nil
-                }
+//        var passwordCounts = [String: Int]()
+//        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
+//        let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
+//            .compactMap { encryptedItem -> InternalPassMonitorItem? in
+//                guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
+//                      let loginItem = item.loginItem else {
+//                    return nil
+//                }
+//
+//                if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
+//                    passwordCounts[loginItem.password, default: 0] += 1
+//                }
+//                return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
+//            }
 
-                if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
-                    passwordCounts[loginItem.password, default: 0] += 1
-                }
-                return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
-            }
-
-        // Filter out unique passwords
-        let reusedPasswords = Set(passwordCounts.filter { $0.value > 1 }.map(\.key))
-
-        var numberOfWeakPassword = 0
-        var numberOfMissing2fa = 0
-        var numberOfExcludedItems = 0
-
-        var securityAffectedItems = [SecurityAffectedItem]()
-
-        for item in loginItems {
-            var weaknesses = [SecurityWeakness]()
-
-            if item.encrypted.item.monitoringDisabled {
-                weaknesses.append(.excludedItems)
-                numberOfExcludedItems += 1
-            } else {
-                if reusedPasswords.contains(item.loginData.password) {
-                    weaknesses.append(.reusedPasswords)
-                }
-
-                if !item.loginData.password.isEmpty,
-                   passwordScorer.checkScore(password: item.loginData.password) != .strong {
-                    weaknesses.append(.weakPasswords)
-                    numberOfWeakPassword += 1
-                }
-
-                if item.loginData.totpUri.isEmpty,
-                   item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }),
-                   item.loginData.passkeys.isEmpty {
-                    weaknesses.append(.missing2FA)
-                    numberOfMissing2fa += 1
-                }
-            }
-
-            if !weaknesses.isEmpty {
-                securityAffectedItems.append(SecurityAffectedItem(item: item.encrypted, weaknesses: weaknesses))
-            }
-        }
-        weaknessStats.send(WeaknessStats(weakPasswords: numberOfWeakPassword,
-                                         reusedPasswords: reusedPasswords.count,
-                                         missing2FA: numberOfMissing2fa,
-                                         excludedItems: numberOfExcludedItems))
-        itemsWithSecurityIssues.send(securityAffectedItems)
+        let result = try await weaknessStats(userId: userId, userOwned: false)
+        weaknessStats.send(result.0)
+        itemsWithSecurityIssues.send(result.1)
     }
 
     public func getItemsWithSamePassword(item: ItemContent) async throws -> [ItemContent] {
@@ -292,6 +257,13 @@ public extension PassMonitorRepository {
                                                         shareId: sharedId,
                                                         itemId: itemId)
     }
+
+    func sendUserMonitorStats() async throws {
+        try Task.checkCancellation()
+        let userId = try await userManager.getActiveUserId()
+        let result = try await weaknessStats(userId: userId, userOwned: true)
+        return try await remoteDataSource.sendUserMonitorStats(userId: userId, stats: result.0)
+    }
 }
 
 private extension PassMonitorRepository {
@@ -322,6 +294,90 @@ private extension PassMonitorRepository {
             .store(in: &cancellable)
         refresh()
     }
+
+    func weaknessStats(userId: String, userOwned: Bool) async throws -> (WeaknessStats, [SecurityAffectedItem]) {
+        var passwordCounts = [String: Int]()
+        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
+        let ownedShareIds = try await ownedShareIds(userId: userId, userOwned: userOwned)
+        let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
+            .filter {
+                if userOwned {
+                    ownedShareIds.contains($0.shareId)
+                } else {
+                    true
+                }
+            }
+            .compactMap { encryptedItem -> InternalPassMonitorItem? in
+                guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
+                      let loginItem = item.loginItem else {
+                    return nil
+                }
+
+                if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
+                    passwordCounts[loginItem.password, default: 0] += 1
+                }
+                return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
+            }
+
+        // Filter out unique passwords
+        let reusedPasswords = Set(passwordCounts.filter { $0.value > 1 }.map(\.key))
+
+        var numberOfWeakPassword = 0
+        var numberOfMissing2fa = 0
+        var numberOfExcludedItems = 0
+
+        var securityAffectedItems = [SecurityAffectedItem]()
+
+        for item in loginItems {
+            var weaknesses = [SecurityWeakness]()
+
+            if item.encrypted.item.monitoringDisabled {
+                weaknesses.append(.excludedItems)
+                numberOfExcludedItems += 1
+            } else {
+                if reusedPasswords.contains(item.loginData.password) {
+                    weaknesses.append(.reusedPasswords)
+                }
+
+                if !item.loginData.password.isEmpty,
+                   passwordScorer.checkScore(password: item.loginData.password) != .strong {
+                    weaknesses.append(.weakPasswords)
+                    numberOfWeakPassword += 1
+                }
+
+                if item.loginData.totpUri.isEmpty,
+                   item.loginData.urls.contains(where: { twofaDomainChecker.twofaDomainEligible(domain: $0) }),
+                   item.loginData.passkeys.isEmpty {
+                    weaknesses.append(.missing2FA)
+                    numberOfMissing2fa += 1
+                }
+            }
+
+            if !weaknesses.isEmpty {
+                securityAffectedItems.append(SecurityAffectedItem(item: item.encrypted, weaknesses: weaknesses))
+            }
+        }
+
+        return (WeaknessStats(weakPasswords: numberOfWeakPassword,
+                              reusedPasswords: reusedPasswords.count,
+                              missing2FA: numberOfMissing2fa,
+                              excludedItems: numberOfExcludedItems),
+                securityAffectedItems)
+    }
+
+    func ownedShareIds(userId: String, userOwned: Bool) async throws -> Set<String> {
+        var ownedShareIds = Set<String>()
+        if userOwned {
+            ownedShareIds = try await shareRepository.getShares(userId: userId)
+                .compactMapToSet { share -> String? in
+                    guard share.share.owner else {
+                        return nil
+                    }
+                    return share.share.shareID
+                }
+        }
+        return ownedShareIds
+    }
 }
 
 private extension [ProtonAddress] {
@@ -333,5 +389,21 @@ private extension [ProtonAddress] {
 private extension [CustomEmail] {
     func sorted() -> Self {
         sorted(by: { $0.breachCounter > $1.breachCounter || ($0.verified && !$1.verified) })
+    }
+}
+
+extension Array {
+    /// Map, but for a `Set`.
+    /// - Parameter transform: The transform to apply to each element.
+    func compactMapToSet<T>(_ transform: (Element) throws -> T?) rethrows -> Set<T> {
+        var tempSet = Set<T>()
+
+        for item in self {
+            if let element = try transform(item) {
+                tempSet.insert(element)
+            }
+        }
+
+        return tempSet
     }
 }
