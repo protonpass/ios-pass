@@ -80,12 +80,10 @@ public struct FileAttachmentsEditSection: View {
                         .foregroundStyle(PassColor.textNorm.toColor)
 
                     if let fetchError {
-                        HStack {
-                            Text(fetchError.localizedDescription)
-                                .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                            Spacer()
-                            RetryButton(onRetry: handler.retryFetchAttachedFiles)
-                        }
+                        RetryableErrorView(mode: .defaultHorizontal,
+                                           tintColor: handler.fileAttachmentsSectionPrimaryColor,
+                                           errorMessage: fetchError.localizedDescription,
+                                           onRetry: handler.retryFetchAttachedFiles)
                     }
 
                     if !files.isEmpty {
@@ -122,7 +120,7 @@ public struct FileAttachmentsEditSection: View {
                                   itemContentType: handler.itemContentType,
                                   uiModel: file,
                                   primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                  secondaryTintColor: handler.fileAttachmentsSectionPrimaryColor)
+                                  secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                     .disabled(isUploading)
                 if file != files.last {

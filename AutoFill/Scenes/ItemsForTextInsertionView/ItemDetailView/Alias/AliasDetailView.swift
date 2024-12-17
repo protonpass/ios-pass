@@ -79,18 +79,14 @@ private extension AliasDetailView {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 if let error = viewModel.mailboxesError {
-                    HStack {
-                        Text(error.localizedDescription)
-                            .font(.callout)
-                            .foregroundStyle(PassColor.passwordInteractionNormMajor2.toColor)
-                            .frame(maxWidth: .infinity, alignment: .leading)
-                        Spacer()
-                        RetryButton(tintColor: tintColor) {
-                            Task {
-                                await viewModel.fetchMailboxes()
-                            }
-                        }
-                    }
+                    RetryableErrorView(mode: .defaultHorizontal,
+                                       tintColor: tintColor,
+                                       errorMessage: error.localizedDescription,
+                                       onRetry: {
+                                           Task {
+                                               await viewModel.fetchMailboxes()
+                                           }
+                                       })
                 } else if let mailboxes = viewModel.mailboxes {
                     ForEach(mailboxes, id: \.ID) { mailbox in
                         Text(mailbox.email)

@@ -205,11 +205,10 @@ struct AliasDetailView: View {
 
             VStack(alignment: .leading, spacing: 8) {
                 if let error = viewModel.error {
-                    RetryableErrorCellView(errorMessage: error.localizedDescription,
-                                           textColor: PassColor.signalDanger.toColor,
-                                           buttonColor: iconTintColor) {
-                        viewModel.refresh()
-                    }
+                    RetryableErrorView(mode: .defaultHorizontal,
+                                       tintColor: iconTintColor,
+                                       errorMessage: error.localizedDescription,
+                                       onRetry: viewModel.refresh)
                 } else {
                     Text("Forwarding to")
                         .sectionTitleText()
