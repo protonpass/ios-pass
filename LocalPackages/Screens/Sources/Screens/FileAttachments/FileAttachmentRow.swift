@@ -145,6 +145,8 @@ public struct FileAttachmentRow: View {
         .buttonEmbeded {
             if uiModel.url != nil {
                 showFilePreview.toggle()
+            } else if case let .view(onOpen, _, _) = mode {
+                onOpen()
             }
         }
         .alert("Rename file",

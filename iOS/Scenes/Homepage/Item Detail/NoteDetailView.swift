@@ -84,8 +84,8 @@ struct NoteDetailView: View {
                         case .fetching:
                             EmptyView()
 
-                        case let .fetched(files):
-                            ForEach(files) { file in
+                        case .fetched:
+                            ForEach(viewModel.fileUiModels) { file in
                                 FileAttachmentRow(mode: .view(onOpen: { viewModel.open(file) },
                                                               onSave: { viewModel.save(file) },
                                                               onShare: { viewModel.share(file) }),

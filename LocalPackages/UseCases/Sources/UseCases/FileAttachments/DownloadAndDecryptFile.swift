@@ -39,7 +39,7 @@ public extension DownloadAndDecryptFileUseCase {
     }
 }
 
-public final class DownloadAndDecrypt: DownloadAndDecryptFileUseCase {
+public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
     private let keyManager: any PassKeyManagerProtocol
     private let remoteDatasource: any RemoteFileDatasourceProtocol
     private let decryptFile: any DecryptFileUseCase
@@ -63,9 +63,13 @@ public final class DownloadAndDecrypt: DownloadAndDecryptFileUseCase {
             throw PassError.fileAttachment(.failedToDownloadMissingFileName(file.fileID))
         }
 
-        let filePath =
-            "\(userId)/\(item.shareId)/\(item.itemId)/\(file.fileID)/\(file.modifyTime)/\(name))"
-        let url = FileManager.default.temporaryDirectory.appending(path: filePath)
+        let url = FileManager.default.temporaryDirectory
+            .appending(path: userId)
+            .appending(path: item.shareId)
+            .appending(path: item.itemId)
+            .appending(path: file.fileID)
+            .appending(path: "\(file.modifyTime)")
+            .appendingPathComponent(name, conformingTo: .data)
 
         if FileManager.default.fileExists(atPath: url.path()) {
             return url
