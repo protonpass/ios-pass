@@ -22,23 +22,23 @@ import Entities
 import Foundation
 
 public extension PendingFileAttachment {
-    static func random(id: String = .random(),
+    static func random(id: String? = nil,
                        key: Data = .init(),
                        metadata: PendingFileAttachment.Metadata = .random()) -> Self {
-        .init(id: id, key: key, metadata: metadata)
+        .init(id: id ?? .random(), key: key, metadata: metadata)
     }
 }
 
 public extension PendingFileAttachment.Metadata {
     static func random(url: URL = URL(string: "https://proton.me")!,
-                       mimeType: String = .random(),
+                       mimeType: String? = nil,
                        fileGroup: FileGroup = .document,
                        size: UInt64 = .random(in: 1...1_000),
-                       formattedSize: String? = .random()) -> Self {
+                       formattedSize: String? = nil) -> Self {
         .init(url: url,
-              mimeType: mimeType,
+              mimeType: mimeType ?? .random(),
               fileGroup: fileGroup,
               size: size,
-              formattedSize: formattedSize)
+              formattedSize: formattedSize ?? .random())
     }
 }
