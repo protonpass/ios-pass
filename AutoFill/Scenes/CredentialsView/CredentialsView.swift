@@ -240,8 +240,9 @@ private extension CredentialsView {
                     }
 
                 case let .error(error):
-                    RetryableErrorCellView(errorMessage: error.localizedDescription,
-                                           onRetry: { Task { await viewModel.filterAndSortItemsAsync() } })
+                    RetryableErrorView(mode: .defaultHorizontal,
+                                       errorMessage: error.localizedDescription,
+                                       onRetry: { Task { await viewModel.filterAndSortItemsAsync() } })
                 }
             }
             .padding(.top)

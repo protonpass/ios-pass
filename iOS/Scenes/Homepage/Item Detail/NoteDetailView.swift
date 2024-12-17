@@ -80,11 +80,29 @@ struct NoteDetailView: View {
                     }
 
                     if viewModel.showFileAttachmentsSection {
-                        FileAttachmentsViewSection(files: viewModel.files.fetchedObject ?? [],
-                                                   isFetching: viewModel.files.isFetching,
-                                                   fetchError: viewModel.files.error,
-                                                   handler: viewModel)
-                            .padding(.top, 8)
+                        switch viewModel.files {
+                        case .fetching:
+                            EmptyView()
+
+                        case let .fetched(files):
+                            ForEach(files) { file in
+                                FileAttachmentRow(mode: .view(onOpen: { viewModel.open(file) },
+                                                              onSave: { viewModel.save(file) },
+                                                              onShare: { viewModel.share(file) }),
+                                                  itemContentType: viewModel.itemContentType,
+                                                  uiModel: file,
+                                                  primaryTintColor: PassColor.noteInteractionNormMajor2,
+                                                  secondaryTintColor: PassColor.noteInteractionNormMinor1)
+                                    .padding(.top, 16)
+                            }
+
+                        case let .error(error):
+                            RetryableErrorView(mode: .defaultHorizontal,
+                                               tintColor: PassColor.noteInteractionNormMajor2,
+                                               errorMessage: error.localizedDescription,
+                                               onRetry: viewModel.retryFetchingAttachments)
+                                .padding(.top, 16)
+                        }
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,

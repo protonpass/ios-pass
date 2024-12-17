@@ -69,14 +69,10 @@ public struct FileAttachmentsViewSection: View {
                     }
 
                     if let fetchError {
-                        HStack {
-                            Text(fetchError.localizedDescription)
-                                .font(.callout)
-                                .foregroundStyle(PassColor.signalDanger.toColor)
-                            Spacer()
-                            RetryButton(tintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                        onRetry: handler.retryFetchingAttachments)
-                        }
+                        RetryableErrorView(mode: .defaultHorizontal,
+                                           tintColor: handler.fileAttachmentsSectionPrimaryColor,
+                                           errorMessage: fetchError.localizedDescription,
+                                           onRetry: handler.retryFetchingAttachments)
                     }
 
                     if !files.isEmpty {

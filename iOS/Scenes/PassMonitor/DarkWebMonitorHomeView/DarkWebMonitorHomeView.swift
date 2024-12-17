@@ -251,12 +251,12 @@ private extension DarkWebMonitorHomeView {
                 }
 
             case let .error(error):
-                RetryableErrorCellView(errorMessage: error.localizedDescription) {
-                    viewModel.fetchAliasBreaches()
-                }
-                .padding(DesignConstant.sectionPadding)
-                .roundedDetailSection()
-                .frame(minHeight: 50)
+                RetryableErrorView(mode: .defaultHorizontal,
+                                   errorMessage: error.localizedDescription,
+                                   onRetry: viewModel.fetchAliasBreaches)
+                    .padding(DesignConstant.sectionPadding)
+                    .roundedDetailSection()
+                    .frame(minHeight: 50)
             }
         }, header: {
             HStack(spacing: 0) {
@@ -325,9 +325,9 @@ private extension DarkWebMonitorHomeView {
                         }
                     }
                 case let .error(error):
-                    RetryableErrorCellView(errorMessage: error.localizedDescription) {
-                        viewModel.fetchCustomEmails()
-                    }
+                    RetryableErrorView(mode: .defaultHorizontal,
+                                       errorMessage: error.localizedDescription,
+                                       onRetry: viewModel.fetchCustomEmails)
                 }
 
                 if case let .fetched(data) = viewModel.customEmailsState, !data.isEmpty,

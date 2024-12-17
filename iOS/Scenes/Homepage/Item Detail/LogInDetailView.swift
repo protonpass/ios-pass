@@ -492,9 +492,10 @@ private extension LogInDetailView {
                 }
             }
         case let .error(error):
-            RetryableErrorCellView(errorMessage: error.localizedDescription,
-                                   textColor: PassColor.signalDanger.toColor,
-                                   onRetry: { viewModel.fetchSimilarPasswordItems() })
+            RetryableErrorView(mode: .defaultHorizontal,
+                               tintColor: PassColor.loginInteractionNormMajor2,
+                               errorMessage: error.localizedDescription,
+                               onRetry: viewModel.fetchSimilarPasswordItems)
         }
     }
 }

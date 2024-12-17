@@ -18,28 +18,70 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Macro
 import SwiftUI
 
 public struct RetryableErrorView: View {
+    let mode: Mode
+    let tintColor: UIColor
     let errorMessage: String
     let onRetry: () -> Void
 
-    public init(errorMessage: String,
+    public enum Mode: Sendable {
+        /// Full-page error view, error message displayed  with retry button below
+        case vertical(textColor: UIColor)
+        /// Inlined error view, error message displayed with retry button on the right
+        case horizontal(textColor: UIColor)
+
+        public static var defaultVertical: Mode {
+            .vertical(textColor: PassColor.textNorm)
+        }
+
+        public static var defaultHorizontal: Mode {
+            .horizontal(textColor: PassColor.passwordInteractionNormMajor2)
+        }
+    }
+
+    public init(mode: Mode = .defaultVertical,
+                tintColor: UIColor = PassColor.interactionNorm,
+                errorMessage: String,
                 onRetry: @escaping () -> Void) {
+        self.mode = mode
+        self.tintColor = tintColor
         self.errorMessage = errorMessage
         self.onRetry = onRetry
     }
 
     public var body: some View {
-        VStack {
-            Text(errorMessage)
-                .multilineTextAlignment(.center)
-                .foregroundStyle(PassColor.textNorm.toColor)
-            Button(action: onRetry) {
-                Text("Retry", bundle: .module)
+        switch mode {
+        case let .vertical(textColor):
+            VStack {
+                Text(errorMessage)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(textColor.toColor)
+                retryButton
             }
-            .foregroundStyle(PassColor.interactionNorm.toColor)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+        case let .horizontal(textColor):
+            HStack {
+                Text(errorMessage)
+                    .font(.callout)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .foregroundStyle(textColor.toColor)
+                Spacer()
+                retryButton
+            }
+            .frame(maxWidth: .infinity)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+private extension RetryableErrorView {
+    var retryButton: some View {
+        Label(#localized("Retry", bundle: .module), systemImage: "arrow.counterclockwise")
+            .foregroundStyle(tintColor.toColor)
+            .labelStyle(.rightIcon)
+            .buttonEmbeded(action: onRetry)
     }
 }
