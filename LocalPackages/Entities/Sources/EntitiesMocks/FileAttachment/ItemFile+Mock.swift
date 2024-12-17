@@ -23,8 +23,8 @@ import Entities
 public extension ItemFile {
     static func random(fileID: String,
                        size: Int = .random(in: 1...1_000),
-                       metadata: String = .random(),
-                       fileKey: String = .random(),
+                       metadata: String? = nil,
+                       fileKey: String? = nil,
                        itemKeyRotation: Int = .random(in: 1...1_000),
                        chunks: [FileChunk] = [],
                        revisionAdded: Int = .random(in: 1...1_000),
@@ -33,8 +33,8 @@ public extension ItemFile {
                        modifyTime: Int = .random(in: 1...1_000)) -> Self {
         .init(fileID: fileID,
               size: size,
-              metadata: metadata,
-              fileKey: fileKey,
+              metadata: metadata ?? .random(),
+              fileKey: fileKey ?? .random(),
               itemKeyRotation: itemKeyRotation,
               chunks: chunks,
               revisionAdded: revisionAdded,
