@@ -65,12 +65,12 @@ public final class SendUserMonitoringStats: SendUserMonitoringStatsUseCase {
 private extension SendUserMonitoringStats {
     func storeCurrentTimestamp() {
         let currentTime = Date()
-        UserDefaults.standard.set(currentTime, forKey: lastSavedTimestampKey)
+        storage.set(currentTime, forKey: lastSavedTimestampKey)
     }
 
     var has24HoursPassed: Bool {
-        guard let lastSavedTime = UserDefaults.standard.object(forKey: lastSavedTimestampKey) as? Date else {
-            return false // No timestamp found means no time has passed.
+        guard let lastSavedTime = storage.object(forKey: lastSavedTimestampKey) as? Date else {
+            return true // No timestamp found means stats never sent.
         }
 
         let currentTime = Date()
