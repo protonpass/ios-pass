@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable file_length
 import Client
 import Combine
 import Core
@@ -655,8 +656,29 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func rename(attachment: FileAttachmentUiModel, newName: String) {
-        print(attachment)
-        print(newName)
+        Task { [weak self] in
+            guard let self else { return }
+            router.display(element: .globalLoading(shouldShow: true))
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                switch files.first(where: { $0.id == attachment.id }) {
+                case var .pending(pendingFile):
+                    if try await fileRepository.updatePendingFileName(userId: userId,
+                                                                      file: pendingFile,
+                                                                      newName: newName) {
+                        pendingFile.metadata.name = newName
+                        files.upsert(pendingFile)
+                    }
+                case let .item(itemFile):
+                    break
+                default:
+                    assertionFailure("No item with id \(attachment.id)")
+                }
+            } catch {
+                handle(error)
+            }
+        }
     }
 
     func delete(attachment: FileAttachmentUiModel) {
@@ -691,3 +713,5 @@ private extension BaseCreateEditItemViewModel {
         files.upsert(file)
     }
 }
+
+// swiftlint:enable file_length

@@ -42,6 +42,9 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
     func uploadChunk(userId: String, file: PendingFileAttachment) async throws
+    func updatePendingFileName(userId: String,
+                               file: PendingFileAttachment,
+                               newName: String) async throws -> Bool
     func linkFilesToItem(userId: String,
                          pendingFilesToAdd: [PendingFileAttachment],
                          existingFileIdsToRemove: [String],
@@ -108,6 +111,27 @@ public extension FileAttachmentRepository {
         if !response.isSuccesful {
             throw PassError.fileAttachment(.failedToUpload(response.code))
         }
+    }
+
+    func updatePendingFileName(userId: String,
+                               file: PendingFileAttachment,
+                               newName: String) async throws -> Bool {
+        guard let remoteId = file.remoteId else {
+            throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
+        }
+        var file = file
+        file.metadata.name = newName
+        let protobuf = file.toProtobuf
+        let serializedProtobuf = try protobuf.serializedData()
+        let encryptedProtobuf = try AES.GCM.seal(serializedProtobuf,
+                                                 key: file.key,
+                                                 associatedData: .fileData)
+        guard let metadata = encryptedProtobuf.combined?.base64EncodedString() else {
+            throw PassError.fileAttachment(.failedToEncryptMetadata)
+        }
+        return try await remoteFileDatasource.updatePendingFileMetadata(userId: userId,
+                                                                        fileId: remoteId,
+                                                                        metadata: metadata)
     }
 
     func linkFilesToItem(userId: String,
