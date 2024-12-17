@@ -42,7 +42,7 @@ public extension PendingFileAttachment {
     struct Metadata: Sendable, Equatable {
         /// The local path to the unencrypted file
         public let url: URL
-        public let name: String
+        public var name: String
         public let mimeType: String
         public let fileGroup: FileGroup
         public let size: UInt64
