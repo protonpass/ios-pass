@@ -25,6 +25,7 @@ public extension PassError {
     enum FileAttachmentReason: CustomDebugStringConvertible, Sendable {
         case noPngData
         case noDataFound(URL)
+        case noDataForChunk(String)
         case failedToProcessPickedPhotos
         case failedToEncryptMetadata
         case failedToEncryptFile
@@ -41,6 +42,8 @@ public extension PassError {
                 "No PNG data"
             case let .noDataFound(url):
                 "No data found \(url.absoluteString)"
+            case let .noDataForChunk(id):
+                "No data for chunk \(id)"
             case .failedToProcessPickedPhotos:
                 "Failed to process picked photos"
             case .failedToEncryptMetadata:
