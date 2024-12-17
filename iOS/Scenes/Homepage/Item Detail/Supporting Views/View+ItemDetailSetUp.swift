@@ -62,9 +62,7 @@ struct ItemDetailSetUpModifier: ViewModifier {
                 case let .preview(url):
                     FileAttachmentPreview(url: url,
                                           primaryTintColor: viewModel.itemContentType.normMajor2Color,
-                                          secondaryTintColor: viewModel.itemContentType.normMinor1Color,
-                                          onRename: { _ in },
-                                          onDelete: {})
+                                          secondaryTintColor: viewModel.itemContentType.normMinor1Color)
                 case let .save(url):
                     ExportDocumentView(url: url)
                 case let .share(url):
