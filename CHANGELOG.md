@@ -1,3 +1,14 @@
+# Version 1.14.3
+Better authentication:
+Now, when autofilling, you'll only need Face ID or Touch ID for authentication if you've used the app recently—no need to reauthenticate within the app. This streamlines your experience while keeping your data secure.
+
+Improvements:
+- Re-encrypt item keys instead of the last 50 revisions when moving items to other vaults
+- Enhanced display and editing of shared aliases
+- Logins with passkeys are no longer flagged as missing 2FA
+- Pinned items now update correctly after being trashed or restored
+- Dismiss the keyboard automatically when scrolling through search results
+
 # Version 1.14.1
 Features:
 - Resolved jumbled favicons issue on iOS 17
