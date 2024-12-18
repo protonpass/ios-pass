@@ -40,18 +40,18 @@ public final class SendUserMonitoringStats: SendUserMonitoringStatsUseCase {
     private let userManager: any UserManagerProtocol
     private let storage: UserDefaults
     private let lastSentTimestampKey = "lastSentStatsTimestamp"
-    private let waitingPeriod: Int
+    private let waitingPeriodInHours: Int
 
     public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 userManager: any UserManagerProtocol,
                 storage: UserDefaults,
-                waitingPeriod: Int = 24) {
+                waitingPeriodInHours: Int = 24) {
         self.passMonitorRepository = passMonitorRepository
         self.accessRepository = accessRepository
         self.userManager = userManager
         self.storage = storage
-        self.waitingPeriod = waitingPeriod
+        self.waitingPeriodInHours = waitingPeriodInHours
     }
 
     public func execute() async throws {
@@ -77,6 +77,6 @@ private extension SendUserMonitoringStats {
             return true // No timestamp found means stats never sent.
         }
 
-        return Date().timeDifference(from: lastSavedTime).hours >= waitingPeriod
+        return Date().timeDifference(from: lastSavedTime).hours >= waitingPeriodInHours
     }
 }
