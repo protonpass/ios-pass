@@ -30,12 +30,11 @@ import Testing
 @Suite(.serialized, .tags(.monitor))
 struct SendUserMonitoringStatsTests {
     // Mocks
-    private var passMonitorRepository: PassMonitorRepositoryProtocolMock
-    private var accessRepository: AccessRepositoryProtocolMock
-    private var userManager: UserManagerProtocolMock
-    private var userDefaults: UserDefaults
-
-    private var sut: SendUserMonitoringStatsUseCase!
+    private let passMonitorRepository: PassMonitorRepositoryProtocolMock
+    private let accessRepository: AccessRepositoryProtocolMock
+    private let userManager: UserManagerProtocolMock
+    private let userDefaults: UserDefaults
+    private let sut: SendUserMonitoringStatsUseCase
     private let lastSavedTimestampKey = "lastSentStatsTimestamp"
 
     let user = UserData(credential: .init(sessionID: "test_session_id",
@@ -123,7 +122,6 @@ struct SendUserMonitoringStatsTests {
 
     @Test("Should send as stats never sent and plan is business")
     func shouldSendStatsAsNoTimestamp() async throws {
-        // Arrange: Store a timestamp 25 hours ago
         userDefaults.removeObject(forKey: lastSavedTimestampKey)
 
         passMonitorRepository.invokedSendUserMonitorStatsfunction = false
