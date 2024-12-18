@@ -33,6 +33,7 @@ import Testing
 struct PassMonitorRepositoryTests {
     let symmetricKeyProviderMockFactory: SymmetricKeyProviderMockFactory
     let itemRepository: ItemRepositoryProtocolMock
+    let shareRepository: ShareRepositoryProtocolMock
     let sut: PassMonitorRepositoryProtocol
     let userManager: UserManagerProtocolMock
 
@@ -44,7 +45,9 @@ struct PassMonitorRepositoryTests {
         itemRepository = ItemRepositoryProtocolMock()
         itemRepository.stubbedGetActiveLogInItemsResult = []
         itemRepository.stubbedItemsWereUpdated = .init(())
+        shareRepository = ShareRepositoryProtocolMock()
         sut = PassMonitorRepository(itemRepository: itemRepository,
+                                    shareRepository: shareRepository,
                                     remoteDataSource: RemoteBreachDataSourceProtocolMock(),
                                     symmetricKeyProvider: symmetricKeyProviderMockFactory.getProvider(),
                                     userManager: userManager)
