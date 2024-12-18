@@ -100,6 +100,8 @@ final class AppContentManager: ObservableObject, @unchecked Sendable, DeinitPrin
     private(set) var incompleteFullSyncUserId: String?
 
     nonisolated let currentVaults: CurrentValueSubject<[Share], Never> = .init([])
+    // Should subscribe and receive on main queue in view models to be sure not crash appears between @MainActor
+    // isolation and combine
     nonisolated let vaultSyncEventStream = PassthroughSubject<VaultSyncProgressEvent, Never>()
     nonisolated let currentSpotlightSelectedVaults: CurrentValueSubject<[Share], Never> = .init([])
 
@@ -166,10 +168,7 @@ extension AppContentManager {
 
     // Delete everything and download again
     func fullSync(userId: String) async {
-//        await MainActor.run { [weak self] in
-//            guard let self else { return }
         vaultSyncEventStream.send(.started)
-//        }
 
         incompleteFullSyncUserId = userId
 
@@ -179,10 +178,7 @@ extension AppContentManager {
 
             // 2. Get all remote shares and their items
             let remoteShares = try await shareRepository.getRemoteShares(userId: userId)
-//            await MainActor.run { [weak self] in
-//                guard let self else { return }
             vaultSyncEventStream.send(.downloadedShares(remoteShares.representingVaults))
-//            }
 
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
                 // Step 1: Upsert all shares in a single batch
@@ -211,18 +207,12 @@ extension AppContentManager {
 
             try await loadContents(userId: userId, for: remoteShares)
         } catch {
-//            await MainActor.run { [weak self] in
-//                guard let self else { return }
             vaultSyncEventStream.send(.error(userId: userId, error: error))
-//            }
             return
         }
 
         incompleteFullSyncUserId = nil
-//        await MainActor.run { [weak self] in
-//            guard let self else { return }
         vaultSyncEventStream.send(.done)
-//        }
     }
 
     func localFullSync(userId: String) async throws {
@@ -496,6 +486,7 @@ private extension AppContentManager {
         logger.info("Created default vault for user")
     }
 
+    @MainActor
     func loadContents(userId: String, for shares: [Share]) async throws {
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let allItems = try await itemRepository.getAllItems(userId: userId)
@@ -505,17 +496,17 @@ private extension AppContentManager {
                                                  items: allItems)
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
-        await MainActor.run { [weak self] in
-            guard let self else { return }
-            currentVaults.send(shares)
-            state = .loaded(sharesData)
-            if let lastSelectedShareId = userPreferences.lastSelectedShareId,
-               let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
-                vaultSelection = .precise(vault)
-            } else {
-                vaultSelection = .all
-            }
+//        await MainActor.run { [weak self] in
+//            guard let self else { return }
+        currentVaults.send(shares)
+        state = .loaded(sharesData)
+        if let lastSelectedShareId = userPreferences.lastSelectedShareId,
+           let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
+            vaultSelection = .precise(vault)
+        } else {
+            vaultSelection = .all
         }
+//        }
 
         async let indexForAutoFill: Void = indexForAutoFill()
         async let indexItemsForSpotlight: Void = indexItemsForSpotlight(userPreferences)
