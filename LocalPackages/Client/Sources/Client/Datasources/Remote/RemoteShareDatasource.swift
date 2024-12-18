@@ -25,12 +25,12 @@ import Foundation
 public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares(userId: String) async throws -> [Share]
     func getShare(shareId: String, userId: String) async throws -> Share
-    func getUsersLinkedToVaultShare(userId: String, shareId: String, lastShareId: String?) async throws
+    func getUsersLinkedToVaultShare(userId: String, shareId: String, lastToken: String?) async throws
         -> PaginatedUsersLinkedToShare
     func getUsersLinkedToItemShare(userId: String,
                                    shareId: String,
                                    itemId: String,
-                                   lastShareId: String?) async throws
+                                   lastToken: String?) async throws
         -> PaginatedUsersLinkedToShare
     func updateUserSharePermission(userId: String,
                                    shareId: String,
@@ -67,8 +67,8 @@ public extension RemoteShareDatasource {
 
     func getUsersLinkedToVaultShare(userId: String,
                                     shareId: String,
-                                    lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
-        let endpoint = GetUsersLinkedToVaultShareEndpoint(for: shareId, lastShareId: lastShareId)
+                                    lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
+        let endpoint = GetUsersLinkedToVaultShareEndpoint(for: shareId, lastToken: lastToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response
     }
@@ -76,8 +76,8 @@ public extension RemoteShareDatasource {
     func getUsersLinkedToItemShare(userId: String,
                                    shareId: String,
                                    itemId: String,
-                                   lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
-        let endpoint = GetUsersLinkedToItemShareEndpoint(for: shareId, itemId: itemId, lastShareId: lastShareId)
+                                   lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
+        let endpoint = GetUsersLinkedToItemShareEndpoint(for: shareId, itemId: itemId, lastToken: lastToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response
     }

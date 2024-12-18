@@ -84,8 +84,7 @@ private struct FullNoteView: View {
             ScrollView {
                 VStack(alignment: .leading) {
                     ItemDetailTitleView(itemContent: itemContent,
-                                        vault: vault,
-                                        shouldShowVault: true)
+                                        vault: vault)
                         .padding(.bottom)
                     Text(title)
                         .sectionTitleText()

@@ -25,7 +25,7 @@ import ProtonCoreDataModel
 import ProtonCoreLogin
 
 public extension Item {
-    func getContentProtobuf(shareKey: any ShareKeyProtocol) throws -> ItemContentProtobuf {
+    func getContentProtobuf(shareKey: DecryptedShareKey) throws -> ItemContentProtobuf {
         guard shareKey.keyRotation == keyRotation else {
             throw PassError.crypto(.unmatchedKeyRotation(lhsKey: shareKey.keyRotation,
                                                          rhsKey: keyRotation))

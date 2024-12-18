@@ -21,6 +21,7 @@
 import Core
 import CryptoKit
 import Entities
+import Foundation
 import ProtonCoreKeyManager
 
 public struct UpdateItemRequest: Sendable {
@@ -39,17 +40,18 @@ public struct UpdateItemRequest: Sendable {
 
 public extension UpdateItemRequest {
     init(oldRevision: Item,
-         latestItemKey: any ShareKeyProtocol,
+         key: Data,
+         keyRotation: Int64,
          itemContent: any ProtobufableItemContentProtocol) throws {
         let sealedBox = try AES.GCM.seal(itemContent.data(),
-                                         key: latestItemKey.keyData,
+                                         key: key,
                                          associatedData: .itemContent)
 
         guard let updatedContent = sealedBox.combined?.base64EncodedString() else {
             throw PassError.crypto(.failedToAESEncrypt)
         }
 
-        self.init(keyRotation: latestItemKey.keyRotation,
+        self.init(keyRotation: keyRotation,
                   lastRevision: oldRevision.revision,
                   content: updatedContent,
                   contentFormatVersion: Int16(Constants.ContentFormatVersion.item))
