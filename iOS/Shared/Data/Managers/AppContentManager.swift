@@ -177,7 +177,7 @@ extension AppContentManager {
             try await deleteLocalDataBeforeFullSync()
 
             // 2. Get all remote shares and their items
-            let remoteShares = try await shareRepository.getRemoteShares(userId: userId)
+            let remoteShares = try await shareRepository.getDecryptedRemoteShares(userId: userId)
             vaultSyncEventStream.send(.downloadedShares(remoteShares.representingVaults))
 
             try await withThrowingTaskGroup(of: Void.self) { taskGroup in
@@ -496,8 +496,6 @@ private extension AppContentManager {
                                                  items: allItems)
         let userPreferences = preferencesManager.userPreferences.unwrapped()
 
-//        await MainActor.run { [weak self] in
-//            guard let self else { return }
         currentVaults.send(shares)
         state = .loaded(sharesData)
         if let lastSelectedShareId = userPreferences.lastSelectedShareId,
@@ -506,12 +504,8 @@ private extension AppContentManager {
         } else {
             vaultSelection = .all
         }
-//        }
 
-        async let indexForAutoFill: Void = indexForAutoFill()
-        async let indexItemsForSpotlight: Void = indexItemsForSpotlight(userPreferences)
-
-        _ = try await (indexForAutoFill, indexItemsForSpotlight)
+        indexContent(userPreferences: userPreferences)
     }
 
     func indexForAutoFill() async {
@@ -575,6 +569,19 @@ private extension AppContentManager {
             }
 
             return SharesData(shares: shareContents, trashedItems: trashedItems)
+        }
+    }
+
+    func indexContent(userPreferences: UserPreferences) {
+        Task {
+            do {
+                async let indexForAutoFill: Void = indexForAutoFill()
+                async let indexItemsForSpotlight: Void = indexItemsForSpotlight(userPreferences)
+
+                _ = try await (indexForAutoFill, indexItemsForSpotlight)
+            } catch {
+                logger.error(message: "Failed indexing content for auto fill and spotlight", error: error)
+            }
         }
     }
 }

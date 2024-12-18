@@ -50,7 +50,6 @@ struct ItemDetailSetUpModifier: ViewModifier {
                 Button("Cancel", role: .cancel) {}
                 Button("Leave") {
                     viewModel.leaveShare()
-                    dismiss()
                 }
             } message: {
                 Text("You will lose access to this item and its details. Do you want to continue?")

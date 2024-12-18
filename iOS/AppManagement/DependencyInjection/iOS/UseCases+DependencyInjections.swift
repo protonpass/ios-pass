@@ -323,11 +323,6 @@ extension UseCasesContainer {
         self { CreateVault(appContentManager: self.appContentManager,
                            repository: self.shareRepository) }
     }
-
-//    var reachedVaultLimit: Factory<any ReachedVaultLimitUseCase> {
-//        self { ReachedVaultLimit(accessRepository: self.accessRepository,
-//                                 vaultsManager: self.vaultsManager) }
-//    }
 }
 
 // MARK: Spotlight

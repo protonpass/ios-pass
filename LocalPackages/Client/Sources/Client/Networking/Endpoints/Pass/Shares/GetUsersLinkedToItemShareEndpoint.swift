@@ -29,15 +29,15 @@ struct GetUsersLinkedToItemShareEndpoint: @unchecked Sendable, Endpoint {
     var path: String
     var queries: [String: Any]?
 
-    init(for shareId: String, itemId: String, lastShareId: String? = nil, pageSize: Int? = nil) {
+    init(for shareId: String, itemId: String, lastToken: String? = nil, pageSize: Int? = nil) {
         debugDescription = "Get users that have access to the item"
         path = "/pass/v1/share/\(shareId)/user/item/\(itemId)"
         var queries: [String: Any] = [:]
         if let pageSize {
             queries["PageSize"] = pageSize
         }
-        if let lastShareId {
-            queries["Since"] = lastShareId
+        if let lastToken {
+            queries["Since"] = lastToken
         }
         self.queries = queries
     }

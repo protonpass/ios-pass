@@ -35,8 +35,9 @@ public protocol ShareRepositoryProtocol: Sendable {
     func getDecryptedShares(userId: String) async throws -> [Share]
     func getDecryptedShare(shareId: String) async throws -> Share?
 
-    /// Get all remote shares this decrypts the content of vault and fills up the vaultcontent of sahre if possible
-    func getRemoteShares(userId: String) async throws -> [Share]
+    /// Get all remote shares and decrypts the content of vault and fills up the vaultcontent of the shares if
+    /// possible
+    func getDecryptedRemoteShares(userId: String) async throws -> [Share]
 
     /// Delete all local shares
     func deleteAllCurrentUserSharesLocally() async throws
@@ -49,9 +50,9 @@ public protocol ShareRepositoryProtocol: Sendable {
                       shares: [Share],
                       eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
 
-    func getUsersLinkedToVaultShare(to shareId: String, lastShareId: String?) async throws
+    func getUsersLinkedToVaultShare(to shareId: String, lastToken: String?) async throws
         -> PaginatedUsersLinkedToShare
-    func getUsersLinkedToItemShare(to shareId: String, itemId: String, lastShareId: String?) async throws
+    func getUsersLinkedToItemShare(to shareId: String, itemId: String, lastToken: String?) async throws
         -> PaginatedUsersLinkedToShare
 
     @discardableResult
@@ -156,20 +157,19 @@ public extension ShareRepository {
     }
 
     /// Get all remote shares for a user. This function decrypts the content of vault and fills up the
-    /// `vaultContent`
-    /// of share if possible
-    func getRemoteShares(userId: String) async throws -> [Share] {
+    /// `vaultContent` of share if possible
+    func getDecryptedRemoteShares(userId: String) async throws -> [Share] {
         logger.trace("Getting all remote shares for user \(userId)")
         do {
             let shares = try await remoteDatasource.getShares(userId: userId)
-            let updatedShares = try await shares
+            let decryptedShares = try await shares
                 .parallelMap { [weak self] in
                     guard let self else { return $0 }
                     return try await decryptVaultContent(userId: userId, $0)
                 }
 
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
-            return updatedShares
+            return decryptedShares
         } catch {
             logger.error(message: "Failed to get remote shares for user \(userId)", error: error)
             throw error
@@ -207,25 +207,25 @@ public extension ShareRepository {
     }
 
     func getUsersLinkedToVaultShare(to shareId: String,
-                                    lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
+                                    lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId)")
         let paginatedUsers = try await remoteDatasource.getUsersLinkedToVaultShare(userId: userId,
                                                                                    shareId: shareId,
-                                                                                   lastShareId: lastShareId)
+                                                                                   lastToken: lastToken)
         logger.trace("Got \(paginatedUsers.shares.count) remote user for \(shareId)")
         return paginatedUsers
     }
 
     func getUsersLinkedToItemShare(to shareId: String,
                                    itemId: String,
-                                   lastShareId: String?) async throws -> PaginatedUsersLinkedToShare {
+                                   lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
         let userId = try await userManager.getActiveUserId()
         logger.trace("Getting all users linked to shareId \(shareId), itemId \(itemId)")
         let paginatedUsers = try await remoteDatasource.getUsersLinkedToItemShare(userId: userId,
                                                                                   shareId: shareId,
                                                                                   itemId: itemId,
-                                                                                  lastShareId: lastShareId)
+                                                                                  lastToken: lastToken)
         logger.trace("Got \(paginatedUsers.shares.count) remote user for \(shareId), itemId \(itemId)")
         return paginatedUsers
     }
@@ -376,25 +376,10 @@ private extension ShareRepository {
         if let vaultContent = share.vaultContent {
             decryptedContent = try vaultContent.data()
         } else {
-            guard let content = share.content,
-                  let keyRotation = share.contentKeyRotation else {
+            guard let content = try await decryptVaultContent(userId: userId, share).vaultContent else {
                 return .init(encryptedContent: nil, share: share)
             }
-
-            guard let contentData = try content.base64Decode() else {
-                throw PassError.crypto(.failedToBase64Decode)
-            }
-
-            guard contentData.count > 12 else {
-                throw PassError.crypto(.corruptedShareContent(shareID: share.shareID))
-            }
-
-            let key = try await passKeyManager.getShareKey(userId: userId,
-                                                           shareId: share.shareID,
-                                                           keyRotation: keyRotation)
-            decryptedContent = try AES.GCM.open(contentData,
-                                                key: key.keyData,
-                                                associatedData: .vaultContent)
+            decryptedContent = try content.data()
         }
         let reencryptedContent = try symmetricKey.encrypt(decryptedContent.encodeBase64())
         return .init(encryptedContent: reencryptedContent, share: share)

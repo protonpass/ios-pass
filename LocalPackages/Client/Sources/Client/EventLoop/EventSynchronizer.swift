@@ -96,7 +96,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
 
         logger.trace("Start sync: fetching local and remote shares + alias sync")
         async let fetchLocalShares = shareRepository.getShares(userId: userId)
-        async let fetchRemoteShares = shareRepository.getRemoteShares(userId: userId)
+        async let fetchRemoteShares = shareRepository.getDecryptedRemoteShares(userId: userId)
         async let fetchAliasSync: Void = if isSimpleLoginAliasSyncActive {
             aliasSync(userId: userId)
         } else {

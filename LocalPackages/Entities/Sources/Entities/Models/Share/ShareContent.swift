@@ -1,5 +1,5 @@
 //
-// VaultContentUiModel.swift
+// ShareContent.swift
 // Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //

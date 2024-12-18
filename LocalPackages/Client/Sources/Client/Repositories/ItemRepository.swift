@@ -591,7 +591,8 @@ public extension ItemRepository {
         }
 
         let request = try UpdateItemRequest(oldRevision: oldItem,
-                                            latestItemKey: latestItemKey,
+                                            key: latestItemKey.keyData,
+                                            keyRotation: latestItemKey.keyRotation,
                                             itemContent: newItemContent)
 
         let updatedItemRevision =

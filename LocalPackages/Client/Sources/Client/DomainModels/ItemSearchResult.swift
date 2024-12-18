@@ -146,8 +146,10 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
 
         self.pinned = pinned
         hasher.combine(pinned)
+
         self.owner = owner
         hasher.combine(owner)
+
         self.shared = shared
         hasher.combine(shared)
 

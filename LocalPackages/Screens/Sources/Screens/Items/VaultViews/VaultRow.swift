@@ -33,7 +33,7 @@ public struct VaultRow<Thumbnail: View>: View {
     private let showBadge: Bool
     private let maxWidth: CGFloat?
     private let height: CGFloat
-    private let shareAction: ((Share) -> Void?)?
+    private let shareAction: ((Share) -> Void)?
 
     public init(@ViewBuilder thumbnail: @escaping () -> Thumbnail,
                 title: String,
@@ -43,7 +43,7 @@ public struct VaultRow<Thumbnail: View>: View {
                 showBadge: Bool = false,
                 maxWidth: CGFloat? = .infinity,
                 height: CGFloat = 70,
-                shareAction: ((Share) -> Void?)? = nil) {
+                shareAction: ((Share) -> Void)? = nil) {
         self.thumbnail = thumbnail
         self.title = title
         self.itemCount = itemCount
