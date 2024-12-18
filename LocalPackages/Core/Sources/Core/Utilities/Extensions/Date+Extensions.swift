@@ -21,6 +21,7 @@
 import Foundation
 
 public extension Date {
+    // swiftlint:disable:next large_tuple
     func timeDifference(from date: Date) -> (hours: Int, minutes: Int, seconds: Int) {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.hour, .minute, .second], from: date, to: self)
