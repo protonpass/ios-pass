@@ -21,6 +21,7 @@
 //
 
 import Client
+import Core
 import Foundation
 
 public protocol SendUserMonitoringStatsUseCase: Sendable {
@@ -38,20 +39,23 @@ public final class SendUserMonitoringStats: SendUserMonitoringStatsUseCase {
     private let accessRepository: any AccessRepositoryProtocol
     private let userManager: any UserManagerProtocol
     private let storage: UserDefaults
-    private let lastSavedTimestampKey = "lastSentStatsTimestamp"
+    private let lastSentTimestampKey = "lastSentStatsTimestamp"
+    private let waitingPeriod: Int
 
     public init(passMonitorRepository: any PassMonitorRepositoryProtocol,
                 accessRepository: any AccessRepositoryProtocol,
                 userManager: any UserManagerProtocol,
-                storage: UserDefaults) {
+                storage: UserDefaults,
+                waitingPeriod: Int = 24) {
         self.passMonitorRepository = passMonitorRepository
         self.accessRepository = accessRepository
         self.userManager = userManager
         self.storage = storage
+        self.waitingPeriod = waitingPeriod
     }
 
     public func execute() async throws {
-        guard has24HoursPassed else {
+        guard thresholdReached else {
             return
         }
         let userId = try await userManager.getActiveUserId()
@@ -65,19 +69,14 @@ public final class SendUserMonitoringStats: SendUserMonitoringStatsUseCase {
 private extension SendUserMonitoringStats {
     func storeCurrentTimestamp() {
         let currentTime = Date()
-        storage.set(currentTime, forKey: lastSavedTimestampKey)
+        storage.set(currentTime, forKey: lastSentTimestampKey)
     }
 
-    var has24HoursPassed: Bool {
-        guard let lastSavedTime = storage.object(forKey: lastSavedTimestampKey) as? Date else {
+    var thresholdReached: Bool {
+        guard let lastSavedTime = storage.object(forKey: lastSentTimestampKey) as? Date else {
             return true // No timestamp found means stats never sent.
         }
 
-        let currentTime = Date()
-        let timeDifference = currentTime.timeIntervalSince(lastSavedTime) // In seconds
-
-        let hoursPassed = timeDifference / 3_600 // Convert to hours
-
-        return hoursPassed >= 24
+        return Date().timeDifference(from: lastSavedTime).hours >= waitingPeriod
     }
 }

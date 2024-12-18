@@ -1,7 +1,7 @@
 //
-// Date+AddingValue.swift
-// Proton Pass - Created on 09/03/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// Date+Extensions.swift
+// Proton Pass - Created on 18/12/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,6 +21,12 @@
 import Foundation
 
 public extension Date {
+    func timeDifference(from date: Date) -> (hours: Int, minutes: Int, seconds: Int) {
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute, .second], from: date, to: self)
+        return (components.hour ?? 0, components.minute ?? 0, components.second ?? 0)
+    }
+
     func adding(component: Calendar.Component, value: Int) -> Date {
         Calendar.current.date(byAdding: component, value: value, to: self) ?? self
     }
