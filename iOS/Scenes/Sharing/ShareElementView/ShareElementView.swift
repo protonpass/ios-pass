@@ -27,14 +27,13 @@ import SwiftUI
 @MainActor
 struct ShareElementView: View {
     let viewModel: ShareElementViewModel
+    @State private var contentHeight: CGFloat = 0
 
     var body: some View {
         VStack(alignment: .center, spacing: 12) {
             Text("Share")
                 .font(.body.bold())
                 .foregroundStyle(PassColor.textNorm.toColor)
-
-            Spacer()
 
             if !viewModel.isFreeUser, viewModel.itemSharingEnabled, viewModel.share.canShareWithMorePeople {
                 itemSharing
@@ -53,14 +52,21 @@ struct ShareElementView: View {
                 currentVault
                     .padding(.top, 12)
             }
-
-            Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
         .padding(.top, 44)
+        .background(GeometryReader { proxy in
+            Color.clear
+                .onAppear {
+                    contentHeight += proxy.size.height
+                }
+        })
         .padding(.bottom, 32)
         .padding(.horizontal, 16)
         .background(PassColor.backgroundNorm.toColor)
+        .onChange(of: contentHeight) { value in
+            viewModel.updateSheetHeight(value)
+        }
     }
 }
 

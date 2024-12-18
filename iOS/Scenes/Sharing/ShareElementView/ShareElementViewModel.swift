@@ -42,14 +42,6 @@ final class ShareElementViewModel: ObservableObject {
 
     weak var sheetPresentation: UISheetPresentationController?
 
-    var sheetHeight: CGFloat {
-        if !isFreeUser {
-            isShared ? 380 : 300
-        } else {
-            isShared ? 280 : 220
-        }
-    }
-
     var itemSharingEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }
@@ -82,7 +74,6 @@ final class ShareElementViewModel: ObservableObject {
             guard let self else { return }
             do {
                 isFreeUser = try await upgradeChecker.isFreeUser()
-                updateSheetDisplay()
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
@@ -107,25 +98,23 @@ final class ShareElementViewModel: ObservableObject {
             }
         }
     }
+
+    func updateSheetHeight(_ height: CGFloat) {
+        guard let sheetPresentation else {
+            return
+        }
+        let custom = UISheetPresentationController.Detent.custom { _ in
+            CGFloat(height)
+        }
+        sheetPresentation.animateChanges {
+            sheetPresentation.detents = [custom]
+        }
+    }
 }
 
 private extension ShareElementViewModel {
     func complete(with element: SharingElementData) {
         setShareInviteVault(with: element)
         router.present(for: .sharingFlow(.topMost))
-    }
-
-    func updateSheetDisplay() {
-        let detent = UISheetPresentationController.Detent.custom { [weak self] _ in
-            guard let self else {
-                return 0
-            }
-            return CGFloat(sheetHeight)
-        }
-
-        sheetPresentation?.animateChanges { [weak self] in
-            guard let self else { return }
-            sheetPresentation?.detents = [detent]
-        }
     }
 }

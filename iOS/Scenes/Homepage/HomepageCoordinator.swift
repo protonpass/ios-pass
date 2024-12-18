@@ -790,7 +790,7 @@ extension HomepageCoordinator {
         let view = ShareElementView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
-        viewController.setDetentType(.custom(viewModel.sheetHeight),
+        viewController.setDetentType(.medium,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true

@@ -162,6 +162,7 @@ private extension ManageSharedShareView {
                             .buttonStyle(.plain)
                         }
                     }
+                    .padding(.horizontal, 16)
                     PassDivider()
                 }
                 ForEach(Array(invitees.enumerated()), id: \.element.id) { index, invitee in
@@ -200,7 +201,6 @@ private extension ManageSharedShareView {
                 }
             }
         }
-        .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .disabled(isVaultSharing && viewModel.reachedLimit && !viewModel.isBusinessUser)
     }
