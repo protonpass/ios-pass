@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @preconcurrency import Combine
+import Core
 @preconcurrency import CryptoKit
 import Entities
 import Foundation
@@ -108,21 +109,6 @@ public actor PassMonitorRepository: PassMonitorRepositoryProtocol {
 
     public func refreshSecurityChecks() async throws {
         let userId = try await userManager.getActiveUserId()
-//        var passwordCounts = [String: Int]()
-//        let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-//        let loginItems = try await itemRepository.getActiveLogInItems(userId: userId)
-//            .compactMap { encryptedItem -> InternalPassMonitorItem? in
-//                guard let item = try? encryptedItem.getItemContent(symmetricKey: symmetricKey),
-//                      let loginItem = item.loginItem else {
-//                    return nil
-//                }
-//
-//                if !encryptedItem.item.monitoringDisabled, !loginItem.password.isEmpty {
-//                    passwordCounts[loginItem.password, default: 0] += 1
-//                }
-//                return InternalPassMonitorItem(encrypted: encryptedItem, loginData: loginItem)
-//            }
-
         let result = try await weaknessStats(userId: userId, userOwned: false)
         weaknessStats.send(result.0)
         itemsWithSecurityIssues.send(result.1)
@@ -389,21 +375,5 @@ private extension [ProtonAddress] {
 private extension [CustomEmail] {
     func sorted() -> Self {
         sorted(by: { $0.breachCounter > $1.breachCounter || ($0.verified && !$1.verified) })
-    }
-}
-
-extension Array {
-    /// Map, but for a `Set`.
-    /// - Parameter transform: The transform to apply to each element.
-    func compactMapToSet<T>(_ transform: (Element) throws -> T?) rethrows -> Set<T> {
-        var tempSet = Set<T>()
-
-        for item in self {
-            if let element = try transform(item) {
-                tempSet.insert(element)
-            }
-        }
-
-        return tempSet
     }
 }
