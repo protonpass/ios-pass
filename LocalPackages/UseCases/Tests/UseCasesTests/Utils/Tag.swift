@@ -21,5 +21,5 @@
 import Testing
 
 extension Tag {
-    @Tag static var useCase: Self
+    @Tag static var monitor: Self
 }

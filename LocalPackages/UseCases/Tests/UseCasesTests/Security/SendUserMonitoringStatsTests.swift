@@ -27,7 +27,7 @@ import Foundation
 import ProtonCoreLogin
 import Testing
 
-@Suite(.serialized, .tags(.useCase))
+@Suite(.serialized, .tags(.monitor))
 struct SendUserMonitoringStatsTests {
     // Mocks
     private var passMonitorRepository: PassMonitorRepositoryProtocolMock
