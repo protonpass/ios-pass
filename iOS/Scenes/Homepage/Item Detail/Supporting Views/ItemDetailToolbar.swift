@@ -56,45 +56,17 @@ struct ItemDetailToolbar: ToolbarContent {
                                            action: { viewModel.edit() })
                     }
 
-                    Button {
-                        viewModel.share()
-                    } label: {
-                        ZStack(alignment: .topTrailing) {
-                            HStack(spacing: 4) {
-                                Image(uiImage: IconProvider.usersPlus)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .foregroundStyle(itemContentType.normMajor2Color.toColor)
-                                    .frame(maxHeight: 20)
-                                if viewModel.canShareItem, viewModel.numberOfSharedMembers > 0 {
-                                    Text(verbatim: "\(viewModel.numberOfSharedMembers)")
-                                        .font(.caption)
-                                        .fontWeight(.medium)
-                                        .foregroundStyle(itemContentType.normMinor1Color.toColor)
-                                        .padding(.horizontal, 6)
-                                        .padding(.vertical, 2)
-                                        .background(itemContentType.normMajor2Color.toColor)
-                                        .cornerRadius(20)
-                                }
-                            }
-                            .padding(10)
-                            .background(itemContentType.normMinor1Color.toColor)
-                            .cornerRadius(20)
-                            // swiftlint:disable:next todo
-                            // TODO: Add discovering new feature
-//                            if !viewModel.isFreeUser, viewModel.itemSharingEnabled, viewModel.canShareItem {
-//                                Circle()
-//                                    .fill(PassColor.signalInfo.toColor)
-//                                    .frame(width: 12, height: 12)
-//                            }
-                        }
+                    if viewModel.canShareItem {
+                        ShareCounterButton(iconColor: itemContentType.normMajor2Color.toColor,
+                                           backgroundColor: itemContentType.normMinor1Color.toColor,
+                                           numberOfSharedMembers: viewModel.numberOfSharedMembers,
+                                           action: {
+                                               viewModel.share()
+                                           })
                     }
-                    .buttonStyle(.plain)
-                    .disabled(!viewModel.canShareItem)
-                    .padding(.leading, 5)
 
                     Menu(content: {
-                        if let vault = viewModel.vault?.vault, vault.isVaultRepresentation {
+                        if viewModel.itemIsLinkToVault {
                             Label("Move to another vault", uiImage: IconProvider.folderArrowIn)
                                 .buttonEmbeded { viewModel.moveToAnotherVault() }
                                 .hidden(!viewModel.isAllowedToEdit)
@@ -110,8 +82,7 @@ struct ItemDetailToolbar: ToolbarContent {
                         }
 
                         if viewModel.itemContent.type != .alias,
-                           let vault = viewModel.vault?.vault,
-                           vault.isVaultRepresentation {
+                           viewModel.itemIsLinkToVault {
                             Label("Clone", image: IconProvider.squares)
                                 .buttonEmbeded { viewModel.clone() }
                         }
@@ -128,8 +99,7 @@ struct ItemDetailToolbar: ToolbarContent {
 
                         Divider()
 
-                        if let vault = viewModel.vault?.vault,
-                           !vault.isVaultRepresentation,
+                        if !viewModel.itemIsLinkToVault,
                            viewModel.itemSharingEnabled {
                             Label("Leave", image: IconProvider.arrowOutFromRectangle)
                                 .buttonEmbeded {
@@ -172,5 +142,53 @@ struct ItemDetailToolbar: ToolbarContent {
                 .disabled(!viewModel.isAllowedToEdit)
             }
         }
+    }
+}
+
+public struct ShareCounterButton: View {
+    private let iconColor: Color
+    private let backgroundColor: Color
+    private let numberOfSharedMembers: Int
+    private let action: () -> Void
+
+    public init(iconColor: Color,
+                backgroundColor: Color,
+                numberOfSharedMembers: Int,
+                action: @escaping () -> Void) {
+        self.iconColor = iconColor
+        self.backgroundColor = backgroundColor
+        self.numberOfSharedMembers = numberOfSharedMembers
+        self.action = action
+    }
+
+    public var body: some View {
+        Button {
+            action()
+        } label: {
+            ZStack(alignment: .topTrailing) {
+                HStack(spacing: 4) {
+                    Image(uiImage: IconProvider.usersPlus)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(iconColor)
+                        .frame(maxHeight: 20)
+                    if numberOfSharedMembers > 0 {
+                        Text(verbatim: "\(numberOfSharedMembers)")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundStyle(backgroundColor)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(iconColor)
+                            .cornerRadius(20)
+                    }
+                }
+                .padding(10)
+                .background(backgroundColor)
+                .cornerRadius(20)
+            }
+        }
+        .buttonStyle(.plain)
+        .padding(.leading, 5)
     }
 }

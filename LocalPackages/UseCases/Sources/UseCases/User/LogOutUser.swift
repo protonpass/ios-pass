@@ -117,12 +117,12 @@ private extension LogOutUser {
         async let preferenceReset: Void = preferencesManager.reset()
         async let removeCredentials: Void = credentialManager.removeAllCredentials()
         async let cleanPassMonitor: Void = passMonitorRepository.reset()
-        async let cleanVaultManager: Void = appContentManager.reset()
+        async let cleanAppContentManager: Void = appContentManager.reset()
 
         _ = try await (preferenceReset,
                        removeCredentials,
                        cleanPassMonitor,
-                       cleanVaultManager)
+                       cleanAppContentManager)
 
         try await commonDeletionActions(userId: userData.user.ID)
         apiManager.reset()

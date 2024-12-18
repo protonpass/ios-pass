@@ -61,7 +61,6 @@ class BaseItemDetailViewModel: ObservableObject {
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: VaultListUiModel?
-    let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
 
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
@@ -98,15 +97,17 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var numberOfSharedMembers: Int {
-        var members = 0
+        var members = itemContent.item.shareCount
+      
         if let vault = vault?.vault, vault.isVaultRepresentation, vault.shared {
-            members = vault.members
+            members += vault.members
         }
-        if itemContent.item.shareCount > members {
-            members += itemContent.item.shareCount
-        }
-
+        
         return members
+    }
+    
+    var itemIsLinkToVault: Bool {
+        vault?.vault.isVaultRepresentation ?? false
     }
 
     weak var delegate: (any ItemDetailViewModelDelegate)?
@@ -120,7 +121,6 @@ class BaseItemDetailViewModel: ObservableObject {
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
 
-        shouldShowVault = appContentManager.getAllSharesContent().count > 1
         vault = appContentManager.getShareContent(for: itemContent.shareId)?.toVaultListUiModel
 
         bindValues()
@@ -292,14 +292,15 @@ class BaseItemDetailViewModel: ObservableObject {
             guard let self else {
                 return
             }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
             do {
+                router.display(element: .globalLoading(shouldShow: true))
                 let userId = try await userManager.getActiveUserId()
                 try await leaveShareUsecase(userId: userId, with: share.shareId)
                 syncEventLoop.forceSync()
                 router.action(.screenDismissal(.all))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
