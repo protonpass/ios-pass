@@ -532,7 +532,7 @@ private extension AppContentManager {
         // Group items by their associated share ID for efficient processing
         let itemsByShareID = Dictionary(grouping: items, by: { $0.shareId })
 
-        return try await withThrowingTaskGroup(of: (ShareContent?, [ItemUiModel]).self) { @Sendable taskGroup in
+        return try await withThrowingTaskGroup(of: (ShareContent, [ItemUiModel]).self) { @Sendable taskGroup in
             var shareContents: [ShareContent] = []
             var trashedItems: [ItemUiModel] = []
             for share in shares {
@@ -554,17 +554,14 @@ private extension AppContentManager {
                         }
                     }
 
-                    var shareContent: ShareContent?
-                    shareContent = ShareContent(share: share, items: activeItems)
+                    let shareContent = ShareContent(share: share, items: activeItems)
                     return (shareContent, trashItems)
                 }
             }
 
             // Aggregate results from all tasks
             for try await (shareContent, trashItems) in taskGroup {
-                if let content = shareContent {
-                    shareContents.append(content)
-                }
+                shareContents.append(shareContent)
                 trashedItems.append(contentsOf: trashItems)
             }
 
