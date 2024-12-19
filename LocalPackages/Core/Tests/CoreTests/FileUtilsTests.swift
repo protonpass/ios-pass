@@ -18,13 +18,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Core
-import XCTest
+import Core
+import Foundation
+import Testing
 
-final class FileUtilsTests: XCTestCase {
+struct FileUtilsTests {
     let containerUrl = FileUtils.getDocumentsDirectory()
 
-    func testCreateNewFileWithData() throws {
+    @Test("Create new file with data")
+    func createNewFileWithData() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -36,10 +38,11 @@ final class FileUtilsTests: XCTestCase {
         let data = try Data(contentsOf: fileUrl)
 
         // Then
-        XCTAssertEqual(data, givenData)
+        #expect(data == givenData)
     }
 
-    func testCreateNewFileWithNullData() throws {
+    @Test("Create new file with null data")
+    func createNewFileWithNullData() throws {
         // Given
         let givenFileName = String.random()
 
@@ -50,10 +53,11 @@ final class FileUtilsTests: XCTestCase {
         let data = try Data(contentsOf: fileUrl)
 
         // Then
-        XCTAssertTrue(data.isEmpty)
+        #expect(data.isEmpty)
     }
 
-    func testOverwriteData() throws {
+    @Test("Overwrite data")
+    func overwriteData() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -68,10 +72,11 @@ final class FileUtilsTests: XCTestCase {
 
         // Then
         let data = try Data(contentsOf: fileUrl)
-        XCTAssertEqual(data, givenData)
+        #expect(data == givenData)
     }
 
-    func testGetCreationDate() throws {
+    @Test("Get creation date")
+    func getCreationDate() throws {
         // Given
         let givenDate = Date.now
         let givenFileUrl = containerUrl.appendingPathComponent(.random())
@@ -80,13 +85,14 @@ final class FileUtilsTests: XCTestCase {
                                            attributes: [.creationDate: givenDate])
 
         // When
-        let creationDate = try XCTUnwrap(FileUtils.getCreationDate(url: givenFileUrl))
+        let creationDate = try #require(try FileUtils.getCreationDate(url: givenFileUrl))
 
         // Then
-        XCTAssertEqual(creationDate, givenDate)
+        #expect(creationDate == givenDate)
     }
 
-    func testGetModificationDate() throws {
+    @Test("Get modification date")
+    func getModificationDate() throws {
         // Given
         let givenDate = Date.now
         let givenFileUrl = containerUrl.appendingPathComponent(.random())
@@ -95,13 +101,14 @@ final class FileUtilsTests: XCTestCase {
                                            attributes: [.modificationDate: givenDate])
 
         // When
-        let modificationDate = try XCTUnwrap(FileUtils.getModificationDate(url: givenFileUrl))
+        let modificationDate = try #require(try FileUtils.getModificationDate(url: givenFileUrl))
 
         // Then
-        XCTAssertEqual(modificationDate, givenDate)
+        #expect(modificationDate == givenDate)
     }
 
-    func testCheckObsolescences() throws {
+    @Test("Check obsolescences")
+    func checkObsolescences() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -110,24 +117,22 @@ final class FileUtilsTests: XCTestCase {
                                                       containerUrl: containerUrl)
 
         // Then
-        XCTAssertFalse(FileUtils.isObsolete(url: fileUrl,
-                                            currentDate: .now,
-                                            thresholdInDays: 3))
-        XCTAssertFalse(FileUtils.isObsolete(url: fileUrl,
-                                            currentDate: .now.adding(component: .day,
-                                                                     value: 1),
-                                            thresholdInDays: 3))
-        XCTAssertFalse(FileUtils.isObsolete(url: fileUrl,
-                                            currentDate: .now.adding(component: .day,
-                                                                     value: 2),
-                                            thresholdInDays: 3))
-        XCTAssertTrue(FileUtils.isObsolete(url: fileUrl,
-                                           currentDate: .now.adding(component: .day,
-                                                                    value: 3),
-                                           thresholdInDays: 3))
+        #expect(!FileUtils.isObsolete(url: fileUrl,
+                                      currentDate: .now,
+                                      thresholdInDays: 3))
+        #expect(!FileUtils.isObsolete(url: fileUrl,
+                                      currentDate: .now.adding(component: .day, value: 1),
+                                      thresholdInDays: 3))
+        #expect(!FileUtils.isObsolete(url: fileUrl,
+                                      currentDate: .now.adding(component: .day, value: 2),
+                                      thresholdInDays: 3))
+        #expect(FileUtils.isObsolete(url: fileUrl,
+                                     currentDate: .now.adding(component: .day, value: 3),
+                                     thresholdInDays: 3))
     }
 
-    func testGetValidData() throws {
+    @Test("Get valid data")
+    func getValidData() throws {
         // Given
         let givenFileName = String.random()
         let givenData = try Data.random()
@@ -139,10 +144,11 @@ final class FileUtilsTests: XCTestCase {
         let data = try FileUtils.getDataRemovingIfObsolete(url: fileUrl, isObsolete: false)
 
         // Then
-        XCTAssertEqual(data, givenData)
-        XCTAssertTrue(FileManager.default.fileExists(atPath: fileUrl.path), "File still exists")
+        #expect(data == givenData)
+        #expect(FileManager.default.fileExists(atPath: fileUrl.path), "File still exists")
     }
 
+    @Test("Get obsolete data")
     func testGetObsoleteData() throws {
         // Given
         let givenFileName = String.random()
@@ -155,11 +161,12 @@ final class FileUtilsTests: XCTestCase {
         let data = try FileUtils.getDataRemovingIfObsolete(url: fileUrl, isObsolete: true)
 
         // Then
-        XCTAssertNil(data)
-        XCTAssertFalse(FileManager.default.fileExists(atPath: fileUrl.path), "File is removed")
+        #expect(data == nil)
+        #expect(!FileManager.default.fileExists(atPath: fileUrl.path), "File is removed")
     }
 
-    func testGetDataOfNotExistFile() throws {
+    @Test("Get data of non existing file")
+    func getDataOfNonExistingFile() throws {
         // Given
         let givenUrl = containerUrl.appendingPathComponent(.random())
 
@@ -167,6 +174,29 @@ final class FileUtilsTests: XCTestCase {
         let data = try FileUtils.getDataRemovingIfObsolete(url: givenUrl, isObsolete: false)
 
         // Then
-        XCTAssertNil(data)
+        #expect(data == nil)
+    }
+
+    @Test("Process file block by block")
+    func processBlockByBlock() async throws {
+        // Given
+        let url = FileManager.default.temporaryDirectory.appending(component: "test")
+        FileManager.default.createFile(atPath: url.path(),
+                                       contents: Data([4, 7, 3, 8, 5]))
+
+        // When
+        var indexes = [Int]()
+        var datas = [Data]()
+
+        try await FileUtils.processBlockByBlock(url,
+                                                blockSizeInBytes: 1,
+                                                process: { block in
+            indexes.append(block.index)
+            datas.append(block.value)
+        })
+
+        // Then
+        #expect(indexes == [0, 1, 2, 3, 4])
+        #expect(datas == [Data([4]), Data([7]), Data([3]), Data([8]), Data([5])])
     }
 }
