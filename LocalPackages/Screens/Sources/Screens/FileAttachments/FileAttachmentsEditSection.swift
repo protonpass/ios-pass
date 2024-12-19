@@ -23,7 +23,6 @@ import DesignSystem
 import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
-import UseCases
 
 @MainActor
 public protocol FileAttachmentsEditHandler: AnyObject {
@@ -36,23 +35,37 @@ public protocol FileAttachmentsEditHandler: AnyObject {
 
     func handleAttachment(_ url: URL)
     func handleAttachmentError(_ error: any Error)
-    func rename(attachment: FileAttachment, newName: String)
-    func retryUpload(attachment: FileAttachment)
-    func delete(attachment: FileAttachment)
+    func rename(attachment: FileAttachmentUiModel, newName: String)
+    func retryFetchAttachedFiles()
+    func retryUpload(attachment: FileAttachmentUiModel)
+    func delete(attachment: FileAttachmentUiModel)
     func deleteAllAttachments()
 }
 
 public struct FileAttachmentsEditSection: View {
     @State private var showDeleteAllAlert = false
 
-    private let files: [FileAttachment]
+    private let files: [FileAttachmentUiModel]
+
+    /// Already attached files are being fetched
+    private let isFetching: Bool
+
+    /// Error while fetching already attached files
+    private let fetchError: (any Error)?
+
+    /// Newly added files are being uploaded
     private let isUploading: Bool
+
     private let handler: any FileAttachmentsEditHandler
 
-    public init(files: [FileAttachment],
+    public init(files: [FileAttachmentUiModel],
+                isFetching: Bool,
+                fetchError: (any Error)?,
                 isUploading: Bool,
                 handler: any FileAttachmentsEditHandler) {
         self.files = files
+        self.isFetching = isFetching
+        self.fetchError = fetchError
         self.isUploading = isUploading
         self.handler = handler
     }
@@ -66,19 +79,30 @@ public struct FileAttachmentsEditSection: View {
                     Text("Attachments")
                         .foregroundStyle(PassColor.textNorm.toColor)
 
+                    if let fetchError {
+                        RetryableErrorView(mode: .defaultHorizontal,
+                                           tintColor: handler.fileAttachmentsSectionPrimaryColor,
+                                           errorMessage: fetchError.localizedDescription,
+                                           onRetry: handler.retryFetchAttachedFiles)
+                    }
+
                     if !files.isEmpty {
                         Text("\(files.count) files")
                             .font(.callout)
                             .foregroundStyle(PassColor.textWeak.toColor)
-                    } else if !isUploading {
+                    } else if !isUploading, fetchError == nil {
                         Text("Upload files from your device")
                             .foregroundStyle(PassColor.textWeak.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
+                            .if(isFetching) { view in
+                                view.redacted(reason: .placeholder)
+                            }
+                            .shimmering(active: isFetching)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                if !files.isEmpty {
+                if !files.isEmpty, !isFetching, fetchError == nil {
                     CircleButton(icon: IconProvider.trash,
                                  iconColor: handler.fileAttachmentsSectionPrimaryColor,
                                  iconDisabledColor: handler.fileAttachmentsSectionPrimaryColor,
@@ -90,7 +114,13 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                FileAttachmentRow(mode: .edit, file: file, handler: handler)
+                FileAttachmentRow(mode: .edit(onRename: { handler.rename(attachment: file, newName: $0) },
+                                              onDelete: { handler.delete(attachment: file) },
+                                              onRetryUpload: { handler.retryUpload(attachment: file) }),
+                                  itemContentType: handler.itemContentType,
+                                  uiModel: file,
+                                  primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
+                                  secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor)
                     .padding(.vertical, DesignConstant.sectionPadding / 2)
                     .disabled(isUploading)
                 if file != files.last {
@@ -98,10 +128,14 @@ public struct FileAttachmentsEditSection: View {
                 }
             }
 
-            FileAttachmentsButton(style: .capsule, handler: handler)
-                .opacityReduced(isUploading)
+            if !isFetching, fetchError == nil {
+                FileAttachmentsButton(style: .capsule, handler: handler)
+                    .opacityReduced(isUploading)
+            }
         }
         .animation(.default, value: files)
+        .animation(.default, value: isFetching)
+        .animation(.default, value: fetchError.debugDescription)
         .animation(.default, value: isUploading)
         .padding(DesignConstant.sectionPadding)
         .tint(handler.fileAttachmentsSectionPrimaryColor.toColor)

@@ -25,15 +25,10 @@ import SwiftUI
 
 public struct FileAttachmentPreview: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var name: String
     @State private var sheet: Sheet?
-    @State private var showRenameAlert = false
-    @State private var showDeleteAlert = false
     let url: URL
     let primaryTintColor: UIColor
     let secondaryTintColor: UIColor
-    let onRename: (String) -> Void
-    let onDelete: () -> Void
 
     private enum Sheet: String, Identifiable {
         case save, share
@@ -45,15 +40,10 @@ public struct FileAttachmentPreview: View {
 
     public init(url: URL,
                 primaryTintColor: UIColor,
-                secondaryTintColor: UIColor,
-                onRename: @escaping (String) -> Void,
-                onDelete: @escaping () -> Void) {
+                secondaryTintColor: UIColor) {
         self.url = url
-        _name = .init(initialValue: url.lastPathComponent)
         self.primaryTintColor = primaryTintColor
         self.secondaryTintColor = secondaryTintColor
-        self.onRename = onRename
-        self.onDelete = onDelete
     }
 
     public var body: some View {
@@ -69,20 +59,6 @@ public struct FileAttachmentPreview: View {
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.inline)
         .navigationStackEmbeded()
-        .alert("Rename file",
-               isPresented: $showRenameAlert,
-               actions: {
-                   TextField(text: $name, label: { EmptyView() })
-                   Button("Rename", action: { onRename(name) })
-                       .disabled(name.isEmpty)
-                   Button("Cancel", role: .cancel, action: { name = url.lastPathComponent })
-               })
-        .alert("Delete file?",
-               isPresented: $showDeleteAlert,
-               actions: {
-                   Button("Delete", role: .destructive, action: onDelete)
-                   Button("Cancel", role: .cancel, action: {})
-               })
         .sheet(item: $sheet) { sheet in
             switch sheet {
             case .save:
@@ -120,13 +96,6 @@ private extension FileAttachmentPreview {
                 LabelButton(title: "Share",
                             icon: IconProvider.arrowUpFromSquare,
                             action: { sheet = .share })
-                LabelButton(title: "Rename",
-                            icon: PassIcon.rename,
-                            action: { showRenameAlert.toggle() })
-                Divider()
-                LabelButton(title: "Delete",
-                            icon: IconProvider.trash,
-                            action: { showDeleteAlert.toggle() })
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
                              iconColor: primaryTintColor,

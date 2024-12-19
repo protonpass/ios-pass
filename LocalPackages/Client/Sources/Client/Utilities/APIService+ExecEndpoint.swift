@@ -23,7 +23,7 @@ import Foundation
 import ProtonCoreNetworking
 import ProtonCoreServices
 
-actor SessionTask {
+private actor SessionTask {
     private var state: State = .ready
 
     func cancel() {

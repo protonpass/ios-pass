@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Screens
 import SwiftUI
 
 /// Set up common UI appearance for item detail pages
@@ -33,11 +34,13 @@ struct ItemDetailSetUpModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .showSpinner(viewModel.isDownloadingFile)
             .tint(tintColor.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
             .navigationBarBackButtonHidden()
             .navigationBarTitleDisplayMode(.inline)
             .navigationBarHidden(false)
+            .animation(.default, value: viewModel.files)
             .background(PassColor.backgroundNorm.toColor)
             .toolbar { ItemDetailToolbar(viewModel: viewModel) }
             .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBeDeleted,
@@ -53,6 +56,21 @@ struct ItemDetailSetUpModifier: ViewModifier {
                 }
             } message: {
                 Text("You will lose access to this item and its details. Do you want to continue?")
+            }
+            .sheet(item: $viewModel.itemFileAction) { action in
+                switch action {
+                case let .preview(url):
+                    FileAttachmentPreview(url: url,
+                                          primaryTintColor: viewModel.itemContentType.normMajor2Color,
+                                          secondaryTintColor: viewModel.itemContentType.normMinor1Color)
+                case let .save(url):
+                    ExportDocumentView(url: url)
+                case let .share(url):
+                    ActivityView(items: [url])
+                }
+            }
+            .task {
+                await viewModel.fetchAttachments()
             }
     }
 }

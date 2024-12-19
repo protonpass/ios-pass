@@ -86,6 +86,14 @@ private extension LogInDetailView {
                                             onSelectTotpToken: { copyTOTPToken($0) },
                                             onUpgrade: { viewModel.upgrade() })
 
+                        if viewModel.showFileAttachmentsSection {
+                            FileAttachmentsViewSection(files: viewModel.fileUiModels,
+                                                       isFetching: viewModel.files.isFetching,
+                                                       fetchError: viewModel.files.error,
+                                                       handler: viewModel)
+                                .padding(.top, 8)
+                        }
+
                         ItemDetailHistorySection(itemContent: viewModel.itemContent,
                                                  action: { viewModel.showItemHistory() })
 
@@ -484,9 +492,10 @@ private extension LogInDetailView {
                 }
             }
         case let .error(error):
-            RetryableErrorCellView(errorMessage: error.localizedDescription,
-                                   textColor: PassColor.signalDanger.toColor,
-                                   onRetry: { viewModel.fetchSimilarPasswordItems() })
+            RetryableErrorView(mode: .defaultHorizontal,
+                               tintColor: PassColor.loginInteractionNormMajor2,
+                               errorMessage: error.localizedDescription,
+                               onRetry: viewModel.fetchSimilarPasswordItems)
         }
     }
 }

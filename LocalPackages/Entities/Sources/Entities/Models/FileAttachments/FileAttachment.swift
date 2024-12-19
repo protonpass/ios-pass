@@ -30,42 +30,21 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
         case let .pending(file):
             file.id
         case let .item(file):
-            file.id
-        }
-    }
-
-    public var toUiModel: FileAttachmentUiModel {
-        switch self {
-        case let .pending(item):
-            .init(id: item.id,
-                  url: item.metadata.url,
-                  state: item.uploadState,
-                  name: item.metadata.name,
-                  group: item.metadata.fileGroup,
-                  formattedSize: item.metadata.formattedSize)
-        case let .item(item):
-            .init(id: item.id,
-                  url: nil,
-                  state: .uploaded(remoteId: item.id),
-                  name: "",
-                  group: .unknown,
-                  formattedSize: nil)
+            file.fileID
         }
     }
 }
 
 public enum FileAttachmentUploadState: Sendable, Equatable {
     case uploading
-    /// `remoteID` is given by the BE after uploading
-    case uploaded(remoteId: String)
+    case uploaded
     case error(any Error)
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.uploading, .uploading):
+        case (.uploaded, .uploaded),
+             (.uploading, .uploading):
             true
-        case let (.uploaded(lId), .uploaded(rId)):
-            lId == rId
         case let (.error(lError), .error(rError)):
             lError.localizedDescription == rError.localizedDescription
         default:
@@ -80,14 +59,6 @@ public enum FileAttachmentUploadState: Sendable, Equatable {
             false
         }
     }
-
-    public var remoteId: String? {
-        if case let .uploaded(remoteId) = self {
-            remoteId
-        } else {
-            nil
-        }
-    }
 }
 
 public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
@@ -98,19 +69,36 @@ public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
     public let name: String
     public let group: FileGroup
     public let formattedSize: String?
+
+    public init(id: String,
+                url: URL?,
+                state: FileAttachmentUploadState,
+                name: String,
+                group: FileGroup,
+                formattedSize: String?) {
+        self.id = id
+        self.url = url
+        self.state = state
+        self.name = name
+        self.group = group
+        self.formattedSize = formattedSize
+    }
 }
 
 public extension [FileAttachment] {
-    mutating func updateState(id: String, newState: FileAttachmentUploadState) {
-        guard let index = self.firstIndex(where: { $0.id == id }) else { return }
-        let file = self[index]
-        switch file {
-        case var .pending(pendingFile):
-            pendingFile.update(newState)
-            self[index] = .pending(pendingFile)
-        case .item:
-            // Not applicable
+    mutating func upsert(_ file: PendingFileAttachment) {
+        guard let index = firstIndex(where: { $0.id == file.id }) else {
+            append(.pending(file))
             return
         }
+        self[index] = .pending(file)
+    }
+
+    mutating func upsert(_ file: ItemFile) {
+        guard let index = firstIndex(where: { $0.id == file.fileID }) else {
+            append(.item(file))
+            return
+        }
+        self[index] = .item(file)
     }
 }
