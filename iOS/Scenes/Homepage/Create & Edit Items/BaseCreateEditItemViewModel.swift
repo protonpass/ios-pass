@@ -148,7 +148,6 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.getMimeType) private var getMimeType
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.encryptFile) private var encryptFile
     @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
 
     var fileAttachmentsEnabled: Bool {
@@ -711,14 +710,9 @@ private extension BaseCreateEditItemViewModel {
         let remoteFile = try await fileRepository.createPendingFile(userId: userId,
                                                                     file: file)
         file.remoteId = remoteFile.fileID
-
-        if file.encryptedData == nil {
-            file.encryptedData = try await encryptFile(key: file.key, sourceUrl: file.metadata.url)
-        }
-
         files.upsert(file)
 
-        try await fileRepository.uploadChunk(userId: userId, file: file)
+        try await fileRepository.uploadFile(userId: userId, file: file)
         file.uploadState = .uploaded
         files.upsert(file)
     }
