@@ -26,7 +26,8 @@ import Foundation
 public protocol ApiServiceLiteProtocol: Sendable {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
-                                       infos: [MultipartInfo]) async throws -> R
+                                       infos: [MultipartInfo],
+                                       delegate: URLSessionTaskDelegate) async throws -> R
 }
 
 public final class ApiServiceLite: ApiServiceLiteProtocol {
@@ -49,7 +50,8 @@ public final class ApiServiceLite: ApiServiceLiteProtocol {
 public extension ApiServiceLite {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
-                                       infos: [MultipartInfo]) async throws -> R {
+                                       infos: [MultipartInfo],
+                                       delegate: URLSessionTaskDelegate) async throws -> R {
         let host = doh.getCurrentlyUsedHostUrl()
         guard let url = URL(string: host) else {
             throw PassError.api(.invalidApiHost(host))
@@ -64,7 +66,7 @@ public extension ApiServiceLite {
                                  credential: .init(credential),
                                  infos: infos,
                                  appVersion: appVersion)
-        let (data, _) = try await urlSession.data(for: request)
+        let (data, _) = try await urlSession.data(for: request, delegate: delegate)
         return try JSONDecoder().decode(R.self, from: data)
     }
 }

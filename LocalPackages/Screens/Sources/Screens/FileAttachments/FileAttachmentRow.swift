@@ -79,6 +79,41 @@ public struct FileAttachmentRow: View {
     }
 
     public var body: some View {
+        VStack {
+            content
+            if case let .uploading(progress) = uiModel.state {
+                ProgressView(value: progress)
+            }
+        }
+        .animation(.default, value: uiModel)
+        .alert("Rename file",
+               isPresented: $showRenameAlert,
+               actions: {
+                   TextField(text: $name, label: { EmptyView() })
+                   Button("Rename", action: { rename(name) })
+                       .disabled(name.isEmpty)
+                   Button("Cancel", role: .cancel, action: { name = uiModel.name })
+               })
+        .alert("Delete file?",
+               isPresented: $showDeleteAlert,
+               actions: {
+                   Button("Delete", role: .destructive, action: delete)
+                   Button("Cancel", role: .cancel, action: {})
+               },
+               message: { Text(verbatim: uiModel.name) })
+        .fullScreenCover(isPresented: $showFilePreview) {
+            if let url = uiModel.url {
+                FileAttachmentPreview(url: url,
+                                      primaryTintColor: primaryTintColor,
+                                      secondaryTintColor: secondaryTintColor)
+            }
+        }
+    }
+}
+
+private extension FileAttachmentRow {
+    @ViewBuilder
+    var content: some View {
         let style = itemContentType.style(for: mode)
         HStack {
             Image(uiImage: uiModel.state.isError ?
@@ -102,8 +137,9 @@ public struct FileAttachmentRow: View {
             Spacer()
 
             switch uiModel.state {
-            case .uploading:
-                ProgressView()
+            case let .uploading(progress):
+                ProgressView(value: progress)
+                    .progressViewStyle(.circular)
 
             case .uploaded:
                 Menu(content: {
@@ -148,28 +184,6 @@ public struct FileAttachmentRow: View {
                 showFilePreview.toggle()
             } else if case let .view(onOpen, _, _) = mode {
                 onOpen()
-            }
-        }
-        .alert("Rename file",
-               isPresented: $showRenameAlert,
-               actions: {
-                   TextField(text: $name, label: { EmptyView() })
-                   Button("Rename", action: { rename(name) })
-                       .disabled(name.isEmpty)
-                   Button("Cancel", role: .cancel, action: { name = uiModel.name })
-               })
-        .alert("Delete file?",
-               isPresented: $showDeleteAlert,
-               actions: {
-                   Button("Delete", role: .destructive, action: delete)
-                   Button("Cancel", role: .cancel, action: {})
-               },
-               message: { Text(verbatim: uiModel.name) })
-        .fullScreenCover(isPresented: $showFilePreview) {
-            if let url = uiModel.url {
-                FileAttachmentPreview(url: url,
-                                      primaryTintColor: primaryTintColor,
-                                      secondaryTintColor: secondaryTintColor)
             }
         }
     }
