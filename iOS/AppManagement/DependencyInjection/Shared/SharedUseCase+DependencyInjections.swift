@@ -565,10 +565,6 @@ extension SharedUseCasesContainer {
         self { FormatFileAttachmentSize() }
     }
 
-    var encryptFile: Factory<any EncryptFileUseCase> {
-        self { EncryptFile() }
-    }
-
     var decryptFile: Factory<any DecryptFileUseCase> {
         self { DecryptFile() }
     }

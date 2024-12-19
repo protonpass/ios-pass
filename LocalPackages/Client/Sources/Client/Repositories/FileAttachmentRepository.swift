@@ -41,7 +41,7 @@ private struct UploadMultipartResponse: Decodable {
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
-    func uploadChunk(userId: String, file: PendingFileAttachment) async throws
+    func uploadFile(userId: String, file: PendingFileAttachment) async throws
     func updatePendingFileName(userId: String,
                                file: PendingFileAttachment,
                                newName: String) async throws -> Bool
@@ -83,33 +83,41 @@ public extension FileAttachmentRepository {
                                                                 metadata: metadata)
     }
 
-    func uploadChunk(userId: String, file: PendingFileAttachment) async throws {
+    func uploadFile(userId: String, file: PendingFileAttachment) async throws {
         guard let remoteId = file.remoteId else {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }
 
-        guard let encryptedData = file.encryptedData else {
-            throw PassError.fileAttachment(.failedToUploadMissingEncryptedData)
+        let path = "/pass/v1/file/\(remoteId)/chunk"
+
+        let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
+            guard let self,
+                  let encryptedData = try AES.GCM.seal(blockData.value,
+                                                       key: file.key,
+                                                       associatedData: .fileData).combined else {
+                throw PassError.fileAttachment(.failedToEncryptFile)
+            }
+            let infos: [MultipartInfo] = [
+                .init(name: "ChunkIndex", data: blockData.index.toAsciiData),
+                .init(name: "ChunkData",
+                      fileName: "no-op", // Not used by the BE but required
+                      contentType: "application/octet-stream",
+                      data: encryptedData)
+            ]
+
+            let response: UploadMultipartResponse =
+                try await apiServiceLite.uploadMultipart(path: path,
+                                                         userId: userId,
+                                                         infos: infos)
+
+            if !response.isSuccesful {
+                throw PassError.fileAttachment(.failedToUpload(response.code))
+            }
         }
 
-        // 48 is the ASCII code of 0, we want to pass ChunkIndex as integer data
-        // converting to UTF8 string doesn't work
-        let zero = Data([48])
-        let infos: [MultipartInfo] = [
-            .init(name: "ChunkIndex", data: zero),
-            .init(name: "ChunkData",
-                  fileName: "no-op", // Not used by the BE but required
-                  contentType: "application/octet-stream",
-                  data: encryptedData)
-        ]
-
-        let response: UploadMultipartResponse =
-            try await apiServiceLite.uploadMultipart(path: "/pass/v1/file/\(remoteId)/chunk",
-                                                     userId: userId,
-                                                     infos: infos)
-        if !response.isSuccesful {
-            throw PassError.fileAttachment(.failedToUpload(response.code))
-        }
+        try await FileUtils.processBlockByBlock(file.metadata.url,
+                                                blockSizeInBytes: Constants.Utils.maxChunkSizeInBytes,
+                                                process: process)
     }
 
     func updatePendingFileName(userId: String,
