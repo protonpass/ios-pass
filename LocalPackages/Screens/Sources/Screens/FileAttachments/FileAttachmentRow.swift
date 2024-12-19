@@ -27,15 +27,22 @@ import SwiftUI
 public struct FileAttachmentRow: View {
     @State private var name: String
     @State private var showRenameAlert = false
+    @State private var showDeleteAlert = false
     @State private var showFilePreview = false
 
     private let mode: Mode
-    private let file: FileAttachment
+    private let itemContentType: ItemContentType
     private let uiModel: FileAttachmentUiModel
-    private let handler: any FileAttachmentsEditHandler
+    private let primaryTintColor: UIColor
+    private let secondaryTintColor: UIColor
 
     public enum Mode: Sendable {
-        case view, edit
+        case view(onOpen: @MainActor () -> Void,
+                  onSave: @MainActor () -> Void,
+                  onShare: @MainActor () -> Void)
+        case edit(onRename: @MainActor (String) -> Void,
+                  onDelete: @MainActor () -> Void,
+                  onRetryUpload: @MainActor () -> Void)
     }
 
     enum Style: Sendable {
@@ -59,18 +66,20 @@ public struct FileAttachmentRow: View {
     }
 
     public init(mode: Mode,
-                file: FileAttachment,
-                handler: any FileAttachmentsEditHandler) {
+                itemContentType: ItemContentType,
+                uiModel: FileAttachmentUiModel,
+                primaryTintColor: UIColor,
+                secondaryTintColor: UIColor) {
         self.mode = mode
-        let uiModel = file.toUiModel
+        self.itemContentType = itemContentType
         _name = .init(initialValue: uiModel.name)
-        self.file = file
         self.uiModel = uiModel
-        self.handler = handler
+        self.primaryTintColor = primaryTintColor
+        self.secondaryTintColor = secondaryTintColor
     }
 
     public var body: some View {
-        let style = handler.itemContentType.style(for: mode)
+        let style = itemContentType.style(for: mode)
         HStack {
             Image(uiImage: uiModel.state.isError ?
                 IconProvider.exclamationCircleFilled : uiModel.group.icon)
@@ -95,23 +104,39 @@ public struct FileAttachmentRow: View {
             switch uiModel.state {
             case .uploading:
                 ProgressView()
+
             case .uploaded:
                 Menu(content: {
-                    LabelButton(title: "Rename",
-                                icon: PassIcon.rename,
-                                action: { showRenameAlert.toggle() })
-                    Divider()
-                    LabelButton(title: "Delete",
-                                icon: IconProvider.trash,
-                                action: { handler.delete(attachment: file) })
+                    switch mode {
+                    case .edit:
+                        LabelButton(title: "Rename",
+                                    icon: PassIcon.rename,
+                                    action: { showRenameAlert.toggle() })
+                        Divider()
+                        LabelButton(title: "Delete",
+                                    icon: IconProvider.trash,
+                                    action: { showDeleteAlert.toggle() })
+
+                    case let .view(onOpen, onSave, onShare):
+                        LabelButton(title: "Open",
+                                    icon: IconProvider.eye,
+                                    action: onOpen)
+                        LabelButton(title: "Save",
+                                    icon: IconProvider.arrowDownCircle,
+                                    action: onSave)
+
+                        LabelButton(title: "Share",
+                                    icon: IconProvider.arrowUpFromSquare,
+                                    action: onShare)
+                    }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.textWeak,
                                  backgroundColor: .clear)
                 })
+
             case .error:
-                RetryButton(tintColor: handler.fileAttachmentsSectionPrimaryColor,
-                            onRetry: { handler.retryUpload(attachment: file) })
+                RetryButton(tintColor: primaryTintColor, onRetry: retryUpload)
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -119,25 +144,59 @@ public struct FileAttachmentRow: View {
         .padding(style == .borderless ? 0 : DesignConstant.sectionPadding)
         .background(background(for: style))
         .buttonEmbeded {
-            showFilePreview.toggle()
+            if uiModel.url != nil {
+                showFilePreview.toggle()
+            } else if case let .view(onOpen, _, _) = mode {
+                onOpen()
+            }
         }
         .alert("Rename file",
                isPresented: $showRenameAlert,
                actions: {
                    TextField(text: $name, label: { EmptyView() })
-                   Button("Rename", action: { handler.rename(attachment: file, newName: name) })
+                   Button("Rename", action: { rename(name) })
                        .disabled(name.isEmpty)
                    Button("Cancel", role: .cancel, action: { name = uiModel.name })
                })
+        .alert("Delete file?",
+               isPresented: $showDeleteAlert,
+               actions: {
+                   Button("Delete", role: .destructive, action: delete)
+                   Button("Cancel", role: .cancel, action: {})
+               },
+               message: { Text(verbatim: uiModel.name) })
         .fullScreenCover(isPresented: $showFilePreview) {
             if let url = uiModel.url {
                 FileAttachmentPreview(url: url,
-                                      primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                      secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor,
-                                      onRename: { handler.rename(attachment: file,
-                                                                 newName: $0) },
-                                      onDelete: { handler.delete(attachment: file) })
+                                      primaryTintColor: primaryTintColor,
+                                      secondaryTintColor: secondaryTintColor)
             }
+        }
+    }
+}
+
+private extension FileAttachmentRow {
+    func rename(_ newName: String) {
+        if case let .edit(onRename, _, _) = mode {
+            onRename(name)
+        } else {
+            assertionFailure("Should be in edit mode in order to rename file")
+        }
+    }
+
+    func delete() {
+        if case let .edit(_, onDelete, _) = mode {
+            onDelete()
+        } else {
+            assertionFailure("Should be in edit mode in order to delete file")
+        }
+    }
+
+    func retryUpload() {
+        if case let .edit(_, _, onRetryUpload) = mode {
+            onRetryUpload()
+        } else {
+            assertionFailure("Should be in edit mode in order to retry upload file")
         }
     }
 }

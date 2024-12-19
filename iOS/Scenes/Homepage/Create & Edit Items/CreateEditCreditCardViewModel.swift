@@ -49,7 +49,9 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 
     override var itemContentType: ItemContentType { .creditCard }
 
-    override var isSaveable: Bool { !title.isEmpty }
+    override var isSaveable: Bool {
+        super.isSaveable && !title.isEmpty
+    }
 
     override var shouldUpgrade: Bool {
         // Free users can not create more credit cards but can only update

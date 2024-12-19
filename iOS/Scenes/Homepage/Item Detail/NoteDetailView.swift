@@ -20,6 +20,7 @@
 
 import DesignSystem
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct NoteDetailView: View {
@@ -76,6 +77,32 @@ struct NoteDetailView: View {
                         TextView(.constant(viewModel.note))
                             .autoDetectDataTypes(.all)
                             .isEditable(false)
+                    }
+
+                    if viewModel.showFileAttachmentsSection {
+                        switch viewModel.files {
+                        case .fetching:
+                            EmptyView()
+
+                        case .fetched:
+                            ForEach(viewModel.fileUiModels) { file in
+                                FileAttachmentRow(mode: .view(onOpen: { viewModel.open(file) },
+                                                              onSave: { viewModel.save(file) },
+                                                              onShare: { viewModel.share(file) }),
+                                                  itemContentType: viewModel.itemContentType,
+                                                  uiModel: file,
+                                                  primaryTintColor: PassColor.noteInteractionNormMajor2,
+                                                  secondaryTintColor: PassColor.noteInteractionNormMinor1)
+                                    .padding(.top, 16)
+                            }
+
+                        case let .error(error):
+                            RetryableErrorView(mode: .defaultHorizontal,
+                                               tintColor: PassColor.noteInteractionNormMajor2,
+                                               errorMessage: error.localizedDescription,
+                                               onRetry: viewModel.retryFetchingAttachments)
+                                .padding(.top, 16)
+                        }
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,

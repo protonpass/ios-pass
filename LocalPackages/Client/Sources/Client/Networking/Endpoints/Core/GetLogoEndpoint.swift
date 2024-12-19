@@ -21,12 +21,9 @@
 import Foundation
 import ProtonCoreNetworking
 
-// Dummy empty response
-struct GetLogoResponse: Decodable, Sendable {}
-
 struct GetLogoEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
-    typealias Response = GetLogoResponse
+    typealias Response = EmptyResponse
 
     var debugDescription: String
     var path: String

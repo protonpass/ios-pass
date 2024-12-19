@@ -24,6 +24,7 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct IdentityDetailView: View {
@@ -60,6 +61,14 @@ private extension IdentityDetailView {
 
                     ForEach(viewModel.extraSections) {
                         view(for: $0)
+                    }
+
+                    if viewModel.showFileAttachmentsSection {
+                        FileAttachmentsViewSection(files: viewModel.fileUiModels,
+                                                   isFetching: viewModel.files.isFetching,
+                                                   fetchError: viewModel.files.error,
+                                                   handler: viewModel)
+                            .padding(.top, 8)
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,

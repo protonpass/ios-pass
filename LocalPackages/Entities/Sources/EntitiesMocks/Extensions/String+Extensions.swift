@@ -32,8 +32,6 @@ extension String {
     static func random(allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit],
                        length: Int = 10) -> String {
         let allCharacters = allowedCharacters.map(\.rawValue).reduce(into: "") { $0 += $1 }
-        // swiftlint:disable:next todo
-        // TODO: Make sure that returned string contains at least 1 character from each AllowedCharacter set
         return String((0..<length).compactMap { _ in allCharacters.randomElement() })
     }
 }
