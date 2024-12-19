@@ -76,14 +76,9 @@ public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
 public extension FileAttachmentRepository {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile {
-        let protobuf = file.toProtobuf
-        let serializedProtobuf = try protobuf.serializedData()
-        let encryptedProtobuf = try AES.GCM.seal(serializedProtobuf,
-                                                 key: file.key,
-                                                 associatedData: .fileData)
-        guard let metadata = encryptedProtobuf.combined?.base64EncodedString() else {
-            throw PassError.fileAttachment(.failedToEncryptMetadata)
-        }
+        let metadata = try generateEncryptedMetadata(name: file.metadata.name,
+                                                     mimeType: file.metadata.mimeType,
+                                                     key: file.key)
         return try await remoteFileDatasource.createPendingFile(userId: userId,
                                                                 metadata: metadata)
     }
@@ -123,16 +118,9 @@ public extension FileAttachmentRepository {
         guard let remoteId = file.remoteId else {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }
-        var file = file
-        file.metadata.name = newName
-        let protobuf = file.toProtobuf
-        let serializedProtobuf = try protobuf.serializedData()
-        let encryptedProtobuf = try AES.GCM.seal(serializedProtobuf,
-                                                 key: file.key,
-                                                 associatedData: .fileData)
-        guard let metadata = encryptedProtobuf.combined?.base64EncodedString() else {
-            throw PassError.fileAttachment(.failedToEncryptMetadata)
-        }
+        let metadata = try generateEncryptedMetadata(name: newName,
+                                                     mimeType: file.metadata.mimeType,
+                                                     key: file.key)
         return try await remoteFileDatasource.updatePendingFileMetadata(userId: userId,
                                                                         fileId: remoteId,
                                                                         metadata: metadata)
@@ -145,9 +133,6 @@ public extension FileAttachmentRepository {
         guard let mimeType = file.mimeType else {
             throw PassError.fileAttachment(.failedToUpdateMissingMimeType)
         }
-        var metadataProtobuf = FileMetadata()
-        metadataProtobuf.name = newName
-        metadataProtobuf.mimeType = mimeType
 
         let itemKeys = try await keyManager.getItemKeys(userId: userId,
                                                         shareId: item.shareId,
@@ -165,12 +150,9 @@ public extension FileAttachmentRepository {
                                        key: itemKey.keyData,
                                        associatedData: .fileKey)
 
-        guard let encryptedMetadata = try AES.GCM.seal(metadataProtobuf.serializedData(),
-                                                       key: fileKey,
-                                                       associatedData: .fileData).combined else {
-            throw PassError.fileAttachment(.failedToEncryptFile)
-        }
-        let metadata = encryptedMetadata.base64EncodedString()
+        let metadata = try generateEncryptedMetadata(name: newName,
+                                                     mimeType: mimeType,
+                                                     key: fileKey)
         var updatedFile = try await remoteFileDatasource.updateFileMetadata(userId: userId,
                                                                             item: item,
                                                                             fileId: file.fileID,
@@ -263,11 +245,20 @@ public extension FileAttachmentRepository {
     }
 }
 
-private extension PendingFileAttachment {
-    var toProtobuf: FileMetadata {
+private extension FileAttachmentRepository {
+    func generateEncryptedMetadata(name: String,
+                                   mimeType: String,
+                                   key: Data) throws -> String {
         var protobuf = FileMetadata()
-        protobuf.name = metadata.name
-        protobuf.mimeType = metadata.mimeType
-        return protobuf
+        protobuf.name = name
+        protobuf.mimeType = mimeType
+        let serializedProtobuf = try protobuf.serializedData()
+        let encryptedProtobuf = try AES.GCM.seal(serializedProtobuf,
+                                                 key: key,
+                                                 associatedData: .fileData)
+        guard let metadata = encryptedProtobuf.combined?.base64EncodedString() else {
+            throw PassError.fileAttachment(.failedToEncryptMetadata)
+        }
+        return metadata
     }
 }
