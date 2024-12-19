@@ -86,10 +86,12 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
     // but always nil because not applicable to search results
     public var totpUri: String?
     public let url: String?
-    public let vault: Vault?
+    public let vault: Share?
     public let lastUseTime: Int64
     public let modifyTime: Int64
     public let pinned: Bool
+    public let owner: Bool
+    public let shared: Bool
 
     public let precomputedHash: Int
 
@@ -101,10 +103,12 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
                 title: SearchResultEither,
                 detail: [SearchResultEither],
                 url: String?,
-                vault: Vault?,
+                vault: Share?,
                 lastUseTime: Int64,
                 modifyTime: Int64,
-                pinned: Bool) {
+                pinned: Bool,
+                owner: Bool,
+                shared: Bool) {
         var hasher = Hasher()
 
         self.shareId = shareId
@@ -142,6 +146,12 @@ public struct ItemSearchResult: Sendable, ItemTypeIdentifiable, Identifiable, Pi
 
         self.pinned = pinned
         hasher.combine(pinned)
+
+        self.owner = owner
+        hasher.combine(owner)
+
+        self.shared = shared
+        hasher.combine(shared)
 
         precomputedHash = hasher.finalize()
     }

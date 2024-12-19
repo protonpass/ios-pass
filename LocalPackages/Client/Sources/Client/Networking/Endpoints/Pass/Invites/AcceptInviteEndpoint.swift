@@ -23,7 +23,7 @@ import ProtonCoreNetworking
 
 struct AcceptInviteEndpoint: Endpoint {
     typealias Body = AcceptInviteRequest
-    typealias Response = CodeOnlyResponse
+    typealias Response = GetShareResponse
 
     var debugDescription: String
     var path: String

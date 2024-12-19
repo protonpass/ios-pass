@@ -253,10 +253,10 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var closureRefreshItems: () -> () = {}
     public var invokedRefreshItemsfunction = false
     public var invokedRefreshItemsCount = 0
-    public var invokedRefreshItemsParameters: (userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
-    public var invokedRefreshItemsParametersList = [(userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
+    public var invokedRefreshItemsParameters: (userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)?
+    public var invokedRefreshItemsParametersList = [(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)]()
 
-    public func refreshItems(userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
+    public func refreshItems(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
         invokedRefreshItemsfunction = true
         invokedRefreshItemsCount += 1
         invokedRefreshItemsParameters = (userId, shareId, eventStream)
@@ -738,8 +738,28 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllItemsContent()
         return stubbedGetAllItemsContentResult
     }
+    // MARK: - fetchAndRefreshItems
+    public var fetchAndRefreshItemsUserIdShareIdThrowableError37: Error?
+    public var closureFetchAndRefreshItems: () -> () = {}
+    public var invokedFetchAndRefreshItemsfunction = false
+    public var invokedFetchAndRefreshItemsCount = 0
+    public var invokedFetchAndRefreshItemsParameters: (userId: String, shareId: String)?
+    public var invokedFetchAndRefreshItemsParametersList = [(userId: String, shareId: String)]()
+    public var stubbedFetchAndRefreshItemsResult: [ItemContent]!
+
+    public func fetchAndRefreshItems(userId: String, shareId: String) async throws -> [ItemContent] {
+        invokedFetchAndRefreshItemsfunction = true
+        invokedFetchAndRefreshItemsCount += 1
+        invokedFetchAndRefreshItemsParameters = (userId, shareId)
+        invokedFetchAndRefreshItemsParametersList.append((userId, shareId))
+        if let error = fetchAndRefreshItemsUserIdShareIdThrowableError37 {
+            throw error
+        }
+        closureFetchAndRefreshItems()
+        return stubbedFetchAndRefreshItemsResult
+    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError37: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError38: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -752,7 +772,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError37 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError38 {
             throw error
         }
         closureTotpCreationDateThreshold()

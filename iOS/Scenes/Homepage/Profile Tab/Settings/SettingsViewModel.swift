@@ -44,7 +44,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let indexItemsForSpotlight = resolve(\SharedUseCasesContainer.indexItemsForSpotlight)
-    private let currentSpotlightVaults = resolve(\DataStreamContainer.currentSpotlightSelectedVaults)
     private let getSpotlightVaults = resolve(\UseCasesContainer.getSpotlightVaults)
     private let updateSpotlightVaults = resolve(\UseCasesContainer.updateSpotlightVaults)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
@@ -52,10 +51,9 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     private let getUserPreferences = resolve(\SharedUseCasesContainer.getUserPreferences)
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.fullVaultsSync) private var fullVaultsSync
+    @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
-
-    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
@@ -67,7 +65,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var spotlightEnabled: Bool
     @Published private(set) var spotlightSearchableContent: SpotlightSearchableContent
     @Published private(set) var spotlightSearchableVaults: SpotlightSearchableVaults
-    @Published private(set) var spotlightVaults: [Vault]?
+    @Published private(set) var spotlightVaults: [Share]?
 
     weak var delegate: (any SettingsViewModelDelegate)?
     private var cancellables = Set<AnyCancellable>()
@@ -205,7 +203,7 @@ extension SettingsViewModel {
                 router.present(for: .fullSync)
                 logger.info("Doing full sync")
                 let userId = try await userManager.getActiveUserId()
-                await fullVaultsSync(userId: userId)
+                await fullContentSync(userId: userId)
                 logger.info("Done full sync")
                 router.display(element: .successMessage(config: .refresh))
             } catch {
@@ -280,7 +278,7 @@ private extension SettingsViewModel {
             }
             .store(in: &cancellables)
 
-        currentSpotlightVaults
+        appContentManager.currentSpotlightSelectedVaults
             .receive(on: DispatchQueue.main)
             .dropFirst() // Drop first event when the stream is init
             // Debouncing 1.5 secs because this will trigger expensive database operations
@@ -309,7 +307,9 @@ private extension SettingsViewModel {
             }
             .store(in: &cancellables)
 
-        vaultsManager.attach(to: self, storeIn: &cancellables)
+        // swiftlint:disable:next todo
+        // TODO: maybe change the observable of appContentManager
+        appContentManager.attach(to: self, storeIn: &cancellables)
         refreshSpotlightVaults()
     }
 
@@ -337,7 +337,7 @@ private extension SettingsViewModel {
                 logger.trace("Refreshing spotlight vaults")
                 let vaults = try await getSpotlightVaults()
                 spotlightVaults = vaults
-                currentSpotlightVaults.send(vaults)
+                appContentManager.currentSpotlightSelectedVaults.send(vaults)
                 logger.trace("Found \(spotlightVaults?.count ?? 0) spotlight vaults")
             } catch {
                 handle(error)

@@ -37,8 +37,8 @@ private extension EditableVaultListViewModel {
         let vaultCounts: [VaultCount]
         let trashed: Int
 
-        init(vaultsManager: VaultsManager) {
-            guard case let .loaded(uiModel) = vaultsManager.state else {
+        init(appContentManager: AppContentManager) {
+            guard let sharesData = appContentManager.state.loadedContent else {
                 all = 0
                 vaultCounts = []
                 trashed = 0
@@ -46,13 +46,13 @@ private extension EditableVaultListViewModel {
             }
             var all = 0
             var vaultCounts = [VaultCount]()
-            for vault in uiModel.vaults {
-                all += vault.itemCount
-                vaultCounts.append(.init(shareId: vault.vault.shareId, value: vault.itemCount))
+            for shareContent in sharesData.shares where shareContent.share.vaultContent != nil {
+                all += shareContent.itemCount
+                vaultCounts.append(.init(shareId: shareContent.share.shareId, value: shareContent.itemCount))
             }
             self.all = all
             self.vaultCounts = vaultCounts
-            trashed = uiModel.trashedItems.count
+            trashed = sharesData.trashedItems.count
         }
     }
 }
@@ -60,7 +60,7 @@ private extension EditableVaultListViewModel {
 @MainActor
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
-    @Published private(set) var state = VaultManagerState.loading
+    @Published private(set) var state = AppContentState.loading
     private let count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -71,7 +71,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let leaveShare = resolve(\UseCasesContainer.leaveShare)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
     private let logger = resolve(\SharedToolingContainer.logger)
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
 
     private var cancellables = Set<AnyCancellable>()
@@ -81,36 +81,36 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     var trashedAliasesCount: Int {
-        guard case let .loaded(uiModel) = vaultsManager.state else {
+        guard let sharesDatas = appContentManager.state.loadedContent else {
             return 0
         }
-        return uiModel.trashedItems.filter(\.isAlias).count
+        return sharesDatas.trashedItems.filter(\.isAlias).count
     }
 
     init() {
-        count = .init(vaultsManager: vaultsManager)
+        count = .init(appContentManager: appContentManager)
         setUp()
     }
 
     deinit { print(deinitMessage) }
 
     func select(_ selection: VaultSelection) {
-        vaultsManager.select(selection)
+        appContentManager.select(selection)
     }
 
     func isSelected(_ selection: VaultSelection) -> Bool {
-        vaultsManager.isSelected(selection)
+        appContentManager.isSelected(selection)
     }
 
-    func canShare(vault: Vault) -> Bool {
+    func canShare(vault: Share) -> Bool {
         getUserShareStatus(for: vault) != .cantShare && !vault.shared
     }
 
-    func canEdit(vault: Vault) -> Bool {
+    func canEdit(vault: Share) -> Bool {
         canUserPerformActionOnVault(for: vault) && vault.isOwner
     }
 
-    func canMoveItems(vault: Vault) -> Bool {
+    func canMoveItems(vault: Share) -> Bool {
         canUserPerformActionOnVault(for: vault)
     }
 }
@@ -119,7 +119,7 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
 
 private extension EditableVaultListViewModel {
     func setUp() {
-        vaultsManager.$state
+        appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newState in
                 guard let self else { return }
@@ -132,16 +132,17 @@ private extension EditableVaultListViewModel {
 // MARK: - Public APIs
 
 extension EditableVaultListViewModel {
-    func delete(vault: Vault) {
+    func delete(vault: Share) {
+        guard let vaultContent = vault.vaultContent else { return }
         Task { [weak self] in
             guard let self else { return }
             defer { loading = false }
             do {
                 loading = true
                 let userId = try await userManager.getActiveUserId()
-                try await vaultsManager.delete(vault: vault)
-                vaultsManager.refresh(userId: userId)
-                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vault.name)))
+                try await appContentManager.delete(vault: vault)
+                try await appContentManager.refresh(userId: userId)
+                router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -153,20 +154,20 @@ extension EditableVaultListViewModel {
         router.present(for: .vaultCreateEdit(vault: nil))
     }
 
-    func edit(vault: Vault) {
+    func edit(vault: Share) {
         router.present(for: .vaultCreateEdit(vault: vault))
     }
 
-    func share(vault: Vault) {
+    func share(vault: Share) {
         if getUserShareStatus(for: vault) == .canShare {
-            setShareInviteVault(with: .existing(vault))
+            setShareInviteVault(with: .vault(vault))
             router.present(for: .sharingFlow(.none))
         } else {
             router.present(for: .upselling(.default))
         }
     }
 
-    func leaveVault(vault: Vault) {
+    func leaveVault(vault: Share) {
         Task { [weak self] in
             guard let self else { return }
             do {
@@ -188,7 +189,7 @@ extension EditableVaultListViewModel {
                 logger.trace("Restoring all trashed items")
                 loading = true
                 let userId = try await userManager.getActiveUserId()
-                try await vaultsManager.restoreAllTrashedItems(userId: userId)
+                try await appContentManager.restoreAllTrashedItems(userId: userId)
                 router.display(element: .successMessage(#localized("All items restored"),
                                                         config: .refresh))
                 logger.info("Restored all trashed items")
@@ -207,7 +208,7 @@ extension EditableVaultListViewModel {
                 logger.trace("Emptying all trashed items")
                 loading = true
                 let userId = try await userManager.getActiveUserId()
-                try await vaultsManager.permanentlyDeleteAllTrashedItems(userId: userId)
+                try await appContentManager.permanentlyDeleteAllTrashedItems(userId: userId)
                 router.display(element: .infosMessage(#localized("All items permanently deleted"),
                                                       config: .refresh))
                 logger.info("Emptied all trashed items")

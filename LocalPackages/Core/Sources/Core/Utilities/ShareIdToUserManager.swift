@@ -27,7 +27,7 @@ private struct UserVault: Sendable, Hashable {
 }
 
 public protocol ShareIdToUserManagerProtocol {
-    func index(vaults: [Vault], userId: String)
+    func index(vaults: [Share], userId: String)
     func getUser(for item: any ItemIdentifiable) throws -> UserUiModel
 }
 
@@ -43,9 +43,9 @@ public final class ShareIdToUserManager: ShareIdToUserManagerProtocol {
 }
 
 public extension ShareIdToUserManager {
-    func index(vaults: [Vault], userId: String) {
+    func index(vaults: [Share], userId: String) {
         for vault in vaults {
-            userVaults.insert(.init(userId: userId, shareId: vault.shareId))
+            userVaults.insert(.init(userId: userId, shareId: vault.id))
         }
     }
 

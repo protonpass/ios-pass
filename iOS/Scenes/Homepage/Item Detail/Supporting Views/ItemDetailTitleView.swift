@@ -21,13 +21,13 @@
 import Client
 import DesignSystem
 import Entities
+import Factory
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct ItemDetailTitleView: View {
     let itemContent: ItemContent
-    let vault: Vault?
-    let shouldShowVault: Bool
+    let vault: Share?
 
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
@@ -44,11 +44,10 @@ struct ItemDetailTitleView: View {
                     .lineLimit(1)
                     .foregroundStyle(PassColor.textNorm.toColor)
 
-                if let vault {
-                    if vault.shared {
-                        VaultButton(vault: vault)
-                    } else if shouldShowVault {
-                        VaultLabel(vault: vault)
+                if let vaultContent = vault?.vaultContent {
+                    HStack {
+                        VaultLabel(vaultContent: vaultContent)
+                        Spacer()
                     }
                 }
             }

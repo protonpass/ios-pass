@@ -31,11 +31,11 @@ public final class CreateVaultUseCaseMock: @unchecked Sendable, CreateVaultUseCa
     public var closureExecute: () -> () = {}
     public var invokedExecutefunction = false
     public var invokedExecuteCount = 0
-    public var invokedExecuteParameters: (userId: String, vault: VaultProtobuf)?
-    public var invokedExecuteParametersList = [(userId: String, vault: VaultProtobuf)]()
-    public var stubbedExecuteResult: Vault?
+    public var invokedExecuteParameters: (userId: String, vault: VaultContent)?
+    public var invokedExecuteParametersList = [(userId: String, vault: VaultContent)]()
+    public var stubbedExecuteResult: Share?
 
-    public func execute(userId: String, with vault: VaultProtobuf) async throws -> Vault? {
+    public func execute(userId: String, with vault: VaultContent) async throws -> Share? {
         invokedExecutefunction = true
         invokedExecuteCount += 1
         invokedExecuteParameters = (userId, vault)

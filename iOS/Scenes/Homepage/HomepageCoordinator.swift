@@ -59,7 +59,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let urlOpener = UrlOpener()
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
-    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let userSettingsRepository = resolve(\SharedRepositoryContainer.userSettingsRepository)
@@ -206,14 +206,14 @@ private extension HomepageCoordinator {
             }
         }
 
-        Publishers.CombineLatest(vaultsManager.$vaultSelection, vaultsManager.$state)
+        Publishers.CombineLatest(appContentManager.$vaultSelection, appContentManager.$state)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] selection, _ in
                 guard let self else { return }
                 var createButtonDisabled = false
                 switch selection {
                 case .all, .trash:
-                    let vaults = vaultsManager.getAllVaults()
+                    let vaults = appContentManager.getAllShares()
                     createButtonDisabled = !vaults.contains(where: \.canEdit)
                 case let .precise(vault):
                     createButtonDisabled = !vault.canEdit
@@ -314,7 +314,7 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
-                try await vaultsManager.asyncRefresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 eventLoop.forceSync()
                 eventLoop.start()
             } catch {
@@ -379,7 +379,7 @@ private extension HomepageCoordinator {
             }
             do {
                 let userId = try await userManager.getActiveUserId()
-                vaultsManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 if exitEditMode {
                     itemsTabViewModel?.isEditMode = false
                 }
@@ -495,8 +495,8 @@ extension HomepageCoordinator {
                 switch destination {
                 case let .sharingFlow(dismissal):
                     presentSharingFlow(dismissal: dismissal)
-                case let .manageShareVault(vault, dismissal):
-                    presentManageShareVault(with: vault, dismissal: dismissal)
+                case let .manageSharedShare(display, dismissal):
+                    presentManageSharedShare(with: display, dismissal: dismissal)
                 case let .acceptRejectInvite(invite):
                     presentAcceptRejectInvite(with: invite)
                 case .upgradeFlow:
@@ -514,7 +514,7 @@ extension HomepageCoordinator {
                 case .fullSync:
                     present(FullSyncProgressView(mode: .fullSync), dismissible: false)
                 case let .shareVaultFromItemDetail(vault, itemContent):
-                    presentShareOrCreateNewVaultView(for: vault, itemContent: itemContent)
+                    presentShareElementView(for: vault, itemContent: itemContent)
                 case let .customizeNewVault(vault, itemContent):
                     presentCreateEditVaultView(mode: .editNewVault(vault, itemContent))
                 case .setPINCode:
@@ -640,6 +640,15 @@ extension HomepageCoordinator {
                     handleSignOut(userId: userId)
                 case let .deleteAccount(userId):
                     deleteAccount(userId: userId)
+                case let .screenDismissal(dismissal):
+                    switch dismissal {
+                    case .none:
+                        return
+                    case .topMost:
+                        dismissTopMostViewController(animated: true, completion: nil)
+                    case .all:
+                        dismissAllViewControllers(animated: true, completion: nil)
+                    }
                 }
             }
             .store(in: &cancellables)
@@ -668,7 +677,7 @@ extension HomepageCoordinator {
         }
     }
 
-    func createEditVaultView(vault: Vault?) {
+    func createEditVaultView(vault: Share?) {
         if let vault {
             presentCreateEditVaultView(mode: .editExistingVault(vault))
         } else {
@@ -676,25 +685,26 @@ extension HomepageCoordinator {
         }
     }
 
-    func presentManageShareVault(with vault: Vault, dismissal: SheetDismissal) {
-        let manageShareVaultView = ManageSharedVaultView(viewModel: ManageSharedVaultViewModel(vault: vault))
+    func presentManageSharedShare(with displayType: ManageSharedDisplay, dismissal: SheetDismissal) {
+        let manageShareShareView =
+            ManageSharedShareView(viewModel: ManageSharedShareViewModel(display: displayType))
 
         let completion: () -> Void = { [weak self] in
             guard let self else {
                 return
             }
             if let host = rootViewController
-                .topMostViewController as? UIHostingController<ManageSharedVaultView> {
+                .topMostViewController as? UIHostingController<ManageSharedShareView> {
                 /// Updating share data circumventing the onAppear not being called after a sheet presentation
                 host.rootView.refresh()
                 return
             }
-            present(manageShareVaultView)
+            present(manageShareShareView)
         }
 
         switch dismissal {
         case .none:
-            present(manageShareVaultView)
+            present(manageShareShareView)
         case .topMost:
             dismissTopMostViewController(animated: true, completion: completion)
         case .all:
@@ -706,7 +716,7 @@ extension HomepageCoordinator {
         let view = AcceptRejectInviteView(viewModel: AcceptRejectInviteViewModel(invite: invite))
 
         let viewController = UIHostingController(rootView: view)
-        viewController.setDetentType(.medium,
+        viewController.setDetentType(invite.isVault ? .medium : .custom(270),
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
@@ -774,15 +784,19 @@ extension HomepageCoordinator {
         present(view)
     }
 
-    func presentShareOrCreateNewVaultView(for vault: VaultListUiModel, itemContent: ItemContent) {
-        let viewModel = ShareOrCreateNewVaultViewModel(vault: vault, itemContent: itemContent)
-        let view = ShareOrCreateNewVaultView(viewModel: viewModel)
+    func presentShareElementView(for vault: VaultListUiModel, itemContent: ItemContent) {
+        let viewModel = ShareElementViewModel(share: vault.vault,
+                                              itemContent: itemContent,
+                                              itemCount: vault.itemCount)
+        let view = ShareElementView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
-        viewController.setDetentType(.custom(viewModel.sheetHeight),
+        viewController.setDetentType(.medium,
                                      parentViewController: rootViewController)
 
         viewController.sheetPresentationController?.prefersGrabberVisible = true
+        viewModel.sheetPresentation = viewController.sheetPresentationController
+
         present(viewController)
     }
 
@@ -890,7 +904,7 @@ extension HomepageCoordinator {
     }
 
     func itemMoveBetweenVault(context: MovingContext) {
-        let allVaults = vaultsManager.getAllEditableVaultContents()
+        let allVaults = appContentManager.getAllEditableVaultContents()
         guard !allVaults.isEmpty else {
             return
         }
@@ -922,7 +936,7 @@ extension HomepageCoordinator {
     }
 
     func presentLoginsWith2faView() {
-        let items = vaultsManager.getAllActiveAndTrashedItems().filter { $0.totpUri?.isEmpty == false }
+        let items = appContentManager.getAllActiveAndTrashedItems().filter { $0.totpUri?.isEmpty == false }
         present(LoginsWith2faView(viewModel: .init(items: items)))
     }
 
@@ -1243,7 +1257,7 @@ extension HomepageCoordinator: ItemsTabViewModelDelegate {
 
         // Num of vaults + all items + trash + create vault button
         let rowHeight = 74
-        let customHeight = rowHeight * vaultsManager.getVaultCount() + rowHeight + rowHeight + 120
+        let customHeight = rowHeight * appContentManager.getSharesCount() + rowHeight + rowHeight + 120
         viewController.setDetentType(.customAndLarge(CGFloat(customHeight)),
                                      parentViewController: rootViewController)
 
@@ -1507,7 +1521,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                 let itemContent = try item.getItemContent(symmetricKey: symmetricKey)
                 let displayToastMessage: () -> Void = { [weak self] in
                     guard let self else { return }
-                    if vaultsManager.isItemVisible(item, type: type) {
+                    if appContentManager.isItemVisible(item, type: type) {
                         bannerManager.displayBottomInfoMessage(type.creationMessage)
                     } else {
                         bannerManager.displayBottomInfoMessage(type.creationMessage,
@@ -1529,7 +1543,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                     }
                 }
                 let userId = try await userManager.getActiveUserId()
-                try await vaultsManager.asyncRefresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 homepageTabDelegate?.change(tab: .items)
                 increaseCreatedItemsCountAndAskForReviewIfNecessary()
             } catch {
@@ -1550,7 +1564,7 @@ extension HomepageCoordinator: CreateEditItemViewModelDelegate {
                 }
                 addNewEvent(type: .update(type))
                 let userId = try await userManager.getActiveUserId()
-                vaultsManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
                 itemDetailCoordinator?.refresh()
                 dismissTopMostViewController { [weak self] in
                     guard let self else { return }
@@ -1631,7 +1645,7 @@ extension HomepageCoordinator: CreateEditVaultViewModelDelegate {
                     bannerManager.displayBottomInfoMessage(#localized("Vault updated"))
                 }
                 let userId = try await userManager.getActiveUserId()
-                vaultsManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
             } catch {
                 bannerManager.displayTopErrorMessage(error)
             }

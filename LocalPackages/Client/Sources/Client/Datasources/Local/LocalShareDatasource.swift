@@ -20,6 +20,7 @@
 
 import CoreData
 
+// sourcery: AutoMockable
 public protocol LocalShareDatasourceProtocol: Sendable {
     func getShare(userId: String, shareId: String) async throws -> SymmetricallyEncryptedShare?
     func getAllShares(userId: String) async throws -> [SymmetricallyEncryptedShare]

@@ -26,16 +26,15 @@ import SwiftUI
 
 struct VaultSelectorView: View {
     @Environment(\.dismiss) private var dismiss
-    @Binding var selectedVault: Vault
+    @Binding var selectedVault: Share
     let isFreeUser: Bool
     let onUpgrade: () -> Void
 
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
 
-    private var vaults: [VaultListUiModel] {
-        vaultsManager
+    private var vaults: [ShareContent] {
+        appContentManager
             .getAllEditableVaultContents()
-            .map { .init(vaultContent: $0) }
     }
 
     var body: some View {
@@ -49,7 +48,9 @@ struct VaultSelectorView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         ForEach(vaults) { vault in
-                            view(for: vault)
+                            if let vaultContent = vault.share.vaultContent {
+                                view(for: vault, vaultContent: vaultContent)
+                            }
                             if vault != vaults.last {
                                 PassDivider()
                                     .padding(.horizontal)
@@ -69,17 +70,15 @@ struct VaultSelectorView: View {
         }
     }
 
-    @MainActor
-    private func view(for vault: VaultListUiModel) -> some View {
+    private func view(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
-            selectedVault = vault.vault
+            selectedVault = vaultInfos.share
             dismiss()
         }, label: {
-            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
-                     title: vault.vault.name,
-                     itemCount: vault.itemCount,
-                     isShared: vault.vault.shared,
-                     isSelected: selectedVault == vault.vault,
+            VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
+                     title: vaultContent.name,
+                     itemCount: vaultInfos.itemCount,
+                     isSelected: selectedVault == vaultInfos.share,
                      height: 74)
                 .padding(.horizontal)
         })

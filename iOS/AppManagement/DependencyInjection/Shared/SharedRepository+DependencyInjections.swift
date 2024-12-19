@@ -302,7 +302,7 @@ extension SharedRepositoryContainer {
         self { ShareRepository(symmetricKeyProvider: self.symmetricKeyProvider,
                                userManager: self.userManager,
                                localDatasource: self.localShareDatasource(),
-                               remoteDatasouce: self.remoteShareDatasource(),
+                               remoteDatasource: self.remoteShareDatasource(),
                                passKeyManager: self.passKeyManager(),
                                logManager: self.logManager) }
     }

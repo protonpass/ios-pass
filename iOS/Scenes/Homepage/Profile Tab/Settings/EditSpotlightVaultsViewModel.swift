@@ -23,28 +23,25 @@ import Factory
 import Foundation
 
 final class EditSpotlightVaultsViewModel: ObservableObject {
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
-    private let currentSpotlightSelectedVaults = resolve(\DataStreamContainer
-        .currentSpotlightSelectedVaults)
-    @Published private(set) var selectedVaults = [Vault]()
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    @Published private(set) var selectedVaults = [Share]()
 
     let allVaults: [VaultListUiModel]
 
     init() {
-        allVaults = vaultsManager.getAllVaultContents().map { .init(vaultContent: $0) }
-        selectedVaults = currentSpotlightSelectedVaults.value
+        allVaults = appContentManager.getAllSharesWithVaultContent().map { .init(vaultContent: $0) }
     }
 
-    func toggleSelection(vault: Vault) {
+    func toggleSelection(vault: Share) {
         if isSelected(vault: vault) {
             selectedVaults.removeAll(where: { $0 == vault })
         } else {
             selectedVaults.append(vault)
         }
-        currentSpotlightSelectedVaults.send(selectedVaults)
+        appContentManager.currentSpotlightSelectedVaults.send(selectedVaults)
     }
 
-    func isSelected(vault: Vault) -> Bool {
+    func isSelected(vault: Share) -> Bool {
         selectedVaults.contains(where: { $0.shareId == vault.shareId })
     }
 }

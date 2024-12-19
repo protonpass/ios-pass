@@ -24,23 +24,23 @@ import Client
 import Entities
 
 public protocol GetMainVaultUseCase: Sendable {
-    func execute() async -> Vault?
+    func execute() async -> Share?
 }
 
 public extension GetMainVaultUseCase {
-    func callAsFunction() async -> Vault? {
+    func callAsFunction() async -> Share? {
         await execute()
     }
 }
 
 public final class GetMainVault: GetMainVaultUseCase {
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
-    public init(vaultsManager: any VaultsManagerProtocol) {
-        self.vaultsManager = vaultsManager
+    public init(appContentManager: any AppContentManagerProtocol) {
+        self.appContentManager = appContentManager
     }
 
-    public func execute() async -> Vault? {
-        vaultsManager.getOldestOwnedVault()
+    public func execute() async -> Share? {
+        appContentManager.getOldestOwnedVault()
     }
 }
