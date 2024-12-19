@@ -39,11 +39,37 @@ protocol ItemDetailViewModelDelegate: AnyObject {
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published private(set) var isMonitored = false // Only applicable to login items
+    @Published private(set) var files: FetchableObject<[ItemFile]> = .fetching
+    @Published private(set) var isDownloadingFile = false
+    @Published var itemFileAction: ItemFileAction?
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
     @Published var showingLeaveShareAlert = false
 
     private var superBindValuesCalled = false
+
+    var fileUiModels: [FileAttachmentUiModel] {
+        guard case let .fetched(files) = files else {
+            return []
+        }
+        var uiModels = [FileAttachmentUiModel]()
+        for file in files {
+            let formattedSize = formatFileAttachmentSize(file.size)
+            if let name = file.name,
+               let mimeType = file.mimeType {
+                let fileGroup = getFileGroup(mimeType: mimeType)
+                uiModels.append(.init(id: file.fileID,
+                                      url: nil,
+                                      state: .uploaded,
+                                      name: name,
+                                      group: fileGroup,
+                                      formattedSize: formattedSize))
+            } else {
+                assertionFailure("Missing file name and MIME type")
+            }
+        }
+        return uiModels
+    }
 
     let isShownAsSheet: Bool
     let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
@@ -74,14 +100,26 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
     @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
-    @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
+    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
+    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
 
     var isAllowedToEdit: Bool {
         guard let vault else {
             return false
         }
         return canUserPerformActionOnVault(for: vault.vault)
+    }
+
+    var fileAttachmentsEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
+    }
+
+    var showFileAttachmentsSection: Bool {
+        fileAttachmentsEnabled && (!files.isFetched || files.fetchedObject?.isEmpty == false)
     }
 
     var aliasSyncEnabled: Bool {
@@ -160,6 +198,22 @@ class BaseItemDetailViewModel: ObservableObject {
         router.present(for: .shareVaultFromItemDetail(vault, itemContent))
     }
 
+    func fetchAttachments() async {
+        guard fileAttachmentsEnabled else { return }
+        do {
+            if files.isError {
+                files = .fetching
+            }
+            let userId = try await userManager.getActiveUserId()
+            let files = try await fileRepository.getActiveItemFiles(userId: userId,
+                                                                    item: itemContent)
+            self.files = .fetched(files)
+        } catch {
+            files = .error(error)
+            logger.error(error)
+        }
+    }
+
     func refresh() {
         Task { [weak self] in
             guard let self else { return }
@@ -173,6 +227,7 @@ class BaseItemDetailViewModel: ObservableObject {
                 }
                 itemContent = updatedItemContent
                 bindValues()
+                await fetchAttachments()
             } catch {
                 logger.error(error)
                 router.display(element: .displayErrorBanner(error))
@@ -323,5 +378,79 @@ private extension BaseItemDetailViewModel {
             guard #available(iOS 17, *) else { return }
             await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
         }
+    }
+}
+
+extension BaseItemDetailViewModel: FileAttachmentsViewHandler {
+    var fileAttachmentsSectionPrimaryColor: UIColor {
+        itemContent.type.normMajor2Color
+    }
+
+    var fileAttachmentsSectionSecondaryColor: UIColor {
+        itemContent.type.normMinor1Color
+    }
+
+    var itemContentType: ItemContentType {
+        itemContent.type
+    }
+
+    func retryFetchingAttachments() {
+        Task { [weak self] in
+            guard let self else { return }
+            await fetchAttachments()
+        }
+    }
+
+    func open(_ file: FileAttachmentUiModel) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let url = try await downloadAndDecrypt(file)
+                itemFileAction = .preview(url)
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func save(_ file: FileAttachmentUiModel) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let url = try await downloadAndDecrypt(file)
+                itemFileAction = .save(url)
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func share(_ file: FileAttachmentUiModel) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let url = try await downloadAndDecrypt(file)
+                itemFileAction = .share(url)
+            } catch {
+                handle(error)
+            }
+        }
+    }
+}
+
+private extension BaseItemDetailViewModel {
+    func downloadAndDecrypt(_ file: FileAttachmentUiModel) async throws -> URL {
+        guard case let .fetched(files) = files else {
+            throw PassError.fileAttachment(.failedToDownloadNoFetchedFiles)
+        }
+        defer { isDownloadingFile = false }
+        isDownloadingFile = true
+        guard let file = files.first(where: { $0.fileID == file.id }) else {
+            throw PassError.fileAttachment(.missingFile(file.id))
+        }
+        let userId = try await userManager.getActiveUserId()
+        return try await downloadAndDecryptFile(userId: userId,
+                                                item: itemContent,
+                                                file: file)
     }
 }

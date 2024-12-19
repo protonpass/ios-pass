@@ -32,7 +32,9 @@ final class CreateEditNoteViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     @Published var title = ""
     @Published var note = ""
 
-    override var isSaveable: Bool { !title.isEmpty }
+    override var isSaveable: Bool {
+        super.isSaveable && !title.isEmpty
+    }
 
     override func bindValues() {
         switch mode {

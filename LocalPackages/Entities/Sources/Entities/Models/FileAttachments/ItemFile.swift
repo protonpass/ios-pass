@@ -21,10 +21,64 @@
 
 import Foundation
 
-public struct ItemFile: Sendable, Equatable {
-    public let id: String
+public struct ItemFile: Decodable, Sendable, Equatable {
+    public let fileID: String
+    public let size: Int
+    public let metadata: String
+    public let fileKey: String
+    public let itemKeyRotation: Int
+    public let chunks: [FileChunk]
+    public let revisionAdded: Int
+    public let revisionRemoved: Int?
+    public let createTime: Int
+    public let modifyTime: Int
 
-    public init(id: String) {
-        self.id = id
+    // To be filled up once metadata is decrypted
+    public var name: String?
+    public var mimeType: String?
+
+    public init(fileID: String,
+                size: Int,
+                metadata: String,
+                fileKey: String,
+                itemKeyRotation: Int,
+                chunks: [FileChunk],
+                revisionAdded: Int,
+                revisionRemoved: Int,
+                createTime: Int,
+                modifyTime: Int) {
+        self.fileID = fileID
+        self.size = size
+        self.metadata = metadata
+        self.fileKey = fileKey
+        self.itemKeyRotation = itemKeyRotation
+        self.chunks = chunks
+        self.revisionAdded = revisionAdded
+        self.revisionRemoved = revisionRemoved
+        self.createTime = createTime
+        self.modifyTime = modifyTime
+    }
+}
+
+public struct FileChunk: Decodable, Sendable, Equatable {
+    public let chunkID: String
+    public let index: Int
+    public let size: Int
+}
+
+public enum ItemFileAction: Sendable, Identifiable {
+    case preview(URL)
+    case save(URL)
+    case share(URL)
+
+    public var id: String {
+        switch self {
+        case let .preview(url):
+            "preview" + url.path()
+        case let .save(url):
+            "save" + url.path()
+        case let .share(url):
+            "share" + url.path()
+        }
     }
 }

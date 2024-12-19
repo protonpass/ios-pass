@@ -165,7 +165,9 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Sendable {
     private var customFieldSection: CreateEditIdentitySection?
     @Published var customSectionTitle = ""
 
-    override var isSaveable: Bool { !title.isEmpty }
+    override var isSaveable: Bool {
+        super.isSaveable && !title.isEmpty
+    }
 
     private(set) var selectedCustomSection: CreateEditIdentitySection?
 

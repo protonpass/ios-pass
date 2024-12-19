@@ -87,7 +87,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     private let validateEmail = resolve(\SharedUseCasesContainer.validateEmail)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
-    override var isSaveable: Bool { !title.isEmpty && !hasEmptyCustomField }
+    override var isSaveable: Bool {
+        super.isSaveable && !title.isEmpty && !hasEmptyCustomField
+    }
 
     private var loginDelegate: (any CreateEditLoginViewModelDelegate)? {
         delegate as? (any CreateEditLoginViewModelDelegate)

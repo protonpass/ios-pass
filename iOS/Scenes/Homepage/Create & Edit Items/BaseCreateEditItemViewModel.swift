@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+// swiftlint:disable file_length
 import Client
 import Combine
 import Core
@@ -44,6 +45,15 @@ enum ItemMode: Equatable, Hashable {
     case create(shareId: String?, type: ItemCreationType)
     case clone(ItemContent)
     case edit(ItemContent)
+
+    var itemContent: ItemContent? {
+        switch self {
+        case let .clone(content), let .edit(content):
+            content
+        default:
+            nil
+        }
+    }
 
     var isEditMode: Bool {
         switch self {
@@ -101,7 +111,11 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published private(set) var isSaving = false
     @Published private(set) var canAddMoreCustomFields = true
     @Published private(set) var canScanDocuments = false
+    /// Hold the user edit list of updated files. Need to compare with the attached files in order to add and
+    /// remove accordingly
     @Published private(set) var files = [FileAttachment]()
+    /// Hold the remote files currently attached to the item
+    @Published private(set) var attachedFiles: FetchableObject<[ItemFile]>?
     @Published private(set) var isUploadingFile = false
     @Published private(set) var dismissedFileAttachmentsBanner = false
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
@@ -126,6 +140,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     private let updateUserPreferences = resolve(\SharedUseCasesContainer.updateUserPreferences)
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedUseCasesContainer.generateDatedFileName) private var generateDatedFileName
     @LazyInjected(\SharedUseCasesContainer.writeToUrl) private var writeToUrl
@@ -133,6 +148,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.getMimeType) private var getMimeType
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\SharedUseCasesContainer.encryptFile) private var encryptFile
+    @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -142,11 +159,51 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         fileAttachmentsEnabled && !dismissedFileAttachmentsBanner
     }
 
+    var isFetchingAttachedFiles: Bool {
+        attachedFiles?.isFetching == true
+    }
+
+    var fetchAttachedFilesError: (any Error)? {
+        attachedFiles?.error
+    }
+
+    var fileUiModels: [FileAttachmentUiModel] {
+        var uiModels = [FileAttachmentUiModel]()
+        for file in files {
+            switch file {
+            case let .pending(pending):
+                uiModels.append(.init(id: pending.id,
+                                      url: pending.metadata.url,
+                                      state: pending.uploadState,
+                                      name: pending.metadata.name,
+                                      group: pending.metadata.fileGroup,
+                                      formattedSize: pending.metadata.formattedSize))
+            case let .item(itemFile):
+                let formattedSize = formatFileAttachmentSize(itemFile.size)
+                if let name = itemFile.name,
+                   let mimeType = itemFile.mimeType {
+                    let fileGroup = getFileGroup(mimeType: mimeType)
+                    uiModels.append(.init(id: itemFile.fileID,
+                                          url: nil,
+                                          state: .uploaded,
+                                          name: name,
+                                          group: fileGroup,
+                                          formattedSize: formattedSize))
+                } else {
+                    assertionFailure("Missing file name and MIME type")
+                }
+            }
+        }
+        return uiModels
+    }
+
     var hasEmptyCustomField: Bool {
         customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
     }
 
-    var isSaveable: Bool { true }
+    var isSaveable: Bool {
+        !isUploadingFile && fileUiModels.allSatisfy { $0.state == .uploaded }
+    }
 
     var shouldUpgrade: Bool { false }
 
@@ -249,6 +306,25 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         customFieldUiModels.append(uiModel)
         recentlyAddedOrEditedField = uiModel
     }
+
+    func fetchAttachedFiles() async {
+        guard let itemContent = mode.itemContent else {
+            attachedFiles = nil
+            return
+        }
+        do {
+            attachedFiles = .fetching
+            let userId = try await userManager.getActiveUserId()
+            let files = try await fileRepository.getActiveItemFiles(userId: userId,
+                                                                    item: itemContent)
+            attachedFiles = .fetched(files)
+            for file in files {
+                self.files.upsert(file)
+            }
+        } catch {
+            attachedFiles = .error(error)
+        }
+    }
 }
 
 // MARK: - Private APIs
@@ -322,25 +398,52 @@ private extension BaseCreateEditItemViewModel {
 
     /// Return `true` if item is edited, `false` otherwise
     func editItem(oldItemContent: ItemContent) async throws -> Bool {
-        let additionallyEdited = try await additionalEdit()
+        var edited = try await additionalEdit()
         let itemId = oldItemContent.itemId
         let shareId = oldItemContent.shareId
         guard let oldItem = try await itemRepository.getItem(shareId: shareId,
                                                              itemId: itemId) else {
             throw PassError.itemNotFound(oldItemContent)
         }
+
+        edited = try await linkFiles(to: oldItem)
+
         guard let newItemContent = await generateItemContent() else {
             logger.warning("No new item content")
-            return additionallyEdited
+            return edited
         }
         guard !oldItemContent.protobuf.isLooselyEqual(to: newItemContent) else {
             logger.trace("Skipped editing because no changes \(oldItemContent.debugDescription)")
-            return additionallyEdited
+            return edited
         }
         try await itemRepository.updateItem(userId: oldItem.userId,
                                             oldItem: oldItem.item,
                                             newItemContent: newItemContent,
                                             shareId: oldItem.shareId)
+        return true
+    }
+
+    func linkFiles(to item: any ItemIdentifiable) async throws -> Bool {
+        let attachedFiles = attachedFiles?.fetchedObject ?? []
+
+        let filesToLink = getFilesToLink(attachedFiles: attachedFiles, updatedFiles: files)
+        guard !filesToLink.isEmpty else {
+            logger.debug("No files to link to \(item.debugDescription)")
+            return false
+        }
+
+        let userId = try await userManager.getActiveUserId()
+        if !filesToLink.toAdd.isEmpty {
+            logger.debug("Linking \(filesToLink.toAdd.count) files to \(item.debugDescription)")
+        }
+        if !filesToLink.toRemove.isEmpty {
+            logger.debug("Removing \(filesToLink.toAdd.count) files to \(item.debugDescription)")
+        }
+        try await fileRepository.linkFilesToItem(userId: userId,
+                                                 pendingFilesToAdd: filesToLink.toAdd,
+                                                 existingFileIdsToRemove: filesToLink.toRemove,
+                                                 item: item)
+        logger.info("Done linking files to \(item.debugDescription)")
         return true
     }
 
@@ -402,6 +505,7 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
+                        _ = try await linkFiles(to: createdItem)
                         let passkey = try await newPasskey()
                         router.present(for: .createItem(item: createdItem,
                                                         type: type,
@@ -493,27 +597,28 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                     // Optionally remove the file, we don't care if errors occur here
                     // because it should be in temporary directory which is cleaned up
                     // by the system anyway
+                    #if !targetEnvironment(simulator)
                     try? FileManager.default.removeItem(at: url)
+                    #endif
                     throw PassError.fileAttachment(.fileTooLarge(fileSize))
                 }
                 let mimeType = try getMimeType(of: url)
                 let fileGroup = getFileGroup(mimeType: mimeType)
                 let formattedFileSize = formatFileAttachmentSize(fileSize)
-                let file = PendingFileAttachment(id: fileId,
-                                                 metadata: .init(url: url,
-                                                                 mimeType: mimeType,
-                                                                 fileGroup: fileGroup,
-                                                                 size: fileSize,
-                                                                 formattedSize: formattedFileSize))
-                files.append(.pending(file))
-                try await Task.sleep(seconds: 0.5)
-                if Bool.random() {
-                    files.updateState(id: fileId, newState: .uploaded(remoteId: ""))
-                } else {
-                    throw PassError.fileAttachment(.noPngData)
-                }
+                let file = try PendingFileAttachment(id: fileId,
+                                                     key: .random(),
+                                                     metadata: .init(url: url,
+                                                                     mimeType: mimeType,
+                                                                     fileGroup: fileGroup,
+                                                                     size: fileSize,
+                                                                     formattedSize: formattedFileSize))
+                try await createEncryptAndUpload(file)
             } catch {
-                files.updateState(id: fileId, newState: .error(error))
+                if let file = files.first(where: { $0.id == fileId }),
+                   case var .pending(pendingFile) = file {
+                    pendingFile.uploadState = .error(error)
+                    files.upsert(pendingFile)
+                }
                 handle(error)
             }
         }
@@ -523,20 +628,100 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         handle(error)
     }
 
-    func retryUpload(attachment: FileAttachment) {
-        files.updateState(id: attachment.id, newState: .uploaded(remoteId: ""))
+    func retryFetchAttachedFiles() {
+        Task { [weak self] in
+            guard let self else { return }
+            await fetchAttachedFiles()
+        }
     }
 
-    func rename(attachment: FileAttachment, newName: String) {
-        print(attachment)
-        print(newName)
+    func retryUpload(attachment: FileAttachmentUiModel) {
+        guard let file = files.first(where: { $0.id == attachment.id }),
+              case var .pending(file) = file else { return }
+        uploadFileTask?.cancel()
+        uploadFileTask = Task { [weak self] in
+            guard let self else { return }
+            defer {
+                isUploadingFile = false
+            }
+            do {
+                isUploadingFile = true
+                try await createEncryptAndUpload(file)
+            } catch {
+                file.uploadState = .error(error)
+                files.upsert(file)
+                handle(error)
+            }
+        }
     }
 
-    func delete(attachment: FileAttachment) {
-        print(attachment)
+    func rename(attachment: FileAttachmentUiModel, newName: String) {
+        Task { [weak self] in
+            guard let self else { return }
+            router.display(element: .globalLoading(shouldShow: true))
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                switch files.first(where: { $0.id == attachment.id }) {
+                case var .pending(pendingFile):
+                    if try await fileRepository.updatePendingFileName(userId: userId,
+                                                                      file: pendingFile,
+                                                                      newName: newName) {
+                        pendingFile.metadata.name = newName
+                        files.upsert(pendingFile)
+                    }
+
+                case let .item(itemFile):
+                    if let itemContent = mode.itemContent {
+                        let updatedFile =
+                            try await fileRepository.updateItemFileName(userId: userId,
+                                                                        item: itemContent,
+                                                                        file: itemFile,
+                                                                        newName: newName)
+                        files.upsert(updatedFile)
+                        router.present(for: .updateItem(type: itemContentType, updated: true))
+                    }
+
+                default:
+                    assertionFailure("No item with id \(attachment.id)")
+                }
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func delete(attachment: FileAttachmentUiModel) {
+        files.removeAll(where: { $0.id == attachment.id })
     }
 
     func deleteAllAttachments() {
-        print(#function)
+        files.removeAll()
     }
 }
+
+private extension BaseCreateEditItemViewModel {
+    func createEncryptAndUpload(_ file: PendingFileAttachment) async throws {
+        var file = file
+
+        file.uploadState = .uploading
+        files.upsert(file)
+
+        let userId = try await userManager.getActiveUserId()
+        let remoteFile = try await fileRepository.createPendingFile(userId: userId,
+                                                                    file: file)
+        file.remoteId = remoteFile.fileID
+
+        if file.encryptedData == nil {
+            file.encryptedData = try await encryptFile(key: file.key, sourceUrl: file.metadata.url)
+        }
+
+        files.upsert(file)
+
+        try await fileRepository.uploadChunk(userId: userId, file: file)
+        file.uploadState = .uploaded
+        files.upsert(file)
+    }
+}
+
+// swiftlint:enable file_length

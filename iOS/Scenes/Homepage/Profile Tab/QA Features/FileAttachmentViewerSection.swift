@@ -44,9 +44,7 @@ struct FileAttachmentViewerSection: View {
             if let url {
                 FileAttachmentPreview(url: url,
                                       primaryTintColor: PassColor.interactionNormMajor1,
-                                      secondaryTintColor: PassColor.interactionNormMinor2,
-                                      onRename: { _ in },
-                                      onDelete: {})
+                                      secondaryTintColor: PassColor.interactionNormMinor2)
             }
         }
     }

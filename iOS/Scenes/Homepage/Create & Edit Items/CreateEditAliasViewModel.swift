@@ -84,7 +84,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     override var isSaveable: Bool {
-        switch mode {
+        guard super.isSaveable else { return false }
+        return switch mode {
         case .clone, .create:
             !title.isEmpty && !prefix.isEmpty && !suffix.isEmpty && !mailboxes.isEmpty && prefixError == nil
         case .edit:

@@ -81,6 +81,7 @@ private extension CreateEditItemToolbar {
 
             if itemContentType == .note, fileAttachmentsEnabled {
                 FileAttachmentsButton(style: .circle, handler: fileAttachmentsEditHandler)
+                    .disabled(!isSaveable)
             }
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
@@ -91,6 +92,7 @@ private extension CreateEditItemToolbar {
                                  backgroundColor: itemContentType.normMinor1Color,
                                  accessibilityLabel: "Scan \(itemContentType == .note ? "document" : "credit card")",
                                  action: onScan)
+                        .disabled(!isSaveable)
                 default:
                     EmptyView()
                 }
