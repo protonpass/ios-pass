@@ -66,7 +66,7 @@ public extension UpgradeChecker {
     func canCreateMoreVaults() async throws -> Bool {
         let plan = try await accessRepository.getPlan(userId: nil)
         if let vaultLimit = plan.vaultLimit {
-            let vaultCount = counter.getVaultCount()
+            let vaultCount = counter.getVaultsCount()
             return vaultCount < vaultLimit
         }
         return true
@@ -96,7 +96,8 @@ public extension UpgradeChecker {
 
 public protocol LimitationCounterProtocol: AnyObject, Sendable {
     func getAliasCount() -> Int
-    func getVaultCount() -> Int
+    func getSharesCount() -> Int
+    func getVaultsCount() -> Int
     func getTOTPCount() -> Int
 }
 

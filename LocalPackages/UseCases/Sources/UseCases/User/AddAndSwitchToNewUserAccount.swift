@@ -39,7 +39,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
     private let authManager: any AuthManagerProtocol
     private let preferencesManager: any PreferencesManagerProtocol
     private let apiManager: any APIManagerProtocol
-    private let fullVaultsSync: any FullVaultsSyncUseCase
+    private let fullContentSync: any FullContentSyncUseCase
     private let refreshFeatureFlags: any RefreshFeatureFlagsUseCase
     private let inviteRepository: any InviteRepositoryProtocol
 
@@ -48,7 +48,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
                 authManager: any AuthManagerProtocol,
                 preferencesManager: any PreferencesManagerProtocol,
                 apiManager: any APIManagerProtocol,
-                fullVaultsSync: any FullVaultsSyncUseCase,
+                fullContentSync: any FullContentSyncUseCase,
                 refreshFeatureFlags: any RefreshFeatureFlagsUseCase,
                 inviteRepository: any InviteRepositoryProtocol) {
         self.syncEventLoop = syncEventLoop
@@ -56,7 +56,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
         self.authManager = authManager
         self.preferencesManager = preferencesManager
         self.apiManager = apiManager
-        self.fullVaultsSync = fullVaultsSync
+        self.fullContentSync = fullContentSync
         self.refreshFeatureFlags = refreshFeatureFlags
         self.inviteRepository = inviteRepository
     }
@@ -72,7 +72,7 @@ public final class AddAndSwitchToNewUserAccount: AddAndSwitchToNewUserAccountUse
             try await preferencesManager.updateUserPreferences(\.extraPasswordEnabled,
                                                                value: true)
         }
-        await fullVaultsSync(userId: userData.user.ID)
+        await fullContentSync(userId: userData.user.ID)
         await inviteRepository.refreshInvites()
         syncEventLoop.start()
     }

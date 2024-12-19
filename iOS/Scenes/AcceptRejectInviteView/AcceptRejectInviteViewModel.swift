@@ -40,7 +40,7 @@ final class AcceptRejectInviteViewModel: ObservableObject {
     private let updateCachedInvitations = resolve(\UseCasesContainer.updateCachedInvitations)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
 
@@ -75,12 +75,6 @@ final class AcceptRejectInviteViewModel: ObservableObject {
             guard let self else {
                 return
             }
-            defer {
-                if !userInvite.isVault {
-                    executingAction = false
-                    shouldCloseSheet = true
-                }
-            }
 
             do {
                 executingAction = true
@@ -101,15 +95,18 @@ private extension AcceptRejectInviteViewModel {
         if userInvite.isVault, userInvite.vaultData != nil {
             decodeVaultData()
         }
-        vaultsManager.$state
+        appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
-                guard let self, case let .loaded(uiModel) = state,
-                      uiModel.vaults.map(\.vault.id).contains(self.userInvite.targetID) else {
+                guard let self,
+                      let sharesData = state.loadedContent,
+                      let shareContent = sharesData.shares
+                      .first(where: { $0.share.targetID == self.userInvite.targetID }) else {
                     return
                 }
                 executingAction = false
                 shouldCloseSheet = true
+                displayItemPage(shareContent: shareContent)
             }.store(in: &cancellables)
     }
 
@@ -129,5 +126,26 @@ private extension AcceptRejectInviteViewModel {
 
     func display(error: any Error) {
         router.display(element: .displayErrorBanner(error))
+    }
+
+    func displayItemPage(shareContent: ShareContent) {
+        guard !userInvite.isVault,
+              let item = shareContent.items.first else {
+            return
+        }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                guard let itemContent = try await appContentManager.getItemContent(shareId: item.shareId,
+                                                                                   itemId: item.itemId) else {
+                    return
+                }
+                router.present(for: .itemDetail(itemContent))
+            } catch {
+                logger.error(message: "Error displaying item detail after accepting item invitation", error: error)
+            }
+        }
     }
 }

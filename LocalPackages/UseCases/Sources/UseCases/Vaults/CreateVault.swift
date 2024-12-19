@@ -37,18 +37,18 @@ public extension CreateVaultUseCase {
 }
 
 public final class CreateVault: CreateVaultUseCase {
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
     private let repository: any ShareRepositoryProtocol
 
-    public init(vaultsManager: any VaultsManagerProtocol,
+    public init(appContentManager: any AppContentManagerProtocol,
                 repository: any ShareRepositoryProtocol) {
-        self.vaultsManager = vaultsManager
+        self.appContentManager = appContentManager
         self.repository = repository
     }
 
     public func execute(userId: String, with vault: VaultContent) async throws -> Share? {
         let share = try await repository.createVault(vault)
-        vaultsManager.refresh(userId: userId)
+        try await appContentManager.refresh(userId: userId)
 
         return try await repository.getDecryptedShare(shareId: share.shareID)
     }

@@ -41,7 +41,7 @@ final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
 
     @LazyInjected(\SharedRepositoryContainer.accessRepository)
     private var accessRepository: any AccessRepositoryProtocol
-    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getMainVault) private var getMainVault
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
@@ -82,7 +82,7 @@ private extension SimpleLoginAliasActivationViewModel {
                 return
             }
             userAliasSyncData = try? await accessRepository.getAccess(userId: nil).access.userData
-            vaults = vaultsManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
+            vaults = appContentManager.getAllEditableVaultContents().map { .init(vaultContent: $0) }
             if let userAliasSyncData, let shareId = userAliasSyncData.defaultShareID {
                 guard let selectedVault = vaults.first(where: { $0.vault.shareId == shareId }) else {
                     let mainVault = await getMainVault()

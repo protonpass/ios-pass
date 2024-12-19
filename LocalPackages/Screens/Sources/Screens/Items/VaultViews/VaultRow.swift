@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
@@ -27,28 +28,31 @@ public struct VaultRow<Thumbnail: View>: View {
     private let thumbnail: () -> Thumbnail
     private let title: String
     private let itemCount: Int
-    private let isShared: Bool
+    private let share: Share?
     private let isSelected: Bool
     private let showBadge: Bool
     private let maxWidth: CGFloat?
     private let height: CGFloat
+    private let shareAction: ((Share) -> Void)?
 
     public init(@ViewBuilder thumbnail: @escaping () -> Thumbnail,
                 title: String,
                 itemCount: Int,
-                isShared: Bool,
+                share: Share? = nil,
                 isSelected: Bool,
                 showBadge: Bool = false,
                 maxWidth: CGFloat? = .infinity,
-                height: CGFloat = 70) {
+                height: CGFloat = 70,
+                shareAction: ((Share) -> Void)? = nil) {
         self.thumbnail = thumbnail
         self.title = title
         self.itemCount = itemCount
-        self.isShared = isShared
+        self.share = share
         self.isSelected = isSelected
         self.showBadge = showBadge
         self.maxWidth = maxWidth
         self.height = height
+        self.shareAction = shareAction
     }
 
     public var body: some View {
@@ -73,12 +77,12 @@ public struct VaultRow<Thumbnail: View>: View {
                 Spacer()
             }
 
-            if isShared {
-                HStack(spacing: 0) {
-                    Image(uiImage: IconProvider.users)
+            if let share {
+                HStack(spacing: 4) {
+                    Image(uiImage: IconProvider.usersPlus)
                         .resizable()
                         .scaledToFit()
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                         .frame(maxHeight: 20)
                     if showBadge {
                         Image(uiImage: IconProvider.exclamationCircleFilled)
@@ -88,7 +92,24 @@ public struct VaultRow<Thumbnail: View>: View {
                             .frame(maxHeight: 16)
                             .offset(y: -10)
                     }
+                    if share.shared {
+                        Text(verbatim: "\(share.members)")
+                            .font(.caption)
+                            .fontWeight(.medium)
+                            .foregroundStyle(PassColor.interactionNormMinor1.toColor)
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 2)
+                            .background(PassColor.interactionNormMajor2.toColor)
+                            .cornerRadius(20)
+                    }
                 }
+                .padding(10)
+                .background(PassColor.interactionNormMinor1.toColor)
+                .cornerRadius(20)
+                .buttonEmbeded {
+                    shareAction?(share)
+                }
+                .buttonStyle(.plain)
             }
 
             if isSelected {

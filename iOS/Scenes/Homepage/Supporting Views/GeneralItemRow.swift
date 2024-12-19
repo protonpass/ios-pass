@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct GeneralItemRow<ThumbnailView: View>: View {
@@ -30,6 +31,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let secondaryTitleColor: UIColor?
     let description: String?
     let descriptionLineLimit: Int
+    let isShared: Bool
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
          title: String,
@@ -37,7 +39,8 @@ struct GeneralItemRow<ThumbnailView: View>: View {
          description: String?,
          descriptionLineLimit: Int = 1,
          secondaryTitle: String? = nil,
-         secondaryTitleColor: UIColor? = nil) {
+         secondaryTitleColor: UIColor? = nil,
+         isShared: Bool = false) {
         self.thumbnailView = thumbnailView()
         self.title = title
         self.titleLineLimit = titleLineLimit
@@ -45,6 +48,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
         self.descriptionLineLimit = descriptionLineLimit
         self.secondaryTitle = secondaryTitle
         self.secondaryTitleColor = secondaryTitleColor
+        self.isShared = isShared
     }
 
     var body: some View {
@@ -57,10 +61,18 @@ struct GeneralItemRow<ThumbnailView: View>: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                Text(titleTexts)
-                    .lineLimit(titleLineLimit)
-                    .truncationMode(secondaryTitle == nil ? .tail : .middle)
-                    .fixedSize(horizontal: false, vertical: true)
+                HStack {
+                    Text(titleTexts)
+                        .lineLimit(titleLineLimit)
+                        .truncationMode(secondaryTitle == nil ? .tail : .middle)
+                        .fixedSize(horizontal: false, vertical: true)
+                    if isShared {
+                        Image(uiImage: IconProvider.usersFilled)
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                            .foregroundStyle(PassColor.textNorm.toColor)
+                    }
+                }
 
                 if let description, !description.isEmpty {
                     Text(description)

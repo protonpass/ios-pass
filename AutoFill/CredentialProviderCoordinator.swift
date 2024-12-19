@@ -61,7 +61,7 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     @LazyInjected(\AutoFillUseCaseContainer.completePasskeyRegistration) private var completePasskeyRegistration
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
-    @LazyInjected(\SharedServiceContainer.vaultsManager) private var vaultsManager
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.getUserPreferences) private var getUserPreferences
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
@@ -651,7 +651,7 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
                 // especially when creating new login items we need to check some limitations
                 // (login with 2FA, custom fields...)
                 try await userManager.switchActiveUser(with: info.userId, onMemory: true)
-                try await vaultsManager.asyncRefresh(userId: info.userId)
+                try await appContentManager.refresh(userId: info.userId)
 
                 switch info.data {
                 case let .login(url, passkeyCredentialRequest):

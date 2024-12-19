@@ -21,12 +21,14 @@
 
 import Foundation
 
-public protocol ShareInvitee: Identifiable {
+public protocol ShareInvitee: Identifiable, Equatable {
     var id: String { get }
     var email: String { get }
     var subtitle: String { get }
     var isPending: Bool { get }
     var isAdmin: Bool { get }
+    var shareRole: ShareRole { get }
+    var shareType: TargetType { get }
     var options: [ShareInviteeOption] { get }
 }
 

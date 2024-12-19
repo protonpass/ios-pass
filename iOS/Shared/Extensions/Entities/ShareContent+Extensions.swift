@@ -1,7 +1,7 @@
 //
-// VaultLabel.swift
-// Proton Pass - Created on 13/04/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ShareContent+Extensions.swift
+// Proton Pass - Created on 04/12/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,23 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
 import Entities
-import SwiftUI
 
-struct VaultLabel: View {
-    let vaultContent: VaultContent
-
-    var body: some View {
-        Label(title: {
-            Text(vaultContent.name)
-                .font(.footnote)
-        }, icon: {
-            Image(uiImage: vaultContent.vaultSmallIcon)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 12, height: 12)
-        })
-        .foregroundStyle(PassColor.textWeak.toColor)
+extension ShareContent {
+    var toVaultListUiModel: VaultListUiModel {
+        VaultListUiModel(vaultContent: self)
     }
 }

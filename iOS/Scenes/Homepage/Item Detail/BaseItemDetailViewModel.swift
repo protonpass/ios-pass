@@ -41,6 +41,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isMonitored = false // Only applicable to login items
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
+    @Published var showingLeaveShareAlert = false
 
     private var superBindValuesCalled = false
 
@@ -60,10 +61,9 @@ class BaseItemDetailViewModel: ObservableObject {
 
     private(set) var customFieldUiModels: [CustomFieldUiModel]
     let vault: VaultListUiModel?
-    let shouldShowVault: Bool
     let logger = resolve(\SharedToolingContainer.logger)
 
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let canUserPerformActionOnVault = resolve(\UseCasesContainer.canUserPerformActionOnVault)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
@@ -73,6 +73,9 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private(set) var router
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedServiceContainer.itemContextMenuHandler) var itemContextMenuHandler
+    @LazyInjected(\SharedServiceContainer.syncEventLoop) var syncEventLoop
+    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
 
     var isAllowedToEdit: Bool {
         guard let vault else {
@@ -83,6 +86,30 @@ class BaseItemDetailViewModel: ObservableObject {
 
     var aliasSyncEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
+    var itemSharingEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
+    }
+
+    var canShareItem: Bool {
+        vault?.vault.shareRole != .read
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: have to check the calculation with new endpoints
+    var numberOfSharedMembers: Int {
+        var members = itemContent.item.shareCount
+
+        if let vault = vault?.vault, vault.isVaultRepresentation, vault.shared {
+            members += vault.members
+        }
+
+        return members
+    }
+
+    var itemIsLinkToVault: Bool {
+        vault?.vault.isVaultRepresentation ?? false
     }
 
     weak var delegate: (any ItemDetailViewModelDelegate)?
@@ -96,11 +123,7 @@ class BaseItemDetailViewModel: ObservableObject {
         customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
         self.upgradeChecker = upgradeChecker
 
-        let allVaults = vaultsManager.getAllVaultContents()
-        vault = allVaults
-            .first { $0.vault.shareId == itemContent.shareId }
-            .map { VaultListUiModel(vaultContent: $0) }
-        shouldShowVault = allVaults.count > 1
+        vault = appContentManager.getShareContent(for: itemContent.shareId)?.toVaultListUiModel
 
         bindValues()
         checkIfFreeUser()
@@ -133,7 +156,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func share() {
-        guard let vault else { return }
+        guard let vault, vault.vault.shareRole != .read else { return }
         router.present(for: .shareVaultFromItemDetail(vault, itemContent))
     }
 
@@ -261,6 +284,27 @@ class BaseItemDetailViewModel: ObservableObject {
 
     func canModify() -> Bool {
         true
+    }
+
+    func leaveShare() {
+        guard let share = vault?.vault else {
+            return
+        }
+        Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer { router.display(element: .globalLoading(shouldShow: false)) }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                let userId = try await userManager.getActiveUserId()
+                try await leaveShareUsecase(userId: userId, with: share.shareId)
+                syncEventLoop.forceSync()
+                router.action(.screenDismissal(.all))
+            } catch {
+                handle(error)
+            }
+        }
     }
 }
 
