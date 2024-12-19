@@ -23,10 +23,10 @@ import Entities
 import ProtonCoreNetworking
 
 public struct GetActiveItemFilesResponse: Decodable, Sendable {
-    public let files: ActiveItemFiles
+    public let files: PaginatedActiveItemFiles
 }
 
-public struct ActiveItemFiles: Decodable, Sendable {
+public struct PaginatedActiveItemFiles: Decodable, Sendable {
     public let files: [ItemFile]
     public let total: Int
     public let lastID: String?
