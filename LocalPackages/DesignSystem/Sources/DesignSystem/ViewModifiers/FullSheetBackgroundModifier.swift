@@ -1,7 +1,7 @@
 //
-// VaultsProvider.swift
-// Proton Pass - Created on 08/12/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// FullSheetBackgroundModifier.swift
+// Proton Pass - Created on 19/12/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,10 +17,27 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Foundation
+import SwiftUI
 
-public protocol VaultsProvider: Sendable {
-    func getAllVaults() async -> [Share]
+/// Add background by embeding inside a ZStack to make the background always fill up the whole sheet
+struct FullSheetBackgroundModifier: ViewModifier {
+    private let color: Color
+
+    init(color: Color) {
+        self.color = color
+    }
+
+    func body(content: Content) -> some View {
+        ZStack {
+            color.ignoresSafeArea()
+            content
+        }
+    }
+}
+
+public extension View {
+    func fullSheetBackground(_ color: Color) -> some View {
+        modifier(FullSheetBackgroundModifier(color: color))
+    }
 }

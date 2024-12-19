@@ -199,7 +199,7 @@ private extension HomepageCoordinator {
         guard let vault = try await shareRepository.getDecryptedShare(shareId: shareID) else {
             return
         }
-        router.present(for: .manageSharedShare(vault, .none))
+        router.present(for: .manageSharedShare(.vault(vault), .none))
     }
 
     func aliasBreach(shareID: String, itemID: String) async throws {

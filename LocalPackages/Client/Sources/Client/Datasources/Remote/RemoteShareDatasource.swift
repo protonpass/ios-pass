@@ -25,7 +25,13 @@ import Foundation
 public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares(userId: String) async throws -> [Share]
     func getShare(shareId: String, userId: String) async throws -> Share
-    func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos]
+    func getUsersLinkedToVaultShare(userId: String, shareId: String, lastToken: String?) async throws
+        -> PaginatedUsersLinkedToShare
+    func getUsersLinkedToItemShare(userId: String,
+                                   shareId: String,
+                                   itemId: String,
+                                   lastToken: String?) async throws
+        -> PaginatedUsersLinkedToShare
     func updateUserSharePermission(userId: String,
                                    shareId: String,
                                    userShareId: String,
@@ -59,10 +65,21 @@ public extension RemoteShareDatasource {
         return getSharesResponse.shares
     }
 
-    func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos] {
-        let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
+    func getUsersLinkedToVaultShare(userId: String,
+                                    shareId: String,
+                                    lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
+        let endpoint = GetUsersLinkedToVaultShareEndpoint(for: shareId, lastToken: lastToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
-        return response.shares
+        return response
+    }
+
+    func getUsersLinkedToItemShare(userId: String,
+                                   shareId: String,
+                                   itemId: String,
+                                   lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
+        let endpoint = GetUsersLinkedToItemShareEndpoint(for: shareId, itemId: itemId, lastToken: lastToken)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response
     }
 
     func updateUserSharePermission(userId: String,

@@ -62,8 +62,6 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
         logger = .init(manager: logManager)
     }
 
-    // swiftlint:disable:next todo
-    // TODO: optimize the following
     public func execute() async throws {
         let start = Date()
         logger.trace("Indexing all login items")
@@ -78,17 +76,18 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
 
         // Step 1: get all the vaults from all users
         // Filterting out the duplicated and keep the most permissive ones
-        var allUsersVaults = [Share]()
+        var allUsersSharesIds = Set<String>()
         for userId in userIds {
-            let vaults = try await shareRepository.getDecryptedShares(userId: userId)
-            allUsersVaults.append(contentsOf: vaults)
+            let encryptedShares = try await shareRepository.getShares(userId: userId)
+            for encryptedShare in encryptedShares where encryptedShare.share.canAutoFill {
+                allUsersSharesIds.insert(encryptedShare.share.id)
+            }
         }
-        let applicableVaults = allUsersVaults.deduplicated
 
         // Step 2: fetch all the items related to the applicable vaults
         var allUserItems = [SymmetricallyEncryptedItem]()
         for userId in userIds {
-            let items = try await filterItems(userId: userId, applicableVaults: applicableVaults)
+            let items = try await filterItems(userId: userId, applicableSharesIds: allUsersSharesIds)
             allUserItems.append(contentsOf: items)
         }
 
@@ -109,22 +108,10 @@ public final class IndexAllLoginItems: @unchecked Sendable, IndexAllLoginItemsUs
 
 private extension IndexAllLoginItems {
     func filterItems(userId: String,
-                     applicableVaults: [Share]) async throws -> [SymmetricallyEncryptedItem] {
-        guard let access = try await localAccessDatasource.getAccess(userId: userId) else {
-            return []
-        }
+                     applicableSharesIds: Set<String>) async throws -> [SymmetricallyEncryptedItem] {
         let items = try await itemRepository.getActiveLogInItems(userId: userId)
         logger.trace("Found \(items.count) active login items")
 
-        var applicableShareIds = [String]()
-        if access.access.plan.isFreeUser {
-            let vaults = try await shareRepository.getDecryptedShares(userId: userId)
-            let ids = vaults.autofillAllowedVaults.map(\.id)
-            applicableShareIds.append(contentsOf: ids)
-        } else {
-            applicableShareIds = applicableVaults.map(\.id)
-        }
-
-        return items.filter { applicableShareIds.contains($0.shareId) }
+        return items.filter { applicableSharesIds.contains($0.shareId) }
     }
 }

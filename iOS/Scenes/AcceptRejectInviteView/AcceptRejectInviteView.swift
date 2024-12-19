@@ -138,7 +138,7 @@ private extension AcceptRejectInviteView {
 
 private extension UserInvite {
     var acceptButtonTitle: String {
-        fromNewUser ? isVault ? #localized("See the shared vault") : #localized("Join shared vault") :
+        isVault ? fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault") :
             #localized("Accept and view the item")
     }
 

@@ -34,13 +34,13 @@ public extension GetMainVaultUseCase {
 }
 
 public final class GetMainVault: GetMainVaultUseCase {
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
-    public init(vaultsManager: any VaultsManagerProtocol) {
-        self.vaultsManager = vaultsManager
+    public init(appContentManager: any AppContentManagerProtocol) {
+        self.appContentManager = appContentManager
     }
 
     public func execute() async -> Share? {
-        vaultsManager.getOldestOwnedVault()
+        appContentManager.getOldestOwnedVault()
     }
 }

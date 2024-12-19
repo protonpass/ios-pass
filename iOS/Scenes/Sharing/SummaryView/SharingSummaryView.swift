@@ -26,6 +26,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SharingSummaryView: View {
@@ -41,14 +42,14 @@ struct SharingSummaryView: View {
             if viewModel.hasSingleInvite, let info = viewModel.infos.first {
                 emailInfo(infos: info)
                 if case let .vault(vault) = info.shareElement, let vaultContent = vault.vaultContent {
-                    vaultInfo(infos: vault, vaultContent: vaultContent, itemsCount: info.itemsNum)
+                    vaultInfo(vaultContent: vaultContent, itemsCount: info.itemsNum)
                 } else if case let .item(item, _) = info.shareElement {
                     itemInfo(infos: item)
                 }
                 permissionInfo(infos: info)
             } else if let info = viewModel.infos.first {
                 if case let .vault(vault) = info.shareElement, let vaultContent = vault.vaultContent {
-                    vaultInfo(infos: vault, vaultContent: vaultContent, itemsCount: info.itemsNum)
+                    vaultInfo(vaultContent: vaultContent, itemsCount: info.itemsNum)
                 } else if case let .item(item, _) = info.shareElement {
                     itemInfo(infos: item)
                 }
@@ -71,7 +72,7 @@ struct SharingSummaryView: View {
 }
 
 private extension SharingSummaryView {
-    func vaultInfo(infos: Share, vaultContent: VaultContent, itemsCount: Int) -> some View {
+    func vaultInfo(vaultContent: VaultContent, itemsCount: Int) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Vault")
                 .font(.callout)
@@ -84,7 +85,6 @@ private extension SharingSummaryView {
                      },
                      title: vaultContent.name,
                      itemCount: itemsCount,
-                     isShared: infos.shared,
                      isSelected: false,
                      height: 60)
         }

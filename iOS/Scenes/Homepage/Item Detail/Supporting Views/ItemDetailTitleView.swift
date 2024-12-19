@@ -28,7 +28,6 @@ import SwiftUI
 struct ItemDetailTitleView: View {
     let itemContent: ItemContent
     let vault: Share?
-    let shouldShowVault: Bool
 
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
@@ -45,15 +44,10 @@ struct ItemDetailTitleView: View {
                     .lineLimit(1)
                     .foregroundStyle(PassColor.textNorm.toColor)
 
-                if let vault {
-                    if let vaultContent = vault.vaultContent {
-                        if vault.shared {
-                            VaultButton(vault: vault, vaultContent: vaultContent)
-                        } else if shouldShowVault {
-                            VaultLabel(vaultContent: vaultContent)
-                        }
-                    } else {
-                        ShareItemButton(share: vault, itemContent: itemContent)
+                if let vaultContent = vault?.vaultContent {
+                    HStack {
+                        VaultLabel(vaultContent: vaultContent)
+                        Spacer()
                     }
                 }
             }

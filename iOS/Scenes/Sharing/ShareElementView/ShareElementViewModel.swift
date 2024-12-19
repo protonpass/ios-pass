@@ -1,5 +1,5 @@
 //
-// ShareOrCreateNewVaultViewModel.swift
+// ShareElementViewModel.swift
 // Proton Pass - Created on 10/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -24,9 +24,10 @@ import Factory
 import Foundation
 import Macro
 import ProtonCoreUIFoundations
+import UIKit
 
 @MainActor
-final class ShareOrCreateNewVaultViewModel: ObservableObject {
+final class ShareElementViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
 
     let share: Share
@@ -35,17 +36,18 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
-    var sheetHeight: CGFloat {
-        share.shared ? 400 : share.canShareWithMorePeople ? 550 : 450
-    }
+    weak var sheetPresentation: UISheetPresentationController?
 
     var itemSharingEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
+    }
+
+    var isShared: Bool {
+        share.shared || itemContent.shared
     }
 
     init(share: Share, itemContent: ItemContent, itemCount: Int?) {
@@ -59,34 +61,12 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
         complete(with: .vault(share))
     }
 
-    func createNewVault() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                if try await reachedVaultLimit() {
-                    router.present(for: .upselling(.default))
-                } else {
-                    complete(with: .new(.defaultNewSharedVault, itemContent))
-                }
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
-
     func secureLinkSharing() {
         router.present(for: .createSecureLink(itemContent))
     }
 
     func manageAccess() {
-        router.present(for: .manageSharedShare(share, .topMost))
-    }
-
-    private func complete(with element: SharingElementData) {
-        setShareInviteVault(with: element)
-        router.present(for: .sharingFlow(.topMost))
+        router.present(for: .manageSharedShare(.item(share, itemContent), .topMost))
     }
 
     func checkIfFreeUser() {
@@ -118,14 +98,23 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
             }
         }
     }
+
+    func updateSheetHeight(_ height: CGFloat) {
+        guard let sheetPresentation else {
+            return
+        }
+        let custom = UISheetPresentationController.Detent.custom { _ in
+            CGFloat(height)
+        }
+        sheetPresentation.animateChanges {
+            sheetPresentation.detents = [custom]
+        }
+    }
 }
 
-private extension VaultContent {
-    static var defaultNewSharedVault: Self {
-        var vault = VaultContent()
-        vault.name = #localized("Shared vault")
-        vault.display.color = .color3
-        vault.display.icon = .icon9
-        return vault
+private extension ShareElementViewModel {
+    func complete(with element: SharingElementData) {
+        setShareInviteVault(with: element)
+        router.present(for: .sharingFlow(.topMost))
     }
 }

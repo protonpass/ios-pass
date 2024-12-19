@@ -146,13 +146,13 @@ private extension ItemContentType {
 @MainActor
 private final class ItemCountViewModel: ObservableObject {
     @Published private(set) var object: FetchableObject<ItemCount> = .fetching
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private var cancellables = Set<AnyCancellable>()
 
     private var task: Task<Void, Never>?
 
     init() {
-        vaultsManager.$state
+        appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self else { return }
@@ -174,11 +174,13 @@ private final class ItemCountViewModel: ObservableObject {
 }
 
 private extension ItemCountViewModel {
-    nonisolated func refreshAsync(_ uiModel: VaultDatasUiModel) async {
+    nonisolated func refreshAsync(_ sharesData: SharesData) async {
         if Task.isCancelled { return }
-        let activeItems = uiModel.vaults.flatMap(\.items)
-        let allItems = activeItems + uiModel.trashedItems
-        let itemCount = ItemCount(items: allItems)
+        let activeItems = sharesData.shares.flatMap(\.items)
+        let allItems = activeItems + sharesData.trashedItems
+        let itemCount = ItemCount(items: allItems,
+                                  sharedByMe: sharesData.itemsSharedByMe.count,
+                                  sharedWithMe: sharesData.itemsSharedWithMe.count)
         await MainActor.run { [weak self] in
             guard let self else { return }
             object = .fetched(itemCount)

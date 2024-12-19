@@ -1,5 +1,5 @@
 //
-// ShareOrCreateNewVaultView.swift
+// ShareElementView.swift
 // Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -25,71 +25,65 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 @MainActor
-struct ShareOrCreateNewVaultView: View {
-    let viewModel: ShareOrCreateNewVaultViewModel
+struct ShareElementView: View {
+    let viewModel: ShareElementViewModel
+    @State private var contentHeight: CGFloat = 0
 
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
+        VStack(alignment: .center, spacing: 12) {
             Text("Share")
                 .font(.body.bold())
                 .foregroundStyle(PassColor.textNorm.toColor)
 
-            Spacer()
-
-            if viewModel.itemSharingEnabled, viewModel.share.canShareWithMorePeople {
+            if !viewModel.isFreeUser, viewModel.itemSharingEnabled, viewModel.share.canShareWithMorePeople {
                 itemSharing
-                    .padding(.vertical)
+            }
+
+            if viewModel.isShared {
+                manageAccessButton
+                Divider()
             }
 
             if !viewModel.itemContent.isAlias {
                 secureLink
             }
 
-            if viewModel.share.shared {
-                manageAccessButton
-                    .padding(.vertical)
-            } else {
-                PassDivider()
-                    .padding(.vertical)
-
-                if viewModel.share.isVaultRepresentation,
-                   let vaultContent = viewModel.share.vaultContent {
-                    currentVault(vaultContent: vaultContent)
-                }
-
-                createNewVaultButton
-                    .padding(.vertical, 12)
-
-                Text("The item will be moved to the new vault")
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(PassColor.textWeak.toColor)
-                    .font(.callout)
-                    .fixedSize(horizontal: false, vertical: true)
+            if !viewModel.isShared, viewModel.share.isVaultRepresentation {
+                currentVault
+                    .padding(.top, 12)
             }
-
-            Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity)
         .padding(.top, 44)
+        .background(GeometryReader { proxy in
+            Color.clear
+                .onAppear {
+                    contentHeight += proxy.size.height
+                }
+        })
         .padding(.bottom, 32)
         .padding(.horizontal, 16)
-        .background(PassColor.backgroundNorm.toColor)
+        .fullSheetBackground(PassColor.backgroundNorm.toColor)
+        .onChange(of: contentHeight) { value in
+            viewModel.updateSheetHeight(value)
+        }
     }
 }
 
-private extension ShareOrCreateNewVaultView {
+private extension ShareElementView {
     var itemSharing: some View {
+        // swiftlint:disable:next todo
+        // TODO: add feature discovery
         HStack {
             SquircleThumbnail(data: .icon(IconProvider.userPlus),
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1)
             VStack(alignment: .leading) {
-                Text("Share with")
+                Text("With other Proton Pass users")
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("Share this item with other Proton users.")
+                Text("Useful for permanent sharing.")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -115,7 +109,7 @@ private extension ShareOrCreateNewVaultView {
     }
 }
 
-private extension ShareOrCreateNewVaultView {
+private extension ShareElementView {
     var secureLink: some View {
         HStack {
             SquircleThumbnail(data: .icon(IconProvider.link),
@@ -126,7 +120,7 @@ private extension ShareOrCreateNewVaultView {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("Generate a secure link to this item")
+                Text("For one-off sharing.")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -152,7 +146,7 @@ private extension ShareOrCreateNewVaultView {
     }
 }
 
-private extension ShareOrCreateNewVaultView {
+private extension ShareElementView {
     var manageAccessButton: some View {
         HStack {
             SquircleThumbnail(data: .icon(IconProvider.users),
@@ -163,15 +157,14 @@ private extension ShareOrCreateNewVaultView {
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Text("The item's vault is currently shared with \(viewModel.share.members) users")
+                Text("See members and permission overview")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .lineLimit(2)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .contentShape(.rect)
         .padding()
         .roundedEditableSection()
@@ -179,48 +172,12 @@ private extension ShareOrCreateNewVaultView {
     }
 }
 
-private extension ShareOrCreateNewVaultView {
-    func currentVault(vaultContent: VaultContent) -> some View {
-        HStack {
-            VaultRow(thumbnail: {
-                         CircleButton(icon: vaultContent.vaultBigIcon,
-                                      iconColor: vaultContent.mainColor,
-                                      backgroundColor: vaultContent.backgroundColor)
-                     },
-                     title: vaultContent.name,
-                     itemCount: viewModel.itemCount ?? 0,
-                     isShared: false, // No need to show share indicator
-                     isSelected: false,
-                     height: 74)
-
-            Spacer()
-
-            CapsuleTextButton(title: #localized("Share this vault"),
-                              titleColor: PassColor.interactionNormMajor2,
-                              backgroundColor: PassColor.interactionNormMinor1,
-                              action: { viewModel.shareVault() })
-                .fixedSize(horizontal: true, vertical: true)
-        }
-        .padding(.horizontal)
-        .roundedEditableSection()
-    }
-}
-
-private extension ShareOrCreateNewVaultView {
-    var createNewVaultButton: some View {
-        Button { viewModel.createNewVault() } label: {
-            Label(title: {
-                Text("Create a new vault to share")
-                    .foregroundStyle(PassColor.textNorm.toColor)
-            }, icon: {
-                CircleButton(icon: IconProvider.plus,
-                             iconColor: PassColor.interactionNormMajor2,
-                             backgroundColor: PassColor.interactionNormMinor1)
-            })
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .frame(height: 72)
-            .padding(.horizontal)
-            .roundedEditableSection(borderColor: PassColor.interactionNormMajor2)
+private extension ShareElementView {
+    var currentVault: some View {
+        Button { viewModel.shareVault() } label: {
+            Text("Share entire vault instead?")
+                .foregroundStyle(PassColor.interactionNorm.toColor)
+                .frame(maxWidth: .infinity, alignment: .center)
         }
     }
 }

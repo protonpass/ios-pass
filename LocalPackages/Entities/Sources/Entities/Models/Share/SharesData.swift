@@ -1,5 +1,5 @@
 //
-// VaultDatasUiModel.swift
+// SharesData.swift
 // Proton Pass - Created on 28/10/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -21,25 +21,33 @@
 
 import CryptoKit
 
-public struct VaultDatasUiModel: Hashable, Sendable {
-    public let vaults: [VaultContentUiModel]
+public struct SharesData: Hashable, Sendable {
+    public let shares: [ShareContent]
     public let trashedItems: [ItemUiModel]
 
-    public init(vaults: [VaultContentUiModel], trashedItems: [ItemUiModel]) {
-        self.vaults = vaults
+    public init(shares: [ShareContent], trashedItems: [ItemUiModel]) {
+        self.shares = shares
         self.trashedItems = trashedItems
     }
 
     public var filteredOrderedVaults: [Share] {
-        vaults
-            .compactMap { vault -> Share? in
-                guard vault.vault.vaultName != nil else { return nil }
-                return vault.vault
+        shares
+            .compactMap { shareContent -> Share? in
+                guard shareContent.share.vaultName != nil else { return nil }
+                return shareContent.share
             }
             .sorted { lhs, rhs in
                 guard let lhsName = lhs.vaultName,
                       let rhsName = rhs.vaultName else { return false }
                 return lhsName < rhsName
             }
+    }
+
+    public var itemsSharedByMe: [ItemUiModel] {
+        shares.filter(\.share.owner).flatMap(\.items).filter(\.isShared)
+    }
+
+    public var itemsSharedWithMe: [ItemUiModel] {
+        shares.filter { !$0.share.isVaultRepresentation && !$0.share.owner }.flatMap(\.items)
     }
 }

@@ -60,7 +60,7 @@ enum SheetDismissal {
 
 enum SheetDestination: Equatable, Hashable, Sendable {
     case sharingFlow(SheetDismissal)
-    case manageSharedShare(Share, SheetDismissal)
+    case manageSharedShare(ManageSharedDisplay, SheetDismissal)
     case acceptRejectInvite(UserInvite)
     case vaultCreateEdit(vault: Share?)
     case upgradeFlow

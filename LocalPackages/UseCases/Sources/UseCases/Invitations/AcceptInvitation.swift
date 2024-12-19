@@ -30,11 +30,11 @@ import ProtonCoreLogin
 import ProtonCoreNetworking
 
 public protocol AcceptInvitationUseCase: Sendable {
-    func execute(with userInvite: UserInvite) async throws -> Bool
+    func execute(with userInvite: UserInvite) async throws -> Share
 }
 
 public extension AcceptInvitationUseCase {
-    func callAsFunction(with userInvite: UserInvite) async throws -> Bool {
+    func callAsFunction(with userInvite: UserInvite) async throws -> Share {
         try await execute(with: userInvite)
     }
 }
@@ -58,7 +58,7 @@ public final class AcceptInvitation: AcceptInvitationUseCase {
         logger = .init(manager: logManager)
     }
 
-    public func execute(with userInvite: UserInvite) async throws -> Bool {
+    public func execute(with userInvite: UserInvite) async throws -> Share {
         logger.trace("Start accepting share invite for invitee email \(userInvite.invitedEmail)")
         let encrytedKeys = try await encryptKeys(userInvite: userInvite)
         logger.trace("Finished encrypting keys")

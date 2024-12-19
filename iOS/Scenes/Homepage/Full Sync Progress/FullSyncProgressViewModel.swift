@@ -29,7 +29,7 @@ final class FullSyncProgressViewModel: ObservableObject {
     @Published private(set) var progresses = [VaultSyncProgress]()
     @Published private(set) var isDoneSynching = false
     @Published private(set) var error: (any Error)?
-    private let vaultManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let processVaultSyncEvent = resolve(\SharedUseCasesContainer.processVaultSyncEvent)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var cancellables = Set<AnyCancellable>()
@@ -45,8 +45,8 @@ final class FullSyncProgressViewModel: ObservableObject {
 
     init(mode: Mode) {
         self.mode = mode
-
-        vaultManager.vaultSyncEventStream
+        appContentManager.vaultSyncEventStream
+            .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
@@ -77,7 +77,7 @@ extension FullSyncProgressViewModel {
         self.userId = nil
         error = nil
         progresses.removeAll()
-        await vaultManager.fullSync(userId: userId)
+        await appContentManager.fullSync(userId: userId)
     }
 }
 
