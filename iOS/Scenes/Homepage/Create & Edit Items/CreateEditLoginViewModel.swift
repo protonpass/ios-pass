@@ -157,7 +157,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
     }
 
-    override func itemContentType() -> ItemContentType { .login }
+    override var itemContentType: ItemContentType { .login }
 
     override func saveButtonTitle() -> String {
         guard case let .create(_, type) = mode,

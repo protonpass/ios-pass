@@ -29,7 +29,7 @@ struct CreateEditCreditCardView: View {
     @FocusState private var focusedField: Field?
     @Namespace private var fileAttachmentsID
 
-    private var tintColor: UIColor { viewModel.itemContentType().normMajor1Color }
+    private var tintColor: UIColor { viewModel.itemContentType.normMajor1Color }
 
     enum Field {
         case title, cardholderName, cardNumber, verificationNumber, pin, note
@@ -67,7 +67,7 @@ private extension CreateEditCreditCardView {
                     CreateEditItemTitleSection(title: $viewModel.title,
                                                focusedField: $focusedField,
                                                field: .title,
-                                               itemContentType: viewModel.itemContentType(),
+                                               itemContentType: viewModel.itemContentType,
                                                isEditMode: viewModel.mode.isEditMode,
                                                onSubmit: { focusedField = .cardholderName })
 

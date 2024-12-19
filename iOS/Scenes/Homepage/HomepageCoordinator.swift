@@ -93,6 +93,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\UseCasesContainer.canAddNewAccount) var canAddNewAccount
     @LazyInjected(\SharedUseCasesContainer.switchUser) var switchUser
     @LazyInjected(\SharedUseCasesContainer.logOutUser) var logOutUser
+    @LazyInjected(\SharedUseCasesContainer.sendUserMonitoringStats) private var sendUserMonitoringStats
     @LazyInjected(\SharedUseCasesContainer.addAndSwitchToNewUserAccount)
     var addAndSwitchToNewUserAccount
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
@@ -138,7 +139,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshAccessAndMonitorStateSync()
         refreshSettings()
         refreshFeatureFlags()
-        refreshInAppNotifications()
         sendAllEventsIfApplicable()
         doLogOutExcessFreeAccounts()
     }
@@ -264,6 +264,7 @@ private extension HomepageCoordinator {
                         refreshFeatureFlags()
                         refreshInAppNotifications()
                         doLogOutExcessFreeAccounts()
+                        try await sendUserMonitoringStats()
                     } catch {
                         logger.error(error)
                     }
