@@ -397,6 +397,7 @@ extension SharedRepositoryContainer {
     var passMonitorRepository: Factory<any PassMonitorRepositoryProtocol> {
         self {
             PassMonitorRepository(itemRepository: self.itemRepository(),
+                                  shareRepository: self.shareRepository(),
                                   remoteDataSource: self.remoteBreachDataSource(),
                                   symmetricKeyProvider: self.symmetricKeyProvider,
                                   userManager: self.userManager)

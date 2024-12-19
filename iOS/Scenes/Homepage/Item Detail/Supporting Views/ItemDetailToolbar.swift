@@ -47,7 +47,7 @@ struct ItemDetailToolbar: ToolbarContent {
             case .active:
                 HStack(spacing: 0) {
                     Spacer()
-                    if viewModel.canModify() {
+                    if viewModel.isAllowedToEdit {
                         CapsuleLabelButton(icon: IconProvider.pencil,
                                            title: #localized("Edit"),
                                            titleColor: PassColor.textInvert,

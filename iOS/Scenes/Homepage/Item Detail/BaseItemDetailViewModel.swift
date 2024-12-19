@@ -282,10 +282,6 @@ class BaseItemDetailViewModel: ObservableObject {
         router.display(element: .displayErrorBanner(error))
     }
 
-    func canModify() -> Bool {
-        true
-    }
-
     func leaveShare() {
         guard let share = vault?.vault else {
             return

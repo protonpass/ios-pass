@@ -32,7 +32,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
         content
             .background(PassColor.backgroundNorm.toColor)
             .navigationBarTitleDisplayMode(.inline)
-            .tint(viewModel.itemContentType().normMajor1Color.toColor)
+            .tint(viewModel.itemContentType.normMajor1Color.toColor)
             .disabled(viewModel.isSaving)
             .obsoleteItemAlert(isPresented: $viewModel.isObsolete,
                                onAction: dismiss.callAsFunction)
@@ -55,7 +55,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       canScanDocuments: viewModel.canScanDocuments,
                                       vault: viewModel.selectedVault,
                                       canChangeVault: viewModel.mode.canChangeVault,
-                                      itemContentType: viewModel.itemContentType(),
+                                      itemContentType: viewModel.itemContentType,
                                       shouldUpgrade: viewModel.shouldUpgrade,
                                       isPhone: viewModel.isPhone,
                                       fileAttachmentsEditHandler: viewModel,
