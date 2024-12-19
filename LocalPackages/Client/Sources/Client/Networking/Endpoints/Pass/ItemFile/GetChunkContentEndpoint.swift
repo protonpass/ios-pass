@@ -21,7 +21,7 @@
 import Foundation
 import ProtonCoreNetworking
 
-struct GetChunkContentEndpoint: Endpoint, @unchecked Sendable {
+struct GetChunkContentEndpoint: Endpoint, Sendable {
     typealias Body = EmptyRequest
     typealias Response = EmptyResponse
 

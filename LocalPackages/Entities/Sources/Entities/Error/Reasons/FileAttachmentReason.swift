@@ -69,7 +69,7 @@ public extension PassError {
             case let .failedToDownloadMissingDecryptedFileKey(id):
                 "Failed to download because of missing decrypted file key \(id)"
             case .failedToDownloadNoFetchedFiles:
-                "Failed to download becasue of missing fetched files"
+                "Failed to download because of missing fetched files"
             case .failedToAttachMissingRemoteId:
                 "Failed to attach file to an item because of missing remote ID"
             case .failedToAttachMissingEncryptedFileKey:
