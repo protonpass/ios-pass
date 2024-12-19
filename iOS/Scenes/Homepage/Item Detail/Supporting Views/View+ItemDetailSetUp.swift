@@ -57,7 +57,7 @@ struct ItemDetailSetUpModifier: ViewModifier {
             } message: {
                 Text("You will lose access to this item and its details. Do you want to continue?")
             }
-            .sheet(item: $viewModel.itemFileAction) { action in
+            .fullScreenCover(item: $viewModel.itemFileAction) { action in
                 switch action {
                 case let .preview(url):
                     FileAttachmentPreview(url: url,

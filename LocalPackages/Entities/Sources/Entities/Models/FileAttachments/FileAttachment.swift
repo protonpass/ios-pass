@@ -36,15 +36,17 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
 }
 
 public enum FileAttachmentUploadState: Sendable, Equatable {
-    case uploading
+    /// Upload progress as associated value. From 0.0 to 1.0
+    case uploading(Float)
     case uploaded
     case error(any Error)
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.uploaded, .uploaded),
-             (.uploading, .uploading):
+        case (.uploaded, .uploaded):
             true
+        case let (.uploading(lProgress), .uploading(rProgress)):
+            lProgress == rProgress
         case let (.error(lError), .error(rError)):
             lError.localizedDescription == rError.localizedDescription
         default:
