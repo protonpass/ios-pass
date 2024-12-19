@@ -41,7 +41,9 @@ private struct UploadMultipartResponse: Decodable {
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
-    func uploadFile(userId: String, file: PendingFileAttachment) async throws
+    func uploadFile(userId: String,
+                    file: PendingFileAttachment,
+                    progress: @Sendable @escaping (Float) -> Void) async throws
     func updatePendingFileName(userId: String,
                                file: PendingFileAttachment,
                                newName: String) async throws -> Bool
@@ -83,10 +85,15 @@ public extension FileAttachmentRepository {
                                                                 metadata: metadata)
     }
 
-    func uploadFile(userId: String, file: PendingFileAttachment) async throws {
+    func uploadFile(userId: String,
+                    file: PendingFileAttachment,
+                    progress: @Sendable @escaping (Float) -> Void) async throws {
         guard let remoteId = file.remoteId else {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }
+
+        let progressTracker = UploadProgressTracker(totalBytes: Int64(file.metadata.size),
+                                                    onUpdateProgress: progress)
 
         let path = "/pass/v1/file/\(remoteId)/chunk"
 
@@ -108,7 +115,8 @@ public extension FileAttachmentRepository {
             let response: UploadMultipartResponse =
                 try await apiServiceLite.uploadMultipart(path: path,
                                                          userId: userId,
-                                                         infos: infos)
+                                                         infos: infos,
+                                                         delegate: progressTracker)
 
             if !response.isSuccesful {
                 throw PassError.fileAttachment(.failedToUpload(response.code))

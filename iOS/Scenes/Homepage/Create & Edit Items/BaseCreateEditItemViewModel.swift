@@ -703,7 +703,7 @@ private extension BaseCreateEditItemViewModel {
     func createEncryptAndUpload(_ file: PendingFileAttachment) async throws {
         var file = file
 
-        file.uploadState = .uploading
+        file.uploadState = .uploading(0.0)
         files.upsert(file)
 
         let userId = try await userManager.getActiveUserId()
@@ -712,7 +712,23 @@ private extension BaseCreateEditItemViewModel {
         file.remoteId = remoteFile.fileID
         files.upsert(file)
 
-        try await fileRepository.uploadFile(userId: userId, file: file)
+        let progressSubject = PassthroughSubject<Float, Never>()
+        progressSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] progress in
+                guard let self else { return }
+                if progress >= 1 {
+                    file.uploadState = .uploaded
+                } else {
+                    file.uploadState = .uploading(progress)
+                }
+                files.upsert(file)
+            }
+            .store(in: &cancellables)
+
+        try await fileRepository.uploadFile(userId: userId, file: file) { progress in
+            progressSubject.send(progress)
+        }
         file.uploadState = .uploaded
         files.upsert(file)
     }
