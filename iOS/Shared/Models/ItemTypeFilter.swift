@@ -28,6 +28,8 @@ import UIKit
 enum ItemTypeFilterOption: Equatable, Hashable {
     case all
     case precise(ItemContentType)
+    case itemSharedWithMe
+    case itemSharedByMe
 
     var isDefault: Bool {
         if case .all = self {
@@ -46,9 +48,11 @@ enum ItemTypeFilterOption: Equatable, Hashable {
             .precise(.alias),
             .precise(.creditCard),
             .precise(.note),
-            .precise(.identity)
+            .precise(.identity),
+            .itemSharedWithMe,
+            .itemSharedByMe
         ]
-        assert(allCases.count == ItemContentType.allCases.count + 1, "Some type is missing")
+        assert(allCases.count == ItemContentType.allCases.count + 3, "Some type is missing")
         return allCases
     }
 
@@ -58,6 +62,10 @@ enum ItemTypeFilterOption: Equatable, Hashable {
             .init(icon: IconProvider.grid2, title: #localized("All"), count: itemCount.total)
         case let .precise(type):
             type.uiModel(from: itemCount)
+        case .itemSharedWithMe:
+            .init(icon: IconProvider.grid2, title: #localized("Shared with me"), count: itemCount.sharedWithMe)
+        case .itemSharedByMe:
+            .init(icon: IconProvider.grid2, title: #localized("Shared by me"), count: itemCount.sharedByMe)
         }
     }
 }
@@ -96,13 +104,21 @@ extension ItemTypeFilterOption: RawRepresentable {
             -1
         case let .precise(type):
             type.rawValue
+        case .itemSharedWithMe:
+            300
+        case .itemSharedByMe:
+            301
         }
     }
 
     init?(rawValue: Int) {
         switch rawValue {
-        case -1:
+        case ItemTypeFilterOption.all.rawValue:
             self = .all
+        case ItemTypeFilterOption.itemSharedWithMe.rawValue:
+            self = .itemSharedWithMe
+        case ItemTypeFilterOption.itemSharedByMe.rawValue:
+            self = .itemSharedByMe
         default:
             if let type = ItemContentType(rawValue: rawValue) {
                 self = .precise(type)

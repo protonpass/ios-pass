@@ -22,6 +22,7 @@ import Combine
 import XCTest
 import ProtonCoreLogin
 import Entities
+import EntitiesMocks
 import UseCases
 import UseCasesMocks
 @testable import Proton_Pass
@@ -29,7 +30,7 @@ import Client
 import ClientMocks
 
 final class SendShareInviteTests: XCTestCase {
-    var sut: SendVaultShareInviteUseCase!
+    var sut: SendShareInviteUseCase!
     var createAndMoveItemToNewVault: CreateAndMoveItemToNewVaultUseCaseMock!
     var makeUnsignedSignatureForVaultSharing: MakeUnsignedSignatureForVaultSharingUseCase!
     var publicKeyRepository: PublicKeyRepositoryProtocolMock!
@@ -47,7 +48,7 @@ final class SendShareInviteTests: XCTestCase {
         shareInviteRepository = ShareInviteRepositoryProtocolMock()
         userManager = UserManagerProtocolMock()
         syncEventLoop = SyncEventLoopProtocolMock()
-        sut = SendVaultShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
+        sut = SendShareInvite(createAndMoveItemToNewVault: createAndMoveItemToNewVault,
                                    makeUnsignedSignatureForVaultSharing: makeUnsignedSignatureForVaultSharing,
                                    shareInviteService: ShareInviteService(),
                                    passKeyManager: passKeyManager,
@@ -60,7 +61,7 @@ final class SendShareInviteTests: XCTestCase {
         publicKeyRepository.stubbedGetPublicKeysResult = [PublicKey(value: "value")]
         passKeyManager.stubbedGetLatestShareKeyResult = DecryptedShareKey(shareId: "test", keyRotation: 1, keyData: try! Data.random())
         userManager.stubbedGetActiveUserDataResult = .preview
-        let infos = SharingInfos(vault: .existing(.random()),
+        let infos = SharingInfos(shareElement: .vault(.random()),
                                  email: "Test@test.com",
                                  role: .read,
                                  receiverPublicKeys: [PublicKey(value: "")],
@@ -71,25 +72,5 @@ final class SendShareInviteTests: XCTestCase {
         } catch {
             XCTAssertTrue(error is PassError)
         }
-    }
-}
-
-extension Vault {
-    static func random() -> Self {
-        .init(id: .random(),
-              shareId: .random(),
-              addressId: .random(),
-              name: .random(),
-              description: .random(),
-              displayPreferences: .init(),
-              isOwner: false,
-              shareRole: .read,
-              members: 0,
-              maxMembers: 10, 
-              pendingInvites: 3,
-              newUserInvitesReady: 0,
-              shared: false,
-              createTime: 0,
-              canAutoFill: .random())
     }
 }

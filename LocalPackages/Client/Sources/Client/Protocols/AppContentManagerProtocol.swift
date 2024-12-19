@@ -1,6 +1,6 @@
 //
-// Vault+Extensions.swift
-// Proton Pass - Created on 02/08/2023.
+// AppContentManagerProtocol.swift
+// Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -18,26 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
+import Combine
 import Entities
-import SwiftUI
 
-// MARK: - UI helpers
+// sourcery: AutoMockable
+public protocol AppContentManagerProtocol: Sendable {
+    nonisolated var vaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never> { get }
+    var currentVaults: CurrentValueSubject<[Share], Never> { get }
+    var vaultSelection: VaultSelection { get }
+    var hasOnlyOneOwnedVault: Bool { get }
 
-extension Vault {
-    var mainColor: Color {
-        displayPreferences.color.color.color.toColor
-    }
-
-    var backgroundColor: Color {
-        mainColor.opacity(0.16)
-    }
-
-    var bigImage: Image {
-        displayPreferences.icon.icon.bigImage.toImage
-    }
-
-    var smallImage: Image {
-        displayPreferences.icon.icon.smallImage.toImage
-    }
+    func refresh(userId: String) async throws
+    func fullSync(userId: String) async
+    func localFullSync(userId: String) async throws
+    func getItems(for vault: Share) -> [ItemUiModel]
+    func delete(userId: String, shareId: String) async throws
+    func getOldestOwnedVault() -> Share?
+    func reset() async
 }

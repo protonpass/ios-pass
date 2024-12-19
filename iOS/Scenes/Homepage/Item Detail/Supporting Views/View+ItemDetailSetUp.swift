@@ -46,6 +46,14 @@ struct ItemDetailSetUpModifier: ViewModifier {
                                                         dismiss()
                                                         viewModel.permanentlyDelete()
                                                     }))
+            .alert("Leave this item?", isPresented: $viewModel.showingLeaveShareAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Leave") {
+                    viewModel.leaveShare()
+                }
+            } message: {
+                Text("You will lose access to this item and its details. Do you want to continue?")
+            }
     }
 }
 

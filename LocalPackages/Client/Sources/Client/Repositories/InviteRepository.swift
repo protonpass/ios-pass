@@ -27,7 +27,7 @@ import ProtonCoreLogin
 public protocol InviteRepositoryProtocol: Sendable {
     var currentPendingInvites: CurrentValueSubject<[UserInvite], Never> { get }
 
-    func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool
+    func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Share
 
     @discardableResult
     func rejectInvite(with inviteToken: String) async throws -> Bool
@@ -66,15 +66,15 @@ public extension InviteRepository {
         }
     }
 
-    func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Bool {
+    func acceptInvite(with inviteToken: String, and keys: [ItemKey]) async throws -> Share {
         logger.trace("Accepting invite \(inviteToken)")
         let request = AcceptInviteRequest(keys: keys)
         let userId = try await userManager.getActiveUserId()
-        let acceptStatus = try await remoteInviteDatasource.acceptInvite(userId: userId,
-                                                                         inviteToken: inviteToken,
-                                                                         request: request)
-        logger.trace("Invite acceptance status \(acceptStatus)")
-        return acceptStatus
+        let share = try await remoteInviteDatasource.acceptInvite(userId: userId,
+                                                                  inviteToken: inviteToken,
+                                                                  request: request)
+        logger.trace("Accepted the invite with token \(inviteToken)")
+        return share
     }
 
     func rejectInvite(with inviteToken: String) async throws -> Bool {

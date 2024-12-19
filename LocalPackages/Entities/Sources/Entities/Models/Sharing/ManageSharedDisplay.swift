@@ -1,6 +1,6 @@
 //
-// UserUiModel+Random.swift
-// Proton Pass - Created on 10/09/2024.
+// ManageSharedDisplay.swift
+// Proton Pass - Created on 13/12/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,19 +17,8 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import Entities
-
-extension UserUiModel {
-    static func random() -> UserUiModel {
-        .init(id: .random(),
-              displayName: .random(),
-              email: .random(),
-              plan: .init(type: .random(),
-                          internalName: .random(),
-                          displayName: .random(),
-                          hideUpgrade: .random(),
-                          manageAlias: false))
-    }
+public enum ManageSharedDisplay: Hashable, Equatable, Sendable {
+    case vault(Share)
+    case item(Share, ItemContent)
 }

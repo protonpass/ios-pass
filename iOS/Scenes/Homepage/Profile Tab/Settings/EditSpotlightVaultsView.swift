@@ -29,10 +29,12 @@ struct EditSpotlightVaultsView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            ForEach(viewModel.allVaults, id: \.hashValue) { vault in
-                view(for: vault)
-                PassDivider()
-                    .padding(.horizontal)
+            ForEach(viewModel.allVaults) { vault in
+                if let vaultContent = vault.vault.vaultContent {
+                    view(for: vault, vaultContent: vaultContent)
+                    PassDivider()
+                        .padding(.horizontal)
+                }
             }
         }
         .scrollViewEmbeded()
@@ -48,14 +50,13 @@ struct EditSpotlightVaultsView: View {
     }
 
     @MainActor
-    private func view(for vault: VaultListUiModel) -> some View {
+    private func view(for vault: VaultListUiModel, vaultContent: VaultContent) -> some View {
         Button(action: {
             viewModel.toggleSelection(vault: vault.vault)
         }, label: {
-            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
-                     title: vault.vault.name,
+            VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
+                     title: vaultContent.name,
                      itemCount: vault.itemCount,
-                     isShared: vault.vault.shared,
                      isSelected: viewModel.isSelected(vault: vault.vault),
                      height: 74)
                 .padding(.horizontal)

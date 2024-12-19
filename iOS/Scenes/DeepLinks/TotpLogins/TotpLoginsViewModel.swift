@@ -78,9 +78,9 @@ final class TotpLoginsViewModel: ObservableObject, Sendable {
         do {
             let userId = try await userManager.getActiveUserId()
             async let getLogins = try getActiveLoginItems(userId: userId)
-            async let getVaults = try shareRepository.getVaults(userId: userId)
+            async let getShares = try shareRepository.getDecryptedShares(userId: userId)
 
-            let (logins, vaults) = try await (getLogins, getVaults)
+            let (logins, vaults) = try await (getLogins, getShares)
 
             let searchableItems = logins.map { SearchableItem(from: $0, allVaults: vaults) }
 

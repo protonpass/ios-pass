@@ -39,6 +39,14 @@ private extension SharedServiceContainer {
     var currentDateProvider: any CurrentDateProviderProtocol {
         SharedToolingContainer.shared.currentDateProvider()
     }
+
+    var shareRepository: any ShareRepositoryProtocol {
+        SharedRepositoryContainer.shared.shareRepository()
+    }
+
+    var itemRepository: any ItemRepositoryProtocol {
+        SharedRepositoryContainer.shared.itemRepository()
+    }
 }
 
 extension SharedServiceContainer {
@@ -55,8 +63,8 @@ extension SharedServiceContainer {
     }
 
     var eventSynchronizer: Factory<any EventSynchronizerProtocol> {
-        self { EventSynchronizer(shareRepository: SharedRepositoryContainer.shared.shareRepository(),
-                                 itemRepository: SharedRepositoryContainer.shared.itemRepository(),
+        self { EventSynchronizer(shareRepository: self.shareRepository,
+                                 itemRepository: self.itemRepository,
                                  shareKeyRepository: SharedRepositoryContainer.shared.shareKeyRepository(),
                                  shareEventIDRepository: SharedRepositoryContainer.shared.shareEventIDRepository(),
                                  remoteSyncEventsDatasource: SharedRepositoryContainer.shared
@@ -81,13 +89,13 @@ extension SharedServiceContainer {
         self { ItemContextMenuHandler() }
     }
 
-    var vaultsManager: Factory<VaultsManager> {
-        self { VaultsManager() }
+    var appContentManager: Factory<AppContentManager> {
+        self { AppContentManager() }
     }
 
     var upgradeChecker: Factory<any UpgradeCheckerProtocol> {
         self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
-                              counter: self.vaultsManager(),
+                              counter: self.appContentManager(),
                               totpChecker: SharedRepositoryContainer.shared.itemRepository()) }
     }
 
@@ -126,6 +134,16 @@ extension SharedServiceContainer {
                                             logManager: self.logManager)
         }
     }
+
+    // swiftlint:disable:next todo
+    // TODO: transform vault Manager
+//    var appContentManager: Factory<any AppContentManagerServicing> {
+//        self { AppContentManager(userManager: self.userManager(),
+//                                 itemRepository: self.itemRepository,
+//                                 shareRepository: self.shareRepository,
+//                                 logManager: self.logManager)
+//        }
+//    }
 }
 
 // MARK: - User

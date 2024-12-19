@@ -1,5 +1,5 @@
 //
-// ShareOrCreateNewVaultViewModel.swift
+// ShareElementViewModel.swift
 // Proton Pass - Created on 10/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -24,48 +24,41 @@ import Factory
 import Foundation
 import Macro
 import ProtonCoreUIFoundations
+import UIKit
 
 @MainActor
-final class ShareOrCreateNewVaultViewModel: ObservableObject {
+final class ShareElementViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
 
-    let vault: VaultListUiModel
+    let share: Share
     let itemContent: ItemContent
+    let itemCount: Int?
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
-    private let reachedVaultLimit = resolve(\UseCasesContainer.reachedVaultLimit)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
-    var sheetHeight: CGFloat {
-        vault.vault.shared ? 290 : 400
+    weak var sheetPresentation: UISheetPresentationController?
+
+    var itemSharingEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }
 
-    init(vault: VaultListUiModel, itemContent: ItemContent) {
-        self.vault = vault
+    var isShared: Bool {
+        share.shared || itemContent.shared
+    }
+
+    init(share: Share, itemContent: ItemContent, itemCount: Int?) {
+        self.share = share
         self.itemContent = itemContent
+        self.itemCount = itemCount
         checkIfFreeUser()
     }
 
     func shareVault() {
-        complete(with: .existing(vault.vault))
-    }
-
-    func createNewVault() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                if try await reachedVaultLimit() {
-                    router.present(for: .upselling(.default))
-                } else {
-                    complete(with: .new(.defaultNewSharedVault, itemContent))
-                }
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
+        complete(with: .vault(share))
     }
 
     func secureLinkSharing() {
@@ -73,12 +66,7 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     }
 
     func manageAccess() {
-        router.present(for: .manageShareVault(vault.vault, .topMost))
-    }
-
-    private func complete(with vault: SharingVaultData) {
-        setShareInviteVault(with: vault)
-        router.present(for: .sharingFlow(.topMost))
+        router.present(for: .manageSharedShare(.item(share, itemContent), .topMost))
     }
 
     func checkIfFreeUser() {
@@ -95,14 +83,38 @@ final class ShareOrCreateNewVaultViewModel: ObservableObject {
     func upsell(entryPoint: UpsellEntry) {
         router.present(for: .upselling(entryPoint.defaultConfiguration))
     }
+
+    func shareItem() {
+        Task {
+            do {
+                guard let share = try await shareRepository.getShare(shareId: itemContent.shareId) else {
+                    throw PassError.sharing(.failedToInvite)
+                }
+
+                setShareInviteVault(with: .item(item: itemContent, share: share))
+                router.present(for: .sharingFlow(.topMost))
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
+    func updateSheetHeight(_ height: CGFloat) {
+        guard let sheetPresentation else {
+            return
+        }
+        let custom = UISheetPresentationController.Detent.custom { _ in
+            CGFloat(height)
+        }
+        sheetPresentation.animateChanges {
+            sheetPresentation.detents = [custom]
+        }
+    }
 }
 
-private extension VaultProtobuf {
-    static var defaultNewSharedVault: Self {
-        var vault = VaultProtobuf()
-        vault.name = #localized("Shared vault")
-        vault.display.color = .color3
-        vault.display.icon = .icon9
-        return vault
+private extension ShareElementViewModel {
+    func complete(with element: SharingElementData) {
+        setShareInviteVault(with: element)
+        router.present(for: .sharingFlow(.topMost))
     }
 }

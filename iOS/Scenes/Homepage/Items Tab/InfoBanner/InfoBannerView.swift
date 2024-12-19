@@ -74,12 +74,10 @@ private extension InfoBannerView {
                 Text(banner.detail.description)
                     .minimumScaleFactor(0.75)
                     .font(.caption)
-                    .frame(maxHeight: banner.detail.ctaTitle != nil ? nil : .infinity, alignment: .topLeading)
+                    .frame(maxHeight: banner.detail.ctaTitle != nil ? nil : .infinity, alignment: .center)
 
                 if let ctaTitle = banner.detail.ctaTitle {
                     ctaButtonView(ctaTitle: ctaTitle)
-                } else {
-                    Spacer()
                 }
             }
             .foregroundStyle(banner.detail.foregroundColor)

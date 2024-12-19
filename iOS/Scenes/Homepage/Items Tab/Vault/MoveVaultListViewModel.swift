@@ -34,16 +34,16 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let moveItemsBetweenVaults = resolve(\UseCasesContainer.moveItemsBetweenVaults)
-    private let getVaultContentForVault = resolve(\UseCasesContainer.getVaultContentForVault)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
 
     @Published private(set) var isFreeUser = false
-    @Published var selectedVault: VaultContentUiModel?
+    @Published var selectedVault: ShareContent?
 
-    let allVaults: [VaultContentUiModel]
+    let allVaults: [ShareContent]
     private let context: MovingContext
 
-    init(allVaults: [VaultContentUiModel], context: MovingContext) {
+    init(allVaults: [ShareContent], context: MovingContext) {
         self.allVaults = allVaults
         self.context = context
         let fromShareId: String? = switch context {
@@ -56,7 +56,8 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
         }
 
         if let fromShareId {
-            selectedVault = getVaultContentForVault(for: fromShareId)
+            selectedVault = appContentManager
+                .getShareContent(for: fromShareId)
         }
 
         Task { [weak self] in
@@ -75,7 +76,8 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
     }
 
     func doMove() {
-        guard let selectedVault else {
+        guard let selectedVault, selectedVault.share.isVaultRepresentation,
+              let vaultContent = selectedVault.share.vaultContent else {
             assertionFailure("Should have a selected vault")
             return
         }
@@ -85,8 +87,8 @@ final class MoveVaultListViewModel: ObservableObject, DeinitPrintable {
             do {
                 router.display(element: .globalLoading(shouldShow: true))
                 try await moveItemsBetweenVaults(context: context,
-                                                 to: selectedVault.vault.shareId)
-                router.display(element: successMessage(toVaultName: selectedVault.vault.name))
+                                                 to: selectedVault.share.shareId)
+                router.display(element: successMessage(toVaultName: vaultContent.name))
                 currentSelectedItems.send([])
             } catch {
                 logger.error(error)
@@ -103,7 +105,8 @@ private extension MoveVaultListViewModel {
             let message = #localized("Item moved to vault « %@ »", toVaultName)
             return .successMessage(message, config: .dismissAndRefresh(with: .update(item.type)))
         case let .allItems(fromVault):
-            let message = #localized("Items from « %@ » moved to vault « %@ »", fromVault.name, toVaultName)
+            let message = #localized("Items from « %@ » moved to vault « %@ »", fromVault.vaultName ?? "",
+                                     toVaultName)
             return .successMessage(message, config: .dismissAndRefresh)
         case let .selectedItems(items):
             let message = #localized("%lld items moved to vault « %@ »", items.count, toVaultName)

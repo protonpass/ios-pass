@@ -48,7 +48,7 @@ public struct ShareExistingUserInvite: Decodable, Equatable, Identifiable, Senda
     public let remindersSent, createTime, modifyTime: Int
 
     public var shareType: TargetType {
-        .init(rawValue: Int64(targetType)) ?? .unknown
+        .init(rawValue: targetType) ?? .unknown
     }
 
     public var shareRole: ShareRole {
@@ -98,7 +98,7 @@ public struct ShareNewUserInvite: Decodable, Equatable, Identifiable, Sendable {
     public let modifyTime: Int
 
     public var shareType: TargetType {
-        .init(rawValue: Int64(targetType)) ?? .unknown
+        .init(rawValue: targetType) ?? .unknown
     }
 
     public var shareRole: ShareRole {

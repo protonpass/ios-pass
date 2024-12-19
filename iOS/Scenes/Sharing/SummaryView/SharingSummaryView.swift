@@ -26,6 +26,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct SharingSummaryView: View {
@@ -40,10 +41,18 @@ struct SharingSummaryView: View {
                 .foregroundStyle(PassColor.textNorm.toColor)
             if viewModel.hasSingleInvite, let info = viewModel.infos.first {
                 emailInfo(infos: info)
-                vaultInfo(infos: info)
+                if case let .vault(vault) = info.shareElement, let vaultContent = vault.vaultContent {
+                    vaultInfo(vaultContent: vaultContent, itemsCount: info.itemsNum)
+                } else if case let .item(item, _) = info.shareElement {
+                    itemInfo(infos: item)
+                }
                 permissionInfo(infos: info)
             } else if let info = viewModel.infos.first {
-                vaultInfo(infos: info)
+                if case let .vault(vault) = info.shareElement, let vaultContent = vault.vaultContent {
+                    vaultInfo(vaultContent: vaultContent, itemsCount: info.itemsNum)
+                } else if case let .item(item, _) = info.shareElement {
+                    itemInfo(infos: item)
+                }
                 infosList
             }
             Spacer()
@@ -63,23 +72,38 @@ struct SharingSummaryView: View {
 }
 
 private extension SharingSummaryView {
-    func vaultInfo(infos: SharingInfos) -> some View {
+    func vaultInfo(vaultContent: VaultContent, itemsCount: Int) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("Vault")
                 .font(.callout)
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(height: 20)
             VaultRow(thumbnail: {
-                         CircleButton(icon: infos.displayPreferences.icon.icon.bigImage,
-                                      iconColor: infos.displayPreferences.color.color.color,
-                                      backgroundColor: infos.displayPreferences.color.color.color
-                                          .withAlphaComponent(0.16))
+                         CircleButton(icon: vaultContent.vaultBigIcon,
+                                      iconColor: vaultContent.mainColor,
+                                      backgroundColor: vaultContent.backgroundColor)
                      },
-                     title: infos.vaultName,
-                     itemCount: infos.itemsNum,
-                     isShared: infos.shared,
+                     title: vaultContent.name,
+                     itemCount: itemsCount,
                      isSelected: false,
                      height: 60)
+        }
+    }
+
+    func itemInfo(infos: ItemContent) -> some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("Item")
+                .font(.callout)
+                .foregroundStyle(PassColor.textWeak.toColor)
+                .frame(height: 20)
+
+            GeneralItemRow(thumbnailView: {
+                               ItemSquircleThumbnail(data: infos.thumbnailData(),
+                                                     pinned: false)
+                           },
+                           title: infos.title,
+                           description: infos.description)
+                .frame(height: 60)
         }
     }
 }
@@ -112,18 +136,18 @@ private extension SharingSummaryView {
                 .font(.callout)
                 .foregroundStyle(PassColor.textWeak.toColor)
                 .frame(height: 20)
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 15) {
                 Text(infos.role.title)
                     .foregroundStyle(PassColor.textNorm.toColor)
                 Text(infos.role.description)
                     .foregroundStyle(PassColor.textWeak.toColor)
-                    .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .cornerRadius(16)
-                    .overlay(RoundedRectangle(cornerRadius: 16)
-                        .strokeBorder(PassColor.textWeak.toColor,
-                                      lineWidth: 1))
             }
+            .padding(16)
+            .cornerRadius(16)
+            .overlay(RoundedRectangle(cornerRadius: 16)
+                .strokeBorder(PassColor.textWeak.toColor,
+                              lineWidth: 1))
         }
     }
 }
@@ -172,19 +196,40 @@ private extension SharingSummaryView {
                          accessibilityLabel: "Go back",
                          action: dismiss.callAsFunction)
         }
-
-        ToolbarItem(placement: .topBarTrailing) {
-            DisablableCapsuleTextButton(title: #localized("Share Vault"),
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.interactionNormMajor1,
-                                        disableBackgroundColor: PassColor.interactionNormMinor1,
-                                        disabled: false,
-                                        action: { viewModel.sendInvite() })
+        if let info = viewModel.infos.first {
+            ToolbarItem(placement: .topBarTrailing) {
+                DisablableCapsuleTextButton(title: info
+                    .isItem ? #localized("Share Item") : #localized("Share Vault"),
+                    titleColor: PassColor.textInvert,
+                    disableTitleColor: PassColor.textHint,
+                    backgroundColor: PassColor.interactionNormMajor1,
+                    disableBackgroundColor: PassColor.interactionNormMinor1,
+                    disabled: false,
+                    action: { viewModel.sendInvite() })
+            }
         }
     }
 }
 
 #Preview("SharingSummaryView Preview") {
     SharingSummaryView()
+}
+
+private extension ItemContent {
+    var title: String { name }
+
+    var description: String {
+        switch contentData {
+        case let .login(data):
+            data.authIdentifier
+        case .alias:
+            aliasEmail ?? ""
+        case let .creditCard(data):
+            data.number.toMaskedCreditCardNumber()
+        case .note:
+            String(note.prefix(50))
+        case let .identity(data):
+            data.fullName.concatenateWith(data.email, separator: " / ")
+        }
+    }
 }

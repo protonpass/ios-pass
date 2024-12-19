@@ -1,5 +1,5 @@
 //
-// VaultsManagerProtocol.swift
+// ShareContent.swift
 // Proton Pass - Created on 03/10/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,22 +18,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
-import Entities
+public struct ShareContent: Identifiable, Hashable, Sendable {
+    public let share: Share
+    /// `Active` items only
+    public let items: [ItemUiModel]
 
-// sourcery: AutoMockable
-public protocol VaultsManagerProtocol: Sendable {
-    nonisolated var vaultSyncEventStream: CurrentValueSubject<VaultSyncProgressEvent, Never> { get }
-    var currentVaults: CurrentValueSubject<[Vault], Never> { get }
-    var vaultSelection: VaultSelection { get }
-    var hasOnlyOneOwnedVault: Bool { get }
+    public var id: String {
+        share.id
+    }
 
-    func refresh(userId: String)
-    func fullSync(userId: String) async
-    func localFullSync(userId: String) async throws
-    func getItems(for vault: Vault) -> [ItemUiModel]
-    func getAllVaults() -> [Vault]
-    func delete(userId: String, shareId: String) async throws
-    func getOldestOwnedVault() -> Vault?
-    func reset() async
+    public var itemCount: Int {
+        items.count
+    }
+
+    public init(share: Share, items: [ItemUiModel]) {
+        self.share = share
+        self.items = items
+    }
 }

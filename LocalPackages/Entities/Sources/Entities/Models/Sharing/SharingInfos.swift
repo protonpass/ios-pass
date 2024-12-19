@@ -18,34 +18,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public enum SharingVaultData: Sendable {
-    case existing(Vault)
-    case new(VaultProtobuf, ItemContent)
+public enum SharingElementData: Sendable {
+    case vault(Share)
+    case item(item: ItemContent, share: Share)
+    case new(VaultContent, ItemContent)
 }
 
-public extension SharingVaultData {
+public extension SharingElementData {
     var name: String {
         switch self {
-        case let .existing(vault):
-            vault.name
+        case let .vault(share):
+            share.vaultName ?? ""
+        case let .item(item, _):
+            item.name
         case let .new(vault, _):
             vault.name
-        }
-    }
-
-    var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
-        switch self {
-        case let .existing(vault):
-            vault.displayPreferences
-        case let .new(vault, _):
-            vault.display
         }
     }
 
     var shared: Bool {
         switch self {
-        case let .existing(vault):
-            vault.shared
+        case let .vault(share):
+            share.shared
+        case let .item(_, share):
+            share.shared
         default:
             false
         }
@@ -53,8 +49,10 @@ public extension SharingVaultData {
 
     var shareId: String {
         switch self {
-        case let .existing(vault):
-            vault.shareId
+        case let .vault(share):
+            share.id
+        case let .item(_, share):
+            share.id
         case let .new(_, content):
             content.shareId
         }
@@ -66,31 +64,40 @@ public struct SharingInfos: Sendable, Identifiable {
         email
     }
 
-    public let vault: SharingVaultData
+    public let shareElement: SharingElementData
     public let email: String
     public let role: ShareRole
     /// No public keys means external user
     public let receiverPublicKeys: [PublicKey]?
     public let itemsNum: Int
-
-    public var vaultName: String {
-        vault.name
-    }
-
-    public var displayPreferences: ProtonPassVaultV1_VaultDisplayPreferences {
-        vault.displayPreferences
+    public var name: String {
+        shareElement.name
     }
 
     public var shared: Bool {
-        vault.shared
+        shareElement.shared
     }
 
-    public init(vault: SharingVaultData,
+    public var shareTargetType: TargetType {
+        if case .item = shareElement {
+            return .item
+        }
+        return .vault
+    }
+
+    public var isItem: Bool {
+        if case .item = shareElement {
+            return true
+        }
+        return false
+    }
+
+    public init(shareElement: SharingElementData,
                 email: String,
                 role: ShareRole,
                 receiverPublicKeys: [PublicKey]?,
                 itemsNum: Int) {
-        self.vault = vault
+        self.shareElement = shareElement
         self.email = email
         self.role = role
         self.receiverPublicKeys = receiverPublicKeys

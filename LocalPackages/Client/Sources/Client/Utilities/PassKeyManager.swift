@@ -24,7 +24,12 @@ import Entities
 import Foundation
 import ProtonCoreLogin
 
-public struct DecryptedShareKey: Hashable, Sendable {
+public protocol ShareKeyProtocol: Hashable, Sendable {
+    var keyRotation: Int64 { get }
+    var keyData: Data { get }
+}
+
+public struct DecryptedShareKey: ShareKeyProtocol {
     public let shareId: String
     public let keyRotation: Int64
     public let keyData: Data
@@ -36,7 +41,7 @@ public struct DecryptedShareKey: Hashable, Sendable {
     }
 }
 
-public struct DecryptedItemKey: Hashable, Sendable {
+public struct DecryptedItemKey: ShareKeyProtocol {
     public let shareId: String
     public let itemId: String
     public let keyRotation: Int64

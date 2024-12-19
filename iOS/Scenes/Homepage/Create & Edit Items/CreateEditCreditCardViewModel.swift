@@ -61,7 +61,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
 
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
-                  vaults: [Vault]) throws {
+                  vaults: [Share]) throws {
         try super.init(mode: mode,
                        upgradeChecker: upgradeChecker,
                        vaults: vaults)

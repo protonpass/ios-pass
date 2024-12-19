@@ -42,13 +42,15 @@ struct AcceptRejectInviteView: View {
                         senderEmailInfo
                     }
 
-                    Spacer()
-                    if let infos = viewModel.vaultInfos {
-                        vaultInformation(infos: infos)
-                    } else {
-                        ProgressView()
+                    if viewModel.userInvite.isVault {
+                        if let infos = viewModel.vaultInfos {
+                            vaultInformation(infos: infos)
+                        } else {
+                            ProgressView()
+                        }
+                        Spacer()
                     }
-                    Spacer()
+
                     actionButtons
                 }
                 .frame(minHeight: geometry.size.height)
@@ -70,17 +72,26 @@ struct AcceptRejectInviteView: View {
 
 private extension AcceptRejectInviteView {
     var senderEmailInfo: some View {
-        VStack {
-            Text(viewModel.userInvite.inviterEmail)
-                .fontWeight(.bold)
-            Text("invites you to access items in")
+        VStack(alignment: .center) {
+            if viewModel.userInvite.isVault {
+                Text(viewModel.userInvite.inviterEmail)
+                    .fontWeight(.bold)
+                Text("invites you to access items in")
+            } else {
+                Text("Shared item invitation")
+                    .font(.title)
+                    .padding(.bottom, 16)
+                Text("\(viewModel.userInvite.inviterEmail) wants to share an item with you.")
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 16)
+            }
         }
         .foregroundStyle(PassColor.textNorm.toColor)
     }
 }
 
 private extension AcceptRejectInviteView {
-    func vaultInformation(infos: VaultProtobuf) -> some View {
+    func vaultInformation(infos: VaultContent) -> some View {
         VStack {
             ZStack {
                 infos.display.color.color.color.withAlphaComponent(0.16).toColor
@@ -127,7 +138,8 @@ private extension AcceptRejectInviteView {
 
 private extension UserInvite {
     var acceptButtonTitle: String {
-        fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault")
+        isVault ? fromNewUser ? #localized("See the shared vault") : #localized("Join shared vault") :
+            #localized("Accept and view the item")
     }
 
     var rejectButtonTitle: String {

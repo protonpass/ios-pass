@@ -26,30 +26,30 @@ import Entities
 // sourcery: AutoMockable
 public protocol CreateVaultUseCase: Sendable {
     @discardableResult
-    func execute(userId: String, with vault: VaultProtobuf) async throws -> Vault?
+    func execute(userId: String, with vault: VaultContent) async throws -> Share?
 }
 
 public extension CreateVaultUseCase {
     @discardableResult
-    func callAsFunction(userId: String, with vault: VaultProtobuf) async throws -> Vault? {
+    func callAsFunction(userId: String, with vault: VaultContent) async throws -> Share? {
         try await execute(userId: userId, with: vault)
     }
 }
 
 public final class CreateVault: CreateVaultUseCase {
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
     private let repository: any ShareRepositoryProtocol
 
-    public init(vaultsManager: any VaultsManagerProtocol,
+    public init(appContentManager: any AppContentManagerProtocol,
                 repository: any ShareRepositoryProtocol) {
-        self.vaultsManager = vaultsManager
+        self.appContentManager = appContentManager
         self.repository = repository
     }
 
-    public func execute(userId: String, with vault: VaultProtobuf) async throws -> Vault? {
+    public func execute(userId: String, with vault: VaultContent) async throws -> Share? {
         let share = try await repository.createVault(vault)
-        vaultsManager.refresh(userId: userId)
+        try await appContentManager.refresh(userId: userId)
 
-        return try await repository.getVault(shareId: share.shareID)
+        return try await repository.getDecryptedShare(shareId: share.shareID)
     }
 }

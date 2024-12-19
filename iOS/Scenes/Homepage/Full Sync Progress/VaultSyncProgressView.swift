@@ -30,8 +30,8 @@ struct VaultSyncProgressView: View {
 
     var body: some View {
         HStack {
-            if let vault = progress.vault {
-                content(vault: vault, itemsState: progress.itemsState)
+            if let vaultContent = progress.vault?.vaultContent {
+                content(vaultContent: vaultContent, itemsState: progress.itemsState)
             } else {
                 skeleton
             }
@@ -62,10 +62,10 @@ private extension VaultSyncProgressView {
 }
 
 private extension VaultSyncProgressView {
-    func content(vault: Vault, itemsState: VaultSyncProgress.ItemsState) -> some View {
+    func content(vaultContent: VaultContent, itemsState: VaultSyncProgress.ItemsState) -> some View {
         HStack(spacing: 16) {
-            thumbnail(for: vault)
-            detail(vault: vault, itemsState: itemsState)
+            thumbnail(for: vaultContent)
+            detail(vaultContent: vaultContent, itemsState: itemsState)
             Spacer()
             if progress.isDone {
                 Image(uiImage: IconProvider.checkmark)
@@ -81,20 +81,18 @@ private extension VaultSyncProgressView {
 
 private extension VaultSyncProgressView {
     @ViewBuilder
-    func thumbnail(for vault: Vault) -> some View {
-        let icon = vault.displayPreferences.icon.icon.bigImage
-        let color = vault.displayPreferences.color.color.color
-        CircleButton(icon: icon,
-                     iconColor: color,
-                     backgroundColor: color.withAlphaComponent(0.16),
+    func thumbnail(for vaultContent: VaultContent) -> some View {
+        CircleButton(icon: vaultContent.vaultBigIcon,
+                     iconColor: vaultContent.mainColor,
+                     backgroundColor: vaultContent.backgroundColor,
                      type: .big)
     }
 }
 
 private extension VaultSyncProgressView {
-    func detail(vault: Vault, itemsState: VaultSyncProgress.ItemsState) -> some View {
+    func detail(vaultContent: VaultContent, itemsState: VaultSyncProgress.ItemsState) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(vault.name)
+            Text(vaultContent.name)
                 .font(.headline)
                 .foregroundStyle(PassColor.textNorm.toColor)
 

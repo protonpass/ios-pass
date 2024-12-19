@@ -24,13 +24,14 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct EditableVaultListView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel = EditableVaultListViewModel()
     @State private var vaultNameConfirmation = ""
-    @State private var vaultToDelete: Vault?
+    @State private var vaultToDelete: Share?
     @State private var isShowingEmptyTrashAlert = false
 
     var body: some View {
@@ -46,8 +47,8 @@ struct EditableVaultListView: View {
 
                         PassDivider()
 
-                        ForEach(uiModel.vaults) { vault in
-                            vaultRow(for: .precise(vault.vault))
+                        ForEach(uiModel.filteredOrderedVaults) { vault in
+                            vaultRow(for: .precise(vault))
                             PassDivider()
                         }
 
@@ -77,12 +78,12 @@ struct EditableVaultListView: View {
                actions: { vault in
                    TextField("Vault name", text: $vaultNameConfirmation)
                    Button("Delete", action: { viewModel.delete(vault: vault) })
-                       .disabled(vaultNameConfirmation != vault.name)
+                       .disabled(vaultNameConfirmation != vault.vaultName)
                    Button("Cancel", action: { vaultNameConfirmation = "" })
                },
                message: { vault in
                    // swiftlint:disable:next line_length
-                   Text("This will permanently delete the vault « \(vault.name) » and all its contents. Enter the vault name to confirm deletion.")
+                   Text("This will permanently delete the vault « \(vault.vaultName ?? "") » and all its contents. Enter the vault name to confirm deletion.")
                })
     }
 
@@ -101,10 +102,17 @@ struct EditableVaultListView: View {
                          },
                          title: selection.title,
                          itemCount: itemCount,
-                         isShared: selection.shared,
+                         share: selection.share,
                          isSelected: viewModel.isSelected(selection),
                          showBadge: selection.showBadge,
-                         height: 74)
+                         height: 74,
+                         shareAction: { vault in
+                             if viewModel.canShare(vault: vault) {
+                                 viewModel.share(vault: vault)
+                             } else {
+                                 viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
+                             }
+                         })
             })
             .buttonStyle(.plain)
 
@@ -130,7 +138,7 @@ struct EditableVaultListView: View {
     }
 
     @ViewBuilder
-    private func vaultTrailingView(_ vault: Vault, haveItems: Bool) -> some View {
+    private func vaultTrailingView(_ vault: Share, haveItems: Bool) -> some View {
         Menu(content: {
             if viewModel.canEdit(vault: vault) {
                 Button(action: {
@@ -160,7 +168,7 @@ struct EditableVaultListView: View {
 
             if vault.shared {
                 Button(action: {
-                    viewModel.router.present(for: .manageShareVault(vault, .none))
+                    viewModel.router.present(for: .manageSharedShare(.vault(vault), .none))
                 }, label: {
                     Label(title: {
                         Text(vault.isAdmin ? "Manage access" : "View members")
@@ -253,9 +261,9 @@ extension VaultSelection {
     var title: String {
         switch self {
         case .all:
-            #localized("All vaults")
+            #localized("All items")
         case let .precise(vault):
-            vault.name
+            vault.vaultName ?? ""
         case .trash:
             #localized("Trash")
         }
@@ -266,7 +274,7 @@ extension VaultSelection {
         case .all:
             PassIcon.brandPass
         case let .precise(vault):
-            vault.displayPreferences.icon.icon.bigImage
+            vault.vaultBigIcon ?? PassIcon.vaultIcon1Big
         case .trash:
             IconProvider.trash
         }
@@ -277,9 +285,18 @@ extension VaultSelection {
         case .all:
             PassColor.interactionNormMajor2
         case let .precise(vault):
-            vault.displayPreferences.color.color.color
+            vault.mainColor ?? PassColor.textWeak
         case .trash:
             PassColor.textWeak
+        }
+    }
+
+    var share: Share? {
+        switch self {
+        case let .precise(vault):
+            vault
+        default:
+            nil
         }
     }
 }

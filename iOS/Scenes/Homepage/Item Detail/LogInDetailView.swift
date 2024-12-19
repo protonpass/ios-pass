@@ -55,8 +55,7 @@ private extension LogInDetailView {
                         }
 
                         ItemDetailTitleView(itemContent: viewModel.itemContent,
-                                            vault: viewModel.vault?.vault,
-                                            shouldShowVault: viewModel.shouldShowVault)
+                                            vault: viewModel.vault?.vault)
                             .padding(.bottom, 40)
 
                         if !viewModel.passkeys.isEmpty {

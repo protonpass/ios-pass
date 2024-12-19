@@ -59,14 +59,9 @@ struct NoteDetailView: View {
                     .animation(.default, value: itemContent.item.pinned)
 
                     HStack {
-                        if let vault = viewModel.vault?.vault {
-                            if !vault.shared {
-                                VaultLabel(vault: vault)
-                                    .padding(.top, 4)
-                            } else {
-                                VaultButton(vault: vault)
-                                    .padding(.top, 4)
-                            }
+                        if let vault = viewModel.vault?.vault, let vaultContent = vault.vaultContent {
+                            VaultLabel(vaultContent: vaultContent)
+                                .padding(.top, 4)
                         }
                         Spacer()
                     }

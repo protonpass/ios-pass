@@ -43,7 +43,7 @@ struct UserEmailView: View {
                 .padding(.horizontal, DesignConstant.sectionPadding)
 
             VStack(alignment: .leading) {
-                if case let .new(vault, _) = viewModel.vault {
+                if case let .new(vault, _) = viewModel.element {
                     vaultRow(vault)
                 }
 
@@ -204,7 +204,7 @@ private extension UserEmailView {
 }
 
 private extension UserEmailView {
-    func vaultRow(_ vault: VaultProtobuf) -> some View {
+    func vaultRow(_ vault: VaultContent) -> some View {
         HStack(spacing: 16) {
             VaultRow(thumbnail: {
                          CircleButton(icon: vault.display.icon.icon.bigImage,
@@ -214,7 +214,6 @@ private extension UserEmailView {
                      },
                      title: vault.name,
                      itemCount: 1,
-                     isShared: false,
                      isSelected: false,
                      maxWidth: nil,
                      height: 74)
