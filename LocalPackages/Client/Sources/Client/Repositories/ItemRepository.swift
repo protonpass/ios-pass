@@ -467,6 +467,7 @@ public extension ItemRepository {
             }
         }
         itemsWereUpdated.send()
+        try await refreshPinnedItemDataStream()
     }
 
     func trashItems(_ items: [any ItemIdentifiable]) async throws {
@@ -478,6 +479,7 @@ public extension ItemRepository {
         }
         logger.info("Trashed \(items.count) items")
         itemsWereUpdated.send()
+        try await refreshPinnedItemDataStream()
     }
 
     func untrashItems(_ items: [SymmetricallyEncryptedItem]) async throws {
@@ -500,6 +502,7 @@ public extension ItemRepository {
             }
         }
         itemsWereUpdated.send()
+        try await refreshPinnedItemDataStream()
     }
 
     func untrashItems(_ items: [any ItemIdentifiable]) async throws {
@@ -511,6 +514,7 @@ public extension ItemRepository {
         }
         logger.info("Bulk restored \(items.count) items")
         itemsWereUpdated.send()
+        try await refreshPinnedItemDataStream()
     }
 
     func deleteItems(userId: String, _ items: [SymmetricallyEncryptedItem], skipTrash: Bool) async throws {

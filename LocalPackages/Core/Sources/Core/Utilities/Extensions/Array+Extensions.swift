@@ -97,3 +97,19 @@ public extension Array where Element: Equatable {
         }
     }
 }
+
+public extension Array {
+    /// CompactMap with set trnasformation.
+    /// - Parameter transform: The transform to apply to each element.
+    func compactMapToSet<T>(_ transform: (Element) throws -> T?) rethrows -> Set<T> {
+        var tempSet = Set<T>()
+
+        for item in self {
+            if let element = try transform(item) {
+                tempSet.insert(element)
+            }
+        }
+
+        return tempSet
+    }
+}

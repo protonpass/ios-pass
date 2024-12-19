@@ -93,6 +93,7 @@ public extension LocalItemDatasource {
         fetchRequest.predicate = .init(format: "pinned = %d", true)
         fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
             .init(format: "pinned = %d", true),
+            .init(format: "state = %d", ItemState.active.rawValue),
             .init(format: "userID = %@", userId)
         ])
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)

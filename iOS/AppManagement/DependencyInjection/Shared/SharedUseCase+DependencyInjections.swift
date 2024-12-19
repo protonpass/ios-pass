@@ -92,6 +92,10 @@ private extension SharedUseCasesContainer {
     var keychain: any KeychainProtocol {
         SharedToolingContainer.shared.keychain()
     }
+
+    var passMonitorRepository: any PassMonitorRepositoryProtocol {
+        SharedRepositoryContainer.shared.passMonitorRepository()
+    }
 }
 
 // MARK: App
@@ -294,8 +298,8 @@ extension SharedUseCasesContainer {
                        preferencesManager: self.preferencesManager,
                        removeUserLocalData: self.removeUserLocalData(),
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                       passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
-                       accessRepository: SharedRepositoryContainer.shared.accessRepository(),
+                       passMonitorRepository: self.passMonitorRepository,
+                       accessRepository: self.accessRepository,
                        appContentManager: self.appContentManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
@@ -423,7 +427,7 @@ extension SharedUseCasesContainer {
                                  preferencesManager: self.preferencesManager,
                                  removeUserLocalData: self.removeUserLocalData(),
                                  featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
-                                 passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
+                                 passMonitorRepository: self.passMonitorRepository,
                                  appContentManager: self.appContentManager,
                                  apiManager: self.apiManager,
                                  authManager: self.authManager,
@@ -511,6 +515,15 @@ extension SharedUseCasesContainer {
 
     var getAllAliases: Factory<any GetAllAliasesUseCase> {
         self { GetAllAliases(itemRepository: self.itemRepository) }
+    }
+
+    var sendUserMonitoringStats: Factory<any SendUserMonitoringStatsUseCase> {
+        self {
+            SendUserMonitoringStats(passMonitorRepository: self.passMonitorRepository,
+                                    accessRepository: self.accessRepository,
+                                    userManager: self.userManager,
+                                    storage: kSharedUserDefaults)
+        }
     }
 }
 

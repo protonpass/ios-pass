@@ -18,12 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+@preconcurrency import Combine
 import DesignSystem
 import DocScanner
+import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct CreateEditNoteView: View {
@@ -37,6 +39,8 @@ struct CreateEditNoteView: View {
         NavigationStack {
             CreateEditNoteContentView(title: $viewModel.title,
                                       content: $viewModel.note,
+                                      files: viewModel.files,
+                                      handler: viewModel,
                                       scanResponsePublisher: viewModel.scanResponsePublisher)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .itemCreateEditSetUp(viewModel)
@@ -52,6 +56,8 @@ struct CreateEditNoteView: View {
 private struct CreateEditNoteContentView: UIViewRepresentable {
     @Binding var title: String
     @Binding var content: String
+    let files: [FileAttachment]
+    let handler: any FileAttachmentsEditHandler
     weak var scanResponsePublisher: ScanResponsePublisher?
 
     func makeUIView(context: Context) -> CreateEditNoteContentUIView {
@@ -59,10 +65,13 @@ private struct CreateEditNoteContentView: UIViewRepresentable {
         view.delegate = context.coordinator
         view.bind(title: title, content: content)
         view.scanResponsePublisher = scanResponsePublisher
+        view.handler = handler
         return view
     }
 
-    func updateUIView(_ view: CreateEditNoteContentUIView, context: Context) {}
+    func updateUIView(_ view: CreateEditNoteContentUIView, context: Context) {
+        view.update(files: files)
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -93,11 +102,14 @@ private protocol CreateEditNoteContentUIViewDelegate: AnyObject, Sendable {
 
 @MainActor
 private final class CreateEditNoteContentUIView: UIView {
+    private var lastFileCount: Int?
     private let padding: CGFloat = 16
 
     /// `UITextView` has its own offset that we need to take into account to properly align with title and the
     /// custom placeholder
     private let textViewOffset: CGFloat = 4
+
+    private let scrollView = UIScrollView()
 
     /// `UITextView` does not support placeholder out of the box so we have to manually add it
     private lazy var contentPlaceholderLabel: UILabel = {
@@ -117,16 +129,27 @@ private final class CreateEditNoteContentUIView: UIView {
         return tf
     }()
 
+    private var contentTextViewHeight: NSLayoutConstraint?
     private lazy var contentTextView: UITextView = {
         let tv = UITextView()
         tv.font = .body
         tv.textColor = PassColor.textNorm
         tv.backgroundColor = .clear
         tv.delegate = self
+        tv.isScrollEnabled = false
         return tv
     }()
 
+    private lazy var filesStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.backgroundColor = .clear
+        sv.spacing = DesignConstant.sectionPadding
+        sv.axis = .vertical
+        return sv
+    }()
+
     weak var delegate: (any CreateEditNoteContentUIViewDelegate)?
+    weak var handler: (any FileAttachmentsEditHandler)?
 
     private var cancellables = Set<AnyCancellable>()
     weak var scanResponsePublisher: ScanResponsePublisher? {
@@ -143,6 +166,10 @@ private final class CreateEditNoteContentUIView: UIView {
                 }
                 .store(in: &cancellables)
         }
+    }
+
+    deinit {
+        cancellables.removeAll()
     }
 
     override init(frame: CGRect) {
@@ -167,7 +194,6 @@ private final class CreateEditNoteContentUIView: UIView {
 private extension CreateEditNoteContentUIView {
     func setUpUI() {
         // Root scroll view
-        let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(scrollView)
         NSLayoutConstraint.activate([
@@ -186,8 +212,7 @@ private extension CreateEditNoteContentUIView {
             containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            containerView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
 
         // Title text field
@@ -208,7 +233,7 @@ private extension CreateEditNoteContentUIView {
             contentPlaceholderLabel.topAnchor.constraint(equalTo: titleTextField.bottomAnchor,
                                                          constant: 2 * textViewOffset),
             contentPlaceholderLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
-                                                             constant: padding + textViewOffset),
+                                                             constant: padding),
             contentPlaceholderLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
                                                               constant: -padding)
         ])
@@ -216,13 +241,29 @@ private extension CreateEditNoteContentUIView {
         // Content text view
         contentTextView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(contentTextView)
+        // Set a big enough height by default and update this constraint as text changes
+        contentTextViewHeight = contentTextView.heightAnchor.constraint(equalToConstant: 500)
+        contentTextViewHeight?.isActive = true
         NSLayoutConstraint.activate([
             contentTextView.topAnchor.constraint(equalTo: titleTextField.bottomAnchor),
             contentTextView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
                                                      constant: padding - 5),
             contentTextView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
-                                                      constant: -padding),
-            contentTextView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor)
+                                                      constant: -padding)
+        ])
+
+        // Files stack view
+        filesStackView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(filesStackView)
+        NSLayoutConstraint.activate([
+            filesStackView.topAnchor.constraint(equalTo: contentTextView.bottomAnchor,
+                                                constant: padding),
+            filesStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                                    constant: padding - 5),
+            filesStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
+                                                     constant: -padding),
+            filesStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
+                                                   constant: -padding)
         ])
 
         titleTextField.setOnTextChangeListener { [weak self] in
@@ -235,6 +276,36 @@ private extension CreateEditNoteContentUIView {
 
     func updatePlaceholderVisibility() {
         contentPlaceholderLabel.alpha = contentTextView.text.isEmpty ? 1 : 0
+    }
+
+    func update(files: [FileAttachment]) {
+        for view in filesStackView.arrangedSubviews {
+            filesStackView.removeArrangedSubview(view)
+            view.removeFromSuperview()
+        }
+
+        for file in files {
+            if let handler {
+                let row = FileAttachmentRow(mode: .edit,
+                                            file: file,
+                                            handler: handler)
+                let viewController = UIHostingController(rootView: row)
+                viewController.view.backgroundColor = .clear
+                viewController.view.translatesAutoresizingMaskIntoConstraints = false
+                filesStackView.addArrangedSubview(viewController.view)
+            }
+        }
+
+        filesStackView.layoutIfNeeded()
+        if let lastFileCount, files.count > lastFileCount {
+            // New file added => scroll to the bottom
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) { [weak self] in
+                guard let self else { return }
+                // Wait for attachment sheet is fully dismissed before scrolling to the bottom
+                scrollView.scrollToBottom()
+            }
+        }
+        lastFileCount = files.count
     }
 
     func transformIntoNote(document: ScannedDocument) {
@@ -254,9 +325,23 @@ private extension CreateEditNoteContentUIView {
             }
         }
     }
+
+    func updateContentTextViewHeight() {
+        let size = contentTextView.sizeThatFits(CGSize(width: contentTextView.frame.width,
+                                                       height: CGFloat.greatestFiniteMagnitude))
+        contentTextViewHeight?.constant = size.height
+        layoutIfNeeded()
+    }
 }
 
 extension CreateEditNoteContentUIView: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Note title is focused automatically by default
+        // we update the height of contentTextView here because its height
+        // is not known at the initialization of this page
+        updateContentTextViewHeight()
+    }
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -269,5 +354,6 @@ extension CreateEditNoteContentUIView: UITextViewDelegate {
             delegate?.contentUpdated(text)
         }
         updatePlaceholderVisibility()
+        updateContentTextViewHeight()
     }
 }

@@ -76,17 +76,23 @@ extension LocalItemDatasourceTests {
         let currentUserId = "test"
 
         // Given
-        var givenItems = [SymmetricallyEncryptedItem].random(randomElement: .random(userId: currentUserId))
-        givenItems.append(SymmetricallyEncryptedItem.random(userId: currentUserId,  item: .random(pinned: true)))
+        var givenItems = [SymmetricallyEncryptedItem].random(randomElement:
+                .random(userId: currentUserId,
+                        item: .random(state: .trashed, pinned: false)))
+        givenItems.append(SymmetricallyEncryptedItem.random(userId: currentUserId,
+                                                            item: .random(state: .active,
+                                                                          pinned: true)))
         try await sut.upsertItems(givenItems)
-        
+
         // When
         let pinnedItems = try await sut.getAllPinnedItems(userId: currentUserId)
         
         // Then
         XCTAssertEqual(pinnedItems.count, 1)
         
-        givenItems.append(SymmetricallyEncryptedItem.random(userId: currentUserId, item: .random(pinned: true)))
+        givenItems.append(SymmetricallyEncryptedItem.random(userId: currentUserId,
+                                                            item: .random(state: .active,
+                                                                          pinned: true)))
         try await sut.upsertItems(givenItems)
         
         // When

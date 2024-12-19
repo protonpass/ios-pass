@@ -47,7 +47,7 @@ final class CreateEditCreditCardViewModel: BaseCreateEditItemViewModel, DeinitPr
         }
     }
 
-    override func itemContentType() -> ItemContentType { .creditCard }
+    override var itemContentType: ItemContentType { .creditCard }
 
     override var isSaveable: Bool { !title.isEmpty }
 
