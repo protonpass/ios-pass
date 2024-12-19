@@ -24,10 +24,10 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct SelectedSyncVaultRow: View {
-    private let vault: Vault?
+    private let vault: Share?
     let action: () -> Void
 
-    public init(vault: Vault?,
+    public init(vault: Share?,
                 action: @escaping () -> Void) {
         self.vault = vault
         self.action = action
@@ -45,8 +45,8 @@ public struct SelectedSyncVaultRow: View {
 
     private var selectedVault: some View {
         HStack(spacing: 16) {
-            if let vault {
-                VaultThumbnail(vault: vault)
+            if let vaultContent = vault?.vaultContent {
+                VaultThumbnail(vaultContent: vaultContent)
             }
 
             VStack(alignment: .leading) {
@@ -54,8 +54,8 @@ public struct SelectedSyncVaultRow: View {
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
 
-                Text(vault?.name ?? "None")
-                    .if(vault?.name == nil) { view in
+                Text(vault?.vaultContent?.name ?? "None")
+                    .if(vault?.vaultContent?.name == nil) { view in
                         view
                             .italic()
                             .foregroundStyle(PassColor.textWeak.toColor)

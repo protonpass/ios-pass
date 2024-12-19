@@ -22,7 +22,7 @@ import Foundation
 
 public enum VaultSelection: Hashable, Sendable {
     case all
-    case precise(Vault)
+    case precise(Share)
     case trash
 
     public var shared: Bool {
@@ -32,16 +32,16 @@ public enum VaultSelection: Hashable, Sendable {
         return false
     }
 
-    public var preciseVault: Vault? {
-        if case let .precise(vault) = self {
-            return vault
+    public var preciseVault: Share? {
+        if case let .precise(share) = self {
+            return share
         }
         return nil
     }
 
     public var showBadge: Bool {
-        if case let .precise(vault) = self {
-            vault.newUserInvitesReady > 0
+        if case let .precise(share) = self {
+            share.newUserInvitesReady > 0
         } else {
             false
         }
@@ -53,8 +53,8 @@ extension VaultSelection: Equatable {
         switch (lhs, rhs) {
         case (.all, .all), (.trash, .trash):
             true
-        case let (.precise(lhsVault), .precise(rhsVault)):
-            lhsVault.id == rhsVault.id && lhsVault.shareId == rhsVault.shareId
+        case let (.precise(lhsShare), .precise(rhsShare)):
+            lhsShare.id == rhsShare.id
         default:
             false
         }

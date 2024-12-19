@@ -1,6 +1,6 @@
 //
-// VaultDatasUiModel.swift
-// Proton Pass - Created on 28/10/2024.
+// UserUiModel+Mock.swift
+// Proton Pass - Created on 02/12/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,16 +17,18 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
-import CryptoKit
+import Entities
 
-public struct VaultDatasUiModel: Hashable, Sendable {
-    public let vaults: [VaultContentUiModel]
-    public let trashedItems: [ItemUiModel]
-
-    public init(vaults: [VaultContentUiModel], trashedItems: [ItemUiModel]) {
-        self.vaults = vaults
-        self.trashedItems = trashedItems
+public extension UserUiModel {
+    static func random() -> UserUiModel {
+        .init(id: .random(),
+              displayName: .random(),
+              email: .random(),
+              plan: .init(type: .random(),
+                          internalName: .random(),
+                          displayName: .random(),
+                          hideUpgrade: .random(),
+                          manageAlias: false))
     }
 }

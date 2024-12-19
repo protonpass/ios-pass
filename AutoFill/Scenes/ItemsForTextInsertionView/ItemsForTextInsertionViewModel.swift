@@ -83,7 +83,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     private var searchableItems: [SearchableItem] = []
     private var filterAndSortTask: Task<Void, Never>?
 
-    private var vaults: [Vault] {
+    private var vaults: [Share] {
         results.flatMap(\.vaults)
     }
 
@@ -131,7 +131,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         await filterAndSortItemsAsync()
     }
 
-    override func getVaults(userId: String) -> [Vault]? {
+    override func getVaults(userId: String) -> [Share]? {
         results.first { $0.userId == userId }?.vaults
     }
 
@@ -155,7 +155,7 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
         state = .loading
     }
 
-    override func generateItemCreationInfo(userId: String, vaults: [Vault]) -> ItemCreationInfo {
+    override func generateItemCreationInfo(userId: String, vaults: [Share]) -> ItemCreationInfo {
         switch selectedItemType {
         case .login:
             return .init(userId: userId, vaults: vaults, data: .login(nil, nil))
@@ -277,7 +277,9 @@ private extension ItemsForTextInsertionViewModel {
                                 at: 0)
             }
 
-            let itemCount = ItemCount(items: allItems)
+            let itemCount = ItemCount(items: allItems,
+                                      sharedByMe: searchableItems.itemSharedByMeCount,
+                                      sharedWithMe: searchableItems.itemSharedWithMeCount)
             await MainActor.run { [weak self] in
                 guard let self else { return }
                 self.searchableItems = searchableItems
@@ -359,5 +361,15 @@ extension ItemsForTextInsertionViewModel {
                 handle(error)
             }
         }
+    }
+}
+
+private extension [SearchableItem] {
+    var itemSharedByMeCount: Int {
+        self.filter { $0.shared && $0.owner }.count
+    }
+
+    var itemSharedWithMeCount: Int {
+        self.filter { $0.shared && !$0.owner }.count
     }
 }

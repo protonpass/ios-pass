@@ -28,6 +28,7 @@ import ProtonCoreLogin
 // swiftlint:disable:next todo
 // TODO: need to keep an eye on the evolution of Combine publisher and structured concurrency
 extension CurrentValueSubject: @unchecked @retroactive Sendable {}
+extension PassthroughSubject: @unchecked @retroactive Sendable {}
 
 private let kBatchPageSize = 100
 
@@ -65,7 +66,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Full sync for a given `shareId`
     func refreshItems(userId: String,
                       shareId: String,
-                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws
+                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws
 
     @discardableResult
     func createItem(userId: String,
@@ -148,6 +149,9 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
+
+    func fetchAndRefreshItems(userId: String,
+                              shareId: String) async throws -> [ItemContent]
 }
 
 public extension ItemRepositoryProtocol {
@@ -240,6 +244,36 @@ public extension ItemRepository {
         return itemsContent
     }
 
+    func fetchAndRefreshItems(userId: String,
+                              shareId: String) async throws -> [ItemContent] {
+        let itemRevisions = try await remoteDatasource.getItems(userId: userId, shareId: shareId, eventStream: nil)
+        logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
+        var encryptedItems = [SymmetricallyEncryptedItem]()
+
+        let symmetricKey = try await getSymmetricKey()
+        for itemRevision in itemRevisions {
+            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
+                                                              shareId: shareId,
+                                                              userId: userId,
+                                                              symmetricKey: symmetricKey)
+            encryptedItems.append(encrypedItem)
+        }
+
+        logger.trace("Removing all local old items if any for share \(shareId)")
+        try await localDatasource.removeAllItems(shareId: shareId)
+        logger.trace("Removed all local old items for share \(shareId)")
+
+        logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
+        try await localDatasource.upsertItems(encryptedItems)
+
+        let itemsContent: [ItemContent] = try await itemRevisions.asyncCompactMap { [weak self] item in
+            guard let self else { return nil }
+            return try await decrypt(userId: userId, item: item, shareId: shareId)
+        }
+
+        return itemsContent
+    }
+
     func getItemRevisions(userId: String,
                           shareId: String,
                           itemId: String,
@@ -264,7 +298,7 @@ public extension ItemRepository {
 
     func refreshItems(userId: String,
                       shareId: String,
-                      eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws {
+                      eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws {
         logger.trace("Refreshing share \(shareId)")
         let itemRevisions = try await remoteDatasource.getItems(userId: userId,
                                                                 shareId: shareId,
@@ -276,14 +310,14 @@ public extension ItemRepository {
 
         let symmetricKey = try await getSymmetricKey()
         for (index, itemRevision) in itemRevisions.enumerated() {
-            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
-                                                              shareId: shareId,
-                                                              userId: userId,
-                                                              symmetricKey: symmetricKey)
+            let encryptedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
+                                                               shareId: shareId,
+                                                               userId: userId,
+                                                               symmetricKey: symmetricKey)
             eventStream?.send(.decryptItems(.init(shareId: shareId,
                                                   total: itemRevisions.count,
                                                   decrypted: index + 1)))
-            encryptedItems.append(encrypedItem)
+            encryptedItems.append(encryptedItem)
         }
 
         logger.trace("Removing all local old items if any for share \(shareId)")
@@ -552,11 +586,17 @@ public extension ItemRepository {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
 
-        let latestItemKey = try await passKeyManager.getLatestItemKey(userId: userId,
-                                                                      shareId: shareId,
-                                                                      itemId: itemId)
+        let latestItemKey: any ShareKeyProtocol = if oldItem.isASharedWithMeItem {
+            try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
+        } else {
+            try await passKeyManager.getLatestItemKey(userId: userId,
+                                                      shareId: shareId,
+                                                      itemId: itemId)
+        }
+
         let request = try UpdateItemRequest(oldRevision: oldItem,
-                                            latestItemKey: latestItemKey,
+                                            key: latestItemKey.keyData,
+                                            keyRotation: latestItemKey.keyRotation,
                                             itemContent: newItemContent)
 
         let updatedItemRevision =
@@ -597,7 +637,9 @@ public extension ItemRepository {
         logger.trace("Updated \(lastUseItems.count) lastUseItem for share \(shareId)")
     }
 
-    func updateLastUseTime(userId: String, item: any ItemIdentifiable, date: Date) async throws {
+    func updateLastUseTime(userId: String,
+                           item: any ItemIdentifiable,
+                           date: Date) async throws {
         logger.trace("Updating last use time \(item.debugDescription)")
 
         let updatedItem = try await remoteDatasource.updateLastUseTime(userId: userId,
@@ -701,7 +743,9 @@ public extension ItemRepository {
 // MARK: - Item flags
 
 public extension ItemRepository {
-    func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws {
+    func updateItemFlags(flags: [ItemFlag],
+                         shareId: String,
+                         itemId: String) async throws {
         logger.trace("Update flags for item \(itemId) of share \(shareId)")
         let request = UpdateItemFlagsRequest(flags: flags)
         let userId = try await userManager.getActiveUserId()
@@ -742,10 +786,12 @@ private extension ItemRepository {
                               shareId: String,
                               userId: String,
                               symmetricKey: SymmetricKey) async throws -> SymmetricallyEncryptedItem {
-        let vaultKey = try await passKeyManager.getShareKey(userId: userId,
+        let shareKey = try await passKeyManager.getShareKey(userId: userId,
                                                             shareId: shareId,
                                                             keyRotation: itemRevision.keyRotation)
-        let contentProtobuf = try itemRevision.getContentProtobuf(vaultKey: vaultKey)
+
+        let contentProtobuf = try itemRevision.getContentProtobuf(shareKey: shareKey)
+
         let encryptedContent = try contentProtobuf.encrypt(symmetricKey: symmetricKey)
 
         let isLogInItem = if case .login = contentProtobuf.contentData {
@@ -914,10 +960,10 @@ private extension ItemRepository {
 
 private extension ItemRepository {
     func decrypt(userId: String, item: Item, shareId: String) async throws -> ItemContent {
-        let vaultKey = try await passKeyManager.getShareKey(userId: userId,
+        let shareKey = try await passKeyManager.getShareKey(userId: userId,
                                                             shareId: shareId,
                                                             keyRotation: item.keyRotation)
-        let contentProtobuf = try item.getContentProtobuf(vaultKey: vaultKey)
+        let contentProtobuf = try item.getContentProtobuf(shareKey: shareKey)
         return ItemContent(userId: userId, shareId: shareId, item: item, contentProtobuf: contentProtobuf)
     }
 }

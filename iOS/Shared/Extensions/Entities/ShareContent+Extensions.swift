@@ -1,7 +1,7 @@
 //
-// CreateVaultRequestTests.swift
-// Proton Pass - Created on 12/07/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// ShareContent+Extensions.swift
+// Proton Pass - Created on 04/12/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,14 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-@testable import Client
-import Core
 import Entities
-import XCTest
 
-final class CreateVaultRequestTests: XCTestCase {
-    func testCreateVaultSuccess() throws {
-        #warning("Fix this")
-        XCTAssertTrue(true)
+extension ShareContent {
+    var toVaultListUiModel: VaultListUiModel {
+        VaultListUiModel(vaultContent: self)
     }
 }

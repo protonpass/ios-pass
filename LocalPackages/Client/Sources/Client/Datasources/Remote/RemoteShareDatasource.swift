@@ -21,9 +21,17 @@
 import Entities
 import Foundation
 
+// sourcery: AutoMockable
 public protocol RemoteShareDatasourceProtocol: Sendable {
     func getShares(userId: String) async throws -> [Share]
-    func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos]
+    func getShare(shareId: String, userId: String) async throws -> Share
+    func getUsersLinkedToVaultShare(userId: String, shareId: String, lastToken: String?) async throws
+        -> PaginatedUsersLinkedToShare
+    func getUsersLinkedToItemShare(userId: String,
+                                   shareId: String,
+                                   itemId: String,
+                                   lastToken: String?) async throws
+        -> PaginatedUsersLinkedToShare
     func updateUserSharePermission(userId: String,
                                    shareId: String,
                                    userShareId: String,
@@ -45,16 +53,33 @@ public protocol RemoteShareDatasourceProtocol: Sendable {
 public final class RemoteShareDatasource: RemoteDatasource, RemoteShareDatasourceProtocol, @unchecked Sendable {}
 
 public extension RemoteShareDatasource {
+    func getShare(shareId: String, userId: String) async throws -> Share {
+        let getShareEndpoint = GetShareEndpoint(for: shareId)
+        let getSharesResponse = try await exec(userId: userId, endpoint: getShareEndpoint)
+        return getSharesResponse.share
+    }
+
     func getShares(userId: String) async throws -> [Share] {
         let getSharesEndpoint = GetSharesEndpoint()
         let getSharesResponse = try await exec(userId: userId, endpoint: getSharesEndpoint)
         return getSharesResponse.shares
     }
 
-    func getShareLinkedUsers(userId: String, shareId: String) async throws -> [UserShareInfos] {
-        let endpoint = GetShareLinkedUsersEndpoint(for: shareId)
+    func getUsersLinkedToVaultShare(userId: String,
+                                    shareId: String,
+                                    lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
+        let endpoint = GetUsersLinkedToVaultShareEndpoint(for: shareId, lastToken: lastToken)
         let response = try await exec(userId: userId, endpoint: endpoint)
-        return response.shares
+        return response
+    }
+
+    func getUsersLinkedToItemShare(userId: String,
+                                   shareId: String,
+                                   itemId: String,
+                                   lastToken: String?) async throws -> PaginatedUsersLinkedToShare {
+        let endpoint = GetUsersLinkedToItemShareEndpoint(for: shareId, itemId: itemId, lastToken: lastToken)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response
     }
 
     func updateUserSharePermission(userId: String,

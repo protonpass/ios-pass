@@ -29,12 +29,12 @@ import SwiftUI
 struct ItemDetailMoreInfoSection: View {
     @Binding var isExpanded: Bool
     private let item: ItemContent
-    private let vault: Vault?
+    private let vault: Share?
     let onCopy: ((_ text: String, _ bannerMessage: String) -> Void)?
 
     init(isExpanded: Binding<Bool>,
          itemContent: ItemContent,
-         vault: Vault?,
+         vault: Share?,
          onCopy: ((_ text: String, _ bannerMessage: String) -> Void)?) {
         _isExpanded = isExpanded
         item = itemContent

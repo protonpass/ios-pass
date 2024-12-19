@@ -19,24 +19,24 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 public struct VaultListUiModel: Hashable, Sendable, Identifiable {
-    public let vault: Vault
+    public let vault: Share
     public let itemCount: Int
 
-    public var id: Int { hashValue }
+    public var id: String { vault.id }
 
-    public init(vault: Vault, itemCount: Int) {
+    public init(vault: Share, itemCount: Int) {
         self.vault = vault
         self.itemCount = itemCount
     }
 
-    public init(vaultContent: VaultContentUiModel) {
-        vault = vaultContent.vault
+    public init(vaultContent: ShareContent) {
+        vault = vaultContent.share
         itemCount = vaultContent.items.count
     }
 }
 
 extension VaultListUiModel: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        lhs.vault.shareId == rhs.vault.shareId
+        lhs.vault.id == rhs.vault.id
     }
 }

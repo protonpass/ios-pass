@@ -24,11 +24,11 @@ import Entities
 import Foundation
 
 public protocol UpdateSpotlightVaultsUseCase: Sendable {
-    func execute(for vaults: [Vault]) async throws
+    func execute(for vaults: [Share]) async throws
 }
 
 public extension UpdateSpotlightVaultsUseCase {
-    func callAsFunction(for vaults: [Vault]) async throws {
+    func callAsFunction(for vaults: [Share]) async throws {
         try await execute(for: vaults)
     }
 }
@@ -43,9 +43,9 @@ public final class UpdateSpotlightVaults: UpdateSpotlightVaultsUseCase {
         self.datasource = datasource
     }
 
-    public func execute(for vaults: [Vault]) async throws {
+    public func execute(for vaults: [Share]) async throws {
         let userId = try await userManager.getActiveUserId()
         try await datasource.removeAll(for: userId)
-        try await datasource.setIds(for: userId, ids: vaults.map(\.shareId))
+        try await datasource.setIds(for: userId, ids: vaults.map(\.id))
     }
 }

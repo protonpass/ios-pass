@@ -33,14 +33,14 @@ public extension LeaveShareUseCase {
 }
 
 public final class LeaveShare: @unchecked Sendable, LeaveShareUseCase {
-    private let vaultManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
-    public init(vaultManager: any VaultsManagerProtocol) {
-        self.vaultManager = vaultManager
+    public init(appContentManager: any AppContentManagerProtocol) {
+        self.appContentManager = appContentManager
     }
 
     public func execute(userId: String, with shareId: String) async throws {
-        try await vaultManager.delete(userId: userId, shareId: shareId)
-        vaultManager.refresh(userId: userId)
+        try await appContentManager.delete(userId: userId, shareId: shareId)
+        try await appContentManager.refresh(userId: userId)
     }
 }

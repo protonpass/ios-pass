@@ -23,12 +23,18 @@ import Entities
 import ProtonCoreLogin
 
 public protocol PromoteNewUserInviteUseCase: Sendable {
-    func execute(vault: Vault, inviteId: String, email: String) async throws
+    func execute(share: Share,
+                 inviteId: String,
+                 email: String,
+                 itemId: String?) async throws
 }
 
 public extension PromoteNewUserInviteUseCase {
-    func callAsFunction(vault: Vault, inviteId: String, email: String) async throws {
-        try await execute(vault: vault, inviteId: inviteId, email: email)
+    func callAsFunction(share: Share,
+                        inviteId: String,
+                        email: String,
+                        itemId: String? = nil) async throws {
+        try await execute(share: share, inviteId: inviteId, email: email, itemId: itemId)
     }
 }
 
@@ -48,18 +54,32 @@ public final class PromoteNewUserInvite: PromoteNewUserInviteUseCase {
         self.userManager = userManager
     }
 
-    public func execute(vault: Vault, inviteId: String, email: String) async throws {
+    public func execute(share: Share,
+                        inviteId: String,
+                        email: String,
+                        itemId: String?) async throws {
         let userData = try await userManager.getUnwrappedActiveUserData()
         let publicKeys = try await publicKeyRepository.getPublicKeys(email: email)
         guard let activeKey = publicKeys.first else {
             throw PassError.sharing(.noPublicKeyAssociatedWithEmail(email))
         }
-        let vaultKey = try await passKeyManager.getLatestShareKey(userId: userData.user.ID, shareId: vault.shareId)
-        let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: vault.addressId,
+
+        let key: any ShareKeyProtocol = if share.isVaultRepresentation {
+            try await passKeyManager.getLatestShareKey(userId: userData.user.ID,
+                                                       shareId: share.id)
+        } else if let itemId {
+            try await passKeyManager.getLatestItemKey(userId: userData.user.ID,
+                                                      shareId: share.id,
+                                                      itemId: itemId)
+        } else {
+            throw PassError.sharing(.failedEncryptionKeysFetching)
+        }
+
+        let signedKey = try CryptoUtils.encryptKeyForSharing(addressId: share.addressId,
                                                              publicReceiverKey: activeKey,
                                                              userData: userData,
-                                                             vaultKey: vaultKey)
-        let promoted = try await shareInviteRepository.promoteNewUserInvite(shareId: vault.shareId,
+                                                             key: key)
+        let promoted = try await shareInviteRepository.promoteNewUserInvite(shareId: share.id,
                                                                             inviteId: inviteId,
                                                                             keys: [signedKey])
         if !promoted {

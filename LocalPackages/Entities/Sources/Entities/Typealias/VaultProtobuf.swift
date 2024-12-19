@@ -20,11 +20,11 @@
 
 import Foundation
 
-public typealias VaultProtobuf = ProtonPassVaultV1_Vault
+public typealias VaultContent = ProtonPassVaultV1_Vault
 
-public extension VaultProtobuf {
+public extension VaultContent {
     init(data: Data) throws {
-        self = try VaultProtobuf(serializedBytes: data)
+        self = try VaultContent(serializedBytes: data)
     }
 
     init(name: String,

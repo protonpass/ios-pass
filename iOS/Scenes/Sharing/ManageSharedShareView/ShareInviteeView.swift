@@ -29,6 +29,7 @@ struct ShareInviteeView: View {
     let invitee: any ShareInvitee
     let isAdmin: Bool
     let isCurrentUser: Bool
+    let canSeeAccessLevel: Bool
     let canTransferOwnership: Bool
     let onSelect: (ShareInviteeOption) -> Void
 
@@ -70,8 +71,10 @@ private extension ShareInviteeView {
                             .padding(.horizontal, 8)
                             .background(Capsule().fill(PassColor.interactionNorm.toColor))
                     }
-                    Text(invitee.subtitle)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                    if canSeeAccessLevel {
+                        Text(invitee.subtitle)
+                            .foregroundStyle(PassColor.textWeak.toColor)
+                    }
                 }
             }
 

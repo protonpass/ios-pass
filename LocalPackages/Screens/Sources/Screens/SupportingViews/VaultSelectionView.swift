@@ -38,20 +38,22 @@ public struct VaultSelectionView: View {
             ScrollView {
                 LazyVStack(spacing: 0) {
                     ForEach(vaults, id: \.vault.id) { vault in
-                        let isSelected = vault == selectedVault
-                        Button(action: {
-                            selectedVault = vault
-                            dismiss()
-                        }, label: {
-                            VaultRow(thumbnail: { VaultThumbnail(vault: vault.vault) },
-                                     title: vault.vault.name,
-                                     itemCount: vault.itemCount,
-                                     isShared: vault.vault.shared,
-                                     isSelected: isSelected,
-                                     height: 74)
-                                .padding(.horizontal)
-                        })
-                        .buttonStyle(.plain)
+                        if let vaultContent = vault.vault.vaultContent {
+                            let isSelected = vault == selectedVault
+                            Button(action: {
+                                selectedVault = vault
+                                dismiss()
+                            }, label: {
+                                VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
+                                         title: vaultContent.name,
+                                         itemCount: vault.itemCount,
+                                         share: vault.vault,
+                                         isSelected: isSelected,
+                                         height: 74)
+                                    .padding(.horizontal)
+                            })
+                            .buttonStyle(.plain)
+                        }
                     }
                 }
             }

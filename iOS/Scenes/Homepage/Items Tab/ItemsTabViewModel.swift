@@ -55,13 +55,15 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var aliasSyncEnabled = false
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
 
+    let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
+
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let credentialManager = resolve(\SharedServiceContainer.credentialManager)
     private let logger = resolve(\SharedToolingContainer.logger)
     private let loginMethod = resolve(\SharedDataContainer.loginMethod)
     private let getPendingUserInvitations = resolve(\UseCasesContainer.getPendingUserInvitations)
-    let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     private let doTrashSelectedItems = resolve(\UseCasesContainer.trashSelectedItems)
     private let doRestoreSelectedItems = resolve(\UseCasesContainer.restoreSelectedItems)
     private let doPermanentlyDeleteSelectedItems = resolve(\UseCasesContainer.permanentlyDeleteSelectedItems)
@@ -74,8 +76,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     private let pinItems = resolve(\SharedUseCasesContainer.pinItems)
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
-
-    let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
@@ -119,7 +119,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             }
             do {
                 let userId = try await userManager.getActiveUserId()
-                vaultsManager.refresh(userId: userId)
+                try await appContentManager.refresh(userId: userId)
             } catch {
                 handle(error: error)
             }
@@ -129,9 +129,9 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     func continueFullSyncIfNeeded() {
         Task { [weak self] in
             guard let self else { return }
-            if let userId = vaultsManager.incompleteFullSyncUserId {
+            if let userId = appContentManager.incompleteFullSyncUserId {
                 router.present(for: .fullSync)
-                await vaultsManager.fullSync(userId: userId)
+                await appContentManager.fullSync(userId: userId)
             }
         }
     }
@@ -142,7 +142,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 private extension ItemsTabViewModel {
     // swiftlint:disable:next cyclomatic_complexity function_body_length
     func setUp() {
-        vaultsManager.$state
+        appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self else { return }
@@ -157,7 +157,7 @@ private extension ItemsTabViewModel {
             }
             .store(in: &cancellables)
 
-        vaultsManager.$vaultSelection
+        appContentManager.$vaultSelection
             .receive(on: DispatchQueue.main)
             .dropFirst()
             .sink { [weak self] _ in
@@ -166,7 +166,8 @@ private extension ItemsTabViewModel {
             }
             .store(in: &cancellables)
 
-        vaultsManager.vaultSyncEventStream
+        appContentManager.vaultSyncEventStream
+            .subscribe(on: DispatchQueue.main)
             .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self else { return }
@@ -215,7 +216,7 @@ private extension ItemsTabViewModel {
             try? await Task.sleep(seconds: 5)
 
             if await loginMethod.isManualLogIn(),
-               case .loading = vaultsManager.state {
+               case .loading = appContentManager.state {
                 shouldShowSyncProgress = true
             }
         }
@@ -264,7 +265,7 @@ private extension ItemsTabViewModel {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] type in
                 guard let self else { return }
-                vaultsManager.select(.all, filterOption: .precise(type))
+                appContentManager.select(.all, filterOption: .precise(type))
                 router.display(element: .infosMessage(type.filterMessage))
             }
             .store(in: &cancellables)
@@ -379,9 +380,6 @@ private extension ItemsTabViewModel {
 
 extension ItemsTabViewModel {
     func filterAndSortItems(sortType: SortType? = nil) {
-        if sortType == nil {
-            sectionedItems = .fetching
-        }
         let sortType = sortType ?? selectedSortType
         sortTask?.cancel()
         sortTask = Task { [weak self] in
@@ -402,7 +400,7 @@ extension ItemsTabViewModel {
     }
 
     func isEditable(_ item: any ItemIdentifiable) -> Bool {
-        canEditItem(vaults: vaultsManager.getAllVaults(), item: item)
+        canEditItem(vaults: appContentManager.getAllShares(), item: item)
     }
 
     // False negative on unhandled_throwing_task rule. Double check later with newer version of SwiftLint
@@ -557,7 +555,7 @@ extension ItemsTabViewModel {
     }
 
     func presentVaultList() {
-        switch vaultsManager.state {
+        switch appContentManager.state {
         case .loaded:
             delegate?.itemsTabViewModelWantsToPresentVaultList()
         default:
@@ -623,7 +621,8 @@ private extension ItemsTabViewModel {
 
     nonisolated func filterAndSortItemsAsync(sortType: SortType) async {
         do {
-            let filteredItems = vaultsManager.getFilteredItems()
+            let filteredItems = await appContentManager.getFilteredItems()
+
             let sectionedItems: [SectionedItemUiModel]
             switch await selectedSortType {
             case .mostRecent:

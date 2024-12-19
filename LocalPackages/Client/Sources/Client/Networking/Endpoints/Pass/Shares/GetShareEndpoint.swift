@@ -1,6 +1,6 @@
 //
-// Vault+Random.swift
-// Proton Pass - Created on 10/09/2024.
+// GetShareEndpoint.swift
+// Proton Pass - Created on 20/11/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,26 +17,23 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Entities
+import ProtonCoreNetworking
 
-extension Vault {
-    static func random() -> Vault {
-        .init(id: .random(),
-              shareId: .random(),
-              addressId: .random(),
-              name: .random(),
-              description: .empty,
-              displayPreferences: .init(),
-              isOwner: .random(),
-              shareRole: .read,
-              members: 0,
-              maxMembers: 0,
-              pendingInvites: 0,
-              newUserInvitesReady: 0,
-              shared: .random(),
-              createTime: 0,
-              canAutoFill: .random())
+struct GetShareResponse: Decodable, Sendable {
+    let share: Share
+}
+
+struct GetShareEndpoint: Endpoint {
+    typealias Body = EmptyRequest
+    typealias Response = GetShareResponse
+
+    let debugDescription: String
+    let path: String
+
+    init(for shareId: String) {
+        debugDescription = "Get share for id \(shareId)"
+        path = "/pass/v1/share/\(shareId)"
     }
 }

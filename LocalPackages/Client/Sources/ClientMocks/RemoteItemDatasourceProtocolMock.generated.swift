@@ -33,11 +33,11 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
     public var closureGetItems: () -> () = {}
     public var invokedGetItemsfunction = false
     public var invokedGetItemsCount = 0
-    public var invokedGetItemsParameters: (userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)?
-    public var invokedGetItemsParametersList = [(userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?)]()
+    public var invokedGetItemsParameters: (userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)?
+    public var invokedGetItemsParametersList = [(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?)]()
     public var stubbedGetItemsResult: [Item]!
 
-    public func getItems(userId: String, shareId: String, eventStream: CurrentValueSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
+    public func getItems(userId: String, shareId: String, eventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?) async throws -> [Item] {
         invokedGetItemsfunction = true
         invokedGetItemsCount += 1
         invokedGetItemsParameters = (userId, shareId, eventStream)

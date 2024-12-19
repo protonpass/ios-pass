@@ -1,6 +1,6 @@
 //
 //
-// FullVaultsSync.swift
+// FullContentSync.swift
 // Proton Pass - Created on 08/07/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
@@ -22,29 +22,29 @@
 
 import Client
 
-public protocol FullVaultsSyncUseCase: Sendable {
+public protocol FullContentSyncUseCase: Sendable {
     func execute(userId: String) async
 }
 
-public extension FullVaultsSyncUseCase {
+public extension FullContentSyncUseCase {
     func callAsFunction(userId: String) async {
         await execute(userId: userId)
     }
 }
 
-public final class FullVaultsSync: FullVaultsSyncUseCase {
+public final class FullContentSync: FullContentSyncUseCase {
     private let syncEventLoop: any SyncEventLoopProtocol
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
     public init(syncEventLoop: any SyncEventLoopProtocol,
-                vaultsManager: any VaultsManagerProtocol) {
+                appContentManager: any AppContentManagerProtocol) {
         self.syncEventLoop = syncEventLoop
-        self.vaultsManager = vaultsManager
+        self.appContentManager = appContentManager
     }
 
     public func execute(userId: String) async {
         syncEventLoop.stop()
-        await vaultsManager.fullSync(userId: userId)
+        await appContentManager.fullSync(userId: userId)
         syncEventLoop.start()
     }
 }
