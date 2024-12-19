@@ -30,10 +30,11 @@ import ProtonCoreNetworking
 
 @MainActor
 final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
-    private(set) var share: Share
     @Published private(set) var itemsNumber = 0
     @Published private(set) var invitations = ShareInvites.default
-    @Published private(set) var members: [UserShareInfos] = []
+    @Published private(set) var vaultMembers: [any ShareInvitee] = []
+    @Published private(set) var itemMembers: [any ShareInvitee] = []
+
     @Published private(set) var fetching = false
     @Published private(set) var loading = false
     @Published private(set) var isFreeUser = true
@@ -59,18 +60,14 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
-    private let leaveShare = resolve(\UseCasesContainer.leaveShare)
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     var reachedLimit: Bool {
         numberOfInvitesLeft <= 0
     }
 
-    var isViewOnly: Bool {
-        !share.isAdmin
-    }
-
     var numberOfInvitesLeft: Int {
-        max(share.maxMembers - (members.count + invitations.totalNumberOfInvites), 0)
+        max(share.maxMembers - (vaultMembers.count + invitations.totalNumberOfInvites), 0)
     }
 
     var showInvitesLeft: Bool {
@@ -92,8 +89,30 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
         return reachedLimit
     }
 
-    init(share: Share) {
-        self.share = share
+    var itemSharingEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
+    }
+
+    private let displayType: ManageSharedDisplay
+
+    var share: Share {
+        switch displayType {
+        case let .item(share, _), let .vault(share):
+            share
+        }
+    }
+
+    private var item: ItemContent? {
+        switch displayType {
+        case let .item(_, item):
+            item
+        default:
+            nil
+        }
+    }
+
+    init(display: ManageSharedDisplay) {
+        displayType = display
         setUp()
     }
 
@@ -101,8 +120,17 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
         userManager.currentActiveUser.value?.user.email == invitee.email
     }
 
-    func shareWithMorePeople() {
-        setShareInviteVault(with: .vault(share))
+    func shareWithMorePeople(iSharingVault: Bool) {
+        let typeOfSharing: SharingElementData
+        if iSharingVault {
+            typeOfSharing = .vault(share)
+        } else if let item {
+            typeOfSharing = .item(item: item, share: share)
+        } else {
+            return
+        }
+
+        setShareInviteVault(with: typeOfSharing)
         router.present(for: .sharingFlow(.none))
     }
 
@@ -195,23 +223,6 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
-
-    func leaveVault() {
-        Task { [weak self] in
-            guard let self else {
-                return
-            }
-            do {
-                let userId = try await userManager.getActiveUserId()
-                try await leaveShare(userId: userId, with: share.shareId)
-                syncEventLoop.forceSync()
-                router.action(.screenDismissal(.all))
-            } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
-            }
-        }
-    }
 }
 
 private extension ManageSharedShareViewModel {
@@ -240,11 +251,36 @@ private extension ManageSharedShareViewModel {
         if Task.isCancelled {
             return
         }
-        let shareId = share.shareId
-        if share.isAdmin {
-            invitations = try await getPendingInvitationsForShare(with: shareId)
+
+        async let getPendingInvitations = fetchPendingInvitations()
+        async let getMembers = if case .vault = displayType {
+            getUsersLinkedToShare(with: share).shares
+        } else {
+            fetchUsersLinkedToShare()
         }
-        members = try await getUsersLinkedToShare(with: shareId)
+
+        let (allInvitations, allMembers) = try await (getPendingInvitations, getMembers)
+
+        itemMembers.removeAll()
+        vaultMembers.removeAll()
+        for invitation in allInvitations.invitees {
+            if invitation.shareType == .vault {
+                vaultMembers.append(invitation)
+            } else if invitation.shareType == .item {
+                itemMembers.append(invitation)
+            }
+        }
+
+        for member in allMembers {
+            if member.shareType == .vault {
+                vaultMembers.append(member)
+            } else if member.shareType == .item {
+                itemMembers.append(member)
+            }
+        }
+
+        itemMembers = itemMembers.sorted { $0.email > $1.email }
+        vaultMembers = vaultMembers.sorted { $0.email > $1.email }
     }
 }
 
@@ -263,5 +299,19 @@ private extension ManageSharedShareViewModel {
 
     func display(error: any Error) {
         router.display(element: .displayErrorBanner(error))
+    }
+
+    func fetchUsersLinkedToShare() async throws -> [UserShareInfos] {
+        guard let item, item.shared else {
+            return []
+        }
+        return try await getUsersLinkedToShare(with: share, itemId: item.itemId).shares
+    }
+
+    func fetchPendingInvitations() async throws -> ShareInvites {
+        guard share.isAdmin else {
+            return .default
+        }
+        return try await getPendingInvitationsForShare(with: share.shareId)
     }
 }

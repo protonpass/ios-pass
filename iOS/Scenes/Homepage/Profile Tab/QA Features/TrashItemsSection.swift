@@ -22,6 +22,7 @@ import Client
 import DesignSystem
 import Entities
 import Factory
+import Screens
 import SwiftUI
 
 struct TrashItemsSection: View {
@@ -81,7 +82,6 @@ private struct TrashItemsView: View {
                                      },
                                      title: vault.vaultName ?? "Share link to item",
                                      itemCount: uiModel.itemCount,
-                                     isShared: uiModel.vault.shared,
                                      isSelected: false,
                                      height: 44)
                         })

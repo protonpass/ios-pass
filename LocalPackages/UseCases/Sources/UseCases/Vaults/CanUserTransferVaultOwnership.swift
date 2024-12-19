@@ -34,13 +34,13 @@ public extension CanUserTransferVaultOwnershipUseCase {
 }
 
 public final class CanUserTransferVaultOwnership: CanUserTransferVaultOwnershipUseCase {
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
-    public init(vaultsManager: any VaultsManagerProtocol) {
-        self.vaultsManager = vaultsManager
+    public init(appContentManager: any AppContentManagerProtocol) {
+        self.appContentManager = appContentManager
     }
 
     public func execute(for vault: Share, to invitee: any ShareInvitee) -> Bool {
-        vault.isOwner && !invitee.isPending && invitee.isAdmin && !vaultsManager.hasOnlyOneOwnedVault
+        vault.isOwner && !invitee.isPending && invitee.isAdmin && !appContentManager.hasOnlyOneOwnedVault
     }
 }

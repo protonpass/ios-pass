@@ -36,6 +36,5 @@ struct VaultLabel: View {
                 .frame(width: 12, height: 12)
         })
         .foregroundStyle(PassColor.textWeak.toColor)
-        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

@@ -57,7 +57,7 @@ extension HomepageCoordinator {
 
     func presentEditSpotlightVaultsView() {
         let viewController = UIHostingController(rootView: EditSpotlightVaultsView())
-        let allVaults = vaultsManager.getAllVaults()
+        let allVaults = appContentManager.getAllSharesLinkToVault()
         let customHeight = Int(OptionRowHeight.short.value) * allVaults.count + 60
         viewController.setDetentType(.custom(CGFloat(customHeight)),
                                      parentViewController: rootViewController)

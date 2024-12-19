@@ -34,16 +34,16 @@ public extension GetVaultItemCountUseCase {
 }
 
 public final class GetVaultItemCount: @unchecked Sendable, GetVaultItemCountUseCase {
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
 
-    public init(vaultsManager: any VaultsManagerProtocol) {
-        self.vaultsManager = vaultsManager
+    public init(appContentManager: any AppContentManagerProtocol) {
+        self.appContentManager = appContentManager
     }
 
     public func execute(for vault: Share, and type: ItemContentType?) -> Int {
         if let type {
-            return vaultsManager.getItems(for: vault).filter { $0.type == type }.count
+            return appContentManager.getItems(for: vault).filter { $0.type == type }.count
         }
-        return vaultsManager.getItems(for: vault).count
+        return appContentManager.getItems(for: vault).count
     }
 }

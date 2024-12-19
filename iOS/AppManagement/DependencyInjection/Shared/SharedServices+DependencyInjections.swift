@@ -89,13 +89,13 @@ extension SharedServiceContainer {
         self { ItemContextMenuHandler() }
     }
 
-    var vaultsManager: Factory<VaultsManager> {
-        self { VaultsManager() }
+    var appContentManager: Factory<AppContentManager> {
+        self { AppContentManager() }
     }
 
     var upgradeChecker: Factory<any UpgradeCheckerProtocol> {
         self { UpgradeChecker(accessRepository: SharedRepositoryContainer.shared.accessRepository(),
-                              counter: self.vaultsManager(),
+                              counter: self.appContentManager(),
                               totpChecker: SharedRepositoryContainer.shared.itemRepository()) }
     }
 

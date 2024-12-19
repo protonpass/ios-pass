@@ -30,10 +30,10 @@ struct VaultSelectorView: View {
     let isFreeUser: Bool
     let onUpgrade: () -> Void
 
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
 
-    private var vaults: [VaultContentUiModel] {
-        vaultsManager
+    private var vaults: [ShareContent] {
+        appContentManager
             .getAllEditableVaultContents()
     }
 
@@ -48,7 +48,7 @@ struct VaultSelectorView: View {
                 ScrollView {
                     VStack(spacing: 0) {
                         ForEach(vaults) { vault in
-                            if let vaultContent = vault.vault.vaultContent {
+                            if let vaultContent = vault.share.vaultContent {
                                 view(for: vault, vaultContent: vaultContent)
                             }
                             if vault != vaults.last {
@@ -70,16 +70,15 @@ struct VaultSelectorView: View {
         }
     }
 
-    private func view(for vaultInfos: VaultContentUiModel, vaultContent: VaultContent) -> some View {
+    private func view(for vaultInfos: ShareContent, vaultContent: VaultContent) -> some View {
         Button(action: {
-            selectedVault = vaultInfos.vault
+            selectedVault = vaultInfos.share
             dismiss()
         }, label: {
             VaultRow(thumbnail: { VaultThumbnail(vaultContent: vaultContent) },
                      title: vaultContent.name,
                      itemCount: vaultInfos.itemCount,
-                     isShared: vaultInfos.vault.shared,
-                     isSelected: selectedVault == vaultInfos.vault,
+                     isSelected: selectedVault == vaultInfos.share,
                      height: 74)
                 .padding(.horizontal)
         })

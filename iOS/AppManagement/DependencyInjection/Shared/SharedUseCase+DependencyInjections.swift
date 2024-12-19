@@ -73,8 +73,8 @@ private extension SharedUseCasesContainer {
         SharedRepositoryContainer.shared.accessRepository()
     }
 
-    var vaultsManager: any VaultsManagerProtocol {
-        SharedServiceContainer.shared.vaultsManager()
+    var appContentManager: any AppContentManagerProtocol {
+        SharedServiceContainer.shared.appContentManager()
     }
 
     var apiManager: any APIManagerProtocol {
@@ -215,16 +215,12 @@ extension SharedUseCasesContainer {
     }
 
     var getMainVault: Factory<any GetMainVaultUseCase> {
-        self { GetMainVault(vaultsManager: self.vaultsManager) }
+        self { GetMainVault(appContentManager: self.appContentManager) }
     }
 
-    var fullVaultsSync: Factory<any FullVaultsSyncUseCase> {
-        self { FullVaultsSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
-                              vaultsManager: self.vaultsManager) }
-    }
-
-    var loadVaultDatas: Factory<any LoadVaultDatasUseCase> {
-        self { LoadVaultDatas() }
+    var fullContentSync: Factory<any FullContentSyncUseCase> {
+        self { FullContentSync(syncEventLoop: SharedServiceContainer.shared.syncEventLoop(),
+                               appContentManager: self.appContentManager) }
     }
 }
 
@@ -300,7 +296,7 @@ extension SharedUseCasesContainer {
                        featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                        passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
                        accessRepository: SharedRepositoryContainer.shared.accessRepository(),
-                       vaultsManager: self.vaultsManager,
+                       appContentManager: self.appContentManager,
                        apiManager: self.apiManager,
                        authManager: self.authManager,
                        credentialManager: SharedServiceContainer.shared.credentialManager(),
@@ -402,7 +398,7 @@ extension SharedUseCasesContainer {
 
     var switchUser: Factory<any SwitchUserUseCase> {
         self { SwitchUser(userManager: self.userManager,
-                          vaultsManager: self.vaultsManager,
+                          appContentManager: self.appContentManager,
                           preferencesManager: self.preferencesManager,
                           apiManager: self.apiManager,
                           syncEventLoop: self.syncEventLoop,
@@ -416,7 +412,7 @@ extension SharedUseCasesContainer {
                                             authManager: self.authManager,
                                             preferencesManager: self.preferencesManager,
                                             apiManager: self.apiManager,
-                                            fullVaultsSync: self.fullVaultsSync(),
+                                            fullContentSync: self.fullContentSync(),
                                             refreshFeatureFlags: self.refreshFeatureFlags(),
                                             inviteRepository: self.inviteRepository) }
     }
@@ -428,7 +424,7 @@ extension SharedUseCasesContainer {
                                  removeUserLocalData: self.removeUserLocalData(),
                                  featureFlagsRepository: SharedRepositoryContainer.shared.featureFlagsRepository(),
                                  passMonitorRepository: SharedRepositoryContainer.shared.passMonitorRepository(),
-                                 vaultsManager: self.vaultsManager,
+                                 appContentManager: self.appContentManager,
                                  apiManager: self.apiManager,
                                  authManager: self.authManager,
                                  credentialManager: SharedServiceContainer.shared.credentialManager(),

@@ -36,7 +36,7 @@ final class CreateEditItemCoordinator: DeinitPrintable {
     deinit { print(deinitMessage) }
 
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    private let vaultsManager = resolve(\SharedServiceContainer.vaultsManager)
+    private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
 
     private weak var createEditItemDelegates: (any CreateEditItemDelegates)?
@@ -91,7 +91,7 @@ extension CreateEditItemCoordinator {
 
     @MainActor
     func presentCreateItemView(for itemType: ItemType) async throws {
-        let shareId = vaultsManager.vaultSelection.preciseVault?.shareId
+        let shareId = appContentManager.vaultSelection.preciseVault?.shareId
         switch itemType {
         case .login:
             let logInType = ItemCreationType.login(autofill: false)
@@ -125,7 +125,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditLoginView(mode: ItemMode) throws {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
-                                                     vaults: vaultsManager.getAllVaults())
+                                                     vaults: appContentManager.getAllShares())
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditLoginView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -135,7 +135,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditAliasView(mode: ItemMode) throws {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
-                                                     vaults: vaultsManager.getAllVaults())
+                                                     vaults: appContentManager.getAllShares())
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditAliasView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -145,7 +145,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditCreditCardView(mode: ItemMode) throws {
         let viewModel = try CreateEditCreditCardViewModel(mode: mode,
                                                           upgradeChecker: upgradeChecker,
-                                                          vaults: vaultsManager.getAllVaults())
+                                                          vaults: appContentManager.getAllShares())
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditCreditCardView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -155,7 +155,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditNoteView(mode: ItemMode) throws {
         let viewModel = try CreateEditNoteViewModel(mode: mode,
                                                     upgradeChecker: upgradeChecker,
-                                                    vaults: vaultsManager.getAllVaults())
+                                                    vaults: appContentManager.getAllShares())
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -165,7 +165,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditIdentityView(mode: ItemMode) throws {
         let viewModel = try CreateEditIdentityViewModel(mode: mode,
                                                         upgradeChecker: upgradeChecker,
-                                                        vaults: vaultsManager.getAllVaults())
+                                                        vaults: appContentManager.getAllShares())
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditIdentityView(viewModel: viewModel)
         present(view, dismissable: false)

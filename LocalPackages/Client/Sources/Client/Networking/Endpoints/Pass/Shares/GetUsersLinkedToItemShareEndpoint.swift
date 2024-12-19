@@ -1,7 +1,7 @@
 //
-// GetShareLinkedUsersEndpoint.swift
-// Proton Pass - Created on 11/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// GetUsersLinkedToItemShareEndpoint.swift
+// Proton Pass - Created on 04/12/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -21,19 +21,24 @@
 import Entities
 import ProtonCoreNetworking
 
-struct GetShareLinkedUsersResponse: Decodable, Sendable {
-    let shares: [UserShareInfos]
-}
-
-struct GetShareLinkedUsersEndpoint: Endpoint {
+struct GetUsersLinkedToItemShareEndpoint: @unchecked Sendable, Endpoint {
     typealias Body = EmptyRequest
-    typealias Response = GetShareLinkedUsersResponse
+    typealias Response = PaginatedUsersLinkedToShare
 
     var debugDescription: String
     var path: String
+    var queries: [String: Any]?
 
-    init(for shareId: String) {
-        debugDescription = "Get users that have access to the whole vault, or item"
-        path = "/pass/v1/share/\(shareId)/user"
+    init(for shareId: String, itemId: String, lastToken: String? = nil, pageSize: Int? = nil) {
+        debugDescription = "Get users that have access to the item"
+        path = "/pass/v1/share/\(shareId)/user/item/\(itemId)"
+        var queries: [String: Any] = [:]
+        if let pageSize {
+            queries["PageSize"] = pageSize
+        }
+        if let lastToken {
+            queries["Since"] = lastToken
+        }
+        self.queries = queries
     }
 }

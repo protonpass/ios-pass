@@ -29,8 +29,8 @@ public struct VaultListUiModel: Hashable, Sendable, Identifiable {
         self.itemCount = itemCount
     }
 
-    public init(vaultContent: VaultContentUiModel) {
-        vault = vaultContent.vault
+    public init(vaultContent: ShareContent) {
+        vault = vaultContent.share
         itemCount = vaultContent.items.count
     }
 }

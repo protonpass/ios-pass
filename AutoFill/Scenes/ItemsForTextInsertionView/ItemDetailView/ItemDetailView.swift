@@ -40,8 +40,7 @@ struct ItemDetailView: View {
                         .padding(.bottom, DesignConstant.sectionPadding)
                 } else {
                     ItemDetailTitleView(itemContent: item.content,
-                                        vault: item.vault,
-                                        shouldShowVault: true)
+                                        vault: item.vault)
                         .padding(.bottom, 40)
                 }
             }

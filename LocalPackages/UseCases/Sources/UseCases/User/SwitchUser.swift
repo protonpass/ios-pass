@@ -34,7 +34,7 @@ public extension SwitchUserUseCase {
 
 public final class SwitchUser: SwitchUserUseCase {
     private let userManager: any UserManagerProtocol
-    private let vaultsManager: any VaultsManagerProtocol
+    private let appContentManager: any AppContentManagerProtocol
     private let preferencesManager: any PreferencesManagerProtocol
     private let apiManager: any APIManagerProtocol
     private let syncEventLoop: any SyncEventLoopProtocol
@@ -42,14 +42,14 @@ public final class SwitchUser: SwitchUserUseCase {
     private let inviteRepository: any InviteRepositoryProtocol
 
     public init(userManager: any UserManagerProtocol,
-                vaultsManager: any VaultsManagerProtocol,
+                appContentManager: any AppContentManagerProtocol,
                 preferencesManager: any PreferencesManagerProtocol,
                 apiManager: any APIManagerProtocol,
                 syncEventLoop: any SyncEventLoopProtocol,
                 refreshFeatureFlags: any RefreshFeatureFlagsUseCase,
                 inviteRepository: any InviteRepositoryProtocol) {
         self.userManager = userManager
-        self.vaultsManager = vaultsManager
+        self.appContentManager = appContentManager
         self.preferencesManager = preferencesManager
         self.apiManager = apiManager
         self.syncEventLoop = syncEventLoop
@@ -61,7 +61,7 @@ public final class SwitchUser: SwitchUserUseCase {
         syncEventLoop.stop()
         try await preferencesManager.switchUserPreferences(userId: userId)
         try await userManager.switchActiveUser(with: userId, onMemory: false)
-        try await vaultsManager.localFullSync(userId: userId)
+        try await appContentManager.localFullSync(userId: userId)
         await inviteRepository.refreshInvites()
         refreshFeatureFlags()
         syncEventLoop.start()

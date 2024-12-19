@@ -28,6 +28,14 @@ extension ShareInvites {
 }
 
 extension UserShareInfos: @retroactive ShareInvitee {
+    public var shareType: TargetType {
+        TargetType(rawValue: targetType) ?? .unknown
+    }
+
+    public var shareRole: ShareRole {
+        ShareRole(rawValue: shareRoleID) ?? .read
+    }
+
     public var email: String {
         userEmail
     }

@@ -49,8 +49,7 @@ private extension IdentityDetailView {
             ScrollView {
                 VStack(spacing: 0) {
                     ItemDetailTitleView(itemContent: viewModel.itemContent,
-                                        vault: viewModel.vault?.vault,
-                                        shouldShowVault: viewModel.shouldShowVault)
+                                        vault: viewModel.vault?.vault)
                         .padding(.bottom, 25)
 
                     ForEach(viewModel.sections) { section in
