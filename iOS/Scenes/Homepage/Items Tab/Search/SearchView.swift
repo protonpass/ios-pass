@@ -101,7 +101,7 @@ private extension SearchView {
             case let .noResults(query):
                 if case let .all(vaultSelection) = viewModel.searchMode {
                     switch vaultSelection {
-                    case .all:
+                    case .all, .sharedByMe, .sharedWithMe:
                         NoSearchResultsInAllVaultView(query: query)
                     case let .precise(vault):
                         if let name = vault.vaultContent?.name {

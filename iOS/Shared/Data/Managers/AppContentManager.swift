@@ -233,12 +233,9 @@ extension AppContentManager {
             guard let self else { return }
             do {
                 switch selection {
-                case .all, .trash:
-                    try await preferencesManager
-                        .updateUserPreferences(\.lastSelectedShareId,
-                                               value: nil)
-                case let .precise(vault):
-                    try await preferencesManager.updateUserPreferences(\.lastSelectedShareId, value: vault.shareId)
+                default:
+                    try await preferencesManager.updateUserPreferences(\.lastSelectedShareId,
+                                                                       value: selection.preferenceKey)
                 }
             } catch {
                 logger.error(error)
@@ -342,6 +339,10 @@ extension AppContentManager {
             sharesData.shares
                 .filter { $0.share.shareId == selectedVault.shareId }
                 .flatMap(\.items)
+        case .sharedByMe:
+            sharesData.itemsSharedByMe
+        case .sharedWithMe:
+            sharesData.itemsSharedWithMe
         case .trash:
             sharesData.trashedItems
         }
@@ -375,6 +376,8 @@ extension AppContentManager {
             }
         case .trash:
             false
+        default:
+            true
         }
     }
 
@@ -469,6 +472,14 @@ private extension AppContentManager {
                 .flatMap(\.items).count
             sharedWithMe = filteredShare
                 .filter { !$0.share.isVaultRepresentation && !$0.share.owner }.flatMap(\.items).count
+        case .sharedByMe:
+            items = sharesData.itemsSharedByMe
+            sharedByMe = sharesData.itemsSharedByMe.count
+            sharedWithMe = 0
+        case .sharedWithMe:
+            items = sharesData.itemsSharedWithMe
+            sharedByMe = 0
+            sharedWithMe = sharesData.itemsSharedWithMe.count
         case .trash:
             items = sharesData.trashedItems
         }
@@ -498,9 +509,18 @@ private extension AppContentManager {
 
         currentVaults.send(shares)
         state = .loaded(sharesData)
-        if let lastSelectedShareId = userPreferences.lastSelectedShareId,
-           let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
-            vaultSelection = .precise(vault)
+
+        if let lastSelectedShareId = userPreferences.lastSelectedShareId {
+            if lastSelectedShareId == VaultSelection.sharedByMe.preferenceKey, vaultSelection != .sharedByMe {
+                vaultSelection = .sharedByMe
+            } else if lastSelectedShareId == VaultSelection.sharedWithMe.preferenceKey,
+                      vaultSelection != .sharedWithMe {
+                vaultSelection = .sharedWithMe
+            } else if lastSelectedShareId == VaultSelection.trash.preferenceKey, vaultSelection != .trash {
+                vaultSelection = .trash
+            } else if let vault = shares.first(where: { $0.shareId == lastSelectedShareId }) {
+                vaultSelection = .precise(vault)
+            }
         } else {
             vaultSelection = .all
         }

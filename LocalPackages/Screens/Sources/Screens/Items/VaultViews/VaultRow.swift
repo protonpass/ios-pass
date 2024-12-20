@@ -57,7 +57,18 @@ public struct VaultRow<Thumbnail: View>: View {
 
     public var body: some View {
         HStack(spacing: 16) {
-            thumbnail()
+            ZStack(alignment: .bottomTrailing) {
+                thumbnail()
+                if isSelected {
+                    Image(uiImage: IconProvider.checkmarkCircleFilled)
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                        .frame(maxHeight: 20)
+                        .clipShape(Circle())
+                        .offset(x: 5, y: 5)
+                }
+            }
 
             VStack(alignment: .leading) {
                 Text(title)
@@ -110,14 +121,6 @@ public struct VaultRow<Thumbnail: View>: View {
                     shareAction?(share)
                 }
                 .buttonStyle(.plain)
-            }
-
-            if isSelected {
-                Image(uiImage: IconProvider.checkmark)
-                    .resizable()
-                    .scaledToFit()
-                    .foregroundStyle(PassColor.interactionNorm.toColor)
-                    .frame(maxHeight: 20)
             }
         }
         .frame(maxWidth: maxWidth)

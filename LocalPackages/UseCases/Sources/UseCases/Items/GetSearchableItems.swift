@@ -97,6 +97,14 @@ private extension GetSearchableItems {
             case .trash:
                 try Task.checkCancellation()
                 return try await itemRepository.getItems(userId: userId, state: .trashed)
+            case .sharedByMe:
+                try Task.checkCancellation()
+                return try await itemRepository.getItems(userId: userId, state: .active)
+                    .filter(\.item.isASharedByMeItem)
+            case .sharedWithMe:
+                try Task.checkCancellation()
+                return try await itemRepository.getItems(userId: userId, state: .active)
+                    .filter(\.item.isASharedWithMeItem)
             }
         }
     }
