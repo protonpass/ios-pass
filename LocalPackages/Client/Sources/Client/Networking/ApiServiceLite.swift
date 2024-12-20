@@ -21,13 +21,18 @@
 import Entities
 import Foundation
 @preconcurrency import ProtonCoreDoh
+import ProtonCoreNetworking
 
 /// Use `URLSession` to make requests that aren't supported by core modules (e.g multipart)
 public protocol ApiServiceLiteProtocol: Sendable {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
                                        infos: [MultipartInfo],
-                                       delegate: URLSessionTaskDelegate) async throws -> R
+                                       delegate: any URLSessionTaskDelegate) async throws -> R
+
+    func download(path: String,
+                  userId: String,
+                  delegate: any URLSessionDownloadDelegate) async throws -> URL
 }
 
 public final class ApiServiceLite: ApiServiceLiteProtocol {
@@ -51,7 +56,32 @@ public extension ApiServiceLite {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
                                        infos: [MultipartInfo],
-                                       delegate: URLSessionTaskDelegate) async throws -> R {
+                                       delegate: any URLSessionTaskDelegate) async throws -> R {
+        let (url, credential) = try getUrlAndCredentials(userId: userId)
+        let request = URLRequest(url: url,
+                                 path: path,
+                                 credential: .init(credential),
+                                 infos: infos,
+                                 appVersion: appVersion)
+        let (data, _) = try await urlSession.data(for: request, delegate: delegate)
+        return try JSONDecoder().decode(R.self, from: data)
+    }
+
+    func download(path: String,
+                  userId: String,
+                  delegate: any URLSessionDownloadDelegate) async throws -> URL {
+        let (url, credential) = try getUrlAndCredentials(userId: userId)
+        let request = URLRequest(url: url,
+                                 path: path,
+                                 credential: .init(credential),
+                                 appVersion: appVersion)
+        let (downloadedUrl, _) = try await urlSession.download(for: request, delegate: delegate)
+        return downloadedUrl
+    }
+}
+
+private extension ApiServiceLite {
+    func getUrlAndCredentials(userId: String) throws -> (URL, AuthCredential) {
         let host = doh.getCurrentlyUsedHostUrl()
         guard let url = URL(string: host) else {
             throw PassError.api(.invalidApiHost(host))
@@ -61,12 +91,6 @@ public extension ApiServiceLite {
             throw PassError.api(.noApiServiceLinkedToUserId)
         }
 
-        let request = URLRequest(url: url,
-                                 path: path,
-                                 credential: .init(credential),
-                                 infos: infos,
-                                 appVersion: appVersion)
-        let (data, _) = try await urlSession.data(for: request, delegate: delegate)
-        return try JSONDecoder().decode(R.self, from: data)
+        return (url, credential)
     }
 }
