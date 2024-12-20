@@ -138,6 +138,20 @@ struct ItemsTabView: View {
                     case .trash:
                         EmptyTrashView()
                             .padding(.bottom, safeAreaInsets.bottom)
+                    case .sharedByMe, .sharedWithMe:
+                        VStack {
+                            Spacer()
+                            Text(viewModel.appContentManager
+                                .vaultSelection == .sharedByMe ? "You have not shared any items" :
+                                "No items are shared with you")
+                                .font(.title2)
+                                .fontWeight(.bold)
+                                .padding(.vertical)
+                                .foregroundStyle(PassColor.textNorm.toColor)
+                            Spacer()
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, safeAreaInsets.bottom)
                     }
                 } else {
                     itemList(sections)

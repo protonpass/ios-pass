@@ -83087,6 +83087,16 @@
         }
       }
     },
+    "No items are shared with you" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No items are shared with you"
+          }
+        }
+      }
+    },
     "No items found" : {
       "comment" : "Message shown when filtering items by type and no items of such type is found",
       "localizations" : {
@@ -117030,6 +117040,26 @@
         }
       }
     },
+    "Show shared by me" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show shared by me"
+          }
+        }
+      }
+    },
+    "Show shared with me" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show shared with me"
+          }
+        }
+      }
+    },
     "Show social security number" : {
       "localizations" : {
         "be" : {
@@ -145431,6 +145461,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn không có mật khẩu tái sử dụng"
+          }
+        }
+      }
+    },
+    "You have not shared any items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have not shared any items"
           }
         }
       }

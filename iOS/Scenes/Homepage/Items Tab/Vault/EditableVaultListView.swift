@@ -52,9 +52,16 @@ struct EditableVaultListView: View {
                             PassDivider()
                         }
 
-                        vaultRow(for: .trash)
+                        if viewModel.canSelectVault(selection: .sharedWithMe) {
+                            vaultRow(for: .sharedWithMe)
+                            PassDivider()
+                        }
+                        if viewModel.canSelectVault(selection: .sharedByMe) {
+                            vaultRow(for: .sharedByMe)
+                            PassDivider()
+                        }
 
-                        PassDivider()
+                        vaultRow(for: .trash)
                     }
                 }
                 .padding(.horizontal)
@@ -119,7 +126,7 @@ struct EditableVaultListView: View {
             Spacer()
 
             switch selection {
-            case .all:
+            case .all, .sharedByMe, .sharedWithMe:
                 EmptyView()
             case let .precise(vault):
                 vaultTrailingView(vault, haveItems: itemCount > 0)
@@ -266,6 +273,10 @@ extension VaultSelection {
             vault.vaultName ?? ""
         case .trash:
             #localized("Trash")
+        case .sharedByMe:
+            #localized("Shared by me")
+        case .sharedWithMe:
+            #localized("Shared with me")
         }
     }
 
@@ -277,12 +288,16 @@ extension VaultSelection {
             vault.vaultBigIcon ?? PassIcon.vaultIcon1Big
         case .trash:
             IconProvider.trash
+        case .sharedByMe:
+            IconProvider.userArrowRight
+        case .sharedWithMe:
+            IconProvider.userArrowLeft
         }
     }
 
     var color: UIColor {
         switch self {
-        case .all:
+        case .all, .sharedByMe, .sharedWithMe:
             PassColor.interactionNormMajor2
         case let .precise(vault):
             vault.mainColor ?? PassColor.textWeak
