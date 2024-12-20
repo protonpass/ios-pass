@@ -23,6 +23,8 @@ import Foundation
 public enum VaultSelection: Hashable, Sendable {
     case all
     case precise(Share)
+    case sharedWithMe
+    case sharedByMe
     case trash
 
     public var shared: Bool {
@@ -46,12 +48,27 @@ public enum VaultSelection: Hashable, Sendable {
             false
         }
     }
+
+    public var preferenceKey: String? {
+        switch self {
+        case .all:
+            nil
+        case let .precise(vault):
+            vault.shareId
+        case .sharedWithMe:
+            "sharedWithMe"
+        case .sharedByMe:
+            "sharedByMe"
+        case .trash:
+            "trash"
+        }
+    }
 }
 
 extension VaultSelection: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.all, .all), (.trash, .trash):
+        case (.all, .all), (.sharedByMe, .sharedByMe), (.sharedWithMe, .sharedWithMe), (.trash, .trash):
             true
         case let (.precise(lhsShare), .precise(rhsShare)):
             lhsShare.id == rhsShare.id
