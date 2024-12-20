@@ -56,13 +56,9 @@ extension URLRequest {
         }
 
         // Construct the headers
-        var headers = [String: String]()
-        headers["Accept"] = "application/vnd.protonmail.v1+json"
+        var headers = [String: String](credential: credential, appVersion: appVersion)
         headers["Content-Type"] = "multipart/form-data; boundary=\(boundary)"
         headers["Content-Length"] = "\(body.count)"
-        headers["x-pm-appversion"] = appVersion
-        headers["Authorization"] = "Bearer \(credential.accessToken)"
-        headers["x-pm-uid"] = credential.UID
 
         // Construct the final request
         var request = URLRequest(url: url.appending(path: path))
@@ -73,6 +69,35 @@ extension URLRequest {
         }
 
         self = request
+    }
+
+    init(url: URL,
+         path: String,
+         credential: Credential,
+         appVersion: String) {
+        // Construct the headers
+        let headers = [String: String](credential: credential, appVersion: appVersion)
+
+        // Construct the final request
+        var request = URLRequest(url: url.appending(path: path))
+        request.httpMethod = "GET"
+        for header in headers {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+
+        self = request
+    }
+}
+
+private extension [String: String] {
+    // Construct base headers with common required ones
+    init(credential: Credential, appVersion: String) {
+        var headers = [String: String]()
+        headers["Accept"] = "application/vnd.protonmail.v1+json"
+        headers["x-pm-appversion"] = appVersion
+        headers["Authorization"] = "Bearer \(credential.accessToken)"
+        headers["x-pm-uid"] = credential.UID
+        self = headers
     }
 }
 
