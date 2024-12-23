@@ -54,30 +54,34 @@ struct GeneratePasswordView: View {
 
                 switch viewModel.passwordType {
                 case .random:
-                    characterCountRow
+                    if viewModel.minChar < viewModel.maxChar {
+                        characterCountRow
+                    }
                     PassDivider()
 
                     toggle(title: #localized("Special characters"),
                            isOn: $viewModel.activateSpecialCharacters,
-                           hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeSymbols ?? false)
+                           hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeSymbols != nil)
                     PassDivider()
 
                     if viewModel.isShowingAdvancedOptions {
                         toggle(title: #localized("Capital letters"),
                                isOn: $viewModel.activateCapitalCharacters,
-                               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeUppercase ?? false)
+                               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeUppercase != nil)
                         PassDivider()
 
                         toggle(title: #localized("Include numbers"),
                                isOn: $viewModel.activateNumberCharacters,
-                               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeNumbers ?? false)
+                               hasPolicy: viewModel.passwordPolicy?.randomPasswordMustIncludeNumbers != nil)
                         PassDivider()
                     } else {
                         advancedOptionsRow
                     }
 
                 case .memorable:
-                    wordCountRow
+                    if viewModel.minWord < viewModel.maxWord {
+                        wordCountRow
+                    }
                     PassDivider()
                     if viewModel.isShowingAdvancedOptions {
                         wordSeparatorRow
@@ -88,7 +92,7 @@ struct GeneratePasswordView: View {
 
                         toggle(title: #localized("Include numbers"),
                                isOn: $viewModel.includeNumbers,
-                               hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustIncludeNumbers ?? false)
+                               hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustIncludeNumbers != nil)
                         PassDivider()
                     } else {
                         capitalizingWordsRow
@@ -229,7 +233,7 @@ struct GeneratePasswordView: View {
     private var capitalizingWordsRow: some View {
         toggle(title: #localized("Capitalize"),
                isOn: $viewModel.activateCapitalized,
-               hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustCapitalize ?? false)
+               hasPolicy: viewModel.passwordPolicy?.memorablePasswordMustCapitalize != nil)
     }
 
     private var wordSeparatorRow: some View {
