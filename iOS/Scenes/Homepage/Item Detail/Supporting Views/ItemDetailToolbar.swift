@@ -22,6 +22,7 @@ import DesignSystem
 import Entities
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 @MainActor
@@ -63,6 +64,11 @@ struct ItemDetailToolbar: ToolbarContent {
                                            action: {
                                                viewModel.share()
                                            })
+                                           .featureDiscoveryOverlay(feature: .itemSharing) {
+                                               Circle()
+                                                   .fill(PassColor.signalInfo.toColor)
+                                                   .frame(width: 10, height: 10)
+                                           }
                     }
 
                     Menu(content: {

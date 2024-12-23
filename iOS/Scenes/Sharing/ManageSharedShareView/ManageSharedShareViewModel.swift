@@ -162,7 +162,10 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func canTransferOwnership(to invitee: any ShareInvitee) -> Bool {
-        canUserTransferVaultOwnership(for: share, to: invitee)
+        guard invitee.shareType == .vault else {
+            return false
+        }
+        return canUserTransferVaultOwnership(for: share, to: invitee)
     }
 
     // swiftformat:disable all
@@ -302,7 +305,7 @@ private extension ManageSharedShareViewModel {
     }
 
     func fetchUsersLinkedToShare() async throws -> [UserShareInfos] {
-        guard let item, item.shared else {
+        guard let item else {
             return []
         }
         return try await getUsersLinkedToShare(with: share, itemId: item.itemId).shares
