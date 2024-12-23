@@ -64,6 +64,16 @@ struct ItemDetailSetUpModifier: ViewModifier {
             .task {
                 await viewModel.fetchAttachments()
             }
+            .sheet(isPresented: $viewModel.urlToSave.mappedToBool()) {
+                if let url = viewModel.urlToSave {
+                    ExportDocumentView(url: url)
+                }
+            }
+            .sheet(isPresented: $viewModel.urlToShare.mappedToBool()) {
+                if let url = viewModel.urlToShare {
+                    ActivityView(items: [url])
+                }
+            }
     }
 }
 
