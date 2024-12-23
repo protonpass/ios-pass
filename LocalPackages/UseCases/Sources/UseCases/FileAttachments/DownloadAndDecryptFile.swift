@@ -42,11 +42,14 @@ public extension DownloadAndDecryptFileUseCase {
 }
 
 public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unchecked Sendable {
+    private let generateFileTempUrl: any GenerateFileTempUrlUseCase
     private let keyManager: any PassKeyManagerProtocol
     private let apiService: any ApiServiceLiteProtocol
 
-    public init(keyManager: any PassKeyManagerProtocol,
+    public init(generateFileTempUrl: any GenerateFileTempUrlUseCase,
+                keyManager: any PassKeyManagerProtocol,
                 apiService: any ApiServiceLiteProtocol) {
+        self.generateFileTempUrl = generateFileTempUrl
         self.keyManager = keyManager
         self.apiService = apiService
     }
@@ -55,20 +58,8 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
                         item: any ItemIdentifiable,
                         file: ItemFile,
                         progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
-        guard let name = file.name else {
-            throw PassError.fileAttachment(.failedToDownloadMissingFileName(file.fileID))
-        }
-
         let fileManager = FileManager.default
-
-        let url = fileManager.temporaryDirectory
-            .appending(path: userId)
-            .appending(path: item.shareId)
-            .appending(path: item.itemId)
-            .appending(path: file.fileID)
-            .appending(path: "\(file.modifyTime)")
-            .appendingPathComponent(name, conformingTo: .data)
-
+        let url = try generateFileTempUrl(userId: userId, item: item, file: file)
         if fileManager.fileExists(atPath: url.path()) {
             // File already downloaded and cached
             return url

@@ -27,6 +27,15 @@ struct FileAttachmentViewerSection: View {
     @State private var url: URL?
 
     var body: some View {
+        Button(action: emptyTempDir) {
+            Text(verbatim: "Empty temporary directory")
+        }
+        picker
+    }
+}
+
+private extension FileAttachmentViewerSection {
+    var picker: some View {
         Button(action: {
             showPicker.toggle()
         }, label: {
@@ -46,6 +55,24 @@ struct FileAttachmentViewerSection: View {
                                       primaryTintColor: PassColor.interactionNormMajor1,
                                       secondaryTintColor: PassColor.interactionNormMinor2)
             }
+        }
+    }
+
+    func emptyTempDir() {
+        let fileManager = FileManager.default
+        let tempDir = fileManager.temporaryDirectory
+
+        do {
+            let tempFiles = try fileManager.contentsOfDirectory(at: tempDir,
+                                                                includingPropertiesForKeys: nil,
+                                                                options: [])
+            for file in tempFiles {
+                try fileManager.removeItem(at: file)
+                print("Deleted \(file.path())")
+            }
+            print("Temporary directory emptied successfully.")
+        } catch {
+            print("Failed to empty temporary directory: \(error)")
         }
     }
 }
