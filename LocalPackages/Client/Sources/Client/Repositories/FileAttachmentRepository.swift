@@ -92,9 +92,9 @@ public extension FileAttachmentRepository {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }
 
-        let progressTracker = UploadProgressTracker(totalBytes: Int64(file.metadata.size),
-                                                    onUpdateProgress: progress)
-
+        var totalBytesSent = 0
+        // Make sure file size is not 0 to avoid crash (can not divide by 0)
+        let fileSize = max(1, file.metadata.size)
         let path = "/pass/v1/file/\(remoteId)/chunk"
 
         let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
@@ -115,8 +115,10 @@ public extension FileAttachmentRepository {
             let response: UploadMultipartResponse =
                 try await apiServiceLite.uploadMultipart(path: path,
                                                          userId: userId,
-                                                         infos: infos,
-                                                         delegate: progressTracker)
+                                                         infos: infos) { bytesSent in
+                    totalBytesSent += bytesSent
+                    progress(Float(totalBytesSent) / Float(fileSize))
+                }
 
             if !response.isSuccesful {
                 throw PassError.fileAttachment(.failedToUpload(response.code))

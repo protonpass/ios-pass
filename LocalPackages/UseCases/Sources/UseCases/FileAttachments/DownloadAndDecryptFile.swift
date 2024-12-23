@@ -28,30 +28,33 @@ import Foundation
 public protocol DownloadAndDecryptFileUseCase: Sendable {
     func execute(userId: String,
                  item: any ItemIdentifiable,
-                 file: ItemFile) async throws -> URL
+                 file: ItemFile,
+                 progress: @Sendable @escaping (Float) -> Void) async throws -> URL
 }
 
 public extension DownloadAndDecryptFileUseCase {
     func callAsFunction(userId: String,
                         item: any ItemIdentifiable,
-                        file: ItemFile) async throws -> URL {
-        try await execute(userId: userId, item: item, file: file)
+                        file: ItemFile,
+                        progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
+        try await execute(userId: userId, item: item, file: file, progress: progress)
     }
 }
 
-public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
+public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unchecked Sendable {
     private let keyManager: any PassKeyManagerProtocol
-    private let remoteDatasource: any RemoteFileDatasourceProtocol
+    private let apiService: any ApiServiceLiteProtocol
 
     public init(keyManager: any PassKeyManagerProtocol,
-                remoteDatasource: any RemoteFileDatasourceProtocol) {
+                apiService: any ApiServiceLiteProtocol) {
         self.keyManager = keyManager
-        self.remoteDatasource = remoteDatasource
+        self.apiService = apiService
     }
 
     public func execute(userId: String,
                         item: any ItemIdentifiable,
-                        file: ItemFile) async throws -> URL {
+                        file: ItemFile,
+                        progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
         guard let name = file.name else {
             throw PassError.fileAttachment(.failedToDownloadMissingFileName(file.fileID))
         }
@@ -95,14 +98,23 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
         // Download, decrypt and write to file chunk by chunk
         let fileHandle = try FileHandle(forWritingTo: url)
         defer { try? fileHandle.close() }
+
+        var totalBytesDownloaded = 0
+        let fileSize = max(1, file.size)
+
         for chunk in file.chunks {
-            let encrypted = try await remoteDatasource.getChunkContent(userId: userId,
-                                                                       item: item,
-                                                                       fileId: file.fileID,
-                                                                       chunkId: chunk.chunkID)
-            let decrypted = try AES.GCM.open(encrypted,
+            let path =
+                "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
+            let encryptedUrl = try await apiService.download(path: path,
+                                                             userId: userId) { bytesDownloaded in
+                totalBytesDownloaded += bytesDownloaded
+                progress(Float(totalBytesDownloaded) / Float(fileSize))
+            }
+            let encryptedData = try Data(contentsOf: encryptedUrl)
+            let decrypted = try AES.GCM.open(encryptedData,
                                              key: fileKey,
                                              associatedData: .fileData)
+            try? fileManager.removeItem(atPath: encryptedUrl.path())
             try fileHandle.write(contentsOf: decrypted)
         }
         return url
