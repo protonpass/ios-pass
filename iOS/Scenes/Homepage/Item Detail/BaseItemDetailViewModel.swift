@@ -451,6 +451,9 @@ private extension BaseItemDetailViewModel {
         let userId = try await userManager.getActiveUserId()
         return try await downloadAndDecryptFile(userId: userId,
                                                 item: itemContent,
-                                                file: file)
+                                                file: file,
+                                                progress: { progress in
+                                                    print(progress)
+                                                })
     }
 }
