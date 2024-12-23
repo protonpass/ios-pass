@@ -821,10 +821,124 @@
     },
     "%@ wants to share an item with you." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ хоча абагуліць элемент з вамі."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ chce s vámi sdílet položku."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ønsker at dele et element med dig."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο %@ θέλει να μοιραστεί μαζί σας ένα αντικείμενο."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ wants to share an item with you."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ desea compartir un elemento contigo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ desea compartir un elemento con usted."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ haluaa jakaa kohteen kanssasi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ souhaite partager un élément avec vous."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ingin membagikan item dengan Anda."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vuole condividere un elemento con te."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ უნდა, ელემენტი გაგიზიაროთ."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@님이 나와 항목을 공유하고자 합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ønsker å dele et element med deg."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ wil een item delen met u."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ doreşte să vă partajeze un articol."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ chce s vami zdieľať položku."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ vill dela ett objekt med dig."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sizinle bir öge paylaşmak istiyor."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ хоче поділитися з вами елементом."
           }
         }
       }
@@ -1290,6 +1404,12 @@
             "value" : "Son 14 günde %1$@, %2$@, %3$@."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@, %2$@, %3$@ за останні 14 днів."
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1745,6 +1865,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld takma ad"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдоніми"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонімів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонім"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонімів"
                 }
               }
             }
@@ -3190,6 +3340,36 @@
               }
             }
           }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блоковані"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блокованих"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блокований"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блоковані"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -3623,6 +3803,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld engelleme"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блоки"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блоків"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блок"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld блоки"
                 }
               }
             }
@@ -5134,6 +5344,36 @@
               }
             }
           }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld переслано"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld переслано"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld переслано"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld переслано"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -5566,6 +5806,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld iletme"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld пересилання"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld пересилань"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld пересилання"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld пересилання"
                 }
               }
             }
@@ -10908,6 +11178,24 @@
     "%lld replies" : {
       "comment" : "Number of replies from an alias",
       "localizations" : {
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld svar"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld svar"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -14813,6 +15101,12 @@
             "state" : "translated",
             "value" : "%@ adresiyle e-posta gönderen veya alan her e-posta adresi için bir kişi oluşturulur"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контакт створюється для кожної адреси електронної пошти, яка надсилає або отримує електронні листи з %@"
+          }
         }
       }
     },
@@ -15138,10 +15432,124 @@
     },
     "Accept and view the item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прыняць і паглядзець элемент"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přijmout a zobrazit položku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepter og se elementet"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποδοχή και προβολή αντικειμένου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accept and view the item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar y mostrar el elemento"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceptar y mostrar el elemento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyväksy ja tarkastele kohdetta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepter et afficher l'élément"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terima dan lihat item"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accetta e visualizza l'elemento"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიღება და ელემენტის ნახვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 공유 수락 및 확인"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aksepter og se elementet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accepteer en bekijk item"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptare și vizualizare articol"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prijať a zobraziť novú položku"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acceptera och visa objektet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kabul et ve ögeyi görüntüle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прийняти та переглянути елемент"
           }
         }
       }
@@ -15767,6 +16175,12 @@
             "state" : "translated",
             "value" : "Son 14 gündeki etkinlikler"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Активність за останні 14 днів"
+          }
         }
       }
     },
@@ -16229,6 +16643,12 @@
             "state" : "translated",
             "value" : "Bir özel bölüm ekle"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додати власний розділ"
+          }
         }
       }
     },
@@ -16690,6 +17110,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Görüntülenecek ad ekle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додати показуване ім'я"
           }
         }
       }
@@ -17460,6 +17886,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta kutusu ekle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додати поштову скриньку"
           }
         }
       }
@@ -18724,6 +19156,12 @@
             "state" : "translated",
             "value" : "Gelişmiş takma ad yönetimi"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розширене керування псевдонімами"
+          }
         }
       }
     },
@@ -18859,6 +19297,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gelişmiş takma ad yönetimi Pass Plus tarifesi ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розширене керування псевдонімами доступне з Pass Plus. Оновіть для негайного доступу."
           }
         }
       }
@@ -21645,6 +22089,12 @@
             "state" : "translated",
             "value" : "Takma ad kişileri"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контакти псевдоніма"
+          }
         }
       }
     },
@@ -22402,6 +22852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma ad yönetimi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Керування псевдонімом"
           }
         }
       }
@@ -23814,6 +24270,12 @@
             "state" : "translated",
             "value" : "**%@** e-posta kutusunu kullanan tüm takma adlar da silinecek. E-posta almayı sürdürmek için bu takma adları farklı bir e-posta kutusuna aktarın:"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всі псевдоніми, що використовують поштову скриньку **%@**, також будуть видалені. Щоб продовжувати отримувати листи, перенесіть ці псевдоніми на іншу поштову скриньку:"
+          }
         }
       }
     },
@@ -24139,10 +24601,130 @@
     },
     "All items" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усе элементы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Všechny položky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle elementer"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ολα τα αντικείμενα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "All items"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los elementos"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos los elementos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaikki kohteet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tous les éléments"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semua item"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutti gli elementi"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ყველა ელემენტი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 항목"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle elementer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle items"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wszystkie elementy"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toate articolele"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Všetky položky"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alla objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm ögeler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Всі елементи"
           }
         }
       }
@@ -28422,6 +29004,12 @@
             "state" : "translated",
             "value" : "Kişiyi engelle"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Блокувати контакт"
+          }
         }
       }
     },
@@ -28563,6 +29151,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Engellenmiş adresler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Блоковані адреси"
           }
         }
       }
@@ -29351,6 +29945,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verilerin ele geçirilmesi olayı bulundu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виявлено порушення"
           }
         }
       }
@@ -35575,6 +36175,12 @@
             "state" : "translated",
             "value" : "Kişi kopyalandı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Контакт скопійовано"
+          }
         }
       }
     },
@@ -40199,6 +40805,12 @@
             "state" : "translated",
             "value" : "Kişi ekle"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створити контакт"
+          }
         }
       }
     },
@@ -40982,6 +41594,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ oluşturuldu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створено %@"
           }
         }
       }
@@ -44624,6 +45242,12 @@
             "state" : "translated",
             "value" : "%@ takma adını sil"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити %@"
+          }
         }
       }
     },
@@ -44926,6 +45550,12 @@
             "state" : "translated",
             "value" : "Bu takma adı sil. Asla kullanmayacağım"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити це, мені це ніколи не знадобиться"
+          }
         }
       }
     },
@@ -45067,6 +45697,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta kutusunu sil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити поштову скриньку"
           }
         }
       }
@@ -47510,7 +48146,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ubah alias"
+            "value" : "Sunting alias"
           }
         },
         "it" : {
@@ -49180,6 +49816,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu adrese e-posta gönderdiğinizde %@ adresinden gönderilmiş gibi görünecek."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надішліть листа на цю адресу, і він буде відправлений з %@."
           }
         }
       }
@@ -51220,6 +51862,12 @@
             "state" : "translated",
             "value" : "SimpleLogin eşitlemesini aç"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увімкнути синхронізацію SimpleLogin"
+          }
         }
       }
     },
@@ -52637,6 +53285,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta göndermek istediğiniz adresi yazın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Введіть адресу, на яку ви хочете надіслати листа."
           }
         }
       }
@@ -56875,6 +57529,12 @@
             "state" : "translated",
             "value" : "Takma adlar süzüldü. Çöpe atılmış ögeler görüntülenmiyor."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відфільтровано за псевдонімами. Видалені елементи не показуються."
+          }
         }
       }
     },
@@ -57016,6 +57676,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kredi kartları süzüldü. Çöpe atılmış ögeler görüntülenmiyor."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відфільтровано за псевдонімами. Видалені елементи не показуються."
           }
         }
       }
@@ -57159,6 +57825,12 @@
             "state" : "translated",
             "value" : "Kimlikler süzüldü. Çöpe atılmış ögeler görüntülenmiyor."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відфільтровано за особами. Видалені елементи не показуються."
+          }
         }
       }
     },
@@ -57301,6 +57973,12 @@
             "state" : "translated",
             "value" : "Oturum açma kayıtları süzüldü. Çöpe atılmış ögeler görüntülenmiyor."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відфільтровано за даними входу. Видалені елементи не показуються."
+          }
         }
       }
     },
@@ -57442,6 +58120,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Notlar süzüldü. Çöpe atılmış ögeler görüntülenmiyor."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відфільтровано за нотатками. Видалені елементи не показуються."
           }
         }
       }
@@ -58249,10 +58933,124 @@
     },
     "For one-off sharing." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для аднаразовага абагульвання."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro jednorázové sdílení."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Til engangsdeling."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Για εφάπαξ κοινή χρήση."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "For one-off sharing."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para un uso único."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para un uso único."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kertaluonteista jakamista varten."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pour un partage unique."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untuk pembagian yang hanya satu kali"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per una condivisione unica."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ერთჯერადი გაზიარებისთვის"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일회성 공유에 유용합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For engangsdeling."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voor eenmalig delen."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pentru partajare unică."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na jednorazové zdieľanie."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "För engångsdelning."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir kerelik paylaşım için."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для одноразового поширення."
           }
         }
       }
@@ -58869,6 +59667,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "<%@> takma adınızdan"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "З вашого псевдоніма <%@>"
           }
         }
       }
@@ -60933,6 +61737,12 @@
             "state" : "translated",
             "value" : "Pass Unlimited edinin"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отримати необмежений Pass"
+          }
         }
       }
     },
@@ -61876,6 +62686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nasıl çalışıyor:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ось як це працює:"
           }
         }
       }
@@ -66001,6 +66817,12 @@
             "state" : "translated",
             "value" : "Proton Pass uygulamasında bir öge notu, öge şifreleme anahtarıyla şifrelenir ve yalnızca ögeye erişim izni olan kullanıcılar notu görüntüleyebilir."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У Pass примітка до елемента шифрується за допомогою ключа шифрування елемента, і тільки користувачі, які мають доступ до елемента, можуть переглянути примітку."
+          }
         }
       }
     },
@@ -67642,20 +68464,254 @@
     },
     "Invite more users to the item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запрасіць больш карыстальнікаў да элемента"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozvání dalších uživatelů k položce"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inviter flere brugere til elementet"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πρόσκληση περισσότερων χρηστών στο στοιχείο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Invite more users to the item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitar a más usuarios al elemento"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitar a más usuarios al elemento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kutsu kohteeseen lisää käyttäjiä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inviter plus d'utilisateur à cet élément"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undang lebih banyak pengguna ke item"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invita altri utenti all'elemento"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მოიწვიეთ მეტი მომხმარებელი ამ ელემენტზე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목에 더 많은 사용자 초대"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inviter flere brukere til elementet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nodig meer gebruikers uit voor het item"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitați mai mulți utilizatori la articol"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozvite k položke ďalších používateľov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bjud in fler användare till detta objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ögeye başka kullanıcılar davet edin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запросіть більше користувачів до елементу"
           }
         }
       }
     },
     "Invite more users to the vault" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запрасіць больш карыстальнікаў да сховішча"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozvání dalších uživatelů k trezoru"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inviter flere brugere til boksen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πρόσκληση περισσότερων χρηστών στην κρύπτη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Invite more users to the vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitar a más usuarios a la caja fuerte"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitar a más usuarios a la bóveda"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kutsu holviin lisää käyttäjiä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inviter plus d'utilisateur à ce coffre-fort"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undang lebih banyak pengguna ke brankas"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invita più utenti alla cassaforte"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მოიწვიეთ მეტი მომხმარებელი ამ საცავზე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고에 더 많은 사용자 초대"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inviter flere brukere til hvelvet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nodig meer gebruikers uit voor de kluis"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitați mai mulți utilizatori la seif"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozvite do trezora ďalších používateľov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bjud in fler användare till detta valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kasaya başka kullanıcılar davet edin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запросіть більше користувачів до сховища"
           }
         }
       }
@@ -67823,10 +68879,130 @@
     },
     "Item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Элемент"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Položka"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Στοιχείο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohde"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élément"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elemento"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელემენტი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articol"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Položka"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Елемент"
           }
         }
       }
@@ -68633,6 +69809,102 @@
     },
     "Item sharing: %lld users" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Абагульванне элемента: %lld карыстальнікі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Абагульванне элемента: %lld карыстальнікаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Абагульванне элемента: %lld карыстальнік"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Абагульванне элемента: %lld карыстальнікаў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sdílení položky: %lld uživatelé"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sdílení položky: %lld uživatelů"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sdílení položky: %lld uživatel"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sdílení položky: %lld uživatelů"
+                }
+              }
+            }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deling af element: %lld bruger"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deling af element: %lld brugere"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Κοινή χρήση στοιχείων: %lld χρήστης"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Κοινή χρήση στοιχείων: %lld χρήστες"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -68646,6 +69918,294 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Item sharing: %lld users"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Elemento compartido: %lld usuario"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Elemento compartido: %lld usuarios"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Elemento compartido: %lld usuario"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Elemento compartido: %lld usuarios"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kohteen jakaminen: %lld käyttäjä"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kohteen jakaminen: %lld käyttäjää"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partage d'élément : %lld utilisateur"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partage d'élément : %lld utilisateurs"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pembagian item: %lld pengguna"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Condivisione elemento: %lld utente"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Condivisione elemento: %lld utenti"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ელემენტის გაზიარება: %lld მომხმარებელი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "ელემენტის გაზიარება: %lld მომხმარებელი"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "항목 공유: %lld명 사용자"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Elementdeling: %lld bruker"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Elementdeling: %lld brukere"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Item delen: %lld gebruiker"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Item delen: %lld gebruikers"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partajare articol: %lld utilizatori"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partajare articol: %lld utilizator"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partajare articol: %lld de utilizator"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zdieľanie položky: %lld používatelia"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zdieľanie položky: %lld používateľov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zdieľanie položky: %lld používateľ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zdieľanie položky: %lld používateľov"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Valvdelning: %lld användare"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Valvdelning: %lld användare"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Öge paylaşımı: %lld kullanıcı"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Öge paylaşımı: %lld kullanıcı"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Спільний доступ до елемента: %lld користувачі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Спільний доступ до елемента: %lld користувачів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Спільний доступ до елемента: %lld користувач"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Спільний доступ до елемента: %lld користувачі"
                 }
               }
             }
@@ -72500,20 +74060,272 @@
     },
     "Leave" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выйсці"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opustit"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forlad"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlassen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποχώρηση"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leave"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abandonar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salir"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poistu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quitter"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keluar"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbandona"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გასვლა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나가기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forlat"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlaat"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opuść"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sair"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Părăsire"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opustiť"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lämna"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayrıl"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Покинути"
           }
         }
       }
     },
     "Leave this item?" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выйсці з гэтага элемента?"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opustit tuto položku?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forlad dette element?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποχώρηση από αυτό το στοιχείο;"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leave this item?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Deseas dejar este elemento?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Desea dejar este elemento?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poistutaanko tästä kohteesta?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voulez-vous quitter cet élément ?"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tinggalkan item ini?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lasciare questo elemento?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დავტოვო ეს ელემენტი?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목에서 나갈까요?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forlate dette elemenet?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit item verlaten?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opuścić element?"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Părăsire acest articol?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opustiť túto položku?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lämna detta objekt?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ögeden ayrılmak istiyor musunuz?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Залишити цей елемент?"
           }
         }
       }
@@ -75105,6 +76917,12 @@
             "state" : "translated",
             "value" : "İki adımlı doğrulama kullanan oturum açma kayıtları"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вхід з 2FA"
+          }
         }
       }
     },
@@ -75562,6 +77380,12 @@
             "state" : "translated",
             "value" : "E-posta kutusu işlemleri menüsü"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Меню дій поштової скриньки"
+          }
         }
       }
     },
@@ -75703,6 +77527,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta kutusu, bir takma ada gönderilen e-postaların yönlendirildiği yerdir. Gmail, Outlook, Proton Mail gibi normal e-posta kutunuzdur."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поштова скринька - це місце, куди пересилаються листи, надіслані на псевдонім. Це ваша звичайна поштова скринька, наприклад, Gmail, Outlook, Proton Mail тощо."
           }
         }
       }
@@ -75999,6 +77829,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Varsayılan yap"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зробити типовою"
           }
         }
       }
@@ -76621,6 +78457,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma ad yönetimi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Керування вашими псевдонімами"
           }
         }
       }
@@ -80762,6 +82604,12 @@
             "state" : "translated",
             "value" : "Son 14 günde herhangi bir etkinlik yok."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жодної активності за останні 14 днів."
+          }
         }
       }
     },
@@ -81378,6 +83226,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhangi bir öge bulunamadı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не знайдено жодного елементу"
           }
         }
       }
@@ -82643,6 +84497,12 @@
             "state" : "translated",
             "value" : "Proton ya da SimleLogin tarafından bile görülemez."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Його не бачать ні Proton, ні SimpleLogin."
+          }
         }
       }
     },
@@ -83253,6 +85113,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Not • SimpleLogin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нотатка • SimpleLogin"
           }
         }
       }
@@ -85316,6 +87182,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eşitlendikten sonra Pass içinden silinen takma adlar SimpleLogin üzerinden de silinir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Після синхронізації, видалення псевдонімів у Pass також видалить їх у SimpleLogin."
           }
         }
       }
@@ -89250,7 +91122,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ændring af adgangskode lykkedes"
+            "value" : "Adgangskode blev ændret"
           }
         },
         "de" : {
@@ -90742,13 +92614,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld element slettet permanent"
+                  "value" : "Slettede %lld element permanent"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld elementer slettet permanent"
+                  "value" : "Slettede %lld elementer permanent"
                 }
               }
             }
@@ -91151,6 +93023,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld öge kalıcı olarak silindi"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Остаточно видалено %lld елементи"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Остаточно видалено %lld елементів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Остаточно видалено %lld елемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Остаточно видалено %lld елементи"
                 }
               }
             }
@@ -93232,6 +95134,12 @@
             "state" : "translated",
             "value" : "İstenmeyenler klasöründe \"Lütfen %@ için e-posta adresinizi doğrulayın\" konulu bir e-posta olup olmadığına bakın.\n\nBöyle bir e-posta bulamazsanız [yeni bir kod isteğinde bulunabilirsiniz](https://proton.me)."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Будь ласка, перевірте у спамі наявність листа з назвою \"Будь ласка, підтвердьте свою поштову скриньку %@\"\n\nЯкщо ви не можете знайти таку електронну адресу, ви можете [запросити новий код] (https://proton.me)."
+          }
         }
       }
     },
@@ -94014,6 +95922,12 @@
             "state" : "translated",
             "value" : "Takma adı silme işleminin geri alınamayacağını unutmayın. Bunun yerine takma adı kullanımdan kaldırabilirsiniz."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зверніть увагу, що після видалення псевдонім не можна відновити. Можливо, ви хочете вимкнути псевдонім?"
+          }
         }
       }
     },
@@ -94155,6 +96069,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lütfen takma adı silme işleminin geri alınamayacağını unutmayın. Takma ad zaten kullanımdan kaldırılmış ve e-posta kutunuza herhangi bir ileti iletmeyecek."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зверніть увагу, що після видалення псевдонім не можна відновити. Псевдонім вже вимкнено, і він не буде пересилати листи на вашу поштову скриньку."
           }
         }
       }
@@ -94298,6 +96218,12 @@
             "state" : "translated",
             "value" : "Lütfen takma adı silme işleminin geri alınamayacağını unutmayın."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зверніть увагу, що після видалення псевдоніми не можна відновити"
+          }
         }
       }
     },
@@ -94439,6 +96365,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma adların silindikten sonra geri alınamayacağını unutmayın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зверніть увагу, що після видалення псевдоніми не можна відновити."
           }
         }
       }
@@ -95519,6 +97451,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ücretli etki alanı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Преміум домен"
           }
         }
       }
@@ -97091,6 +99029,12 @@
             "state" : "translated",
             "value" : "Proton Pass bir iletme adresi (ters takma ad olarak da bilinir) oluşturacak."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass згенерує адресу переадресації (також звану зворотним псевдонімом)."
+          }
         }
       }
     },
@@ -97433,6 +99377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herkese açık etki alanı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Публічний домен"
           }
         }
       }
@@ -102584,6 +104534,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Відновлено %lld елементи"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Відновлено %lld елементів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Відновлено %lld елемент"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Відновлено %lld елементи"
+                }
+              }
+            }
+          }
+        },
         "vi" : {
           "variations" : {
             "plural" : {
@@ -103555,6 +105535,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld kez yeniden kullanıldı"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Повторювався %lld рази"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Повторювався %lld разів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Повторювався %lld раз"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Повторювався %lld рази"
                 }
               }
             }
@@ -105448,6 +107458,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld hesapta ara"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Пошук в %lld облікових записах"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Пошук в %lld облікових записах"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Пошук в %lld обліковому записі"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Пошук в %lld облікових записах"
                 }
               }
             }
@@ -107861,10 +109901,124 @@
     },
     "See members and permission overview" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паглядзець удзельнікаў і дазволы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prohlédnout členy a oprávnění"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se oversigt over medlemmer og tilladelser"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δείτε τα μέλη και την επισκόπηση δικαιωμάτων"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "See members and permission overview"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consulta todos los miembros y permisos"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consulte todos los miembros y permisos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä jäsenten ja käyttöoikeuksien yleiskatsaus."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afficher l'ensemble des membres et des autorisations"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lihat rincian anggota dan perizinan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza la panoramica dei membri e delle autorizzazioni"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წევრებისა და წვდომების გადახედვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "구성원과 권한을 확인해보세요"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se oversikt over medlemmer og tillatelser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zie de leden en permissies overzicht"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare rezumat membri și permisiuni"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozrite si prehľad členov a povolení"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa medlems- och rättighetsöversikt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üye ve izin özetini görüntüleyin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дивіться огляд учасників та дозволів"
           }
         }
       }
@@ -108489,6 +110643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesap seçin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вибрати обліковий запис"
           }
         }
       }
@@ -109427,6 +111587,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta gönder"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надіслати лист"
           }
         }
       }
@@ -111677,20 +113843,260 @@
     },
     "Share entire vault instead?" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Замест гэтага абагуліць сховішча поўнасцю?"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdílet místo toho celý trezor?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del hele boksen i stedet?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντ' αυτού, κοινοποιήστε όλη την κρύπτη;"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share entire vault instead?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Prefieres compartir la caja fuerte entera en cambio?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Compartir la bóveda entera en cambio?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaetaanko sen sijaan koko holvi?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voulez-vous partager l'ensemble du coffre-fort à la place ?"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bagikan seluruh brankas?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividere l'intera cassaforte?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გავაზიარო მთელი საცავი ამის მაგიერ?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대신 전체 금고를 공유하시겠어요?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dele hele hvelvet istedenfor?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De hele kluis delen?"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partajați în schimb tot seiful?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdieľať namiesto toho celý trezor?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dela hela valvet istället?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bunun yerine tüm kasa paylaşılsın mı?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Натомість надати доступ до всього сховища?"
           }
         }
       }
     },
     "Share Item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абагуліць элемент"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdílet položku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del element"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κοινή χρήση Αντικειμένου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share Item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir l'elemento"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartir l'elemento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaa kohde"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partager l'élément"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bagikan item"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividi elemento"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელემენტის გაზიარება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 공유"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Del element"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item delen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnij element"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhar item"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partajare articol"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdieľať položku"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dela objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ögeyi paylaş"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поділитися елементом"
           }
         }
       }
@@ -112339,40 +114745,538 @@
     },
     "Shared by me" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абагулена мной"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdíleno mnou"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt af mig"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von mir geteilt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κοινοποιημένο από εμένα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shared by me"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartido por mí"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartido por mí"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Minun jakamani"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partagé par moi"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dibagikan oleh saya"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condiviso da me"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩემი გაზიარებული"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내가 공유함"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt av meg"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedeeld door mij"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępniam"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhado por mim"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partajate de mine"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mnou zdieľané"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delat av mig"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benim paylaştıklarım"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поширено мною"
           }
         }
       }
     },
     "Shared item invitation" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запрашэнне да абагуленага элемента"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozvánka ke sdílené položce"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delte element-invitation"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πρόσκληση για κοινόχρηστο στοιχείο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shared item invitation"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitación a un elemento compartido"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitación a un elemento compartido"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kutsu jaettuun kohteeseen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitation à un élément partagé"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undangan item terbagi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invito a un elemento condiviso"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაზიარებული ელემენტის მოსაწვევი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유된 금고 초대"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt elementinvitasjon"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedeeld item uitnodiging"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convite de item compartilhado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitație articol partajat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozvánka ku zdieľanej položke"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inbjudan till delat objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge paylaşma daveti"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Запрошення на спільний елемент"
           }
         }
       }
     },
     "Shared via" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абагулена праз"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdíleno pomocí"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt via"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κοινή χρήση μέσω"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shared via"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartido por"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartido por"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partagé via"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dibagikan lewat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condiviso tramite"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაზიარებულია საიდან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다음으로 공유:"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt via"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedeeld via"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhar via"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partajat prin"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdieľané cez"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delad via"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şununla paylaşıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поширено через"
           }
         }
       }
     },
     "Shared with me" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абагулена са мной"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sdíleno se mnou"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt med mig"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit mir geteilt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κοινοποιημένο με εμένα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shared with me"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartido conmigo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartido conmigo"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaettu minulle"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partagé avec moi"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dibagikan dengan saya"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condivisi con me"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩემთან გაზიარებული"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나와 공유됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delt med meg"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedeeld met mij"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnione Tobie"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhado comigo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partajate cu mine"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zdieľané so mnou"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delat med mig"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benimle paylaşılanlar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поділилися зі мною"
           }
         }
       }
@@ -113316,6 +116220,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özel alanı görüntüle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показати користувацьке поле"
           }
         }
       }
@@ -114888,6 +117798,12 @@
             "state" : "translated",
             "value" : "%@ olarak oturum açıldı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вхід виконано як %@"
+          }
         }
       }
     },
@@ -115030,6 +117946,12 @@
             "state" : "translated",
             "value" : "SimpleLogin takma adlarının içe aktarılacağı kasa."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псевдоніми SimpleLogin буде імпортовано до цього сховища."
+          }
         }
       }
     },
@@ -115159,6 +118081,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin notu, takma ad adresiyle aynı konumda tutulur ve dinlenme halindeyken şifreleme ile korunsa da uçtan uca şifrelenmez. Yani SimpleLogin veri tabanına erişme izni olan herkes onu okuyabilir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нотатки SimpleLogin зберігаються в одному місці з псевдоадресою, і хоча вони захищені шифруванням у стані спокою, вони не зашифровані E2E, що означає, що будь-хто, хто має доступ до бази даних SimpleLogin, може їх прочитати."
           }
         }
       }
@@ -115307,6 +118235,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin eşitleme"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Синхронізація SimpleLogin"
           }
         }
       }
@@ -117711,6 +120645,12 @@
             "value" : "Geç ve yönet"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перемикання і керування"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -117866,6 +120806,12 @@
             "value" : "%@ adresine geçildi"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перемкнуто на %@"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -118018,6 +120964,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma adları eşitle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Синхронізувати псевдоніми"
           }
         }
       }
@@ -118986,10 +121938,130 @@
     },
     "Tap here for details" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Націсніце тут для падрабязнасцяў"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klepněte sem pro více informací"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryk for detaljer"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πατήστε εδώ για λεπτομέρειες"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tap here for details"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca aquí para obtener más información"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque aquí para obtener más información"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napauta tästä lisätietoja varten"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appuyez ici pour en savoir plus"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ketuk di sini untuk perincian"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tocca qui per informazioni"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დეტალებისთვის დაატყაპუნეთ აქ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "세부 사항을 확인하려면 탭하기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trykk her for detaljer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tik hier voor details"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toque aqui para detalhes"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atingeți aici pentru detalii"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ťuknite pre viac informácií"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tryck här för detaljer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayrıntılar için buraya dokunun"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Натисніть тут для подробиць"
           }
         }
       }
@@ -119929,6 +123001,12 @@
             "state" : "translated",
             "value" : "Bu takma ad ile e-posta gönderilirken görüntülenecek ad."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ім'я, яке показуватиметься під час надсилання електронного листа з цього псевдоніму."
+          }
         }
       }
     },
@@ -120024,6 +123102,12 @@
             "value" : "Den valgte filen overskrider størrelsesgrensen. Velg en fil som er mindre enn 100 MB."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het geselecteerde bestand overschrijdt de grootte limiet. Kies een bestand kleiner dan 100 MB."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -120052,6 +123136,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seçilmiş dosya boyutu sınırı aşıyor. Lütfen 100 MB boyutundan daha küçük bir dosya seçin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вибраний файл перевищує обмеження за розміром. Будь ласка, виберіть файл розміром менше ніж 100 МБ."
           }
         }
       }
@@ -122436,6 +125526,12 @@
             "state" : "translated",
             "value" : "Kişisel e-posta adresinizi gizli tutmak için bir takma ad kişisi oluşturarak adresinizi gizleyebilirsiniz."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Щоб приховати свою особисту електронну адресу, ви можете створити псевдонім контакту, який замаскує вашу адресу."
+          }
         }
       }
     },
@@ -122578,6 +125674,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta kutusuna"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "До поштової скриньки"
           }
         }
       }
@@ -122880,6 +125982,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Çok fazla yanlış deneme yapıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Забагато помилкових спроб"
           }
         },
         "vi" : {
@@ -123389,6 +126497,12 @@
             "state" : "translated",
             "value" : "Takma adları aktar"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перенести псевдоніми"
+          }
         }
       }
     },
@@ -123530,6 +126644,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktar ve e-posta kutusunu sil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перенести та видалити поштову скриньку"
           }
         }
       }
@@ -125437,6 +128557,12 @@
             "state" : "translated",
             "value" : "Kişinin engellemesini kaldır"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розблокувати контакт"
+          }
         }
       }
     },
@@ -125738,6 +128864,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Anladım. Bu takma adları kullanmıyorum"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зрозуміло, вони мені ніколи не знадобляться"
           }
         }
       }
@@ -127802,6 +130934,12 @@
             "state" : "translated",
             "value" : "E-posta kutusu doğrulanmamış"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Непідтверджена поштова скринька"
+          }
         }
       }
     },
@@ -128751,6 +131889,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özel bölümler ekleyebilmek için tarifenizi yükseltin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оновити, щоб додати користувацькі секції"
           }
         },
         "vi" : {
@@ -130363,6 +133507,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Використано в %lld записах входу"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Використано в %lld записах входу"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Використано в %lld записі входу"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Використано в %lld записах входу"
+                }
+              }
+            }
+          }
+        },
         "vi" : {
           "variations" : {
             "plural" : {
@@ -130379,10 +133553,124 @@
     },
     "Useful for permanent sharing." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Карысна для пастаяннага абагульвання."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Užitečné pro trvalé sdílení."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nyttig til permanent deling."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Χρήσιμο για μόνιμη κοινή χρήση."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Useful for permanent sharing."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Útil para compartir permanentemente."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Útil para compartir permanentemente."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hyödyllinen pysyvään jakamiseen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utile pour un partage permanent."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berguna untuk pembagian permanen."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utile per la condivisione permanente."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სასარგებლოა მუდმივი გაზიარებისთვის."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기간 제한 없이 공유할 때 유용합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nyttig for permanent deling."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuttig voor permanent delen"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Util pentru partajare permanentă."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Užitočné na trvalé zdieľanie."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Användbart för permanent delning."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalıcı paylaşım için uygundur."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Корисно для постійного спільного використання."
           }
         }
       }
@@ -132151,6 +135439,102 @@
     },
     "Vault sharing: %lld members" : {
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Абагульванне сховішча: %lld удзельнікі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Абагульванне сховішча: %lld удзельнікаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Абагульванне сховішча: %lld удзельнік"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Абагульванне сховішча: %lld удзельнікаў"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sdílení trezoru: %lld členové"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sdílení trezoru: %lld členů"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sdílení trezoru: %lld člen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Sdílení trezoru: %lld členů"
+                }
+              }
+            }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deling af boks: %lld medlem"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Deling af boks: %lld medlemmer"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Κοινοποίηση κρύπτης: %lld μέλος"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Κοινοποίηση κρύπτης: %lld μέλη"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -132164,6 +135548,294 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Vault sharing: %lld members"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Caja fuerte compartida: %lld miembro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Caja fuerte compartida: %lld miembros"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Bóveda compartida: %lld miembro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Bóveda compartida: %lld miembros"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Holvin jakaminen: %lld jäsen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Holvin jakaminen: %lld jäsentä"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partage de coffre-fort : %lld utilisateur"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partage de coffre-fort : %lld utilisateurs"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Pembagian brankas: %lld anggota"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Condivisione cassaforte: %lld membro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Condivisione cassaforte: %lld membri"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "საცავის გაზიარება: %lld წევრი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "საცავის გაზიარება: %lld წევრი"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "금고 공유: %lld명 구성원"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Hvelvdeling: %lld medlem"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Hvelvdeling: %lld medlemmer"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kluis delen: %lld lid"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kluis delen: %lld leden"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partajare seif: %lld membri"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partajare seif: %lld membru"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Partajare seif: %lld de membri"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zdieľanie trezora: %lld členovia"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zdieľanie trezora: %lld členov"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zdieľanie trezora: %lld člen"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Zdieľanie trezora: %lld členov"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Valvdelning: %lld medlem"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Valvdelning: %lld medlemmar"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kasa paylaşımı: %lld üye"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Kasa paylaşımı: %lld üye"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Спільний доступ до сховища: %lld учасники"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Спільний доступ до сховища: %lld учасників"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Спільний доступ до сховища: %lld учасник"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Спільний доступ до сховища: %lld учасники"
                 }
               }
             }
@@ -133113,6 +136785,12 @@
             "value" : "Güvenli bağlantı ile"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Через безпечне посилання"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -133581,6 +137259,12 @@
             "value" : "Tüm güvenli bağlantılarınızı görüntüleyin"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Переглянути всі ваші захищені посилання"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -133654,7 +137338,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tampilkan dan sunting detail untuk alias ini di halaman alias tersendiri."
+            "value" : "Tampilkan dan sunting rincian untuk alias ini pada halaman alias yang terpisah."
           }
         },
         "it" : {
@@ -134437,7 +138121,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Visualizador"
+            "value" : "Lector"
           }
         },
         "fi" : {
@@ -135642,6 +139326,36 @@
               }
             }
           }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ми виявили, що у вас є %lld псевдоніми, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ми виявили, що у вас є %lld псевдонімів, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ми виявили, що у вас є %lld псевдонім, який присутній у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ми виявили, що у вас є %lld псевдоніми, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -135783,6 +139497,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biyometrik kimlik doğrulama ayarlarınızda değişiklik yapıldığı algılandı. Güvenlik nedeniyle oturumunuz kapatıldı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ми виявили зміни у ваших налаштуваннях біометричної автентифікації. З міркувань безпеки ви вийшли з системи."
           }
         }
       }
@@ -136973,7 +140693,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apa itu catatan SimpleLogin"
+            "value" : "Apa itu catatan SimpleLogin?"
           }
         },
         "it" : {
@@ -137046,6 +140766,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir SimpleLogin notu nedir?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Що таке нотатка SimpleLogin?"
           }
         }
       }
@@ -137532,10 +141258,124 @@
     },
     "With other Proton Pass users" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "З іншымі карыстальнікамі Proton Pass"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S ostatními uživateli Proton Pass"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Med andre Proton Pass-brugere"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Με άλλους χρήστες του Proton Pass"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "With other Proton Pass users"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con otros usuarios de Proton Pass"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con otros usuarios de Proton Pass"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muiden Proton Pass -käyttäjien kanssa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avec d'autres utilisateurs de Proton Pass"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dengan pengguna Proton Pass lainnya"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Con altri utenti Proton Pass"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სხვა Proton Pass-ის მომხმარებლებთან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 Proton Pass 사용자들과 함께"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Med andre brukere av Proton Pass"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Met andere Proton Pass gebruikers"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cu alți utilizatori Proton Pass"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S ostatnými používateľmi Proton Pass"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Med andra Proton Pass-användare"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diğer Proton Pass kullanıcıları ile"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "З іншими користувачами Proton Pass"
           }
         }
       }
@@ -138004,6 +141844,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İş e-posta adresi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Робоча електронна пошта"
           }
         },
         "vi" : {
@@ -138634,6 +142480,12 @@
             "value" : "Ek parola yanlış"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хибний додатковий пароль"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138780,6 +142632,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton parolası yanlış"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Хибний Proton пароль"
           }
         },
         "vi" : {
@@ -139922,6 +143780,36 @@
               }
             }
           }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся назавжди видалити %lld псевдоніми"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся назавжди видалити %lld псевдонімів"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся назавжди видалити %lld псевдонім"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтеся назавжди видалити %lld псевдоніми"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -140407,6 +144295,36 @@
             }
           }
         },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтесь остаточно видалити %lld елементи. Ви впевнені?"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтесь остаточно видалити %lld елементів. Ви впевнені?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтесь остаточно видалити %lld елемент. Ви впевнені?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ви збираєтесь остаточно видалити %lld елементи. Ви впевнені?"
+                }
+              }
+            }
+          }
+        },
         "vi" : {
           "variations" : {
             "plural" : {
@@ -140881,6 +144799,12 @@
             "value" : "Şu anda herhangi bir güvenli bağlantınız yok"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наразі у вас немає безпечних посилань"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141181,6 +145105,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İki adımlı gizli anahtar (tek kullanımlık parola) kullanan bir oturum açma kaydınız yok"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наразі у вас немає елементів входу із секретним ключем 2FA (TOTP)"
           }
         }
       }
@@ -141966,6 +145896,12 @@
             "value" : "Oluşturabileceğiniz kasa sayısı sınırına ulaştınız. Birkaç kasa oluşturmak için ücretli bir tarifeye yükseltin."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви досягли ліміту сховищ, які можна створити. Перейдіть на платний тарифний план, щоб створювати більше сховищ."
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142119,6 +146055,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yönetebilmek için %@ adresine geçiş yapmalısınız"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Щоб керувати ним, вам потрібно перейти на %@"
           }
         },
         "vi" : {
@@ -142275,6 +146217,12 @@
             "value" : "Oturum açarken ve başka bir Proton uygulamasından Proton Pass internet uygulamasına geçerken sizden bu parola istenir."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Цей пароль буде запитано під час входу в систему та при переході з іншого додатку Proton до Proton Pass на сайті."
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142423,6 +146371,12 @@
             "value" : "Oturumunuz kapatılacak ve diğer tüm aygıtlarınızda yeniden oturum açmanız gerekecek."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви вийдете із системи, і вам доведеться увійти знову на всіх інших пристроях."
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142433,10 +146387,124 @@
     },
     "You will lose access to this item and its details. Do you want to continue?" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы згубіце доступ да гэтага элемента і яго падрабязнасцяў. Вы сапраўды хочаце працягнуць?"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ztratíte přístup k této položce a jejím detailům. Chcete pokračovat?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du vil miste adgang til dette element og dets detaljer. Ønsker du at fortsætte"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Θα χάσετε την πρόσβαση σε αυτό το στοιχείο και τις λεπτομέρειές του. Θέλετε να συνεχίσετε"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You will lose access to this item and its details. Do you want to continue"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perderás el acceso a este artículo y a sus detalles. ¿Deseas continuar?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perderá el acceso a este elemento y a sus detalles. ¿Desea continuar?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menetät pääsyn tähän kohteeseen ja sen tietoihin. Haluatko jatkaa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'aurez plus accès à cet élément et à ses informations. Voulez-vous continuer ?"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda akan kehilangan akses ke item ini beserta dengan seluruh rinciannya. Apakah Anda yakin ingin melanjutkan?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perderai l'accesso a questo elemento e ai suoi dettagli. Vuoi continuare?"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაკარგავთ წვდომას ამ ელემენტთან და მის დეტალებთან. გნებავთ გააგრძელოთ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목과 상세 정보에 대한 접근 권한을 잃게 됩니다. 정말 계속하시겠어요?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du mister tilgangen til dette elementet og dets detaljer. Vil du fortsette?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U zult toegang tot dit item en de bijbehorende gegevens. Wilt u doorgaan"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veți pierde accesul la acest articol și la detaliile sale. Doriți să continuați?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stratíte prístup k tejto položke a jej údajom. Chcete pokračovať?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kommer att förlora åtkomst till detta objekt och dess detaljer. Vill du fortsätta"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ögeye ve ayrıntılarına erişiminizi kaybedeceksiniz. İlerlemek istiyor musunuz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви втратите доступ до цього елемент та його деталей. Ви хочете продовжити?"
           }
         }
       }
@@ -142749,6 +146817,12 @@
             "value" : "%@ adresinin oturumunu kapattınız."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви вийшли з %@"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -142902,6 +146976,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Diğer ücretsiz hesapların oturumunu kapattınız"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви вийшли з інших безплатних облікових записів"
           }
         },
         "vi" : {
@@ -143370,6 +147450,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etki alanınız"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш домен"
           }
         }
       }
@@ -143851,6 +147937,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "E-posta adresiniz en az %lld verilerin ele geçirilmesi olayında açığa çıkmış"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ваша адреса пошти була виявлена в %lld витоках"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ваша адреса пошти була виявлена в %lld витоках"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ваша адреса пошти була виявлена в %lld витоку"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ваша адреса пошти була виявлена в %lld витоках"
                 }
               }
             }
@@ -144650,6 +148766,12 @@
             "state" : "translated",
             "value" : "Tarifeniz otomatik doldurma için yalnızca ilk 2 kasanızdaki ögelerin kullanılmasına izin veriyor."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш тарифний план дозволяє використовувати для автозаповнення лише предмети з перших 2 сховищ."
+          }
         }
       }
     },
@@ -144951,6 +149073,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alıcınız"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш отримувач"
           }
         }
       }
@@ -145580,6 +149708,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Posta kodu"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поштовий індекс"
           }
         },
         "vi" : {
