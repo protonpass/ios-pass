@@ -52,7 +52,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                            title: #localized("Edit"),
                                            titleColor: PassColor.textInvert,
                                            backgroundColor: itemContentType.normMajor1Color,
-                                           isDisabled: !viewModel.isAllowedToEdit || viewModel.isDownloadingFile,
+                                           isDisabled: !viewModel.isAllowedToEdit,
                                            action: { viewModel.edit() })
                     }
 
@@ -123,7 +123,6 @@ struct ItemDetailToolbar: ToolbarContent {
                                      accessibilityLabel: "Item's action Menu")
                     })
                 }
-                .disabled(viewModel.isDownloadingFile)
 
             case .trashed:
                 Menu(content: {
@@ -140,7 +139,7 @@ struct ItemDetailToolbar: ToolbarContent {
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color)
                 })
-                .disabled(!viewModel.isAllowedToEdit || viewModel.isDownloadingFile)
+                .disabled(!viewModel.isAllowedToEdit)
             }
         }
     }

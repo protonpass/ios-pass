@@ -42,7 +42,7 @@ struct FileAttachmentViewerSection: View {
                       })
         .fullScreenCover(isPresented: $url.mappedToBool()) {
             if let url {
-                FileAttachmentPreview(url: url,
+                FileAttachmentPreview(mode: .pending(url),
                                       primaryTintColor: PassColor.interactionNormMajor1,
                                       secondaryTintColor: PassColor.interactionNormMinor2)
             }
