@@ -1969,6 +1969,36 @@
               }
             }
           }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Всі облікові записи (%lld)"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Всі облікові записи (%lld)"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Всі облікові записи (%lld)"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Всі облікові записи (%lld)"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2110,6 +2140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir dosya ekle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вкласти файл"
           }
         }
       }
@@ -2568,6 +2604,12 @@
             "state" : "translated",
             "value" : "Bir dosya seçin"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вибрати файл"
+          }
         }
       }
     },
@@ -2709,6 +2751,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir fotoğraf ya da video seçin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вибрати фото або відео"
           }
         }
       }
@@ -3812,6 +3860,12 @@
             "state" : "translated",
             "value" : "Varsayılan SimpleLogin kasası"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стандартне сховище SimpleLogin"
+          }
         }
       }
     },
@@ -4114,6 +4168,12 @@
             "state" : "translated",
             "value" : "Tümünü sil"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити все"
+          }
         }
       }
     },
@@ -4256,6 +4316,12 @@
             "state" : "translated",
             "value" : "Tüm ek dosyalar silinsin mi?"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити всі вкладення?"
+          }
         }
       }
     },
@@ -4397,6 +4463,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dosya silinsin mi?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалити файл?"
           }
         }
       }
@@ -4699,6 +4771,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SimpleLogin eşitlemesini aç"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увімкнути синхронізацію SimpleLogin"
           }
         }
       }
@@ -7553,6 +7631,12 @@
             "state" : "translated",
             "value" : "Dosyayı yeniden adlandır"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перейменувати файл"
+          }
         }
       }
     },
@@ -7854,6 +7938,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Belgeleri tara"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сканувати документи"
           }
         }
       }
@@ -9446,6 +9536,12 @@
             "value" : "Şuna geç"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перейти до"
+          }
+        },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9599,6 +9695,12 @@
             "state" : "translated",
             "value" : "Takma adları eşitle"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Синхронізувати псевдоніми"
+          }
         }
       }
     },
@@ -9740,6 +9842,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir fotoğraf çekin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зробити фото"
           }
         }
       }
@@ -10043,6 +10151,12 @@
             "state" : "translated",
             "value" : "Bu işlem geri alınamaz"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Цю дію не можна скасувати"
+          }
         }
       }
     },
@@ -10338,6 +10452,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aygıtınızdaki dosyaları yükleyin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вивантажити файли з вашого пристрою"
           }
         }
       }
@@ -10793,6 +10913,36 @@
               }
             }
           }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ми виявили, що у вас є %lld псевдоніми, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ми виявили, що у вас є %lld псевдонімів, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ми виявили, що у вас є %lld псевдонім, який присутній у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ми виявили, що у вас є %lld псевдоніми, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -10928,6 +11078,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Daha iyi bir düzen için ögelere dosyalar ekleyebilirsiniz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви можете прикріплювати файли до елементів для кращої організації"
           }
         }
       }
