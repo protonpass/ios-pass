@@ -103,7 +103,7 @@ public struct FileAttachmentRow: View {
                message: { Text(verbatim: uiModel.name) })
         .fullScreenCover(isPresented: $showFilePreview) {
             if let url = uiModel.url {
-                FileAttachmentPreview(url: url,
+                FileAttachmentPreview(mode: .pending(url),
                                       primaryTintColor: primaryTintColor,
                                       secondaryTintColor: secondaryTintColor)
             }

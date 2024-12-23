@@ -34,7 +34,6 @@ struct ItemDetailSetUpModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .showSpinner(viewModel.isDownloadingFile)
             .tint(tintColor.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
             .navigationBarBackButtonHidden()
@@ -57,17 +56,10 @@ struct ItemDetailSetUpModifier: ViewModifier {
             } message: {
                 Text("You will lose access to this item and its details. Do you want to continue?")
             }
-            .fullScreenCover(item: $viewModel.itemFileAction) { action in
-                switch action {
-                case let .preview(url):
-                    FileAttachmentPreview(url: url,
-                                          primaryTintColor: viewModel.itemContentType.normMajor2Color,
-                                          secondaryTintColor: viewModel.itemContentType.normMinor1Color)
-                case let .save(url):
-                    ExportDocumentView(url: url)
-                case let .share(url):
-                    ActivityView(items: [url])
-                }
+            .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
+                FileAttachmentPreview(mode: mode,
+                                      primaryTintColor: viewModel.itemContentType.normMajor2Color,
+                                      secondaryTintColor: viewModel.itemContentType.normMinor1Color)
             }
             .task {
                 await viewModel.fetchAttachments()
