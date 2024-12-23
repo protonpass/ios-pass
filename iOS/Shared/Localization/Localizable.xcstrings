@@ -81985,6 +81985,16 @@
         }
       }
     },
+    "NEW" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NEW"
+          }
+        }
+      }
+    },
     "New title" : {
       "localizations" : {
         "be" : {
