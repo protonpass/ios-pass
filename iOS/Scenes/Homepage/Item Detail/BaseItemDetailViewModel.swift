@@ -40,8 +40,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
     @Published private(set) var isMonitored = false // Only applicable to login items
     @Published private(set) var files: FetchableObject<[ItemFile]> = .fetching
-    @Published private(set) var isDownloadingFile = false
-    @Published var itemFileAction: ItemFileAction?
+    @Published var filePreviewMode: FileAttachmentPreviewMode?
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
     @Published var showingLeaveShareAlert = false
@@ -402,35 +401,30 @@ extension BaseItemDetailViewModel: FileAttachmentsViewHandler {
     }
 
     func open(_ file: FileAttachmentUiModel) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let url = try await downloadAndDecrypt(file)
-                itemFileAction = .preview(url)
-            } catch {
-                handle(error)
-            }
-        }
+        openPreview(file, postAction: .none)
     }
 
     func save(_ file: FileAttachmentUiModel) {
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let url = try await downloadAndDecrypt(file)
-                itemFileAction = .save(url)
-            } catch {
-                handle(error)
-            }
-        }
+        openPreview(file, postAction: .save)
     }
 
     func share(_ file: FileAttachmentUiModel) {
-        Task { [weak self] in
-            guard let self else { return }
+        openPreview(file, postAction: .share)
+    }
+}
+
+private extension BaseItemDetailViewModel {
+    func openPreview(_ file: FileAttachmentUiModel,
+                     postAction: FileAttachmentPreviewPostDownloadAction) {
+        Task {
             do {
-                let url = try await downloadAndDecrypt(file)
-                itemFileAction = .share(url)
+                guard case let .fetched(files) = files else {
+                    throw PassError.fileAttachment(.failedToDownloadNoFetchedFiles)
+                }
+                guard let file = files.first(where: { $0.fileID == file.id }) else {
+                    throw PassError.fileAttachment(.missingFile(file.id))
+                }
+                filePreviewMode = .item(file, self, postAction)
             } catch {
                 handle(error)
             }
@@ -438,22 +432,13 @@ extension BaseItemDetailViewModel: FileAttachmentsViewHandler {
     }
 }
 
-private extension BaseItemDetailViewModel {
-    func downloadAndDecrypt(_ file: FileAttachmentUiModel) async throws -> URL {
-        guard case let .fetched(files) = files else {
-            throw PassError.fileAttachment(.failedToDownloadNoFetchedFiles)
-        }
-        defer { isDownloadingFile = false }
-        isDownloadingFile = true
-        guard let file = files.first(where: { $0.fileID == file.id }) else {
-            throw PassError.fileAttachment(.missingFile(file.id))
-        }
+extension BaseItemDetailViewModel: FileAttachmentPreviewHandler {
+    func downloadAndDecrypt(file: ItemFile,
+                            progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
         let userId = try await userManager.getActiveUserId()
         return try await downloadAndDecryptFile(userId: userId,
                                                 item: itemContent,
                                                 file: file,
-                                                progress: { progress in
-                                                    print(progress)
-                                                })
+                                                progress: progress)
     }
 }
