@@ -41,6 +41,8 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isMonitored = false // Only applicable to login items
     @Published private(set) var files: FetchableObject<[ItemFile]> = .fetching
     @Published var filePreviewMode: FileAttachmentPreviewMode?
+    @Published var urlToSave: URL?
+    @Published var urlToShare: URL?
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
     @Published var showingLeaveShareAlert = false
@@ -104,6 +106,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
 
     var isAllowedToEdit: Bool {
@@ -424,7 +427,25 @@ private extension BaseItemDetailViewModel {
                 guard let file = files.first(where: { $0.fileID == file.id }) else {
                     throw PassError.fileAttachment(.missingFile(file.id))
                 }
-                filePreviewMode = .item(file, self, postAction)
+
+                let userId = try await userManager.getActiveUserId()
+                let url = try generateFileTempUrl(userId: userId,
+                                                  item: itemContent,
+                                                  file: file)
+                if FileManager.default.fileExists(atPath: url.path()) {
+                    // File already downloaded => open directly
+                    switch postAction {
+                    case .save:
+                        urlToSave = url
+                    case .share:
+                        urlToShare = url
+                    case .none:
+                        filePreviewMode = .item(file, self, postAction)
+                    }
+                } else {
+                    // File not downloaded => open preview page to download
+                    filePreviewMode = .item(file, self, postAction)
+                }
             } catch {
                 handle(error)
             }

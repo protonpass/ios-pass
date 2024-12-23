@@ -565,8 +565,13 @@ extension SharedUseCasesContainer {
         self { FormatFileAttachmentSize() }
     }
 
+    var generateFileTempUrl: Factory<any GenerateFileTempUrlUseCase> {
+        self { GenerateFileTempUrl() }
+    }
+
     var downloadAndDecryptFile: Factory<any DownloadAndDecryptFileUseCase> {
-        self { DownloadAndDecryptFile(keyManager: SharedRepositoryContainer.shared.passKeyManager(),
+        self { DownloadAndDecryptFile(generateFileTempUrl: self.generateFileTempUrl(),
+                                      keyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                       apiService: SharedToolingContainer.shared.apiServiceLite()) }
     }
 
