@@ -106,6 +106,18 @@ private extension ShareElementView {
         }
         .padding()
         .roundedEditableSection()
+        .featureDiscoveryOverlay(feature: .itemSharing, config: .init(alignment: .topTrailing,
+                                                                      offset: CGSize(width: -17, height: -12.5),
+                                                                      shouldHideAfterAction: false)) {
+            Text("NEW")
+                .font(.caption)
+                .foregroundStyle(PassColor.textInvert.toColor)
+                .fontWeight(.medium)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(PassColor.signalInfo.toColor)
+                .cornerRadius(6)
+        }
     }
 }
 
