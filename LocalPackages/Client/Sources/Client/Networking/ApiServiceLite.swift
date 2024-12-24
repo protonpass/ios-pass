@@ -76,10 +76,9 @@ public extension ApiServiceLite {
         let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
 
         uploadProgress
+            .filterValue(by: session)
             .sink { progress in
-                if progress.session == session {
-                    onSendBytes(Int(progress.value))
-                }
+                onSendBytes(Int(progress))
             }
             .store(in: &cancellables)
 
@@ -101,26 +100,23 @@ public extension ApiServiceLite {
         // https://forums.developer.apple.com/forums/thread/738541
         return try await withCheckedThrowingContinuation { continuation in
             downloadProgress
-                .sink { progress in
-                    if progress.session == session {
-                        onDownloadBytes(Int(progress.value))
-                    }
+                .filterValue(by: session)
+                .sink { bytesDownloaded in
+                    onDownloadBytes(Int(bytesDownloaded))
                 }
                 .store(in: &cancellables)
 
             downloadResult
-                .sink { result in
-                    if result.session == session {
-                        continuation.resume(returning: result.value)
-                    }
+                .filterValue(by: session)
+                .sink { url in
+                    continuation.resume(returning: url)
                 }
                 .store(in: &cancellables)
 
             sessionError
+                .filterValue(by: session)
                 .sink { error in
-                    if error.session == session {
-                        continuation.resume(throwing: error.value)
-                    }
+                    continuation.resume(throwing: error)
                 }
                 .store(in: &cancellables)
 
@@ -137,19 +133,19 @@ extension ApiServiceLite: URLSessionDataDelegate, URLSessionDownloadDelegate {
                            didSendBodyData bytesSent: Int64,
                            totalBytesSent: Int64,
                            totalBytesExpectedToSend: Int64) {
-        uploadProgress.send(.init(session: session, value: bytesSent))
+        uploadProgress.send(bytesSent, for: session)
     }
 
     public func urlSession(_ session: URLSession,
                            downloadTask: URLSessionDownloadTask,
                            didFinishDownloadingTo location: URL) {
-        downloadResult.send(.init(session: session, value: location))
+        downloadResult.send(location, for: session)
     }
 
     public func urlSession(_ session: URLSession,
                            didBecomeInvalidWithError error: (any Error)?) {
         if let error {
-            sessionError.send(.init(session: session, value: error))
+            sessionError.send(error, for: session)
         }
     }
 
@@ -157,7 +153,7 @@ extension ApiServiceLite: URLSessionDataDelegate, URLSessionDownloadDelegate {
                            task: URLSessionTask,
                            didCompleteWithError error: (any Error)?) {
         if let error {
-            sessionError.send(.init(session: session, value: error))
+            sessionError.send(error, for: session)
         }
     }
 
@@ -166,7 +162,7 @@ extension ApiServiceLite: URLSessionDataDelegate, URLSessionDownloadDelegate {
                            didWriteData bytesWritten: Int64,
                            totalBytesWritten: Int64,
                            totalBytesExpectedToWrite: Int64) {
-        downloadProgress.send(.init(session: session, value: bytesWritten))
+        downloadProgress.send(bytesWritten, for: session)
     }
 }
 
@@ -182,5 +178,18 @@ private extension ApiServiceLite {
         }
 
         return (url, credential)
+    }
+}
+
+private extension PassthroughSubject where Failure == Never {
+    func send<T: Sendable>(_ value: T, for session: URLSession) where Output == TrackedResult<T> {
+        send(TrackedResult(session: session, value: value))
+    }
+
+    func filterValue<T: Sendable>(by session: URLSession)
+        -> AnyPublisher<T, Never> where Output == TrackedResult<T> {
+        filter { $0.session == session }
+            .map(\.value)
+            .eraseToAnyPublisher()
     }
 }

@@ -47,18 +47,15 @@ public struct FileAttachmentPreview: View {
             case .fetching:
                 ProgressView(value: viewModel.progress,
                              label: {
-                                 if let fileName = viewModel.fileName {
-                                     Label(title: {
+                                 Label(title: {
+                                     if let fileName = viewModel.fileName {
                                          Text(verbatim: fileName)
                                              .foregroundStyle(PassColor.textNorm.toColor)
-                                     }, icon: {
-                                         ProgressView()
-                                             .controlSize(.small)
-                                     })
-                                 } else {
+                                     }
+                                 }, icon: {
                                      ProgressView()
                                          .controlSize(.small)
-                                 }
+                                 })
                              },
                              currentValueLabel: {
                                  Text(verbatim: "\(Int(viewModel.progress * 100))%")
@@ -110,8 +107,8 @@ private extension FileAttachmentPreview {
         }
 
         ToolbarItem(placement: .principal) {
-            if case let .fetched(url) = viewModel.url {
-                Text(verbatim: url.lastPathComponent)
+            if let fileName = viewModel.fileName {
+                Text(verbatim: fileName)
                     .lineLimit(1)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .fontWeight(.medium)
