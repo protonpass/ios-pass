@@ -20,28 +20,20 @@
 //
 
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct FileAttachmentPreview: View {
     @Environment(\.dismiss) private var dismiss
-    @State private var sheet: Sheet?
-    let url: URL
+    @StateObject private var viewModel: FileAttachmentPreviewModel
     let primaryTintColor: UIColor
     let secondaryTintColor: UIColor
 
-    private enum Sheet: String, Identifiable {
-        case save, share
-
-        var id: String {
-            rawValue
-        }
-    }
-
-    public init(url: URL,
+    public init(mode: FileAttachmentPreviewMode,
                 primaryTintColor: UIColor,
                 secondaryTintColor: UIColor) {
-        self.url = url
+        _viewModel = .init(wrappedValue: .init(mode: mode))
         self.primaryTintColor = primaryTintColor
         self.secondaryTintColor = secondaryTintColor
     }
@@ -50,20 +42,53 @@ public struct FileAttachmentPreview: View {
         ZStack {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
-            QuickLookPreview(url: url)
-                .padding(.top, 8)
-                .ignoresSafeArea(edges: .bottom)
+
+            switch viewModel.url {
+            case .fetching:
+                ProgressView(value: viewModel.progress,
+                             label: {
+                                 Label(title: {
+                                     if let fileName = viewModel.fileName {
+                                         Text(verbatim: fileName)
+                                             .foregroundStyle(PassColor.textNorm.toColor)
+                                     }
+                                 }, icon: {
+                                     ProgressView()
+                                         .controlSize(.small)
+                                 })
+                             },
+                             currentValueLabel: {
+                                 Text(verbatim: "\(Int(viewModel.progress * 100))%")
+                                     .foregroundStyle(PassColor.textWeak.toColor)
+                             })
+                             .tint(primaryTintColor.toColor)
+                             .padding()
+
+            case let .fetched(url):
+                QuickLookPreview(url: url)
+                    .padding(.top, 8)
+                    .ignoresSafeArea(edges: .bottom)
+
+            case let .error(error):
+                RetryableErrorView(tintColor: primaryTintColor,
+                                   errorMessage: error.localizedDescription,
+                                   onRetry: { Task { await viewModel.fetchFile() } })
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .tint(primaryTintColor.toColor)
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.inline)
+        .animation(.default, value: viewModel.url)
         .navigationStackEmbeded()
-        .sheet(item: $sheet) { sheet in
-            switch sheet {
-            case .save:
+        .task { await viewModel.fetchFile() }
+        .sheet(isPresented: $viewModel.urlToSave.mappedToBool()) {
+            if let url = viewModel.urlToSave {
                 ExportDocumentView(url: url)
-            case .share:
+            }
+        }
+        .sheet(isPresented: $viewModel.urlToShare.mappedToBool()) {
+            if let url = viewModel.urlToShare {
                 ActivityView(items: [url])
             }
         }
@@ -82,25 +107,29 @@ private extension FileAttachmentPreview {
         }
 
         ToolbarItem(placement: .principal) {
-            Text(verbatim: url.lastPathComponent)
-                .lineLimit(1)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .fontWeight(.medium)
+            if let fileName = viewModel.fileName {
+                Text(verbatim: fileName)
+                    .lineLimit(1)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .fontWeight(.medium)
+            }
         }
 
         ToolbarItem(placement: .topBarTrailing) {
-            Menu(content: {
-                LabelButton(title: "Save",
-                            icon: IconProvider.arrowDownCircle,
-                            action: { sheet = .save })
-                LabelButton(title: "Share",
-                            icon: IconProvider.arrowUpFromSquare,
-                            action: { sheet = .share })
-            }, label: {
-                CircleButton(icon: IconProvider.threeDotsVertical,
-                             iconColor: primaryTintColor,
-                             backgroundColor: secondaryTintColor)
-            })
+            if case let .fetched(url) = viewModel.url {
+                Menu(content: {
+                    LabelButton(title: "Save",
+                                icon: IconProvider.arrowDownCircle,
+                                action: { viewModel.urlToSave = url })
+                    LabelButton(title: "Share",
+                                icon: IconProvider.arrowUpFromSquare,
+                                action: { viewModel.urlToShare = url })
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: primaryTintColor,
+                                 backgroundColor: secondaryTintColor)
+                })
+            }
         }
     }
 }

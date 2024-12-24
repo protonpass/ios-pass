@@ -65,20 +65,3 @@ public struct FileChunk: Decodable, Sendable, Equatable {
     public let index: Int
     public let size: Int
 }
-
-public enum ItemFileAction: Sendable, Identifiable {
-    case preview(URL)
-    case save(URL)
-    case share(URL)
-
-    public var id: String {
-        switch self {
-        case let .preview(url):
-            "preview" + url.path()
-        case let .save(url):
-            "save" + url.path()
-        case let .share(url):
-            "share" + url.path()
-        }
-    }
-}

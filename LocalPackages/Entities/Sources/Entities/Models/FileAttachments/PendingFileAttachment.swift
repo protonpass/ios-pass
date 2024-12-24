@@ -27,8 +27,7 @@ public struct PendingFileAttachment: Sendable, Equatable, Identifiable {
     public var remoteId: String?
     /// Random AES256-GCM key
     public let key: Data
-    public var encryptedData: Data?
-    public var uploadState: FileAttachmentUploadState = .uploading
+    public var uploadState: FileAttachmentUploadState = .uploading(0.0)
     public var metadata: Metadata
 
     public init(id: String, key: Data, metadata: Metadata) {
