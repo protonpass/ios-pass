@@ -28,7 +28,6 @@ public extension PassError {
         case noDataForChunk(String)
         case noChunkId(String)
         case failedToProcessPickedPhotos
-        case failedToEncryptMetadata
         case failedToEncryptFile
         case failedToUploadMissingRemoteId
         case failedToUploadMissingEncryptedData
@@ -36,7 +35,6 @@ public extension PassError {
         case failedToDownloadMissingDecryptedFileKey(String)
         case failedToDownloadNoFetchedFiles
         case failedToAttachMissingRemoteId
-        case failedToAttachMissingEncryptedFileKey
         case failedToCreateFileOnFileSystem
         case failedToUpdateMissingMimeType
         case failedToUpload(Int)
@@ -56,8 +54,6 @@ public extension PassError {
                 "No chunk ID for file \(fileId)"
             case .failedToProcessPickedPhotos:
                 "Failed to process picked photos"
-            case .failedToEncryptMetadata:
-                "Failed to encrypt metadata"
             case .failedToEncryptFile:
                 "Failed to encrypt file"
             case .failedToUploadMissingRemoteId:
@@ -72,8 +68,6 @@ public extension PassError {
                 "Failed to download because of missing fetched files"
             case .failedToAttachMissingRemoteId:
                 "Failed to attach file to an item because of missing remote ID"
-            case .failedToAttachMissingEncryptedFileKey:
-                "Failed to attach file to an item because of missing encrypted file key"
             case .failedToCreateFileOnFileSystem:
                 "Failed to create file on filesystem"
             case .failedToUpdateMissingMimeType:

@@ -902,8 +902,7 @@ private extension ItemRepository {
                 let encryptedItemKey = try AES.GCM.seal(itemKey.keyData,
                                                         key: destinationShareKey.keyData,
                                                         associatedData: .itemKey)
-                let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
-                encryptedItemKeys.append(.init(key: encryptedItemKeyData.base64EncodedString(),
+                encryptedItemKeys.append(.init(key: encryptedItemKey.base64EncodedString(),
                                                keyRotation: itemKey.keyRotation))
             }
             itemsToBeMoved.append(.init(itemId: item.itemId,

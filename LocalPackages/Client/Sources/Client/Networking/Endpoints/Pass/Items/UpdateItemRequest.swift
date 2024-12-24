@@ -43,17 +43,13 @@ public extension UpdateItemRequest {
          key: Data,
          keyRotation: Int64,
          itemContent: any ProtobufableItemContentProtocol) throws {
-        let sealedBox = try AES.GCM.seal(itemContent.data(),
-                                         key: key,
-                                         associatedData: .itemContent)
-
-        guard let updatedContent = sealedBox.combined?.base64EncodedString() else {
-            throw PassError.crypto(.failedToAESEncrypt)
-        }
+        let updatedContent = try AES.GCM.seal(itemContent.data(),
+                                              key: key,
+                                              associatedData: .itemContent)
 
         self.init(keyRotation: keyRotation,
                   lastRevision: oldRevision.revision,
-                  content: updatedContent,
+                  content: updatedContent.base64EncodedString(),
                   contentFormatVersion: Int16(Constants.ContentFormatVersion.item))
     }
 }
