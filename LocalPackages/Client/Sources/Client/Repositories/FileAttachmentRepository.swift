@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import CryptoKit
 import Entities
@@ -64,6 +65,8 @@ public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
     private let apiServiceLite: any ApiServiceLiteProtocol
     private let keyManager: any PassKeyManagerProtocol
 
+    private var cancellables = Set<AnyCancellable>()
+
     public init(localItemDatasource: any LocalItemDatasourceProtocol,
                 remoteFileDatasource: any RemoteFileDatasourceProtocol,
                 apiServiceLite: any ApiServiceLiteProtocol,
@@ -97,6 +100,14 @@ public extension FileAttachmentRepository {
         let fileSize = max(1, file.metadata.size)
         let path = "/pass/v1/file/\(remoteId)/chunk"
 
+        let bytesSentSubject = PassthroughSubject<Int, Never>()
+        bytesSentSubject
+            .sink { bytesSent in
+                totalBytesSent += bytesSent
+                progress(Float(totalBytesSent) / Float(fileSize))
+            }
+            .store(in: &cancellables)
+
         let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
             guard let self,
                   let encryptedData = try AES.GCM.seal(blockData.value,
@@ -116,8 +127,7 @@ public extension FileAttachmentRepository {
                 try await apiServiceLite.uploadMultipart(path: path,
                                                          userId: userId,
                                                          infos: infos) { bytesSent in
-                    totalBytesSent += bytesSent
-                    progress(Float(totalBytesSent) / Float(fileSize))
+                    bytesSentSubject.send(bytesSent)
                 }
 
             if !response.isSuccesful {
