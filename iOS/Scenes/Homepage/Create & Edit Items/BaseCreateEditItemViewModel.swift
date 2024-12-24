@@ -712,23 +712,16 @@ private extension BaseCreateEditItemViewModel {
         file.remoteId = remoteFile.fileID
         files.upsert(file)
 
-        let progressSubject = PassthroughSubject<Float, Never>()
-        progressSubject
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] progress in
-                guard let self else { return }
-                if progress >= 1 {
-                    file.uploadState = .uploaded
-                } else {
-                    file.uploadState = .uploading(progress)
-                }
-                files.upsert(file)
+        try await fileRepository.uploadFile(userId: userId, file: file) { [weak self] progress in
+            guard let self else { return }
+            if progress >= 1 {
+                file.uploadState = .uploaded
+            } else {
+                file.uploadState = .uploading(progress)
             }
-            .store(in: &cancellables)
-
-        try await fileRepository.uploadFile(userId: userId, file: file) { progress in
-            progressSubject.send(progress)
+            files.upsert(file)
         }
+
         file.uploadState = .uploaded
         files.upsert(file)
     }

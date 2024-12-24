@@ -19,13 +19,12 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Combine
 import Entities
 import Foundation
 
 public protocol FileAttachmentPreviewHandler: Sendable {
     func downloadAndDecrypt(file: ItemFile,
-                            progress: @Sendable @escaping (Float) -> Void) async throws -> URL
+                            progress: @MainActor @escaping (Float) -> Void) async throws -> URL
 }
 
 public enum FileAttachmentPreviewPostDownloadAction: String, Identifiable, Sendable {
@@ -66,8 +65,6 @@ final class FileAttachmentPreviewModel: ObservableObject {
         }
     }
 
-    private var cancellables = Set<AnyCancellable>()
-
     init(mode: FileAttachmentPreviewMode) {
         self.mode = mode
     }
@@ -85,17 +82,9 @@ extension FileAttachmentPreviewModel {
                     url = .fetching
                 }
 
-                let progressUpdate = PassthroughSubject<Float, Never>()
-                progressUpdate
-                    .receive(on: DispatchQueue.main)
-                    .sink { [weak self] progress in
-                        guard let self else { return }
-                        self.progress = progress
-                    }
-                    .store(in: &cancellables)
-
-                let url = try await handler.downloadAndDecrypt(file: itemFile) { progress in
-                    progressUpdate.send(progress)
+                let url = try await handler.downloadAndDecrypt(file: itemFile) { [weak self] newProgress in
+                    guard let self else { return }
+                    progress = newProgress
                 }
                 self.url = .fetched(url)
 
