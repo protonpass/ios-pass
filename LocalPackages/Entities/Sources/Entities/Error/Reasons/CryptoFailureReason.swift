@@ -27,7 +27,6 @@ public extension PassError {
         case failedToUnarmor(String)
         case failedToArmor(String)
         case failedToBase64Decode
-        case failedToBase64Encode
         case failedToGetFingerprint
         case failedToGenerateKeyRing
         case failedToEncrypt
@@ -57,8 +56,6 @@ public extension PassError {
                 "Failed to armor \(string)"
             case .failedToBase64Decode:
                 "Failed to base 64 decode"
-            case .failedToBase64Encode:
-                "Failed to base 64 encode"
             case .failedToGetFingerprint:
                 "Failed to get fingerprint"
             case .failedToGenerateKeyRing:
