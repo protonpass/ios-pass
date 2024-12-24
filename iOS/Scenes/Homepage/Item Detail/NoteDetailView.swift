@@ -99,7 +99,7 @@ struct NoteDetailView: View {
                         case let .error(error):
                             RetryableErrorView(mode: .defaultHorizontal,
                                                tintColor: PassColor.noteInteractionNormMajor2,
-                                               errorMessage: error.localizedDescription,
+                                               error: error,
                                                onRetry: viewModel.retryFetchingAttachments)
                                 .padding(.top, 16)
                         }

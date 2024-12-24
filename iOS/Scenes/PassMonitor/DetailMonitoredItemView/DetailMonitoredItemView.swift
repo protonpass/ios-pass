@@ -43,7 +43,7 @@ struct DetailMonitoredItemView: View {
             case let .fetched(uiModel):
                 content(uiModel)
             case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
+                RetryableErrorView(error: error,
                                    onRetry: { Task { await viewModel.fetchData() } })
             }
         }
