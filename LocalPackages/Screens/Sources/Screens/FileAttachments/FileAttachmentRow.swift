@@ -137,9 +137,8 @@ private extension FileAttachmentRow {
             Spacer()
 
             switch uiModel.state {
-            case let .uploading(progress):
-                ProgressView(value: progress)
-                    .progressViewStyle(.circular)
+            case .uploading:
+                ProgressView()
 
             case .uploaded:
                 Menu(content: {
