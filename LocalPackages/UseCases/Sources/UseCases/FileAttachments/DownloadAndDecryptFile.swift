@@ -20,7 +20,6 @@
 //
 
 import Client
-import Combine
 import Core
 import CryptoKit
 import Entities
@@ -30,14 +29,14 @@ public protocol DownloadAndDecryptFileUseCase: Sendable {
     func execute(userId: String,
                  item: any ItemIdentifiable,
                  file: ItemFile,
-                 progress: @Sendable @escaping (Float) -> Void) async throws -> URL
+                 progress: @MainActor @escaping (Float) -> Void) async throws -> URL
 }
 
 public extension DownloadAndDecryptFileUseCase {
     func callAsFunction(userId: String,
                         item: any ItemIdentifiable,
                         file: ItemFile,
-                        progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
+                        progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
         try await execute(userId: userId, item: item, file: file, progress: progress)
     }
 }
@@ -46,8 +45,6 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
     private let generateFileTempUrl: any GenerateFileTempUrlUseCase
     private let keyManager: any PassKeyManagerProtocol
     private let apiService: any ApiServiceLiteProtocol
-
-    private var cancellables = Set<AnyCancellable>()
 
     public init(generateFileTempUrl: any GenerateFileTempUrlUseCase,
                 keyManager: any PassKeyManagerProtocol,
@@ -60,7 +57,7 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
     public func execute(userId: String,
                         item: any ItemIdentifiable,
                         file: ItemFile,
-                        progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
+                        progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
         let fileManager = FileManager.default
         let url = try generateFileTempUrl(userId: userId, item: item, file: file)
         if fileManager.fileExists(atPath: url.path()) {
@@ -93,23 +90,17 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
         let fileHandle = try FileHandle(forWritingTo: url)
         defer { try? fileHandle.close() }
 
-        var totalBytesDownloaded = 0
+        let progressTracker = UploadProgressTracker()
         let fileSize = max(1, file.size)
-
-        let bytesDownloadedSubject = PassthroughSubject<Int, Never>()
-        bytesDownloadedSubject
-            .sink { bytesDownloaded in
-                totalBytesDownloaded += bytesDownloaded
-                progress(Float(totalBytesDownloaded) / Float(fileSize))
-            }
-            .store(in: &cancellables)
 
         for chunk in file.chunks {
             let path =
                 "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
             let encryptedUrl = try await apiService.download(path: path,
                                                              userId: userId) { bytesDownloaded in
-                bytesDownloadedSubject.send(bytesDownloaded)
+                progressTracker.updateProgress(bytesSent: bytesDownloaded,
+                                               fileSize: fileSize,
+                                               progress: progress)
             }
             let encryptedData = try Data(contentsOf: encryptedUrl)
             let decrypted = try AES.GCM.open(encryptedData,

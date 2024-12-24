@@ -30,7 +30,7 @@ import Foundation
 private struct UploadMultipartResponse: Decodable {
     let code: Int
 
-    var isSuccesful: Bool {
+    var isSuccessful: Bool {
         code == 1_000
     }
 
@@ -44,7 +44,7 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
                            file: PendingFileAttachment) async throws -> RemotePendingFile
     func uploadFile(userId: String,
                     file: PendingFileAttachment,
-                    progress: @Sendable @escaping (Float) -> Void) async throws
+                    progress: @MainActor @escaping (Float) -> Void) async throws
     func updatePendingFileName(userId: String,
                                file: PendingFileAttachment,
                                newName: String) async throws -> Bool
@@ -78,6 +78,19 @@ public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
     }
 }
 
+@MainActor
+public final class UploadProgressTracker {
+    private var totalBytesSent: Int = 0
+
+    public nonisolated init() {}
+
+    public func updateProgress(bytesSent: Int, fileSize: Int, progress: @escaping (Float) -> Void) {
+        totalBytesSent += bytesSent
+        let progressValue = Float(totalBytesSent) / Float(fileSize)
+        progress(progressValue)
+    }
+}
+
 public extension FileAttachmentRepository {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile {
@@ -90,23 +103,16 @@ public extension FileAttachmentRepository {
 
     func uploadFile(userId: String,
                     file: PendingFileAttachment,
-                    progress: @Sendable @escaping (Float) -> Void) async throws {
+                    progress: @MainActor @escaping (Float) -> Void) async throws {
         guard let remoteId = file.remoteId else {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }
 
-        var totalBytesSent = 0
-        // Make sure file size is not 0 to avoid crash (can not divide by 0)
-        let fileSize = max(1, file.metadata.size)
-        let path = "/pass/v1/file/\(remoteId)/chunk"
+        let progressTracker = UploadProgressTracker()
 
-        let bytesSentSubject = PassthroughSubject<Int, Never>()
-        bytesSentSubject
-            .sink { bytesSent in
-                totalBytesSent += bytesSent
-                progress(Float(totalBytesSent) / Float(fileSize))
-            }
-            .store(in: &cancellables)
+        // Make sure file size is not 0 to avoid crash (can not divide by 0)
+        let fileSize = max(1, Int(file.metadata.size))
+        let path = "/pass/v1/file/\(remoteId)/chunk"
 
         let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
             guard let self,
@@ -127,10 +133,10 @@ public extension FileAttachmentRepository {
                 try await apiServiceLite.uploadMultipart(path: path,
                                                          userId: userId,
                                                          infos: infos) { bytesSent in
-                    bytesSentSubject.send(bytesSent)
+                    progressTracker.updateProgress(bytesSent: bytesSent, fileSize: fileSize, progress: progress)
                 }
 
-            if !response.isSuccesful {
+            if !response.isSuccessful {
                 throw PassError.fileAttachment(.failedToUpload(response.code))
             }
         }

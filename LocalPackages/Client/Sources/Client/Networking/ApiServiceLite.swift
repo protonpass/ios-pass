@@ -30,11 +30,11 @@ public protocol ApiServiceLiteProtocol: Sendable {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
                                        infos: [MultipartInfo],
-                                       onSendBytes: @Sendable @escaping (Int) -> Void) async throws -> R
+                                       onSendBytes: @MainActor @escaping (Int) -> Void) async throws -> R
 
     func download(path: String,
                   userId: String,
-                  onDownloadBytes: @Sendable @escaping (Int) -> Void) async throws -> URL
+                  onDownloadBytes: @MainActor @escaping (Int) -> Void) async throws -> URL
 }
 
 private struct TrackedResult<T: Sendable>: Sendable {
@@ -69,7 +69,7 @@ public extension ApiServiceLite {
     func uploadMultipart<R: Decodable & Sendable>(path: String,
                                                   userId: String,
                                                   infos: [MultipartInfo],
-                                                  onSendBytes: @Sendable @escaping (Int) -> Void) async throws
+                                                  onSendBytes: @MainActor @escaping (Int) -> Void) async throws
         -> R {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
@@ -79,8 +79,9 @@ public extension ApiServiceLite {
                                  appVersion: appVersion)
         uploadProgress
             .filterValue(by: request)
-            .sink { progress in
-                onSendBytes(Int(progress))
+            .sink { [weak self] progress in
+                guard let self else { return }
+                updateProgress(progress: progress, onSendBytes)
             }
             .store(in: &cancellables)
 
@@ -90,7 +91,7 @@ public extension ApiServiceLite {
 
     func download(path: String,
                   userId: String,
-                  onDownloadBytes: @Sendable @escaping (Int) -> Void) async throws -> URL {
+                  onDownloadBytes: @MainActor @escaping (Int) -> Void) async throws -> URL {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
                                  path: path,
@@ -102,8 +103,9 @@ public extension ApiServiceLite {
         return try await withCheckedThrowingContinuation { continuation in
             downloadProgress
                 .filterValue(by: request)
-                .sink { bytesDownloaded in
-                    onDownloadBytes(Int(bytesDownloaded))
+                .sink { [weak self] bytesDownloaded in
+                    guard let self else { return }
+                    updateProgress(progress: bytesDownloaded, onDownloadBytes)
                 }
                 .store(in: &cancellables)
 
@@ -124,6 +126,13 @@ public extension ApiServiceLite {
             let task = session.downloadTask(with: request)
             task.delegate = self
             task.resume()
+        }
+    }
+
+    private nonisolated func updateProgress(progress: Int64,
+                                            _ onProgress: @MainActor @escaping (Int) -> Void) {
+        Task { @MainActor in
+            onProgress(Int(progress))
         }
     }
 }
