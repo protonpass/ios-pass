@@ -51,7 +51,7 @@ private struct ItemReadEventsView: View {
     var body: some View {
         ZStack {
             if let error = viewModel.error {
-                RetryableErrorView(errorMessage: error.localizedDescription,
+                RetryableErrorView(error: error,
                                    onRetry: { Task { await viewModel.loadEvents() } })
             } else {
                 if viewModel.uiModels.isEmpty {

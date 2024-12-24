@@ -49,7 +49,7 @@ private extension FullSyncProgressView {
     var realBody: some View {
         ZStack {
             if let error = viewModel.error {
-                RetryableErrorView(errorMessage: error.localizedDescription, onRetry: retry)
+                RetryableErrorView(error: error, onRetry: retry)
                     .padding()
             } else {
                 VStack {

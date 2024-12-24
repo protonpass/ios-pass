@@ -71,7 +71,7 @@ public struct FileAttachmentsViewSection: View {
                     if let fetchError {
                         RetryableErrorView(mode: .defaultHorizontal,
                                            tintColor: handler.fileAttachmentsSectionPrimaryColor,
-                                           errorMessage: fetchError.localizedDescription,
+                                           error: fetchError,
                                            onRetry: handler.retryFetchingAttachments)
                     }
 

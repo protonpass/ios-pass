@@ -207,7 +207,7 @@ struct AliasDetailView: View {
                 if let error = viewModel.error {
                     RetryableErrorView(mode: .defaultHorizontal,
                                        tintColor: iconTintColor,
-                                       errorMessage: error.localizedDescription,
+                                       error: error,
                                        onRetry: viewModel.refresh)
                 } else {
                     Text("Forwarding to")
