@@ -36,15 +36,17 @@ public enum FileAttachment: Sendable, Equatable, Identifiable {
 }
 
 public enum FileAttachmentUploadState: Sendable, Equatable {
-    case uploading
+    /// Upload progress as associated value. From 0.0 to 1.0
+    case uploading(Float)
     case uploaded
     case error(any Error)
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.uploaded, .uploaded),
-             (.uploading, .uploading):
+        case (.uploaded, .uploaded):
             true
+        case let (.uploading(lProgress), .uploading(rProgress)):
+            lProgress == rProgress
         case let (.error(lError), .error(rError)):
             lError.localizedDescription == rError.localizedDescription
         default:
@@ -87,18 +89,18 @@ public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
 
 public extension [FileAttachment] {
     mutating func upsert(_ file: PendingFileAttachment) {
-        guard let index = firstIndex(where: { $0.id == file.id }) else {
+        if let index = firstIndex(where: { $0.id == file.id }) {
+            self[index] = .pending(file)
+        } else {
             append(.pending(file))
-            return
         }
-        self[index] = .pending(file)
     }
 
     mutating func upsert(_ file: ItemFile) {
-        guard let index = firstIndex(where: { $0.id == file.fileID }) else {
+        if let index = firstIndex(where: { $0.id == file.fileID }) {
+            self[index] = .item(file)
+        } else {
             append(.item(file))
-            return
         }
-        self[index] = .item(file)
     }
 }

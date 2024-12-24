@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Core
 import CryptoKit
 import Entities
@@ -29,7 +30,7 @@ import Foundation
 private struct UploadMultipartResponse: Decodable {
     let code: Int
 
-    var isSuccesful: Bool {
+    var isSuccessful: Bool {
         code == 1_000
     }
 
@@ -41,7 +42,9 @@ private struct UploadMultipartResponse: Decodable {
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
-    func uploadChunk(userId: String, file: PendingFileAttachment) async throws
+    func uploadFile(userId: String,
+                    file: PendingFileAttachment,
+                    progress: @MainActor @escaping (Float) -> Void) async throws
     func updatePendingFileName(userId: String,
                                file: PendingFileAttachment,
                                newName: String) async throws -> Bool
@@ -62,6 +65,8 @@ public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
     private let apiServiceLite: any ApiServiceLiteProtocol
     private let keyManager: any PassKeyManagerProtocol
 
+    private var cancellables = Set<AnyCancellable>()
+
     public init(localItemDatasource: any LocalItemDatasourceProtocol,
                 remoteFileDatasource: any RemoteFileDatasourceProtocol,
                 apiServiceLite: any ApiServiceLiteProtocol,
@@ -70,6 +75,19 @@ public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
         self.remoteFileDatasource = remoteFileDatasource
         self.apiServiceLite = apiServiceLite
         self.keyManager = keyManager
+    }
+}
+
+@MainActor
+public final class UploadProgressTracker {
+    private var totalBytesSent: Int = 0
+
+    public nonisolated init() {}
+
+    public func updateProgress(bytesSent: Int, fileSize: Int, progress: @escaping (Float) -> Void) {
+        totalBytesSent += bytesSent
+        let progressValue = Float(totalBytesSent) / Float(fileSize)
+        progress(progressValue)
     }
 }
 
@@ -83,33 +101,49 @@ public extension FileAttachmentRepository {
                                                                 metadata: metadata)
     }
 
-    func uploadChunk(userId: String, file: PendingFileAttachment) async throws {
+    func uploadFile(userId: String,
+                    file: PendingFileAttachment,
+                    progress: @MainActor @escaping (Float) -> Void) async throws {
         guard let remoteId = file.remoteId else {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }
 
-        guard let encryptedData = file.encryptedData else {
-            throw PassError.fileAttachment(.failedToUploadMissingEncryptedData)
+        let progressTracker = UploadProgressTracker()
+
+        // Make sure file size is not 0 to avoid crash (can not divide by 0)
+        let fileSize = max(1, Int(file.metadata.size))
+        let path = "/pass/v1/file/\(remoteId)/chunk"
+
+        let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
+            guard let self,
+                  let encryptedData = try AES.GCM.seal(blockData.value,
+                                                       key: file.key,
+                                                       associatedData: .fileData).combined else {
+                throw PassError.fileAttachment(.failedToEncryptFile)
+            }
+            let infos: [MultipartInfo] = [
+                .init(name: "ChunkIndex", data: blockData.index.toAsciiData),
+                .init(name: "ChunkData",
+                      fileName: "no-op", // Not used by the BE but required
+                      contentType: "application/octet-stream",
+                      data: encryptedData)
+            ]
+
+            let response: UploadMultipartResponse =
+                try await apiServiceLite.uploadMultipart(path: path,
+                                                         userId: userId,
+                                                         infos: infos) { bytesSent in
+                    progressTracker.updateProgress(bytesSent: bytesSent, fileSize: fileSize, progress: progress)
+                }
+
+            if !response.isSuccessful {
+                throw PassError.fileAttachment(.failedToUpload(response.code))
+            }
         }
 
-        // 48 is the ASCII code of 0, we want to pass ChunkIndex as integer data
-        // converting to UTF8 string doesn't work
-        let zero = Data([48])
-        let infos: [MultipartInfo] = [
-            .init(name: "ChunkIndex", data: zero),
-            .init(name: "ChunkData",
-                  fileName: "no-op", // Not used by the BE but required
-                  contentType: "application/octet-stream",
-                  data: encryptedData)
-        ]
-
-        let response: UploadMultipartResponse =
-            try await apiServiceLite.uploadMultipart(path: "/pass/v1/file/\(remoteId)/chunk",
-                                                     userId: userId,
-                                                     infos: infos)
-        if !response.isSuccesful {
-            throw PassError.fileAttachment(.failedToUpload(response.code))
-        }
+        try await FileUtils.processBlockByBlock(file.metadata.url,
+                                                blockSizeInBytes: Constants.Utils.maxChunkSizeInBytes,
+                                                process: process)
     }
 
     func updatePendingFileName(userId: String,

@@ -148,7 +148,6 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.getMimeType) private var getMimeType
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
-    @LazyInjected(\SharedUseCasesContainer.encryptFile) private var encryptFile
     @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
 
     var fileAttachmentsEnabled: Bool {
@@ -704,21 +703,25 @@ private extension BaseCreateEditItemViewModel {
     func createEncryptAndUpload(_ file: PendingFileAttachment) async throws {
         var file = file
 
-        file.uploadState = .uploading
+        file.uploadState = .uploading(0.0)
         files.upsert(file)
 
         let userId = try await userManager.getActiveUserId()
         let remoteFile = try await fileRepository.createPendingFile(userId: userId,
                                                                     file: file)
         file.remoteId = remoteFile.fileID
-
-        if file.encryptedData == nil {
-            file.encryptedData = try await encryptFile(key: file.key, sourceUrl: file.metadata.url)
-        }
-
         files.upsert(file)
 
-        try await fileRepository.uploadChunk(userId: userId, file: file)
+        try await fileRepository.uploadFile(userId: userId, file: file) { [weak self] progress in
+            guard let self else { return }
+            if progress >= 1 {
+                file.uploadState = .uploaded
+            } else {
+                file.uploadState = .uploading(progress)
+            }
+            files.upsert(file)
+        }
+
         file.uploadState = .uploaded
         files.upsert(file)
     }

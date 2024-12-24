@@ -565,18 +565,14 @@ extension SharedUseCasesContainer {
         self { FormatFileAttachmentSize() }
     }
 
-    var encryptFile: Factory<any EncryptFileUseCase> {
-        self { EncryptFile() }
-    }
-
-    var decryptFile: Factory<any DecryptFileUseCase> {
-        self { DecryptFile() }
+    var generateFileTempUrl: Factory<any GenerateFileTempUrlUseCase> {
+        self { GenerateFileTempUrl() }
     }
 
     var downloadAndDecryptFile: Factory<any DownloadAndDecryptFileUseCase> {
-        self { DownloadAndDecryptFile(keyManager: SharedRepositoryContainer.shared.passKeyManager(),
-                                      remoteDatasource: SharedRepositoryContainer.shared.remoteFileDatasource(),
-                                      decryptFile: self.decryptFile()) }
+        self { DownloadAndDecryptFile(generateFileTempUrl: self.generateFileTempUrl(),
+                                      keyManager: SharedRepositoryContainer.shared.passKeyManager(),
+                                      apiService: SharedToolingContainer.shared.apiServiceLite()) }
     }
 
     var getFilesToLink: Factory<any GetFilesToLinkUseCase> {
