@@ -20,6 +20,7 @@
 //
 
 import Client
+import Combine
 import Core
 import CryptoKit
 import Entities
@@ -45,6 +46,8 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
     private let generateFileTempUrl: any GenerateFileTempUrlUseCase
     private let keyManager: any PassKeyManagerProtocol
     private let apiService: any ApiServiceLiteProtocol
+
+    private var cancellables = Set<AnyCancellable>()
 
     public init(generateFileTempUrl: any GenerateFileTempUrlUseCase,
                 keyManager: any PassKeyManagerProtocol,
@@ -93,13 +96,20 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
         var totalBytesDownloaded = 0
         let fileSize = max(1, file.size)
 
+        let bytesDownloadedSubject = PassthroughSubject<Int, Never>()
+        bytesDownloadedSubject
+            .sink { bytesDownloaded in
+                totalBytesDownloaded += bytesDownloaded
+                progress(Float(totalBytesDownloaded) / Float(fileSize))
+            }
+            .store(in: &cancellables)
+
         for chunk in file.chunks {
             let path =
                 "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
             let encryptedUrl = try await apiService.download(path: path,
                                                              userId: userId) { bytesDownloaded in
-                totalBytesDownloaded += bytesDownloaded
-                progress(Float(totalBytesDownloaded) / Float(fileSize))
+                bytesDownloadedSubject.send(bytesDownloaded)
             }
             let encryptedData = try Data(contentsOf: encryptedUrl)
             let decrypted = try AES.GCM.open(encryptedData,

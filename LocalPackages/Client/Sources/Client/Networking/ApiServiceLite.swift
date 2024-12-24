@@ -30,19 +30,22 @@ public protocol ApiServiceLiteProtocol: Sendable {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
                                        infos: [MultipartInfo],
-                                       onSendBytes: @escaping (Int) -> Void) async throws -> R
+                                       onSendBytes: @Sendable @escaping (Int) -> Void) async throws -> R
 
     func download(path: String,
                   userId: String,
-                  onDownloadBytes: @escaping (Int) -> Void) async throws -> URL
+                  onDownloadBytes: @Sendable @escaping (Int) -> Void) async throws -> URL
 }
 
 private struct TrackedResult<T: Sendable>: Sendable {
-    let session: URLSession
+    let request: URLRequest?
     let value: T
 }
 
-public final class ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
+public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
+    private lazy var session = URLSession(configuration: .default,
+                                          delegate: self,
+                                          delegateQueue: nil)
     private let appVersion: String
     private let doh: any DoHInterface
     private let authManager: any AuthManagerProtocol
@@ -63,20 +66,19 @@ public final class ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrint
 }
 
 public extension ApiServiceLite {
-    func uploadMultipart<R: Decodable>(path: String,
-                                       userId: String,
-                                       infos: [MultipartInfo],
-                                       onSendBytes: @escaping (Int) -> Void) async throws -> R {
+    func uploadMultipart<R: Decodable & Sendable>(path: String,
+                                                  userId: String,
+                                                  infos: [MultipartInfo],
+                                                  onSendBytes: @Sendable @escaping (Int) -> Void) async throws
+        -> R {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
                                  path: path,
                                  credential: .init(credential),
                                  infos: infos,
                                  appVersion: appVersion)
-        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-
         uploadProgress
-            .filterValue(by: session)
+            .filterValue(by: request)
             .sink { progress in
                 onSendBytes(Int(progress))
             }
@@ -88,33 +90,32 @@ public extension ApiServiceLite {
 
     func download(path: String,
                   userId: String,
-                  onDownloadBytes: @escaping (Int) -> Void) async throws -> URL {
+                  onDownloadBytes: @Sendable @escaping (Int) -> Void) async throws -> URL {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
                                  path: path,
                                  credential: .init(credential),
                                  appVersion: appVersion)
 
-        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
         // Use closure base instead of async version because of URLSession limitation
         // https://forums.developer.apple.com/forums/thread/738541
         return try await withCheckedThrowingContinuation { continuation in
             downloadProgress
-                .filterValue(by: session)
+                .filterValue(by: request)
                 .sink { bytesDownloaded in
                     onDownloadBytes(Int(bytesDownloaded))
                 }
                 .store(in: &cancellables)
 
             downloadResult
-                .filterValue(by: session)
+                .filterValue(by: request)
                 .sink { url in
                     continuation.resume(returning: url)
                 }
                 .store(in: &cancellables)
 
             sessionError
-                .filterValue(by: session)
+                .filterValue(by: request)
                 .sink { error in
                     continuation.resume(throwing: error)
                 }
@@ -128,41 +129,41 @@ public extension ApiServiceLite {
 }
 
 extension ApiServiceLite: URLSessionDataDelegate, URLSessionDownloadDelegate {
-    public func urlSession(_ session: URLSession,
-                           task: URLSessionTask,
-                           didSendBodyData bytesSent: Int64,
-                           totalBytesSent: Int64,
-                           totalBytesExpectedToSend: Int64) {
-        uploadProgress.send(bytesSent, for: session)
+    public nonisolated func urlSession(_ session: URLSession,
+                                       task: URLSessionTask,
+                                       didSendBodyData bytesSent: Int64,
+                                       totalBytesSent: Int64,
+                                       totalBytesExpectedToSend: Int64) {
+        uploadProgress.send(bytesSent, for: task.originalRequest)
     }
 
-    public func urlSession(_ session: URLSession,
-                           downloadTask: URLSessionDownloadTask,
-                           didFinishDownloadingTo location: URL) {
-        downloadResult.send(location, for: session)
+    public nonisolated func urlSession(_ session: URLSession,
+                                       downloadTask: URLSessionDownloadTask,
+                                       didFinishDownloadingTo location: URL) {
+        downloadResult.send(location, for: downloadTask.originalRequest)
     }
 
-    public func urlSession(_ session: URLSession,
-                           didBecomeInvalidWithError error: (any Error)?) {
+    public nonisolated func urlSession(_ session: URLSession,
+                                       didBecomeInvalidWithError error: (any Error)?) {
         if let error {
-            sessionError.send(error, for: session)
+            sessionError.send(error, for: nil)
         }
     }
 
-    public func urlSession(_ session: URLSession,
-                           task: URLSessionTask,
-                           didCompleteWithError error: (any Error)?) {
+    public nonisolated func urlSession(_ session: URLSession,
+                                       task: URLSessionTask,
+                                       didCompleteWithError error: (any Error)?) {
         if let error {
-            sessionError.send(error, for: session)
+            sessionError.send(error, for: task.originalRequest)
         }
     }
 
-    public func urlSession(_ session: URLSession,
-                           downloadTask: URLSessionDownloadTask,
-                           didWriteData bytesWritten: Int64,
-                           totalBytesWritten: Int64,
-                           totalBytesExpectedToWrite: Int64) {
-        downloadProgress.send(bytesWritten, for: session)
+    public nonisolated func urlSession(_ session: URLSession,
+                                       downloadTask: URLSessionDownloadTask,
+                                       didWriteData bytesWritten: Int64,
+                                       totalBytesWritten: Int64,
+                                       totalBytesExpectedToWrite: Int64) {
+        downloadProgress.send(bytesWritten, for: downloadTask.originalRequest)
     }
 }
 
@@ -182,13 +183,13 @@ private extension ApiServiceLite {
 }
 
 private extension PassthroughSubject where Failure == Never {
-    func send<T: Sendable>(_ value: T, for session: URLSession) where Output == TrackedResult<T> {
-        send(TrackedResult(session: session, value: value))
+    func send<T: Sendable>(_ value: T, for request: URLRequest?) where Output == TrackedResult<T> {
+        send(TrackedResult(request: request, value: value))
     }
 
-    func filterValue<T: Sendable>(by session: URLSession)
+    func filterValue<T: Sendable>(by request: URLRequest)
         -> AnyPublisher<T, Never> where Output == TrackedResult<T> {
-        filter { $0.session == session }
+        filter { $0.request == request }
             .map(\.value)
             .eraseToAnyPublisher()
     }
