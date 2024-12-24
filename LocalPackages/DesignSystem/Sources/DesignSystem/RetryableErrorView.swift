@@ -24,7 +24,7 @@ import SwiftUI
 public struct RetryableErrorView: View {
     let mode: Mode
     let tintColor: UIColor
-    let errorMessage: String
+    let error: any Error
     let onRetry: () -> Void
 
     public enum Mode: Sendable {
@@ -44,11 +44,11 @@ public struct RetryableErrorView: View {
 
     public init(mode: Mode = .defaultVertical,
                 tintColor: UIColor = PassColor.interactionNorm,
-                errorMessage: String,
+                error: any Error,
                 onRetry: @escaping () -> Void) {
         self.mode = mode
         self.tintColor = tintColor
-        self.errorMessage = errorMessage
+        self.error = error
         self.onRetry = onRetry
     }
 
@@ -56,7 +56,7 @@ public struct RetryableErrorView: View {
         switch mode {
         case let .vertical(textColor):
             VStack {
-                Text(errorMessage)
+                Text(verbatim: error.localizedDebugDescription)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(textColor.toColor)
                 retryButton
@@ -65,7 +65,7 @@ public struct RetryableErrorView: View {
 
         case let .horizontal(textColor):
             HStack {
-                Text(errorMessage)
+                Text(verbatim: error.localizedDebugDescription)
                     .font(.callout)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundStyle(textColor.toColor)
@@ -83,5 +83,15 @@ private extension RetryableErrorView {
             .foregroundStyle(tintColor.toColor)
             .labelStyle(.rightIcon)
             .buttonEmbeded(action: onRetry)
+    }
+}
+
+private extension Error {
+    var localizedDebugDescription: String {
+        if let debugDescription = (self as? CustomDebugStringConvertible)?.debugDescription {
+            "\(localizedDescription) \(debugDescription)"
+        } else {
+            localizedDescription
+        }
     }
 }

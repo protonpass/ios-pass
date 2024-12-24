@@ -139,7 +139,7 @@ private extension CredentialsView {
             case .loading:
                 CredentialsSkeletonView()
             case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
+                RetryableErrorView(error: error,
                                    onRetry: { Task { await viewModel.fetchItems() } })
             }
 
@@ -241,7 +241,7 @@ private extension CredentialsView {
 
                 case let .error(error):
                     RetryableErrorView(mode: .defaultHorizontal,
-                                       errorMessage: error.localizedDescription,
+                                       error: error,
                                        onRetry: { Task { await viewModel.filterAndSortItemsAsync() } })
                 }
             }
