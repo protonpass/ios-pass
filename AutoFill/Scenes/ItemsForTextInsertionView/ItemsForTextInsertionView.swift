@@ -155,7 +155,7 @@ private extension ItemsForTextInsertionView {
                 CredentialsSkeletonView()
 
             case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
+                RetryableErrorView(error: error,
                                    onRetry: { Task { await viewModel.fetchItems() } })
             }
 

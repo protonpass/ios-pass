@@ -71,7 +71,7 @@ public struct FileAttachmentPreview: View {
 
             case let .error(error):
                 RetryableErrorView(tintColor: primaryTintColor,
-                                   errorMessage: error.localizedDescription,
+                                   error: error,
                                    onRetry: { Task { await viewModel.fetchFile() } })
             }
         }

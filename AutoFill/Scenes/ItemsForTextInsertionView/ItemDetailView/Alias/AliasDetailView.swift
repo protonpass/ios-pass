@@ -81,7 +81,7 @@ private extension AliasDetailView {
                 if let error = viewModel.mailboxesError {
                     RetryableErrorView(mode: .defaultHorizontal,
                                        tintColor: tintColor,
-                                       errorMessage: error.localizedDescription,
+                                       error: error,
                                        onRetry: {
                                            Task {
                                                await viewModel.fetchMailboxes()

@@ -54,11 +54,9 @@ struct CreateEditAliasView: View {
                     content
 
                 case let .error(error):
-                    RetryableErrorView(errorMessage: error.localizedDescription) {
-                        viewModel.getAliasAndAliasOptions()
-                    }
-                    .padding()
-                    .toolbar { closeButtonToolbar }
+                    RetryableErrorView(error: error, onRetry: viewModel.getAliasAndAliasOptions)
+                        .padding()
+                        .toolbar { closeButtonToolbar }
                 }
             }
             .background(PassColor.backgroundNorm.toColor)

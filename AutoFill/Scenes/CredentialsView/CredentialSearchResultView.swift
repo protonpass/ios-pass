@@ -62,8 +62,7 @@ struct CredentialSearchResultView: View {
                           headerView: { _ in nil })
 
             case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { viewModel.filterAndSortItems() })
+                RetryableErrorView(error: error, onRetry: viewModel.filterAndSortItems)
             }
         }
         .animation(.default, value: viewModel.state)

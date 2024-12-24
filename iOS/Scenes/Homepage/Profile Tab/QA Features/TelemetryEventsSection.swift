@@ -103,7 +103,7 @@ private struct TelemetryEventsView: View {
     var body: some View {
         ZStack {
             if let error = viewModel.error {
-                RetryableErrorView(errorMessage: error.localizedDescription, onRetry: viewModel.refresh)
+                RetryableErrorView(error: error, onRetry: viewModel.refresh)
             } else {
                 if viewModel.uiModels.isEmpty {
                     Form {
