@@ -44,11 +44,11 @@ public extension UpdateVaultRequest {
         let encryptedContent = try AES.GCM.seal(vault.data(),
                                                 key: vaultKey,
                                                 associatedData: .vaultContent)
-
-        guard let content = encryptedContent.combined?.base64EncodedString(), content.count >= 28 else {
+        let base64Content = encryptedContent.base64EncodedString()
+        guard base64Content.count >= 28 else {
             throw PassError.crypto(.failedToAESEncrypt)
         }
-        self.content = content
+        content = base64Content
         keyRotation = Int(shareKey.keyRotation)
     }
 }
