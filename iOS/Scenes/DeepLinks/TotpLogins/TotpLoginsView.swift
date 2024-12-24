@@ -120,7 +120,7 @@ private extension TotpLoginsView {
                 }
 
             case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
+                RetryableErrorView(error: error,
                                    onRetry: { Task { await viewModel.loadLogins() } })
             }
 
