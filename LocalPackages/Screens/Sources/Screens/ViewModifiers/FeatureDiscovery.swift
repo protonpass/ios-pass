@@ -57,17 +57,23 @@ struct OverlayViewModifier<Overlay: View>: ViewModifier {
 final class OverlayViewModifierModel: ObservableObject {
     @Published private(set) var isOverlayVisible: Bool = true
     private let storage: UserDefaults
-
+    
+    //TODO: add `AccessRepository` to get time activation infos
     init(feature: FeatureDiscoveries,
          storage: UserDefaults = kSharedUserDefaults) {
         self.storage = storage
-        isOverlayVisible = storage.object(forKey: feature.rawValue) as? Bool ?? true
+        Task {
+            // check time activation
+            isOverlayVisible = storage.object(forKey: feature.rawValue) as? Bool ?? true
+        }
     }
 
     func removeOverlay(feature: FeatureDiscoveries) {
         storage.set(false, forKey: feature.rawValue)
         isOverlayVisible = false
     }
+    
+
 }
 
 public enum FeatureDiscoveries: String, Sendable {
