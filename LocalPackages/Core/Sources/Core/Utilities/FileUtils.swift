@@ -92,3 +92,28 @@ public enum FileUtils {
         return abs(numberOfDays) >= thresholdInDays
     }
 }
+
+public extension FileUtils {
+    struct FileBlockData: Sendable {
+        public let index: Int
+        public let value: Data
+    }
+
+    static func processBlockByBlock(_ url: URL,
+                                    blockSizeInBytes: Int,
+                                    process: (FileBlockData) async throws -> Void) async throws {
+        let fileHandle = try FileHandle(forReadingFrom: url)
+        defer { try? fileHandle.close() }
+
+        var index = 0
+        while true {
+            if let data = try fileHandle.read(upToCount: blockSizeInBytes),
+               !data.isEmpty {
+                try await process(.init(index: index, value: data))
+                index += 1
+            } else {
+                break
+            }
+        }
+    }
+}

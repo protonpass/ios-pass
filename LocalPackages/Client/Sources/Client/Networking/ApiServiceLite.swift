@@ -18,28 +18,47 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+@preconcurrency import Combine
+import Core
 import Entities
 import Foundation
 @preconcurrency import ProtonCoreDoh
+import ProtonCoreNetworking
 
 /// Use `URLSession` to make requests that aren't supported by core modules (e.g multipart)
 public protocol ApiServiceLiteProtocol: Sendable {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
-                                       infos: [MultipartInfo]) async throws -> R
+                                       infos: [MultipartInfo],
+                                       onSendBytes: @MainActor @escaping (Int) -> Void) async throws -> R
+
+    func download(path: String,
+                  userId: String,
+                  onDownloadBytes: @MainActor @escaping (Int) -> Void) async throws -> URL
 }
 
-public final class ApiServiceLite: ApiServiceLiteProtocol {
-    private let urlSession: URLSession
+private struct TrackedResult<T: Sendable>: Sendable {
+    let request: URLRequest?
+    let value: T
+}
+
+public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
+    private lazy var session = URLSession(configuration: .default,
+                                          delegate: self,
+                                          delegateQueue: nil)
     private let appVersion: String
     private let doh: any DoHInterface
     private let authManager: any AuthManagerProtocol
 
-    public init(urlSession: URLSession = .shared,
-                appVersion: String,
+    private nonisolated(unsafe) var cancellables = Set<AnyCancellable>()
+    private let uploadProgress = PassthroughSubject<TrackedResult<Int64>, Never>()
+    private let downloadProgress = PassthroughSubject<TrackedResult<Int64>, Never>()
+    private let downloadResult = PassthroughSubject<TrackedResult<URL>, Never>()
+    private let sessionError = PassthroughSubject<TrackedResult<Error>, Never>()
+
+    public init(appVersion: String,
                 doh: any DoHInterface,
                 authManager: any AuthManagerProtocol) {
-        self.urlSession = urlSession
         self.appVersion = appVersion
         self.doh = doh
         self.authManager = authManager
@@ -47,9 +66,118 @@ public final class ApiServiceLite: ApiServiceLiteProtocol {
 }
 
 public extension ApiServiceLite {
-    func uploadMultipart<R: Decodable>(path: String,
-                                       userId: String,
-                                       infos: [MultipartInfo]) async throws -> R {
+    func uploadMultipart<R: Decodable & Sendable>(path: String,
+                                                  userId: String,
+                                                  infos: [MultipartInfo],
+                                                  onSendBytes: @MainActor @escaping (Int) -> Void) async throws
+        -> R {
+        let (url, credential) = try getUrlAndCredentials(userId: userId)
+        let request = URLRequest(url: url,
+                                 path: path,
+                                 credential: .init(credential),
+                                 infos: infos,
+                                 appVersion: appVersion)
+        uploadProgress
+            .filterValue(by: request)
+            .sink { [weak self] progress in
+                guard let self else { return }
+                updateProgress(progress: progress, onSendBytes)
+            }
+            .store(in: &cancellables)
+
+        let (data, _) = try await session.data(for: request)
+        return try JSONDecoder().decode(R.self, from: data)
+    }
+
+    func download(path: String,
+                  userId: String,
+                  onDownloadBytes: @MainActor @escaping (Int) -> Void) async throws -> URL {
+        let (url, credential) = try getUrlAndCredentials(userId: userId)
+        let request = URLRequest(url: url,
+                                 path: path,
+                                 credential: .init(credential),
+                                 appVersion: appVersion)
+
+        // Use closure base instead of async version because of URLSession limitation
+        // https://forums.developer.apple.com/forums/thread/738541
+        return try await withCheckedThrowingContinuation { continuation in
+            downloadProgress
+                .filterValue(by: request)
+                .sink { [weak self] bytesDownloaded in
+                    guard let self else { return }
+                    updateProgress(progress: bytesDownloaded, onDownloadBytes)
+                }
+                .store(in: &cancellables)
+
+            downloadResult
+                .filterValue(by: request)
+                .sink { url in
+                    continuation.resume(returning: url)
+                }
+                .store(in: &cancellables)
+
+            sessionError
+                .filterValue(by: request)
+                .sink { error in
+                    continuation.resume(throwing: error)
+                }
+                .store(in: &cancellables)
+
+            let task = session.downloadTask(with: request)
+            task.delegate = self
+            task.resume()
+        }
+    }
+
+    private nonisolated func updateProgress(progress: Int64,
+                                            _ onProgress: @MainActor @escaping (Int) -> Void) {
+        Task { @MainActor in
+            onProgress(Int(progress))
+        }
+    }
+}
+
+extension ApiServiceLite: URLSessionDataDelegate, URLSessionDownloadDelegate {
+    public nonisolated func urlSession(_ session: URLSession,
+                                       task: URLSessionTask,
+                                       didSendBodyData bytesSent: Int64,
+                                       totalBytesSent: Int64,
+                                       totalBytesExpectedToSend: Int64) {
+        uploadProgress.send(bytesSent, for: task.originalRequest)
+    }
+
+    public nonisolated func urlSession(_ session: URLSession,
+                                       downloadTask: URLSessionDownloadTask,
+                                       didFinishDownloadingTo location: URL) {
+        downloadResult.send(location, for: downloadTask.originalRequest)
+    }
+
+    public nonisolated func urlSession(_ session: URLSession,
+                                       didBecomeInvalidWithError error: (any Error)?) {
+        if let error {
+            sessionError.send(error, for: nil)
+        }
+    }
+
+    public nonisolated func urlSession(_ session: URLSession,
+                                       task: URLSessionTask,
+                                       didCompleteWithError error: (any Error)?) {
+        if let error {
+            sessionError.send(error, for: task.originalRequest)
+        }
+    }
+
+    public nonisolated func urlSession(_ session: URLSession,
+                                       downloadTask: URLSessionDownloadTask,
+                                       didWriteData bytesWritten: Int64,
+                                       totalBytesWritten: Int64,
+                                       totalBytesExpectedToWrite: Int64) {
+        downloadProgress.send(bytesWritten, for: downloadTask.originalRequest)
+    }
+}
+
+private extension ApiServiceLite {
+    func getUrlAndCredentials(userId: String) throws -> (URL, AuthCredential) {
         let host = doh.getCurrentlyUsedHostUrl()
         guard let url = URL(string: host) else {
             throw PassError.api(.invalidApiHost(host))
@@ -59,12 +187,19 @@ public extension ApiServiceLite {
             throw PassError.api(.noApiServiceLinkedToUserId)
         }
 
-        let request = URLRequest(url: url,
-                                 path: path,
-                                 credential: .init(credential),
-                                 infos: infos,
-                                 appVersion: appVersion)
-        let (data, _) = try await urlSession.data(for: request)
-        return try JSONDecoder().decode(R.self, from: data)
+        return (url, credential)
+    }
+}
+
+private extension PassthroughSubject where Failure == Never {
+    func send<T: Sendable>(_ value: T, for request: URLRequest?) where Output == TrackedResult<T> {
+        send(TrackedResult(request: request, value: value))
+    }
+
+    func filterValue<T: Sendable>(by request: URLRequest)
+        -> AnyPublisher<T, Never> where Output == TrackedResult<T> {
+        filter { $0.request == request }
+            .map(\.value)
+            .eraseToAnyPublisher()
     }
 }
