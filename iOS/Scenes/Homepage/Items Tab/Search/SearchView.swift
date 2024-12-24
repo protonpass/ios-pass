@@ -39,8 +39,7 @@ struct SearchView: View {
                     .ignoresSafeArea(edges: .all)
                 switch viewModel.state {
                 case let .error(error):
-                    RetryableErrorView(errorMessage: error.localizedDescription,
-                                       onRetry: { viewModel.refreshResults() })
+                    RetryableErrorView(error: error, onRetry: viewModel.refreshResults)
                 default:
                     content
                 }
@@ -129,8 +128,7 @@ private extension SearchView {
                                   onSelectItem: { viewModel.viewDetail(of: $0) })
 
             case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { viewModel.refreshResults() })
+                RetryableErrorView(error: error, onRetry: viewModel.refreshResults)
             }
 
             Spacer()

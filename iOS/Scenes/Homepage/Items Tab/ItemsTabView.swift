@@ -62,8 +62,7 @@ struct ItemsTabView: View {
                 Spacer()
 
             case let .error(error):
-                RetryableErrorView(errorMessage: error.localizedDescription,
-                                   onRetry: { viewModel.refresh() })
+                RetryableErrorView(error: error, onRetry: viewModel.refresh)
             }
         }
         .animation(.default, value: viewModel.sectionedItems)

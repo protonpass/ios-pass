@@ -494,7 +494,7 @@ private extension LogInDetailView {
         case let .error(error):
             RetryableErrorView(mode: .defaultHorizontal,
                                tintColor: PassColor.loginInteractionNormMajor2,
-                               errorMessage: error.localizedDescription,
+                               error: error,
                                onRetry: viewModel.fetchSimilarPasswordItems)
         }
     }

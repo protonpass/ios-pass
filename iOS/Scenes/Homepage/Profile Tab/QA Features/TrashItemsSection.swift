@@ -50,8 +50,7 @@ private struct TrashItemsView: View {
         case let .loaded(uiModels):
             vaultList(uiModels)
         case let .error(error):
-            RetryableErrorView(errorMessage: error.localizedDescription,
-                               onRetry: viewModel.loadVaults)
+            RetryableErrorView(error: error, onRetry: viewModel.loadVaults)
         }
     }
 

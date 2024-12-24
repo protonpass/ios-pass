@@ -252,7 +252,7 @@ private extension DarkWebMonitorHomeView {
 
             case let .error(error):
                 RetryableErrorView(mode: .defaultHorizontal,
-                                   errorMessage: error.localizedDescription,
+                                   error: error,
                                    onRetry: viewModel.fetchAliasBreaches)
                     .padding(DesignConstant.sectionPadding)
                     .roundedDetailSection()
@@ -326,7 +326,7 @@ private extension DarkWebMonitorHomeView {
                     }
                 case let .error(error):
                     RetryableErrorView(mode: .defaultHorizontal,
-                                       errorMessage: error.localizedDescription,
+                                       error: error,
                                        onRetry: viewModel.fetchCustomEmails)
                 }
 
