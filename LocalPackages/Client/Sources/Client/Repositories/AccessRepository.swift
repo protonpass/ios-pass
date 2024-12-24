@@ -138,6 +138,19 @@ public extension AccessRepository {
     func updateAliasesMonitor(userId: String?, monitored: Bool) async throws {
         try await updatePassMonitorState(userId: userId, request: .aliases(monitored))
     }
+    
+    func getPassUserInformation(userId: String) async throws -> PassUserInformations {
+        //TODO: get local infos
+        logger.trace("Getting information for user \(userId)")
+        if let localInfos = try await localDatasource.getPassUserInformations(userId: userId) {
+            logger.trace("Found local infos for user \(userId)")
+            return localInfos
+        } else {
+            let infos = try await remoteDatasource.getUserPassInformations(userId: userId)
+            try await localDatasource.upsert(informations: infos)
+            return infos
+        }
+    }
 }
 
 private extension AccessRepository {
