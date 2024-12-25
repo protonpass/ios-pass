@@ -307,7 +307,9 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     }
 
     func fetchAttachedFiles() async {
-        guard let itemContent = mode.itemContent else {
+        guard fileAttachmentsEnabled,
+              let itemContent = mode.itemContent,
+              itemContent.item.hasFiles else {
             attachedFiles = nil
             return
         }
