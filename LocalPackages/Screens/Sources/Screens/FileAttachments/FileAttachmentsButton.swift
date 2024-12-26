@@ -111,7 +111,8 @@ public struct FileAttachmentsButton: View {
                })
         .sheet(isPresented: $viewModel.showTextConfirmation) {
             ScannedTextEditor(text: $viewModel.scannedTextToBeConfirmed,
-                              tintColor: handler.fileAttachmentsSectionPrimaryColor,
+                              primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
+                              secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor,
                               onSave: { viewModel.confirmScannedText() })
                 .interactiveDismissDisabled()
         }
@@ -153,8 +154,10 @@ public struct FileAttachmentsButton: View {
 private struct ScannedTextEditor: View {
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isFocused: Bool
+    @State private var showDiscardChangesAlert = false
     @Binding var text: String
-    let tintColor: UIColor
+    let primaryTintColor: UIColor
+    let secondaryTintColor: UIColor
     let onSave: () -> Void
 
     var body: some View {
@@ -162,18 +165,36 @@ private struct ScannedTextEditor: View {
             .scrollContentBackground(.hidden)
             .focused($isFocused)
             .fullSheetBackground()
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    CapsuleTextButton(title: #localized("Save"),
-                                      titleColor: PassColor.textInvert,
-                                      backgroundColor: tintColor,
-                                      action: {
-                                          onSave()
-                                          dismiss()
-                                      })
-                }
-            }
+            .toolbar { toolbar }
             .onAppear { isFocused = true }
             .navigationStackEmbeded()
+            .discardChangesAlert(isPresented: $showDiscardChangesAlert,
+                                 onDiscard: dismiss.callAsFunction)
+    }
+
+    @ToolbarContentBuilder
+    private var toolbar: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            CircleButton(icon: IconProvider.cross,
+                         iconColor: primaryTintColor,
+                         backgroundColor: secondaryTintColor,
+                         accessibilityLabel: "Close",
+                         action: { showDiscardChangesAlert.toggle() })
+        }
+
+        ToolbarItem(placement: .topBarTrailing) {
+            DisablableCapsuleTextButton(title: #localized("Save"),
+                                        titleColor: PassColor.textInvert,
+                                        disableTitleColor: PassColor.textHint,
+                                        backgroundColor: primaryTintColor,
+                                        disableBackgroundColor: secondaryTintColor,
+                                        disabled: text.isEmpty,
+                                        action: {
+                                            onSave()
+                                            dismiss()
+                                        })
+                                        .accessibilityLabel("Save")
+                                        .animation(.default, value: text.isEmpty)
+        }
     }
 }
