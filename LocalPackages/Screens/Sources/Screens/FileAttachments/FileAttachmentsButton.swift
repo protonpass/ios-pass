@@ -118,6 +118,10 @@ public struct FileAttachmentsButton: View {
     }
 
     private func handle(_ method: FileAttachmentMethod) {
+        guard !handler.isFreeUser else {
+            handler.upsellFileAttachments()
+            return
+        }
         switch method {
         case .takePhoto:
             checkCameraPermission {

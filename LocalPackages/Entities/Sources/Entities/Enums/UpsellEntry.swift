@@ -28,4 +28,5 @@ public enum UpsellEntry {
     case darkWebMonitorBreach
     case secureLink
     case aliasManagement
+    case fileAttachments
 }

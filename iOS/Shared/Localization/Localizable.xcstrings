@@ -57230,6 +57230,26 @@
         }
       }
     },
+    "File attachments" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File attachments"
+          }
+        }
+      }
+    },
+    "File attachments are available with Pass Plus. Upgrade for immediate access." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File attachments are available with Pass Plus. Upgrade for immediate access."
+          }
+        }
+      }
+    },
     "Fill in your personal data" : {
       "localizations" : {
         "be" : {

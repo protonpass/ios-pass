@@ -28,6 +28,7 @@ import SwiftUI
 public protocol FileAttachmentsEditHandler: AnyObject {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
+    var isFreeUser: Bool { get }
     var itemContentType: ItemContentType { get }
 
     func generateDatedFileName(prefix: String, extension: String) -> String
@@ -40,6 +41,7 @@ public protocol FileAttachmentsEditHandler: AnyObject {
     func retryUpload(attachment: FileAttachmentUiModel)
     func delete(attachment: FileAttachmentUiModel)
     func deleteAllAttachments()
+    func upsellFileAttachments()
 }
 
 public struct FileAttachmentsEditSection: View {
