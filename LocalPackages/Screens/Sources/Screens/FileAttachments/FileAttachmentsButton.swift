@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import AVFoundation
 import DesignSystem
 import DocScanner
 import Entities
@@ -28,6 +29,7 @@ import SwiftUI
 
 public struct FileAttachmentsButton: View {
     @StateObject private var viewModel: FileAttachmentsButtonViewModel
+    @State private var showCameraUnavailable = false
     @State private var showCamera = false
     @State private var showDocScanner = false
     @State private var showPhotosPicker = false
@@ -99,18 +101,34 @@ public struct FileAttachmentsButton: View {
                               handler.handleAttachmentError(error)
                           }
                       })
+        .cameraUnavailableAlert(isPresented: $showCameraUnavailable)
     }
 
     private func handle(_ method: FileAttachmentMethod) {
         switch method {
         case .takePhoto:
-            showCamera.toggle()
+            checkCameraPermission {
+                showCamera.toggle()
+            }
         case .scanDocuments:
-            showDocScanner.toggle()
+            checkCameraPermission {
+                showDocScanner.toggle()
+            }
         case .choosePhotoOrVideo:
             showPhotosPicker.toggle()
         case .chooseFile:
             showFileImporter.toggle()
+        }
+    }
+
+    private func checkCameraPermission(onSuccess: () -> Void) {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized, .notDetermined:
+            onSuccess()
+        case .denied, .restricted:
+            showCameraUnavailable.toggle()
+        @unknown default:
+            showCameraUnavailable.toggle()
         }
     }
 }
