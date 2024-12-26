@@ -64,7 +64,8 @@ struct ItemDetailToolbar: ToolbarContent {
                                            action: {
                                                viewModel.share()
                                            })
-                                           .featureDiscoveryOverlay(feature: .itemSharing) {
+                                           .featureDiscoveryOverlay(feature: .itemSharing(canDisplay: viewModel
+                                                   .canDisplayFeatureDiscovery)) {
                                                Circle()
                                                    .fill(PassColor.signalInfo.toColor)
                                                    .frame(width: 10, height: 10)

@@ -21,7 +21,7 @@
 import CoreData
 import Entities
 
-@objc(ItemReadEventEntity)
+@objc(PassUserInformationsEntity)
 final class PassUserInformationsEntity: NSManagedObject {}
 
 extension PassUserInformationsEntity: Identifiable {}
@@ -31,7 +31,7 @@ extension PassUserInformationsEntity {
     class func fetchRequest() -> NSFetchRequest<PassUserInformationsEntity> {
         NSFetchRequest<PassUserInformationsEntity>(entityName: "PassUserInformationsEntity")
     }
-    
+
     @NSManaged var userID: String
     @NSManaged var activationTime: Int64
 }

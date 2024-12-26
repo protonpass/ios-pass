@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import SwiftUI
 
@@ -54,38 +55,48 @@ struct OverlayViewModifier<Overlay: View>: ViewModifier {
     }
 }
 
+@MainActor
 final class OverlayViewModifierModel: ObservableObject {
-    @Published private(set) var isOverlayVisible: Bool = true
+    @Published private(set) var isOverlayVisible: Bool = false
     private let storage: UserDefaults
-    
-    //TODO: add `AccessRepository` to get time activation infos
+
     init(feature: FeatureDiscoveries,
          storage: UserDefaults = kSharedUserDefaults) {
         self.storage = storage
-        Task {
-            // check time activation
-            isOverlayVisible = storage.object(forKey: feature.rawValue) as? Bool ?? true
+        if feature.canDisplay {
+            isOverlayVisible = storage.object(forKey: feature.storageKey) as? Bool ?? true
         }
     }
 
     func removeOverlay(feature: FeatureDiscoveries) {
-        storage.set(false, forKey: feature.rawValue)
+        storage.set(false, forKey: feature.storageKey)
         isOverlayVisible = false
     }
-    
-
 }
 
-public enum FeatureDiscoveries: String, Sendable {
-    case itemSharing
+public enum FeatureDiscoveries: Sendable {
+    case itemSharing(canDisplay: Bool)
 
-    // TODO: need to get end display date
-    var discoveryEnded: Bool {
+    var storageKey: String {
         switch self {
         case .itemSharing:
-            Date().timeIntervalSinceNow.sign == .minus
+            "itemSharing"
         }
     }
+
+    var canDisplay: Bool {
+        switch self {
+        case let .itemSharing(canDisplay):
+            canDisplay
+        }
+    }
+
+//    var discoveryEnded: Bool {
+//        switch self {
+//        case .itemSharing:
+//            Date().timeIntervalSinceNow.sign == .minus
+//        }
+//    }
 }
 
 public extension View {

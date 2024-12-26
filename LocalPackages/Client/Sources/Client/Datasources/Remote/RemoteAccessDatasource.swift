@@ -41,11 +41,10 @@ public extension RemoteAccessDatasource {
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.monitor
     }
-    
+
     func getUserPassInformations(userId: String) async throws -> PassUserInformations {
         let endpoint = GetPassUserInformationsEndpoint()
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.data
     }
 }
-
