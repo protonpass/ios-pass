@@ -38,23 +38,9 @@ extension OrganizationEntity {
     @NSManaged var exportMode: Int64
     @NSManaged var forceLockSeconds: Int64
     @NSManaged var shareMode: Int64
-
-    // password policy sub elements
-    @NSManaged var hasPasswordPolicy: Bool
-    @NSManaged var randomPasswordAllowed: Bool
-    @NSManaged var randomPasswordMinLength: Int64
-    @NSManaged var randomPasswordMaxLength: Int64
-    @NSManaged var randomPasswordMustIncludeNumbers: Bool
-    @NSManaged var randomPasswordMustIncludeSymbols: Bool
-    @NSManaged var randomPasswordMustIncludeUppercase: Bool
-    @NSManaged var memorablePasswordAllowed: Bool
-    @NSManaged var memorablePasswordMinWords: Int64
-    @NSManaged var memorablePasswordMaxWords: Int64
-    @NSManaged var memorablePasswordMustCapitalize: Bool
-    @NSManaged var memorablePasswordMustIncludeNumbers: Bool
+    @NSManaged var passwordPolicyData: Data?
 }
 
-// swiftlint:disable line_length
 extension OrganizationEntity {
     var toOrganization: Organization {
         let settings: Organization.Settings?
@@ -65,18 +51,9 @@ extension OrganizationEntity {
             let exportMode = Organization.ExportMode(rawValue: Int(exportMode)) ?? .default
 
             var passwordPolicy: PasswordPolicy?
-            if hasPasswordPolicy {
-                passwordPolicy = PasswordPolicy(randomPasswordAllowed: randomPasswordAllowed,
-                                                randomPasswordMinLength: Int(randomPasswordMinLength),
-                                                randomPasswordMaxLength: Int(randomPasswordMaxLength),
-                                                randomPasswordMustIncludeNumbers: randomPasswordMustIncludeNumbers,
-                                                randomPasswordMustIncludeSymbols: randomPasswordMustIncludeSymbols,
-                                                randomPasswordMustIncludeUppercase: randomPasswordMustIncludeUppercase,
-                                                memorablePasswordAllowed: memorablePasswordAllowed,
-                                                memorablePasswordMinWords: Int(memorablePasswordMinWords),
-                                                memorablePasswordMaxWords: Int(memorablePasswordMaxWords),
-                                                memorablePasswordMustCapitalize: memorablePasswordMustCapitalize,
-                                                memorablePasswordMustIncludeNumbers: memorablePasswordMustIncludeNumbers)
+
+            if let passwordPolicyData {
+                passwordPolicy = try? JSONDecoder().decode(PasswordPolicy.self, from: passwordPolicyData)
             }
             settings = .init(shareMode: shareMode,
                              forceLockSeconds: Int(forceLockSeconds),
@@ -92,21 +69,9 @@ extension OrganizationEntity {
         exportMode = Int64(org.settings?.exportMode.rawValue ?? -1)
         forceLockSeconds = Int64(org.settings?.forceLockSeconds ?? -1)
         shareMode = Int64(org.settings?.shareMode.rawValue ?? -1)
-        hasPasswordPolicy = org.settings?.passwordPolicy != nil
+
         if let passwordPolicy = org.settings?.passwordPolicy {
-            randomPasswordAllowed = passwordPolicy.randomPasswordAllowed
-            randomPasswordMinLength = Int64(passwordPolicy.randomPasswordMinLength)
-            randomPasswordMaxLength = Int64(passwordPolicy.randomPasswordMaxLength)
-            randomPasswordMustIncludeNumbers = passwordPolicy.randomPasswordMustIncludeNumbers
-            randomPasswordMustIncludeSymbols = passwordPolicy.randomPasswordMustIncludeSymbols
-            randomPasswordMustIncludeUppercase = passwordPolicy.randomPasswordMustIncludeUppercase
-            memorablePasswordAllowed = passwordPolicy.memorablePasswordAllowed
-            memorablePasswordMinWords = Int64(passwordPolicy.memorablePasswordMinWords)
-            memorablePasswordMaxWords = Int64(passwordPolicy.memorablePasswordMaxWords)
-            memorablePasswordMustCapitalize = passwordPolicy.memorablePasswordMustCapitalize
-            memorablePasswordMustIncludeNumbers = passwordPolicy.memorablePasswordMustIncludeNumbers
+            passwordPolicyData = try? JSONEncoder().encode(passwordPolicy)
         }
     }
 }
-
-// swiftlint:enable line_length
