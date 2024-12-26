@@ -104,6 +104,11 @@ enum ItemCreationType: Equatable, Hashable {
     }
 }
 
+private struct PendingFileNameUpdate: Sendable {
+    let fileId: String
+    let newName: String
+}
+
 @MainActor
 class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate, CustomFieldEditionDelegate {
     @Published var selectedVault: Share
@@ -128,6 +133,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     // Scanning
     @Published var isShowingScanner = false
     let scanResponsePublisher = ScanResponsePublisher()
+
+    private var pendingFileNameUpdates = [PendingFileNameUpdate]()
 
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -407,7 +414,11 @@ private extension BaseCreateEditItemViewModel {
             throw PassError.itemNotFound(oldItemContent)
         }
 
-        edited = try await linkFiles(to: oldItem)
+        let renamedFiles = try await processPendingFileNameUpdates()
+        edited = edited || renamedFiles
+
+        let linkedFiles = try await linkFiles(to: oldItem)
+        edited = edited || linkedFiles
 
         guard let newItemContent = await generateItemContent() else {
             logger.warning("No new item content")
@@ -657,39 +668,52 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func rename(attachment: FileAttachmentUiModel, newName: String) {
-        Task { [weak self] in
-            guard let self else { return }
-            router.display(element: .globalLoading(shouldShow: true))
-            defer { router.display(element: .globalLoading(shouldShow: false)) }
-            do {
-                let userId = try await userManager.getActiveUserId()
-                switch files.first(where: { $0.id == attachment.id }) {
-                case var .pending(pendingFile):
-                    if try await fileRepository.updatePendingFileName(userId: userId,
-                                                                      file: pendingFile,
-                                                                      newName: newName) {
-                        pendingFile.metadata.name = newName
-                        files.upsert(pendingFile)
-                    }
+        let update = PendingFileNameUpdate(fileId: attachment.id, newName: newName)
+        pendingFileNameUpdates.upsert(update, isEqual: { $0.fileId == $1.fileId })
 
-                case let .item(itemFile):
-                    if let itemContent = mode.itemContent {
-                        let updatedFile =
-                            try await fileRepository.updateItemFileName(userId: userId,
-                                                                        item: itemContent,
-                                                                        file: itemFile,
-                                                                        newName: newName)
-                        files.upsert(updatedFile)
-                        router.present(for: .updateItem(type: itemContentType, updated: true))
-                    }
+        switch files.first(where: { $0.id == attachment.id }) {
+        case var .pending(pendingFile):
+            pendingFile.metadata.name = newName
+            files.upsert(pendingFile)
 
-                default:
-                    assertionFailure("No item with id \(attachment.id)")
+        case var .item(itemFile):
+            itemFile.name = newName
+            files.upsert(itemFile)
+
+        default:
+            assertionFailure("No item with id \(attachment.id)")
+        }
+    }
+
+    /// Return `true` if there was something to process, `false` otherwise
+    func processPendingFileNameUpdates() async throws -> Bool {
+        let userId = try await userManager.getActiveUserId()
+        var processed = false
+        for update in pendingFileNameUpdates {
+            processed = true
+            switch files.first(where: { $0.id == update.fileId }) {
+            case var .pending(pendingFile):
+                if try await fileRepository.updatePendingFileName(userId: userId,
+                                                                  file: pendingFile,
+                                                                  newName: update.newName) {
+                    pendingFile.metadata.name = update.newName
                 }
-            } catch {
-                handle(error)
+
+            case let .item(itemFile):
+                if let itemContent = mode.itemContent {
+                    let updatedFile =
+                        try await fileRepository.updateItemFileName(userId: userId,
+                                                                    item: itemContent,
+                                                                    file: itemFile,
+                                                                    newName: update.newName)
+                }
+
+            default:
+                assertionFailure("No item with id \(update.fileId)")
             }
         }
+        pendingFileNameUpdates.removeAll()
+        return processed
     }
 
     func delete(attachment: FileAttachmentUiModel) {
