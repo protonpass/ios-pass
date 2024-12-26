@@ -37,6 +37,8 @@ extension UpsellEntry {
             #localized("Your personal data was leaked by an online service in a data breach. Upgrade to view full details and get recommended actions.")
         case .aliasManagement:
             #localized("Advanced alias management is available with Pass Plus. Upgrade for immediate access.")
+        case .fileAttachments:
+            #localized("File attachments are available with Pass Plus. Upgrade for immediate access.")
         }
     }
 
@@ -62,6 +64,10 @@ extension UpsellEntry {
         case .aliasManagement:
             upsellElements.append(UpsellElement(icon: IconProvider.mailbox,
                                                 title: #localized("Advanced alias management"),
+                                                color: PassColor.interactionNormMajor2))
+        case .fileAttachments:
+            upsellElements.append(UpsellElement(icon: IconProvider.mailbox,
+                                                title: #localized("File attachments"),
                                                 color: PassColor.interactionNormMajor2))
         default:
             break
