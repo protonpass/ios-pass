@@ -693,16 +693,13 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
             processed = true
             switch files.first(where: { $0.id == update.fileId }) {
             case var .pending(pendingFile):
-                if try await fileRepository.updatePendingFileName(userId: userId,
-                                                                  file: pendingFile,
-                                                                  newName: update.newName) {
-                    pendingFile.metadata.name = update.newName
-                }
+                _ = try await fileRepository.updatePendingFileName(userId: userId,
+                                                                   file: pendingFile,
+                                                                   newName: update.newName)
 
             case let .item(itemFile):
                 if let itemContent = mode.itemContent {
-                    let updatedFile =
-                        try await fileRepository.updateItemFileName(userId: userId,
+                    _ = try await fileRepository.updateItemFileName(userId: userId,
                                                                     item: itemContent,
                                                                     file: itemFile,
                                                                     newName: update.newName)
