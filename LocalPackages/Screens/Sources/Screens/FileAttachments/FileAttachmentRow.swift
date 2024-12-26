@@ -116,20 +116,32 @@ private extension FileAttachmentRow {
     var content: some View {
         let style = itemContentType.style(for: mode)
         HStack {
-            Image(uiImage: uiModel.state.isError ?
-                IconProvider.exclamationCircleFilled : uiModel.group.icon)
-                .renderingMode(uiModel.state.isError ? .template : .original)
+            Image(uiImage: uiModel.group.icon)
                 .resizable()
                 .scaledToFit()
                 .frame(maxWidth: 20)
-                .foregroundStyle(uiModel.state.isError ?
-                    PassColor.passwordInteractionNormMajor2.toColor : Color.clear)
 
             VStack(alignment: .leading) {
                 Text(uiModel.name)
+                    .lineLimit(2)
+                    .truncationMode(.middle)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                if let formattedSize = uiModel.formattedSize {
+                if uiModel.state.isError {
+                    HStack(spacing: 4) {
+                        Text("Upload failed")
+                            .foregroundStyle(ColorProvider.NotificationError.toColor)
+                        if case let .edit(_, _, onRetryUpload) = mode {
+                            Text(verbatim: "•")
+                                .foregroundStyle(PassColor.textWeak.toColor)
+                            Text("Retry")
+                                .foregroundStyle(primaryTintColor.toColor)
+                                .buttonEmbeded(action: onRetryUpload)
+                        }
+                    }
+                    .font(.callout)
+                } else if let formattedSize = uiModel.formattedSize {
                     Text(verbatim: formattedSize)
+                        .font(.callout)
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
             }
@@ -171,7 +183,21 @@ private extension FileAttachmentRow {
                 })
 
             case .error:
-                RetryButton(tintColor: primaryTintColor, onRetry: retryUpload)
+                if case let .edit(_, _, onRetryUpload) = mode {
+                    Menu(content: {
+                        LabelButton(title: "Retry",
+                                    icon: IconProvider.arrowRotateRight,
+                                    action: onRetryUpload)
+                        Divider()
+                        LabelButton(title: "Delete",
+                                    icon: IconProvider.trash,
+                                    action: { showDeleteAlert.toggle() })
+                    }, label: {
+                        CircleButton(icon: IconProvider.threeDotsVertical,
+                                     iconColor: PassColor.textWeak,
+                                     backgroundColor: .clear)
+                    })
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Camera Unavailable" : {
+      "comment" : "Please refer to the comment for string \"Privacy or Restrictions settings have disabled the use of the camera. You can change this in Settings.\"",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera Unavailable"
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "be" : {
@@ -961,6 +972,17 @@
         }
       }
     },
+    "Privacy or Restrictions settings have disabled the use of the camera. You can change this in Settings." : {
+      "comment" : "Message shown when users try to take a photo to attach to an item when camera permission is denied. The message is identical with the iOS default one. You could deny camera access for an app to trigger the system prompt and copy the translation.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy or Restrictions settings have disabled the use of the camera. You can change this in Settings."
+          }
+        }
+      }
+    },
     "Retry" : {
       "localizations" : {
         "be" : {
@@ -1117,6 +1139,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thử lại"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         }
       }
