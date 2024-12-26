@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Foundation
 
 public enum FileUtils {
@@ -102,6 +103,9 @@ public extension FileUtils {
     static func processBlockByBlock(_ url: URL,
                                     blockSizeInBytes: Int,
                                     process: (FileBlockData) async throws -> Void) async throws {
+        _ = url.startAccessingSecurityScopedResource()
+        defer { url.stopAccessingSecurityScopedResource() }
+
         let fileHandle = try FileHandle(forReadingFrom: url)
         defer { try? fileHandle.close() }
 
