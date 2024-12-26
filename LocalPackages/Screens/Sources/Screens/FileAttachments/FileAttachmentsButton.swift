@@ -102,6 +102,13 @@ public struct FileAttachmentsButton: View {
                           }
                       })
         .cameraUnavailableAlert(isPresented: $showCameraUnavailable)
+        .alert("No Text Found",
+               isPresented: $viewModel.showNoTextFound,
+               actions: { Button(action: {}, label: { Text("OK") }) },
+               message: {
+                   // swiftlint:disable:next line_length
+                   Text("No text could be detected in the image. Please try again, ensuring the text is clear, well-lit, and within the camera's focus.")
+               })
     }
 
     private func handle(_ method: FileAttachmentMethod) {
