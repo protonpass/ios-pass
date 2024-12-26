@@ -126,7 +126,7 @@ struct ItemsTabView: View {
                 }
 
                 if sections.isEmpty {
-                    emptySections()
+                    emptySections
                 } else {
                     itemList(sections)
                     Spacer()
