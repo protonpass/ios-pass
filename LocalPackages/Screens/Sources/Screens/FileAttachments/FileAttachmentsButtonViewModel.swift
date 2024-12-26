@@ -29,6 +29,7 @@ import SwiftUI
 @MainActor
 final class FileAttachmentsButtonViewModel: ObservableObject {
     @Published var selectedPhotos = [PhotosPickerItem]()
+    @Published var showNoTextFound = false
 
     private var selectedPhotosTask: Task<Void, Never>?
     private var cancellable = Set<AnyCancellable>()
@@ -65,7 +66,10 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
             case let .success(scanResult):
                 guard let document = scanResult as? ScannedDocument else { return }
                 let text = document.scannedPages.flatMap(\.text).joined(separator: "\n")
-                guard !text.isEmpty else { return }
+                guard !text.isEmpty else {
+                    showNoTextFound.toggle()
+                    return
+                }
                 let fileName = handler.generateDatedFileName(prefix: "Document", extension: "txt")
 
                 guard let data = text.data(using: .utf8) else { return }
