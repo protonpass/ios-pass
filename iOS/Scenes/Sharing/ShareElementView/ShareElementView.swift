@@ -106,9 +106,11 @@ private extension ShareElementView {
         }
         .padding()
         .roundedEditableSection()
-        .featureDiscoveryOverlay(feature: .itemSharing, config: .init(alignment: .topTrailing,
-                                                                      offset: CGSize(width: -17, height: -12.5),
-                                                                      shouldHideAfterAction: false)) {
+        .featureDiscoveryOverlay(feature: .itemSharing(canDisplay: viewModel.canDisplayFeatureDiscovery),
+                                 config: .init(alignment: .topTrailing,
+                                               offset: CGSize(width: -17,
+                                                              height: -12.5),
+                                               shouldHideAfterAction: false)) {
             Text("NEW")
                 .font(.caption)
                 .foregroundStyle(PassColor.textInvert.toColor)

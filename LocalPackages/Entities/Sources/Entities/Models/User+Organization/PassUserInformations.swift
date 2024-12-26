@@ -18,10 +18,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-public struct PassUserInformations: Decodable, Equatable, Sendable  {
+public struct PassUserInformations: Decodable, Equatable, Sendable {
     public let activationTime: Int
-    
-   public init(activationTime: Int) {
+
+    public init(activationTime: Int) {
         self.activationTime = activationTime
     }
 }
