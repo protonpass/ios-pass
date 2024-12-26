@@ -22,6 +22,7 @@
 import Client
 import Combine
 import Core
+import DesignSystem
 import DocScanner
 import Entities
 import Factory
@@ -315,6 +316,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
 
     func fetchAttachedFiles() async {
         guard fileAttachmentsEnabled,
+              mode.isEditMode, // Do not fetch attachments when cloning items
               let itemContent = mode.itemContent,
               itemContent.item.hasFiles else {
             attachedFiles = nil
@@ -517,6 +519,7 @@ extension BaseCreateEditItemViewModel {
                     logger.trace("Creating item")
                     if let createdItem = try await createItem(for: type) {
                         logger.info("Created \(createdItem.debugDescription)")
+                        _ = try await processPendingFileNameUpdates()
                         _ = try await linkFiles(to: createdItem)
                         let passkey = try await newPasskey()
                         router.present(for: .createItem(item: createdItem,
@@ -692,7 +695,7 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         for update in pendingFileNameUpdates {
             processed = true
             switch files.first(where: { $0.id == update.fileId }) {
-            case var .pending(pendingFile):
+            case let .pending(pendingFile):
                 _ = try await fileRepository.updatePendingFileName(userId: userId,
                                                                    file: pendingFile,
                                                                    newName: update.newName)
@@ -719,6 +722,15 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 
     func deleteAllAttachments() {
         files.removeAll()
+    }
+
+    func upsellFileAttachments() {
+        let config = UpsellingViewConfiguration(icon: PassIcon.passPlus,
+                                                title: #localized("File attachments"),
+                                                description: UpsellEntry.fileAttachments.description,
+                                                upsellElements: UpsellEntry.fileAttachments.upsellElements,
+                                                ctaTitle: #localized("Get Pass Plus"))
+        router.present(for: .upselling(config))
     }
 }
 
