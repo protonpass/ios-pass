@@ -67,15 +67,9 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
                                                 key: shareKeyInfo.keyData,
                                                 associatedData: .linkKey)
 
-        guard let itemKeyEncoded = encryptedItemKey.combined?.base64EncodedString(),
-              let linkKeyEncoded = encryptedLinkKey.combined?.base64EncodedString()
-        else {
-            throw PassError.crypto(.failedToBase64Encode)
-        }
-
         return SecureLinkKeys(linkKey: linkKey.base64URLSafeEncodedString(),
-                              itemKeyEncoded: itemKeyEncoded,
-                              linkKeyEncoded: linkKeyEncoded,
+                              itemKeyEncoded: encryptedItemKey.base64EncodedString(),
+                              linkKeyEncoded: encryptedLinkKey.base64EncodedString(),
                               shareKeyRotation: shareKeyInfo.keyRotation)
     }
 }

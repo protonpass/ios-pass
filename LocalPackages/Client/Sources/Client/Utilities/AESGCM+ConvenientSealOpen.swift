@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CryptoKit
+import Entities
 import Foundation
 
 public enum AssociatedData: String {
@@ -33,8 +34,14 @@ public enum AssociatedData: String {
 }
 
 public extension AES.GCM {
-    static func seal(_ data: Data, key: Data, associatedData: AssociatedData) throws -> SealedBox {
-        try AES.GCM.seal(data, using: .init(data: key), authenticating: associatedData.data)
+    static func seal(_ data: Data, key: Data, associatedData: AssociatedData) throws -> Data {
+        let sealedBox = try AES.GCM.seal(data,
+                                         using: .init(data: key),
+                                         authenticating: associatedData.data)
+        guard let encryptedData = sealedBox.combined else {
+            throw PassError.crypto(.failedToAESEncrypt)
+        }
+        return encryptedData
     }
 
     static func open(_ data: Data, key: Data, associatedData: AssociatedData) throws -> Data {

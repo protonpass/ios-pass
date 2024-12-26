@@ -115,12 +115,12 @@ public extension FileAttachmentRepository {
         let path = "/pass/v1/file/\(remoteId)/chunk"
 
         let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
-            guard let self,
-                  let encryptedData = try AES.GCM.seal(blockData.value,
-                                                       key: file.key,
-                                                       associatedData: .fileData).combined else {
+            guard let self else {
                 throw PassError.fileAttachment(.failedToEncryptFile)
             }
+            let encryptedData = try AES.GCM.seal(blockData.value,
+                                                 key: file.key,
+                                                 associatedData: .fileData)
             let infos: [MultipartInfo] = [
                 .init(name: "ChunkIndex", data: blockData.index.toAsciiData),
                 .init(name: "ChunkData",
@@ -211,11 +211,8 @@ public extension FileAttachmentRepository {
             let encryptedFileKey = try AES.GCM.seal(file.key,
                                                     key: itemKey.keyData,
                                                     associatedData: .fileKey)
-            guard let encryptedFileKeyData = encryptedFileKey.combined else {
-                throw PassError.fileAttachment(.failedToAttachMissingEncryptedFileKey)
-            }
             filesToAdd.append(.init(fileId: remoteId,
-                                    fileKey: encryptedFileKeyData.base64EncodedString()))
+                                    fileKey: encryptedFileKey.base64EncodedString()))
         }
 
         var existingFileIdsToRemove = existingFileIdsToRemove
@@ -290,9 +287,6 @@ private extension FileAttachmentRepository {
         let encryptedProtobuf = try AES.GCM.seal(serializedProtobuf,
                                                  key: key,
                                                  associatedData: .fileData)
-        guard let metadata = encryptedProtobuf.combined?.base64EncodedString() else {
-            throw PassError.fileAttachment(.failedToEncryptMetadata)
-        }
-        return metadata
+        return encryptedProtobuf.base64EncodedString()
     }
 }
