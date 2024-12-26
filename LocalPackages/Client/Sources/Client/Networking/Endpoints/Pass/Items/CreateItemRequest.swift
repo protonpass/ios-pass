@@ -55,18 +55,13 @@ extension CreateItemRequest {
                                                 key: itemKey,
                                                 associatedData: .itemContent)
 
-        guard let content = encryptedContent.combined?.base64EncodedString() else {
-            throw PassError.crypto(.failedToAESEncrypt)
-        }
-
         let encryptedItemKey = try AES.GCM.seal(itemKey,
                                                 key: vaultKey.keyData,
                                                 associatedData: .itemKey)
-        let encryptedItemKeyData = encryptedItemKey.combined ?? .init()
 
         self.init(keyRotation: vaultKey.keyRotation,
                   contentFormatVersion: Int16(Constants.ContentFormatVersion.item),
-                  content: content,
-                  itemKey: encryptedItemKeyData.base64EncodedString())
+                  content: encryptedContent.base64EncodedString(),
+                  itemKey: encryptedItemKey.base64EncodedString())
     }
 }
