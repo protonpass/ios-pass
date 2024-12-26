@@ -109,6 +109,12 @@ public struct FileAttachmentsButton: View {
                    // swiftlint:disable:next line_length
                    Text("No text could be detected in the image. Please try again, ensuring the text is clear, well-lit, and within the camera's focus.")
                })
+        .sheet(isPresented: $viewModel.showTextConfirmation) {
+            ScannedTextEditor(text: $viewModel.scannedTextToBeConfirmed,
+                              tintColor: handler.fileAttachmentsSectionPrimaryColor,
+                              onSave: { viewModel.confirmScannedText() })
+                .interactiveDismissDisabled()
+        }
     }
 
     private func handle(_ method: FileAttachmentMethod) {
@@ -137,5 +143,33 @@ public struct FileAttachmentsButton: View {
         @unknown default:
             showCameraUnavailable.toggle()
         }
+    }
+}
+
+private struct ScannedTextEditor: View {
+    @Environment(\.dismiss) private var dismiss
+    @FocusState private var isFocused: Bool
+    @Binding var text: String
+    let tintColor: UIColor
+    let onSave: () -> Void
+
+    var body: some View {
+        TextEditor(text: $text)
+            .scrollContentBackground(.hidden)
+            .focused($isFocused)
+            .fullSheetBackground()
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    CapsuleTextButton(title: #localized("Save"),
+                                      titleColor: PassColor.textInvert,
+                                      backgroundColor: tintColor,
+                                      action: {
+                                          onSave()
+                                          dismiss()
+                                      })
+                }
+            }
+            .onAppear { isFocused = true }
+            .navigationStackEmbeded()
     }
 }

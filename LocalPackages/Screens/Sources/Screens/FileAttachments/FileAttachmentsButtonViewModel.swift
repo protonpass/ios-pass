@@ -29,6 +29,8 @@ import SwiftUI
 @MainActor
 final class FileAttachmentsButtonViewModel: ObservableObject {
     @Published var selectedPhotos = [PhotosPickerItem]()
+    @Published var scannedTextToBeConfirmed = ""
+    @Published var showTextConfirmation = false
     @Published var showNoTextFound = false
 
     private var selectedPhotosTask: Task<Void, Never>?
@@ -61,23 +63,31 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
     }
 
     func handleScanResult(_ result: Result<(any ScanResult)?, any Error>) {
-        do {
-            switch result {
-            case let .success(scanResult):
-                guard let document = scanResult as? ScannedDocument else { return }
-                let text = document.scannedPages.flatMap(\.text).joined(separator: "\n")
-                guard !text.isEmpty else {
-                    showNoTextFound.toggle()
-                    return
-                }
-                let fileName = handler.generateDatedFileName(prefix: "Document", extension: "txt")
-
-                guard let data = text.data(using: .utf8) else { return }
-                let url = try handler.writeToTemporaryDirectory(data: data, fileName: fileName)
-                handler.handleAttachment(url)
-            case let .failure(error):
-                handler.handleAttachmentError(error)
+        switch result {
+        case let .success(scanResult):
+            guard let document = scanResult as? ScannedDocument else {
+                showNoTextFound.toggle()
+                return
             }
+            let text = document.scannedPages.flatMap(\.text).joined(separator: "\n")
+            if text.isEmpty {
+                showNoTextFound.toggle()
+            } else {
+                scannedTextToBeConfirmed = text
+                showTextConfirmation.toggle()
+            }
+
+        case let .failure(error):
+            handler.handleAttachmentError(error)
+        }
+    }
+
+    func confirmScannedText() {
+        do {
+            let fileName = handler.generateDatedFileName(prefix: "Document", extension: "txt")
+            guard let data = scannedTextToBeConfirmed.data(using: .utf8) else { return }
+            let url = try handler.writeToTemporaryDirectory(data: data, fileName: fileName)
+            handler.handleAttachment(url)
         } catch {
             handler.handleAttachmentError(error)
         }
