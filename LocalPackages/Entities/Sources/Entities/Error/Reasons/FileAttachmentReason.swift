@@ -30,12 +30,10 @@ public extension PassError {
         case failedToProcessPickedPhotos
         case failedToEncryptFile
         case failedToUploadMissingRemoteId
-        case failedToUploadMissingEncryptedData
         case failedToDownloadMissingFileName(String)
         case failedToDownloadMissingDecryptedFileKey(String)
         case failedToDownloadNoFetchedFiles
         case failedToAttachMissingRemoteId
-        case failedToCreateFileOnFileSystem
         case failedToUpdateMissingMimeType
         case failedToUpload(Int)
         case fileTooLarge(UInt64)
@@ -58,8 +56,6 @@ public extension PassError {
                 "Failed to encrypt file"
             case .failedToUploadMissingRemoteId:
                 "Failed to upload because of missing remote ID"
-            case .failedToUploadMissingEncryptedData:
-                "Failed to upload because of missing encrypted data"
             case let .failedToDownloadMissingFileName(id):
                 "Failed to download because of missing file name \(id)"
             case let .failedToDownloadMissingDecryptedFileKey(id):
@@ -68,8 +64,6 @@ public extension PassError {
                 "Failed to download because of missing fetched files"
             case .failedToAttachMissingRemoteId:
                 "Failed to attach file to an item because of missing remote ID"
-            case .failedToCreateFileOnFileSystem:
-                "Failed to create file on filesystem"
             case .failedToUpdateMissingMimeType:
                 "Failed to update because of missing MIME type"
             case let .failedToUpload(code):
