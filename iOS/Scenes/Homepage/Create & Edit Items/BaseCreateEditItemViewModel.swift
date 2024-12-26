@@ -124,6 +124,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published private(set) var attachedFiles: FetchableObject<[ItemFile]>?
     @Published private(set) var isUploadingFile = false
     @Published private(set) var dismissedFileAttachmentsBanner = false
+    @Published var fileToRename: FileAttachmentUiModel?
+    @Published var fileToDelete: FileAttachmentUiModel?
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
 
     @Published var customFieldUiModels = [CustomFieldUiModel]()
@@ -686,6 +688,14 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
         default:
             assertionFailure("No item with id \(attachment.id)")
         }
+    }
+
+    func showRenameAlert(attachment: FileAttachmentUiModel) {
+        fileToRename = attachment
+    }
+
+    func showDeleteAlert(attachment: FileAttachmentUiModel) {
+        fileToDelete = attachment
     }
 
     /// Return `true` if there was something to process, `false` otherwise
