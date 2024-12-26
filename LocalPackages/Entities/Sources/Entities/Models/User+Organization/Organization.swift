@@ -75,63 +75,94 @@ public extension Organization {
     }
 }
 
+//
+// RandomPasswordAllowed
+// required
+// boolean
+// Whether subusers are allowed to generate random passwords
+//
+// RandomPasswordMinLength
+// integer or null >= 4
+// Minimum password length. Default limit if null.
+//
+// RandomPasswordMaxLength
+// integer or null <= 64
+// Maximum password length. Default limit if null.
+//
+// RandomPasswordMustIncludeNumbers
+// boolean or null
+// Whether the password must include numbers. If true, it must. If false, it must not. Cannot be changed if not
+// null. Can be changed if null.
+//
+// RandomPasswordMustIncludeSymbols
+// boolean or null
+// Whether the password must include symbols. If true, it must. If false, it must not. Cannot be changed if not
+// null. Can be changed if null.
+//
+// RandomPasswordMustIncludeUppercase
+// boolean or null
+// Whether the password must include uppercase characters. If true, it must. If false, it must not. Cannot be
+// changed if not null. Can be changed if null.
+//
+// MemorablePasswordAllowed
+// required
+// boolean
+// Whether subusers are allowed to generate memorable passwords
+//
+// MemorablePasswordMinWords
+// integer or null
+// Minimum amount of words for the memorable passwords. Default limit if null.
+//
+// MemorablePasswordMaxWords
+// integer or null
+// Maximum amount of words for the memorable passwords. Default limit if null.
+//
+// MemorablePasswordMustCapitalize
+// boolean or null
+// Whether the password must capitalize words. If true, it must. If false, it must not. Cannot be changed if not
+// null. Can be changed if null.
+//
+// MemorablePasswordMustIncludeNumbers
+// boolean or null
+// Whether the password must include numbers. If true, it must. If false, it must not. Cannot be changed if not
+// null. Can be changed if null.
+
+// swiftlint:disable discouraged_optional_boolean
 public struct PasswordPolicy: Sendable, Codable, Equatable {
     public let randomPasswordAllowed: Bool
     public let randomPasswordMinLength: Int
     public let randomPasswordMaxLength: Int
-    public let randomPasswordMustIncludeNumbers: Bool
-    public let randomPasswordMustIncludeSymbols: Bool
-    public let randomPasswordMustIncludeUppercase: Bool
+    public let randomPasswordMustIncludeNumbers: Bool?
+    public let randomPasswordMustIncludeSymbols: Bool?
+    public let randomPasswordMustIncludeUppercase: Bool?
     public let memorablePasswordAllowed: Bool
     public let memorablePasswordMinWords: Int
     public let memorablePasswordMaxWords: Int
-    public let memorablePasswordMustCapitalize: Bool
-    public let memorablePasswordMustIncludeNumbers: Bool
+    public let memorablePasswordMustCapitalize: Bool?
+    public let memorablePasswordMustIncludeNumbers: Bool?
 
     public init(randomPasswordAllowed: Bool,
-                randomPasswordMinLength: Int,
-                randomPasswordMaxLength: Int,
-                randomPasswordMustIncludeNumbers: Bool,
-                randomPasswordMustIncludeSymbols: Bool,
-                randomPasswordMustIncludeUppercase: Bool,
+                randomPasswordMinLength: Int?,
+                randomPasswordMaxLength: Int?,
+                randomPasswordMustIncludeNumbers: Bool?,
+                randomPasswordMustIncludeSymbols: Bool?,
+                randomPasswordMustIncludeUppercase: Bool?,
                 memorablePasswordAllowed: Bool,
-                memorablePasswordMinWords: Int,
-                memorablePasswordMaxWords: Int,
-                memorablePasswordMustCapitalize: Bool,
-                memorablePasswordMustIncludeNumbers: Bool) {
+                memorablePasswordMinWords: Int?,
+                memorablePasswordMaxWords: Int?,
+                memorablePasswordMustCapitalize: Bool?,
+                memorablePasswordMustIncludeNumbers: Bool?) {
         self.randomPasswordAllowed = randomPasswordAllowed
-        self.randomPasswordMinLength = randomPasswordMinLength
-        self.randomPasswordMaxLength = randomPasswordMaxLength
+        self.randomPasswordMinLength = randomPasswordMinLength ?? 4
+        self.randomPasswordMaxLength = randomPasswordMaxLength ?? 64
         self.randomPasswordMustIncludeNumbers = randomPasswordMustIncludeNumbers
         self.randomPasswordMustIncludeSymbols = randomPasswordMustIncludeSymbols
         self.randomPasswordMustIncludeUppercase = randomPasswordMustIncludeUppercase
         self.memorablePasswordAllowed = memorablePasswordAllowed
-        self.memorablePasswordMinWords = memorablePasswordMinWords
-        self.memorablePasswordMaxWords = memorablePasswordMaxWords
+        self.memorablePasswordMinWords = memorablePasswordMinWords ?? 1
+        self.memorablePasswordMaxWords = memorablePasswordMaxWords ?? 10
         self.memorablePasswordMustCapitalize = memorablePasswordMustCapitalize
         self.memorablePasswordMustIncludeNumbers = memorablePasswordMustIncludeNumbers
-    }
-
-    public init(from decoder: any Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        randomPasswordAllowed = try container.decode(Bool.self, forKey: .randomPasswordAllowed)
-        randomPasswordMinLength = try (container.decodeIfPresent(Int.self, forKey: .randomPasswordMinLength)) ?? 4
-        randomPasswordMaxLength = try (container.decodeIfPresent(Int.self, forKey: .randomPasswordMaxLength)) ?? 64
-        randomPasswordMustIncludeNumbers =
-            try (container.decodeIfPresent(Bool.self, forKey: .randomPasswordMustIncludeNumbers)) ?? true
-        randomPasswordMustIncludeSymbols =
-            try (container.decodeIfPresent(Bool.self, forKey: .randomPasswordMustIncludeSymbols)) ?? true
-        randomPasswordMustIncludeUppercase =
-            try (container.decodeIfPresent(Bool.self, forKey: .randomPasswordMustIncludeUppercase)) ?? true
-        memorablePasswordAllowed = try container.decode(Bool.self, forKey: .memorablePasswordAllowed)
-        memorablePasswordMinWords =
-            try (container.decodeIfPresent(Int.self, forKey: .memorablePasswordMinWords)) ?? 1
-        memorablePasswordMaxWords =
-            try (container.decodeIfPresent(Int.self, forKey: .memorablePasswordMaxWords)) ?? 10
-        memorablePasswordMustCapitalize =
-            try (container.decodeIfPresent(Bool.self, forKey: .memorablePasswordMustCapitalize)) ?? true
-        memorablePasswordMustIncludeNumbers =
-            try (container.decodeIfPresent(Bool.self, forKey: .memorablePasswordMustIncludeNumbers)) ?? true
     }
 
     public static var `default`: PasswordPolicy {
@@ -146,22 +177,6 @@ public struct PasswordPolicy: Sendable, Codable, Equatable {
                        memorablePasswordMaxWords: 10,
                        memorablePasswordMustCapitalize: true,
                        memorablePasswordMustIncludeNumbers: true)
-    }
-
-    // MARK: Private
-
-    private enum CodingKeys: String, CodingKey {
-        case randomPasswordAllowed = "RandomPasswordAllowed"
-        case randomPasswordMinLength = "RandomPasswordMinLength"
-        case randomPasswordMaxLength = "RandomPasswordMaxLength"
-        case randomPasswordMustIncludeNumbers = "RandomPasswordMustIncludeNumbers"
-        case randomPasswordMustIncludeSymbols = "RandomPasswordMustIncludeSymbols"
-        case randomPasswordMustIncludeUppercase = "RandomPasswordMustIncludeUppercase"
-        case memorablePasswordAllowed = "MemorablePasswordAllowed"
-        case memorablePasswordMinWords = "MemorablePasswordMinWords"
-        case memorablePasswordMaxWords = "MemorablePasswordMaxWords"
-        case memorablePasswordMustCapitalize = "MemorablePasswordMustCapitalize"
-        case memorablePasswordMustIncludeNumbers = "MemorablePasswordMustIncludeNumbers"
     }
 }
 
@@ -198,3 +213,5 @@ public extension Organization.Settings {
         }
     }
 }
+
+// swiftlint:enable discouraged_optional_boolean

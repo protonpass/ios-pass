@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24B91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23605" systemVersion="24C101" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="1">
     <entity name="AccessEntity" representedClassName="AccessEntity" syncable="YES">
         <attribute name="aliasLimit" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="aliasSyncEnabled" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
@@ -113,18 +113,7 @@
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="forceLockSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="hasPasswordPolicy" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
-        <attribute name="memorablePasswordAllowed" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="memorablePasswordMaxWords" attributeType="Integer 64" defaultValueString="10" usesScalarValueType="YES"/>
-        <attribute name="memorablePasswordMinWords" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
-        <attribute name="memorablePasswordMustCapitalize" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="memorablePasswordMustIncludeNumbers" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="randomPasswordAllowed" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="randomPasswordMaxLength" attributeType="Integer 64" defaultValueString="64" usesScalarValueType="YES"/>
-        <attribute name="randomPasswordMinLength" attributeType="Integer 64" defaultValueString="4" usesScalarValueType="YES"/>
-        <attribute name="randomPasswordMustIncludeNumbers" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="randomPasswordMustIncludeSymbols" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
-        <attribute name="randomPasswordMustIncludeUppercase" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="YES"/>
+        <attribute name="passwordPolicyData" optional="YES" attributeType="Binary"/>
         <attribute name="shareMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <uniquenessConstraints>
