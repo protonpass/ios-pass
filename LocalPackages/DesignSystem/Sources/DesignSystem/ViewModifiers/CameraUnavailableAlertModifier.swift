@@ -33,7 +33,7 @@ struct CameraUnavailableAlertModifier: ViewModifier {
                    },
                    message: {
                        // swiftlint:disable:next line_length
-                       Text("Privacy or Restrictions settings have disabled use of the camera. You can change this in Settings.")
+                       Text("Privacy or Restrictions settings have disabled the use of the camera. You can change this in Settings.")
                    })
     }
 
