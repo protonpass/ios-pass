@@ -38,21 +38,6 @@ extension OrganizationEntity {
     @NSManaged var exportMode: Int64
     @NSManaged var forceLockSeconds: Int64
     @NSManaged var shareMode: Int64
-
-    // password policy sub elements
-    @NSManaged var hasPasswordPolicy: Bool
-    @NSManaged var randomPasswordAllowed: Bool
-    @NSManaged var randomPasswordMinLength: Int64
-    @NSManaged var randomPasswordMaxLength: Int64
-    @NSManaged var randomPasswordMustIncludeNumbers: Bool
-    @NSManaged var randomPasswordMustIncludeSymbols: Bool
-    @NSManaged var randomPasswordMustIncludeUppercase: Bool
-    @NSManaged var memorablePasswordAllowed: Bool
-    @NSManaged var memorablePasswordMinWords: Int64
-    @NSManaged var memorablePasswordMaxWords: Int64
-    @NSManaged var memorablePasswordMustCapitalize: Bool
-    @NSManaged var memorablePasswordMustIncludeNumbers: Bool
-
     @NSManaged var passwordPolicyData: Data?
 }
 
@@ -84,7 +69,6 @@ extension OrganizationEntity {
         exportMode = Int64(org.settings?.exportMode.rawValue ?? -1)
         forceLockSeconds = Int64(org.settings?.forceLockSeconds ?? -1)
         shareMode = Int64(org.settings?.shareMode.rawValue ?? -1)
-        hasPasswordPolicy = org.settings?.passwordPolicy != nil
 
         if let passwordPolicy = org.settings?.passwordPolicy {
             passwordPolicyData = try? JSONEncoder().encode(passwordPolicy)
