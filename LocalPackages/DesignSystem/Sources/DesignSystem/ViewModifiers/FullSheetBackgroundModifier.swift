@@ -37,7 +37,7 @@ struct FullSheetBackgroundModifier: ViewModifier {
 }
 
 public extension View {
-    func fullSheetBackground(_ color: Color) -> some View {
+    func fullSheetBackground(_ color: Color = PassColor.backgroundNorm.toColor) -> some View {
         modifier(FullSheetBackgroundModifier(color: color))
     }
 }
