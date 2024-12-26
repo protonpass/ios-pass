@@ -26,8 +26,6 @@ import SwiftUI
 
 public struct FileAttachmentRow: View {
     @State private var name: String
-    @State private var showRenameAlert = false
-    @State private var showDeleteAlert = false
     @State private var showFilePreview = false
 
     private let mode: Mode
@@ -40,7 +38,7 @@ public struct FileAttachmentRow: View {
         case view(onOpen: @MainActor () -> Void,
                   onSave: @MainActor () -> Void,
                   onShare: @MainActor () -> Void)
-        case edit(onRename: @MainActor (String) -> Void,
+        case edit(onRename: @MainActor () -> Void,
                   onDelete: @MainActor () -> Void,
                   onRetryUpload: @MainActor () -> Void)
     }
@@ -86,21 +84,6 @@ public struct FileAttachmentRow: View {
             }
         }
         .animation(.default, value: uiModel)
-        .alert("Rename file",
-               isPresented: $showRenameAlert,
-               actions: {
-                   TextField(text: $name, label: { EmptyView() })
-                   Button("Rename", action: { rename(name) })
-                       .disabled(name.isEmpty)
-                   Button("Cancel", role: .cancel, action: { name = uiModel.name })
-               })
-        .alert("Delete file?",
-               isPresented: $showDeleteAlert,
-               actions: {
-                   Button("Delete", role: .destructive, action: delete)
-                   Button("Cancel", role: .cancel, action: {})
-               },
-               message: { Text(verbatim: uiModel.name) })
         .fullScreenCover(isPresented: $showFilePreview) {
             if let url = uiModel.url {
                 FileAttachmentPreview(mode: .pending(url),
@@ -155,14 +138,14 @@ private extension FileAttachmentRow {
             case .uploaded:
                 Menu(content: {
                     switch mode {
-                    case .edit:
+                    case let .edit(onRename, onDelete, _):
                         LabelButton(title: "Rename",
                                     icon: PassIcon.rename,
-                                    action: { showRenameAlert.toggle() })
+                                    action: onRename)
                         Divider()
                         LabelButton(title: "Delete",
                                     icon: IconProvider.trash,
-                                    action: { showDeleteAlert.toggle() })
+                                    action: onDelete)
 
                     case let .view(onOpen, onSave, onShare):
                         LabelButton(title: "Open",
@@ -183,7 +166,7 @@ private extension FileAttachmentRow {
                 })
 
             case .error:
-                if case let .edit(_, _, onRetryUpload) = mode {
+                if case let .edit(_, onDelete, onRetryUpload) = mode {
                     Menu(content: {
                         LabelButton(title: "Retry",
                                     icon: IconProvider.arrowRotateRight,
@@ -191,7 +174,7 @@ private extension FileAttachmentRow {
                         Divider()
                         LabelButton(title: "Delete",
                                     icon: IconProvider.trash,
-                                    action: { showDeleteAlert.toggle() })
+                                    action: onDelete)
                     }, label: {
                         CircleButton(icon: IconProvider.threeDotsVertical,
                                      iconColor: PassColor.textWeak,
@@ -215,22 +198,6 @@ private extension FileAttachmentRow {
 }
 
 private extension FileAttachmentRow {
-    func rename(_ newName: String) {
-        if case let .edit(onRename, _, _) = mode {
-            onRename(name)
-        } else {
-            assertionFailure("Should be in edit mode in order to rename file")
-        }
-    }
-
-    func delete() {
-        if case let .edit(_, onDelete, _) = mode {
-            onDelete()
-        } else {
-            assertionFailure("Should be in edit mode in order to delete file")
-        }
-    }
-
     func retryUpload() {
         if case let .edit(_, _, onRetryUpload) = mode {
             onRetryUpload()
