@@ -58,6 +58,7 @@ final class ShareElementViewModel: ObservableObject {
         self.itemContent = itemContent
         self.itemCount = itemCount
         checkIfFreeUser()
+        getPassUserInfos()
     }
 
     func shareVault() {
