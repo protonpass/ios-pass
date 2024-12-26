@@ -29,6 +29,7 @@ import UIKit
 @MainActor
 final class ShareElementViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
+    @Published private(set) var canDisplayFeatureDiscovery = false
 
     let share: Share
     let itemContent: ItemContent
@@ -39,6 +40,8 @@ final class ShareElementViewModel: ObservableObject {
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
+    @LazyInjected(\SharedServiceContainer.userManager) var userManager
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
 
     weak var sheetPresentation: UISheetPresentationController?
 
@@ -116,5 +119,19 @@ private extension ShareElementViewModel {
     func complete(with element: SharingElementData) {
         setShareInviteVault(with: element)
         router.present(for: .sharingFlow(.topMost))
+    }
+
+    func getPassUserInfos() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
+                canDisplayFeatureDiscovery = Date.now
+                    .timeIntervalSince1970 - Double(passUserInfos.activationTime) >= 604_800 // 7 days
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
     }
 }

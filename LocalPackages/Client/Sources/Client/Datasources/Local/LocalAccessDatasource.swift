@@ -27,9 +27,9 @@ public protocol LocalAccessDatasourceProtocol: Sendable {
     func getAllAccesses() async throws -> [UserAccess]
     func upsert(access: UserAccess) async throws
     func removeAccess(userId: String) async throws
-    
+
     func getPassUserInformations(userId: String) async throws -> PassUserInformations?
-    func upsert(informations: PassUserInformations) async throws
+    func upsert(informations: PassUserInformations, userId: String) async throws
 }
 
 public final class LocalAccessDatasource: LocalDatasource, LocalAccessDatasourceProtocol, @unchecked Sendable {}
@@ -71,7 +71,7 @@ public extension LocalAccessDatasource {
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: deleteContext)
     }
-    
+
     func getPassUserInformations(userId: String) async throws -> PassUserInformations? {
         let taskContext = newTaskContext(type: .fetch)
 
@@ -81,16 +81,16 @@ public extension LocalAccessDatasource {
         assert(entities.count <= 1, "Should have maximum 1 information per user")
         return entities.compactMap { $0.toPassUserInformations() }.first
     }
-    
+
     func upsert(informations: PassUserInformations, userId: String) async throws {
         try await upsert([informations],
                          entityType: PassUserInformationsEntity.self,
                          fetchPredicate: NSPredicate(format: "userID == %@", userId),
-                         isEqual: { item, entity in
+                         isEqual: { _, entity in
                              userId == entity.userID
                          },
                          hydrate: { item, entity in
-            entity.hydrate(from: item, userId: userId)
+                             entity.hydrate(from: item, userId: userId)
                          })
     }
 }

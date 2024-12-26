@@ -46,6 +46,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
     @Published var showingLeaveShareAlert = false
+    @Published private(set) var canDisplayFeatureDiscovery = false
 
     private var superBindValuesCalled = false
 
@@ -108,6 +109,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
 
     var isAllowedToEdit: Bool {
         guard let vault else {
@@ -169,6 +171,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
+        getPassUserInfos()
         addItemReadEvent(itemContent)
         assert(superBindValuesCalled, "bindValues must be overridden with call to super")
     }
@@ -381,6 +384,20 @@ private extension BaseItemDetailViewModel {
         Task {
             guard #available(iOS 17, *) else { return }
             await ItemForceTouchTip.didPerformEligibleQuickAction.donate()
+        }
+    }
+
+    func getPassUserInfos() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
+                canDisplayFeatureDiscovery = Date.now.timeIntervalSince1970 - Double(passUserInfos
+                    .activationTime) >= 604_800 // 7 days
+            } catch {
+                handle(error)
+            }
         }
     }
 }
