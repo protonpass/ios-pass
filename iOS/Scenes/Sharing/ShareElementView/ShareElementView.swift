@@ -110,7 +110,7 @@ private extension ShareElementView {
                                  config: .init(alignment: .topTrailing,
                                                offset: CGSize(width: -17,
                                                               height: -12.5),
-                                               shouldHideAfterAction: false)) {
+                                               shouldHideAfterAction: true)) {
             Text("NEW")
                 .font(.caption)
                 .foregroundStyle(PassColor.textInvert.toColor)
