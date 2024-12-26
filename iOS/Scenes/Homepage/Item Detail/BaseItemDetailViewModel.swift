@@ -121,7 +121,9 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var showFileAttachmentsSection: Bool {
-        fileAttachmentsEnabled && (!files.isFetched || files.fetchedObject?.isEmpty == false)
+        fileAttachmentsEnabled &&
+            itemContent.item.hasFiles &&
+            (!files.isFetched || files.fetchedObject?.isEmpty == false)
     }
 
     var aliasSyncEnabled: Bool {
@@ -201,7 +203,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func fetchAttachments() async {
-        guard fileAttachmentsEnabled else { return }
+        guard fileAttachmentsEnabled, itemContent.item.hasFiles else { return }
         do {
             if files.isError {
                 files = .fetching

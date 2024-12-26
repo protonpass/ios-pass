@@ -106,6 +106,17 @@ public extension Array where Element: Equatable {
 }
 
 public extension Array {
+    /// Insert if not exist, update if exist
+    mutating func upsert(_ element: Element, isEqual: (Element, Element) -> Bool) {
+        if let index = firstIndex(where: { isEqual($0, element) }) {
+            self[index] = element
+        } else {
+            append(element)
+        }
+    }
+}
+
+public extension Array {
     /// CompactMap with set trnasformation.
     /// - Parameter transform: The transform to apply to each element.
     func compactMapToSet<T>(_ transform: (Element) throws -> T?) rethrows -> Set<T> {
