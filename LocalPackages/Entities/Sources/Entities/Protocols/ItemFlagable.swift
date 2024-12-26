@@ -47,6 +47,14 @@ public extension ItemFlagable {
     var isAliasEnabled: Bool {
         !itemFlags.contains(.aliasDisabled)
     }
+
+    var hasFiles: Bool {
+        itemFlags.contains(.hasFiles)
+    }
+
+    var hasHadFiles: Bool {
+        itemFlags.contains(.hasHadFiles)
+    }
 }
 
 public struct ItemFlags: Sendable, OptionSet {
@@ -54,6 +62,8 @@ public struct ItemFlags: Sendable, OptionSet {
     public static let monitoringDisabled = ItemFlags(rawValue: 1 << 0)
     public static let isBreached = ItemFlags(rawValue: 1 << 1)
     public static let aliasDisabled = ItemFlags(rawValue: 1 << 2)
+    public static let hasFiles = ItemFlags(rawValue: 1 << 3)
+    public static let hasHadFiles = ItemFlags(rawValue: 1 << 4)
 
     public init(rawValue: Int) {
         self.rawValue = rawValue
