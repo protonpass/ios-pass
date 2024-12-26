@@ -27,6 +27,7 @@ import Entities
 import Factory
 import SwiftUI
 
+// swiftlint:disable identifier_name line_length
 struct PasswordPolicySection: View {
     var body: some View {
         NavigationLink(destination: { PasswordPolicyView() },
@@ -63,12 +64,26 @@ private struct PasswordPolicyView: View {
                            }
                        }, label: { Text(verbatim: "Max Length") })
 
-                Toggle(isOn: $viewModel.randomPasswordMustIncludeNumbers,
-                       label: { Text(verbatim: "Must Include Numbers") })
-                Toggle(isOn: $viewModel.randomPasswordMustIncludeSymbols,
-                       label: { Text(verbatim: "Must Include Symbols") })
-                Toggle(isOn: $viewModel.randomPasswordMustIncludeUppercase,
-                       label: { Text(verbatim: "Must Include Uppercase") })
+                Toggle(isOn: $viewModel.enforceRandomPasswordMustIncludeNumbers,
+                       label: { Text(verbatim: "Enforce Include Numbers") })
+                if viewModel.enforceRandomPasswordMustIncludeNumbers {
+                    Toggle(isOn: $viewModel.randomPasswordMustIncludeNumbers,
+                           label: { Text(verbatim: "Must Include Numbers") })
+                }
+
+                Toggle(isOn: $viewModel.enforceRandomPasswordMustIncludeSymbols,
+                       label: { Text(verbatim: "Enforce Include Symbols") })
+                if viewModel.enforceRandomPasswordMustIncludeSymbols {
+                    Toggle(isOn: $viewModel.randomPasswordMustIncludeSymbols,
+                           label: { Text(verbatim: "Must Include Symbols") })
+                }
+
+                Toggle(isOn: $viewModel.enforceRandomPasswordMustIncludeUppercase,
+                       label: { Text(verbatim: "Enforce Include Uppercase") })
+                if viewModel.enforceRandomPasswordMustIncludeUppercase {
+                    Toggle(isOn: $viewModel.randomPasswordMustIncludeUppercase,
+                           label: { Text(verbatim: "Must Include Uppercase") })
+                }
             }
 
             Section(header: Text(verbatim: "Memorable Password Settings").font(.headline.bold())) {
@@ -87,10 +102,18 @@ private struct PasswordPolicyView: View {
                            Text(verbatim: "\(wordCount)").tag(wordCount)
                        }}, label: { Text(verbatim: "Max Words") })
 
-                Toggle(isOn: $viewModel.memorablePasswordMustCapitalize,
-                       label: { Text(verbatim: "Capitalize Words") })
-                Toggle(isOn: $viewModel.memorablePasswordMustIncludeNumbers,
-                       label: { Text(verbatim: "Must Include Numbers") })
+                Toggle(isOn: $viewModel.enforceMemorablePasswordMustCapitalize,
+                       label: { Text(verbatim: "Enforce Capitalize Words") })
+                if viewModel.enforceMemorablePasswordMustCapitalize {
+                    Toggle(isOn: $viewModel.memorablePasswordMustCapitalize,
+                           label: { Text(verbatim: "Capitalize Words") })
+                }
+                Toggle(isOn: $viewModel.enforceMemorablePasswordMustIncludeNumbers,
+                       label: { Text(verbatim: "Enforce Must Include Numbers") })
+                if viewModel.enforceMemorablePasswordMustIncludeNumbers {
+                    Toggle(isOn: $viewModel.memorablePasswordMustIncludeNumbers,
+                           label: { Text(verbatim: "Must Include Numbers") })
+                }
             }
         }
         .padding(DesignConstant.sectionPadding)
@@ -118,19 +141,37 @@ private final class PasswordPolicyViewModel: ObservableObject {
         }
     }
 
-    @Published var randomPasswordMustIncludeNumbers = true {
+    @Published var enforceRandomPasswordMustIncludeNumbers: Bool = true {
         didSet {
             updatePolicy()
         }
     }
 
-    @Published var randomPasswordMustIncludeSymbols = true {
+    @Published var randomPasswordMustIncludeNumbers: Bool = true {
         didSet {
             updatePolicy()
         }
     }
 
-    @Published var randomPasswordMustIncludeUppercase = true {
+    @Published var enforceRandomPasswordMustIncludeSymbols: Bool = true {
+        didSet {
+            updatePolicy()
+        }
+    }
+
+    @Published var randomPasswordMustIncludeSymbols: Bool = true {
+        didSet {
+            updatePolicy()
+        }
+    }
+
+    @Published var enforceRandomPasswordMustIncludeUppercase: Bool = true {
+        didSet {
+            updatePolicy()
+        }
+    }
+
+    @Published var randomPasswordMustIncludeUppercase: Bool = true {
         didSet {
             updatePolicy()
         }
@@ -154,13 +195,25 @@ private final class PasswordPolicyViewModel: ObservableObject {
         }
     }
 
-    @Published var memorablePasswordMustCapitalize = true {
+    @Published var enforceMemorablePasswordMustCapitalize: Bool = true {
         didSet {
             updatePolicy()
         }
     }
 
-    @Published var memorablePasswordMustIncludeNumbers = true {
+    @Published var memorablePasswordMustCapitalize: Bool = true {
+        didSet {
+            updatePolicy()
+        }
+    }
+
+    @Published var enforceMemorablePasswordMustIncludeNumbers: Bool = true {
+        didSet {
+            updatePolicy()
+        }
+    }
+
+    @Published var memorablePasswordMustIncludeNumbers: Bool = true {
         didSet {
             updatePolicy()
         }
@@ -178,14 +231,24 @@ private final class PasswordPolicyViewModel: ObservableObject {
         randomPasswordAllowed = passwordPolicy.randomPasswordAllowed
         randomPasswordMinLength = passwordPolicy.randomPasswordMinLength
         randomPasswordMaxLength = passwordPolicy.randomPasswordMaxLength
-        randomPasswordMustIncludeNumbers = passwordPolicy.randomPasswordMustIncludeNumbers
-        randomPasswordMustIncludeSymbols = passwordPolicy.randomPasswordMustIncludeSymbols
-        randomPasswordMustIncludeUppercase = passwordPolicy.randomPasswordMustIncludeUppercase
+        enforceRandomPasswordMustIncludeNumbers = passwordPolicy
+            .randomPasswordMustIncludeNumbers == nil ? false : true
+        randomPasswordMustIncludeNumbers = passwordPolicy.randomPasswordMustIncludeNumbers ?? true
+        enforceRandomPasswordMustIncludeSymbols = passwordPolicy
+            .randomPasswordMustIncludeSymbols == nil ? false : true
+        randomPasswordMustIncludeSymbols = passwordPolicy.randomPasswordMustIncludeSymbols ?? true
+        enforceRandomPasswordMustIncludeUppercase = passwordPolicy
+            .randomPasswordMustIncludeUppercase == nil ? false : true
+        randomPasswordMustIncludeUppercase = passwordPolicy.randomPasswordMustIncludeUppercase ?? true
         memorablePasswordAllowed = passwordPolicy.memorablePasswordAllowed
         memorablePasswordMinWords = passwordPolicy.memorablePasswordMinWords
         memorablePasswordMaxWords = passwordPolicy.memorablePasswordMaxWords
-        memorablePasswordMustCapitalize = passwordPolicy.memorablePasswordMustCapitalize
-        memorablePasswordMustIncludeNumbers = passwordPolicy.memorablePasswordMustIncludeNumbers
+        enforceMemorablePasswordMustCapitalize = passwordPolicy
+            .memorablePasswordMustCapitalize == nil ? false : true
+        memorablePasswordMustCapitalize = passwordPolicy.memorablePasswordMustCapitalize ?? true
+        enforceMemorablePasswordMustIncludeNumbers = passwordPolicy
+            .memorablePasswordMustIncludeNumbers == nil ? false : true
+        memorablePasswordMustIncludeNumbers = passwordPolicy.memorablePasswordMustIncludeNumbers ?? true
         updatingValues.toggle()
     }
 
@@ -196,14 +259,19 @@ private final class PasswordPolicyViewModel: ObservableObject {
         passwordPolicy = PasswordPolicy(randomPasswordAllowed: randomPasswordAllowed,
                                         randomPasswordMinLength: randomPasswordMinLength,
                                         randomPasswordMaxLength: randomPasswordMaxLength,
-                                        randomPasswordMustIncludeNumbers: randomPasswordMustIncludeNumbers,
-                                        randomPasswordMustIncludeSymbols: randomPasswordMustIncludeSymbols,
-                                        randomPasswordMustIncludeUppercase: randomPasswordMustIncludeUppercase,
+                                        randomPasswordMustIncludeNumbers: enforceRandomPasswordMustIncludeNumbers ?
+                                            randomPasswordMustIncludeNumbers : nil,
+                                        randomPasswordMustIncludeSymbols: enforceRandomPasswordMustIncludeSymbols ?
+                                            randomPasswordMustIncludeSymbols : nil,
+                                        randomPasswordMustIncludeUppercase: enforceRandomPasswordMustIncludeUppercase ?
+                                            randomPasswordMustIncludeUppercase : nil,
                                         memorablePasswordAllowed: memorablePasswordAllowed,
                                         memorablePasswordMinWords: memorablePasswordMinWords,
                                         memorablePasswordMaxWords: memorablePasswordMaxWords,
-                                        memorablePasswordMustCapitalize: memorablePasswordMustCapitalize,
-                                        memorablePasswordMustIncludeNumbers: memorablePasswordMustIncludeNumbers)
+                                        memorablePasswordMustCapitalize: enforceMemorablePasswordMustCapitalize ?
+                                            memorablePasswordMustCapitalize : nil,
+                                        memorablePasswordMustIncludeNumbers: enforceMemorablePasswordMustIncludeNumbers ?
+                                            memorablePasswordMustIncludeNumbers : nil)
     }
 }
 
@@ -217,3 +285,5 @@ extension PasswordPolicy: @retroactive RawRepresentable {
         return result
     }
 }
+
+// swiftlint:enable identifier_name line_length
