@@ -315,10 +315,11 @@ private extension GeneratePasswordViewModel {
         update($includeNumbers.eraseToAnyPublisher(), keyPath: \.includingNumbers, forceRefresh: false)
     }
 
-    func update<Value>(_ publisher: AnyPublisher<Value, Never>,
-                       keyPath: WritableKeyPath<GeneratePasswordViewModel, Value>,
-                       forceRefresh: Bool = true) {
+    func update<Value: Equatable>(_ publisher: AnyPublisher<Value, Never>,
+                                  keyPath: WritableKeyPath<GeneratePasswordViewModel, Value>,
+                                  forceRefresh: Bool = true) {
         publisher
+            .removeDuplicates()
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newValue in
                 guard var self else { return }

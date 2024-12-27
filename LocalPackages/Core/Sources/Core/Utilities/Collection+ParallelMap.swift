@@ -20,52 +20,42 @@
 
 import Foundation
 
-// swiftlint:disable identifier_name
-// https://gist.github.com/wilg/47a04c8f5083a6938da6087f77333784
 public extension Collection where Element: Sendable {
-    func parallelMap<T: Sendable>(parallelism requestedParallelism: Int? = nil,
+    func parallelMap<T: Sendable>(parallelism: Int = 2,
                                   _ transform: @escaping @Sendable (Element) async throws -> T) async rethrows
         -> [T] {
-        let defaultParallelism = 2
-        let parallelism = requestedParallelism ?? defaultParallelism
+        guard !isEmpty else { return [] }
 
-        let n = count
-        if n == 0 {
-            return []
-        }
+        var iterator = enumerated().makeIterator()
+
         return try await withThrowingTaskGroup(of: (Int, T).self, returning: [T].self) { group in
-            var result = [T?](repeatElement(nil, count: n))
+            var results = [T?](repeating: nil, count: count)
 
-            var i = self.startIndex
-            var submitted = 0
-
-            func submitNext() async throws {
-                if i == self.endIndex { return }
-
-                let element = self[i]
-                group.addTask { [submitted, element] in
-                    let value = try await transform(element)
-                    return (submitted, value)
+            // Submit initial tasks
+            for _ in 0..<Swift.min(parallelism, count) {
+                if let (index, element) = iterator.next() {
+                    group.addTask {
+                        let value = try await transform(element)
+                        return (index, value)
+                    }
                 }
-                submitted += 1
-                formIndex(after: &i)
             }
 
-            // submit first initial tasks
-            for _ in 0..<parallelism {
-                try await submitNext()
-            }
+            // Process completed tasks and submit new ones
+            while let (index, value) = try await group.next() {
+                results[index] = value
 
-            // as each task completes, submit a new task until we run out of work
-            while let (index, taskResult) = try await group.next() {
-                result[index] = taskResult
+                if let (nextIndex, nextElement) = iterator.next() {
+                    group.addTask {
+                        let transformedValue = try await transform(nextElement)
+                        return (nextIndex, transformedValue)
+                    }
+                }
 
                 try Task.checkCancellation()
-                try await submitNext()
             }
 
-            assert(result.count == n)
-            return Array(result.compactMap { $0 })
+            return results.compactMap { $0 }
         }
     }
 
@@ -76,6 +66,42 @@ public extension Collection where Element: Sendable {
             try await work($0)
         }
     }
-}
 
-// swiftlint:enable identifier_name
+    func compactParallelMap<T: Sendable>(parallelism: Int = 2,
+                                         _ transform: @escaping @Sendable (Element) async throws
+                                             -> T?) async rethrows -> [T] {
+        guard !isEmpty else { return [] }
+
+        var iterator = makeIterator()
+
+        return try await withThrowingTaskGroup(of: T?.self, returning: [T].self) { group in
+            var results = [T]()
+
+            // Submit initial tasks
+            for _ in 0..<Swift.min(parallelism, count) {
+                if let element = iterator.next() {
+                    group.addTask {
+                        try await transform(element)
+                    }
+                }
+            }
+
+            // Process completed tasks and submit new ones
+            while let transformedValue = try await group.next() {
+                if let value = transformedValue {
+                    results.append(value)
+                }
+
+                if let nextElement = iterator.next() {
+                    group.addTask {
+                        try await transform(nextElement)
+                    }
+                }
+
+                try Task.checkCancellation()
+            }
+
+            return results
+        }
+    }
+}
