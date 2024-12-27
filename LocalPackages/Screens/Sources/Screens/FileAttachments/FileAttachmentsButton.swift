@@ -180,7 +180,10 @@ private struct ScannedTextEditor: View {
                               secondaryTintColor: secondaryTintColor,
                               saveable: !text.isEmpty,
                               onClose: { showDiscardChangesAlert.toggle() },
-                              onSave: onSave)
+                              onSave: {
+                                  onSave()
+                                  dismiss()
+                              })
             }
             .onAppear { isFocused = true }
             .navigationStackEmbeded()
