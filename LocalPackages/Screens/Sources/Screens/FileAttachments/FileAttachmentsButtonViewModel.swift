@@ -29,6 +29,32 @@ import SwiftUI
 enum CapturedPhoto: Sendable {
     case png(Data?)
     case jpeg(Data?)
+
+    var data: Data {
+        get throws {
+            switch self {
+            case let .png(data):
+                guard let data else {
+                    throw PassError.fileAttachment(.noPngData)
+                }
+                return data
+            case let .jpeg(data):
+                guard let data else {
+                    throw PassError.fileAttachment(.noJpegData)
+                }
+                return data
+            }
+        }
+    }
+
+    var fileExtension: String {
+        switch self {
+        case .png:
+            "png"
+        case .jpeg:
+            "jpeg"
+        }
+    }
 }
 
 @MainActor
@@ -56,26 +82,9 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
 
     func handleCapturedPhoto(_ photo: CapturedPhoto) {
         do {
-            let data: Data
-            let fileExtension: String
-
-            switch photo {
-            case let .png(pngData):
-                guard let pngData else {
-                    throw PassError.fileAttachment(.noPngData)
-                }
-                data = pngData
-                fileExtension = "png"
-            case let .jpeg(jpegData):
-                guard let jpegData else {
-                    throw PassError.fileAttachment(.noJpegData)
-                }
-                data = jpegData
-                fileExtension = "jpeg"
-            }
-
-            let fileName = handler.generateDatedFileName(prefix: "Photo", extension: fileExtension)
-            let url = try handler.writeToTemporaryDirectory(data: data, fileName: fileName)
+            let fileName = handler.generateDatedFileName(prefix: "Photo",
+                                                         extension: photo.fileExtension)
+            let url = try handler.writeToTemporaryDirectory(data: photo.data, fileName: fileName)
             handler.handleAttachment(url)
         } catch {
             handler.handleAttachmentError(error)
