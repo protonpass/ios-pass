@@ -245,17 +245,19 @@ struct GeneratePasswordView: View {
 
             Menu(content: {
                 ForEach(WordSeparator.allCases, id: \.self) { separator in
-                    Button(action: {
-                        viewModel.changeWordSeparator(separator)
-                    }, label: {
-                        HStack {
-                            Text(separator.title)
-                            Spacer()
-                            if viewModel.typeOfWordSeparator == separator {
-                                Image(systemName: "checkmark")
+                    if separator != .numbers || separator == .numbers && viewModel.activateNumberCharacters {
+                        Button(action: {
+                            viewModel.changeWordSeparator(separator)
+                        }, label: {
+                            HStack {
+                                Text(separator.title)
+                                Spacer()
+                                if viewModel.typeOfWordSeparator == separator {
+                                    Image(systemName: "checkmark")
+                                }
                             }
-                        }
-                    })
+                        })
+                    }
                 }
             }, label: {
                 HStack {
