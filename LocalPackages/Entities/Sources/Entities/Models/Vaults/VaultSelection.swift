@@ -68,12 +68,8 @@ public enum VaultSelection: Hashable, Sendable {
 extension VaultSelection: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         switch (lhs, rhs) {
-        case (.all, .all), (.sharedByMe, .sharedByMe), (.sharedWithMe, .sharedWithMe), (.trash, .trash):
-            true
-        case let (.precise(lhsShare), .precise(rhsShare)):
-            lhsShare.id == rhsShare.id
         default:
-            false
+            lhs.preferenceKey == rhs.preferenceKey
         }
     }
 }

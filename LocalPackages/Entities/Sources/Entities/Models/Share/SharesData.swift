@@ -24,10 +24,14 @@ import CryptoKit
 public struct SharesData: Hashable, Sendable {
     public let shares: [ShareContent]
     public let trashedItems: [ItemUiModel]
+    public let itemsSharedByMe: [ItemUiModel]
+    public let itemsSharedWithMe: [ItemUiModel]
 
     public init(shares: [ShareContent], trashedItems: [ItemUiModel]) {
         self.shares = shares
         self.trashedItems = trashedItems
+        itemsSharedByMe = shares.filter(\.share.owner).flatMap(\.items).filter(\.isShared)
+        itemsSharedWithMe = shares.filter { !$0.share.isVaultRepresentation && !$0.share.owner }.flatMap(\.items)
     }
 
     public var filteredOrderedVaults: [Share] {
@@ -41,13 +45,5 @@ public struct SharesData: Hashable, Sendable {
                       let rhsName = rhs.vaultName else { return false }
                 return lhsName < rhsName
             }
-    }
-
-    public var itemsSharedByMe: [ItemUiModel] {
-        shares.filter(\.share.owner).flatMap(\.items).filter(\.isShared)
-    }
-
-    public var itemsSharedWithMe: [ItemUiModel] {
-        shares.filter { !$0.share.isVaultRepresentation && !$0.share.owner }.flatMap(\.items)
     }
 }

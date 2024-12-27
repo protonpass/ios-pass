@@ -81986,6 +81986,7 @@
       }
     },
     "NEW" : {
+      "comment" : "Text for the top right badge for a button of a new feature. Always in majuscule.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
