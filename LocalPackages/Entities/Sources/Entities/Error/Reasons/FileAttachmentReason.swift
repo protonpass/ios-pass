@@ -24,6 +24,7 @@ import Foundation
 public extension PassError {
     enum FileAttachmentReason: CustomDebugStringConvertible, Sendable {
         case noPngData
+        case noJpegData
         case noDataFound(URL)
         case noDataForChunk(String)
         case noChunkId(String)
@@ -44,6 +45,8 @@ public extension PassError {
             switch self {
             case .noPngData:
                 "No PNG data"
+            case .noJpegData:
+                "No JPEG data"
             case let .noDataFound(url):
                 "No data found \(url.absoluteString)"
             case let .noDataForChunk(id):

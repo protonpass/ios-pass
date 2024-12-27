@@ -31,6 +31,7 @@ public struct FileAttachmentsButton: View {
     @StateObject private var viewModel: FileAttachmentsButtonViewModel
     @State private var showCameraUnavailable = false
     @State private var showCamera = false
+    @State private var capturedImageToEdit: UIImage?
     @State private var showDocScanner = false
     @State private var showPhotosPicker = false
     @State private var showFileImporter = false
@@ -78,7 +79,16 @@ public struct FileAttachmentsButton: View {
         })
         .sheet(isPresented: $showCamera) {
             CameraView {
-                viewModel.handleCapturedPhoto($0)
+                capturedImageToEdit = $0
+            }
+        }
+        .sheet(isPresented: $capturedImageToEdit.mappedToBool()) {
+            if let capturedImageToEdit {
+                CapturedPhotoEditor(capturedImage: capturedImageToEdit,
+                                    primaryTintColor: handler.fileAttachmentsSectionPrimaryColor,
+                                    secondaryTintColor: handler.fileAttachmentsSectionSecondaryColor,
+                                    onSave: viewModel.handleCapturedPhoto)
+                    .interactiveDismissDisabled()
             }
         }
         .sheet(isPresented: $showDocScanner) {
@@ -165,21 +175,142 @@ private struct ScannedTextEditor: View {
             .scrollContentBackground(.hidden)
             .focused($isFocused)
             .fullSheetBackground()
-            .toolbar { toolbar }
+            .toolbar {
+                EditorToolbar(primaryTintColor: primaryTintColor,
+                              secondaryTintColor: secondaryTintColor,
+                              saveable: !text.isEmpty,
+                              onClose: { showDiscardChangesAlert.toggle() },
+                              onSave: onSave)
+            }
             .onAppear { isFocused = true }
             .navigationStackEmbeded()
             .discardChangesAlert(isPresented: $showDiscardChangesAlert,
                                  onDiscard: dismiss.callAsFunction)
     }
+}
 
-    @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+private struct CapturedPhotoEditor: View {
+    @Environment(\.dismiss) private var dismiss
+    @State private var image: UIImage
+    @State private var quality: Float
+    @State private var bytesCount: Int
+    @State private var editing = false
+    @State private var showDiscardChangesAlert = false
+    private let capturedImage: UIImage
+    private let formatter: ByteCountFormatter
+    private let primaryTintColor: UIColor
+    private let secondaryTintColor: UIColor
+    private let onSave: (CapturedPhoto) -> Void
+
+    init(capturedImage: UIImage,
+         defaultQuality: Float = 50.0,
+         allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB],
+         primaryTintColor: UIColor,
+         secondaryTintColor: UIColor,
+         onSave: @escaping (CapturedPhoto) -> Void) {
+        _image = .init(initialValue: capturedImage)
+        _quality = .init(initialValue: defaultQuality)
+        _bytesCount = .init(initialValue: capturedImage
+            .jpegData(compressionQuality: CGFloat(defaultQuality) / 100.0)?.count ?? 0)
+
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = allowedUnits
+        self.formatter = formatter
+
+        self.capturedImage = capturedImage
+        self.primaryTintColor = primaryTintColor
+        self.secondaryTintColor = secondaryTintColor
+        self.onSave = onSave
+    }
+
+    var body: some View {
+        VStack {
+            Image(uiImage: image)
+                .resizable()
+                .showSpinner(editing)
+
+            Slider(value: $quality,
+                   in: 10...100,
+                   step: 10,
+                   label: {
+                       EmptyView()
+                   },
+                   minimumValueLabel: {
+                       Text(verbatim: "10%")
+                           .foregroundStyle(PassColor.textNorm.toColor)
+                   },
+                   maximumValueLabel: {
+                       Text(verbatim: "100%")
+                           .foregroundStyle(PassColor.textNorm.toColor)
+                   },
+                   onEditingChanged: { editing in
+                       self.editing = editing
+                       if quality == 100 {
+                           image = capturedImage
+                           bytesCount = capturedImage.pngData()?.count ?? 0
+                       } else if let data = compressedImageData(),
+                                 let image = UIImage(data: data) {
+                           self.image = image
+                           bytesCount = data.count
+                       }
+                   })
+                   .padding([.top, .horizontal])
+
+            HStack {
+                if let size = formatter.string(for: bytesCount) {
+                    Text(verbatim: size)
+                        .if(editing) { view in
+                            view.redacted(reason: .placeholder)
+                        }
+                }
+                Text(verbatim: "(\("\(String(format: "%.0f", quality))%"))")
+            }
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
+        .padding(.bottom)
+        .tint(primaryTintColor.toColor)
+        .animation(.default, value: quality)
+        .animation(.default, value: editing)
+        .fullSheetBackground()
+        .toolbar {
+            EditorToolbar(primaryTintColor: primaryTintColor,
+                          secondaryTintColor: secondaryTintColor,
+                          saveable: true,
+                          onClose: { showDiscardChangesAlert.toggle() },
+                          onSave: {
+                              if quality == 100 {
+                                  onSave(.png(capturedImage.pngData()))
+                              } else {
+                                  onSave(.jpeg(compressedImageData()))
+                              }
+                              dismiss()
+                          })
+        }
+        .navigationStackEmbeded()
+        .discardChangesAlert(isPresented: $showDiscardChangesAlert,
+                             onDiscard: dismiss.callAsFunction)
+    }
+
+    private func compressedImageData() -> Data? {
+        capturedImage.jpegData(compressionQuality: CGFloat(quality) / 100.0)
+    }
+}
+
+private struct EditorToolbar: ToolbarContent {
+    let primaryTintColor: UIColor
+    let secondaryTintColor: UIColor
+    let saveable: Bool
+    let onClose: () -> Void
+    let onSave: () -> Void
+
+    var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             CircleButton(icon: IconProvider.cross,
                          iconColor: primaryTintColor,
                          backgroundColor: secondaryTintColor,
                          accessibilityLabel: "Close",
-                         action: { showDiscardChangesAlert.toggle() })
+                         action: onClose)
         }
 
         ToolbarItem(placement: .topBarTrailing) {
@@ -188,13 +319,10 @@ private struct ScannedTextEditor: View {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: primaryTintColor,
                                         disableBackgroundColor: secondaryTintColor,
-                                        disabled: text.isEmpty,
-                                        action: {
-                                            onSave()
-                                            dismiss()
-                                        })
-                                        .accessibilityLabel("Save")
-                                        .animation(.default, value: text.isEmpty)
+                                        disabled: !saveable,
+                                        action: onSave)
+                .accessibilityLabel("Save")
+                .animation(.default, value: saveable)
         }
     }
 }
