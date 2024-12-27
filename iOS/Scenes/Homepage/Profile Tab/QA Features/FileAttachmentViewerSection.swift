@@ -19,18 +19,40 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Factory
 import Screens
 import SwiftUI
 
 struct FileAttachmentViewerSection: View {
     @State private var showPicker = false
     @State private var url: URL?
+    @State private var dismissedFileAttachmentsBanner = false
+
+    private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
 
     var body: some View {
-        Button(action: emptyTempDir) {
-            Text(verbatim: "Empty temporary directory")
+        Section(content: {
+            StaticToggle(.verbatim("Dismissed file attachments banner"),
+                         isOn: dismissedFileAttachmentsBanner,
+                         action: {
+                             Task {
+                                 try? await preferencesManager
+                                     .updateAppPreferences(\.dismissedFileAttachmentsBanner,
+                                                           value: false)
+                                 dismissedFileAttachmentsBanner = false
+                             }
+                         })
+            Button(action: emptyTempDir) {
+                Text(verbatim: "Empty temporary directory")
+            }
+            picker
+        }, header: {
+            Text(verbatim: "File attachments")
+        })
+        .task {
+            dismissedFileAttachmentsBanner =
+                preferencesManager.appPreferences.unwrapped().dismissedFileAttachmentsBanner
         }
-        picker
     }
 }
 

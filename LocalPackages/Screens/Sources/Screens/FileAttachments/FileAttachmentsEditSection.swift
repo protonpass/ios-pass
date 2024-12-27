@@ -28,6 +28,7 @@ import SwiftUI
 public protocol FileAttachmentsEditHandler: AnyObject {
     var fileAttachmentsSectionPrimaryColor: UIColor { get }
     var fileAttachmentsSectionSecondaryColor: UIColor { get }
+    var isFreeUser: Bool { get }
     var itemContentType: ItemContentType { get }
 
     func generateDatedFileName(prefix: String, extension: String) -> String
@@ -35,11 +36,12 @@ public protocol FileAttachmentsEditHandler: AnyObject {
 
     func handleAttachment(_ url: URL)
     func handleAttachmentError(_ error: any Error)
-    func rename(attachment: FileAttachmentUiModel, newName: String)
+    func showRenameAlert(attachment: FileAttachmentUiModel)
+    func showDeleteAlert(attachment: FileAttachmentUiModel)
     func retryFetchAttachedFiles()
     func retryUpload(attachment: FileAttachmentUiModel)
-    func delete(attachment: FileAttachmentUiModel)
     func deleteAllAttachments()
+    func upsellFileAttachments()
 }
 
 public struct FileAttachmentsEditSection: View {
@@ -114,8 +116,8 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                FileAttachmentRow(mode: .edit(onRename: { handler.rename(attachment: file, newName: $0) },
-                                              onDelete: { handler.delete(attachment: file) },
+                FileAttachmentRow(mode: .edit(onRename: { handler.showRenameAlert(attachment: file) },
+                                              onDelete: { handler.showDeleteAlert(attachment: file) },
                                               onRetryUpload: { handler.retryUpload(attachment: file) }),
                                   itemContentType: handler.itemContentType,
                                   uiModel: file,
