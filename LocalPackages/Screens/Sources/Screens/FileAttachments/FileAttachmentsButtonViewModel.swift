@@ -26,6 +26,11 @@ import Entities
 import PhotosUI
 import SwiftUI
 
+enum CapturedPhoto: Sendable {
+    case png(Data?)
+    case jpeg(Data?)
+}
+
 @MainActor
 final class FileAttachmentsButtonViewModel: ObservableObject {
     @Published var selectedPhotos = [PhotosPickerItem]()
@@ -49,13 +54,28 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
             .store(in: &cancellable)
     }
 
-    func handleCapturedPhoto(_ image: UIImage?) {
+    func handleCapturedPhoto(_ photo: CapturedPhoto) {
         do {
-            guard let pngData = image?.pngData() else {
-                throw PassError.fileAttachment(.noPngData)
+            let data: Data
+            let fileExtension: String
+
+            switch photo {
+            case let .png(pngData):
+                guard let pngData else {
+                    throw PassError.fileAttachment(.noPngData)
+                }
+                data = pngData
+                fileExtension = "png"
+            case let .jpeg(jpegData):
+                guard let jpegData else {
+                    throw PassError.fileAttachment(.noJpegData)
+                }
+                data = jpegData
+                fileExtension = "jpeg"
             }
-            let fileName = handler.generateDatedFileName(prefix: "Photo", extension: "png")
-            let url = try handler.writeToTemporaryDirectory(data: pngData, fileName: fileName)
+
+            let fileName = handler.generateDatedFileName(prefix: "Photo", extension: fileExtension)
+            let url = try handler.writeToTemporaryDirectory(data: data, fileName: fileName)
             handler.handleAttachment(url)
         } catch {
             handler.handleAttachmentError(error)
