@@ -162,12 +162,24 @@ public extension ShareRepository {
         logger.trace("Getting all remote shares for user \(userId)")
         do {
             let shares = try await remoteDatasource.getShares(userId: userId)
-            let decryptedShares = try await shares
-                .parallelMap { [weak self] in
-                    guard let self else { return $0 }
-                    return try await decryptVaultContent(userId: userId, $0)
+            let decryptedShares: [Share] = try await shares
+                .compactParallelMap(parallelism: 5) { [weak self] in
+                    guard let self else { return nil }
+                    do {
+                        return try await decryptVaultContent(userId: userId, $0)
+                    } catch {
+                        if let passError = error as? PassError,
+                           case let .crypto(reason) = passError,
+                           case .inactiveUserKey = reason {
+                            // We can’t decrypt old vaults because of password reset
+                            // just log and move on instead of throwing
+                            logger.warning(reason.debugDescription)
+                            return nil
+                        } else {
+                            throw error
+                        }
+                    }
                 }
-
             logger.trace("Got \(shares.count) remote shares for user \(userId)")
             return decryptedShares
         } catch {
