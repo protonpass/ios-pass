@@ -67,9 +67,6 @@ public enum VaultSelection: Hashable, Sendable {
 
 extension VaultSelection: Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
-        default:
-            lhs.preferenceKey == rhs.preferenceKey
-        }
+        lhs.preferenceKey == rhs.preferenceKey
     }
 }
