@@ -81985,6 +81985,17 @@
         }
       }
     },
+    "NEW" : {
+      "comment" : "Text for the top right badge for a button of a new feature. Always in majuscule.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NEW"
+          }
+        }
+      }
+    },
     "New title" : {
       "localizations" : {
         "be" : {
@@ -83083,6 +83094,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Không có vụ rò rỉ dữ liệu nào được tìm thấy cho"
+          }
+        }
+      }
+    },
+    "No items are shared with you" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No items are shared with you"
           }
         }
       }
@@ -117030,6 +117051,26 @@
         }
       }
     },
+    "Show shared by me" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show shared by me"
+          }
+        }
+      }
+    },
+    "Show shared with me" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show shared with me"
+          }
+        }
+      }
+    },
     "Show social security number" : {
       "localizations" : {
         "be" : {
@@ -145431,6 +145472,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn không có mật khẩu tái sử dụng"
+          }
+        }
+      }
+    },
+    "You have not shared any items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have not shared any items"
           }
         }
       }

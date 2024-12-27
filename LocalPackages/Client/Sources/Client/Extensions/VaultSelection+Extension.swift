@@ -30,6 +30,10 @@ public extension VaultSelection {
             #localized("Search in %@...", bundle: .module, share.vaultContent?.name ?? "")
         case .trash:
             #localized("Search in Trash...", bundle: .module)
+        case .sharedByMe:
+            #localized("Search in items shared by me", bundle: .module)
+        case .sharedWithMe:
+            #localized("Search in items shared with me", bundle: .module)
         }
     }
 }

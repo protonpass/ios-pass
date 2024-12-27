@@ -23,6 +23,7 @@ import Entities
 public protocol RemoteAccessDatasourceProtocol: Sendable {
     func getAccess(userId: String) async throws -> Access
     func updatePassMonitorState(userId: String, request: UpdateMonitorStateRequest) async throws -> Access.Monitor
+    func getUserPassInformations(userId: String) async throws -> PassUserInformations
 }
 
 public final class RemoteAccessDatasource: RemoteDatasource, RemoteAccessDatasourceProtocol, @unchecked Sendable {}
@@ -39,5 +40,11 @@ public extension RemoteAccessDatasource {
         let endpoint = UpdateMonitorStateEndpoint(request: request)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.monitor
+    }
+
+    func getUserPassInformations(userId: String) async throws -> PassUserInformations {
+        let endpoint = GetPassUserInformationsEndpoint()
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.data
     }
 }
