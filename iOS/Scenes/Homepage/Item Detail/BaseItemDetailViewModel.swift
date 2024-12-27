@@ -393,8 +393,7 @@ private extension BaseItemDetailViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                canDisplayFeatureDiscovery = Date.now.timeIntervalSince1970 - Double(passUserInfos
-                    .activationTime) >= 604_800 // 7 days
+                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
             } catch {
                 handle(error)
             }

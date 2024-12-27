@@ -18,28 +18,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
 import Core
 import SwiftUI
 
 // Custom ViewModifier for displaying overlay views
-struct OverlayViewModifier<Overlay: View>: ViewModifier {
-    @StateObject private var model: OverlayViewModifierModel
+private struct FeatureDiscoveryOverlay<Overlay: View>: ViewModifier {
+    @StateObject private var model: FeatureDiscoveryOverlayViewModel
     private let overlay: () -> Overlay
     private let config: FeatureDiscoveryConfig
-    private let feature: FeatureDiscoveries
+    private let feature: NewFeature
 
-    init(feature: FeatureDiscoveries,
+    init(feature: NewFeature,
          config: FeatureDiscoveryConfig,
+         storage: UserDefaults,
          @ViewBuilder overlay: @escaping () -> Overlay) {
-        _model = .init(wrappedValue: .init(feature: feature))
+        _model = .init(wrappedValue: .init(feature: feature, storage: storage))
         self.overlay = overlay
         self.config = config
         self.feature = feature
     }
 
     func body(content: Content) -> some View {
-        ZStack(alignment: .topTrailing) {
+        ZStack(alignment: config.alignment) {
             content
                 .simultaneousGesture(TapGesture().onEnded {
                     if config.shouldHideAfterAction {
@@ -47,7 +47,7 @@ struct OverlayViewModifier<Overlay: View>: ViewModifier {
                     }
                 })
             // Conditional overlay view
-            if model.isOverlayVisible {
+            if !model.shouldOverlayBeInvisible {
                 overlay()
                     .offset(config.offset)
             }
@@ -56,25 +56,25 @@ struct OverlayViewModifier<Overlay: View>: ViewModifier {
 }
 
 @MainActor
-final class OverlayViewModifierModel: ObservableObject {
-    @Published private(set) var isOverlayVisible: Bool = false
+private final class FeatureDiscoveryOverlayViewModel: ObservableObject {
+    @Published private(set) var shouldOverlayBeInvisible = true
     private let storage: UserDefaults
 
-    init(feature: FeatureDiscoveries,
-         storage: UserDefaults = kSharedUserDefaults) {
+    init(feature: NewFeature,
+         storage: UserDefaults) {
         self.storage = storage
         if feature.canDisplay {
-            isOverlayVisible = storage.object(forKey: feature.storageKey) as? Bool ?? true
+            shouldOverlayBeInvisible = storage.bool(forKey: feature.storageKey)
         }
     }
 
-    func removeOverlay(feature: FeatureDiscoveries) {
-        storage.set(false, forKey: feature.storageKey)
-        isOverlayVisible = false
+    func removeOverlay(feature: NewFeature) {
+        storage.set(true, forKey: feature.storageKey)
+        shouldOverlayBeInvisible = true
     }
 }
 
-public enum FeatureDiscoveries: Sendable {
+public enum NewFeature: Sendable {
     case itemSharing(canDisplay: Bool)
 
     var storageKey: String {
@@ -90,22 +90,17 @@ public enum FeatureDiscoveries: Sendable {
             canDisplay
         }
     }
-
-//    var discoveryEnded: Bool {
-//        switch self {
-//        case .itemSharing:
-//            Date().timeIntervalSinceNow.sign == .minus
-//        }
-//    }
 }
 
 public extension View {
-    func featureDiscoveryOverlay(feature: FeatureDiscoveries,
+    func featureDiscoveryOverlay(feature: NewFeature,
                                  config: FeatureDiscoveryConfig = .default,
+                                 storage: UserDefaults = kSharedUserDefaults,
                                  @ViewBuilder overlay: @escaping () -> some View) -> some View {
-        modifier(OverlayViewModifier(feature: feature,
-                                     config: config,
-                                     overlay: overlay))
+        modifier(FeatureDiscoveryOverlay(feature: feature,
+                                         config: config,
+                                         storage: storage,
+                                         overlay: overlay))
     }
 }
 
@@ -114,13 +109,13 @@ public struct FeatureDiscoveryConfig {
     public let offset: CGSize
     public let shouldHideAfterAction: Bool
 
-    public init(alignment: Alignment, offset: CGSize, shouldHideAfterAction: Bool) {
+    public init(alignment: Alignment = .topTrailing, offset: CGSize = .zero, shouldHideAfterAction: Bool = true) {
         self.alignment = alignment
         self.offset = offset
         self.shouldHideAfterAction = shouldHideAfterAction
     }
 
     public static var `default`: FeatureDiscoveryConfig {
-        FeatureDiscoveryConfig(alignment: .topTrailing, offset: .zero, shouldHideAfterAction: false)
+        FeatureDiscoveryConfig(alignment: .topTrailing, offset: .zero, shouldHideAfterAction: true)
     }
 }

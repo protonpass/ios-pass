@@ -18,10 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+
 public struct PassUserInformations: Decodable, Equatable, Sendable {
     public let activationTime: Int
 
     public init(activationTime: Int) {
         self.activationTime = activationTime
+    }
+
+    /// Should display new feature visual queues only if account is older then a week
+    public var canDisplayFeatureDiscovery: Bool {
+        Date.now
+            .timeIntervalSince1970 - Double(activationTime) >= 604_800 // 7 days
     }
 }

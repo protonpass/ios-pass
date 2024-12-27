@@ -232,11 +232,8 @@ extension AppContentManager {
         Task { [weak self] in
             guard let self else { return }
             do {
-                switch selection {
-                default:
-                    try await preferencesManager.updateUserPreferences(\.lastSelectedShareId,
-                                                                       value: selection.preferenceKey)
-                }
+                try await preferencesManager.updateUserPreferences(\.lastSelectedShareId,
+                                                                   value: selection.preferenceKey)
             } catch {
                 logger.error(error)
             }
@@ -374,10 +371,8 @@ extension AppContentManager {
             } else {
                 false
             }
-        case .trash:
-            false
         default:
-            true
+            false
         }
     }
 
