@@ -26,9 +26,43 @@ import Entities
 import PhotosUI
 import SwiftUI
 
+enum CapturedPhoto: Sendable {
+    case png(Data?)
+    case jpeg(Data?)
+
+    var data: Data {
+        get throws {
+            switch self {
+            case let .png(data):
+                guard let data else {
+                    throw PassError.fileAttachment(.noPngData)
+                }
+                return data
+            case let .jpeg(data):
+                guard let data else {
+                    throw PassError.fileAttachment(.noJpegData)
+                }
+                return data
+            }
+        }
+    }
+
+    var fileExtension: String {
+        switch self {
+        case .png:
+            "png"
+        case .jpeg:
+            "jpeg"
+        }
+    }
+}
+
 @MainActor
 final class FileAttachmentsButtonViewModel: ObservableObject {
     @Published var selectedPhotos = [PhotosPickerItem]()
+    @Published var scannedTextToBeConfirmed = ""
+    @Published var showTextConfirmation = false
+    @Published var showNoTextFound = false
 
     private var selectedPhotosTask: Task<Void, Never>?
     private var cancellable = Set<AnyCancellable>()
@@ -46,13 +80,11 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
             .store(in: &cancellable)
     }
 
-    func handleCapturedPhoto(_ image: UIImage?) {
+    func handleCapturedPhoto(_ photo: CapturedPhoto) {
         do {
-            guard let pngData = image?.pngData() else {
-                throw PassError.fileAttachment(.noPngData)
-            }
-            let fileName = handler.generateDatedFileName(prefix: "Photo", extension: "png")
-            let url = try handler.writeToTemporaryDirectory(data: pngData, fileName: fileName)
+            let fileName = handler.generateDatedFileName(prefix: "Photo",
+                                                         extension: photo.fileExtension)
+            let url = try handler.writeToTemporaryDirectory(data: photo.data, fileName: fileName)
             handler.handleAttachment(url)
         } catch {
             handler.handleAttachmentError(error)
@@ -60,20 +92,31 @@ final class FileAttachmentsButtonViewModel: ObservableObject {
     }
 
     func handleScanResult(_ result: Result<(any ScanResult)?, any Error>) {
-        do {
-            switch result {
-            case let .success(scanResult):
-                guard let document = scanResult as? ScannedDocument else { return }
-                let text = document.scannedPages.flatMap(\.text).joined(separator: "\n")
-                guard !text.isEmpty else { return }
-                let fileName = handler.generateDatedFileName(prefix: "Document", extension: "txt")
-
-                guard let data = text.data(using: .utf8) else { return }
-                let url = try handler.writeToTemporaryDirectory(data: data, fileName: fileName)
-                handler.handleAttachment(url)
-            case let .failure(error):
-                handler.handleAttachmentError(error)
+        switch result {
+        case let .success(scanResult):
+            guard let document = scanResult as? ScannedDocument else {
+                showNoTextFound.toggle()
+                return
             }
+            let text = document.scannedPages.flatMap(\.text).joined(separator: "\n")
+            if text.isEmpty {
+                showNoTextFound.toggle()
+            } else {
+                scannedTextToBeConfirmed = text
+                showTextConfirmation.toggle()
+            }
+
+        case let .failure(error):
+            handler.handleAttachmentError(error)
+        }
+    }
+
+    func confirmScannedText() {
+        do {
+            let fileName = handler.generateDatedFileName(prefix: "Document", extension: "txt")
+            guard let data = scannedTextToBeConfirmed.data(using: .utf8) else { return }
+            let url = try handler.writeToTemporaryDirectory(data: data, fileName: fileName)
+            handler.handleAttachment(url)
         } catch {
             handler.handleAttachmentError(error)
         }

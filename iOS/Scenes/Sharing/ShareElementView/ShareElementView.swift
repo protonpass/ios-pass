@@ -63,7 +63,7 @@ struct ShareElementView: View {
         })
         .padding(.bottom, 32)
         .padding(.horizontal, 16)
-        .fullSheetBackground(PassColor.backgroundNorm.toColor)
+        .fullSheetBackground()
         .onChange(of: contentHeight) { value in
             viewModel.updateSheetHeight(value)
         }
