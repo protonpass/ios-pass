@@ -66,7 +66,22 @@ private extension ItemsTabTopBar {
                              action: onShowVaultList)
                     .frame(width: DesignConstant.searchBarHeight)
                     .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
-
+            case .sharedByMe:
+                CircleButton(icon: IconProvider.userArrowRight,
+                             iconColor: VaultSelection.all.color,
+                             backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
+                             type: .big,
+                             action: onShowVaultList)
+                    .frame(width: DesignConstant.searchBarHeight)
+                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
+            case .sharedWithMe:
+                CircleButton(icon: IconProvider.userArrowLeft,
+                             iconColor: VaultSelection.all.color,
+                             backgroundColor: VaultSelection.all.color.withAlphaComponent(0.16),
+                             type: .big,
+                             action: onShowVaultList)
+                    .frame(width: DesignConstant.searchBarHeight)
+                    .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
             case let .precise(vault):
                 if let vaultContent = vault.vaultContent {
                     CircleButton(icon: vaultContent.vaultBigIcon,
@@ -76,7 +91,6 @@ private extension ItemsTabTopBar {
                         .frame(width: DesignConstant.searchBarHeight)
                         .accessibilityLabel(viewModel.vaultSelection.accessibilityLabel)
                 }
-
             case .trash:
                 CircleButton(icon: IconProvider.trash,
                              iconColor: VaultSelection.trash.color,
@@ -162,6 +176,9 @@ private extension ItemsTabTopBar {
                     button(action: onPermanentlyDelete,
                            icon: IconProvider.trashCross,
                            color: PassColor.signalDanger)
+
+                default:
+                    EmptyView()
                 }
 
                 if !viewModel.extraOptions.isEmpty {

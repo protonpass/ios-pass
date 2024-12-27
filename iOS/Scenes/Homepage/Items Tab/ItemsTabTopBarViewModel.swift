@@ -37,6 +37,10 @@ extension VaultSelection {
             #localized("Show %@ vault", vault.vaultName ?? "")
         case .trash:
             #localized("Show trash")
+        case .sharedByMe:
+            #localized("Show shared by me")
+        case .sharedWithMe:
+            #localized("Show shared with me")
         }
     }
 }
@@ -101,7 +105,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
 
     var selectable: Bool {
         switch appContentManager.vaultSelection {
-        case .all, .trash:
+        case .all, .sharedByMe, .sharedWithMe, .trash:
             true
         case let .precise(vault):
             vault.canEdit

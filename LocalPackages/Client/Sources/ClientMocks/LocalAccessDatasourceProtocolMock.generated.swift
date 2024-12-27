@@ -62,23 +62,23 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
         closureGetAllAccesses()
         return stubbedGetAllAccessesResult
     }
-    // MARK: - upsert
+    // MARK: - upsertAccess
     public var upsertAccessThrowableError3: Error?
-    public var closureUpsert: () -> () = {}
-    public var invokedUpsertfunction = false
-    public var invokedUpsertCount = 0
-    public var invokedUpsertParameters: (access: UserAccess, Void)?
-    public var invokedUpsertParametersList = [(access: UserAccess, Void)]()
+    public var closureUpsertAccessAsync3: () -> () = {}
+    public var invokedUpsertAccessAsync3 = false
+    public var invokedUpsertAccessAsyncCount3 = 0
+    public var invokedUpsertAccessAsyncParameters3: (access: UserAccess, Void)?
+    public var invokedUpsertAccessAsyncParametersList3 = [(access: UserAccess, Void)]()
 
     public func upsert(access: UserAccess) async throws {
-        invokedUpsertfunction = true
-        invokedUpsertCount += 1
-        invokedUpsertParameters = (access, ())
-        invokedUpsertParametersList.append((access, ()))
+        invokedUpsertAccessAsync3 = true
+        invokedUpsertAccessAsyncCount3 += 1
+        invokedUpsertAccessAsyncParameters3 = (access, ())
+        invokedUpsertAccessAsyncParametersList3.append((access, ()))
         if let error = upsertAccessThrowableError3 {
             throw error
         }
-        closureUpsert()
+        closureUpsertAccessAsync3()
     }
     // MARK: - removeAccess
     public var removeAccessUserIdThrowableError4: Error?
@@ -97,5 +97,43 @@ public final class LocalAccessDatasourceProtocolMock: @unchecked Sendable, Local
             throw error
         }
         closureRemoveAccess()
+    }
+    // MARK: - getPassUserInformations
+    public var getPassUserInformationsUserIdThrowableError5: Error?
+    public var closureGetPassUserInformations: () -> () = {}
+    public var invokedGetPassUserInformationsfunction = false
+    public var invokedGetPassUserInformationsCount = 0
+    public var invokedGetPassUserInformationsParameters: (userId: String, Void)?
+    public var invokedGetPassUserInformationsParametersList = [(userId: String, Void)]()
+    public var stubbedGetPassUserInformationsResult: PassUserInformations?
+
+    public func getPassUserInformations(userId: String) async throws -> PassUserInformations? {
+        invokedGetPassUserInformationsfunction = true
+        invokedGetPassUserInformationsCount += 1
+        invokedGetPassUserInformationsParameters = (userId, ())
+        invokedGetPassUserInformationsParametersList.append((userId, ()))
+        if let error = getPassUserInformationsUserIdThrowableError5 {
+            throw error
+        }
+        closureGetPassUserInformations()
+        return stubbedGetPassUserInformationsResult
+    }
+    // MARK: - upsertInformationsUserId
+    public var upsertInformationsUserIdThrowableError6: Error?
+    public var closureUpsertInformationsUserIdAsync6: () -> () = {}
+    public var invokedUpsertInformationsUserIdAsync6 = false
+    public var invokedUpsertInformationsUserIdAsyncCount6 = 0
+    public var invokedUpsertInformationsUserIdAsyncParameters6: (informations: PassUserInformations, userId: String)?
+    public var invokedUpsertInformationsUserIdAsyncParametersList6 = [(informations: PassUserInformations, userId: String)]()
+
+    public func upsert(informations: PassUserInformations, userId: String) async throws {
+        invokedUpsertInformationsUserIdAsync6 = true
+        invokedUpsertInformationsUserIdAsyncCount6 += 1
+        invokedUpsertInformationsUserIdAsyncParameters6 = (informations, userId)
+        invokedUpsertInformationsUserIdAsyncParametersList6.append((informations, userId))
+        if let error = upsertInformationsUserIdThrowableError6 {
+            throw error
+        }
+        closureUpsertInformationsUserIdAsync6()
     }
 }
