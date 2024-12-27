@@ -113,6 +113,13 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     func canMoveItems(vault: Share) -> Bool {
         canUserPerformActionOnVault(for: vault)
     }
+
+    func canSelectVault(selection: VaultSelection) -> Bool {
+        guard selection == .sharedByMe || selection == .sharedWithMe else {
+            return true
+        }
+        return itemCount(for: selection) > 0
+    }
 }
 
 // MARK: - Private APIs
@@ -220,11 +227,17 @@ extension EditableVaultListViewModel {
     }
 
     func itemCount(for selection: VaultSelection) -> Int {
-        switch selection {
+        let itemSharedWithMeCount = appContentManager.state.loadedContent?.itemsSharedWithMe.count ?? 0
+        let itemSharedByMeCount = appContentManager.state.loadedContent?.itemsSharedByMe.count ?? 0
+        return switch selection {
         case .all:
-            count.all
+            count.all + itemSharedWithMeCount
         case let .precise(vault):
             count.vaultCounts.first { $0.shareId == vault.shareId }?.value ?? 0
+        case .sharedWithMe:
+            itemSharedWithMeCount
+        case .sharedByMe:
+            itemSharedByMeCount
         case .trash:
             count.trashed
         }

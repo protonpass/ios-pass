@@ -1761,6 +1761,26 @@
         }
       }
     },
+    "Search in items shared by me" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search in items shared by me"
+          }
+        }
+      }
+    },
+    "Search in items shared with me" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Search in items shared with me"
+          }
+        }
+      }
+    },
     "Search in Trash..." : {
       "localizations" : {
         "be" : {

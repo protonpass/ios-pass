@@ -126,19 +126,7 @@ struct ItemsTabView: View {
                 }
 
                 if sections.isEmpty {
-                    switch viewModel.appContentManager.vaultSelection {
-                    case .all:
-                        EmptyVaultView(canCreateItems: true,
-                                       onCreate: { viewModel.createNewItem(type: $0) })
-                            .padding(.bottom, safeAreaInsets.bottom)
-                    case let .precise(vault):
-                        EmptyVaultView(canCreateItems: vault.canEdit,
-                                       onCreate: { viewModel.createNewItem(type: $0) })
-                            .padding(.bottom, safeAreaInsets.bottom)
-                    case .trash:
-                        EmptyTrashView()
-                            .padding(.bottom, safeAreaInsets.bottom)
-                    }
+                    emptySections
                 } else {
                     itemList(sections)
                     Spacer()
@@ -183,6 +171,37 @@ struct ItemsTabView: View {
 }
 
 private extension ItemsTabView {
+    @ViewBuilder
+    var emptySections: some View {
+        switch viewModel.appContentManager.vaultSelection {
+        case .all:
+            EmptyVaultView(canCreateItems: true,
+                           onCreate: { viewModel.createNewItem(type: $0) })
+                .padding(.bottom, safeAreaInsets.bottom)
+        case let .precise(vault):
+            EmptyVaultView(canCreateItems: vault.canEdit,
+                           onCreate: { viewModel.createNewItem(type: $0) })
+                .padding(.bottom, safeAreaInsets.bottom)
+        case .trash:
+            EmptyTrashView()
+                .padding(.bottom, safeAreaInsets.bottom)
+        case .sharedByMe, .sharedWithMe:
+            VStack {
+                Spacer()
+                Text(viewModel.appContentManager
+                    .vaultSelection == .sharedByMe ? "You have not shared any items" :
+                    "No items are shared with you")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.vertical)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                Spacer()
+            }
+            .padding(.horizontal)
+            .padding(.bottom, safeAreaInsets.bottom)
+        }
+    }
+
     @ViewBuilder
     func itemList(_ sections: [SectionedItemUiModel]) -> some View {
         if useSwiftUIList {
