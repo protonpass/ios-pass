@@ -54,6 +54,10 @@ extension AccessEntity {
     @NSManaged var aliasSyncEnabled: Bool
     @NSManaged var pendingAliasToSync: Int64
     @NSManaged var manageAlias: Bool
+
+    @NSManaged var storageAllowed: Bool
+    @NSManaged var storageUsed: Int64
+    @NSManaged var storageQuota: Int64
 }
 
 extension AccessEntity {
@@ -66,7 +70,10 @@ extension AccessEntity {
                         trialEnd: trialEnd == -1 ? nil : Int(trialEnd),
                         vaultLimit: vaultLimit == -1 ? nil : Int(vaultLimit),
                         aliasLimit: aliasLimit == -1 ? nil : Int(aliasLimit),
-                        totpLimit: totpLimit == -1 ? nil : Int(totpLimit))
+                        totpLimit: totpLimit == -1 ? nil : Int(totpLimit),
+                        storageAllowed: storageAllowed,
+                        storageUsed: Int(storageUsed),
+                        storageQuota: Int(storageQuota))
 
         let userAliasSyncData = UserAliasSyncData(defaultShareID: defaultShareID,
                                                   aliasSyncEnabled: aliasSyncEnabled,
@@ -104,5 +111,9 @@ extension AccessEntity {
         defaultShareID = userData.defaultShareID
         aliasSyncEnabled = userData.aliasSyncEnabled
         pendingAliasToSync = Int64(userData.pendingAliasToSync)
+
+        storageAllowed = plan.storageAllowed
+        storageUsed = Int64(plan.storageUsed)
+        storageQuota = Int64(plan.storageQuota)
     }
 }

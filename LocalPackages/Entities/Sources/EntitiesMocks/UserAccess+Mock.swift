@@ -30,7 +30,10 @@ public extension Plan {
         trialEnd: Int? = 0,
         vaultLimit: Int? = 100,
         aliasLimit: Int? = 50,
-        totpLimit: Int? = 10
+        totpLimit: Int? = 10,
+        storageAllowed: Bool = false,
+        storageUsed: Int = 100,
+        storageQuota: Int = 200
     ) -> Plan {
         Plan(
             type: type,
@@ -41,7 +44,10 @@ public extension Plan {
             trialEnd: trialEnd,
             vaultLimit: vaultLimit,
             aliasLimit: aliasLimit,
-            totpLimit: totpLimit
+            totpLimit: totpLimit,
+            storageAllowed: storageAllowed,
+            storageUsed: storageUsed,
+            storageQuota: storageQuota
         )
     }
     static let mockBusinessPlan: Plan = .mock(type: "business")

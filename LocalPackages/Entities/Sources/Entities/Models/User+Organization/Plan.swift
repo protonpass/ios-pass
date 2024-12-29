@@ -42,6 +42,10 @@ public struct Plan: Decodable, Hashable, Sendable {
 
     public let manageAlias: Bool
 
+    public let storageAllowed: Bool
+    public let storageUsed: Int
+    public let storageQuota: Int
+
     /// Enum representation of `type`
     public enum PlanType {
         case free, plus, trial, business
@@ -78,7 +82,10 @@ public struct Plan: Decodable, Hashable, Sendable {
                 trialEnd: Int? = nil,
                 vaultLimit: Int? = nil,
                 aliasLimit: Int? = nil,
-                totpLimit: Int? = nil) {
+                totpLimit: Int? = nil,
+                storageAllowed: Bool,
+                storageUsed: Int,
+                storageQuota: Int) {
         self.type = type
         self.internalName = internalName
         self.displayName = displayName
@@ -88,5 +95,8 @@ public struct Plan: Decodable, Hashable, Sendable {
         self.aliasLimit = aliasLimit
         self.totpLimit = totpLimit
         self.manageAlias = manageAlias
+        self.storageAllowed = storageAllowed
+        self.storageUsed = storageUsed
+        self.storageQuota = storageQuota
     }
 }
