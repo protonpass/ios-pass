@@ -29,6 +29,9 @@ public extension UserUiModel {
                           internalName: .random(),
                           displayName: .random(),
                           hideUpgrade: .random(),
-                          manageAlias: false))
+                          manageAlias: false,
+                          storageAllowed: false,
+                          storageUsed: 1,
+                          storageQuota: 2))
     }
 }
