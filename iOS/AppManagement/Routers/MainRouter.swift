@@ -59,6 +59,7 @@ enum SheetDismissal {
 }
 
 enum SheetDestination: Equatable, Hashable, Sendable {
+    case alert(UIAlertController)
     case sharingFlow(SheetDismissal)
     case manageSharedShare(ManageSharedDisplay, SheetDismissal)
     case acceptRejectInvite(UserInvite)
