@@ -495,6 +495,8 @@ extension HomepageCoordinator {
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
+                case let .alert(alert):
+                    present(alert)
                 case let .sharingFlow(dismissal):
                     presentSharingFlow(dismissal: dismissal)
                 case let .manageSharedShare(display, dismissal):
