@@ -25,6 +25,8 @@ import Entities
 import Factory
 import Foundation
 import Macro
+import Screens
+import UIKit
 
 enum SelectedRevision {
     case current, past
@@ -39,12 +41,15 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
 
     private var cancellables = Set<AnyCancellable>()
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
     let currentRevision: ItemContent
     let pastRevision: ItemContent
+    let files: [ItemFile]
 
     var selectedRevisionContent: ItemContent {
         switch selectedRevision {
@@ -55,10 +60,40 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
         }
     }
 
-    init(currentRevision: ItemContent, pastRevision: ItemContent) {
+    init(currentRevision: ItemContent,
+         pastRevision: ItemContent,
+         files: [ItemFile]) {
         self.currentRevision = currentRevision
         self.pastRevision = pastRevision
+        self.files = files
         setUp()
+    }
+
+    func fileUiModels(for item: ItemContent) -> [FileAttachmentUiModel] {
+        let files = files.filter { file in
+            if let revisionRemoved = file.revisionRemoved {
+                revisionRemoved >= item.item.revision
+            } else {
+                file.revisionAdded <= item.item.revision
+            }
+        }
+        var uiModels = [FileAttachmentUiModel]()
+        for file in files {
+            let formattedSize = formatFileAttachmentSize(file.size)
+            if let name = file.name,
+               let mimeType = file.mimeType {
+                let fileGroup = getFileGroup(mimeType: mimeType)
+                uiModels.append(.init(id: file.fileID,
+                                      url: nil,
+                                      state: .uploaded,
+                                      name: name,
+                                      group: fileGroup,
+                                      formattedSize: formattedSize))
+            } else {
+                assertionFailure("Missing file name and MIME type")
+            }
+        }
+        return uiModels
     }
 }
 
@@ -173,5 +208,35 @@ private extension DetailHistoryViewModel {
 
     func copy(_ keypath: KeyPath<ItemContent, String?>, message: String) {
         copy(selectedRevisionContent[keyPath: keypath], message: message)
+    }
+}
+
+extension DetailHistoryViewModel: FileAttachmentsViewHandler {
+    var fileAttachmentsSectionPrimaryColor: UIColor {
+        itemContentType.normMajor2Color
+    }
+
+    var fileAttachmentsSectionSecondaryColor: UIColor {
+        itemContentType.normMinor1Color
+    }
+
+    var itemContentType: ItemContentType {
+        currentRevision.type
+    }
+
+    func retryFetchingAttachments() {
+        // Not applicable
+    }
+
+    func open(_ file: FileAttachmentUiModel) {
+        // Not applicable
+    }
+
+    func save(_ file: FileAttachmentUiModel) {
+        // Not applicable
+    }
+
+    func share(_ file: FileAttachmentUiModel) {
+        // Not applicable
     }
 }
