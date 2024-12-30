@@ -245,7 +245,9 @@ struct GeneratePasswordView: View {
 
             Menu(content: {
                 ForEach(WordSeparator.allCases, id: \.self) { separator in
-                    if separator != .numbers || separator == .numbers && viewModel.activateNumberCharacters {
+                    if (separator != .numbers && separator != .numbersAndSymbols) ||
+                        (separator == .numbers || separator == .numbersAndSymbols) &&
+                        viewModel.includeNumbers {
                         Button(action: {
                             viewModel.changeWordSeparator(separator)
                         }, label: {
