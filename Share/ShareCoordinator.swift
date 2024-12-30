@@ -82,7 +82,7 @@ final class ShareCoordinator {
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedViewContainer.bannerManager) private var bannerManager
-    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
+//    @LazyInjected(\SharedUseCasesContainer.revokeCurrentSession) private var revokeCurrentSession
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
@@ -328,7 +328,7 @@ private extension ShareCoordinator {
     func present(_ viewController: UIViewController, animated: Bool = true) {
         let theme = preferencesManager.sharedPreferences.unwrapped().theme
         viewController.overrideUserInterfaceStyle = theme.userInterfaceStyle
-        topMostViewController?.present(viewController, animated: true)
+        topMostViewController?.present(viewController, animated: animated)
     }
 }
 
