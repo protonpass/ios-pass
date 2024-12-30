@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Screens
 import SwiftUI
 
 /// Set up common UI appearance for item create/edit pages
@@ -27,7 +28,6 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: BaseCreateEditItemViewModel
-    @State private var newFileName = ""
 
     func body(content: Content) -> some View {
         content
@@ -47,6 +47,11 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                   onUpgrade: { viewModel.upgrade() })
                     .presentationDetents([.height(CGFloat(height)), .large])
                     .environment(\.colorScheme, colorScheme)
+            }
+            .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
+                FileAttachmentPreview(mode: mode,
+                                      primaryTintColor: viewModel.itemContentType.normMajor2Color,
+                                      secondaryTintColor: viewModel.itemContentType.normMinor1Color)
             }
             .toolbar {
                 CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
@@ -70,18 +75,6 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       onScan: { viewModel.openScanner() },
                                       onSave: { viewModel.save() })
             }
-            .alert("Rename file",
-                   isPresented: $viewModel.fileToRename.mappedToBool(),
-                   actions: {
-                       if let file = viewModel.fileToRename {
-                           TextField(text: $newFileName, label: { EmptyView() })
-                           Button("Rename",
-                                  action: { viewModel.rename(attachment: file,
-                                                             newName: newFileName) })
-                               .disabled(newFileName.isEmpty)
-                           Button("Cancel", role: .cancel, action: {})
-                       }
-                   })
             .alert("Delete file?",
                    isPresented: $viewModel.fileToDelete.mappedToBool(),
                    actions: {
@@ -93,9 +86,6 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                        }
                    },
                    message: { Text(verbatim: viewModel.fileToDelete?.name ?? "") })
-            .onChange(of: viewModel.fileToRename) { file in
-                newFileName = file?.name ?? ""
-            }
             .task {
                 await viewModel.fetchAttachedFiles()
             }

@@ -32,7 +32,10 @@ final class PlanTests: XCTestCase {
                             trialEnd: nil,
                             vaultLimit: nil,
                             aliasLimit: nil,
-                            totpLimit: nil)
+                            totpLimit: nil,
+                            storageAllowed: true,
+                            storageUsed: 1,
+                            storageQuota: 2)
         XCTAssertEqual(plusPlan.planType, .plus)
 
         // Free
@@ -44,7 +47,10 @@ final class PlanTests: XCTestCase {
                             trialEnd: nil,
                             vaultLimit: nil,
                             aliasLimit: nil,
-                            totpLimit: nil)
+                            totpLimit: nil,
+                            storageAllowed: false,
+                            storageUsed: 1,
+                            storageQuota: 2)
         XCTAssertEqual(freePlan.planType, .free)
 
         // Trial
@@ -56,7 +62,10 @@ final class PlanTests: XCTestCase {
                              trialEnd: .random(in: 1...1_000),
                              vaultLimit: nil,
                              aliasLimit: nil,
-                             totpLimit: nil)
+                             totpLimit: nil,
+                             storageAllowed: false,
+                             storageUsed: 1,
+                             storageQuota: 2)
         XCTAssertEqual(trialPlan.planType, .trial)
     }
 }
