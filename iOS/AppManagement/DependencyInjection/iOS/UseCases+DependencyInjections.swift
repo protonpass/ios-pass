@@ -412,9 +412,9 @@ extension UseCasesContainer {
     }
 
     // periphery:ignore
-    var checkFlagForMultiUsers: Factory<any CheckFlagForMultiUsersUseCase> {
-        self { CheckFlagForMultiUsers(apiServicing: self.apiManager) }
-    }
+//    var checkFlagForMultiUsers: Factory<any CheckFlagForMultiUsersUseCase> {
+//        self { CheckFlagForMultiUsers(apiServicing: self.apiManager) }
+//    }
 }
 
 // MARK: - Misc

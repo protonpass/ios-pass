@@ -25,53 +25,53 @@ import ProtonCoreNetworking
 import ProtonCoreServices
 import ProtonCoreUtilities
 
-private struct FeatureFlagRequest: Request {
-    var path: String {
-        "/feature/v2/frontend"
-    }
-
-    var isAuth: Bool {
-        true
-    }
-}
-
-private struct FeatureFlagResponse: Decodable {
-    public let code: Int
-    public let toggles: [FeatureFlag]
-
-    public init(code: Int, toggles: [FeatureFlag]) {
-        self.code = code
-        self.toggles = toggles
-    }
-}
-
-/// Return `true` if at least 1 of the user has the flag enabled
-public protocol CheckFlagForMultiUsersUseCase: Sendable {
-    func execute(flag: String, userIds: [String]) async throws -> Bool
-}
-
-public extension CheckFlagForMultiUsersUseCase {
-    func callAsFunction(flag: String, userIds: [String]) async throws -> Bool {
-        try await execute(flag: flag, userIds: userIds)
-    }
-}
-
-public final class CheckFlagForMultiUsers: CheckFlagForMultiUsersUseCase {
-    private let apiServicing: any APIManagerProtocol
-
-    public init(apiServicing: any APIManagerProtocol) {
-        self.apiServicing = apiServicing
-    }
-
-    public func execute(flag: String, userIds: [String]) async throws -> Bool {
-        for userId in userIds {
-            let apiService = try apiServicing.getApiService(userId: userId)
-            let request = FeatureFlagRequest()
-            let (_, response): (_, FeatureFlagResponse) = try await apiService.perform(request: request)
-            if response.toggles.contains(where: { $0.name == flag && $0.enabled }) {
-                return true
-            }
-        }
-        return false
-    }
-}
+// private struct FeatureFlagRequest: Request {
+//    var path: String {
+//        "/feature/v2/frontend"
+//    }
+//
+//    var isAuth: Bool {
+//        true
+//    }
+// }
+//
+// private struct FeatureFlagResponse: Decodable {
+//    public let code: Int
+//    public let toggles: [FeatureFlag]
+//
+//    public init(code: Int, toggles: [FeatureFlag]) {
+//        self.code = code
+//        self.toggles = toggles
+//    }
+// }
+//
+///// Return `true` if at least 1 of the user has the flag enabled
+// public protocol CheckFlagForMultiUsersUseCase: Sendable {
+//    func execute(flag: String, userIds: [String]) async throws -> Bool
+// }
+//
+// public extension CheckFlagForMultiUsersUseCase {
+//    func callAsFunction(flag: String, userIds: [String]) async throws -> Bool {
+//        try await execute(flag: flag, userIds: userIds)
+//    }
+// }
+//
+// public final class CheckFlagForMultiUsers: CheckFlagForMultiUsersUseCase {
+//    private let apiServicing: any APIManagerProtocol
+//
+//    public init(apiServicing: any APIManagerProtocol) {
+//        self.apiServicing = apiServicing
+//    }
+//
+//    public func execute(flag: String, userIds: [String]) async throws -> Bool {
+//        for userId in userIds {
+//            let apiService = try apiServicing.getApiService(userId: userId)
+//            let request = FeatureFlagRequest()
+//            let (_, response): (_, FeatureFlagResponse) = try await apiService.perform(request: request)
+//            if response.toggles.contains(where: { $0.name == flag && $0.enabled }) {
+//                return true
+//            }
+//        }
+//        return false
+//    }
+// }
