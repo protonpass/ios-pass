@@ -23,7 +23,6 @@ import Core
 import Entities
 import Factory
 import Foundation
-import Macro
 
 @preconcurrency import ProtonCoreServices
 

@@ -21,7 +21,6 @@
 import DesignSystem
 import Entities
 import Factory
-import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI

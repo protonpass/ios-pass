@@ -218,7 +218,7 @@ private extension HomepageCoordinator {
                 case let .precise(vault):
                     createButtonDisabled = !vault.canEdit
                 default:
-                    true
+                    createButtonDisabled = true
                 }
                 homepageTabDelegate?.disableCreateButton(createButtonDisabled)
             }

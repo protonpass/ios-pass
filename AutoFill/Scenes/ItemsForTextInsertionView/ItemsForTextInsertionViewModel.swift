@@ -24,7 +24,6 @@ import Core
 import DesignSystem
 import Entities
 import Factory
-import Macro
 import SwiftUI
 
 // Wrap UI models inside an enum to support displaying the same items
