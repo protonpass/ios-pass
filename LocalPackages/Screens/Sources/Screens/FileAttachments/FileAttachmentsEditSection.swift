@@ -34,6 +34,7 @@ public protocol FileAttachmentsEditHandler: AnyObject {
     func generateDatedFileName(prefix: String, extension: String) -> String
     func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL
 
+    func open(attachment: FileAttachmentUiModel)
     func handleAttachment(_ url: URL)
     func handleAttachmentError(_ error: any Error)
     func showRenameAlert(attachment: FileAttachmentUiModel)
@@ -116,7 +117,8 @@ public struct FileAttachmentsEditSection: View {
             }
 
             ForEach(files) { file in
-                FileAttachmentRow(mode: .edit(onRename: { handler.showRenameAlert(attachment: file) },
+                FileAttachmentRow(mode: .edit(onOpen: { handler.open(attachment: file) },
+                                              onRename: { handler.showRenameAlert(attachment: file) },
                                               onDelete: { handler.showDeleteAlert(attachment: file) },
                                               onRetryUpload: { handler.retryUpload(attachment: file) }),
                                   itemContentType: handler.itemContentType,

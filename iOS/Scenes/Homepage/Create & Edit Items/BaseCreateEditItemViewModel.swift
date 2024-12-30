@@ -124,6 +124,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published private(set) var attachedFiles: FetchableObject<[ItemFile]>?
     @Published private(set) var isUploadingFile = false
     @Published private(set) var dismissedFileAttachmentsBanner = false
+    @Published var filePreviewMode: FileAttachmentPreviewMode?
     @Published var fileToDelete: FileAttachmentUiModel?
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
 
@@ -160,6 +161,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
+    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -600,6 +602,34 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                               baseUrl: FileManager.default.temporaryDirectory)
     }
 
+    func open(attachment: FileAttachmentUiModel) {
+        Task {
+            do {
+                switch mode {
+                case .clone, .create:
+                    // When creating or cloning, all files are pending
+                    if let file = files.first(where: { $0.id == attachment.id }),
+                       case let .pending(pendingFile) = file {
+                        filePreviewMode = .pending(pendingFile.metadata.url)
+                    }
+
+                case let .edit(itemContent):
+                    guard let file = files.first(where: { $0.id == attachment.id }) else { return }
+                    switch file {
+                    case let .pending(pendingFile):
+                        filePreviewMode = .pending(pendingFile.metadata.url)
+
+                    case let .item(itemFile):
+                        let userId = try await userManager.getActiveUserId()
+                        filePreviewMode = .item(itemFile, self, .none)
+                    }
+                }
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
     func handleAttachment(_ url: URL) {
         uploadFileTask?.cancel()
         uploadFileTask = Task { [weak self] in
@@ -770,6 +800,20 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                                                 upsellElements: UpsellEntry.fileAttachments.upsellElements,
                                                 ctaTitle: #localized("Get Pass Plus"))
         router.present(for: .upselling(config))
+    }
+}
+
+extension BaseCreateEditItemViewModel: FileAttachmentPreviewHandler {
+    func downloadAndDecrypt(file: ItemFile,
+                            progress: @escaping @MainActor @Sendable (Float) -> Void) async throws -> URL {
+        guard case let .edit(itemContent) = mode else {
+            throw PassError.fileAttachment(.failedToDownloadNoFetchedFiles)
+        }
+        let userId = try await userManager.getActiveUserId()
+        return try await downloadAndDecryptFile(userId: userId,
+                                                item: itemContent,
+                                                file: file,
+                                                progress: progress)
     }
 }
 
