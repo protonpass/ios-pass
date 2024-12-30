@@ -1,7 +1,6 @@
 //
-// GetActiveItemFilesEndpoint.swift
-// Friday the 13th
-// Proton Pass - Created on 13/12/2024.
+// GetItemFilesForAllRevisionsEndpoint.swift
+// Proton Pass - Created on 30/12/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -22,17 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct GetItemFilesResponse: Decodable, Sendable {
-    public let files: PaginatedItemFiles
-}
-
-public struct PaginatedItemFiles: Decodable, Sendable {
-    public let files: [ItemFile]
-    public let total: Int
-    public let lastID: String?
-}
-
-struct GetActiveItemFilesEndpoint: Endpoint, @unchecked Sendable {
+struct GetItemFilesForAllRevisionsEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
     typealias Response = GetItemFilesResponse
 
@@ -42,8 +31,8 @@ struct GetActiveItemFilesEndpoint: Endpoint, @unchecked Sendable {
     var parameters: [String: Any]?
 
     init(item: any ItemIdentifiable, lastId: String?) {
-        debugDescription = "Get active files of an item"
-        path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/files"
+        debugDescription = "Get item files for all revisions"
+        path = "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/revisions/files"
         method = .get
         if let lastId {
             parameters = ["Since": lastId]
