@@ -26,7 +26,6 @@ import SwiftUI
 
 public struct FileAttachmentRow: View {
     @State private var name: String
-    @State private var showFilePreview = false
 
     private let mode: Mode
     private let itemContentType: ItemContentType
@@ -38,7 +37,8 @@ public struct FileAttachmentRow: View {
         case view(onOpen: @MainActor () -> Void,
                   onSave: @MainActor () -> Void,
                   onShare: @MainActor () -> Void)
-        case edit(onRename: @MainActor () -> Void,
+        case edit(onOpen: @MainActor () -> Void,
+                  onRename: @MainActor () -> Void,
                   onDelete: @MainActor () -> Void,
                   onRetryUpload: @MainActor () -> Void)
     }
@@ -84,13 +84,6 @@ public struct FileAttachmentRow: View {
             }
         }
         .animation(.default, value: uiModel)
-        .fullScreenCover(isPresented: $showFilePreview) {
-            if let url = uiModel.url {
-                FileAttachmentPreview(mode: .pending(url),
-                                      primaryTintColor: primaryTintColor,
-                                      secondaryTintColor: secondaryTintColor)
-            }
-        }
     }
 }
 
@@ -113,7 +106,7 @@ private extension FileAttachmentRow {
                     HStack(spacing: 4) {
                         Text("Upload failed")
                             .foregroundStyle(ColorProvider.NotificationError.toColor)
-                        if case let .edit(_, _, onRetryUpload) = mode {
+                        if case let .edit(_, _, _, onRetryUpload) = mode {
                             Text(verbatim: "•")
                                 .foregroundStyle(PassColor.textWeak.toColor)
                             Text("Retry")
@@ -128,8 +121,14 @@ private extension FileAttachmentRow {
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
             }
-
-            Spacer()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+            .buttonEmbeded {
+                switch mode {
+                case let .edit(onOpen, _, _, _), let .view(onOpen, _, _):
+                    onOpen()
+                }
+            }
 
             switch uiModel.state {
             case .uploading:
@@ -138,7 +137,10 @@ private extension FileAttachmentRow {
             case .uploaded:
                 Menu(content: {
                     switch mode {
-                    case let .edit(onRename, onDelete, _):
+                    case let .edit(onOpen, onRename, onDelete, _):
+                        LabelButton(title: "Open",
+                                    icon: IconProvider.eye,
+                                    action: onOpen)
                         LabelButton(title: "Rename",
                                     icon: PassIcon.rename,
                                     action: onRename)
@@ -166,7 +168,7 @@ private extension FileAttachmentRow {
                 })
 
             case .error:
-                if case let .edit(_, onDelete, onRetryUpload) = mode {
+                if case let .edit(_, _, onDelete, onRetryUpload) = mode {
                     Menu(content: {
                         LabelButton(title: "Retry",
                                     icon: IconProvider.arrowRotateRight,
@@ -184,26 +186,8 @@ private extension FileAttachmentRow {
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .contentShape(.rect)
         .padding(style == .borderless ? 0 : DesignConstant.sectionPadding)
         .background(background(for: style))
-        .buttonEmbeded {
-            if uiModel.url != nil {
-                showFilePreview.toggle()
-            } else if case let .view(onOpen, _, _) = mode {
-                onOpen()
-            }
-        }
-    }
-}
-
-private extension FileAttachmentRow {
-    func retryUpload() {
-        if case let .edit(_, _, onRetryUpload) = mode {
-            onRetryUpload()
-        } else {
-            assertionFailure("Should be in edit mode in order to retry upload file")
-        }
     }
 }
 

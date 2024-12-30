@@ -39,7 +39,10 @@ final class CheckAccessResponseTests: XCTestCase {
          "TrialEnd":163823923,
          "VaultLimit":1,
          "AliasLimit":10,
-         "TotpLimit":3
+         "TotpLimit":3,
+         "StorageAllowed":false,
+         "StorageUsed":1,
+         "StorageQuota":2
       },
       "Monitor":{
          "ProtonAddress": true,
@@ -64,7 +67,10 @@ final class CheckAccessResponseTests: XCTestCase {
                                                        trialEnd: 163823923,
                                                        vaultLimit: 1,
                                                        aliasLimit: 10,
-                                                       totpLimit: 3),
+                                                       totpLimit: 3,
+                                                       storageAllowed: false,
+                                                       storageUsed: 1,
+                                                       storageQuota: 2),
                                            monitor: .init(protonAddress: true, aliases: false),
                                            pendingInvites: 3,
                                            waitingNewUserInvites: 0,

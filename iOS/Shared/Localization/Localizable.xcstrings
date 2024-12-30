@@ -44207,6 +44207,16 @@
         }
       }
     },
+    "Data" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        }
+      }
+    },
     "Data Security" : {
       "localizations" : {
         "be" : {
