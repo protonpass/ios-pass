@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Screens
 import SwiftUI
 
 /// Set up common UI appearance for item create/edit pages
@@ -46,6 +47,11 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                   onUpgrade: { viewModel.upgrade() })
                     .presentationDetents([.height(CGFloat(height)), .large])
                     .environment(\.colorScheme, colorScheme)
+            }
+            .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
+                FileAttachmentPreview(mode: mode,
+                                      primaryTintColor: viewModel.itemContentType.normMajor2Color,
+                                      secondaryTintColor: viewModel.itemContentType.normMinor1Color)
             }
             .toolbar {
                 CreateEditItemToolbar(saveButtonTitle: viewModel.saveButtonTitle(),
