@@ -166,7 +166,9 @@ private extension ItemHistoryView {
 
     func navigationLink(for item: ItemContent, view: some View) -> some View {
         NavigationLink(value: GeneralRouterDestination
-            .historyDetail(currentRevision: viewModel.item, pastRevision: item),
+            .historyDetail(currentRevision: viewModel.item,
+                           pastRevision: item,
+                           files: viewModel.files),
             label: {
                 view
             })

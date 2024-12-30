@@ -21,7 +21,7 @@
 
 import Foundation
 
-public struct ItemFile: Decodable, Sendable, Equatable {
+public struct ItemFile: Decodable, Sendable, Equatable, Hashable {
     public let fileID: String
     public let size: Int
     public let metadata: String
@@ -60,7 +60,7 @@ public struct ItemFile: Decodable, Sendable, Equatable {
     }
 }
 
-public struct FileChunk: Decodable, Sendable, Equatable {
+public struct FileChunk: Decodable, Sendable, Equatable, Hashable {
     public let chunkID: String
     public let index: Int
     public let size: Int
