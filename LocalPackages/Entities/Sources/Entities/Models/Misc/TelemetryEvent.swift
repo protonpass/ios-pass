@@ -64,6 +64,7 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
     case notificationDisplay(key: String)
     case notificationChangeStatus(key: String, status: Int)
     case notificationCtaClick(key: String)
+    case fileUploaded(mimeType: String)
 
     // swiftlint:disable:next cyclomatic_complexity
     public init?(rawValue: String) {
@@ -209,6 +210,8 @@ public enum TelemetryEventType: Sendable, Equatable, Codable {
             "pass_notification.change_notification_status"
         case .notificationCtaClick:
             "pass_notification.notification_cta_click"
+        case .fileUploaded:
+            "pass_file_attachment.file_uploaded"
         }
     }
 }
