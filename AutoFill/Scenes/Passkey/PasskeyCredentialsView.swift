@@ -19,9 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import AuthenticationServices
-import Client
 import DesignSystem
-import Entities
 import Factory
 import Screens
 import SwiftUI

@@ -153,23 +153,23 @@ struct ItemDetailToolbar: ToolbarContent {
     }
 }
 
-public struct ShareCounterButton: View {
+struct ShareCounterButton: View {
     private let iconColor: Color
     private let backgroundColor: Color
     private let numberOfSharedMembers: Int
     private let action: () -> Void
 
-    public init(iconColor: Color,
-                backgroundColor: Color,
-                numberOfSharedMembers: Int,
-                action: @escaping () -> Void) {
+    init(iconColor: Color,
+         backgroundColor: Color,
+         numberOfSharedMembers: Int,
+         action: @escaping () -> Void) {
         self.iconColor = iconColor
         self.backgroundColor = backgroundColor
         self.numberOfSharedMembers = numberOfSharedMembers
         self.action = action
     }
 
-    public var body: some View {
+    var body: some View {
         Button {
             action()
         } label: {

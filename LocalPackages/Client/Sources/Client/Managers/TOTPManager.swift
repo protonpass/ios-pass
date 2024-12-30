@@ -22,7 +22,6 @@ import Combine
 import Core
 import Entities
 import Foundation
-import PassRustCore
 
 public protocol TOTPManagerProtocol: Sendable {
     var currentState: CurrentValueSubject<TOTPState, Never> { get }
