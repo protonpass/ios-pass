@@ -603,29 +603,22 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func open(attachment: FileAttachmentUiModel) {
-        Task {
-            do {
-                switch mode {
-                case .clone, .create:
-                    // When creating or cloning, all files are pending
-                    if let file = files.first(where: { $0.id == attachment.id }),
-                       case let .pending(pendingFile) = file {
-                        filePreviewMode = .pending(pendingFile.metadata.url)
-                    }
+        switch mode {
+        case .clone, .create:
+            // When creating or cloning, all files are pending
+            if let file = files.first(where: { $0.id == attachment.id }),
+               case let .pending(pendingFile) = file {
+                filePreviewMode = .pending(pendingFile.metadata.url)
+            }
 
-                case let .edit(itemContent):
-                    guard let file = files.first(where: { $0.id == attachment.id }) else { return }
-                    switch file {
-                    case let .pending(pendingFile):
-                        filePreviewMode = .pending(pendingFile.metadata.url)
+        case .edit:
+            guard let file = files.first(where: { $0.id == attachment.id }) else { return }
+            switch file {
+            case let .pending(pendingFile):
+                filePreviewMode = .pending(pendingFile.metadata.url)
 
-                    case let .item(itemFile):
-                        let userId = try await userManager.getActiveUserId()
-                        filePreviewMode = .item(itemFile, self, .none)
-                    }
-                }
-            } catch {
-                handle(error)
+            case let .item(itemFile):
+                filePreviewMode = .item(itemFile, self, .none)
             }
         }
     }
