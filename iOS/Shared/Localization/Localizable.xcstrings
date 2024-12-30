@@ -887,6 +887,12 @@
             "value" : "%@ vuole condividere un elemento con te."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@があなたとアイテムを共有したいようです。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -909,6 +915,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ wil een item delen met u."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ deseja compartilhar um item com você."
           }
         },
         "ro" : {
@@ -15498,6 +15510,12 @@
             "value" : "Accetta e visualizza l'elemento"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受諾し、アイテムを見る"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15520,6 +15538,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accepteer en bekijk item"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aceitar e ver esse item"
           }
         },
         "ro" : {
@@ -23905,7 +23929,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aliaser med egendefinerte domener overvåkes ikke, vennligst legg dem til som en tilpasset e-post for overvåking."
+            "value" : "Aliaser med egendefinerte domener overvåkes ikke, legg dem til som en tilpasset e-post for overvåking."
           }
         },
         "nl" : {
@@ -24619,6 +24643,12 @@
             "value" : "Alle elementer"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Einträge"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24667,6 +24697,12 @@
             "value" : "Tutti gli elementi"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのアイテム"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24695,6 +24731,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wszystkie elementy"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todos os itens"
           }
         },
         "ro" : {
@@ -26853,7 +26895,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Liitä ja automaattitäytä"
+            "value" : "Liitä ja täytä"
           }
         },
         "fr" : {
@@ -27173,7 +27215,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Liitetäänkö URL-osoitteeseen?"
+            "value" : "Liitetäänkö URL-osoite?"
           }
         },
         "fr" : {
@@ -28118,7 +28160,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Automaattitäytä sovelluksissa ja verkkosivustoilla ottamalla Proton Passin Automaattitäyttö käyttöön"
+            "value" : "Automaattitäytä sovelluksissa ja verkkosivustoilla ottamalla Proton Passin automaattitäyttö käyttöön"
           }
         },
         "fr" : {
@@ -57385,6 +57427,24 @@
             "state" : "translated",
             "value" : "File attachments"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archivos adjuntos"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archivos adjuntos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fichiers joints"
+          }
         }
       }
     },
@@ -57394,6 +57454,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "File attachments are available with Pass Plus. Upgrade for immediate access."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus permite adjuntar archivos. Mejora tu plan para obtener acceso inmediato."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus permite adjuntar archivos. Mejore su plan para obtener acceso inmediato."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pass Plus permet de joindre des fichiers. Changez d'abonnement pour en profiter immédiatement."
           }
         }
       }
@@ -59167,6 +59245,12 @@
             "value" : "Per una condivisione unica."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一度限りの共有のために。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59189,6 +59273,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voor eenmalig delen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para uso único."
           }
         },
         "ro" : {
@@ -68698,6 +68788,12 @@
             "value" : "Invita altri utenti all'elemento"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムにもっとユーザーを招待"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68828,6 +68924,12 @@
             "value" : "Invita più utenti alla cassaforte"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫にもっとユーザーを招待"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68850,6 +68952,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nodig meer gebruikers uit voor de kluis"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Convidar mais usuários para o cofre"
           }
         },
         "ro" : {
@@ -69065,6 +69173,12 @@
             "value" : "Element"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eintrag"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69111,6 +69225,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elemento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテム"
           }
         },
         "ka" : {
@@ -70193,6 +70313,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "アイテム共有: %lld人のユーザー"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -70254,6 +70386,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Item delen: %lld gebruikers"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Item compartilhado: %lld usuário"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Item compartilhado: %lld usuários"
                 }
               }
             }
@@ -72358,7 +72508,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vain automaattitäyttö"
+            "value" : "Pelkkä täyttö"
           }
         },
         "fr" : {
@@ -74300,6 +74450,12 @@
             "value" : "Abbandona"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "離れる"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74436,6 +74592,12 @@
             "value" : "Lasciare questo elemento?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアイテムから離れますか？"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74464,6 +74626,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Opuścić element?"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deixar este item?"
           }
         },
         "ro" : {
@@ -82161,6 +82329,24 @@
             "state" : "translated",
             "value" : "NEW"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NUEVO"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NUEVO"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOUVEAU"
+          }
         }
       }
     },
@@ -83272,6 +83458,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No items are shared with you"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se comparte ningún elemento contigo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se comparte ningún elemento con usted."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun élément n’est partagé avec vous."
           }
         }
       }
@@ -94798,7 +95002,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst tillat kameratilgang i innstillinger."
+            "value" : "Tillat kameratilgang i innstillinger."
           }
         },
         "nl" : {
@@ -94958,7 +95162,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst godkjenn"
+            "value" : "Autentiser"
           }
         },
         "nl" : {
@@ -95118,7 +95322,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst sjekk søppelposten for en e-post som heter \"Vennligst bekreft e-postadressen din for Proton Pass\"\n\nHvis du ikke finner en slik e-post, kan du [be om en ny kode](https://proton.me)."
+            "value" : "Sjekk søppelposten for en e-post som heter \"Bekreft e-postadressen din for Proton Pass\"\n\nHvis du ikke finner en slik e-post, kan du [be om en ny kode](https://proton.me)."
           }
         },
         "nl" : {
@@ -95427,7 +95631,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst kontakt oss for å undersøke problemet."
+            "value" : "Kontakt oss for å undersøke problemet"
           }
         },
         "nl" : {
@@ -95587,7 +95791,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst beskriv problemet så detaljert som mulig, og inkluder eventuelle feilmeldinger."
+            "value" : "Beskriv problemet så detaljert som mulig, og inkluder eventuelle feilmeldinger."
           }
         },
         "nl" : {
@@ -95747,7 +95951,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst hold appen åpen."
+            "value" : "Hold appen åpen."
           }
         },
         "nl" : {
@@ -95907,7 +96111,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst logg på igjen"
+            "value" : "Logg på igjen"
           }
         },
         "nl" : {
@@ -96660,7 +96864,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst gi oss flere detaljer i beskrivelsen"
+            "value" : "Gjerne gi oss flere detaljer i beskrivelsen"
           }
         },
         "nl" : {
@@ -110452,6 +110656,12 @@
             "value" : "Visualizza la panoramica dei membri e delle autorizzazioni"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メンバーと権限の概要を表示"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114394,6 +114604,12 @@
             "value" : "Condividere l'intera cassaforte?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "代わりに保管庫全体を共有しますか？"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -114516,6 +114732,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Condividi elemento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有アイテム"
           }
         },
         "ka" : {
@@ -115302,6 +115524,12 @@
             "value" : "Condiviso da me"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "私が共有したもの"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115438,6 +115666,12 @@
             "value" : "Invito a un elemento condiviso"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有したアイテム招待"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115447,7 +115681,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "공유된 금고 초대"
+            "value" : "공유된 항목 초대"
           }
         },
         "nb" : {
@@ -115562,6 +115796,12 @@
             "value" : "Condiviso tramite"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有されました"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115571,7 +115811,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "다음으로 공유:"
+            "value" : "다음으로 공유됨:"
           }
         },
         "nb" : {
@@ -115696,6 +115936,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Condivisi con me"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共有されたもの"
           }
         },
         "ka" : {
@@ -117522,6 +117768,24 @@
             "state" : "translated",
             "value" : "Show shared by me"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar los elementos compartidos por mí"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar los elementos compartidos por mí"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montrer les éléments partagés par moi"
+          }
         }
       }
     },
@@ -117531,6 +117795,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Show shared with me"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar los elementos compartidos conmigo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar los elementos compartidos conmigo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montrer les éléments partagés avec moi"
           }
         }
       }
@@ -122507,6 +122789,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tocca qui per informazioni"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "詳細はここをタップ"
           }
         },
         "ka" : {
@@ -128496,7 +128784,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ottamalla Automaattitäytön käyttöön, Proton Pass täyttää kirjautumistiedot puolestasi — 10 sekuntia säästää sinulta tunteja"
+            "value" : "Ottamalla automaattitäytön käyttöön, Proton Pass täyttää kirjautumistiedot puolestasi — 10 sekuntia säästää sinulta tunteja"
           }
         },
         "fr" : {
@@ -134124,6 +134412,12 @@
             "value" : "Utile per la condivisione permanente."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "永続的な共有に役立ちます"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -134146,6 +134440,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nuttig voor permanent delen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Útil para compartilhar permanentemente."
           }
         },
         "ro" : {
@@ -136160,6 +136460,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "保管庫共有: %lld人のメンバー"
+                }
+              }
+            }
+          }
+        },
         "ka" : {
           "variations" : {
             "plural" : {
@@ -136221,6 +136533,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Kluis delen: %lld leden"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Cofre compartilhado: %lld membro"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Cofre compartilhado: %lld membros"
                 }
               }
             }
@@ -140107,7 +140437,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vi har sendt en verifiseringskode til %@. Vennligst angi den nedenfor:"
+            "value" : "Vi har sendt en verifiseringskode til %@. Skriv den inn nedenfor:"
           }
         },
         "nl" : {
@@ -141829,6 +142159,12 @@
             "value" : "Con altri utenti Proton Pass"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "他のProton Passユーザーと"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141851,6 +142187,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Met andere Proton Pass gebruikers"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Com outros usuários do Proton Pass"
           }
         },
         "ro" : {
@@ -142578,7 +142920,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haluatko liittää URL-osoitteen \"%@\" kirjautumistietoon \"%@\"?"
+            "value" : "Haluatko liittää osoitteen \"%@\" kirjautumistietoon \"%@\"?"
           }
         },
         "fr" : {
@@ -142690,7 +143032,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Напішыце нам у Reddit"
+            "value" : "Напісаць нам у Reddit"
           }
         },
         "cs" : {
@@ -145947,6 +146289,24 @@
             "state" : "translated",
             "value" : "You have not shared any items"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No has compartido ningún elemento."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No compartió ningún elemento."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'avez partagé aucun élément."
+          }
         }
       }
     },
@@ -146968,6 +147328,12 @@
             "value" : "Perderai l'accesso a questo elemento e ai suoi dettagli. Vuoi continuare?"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアイテムへのアクセスとその詳細を失います。続けますか"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -146990,6 +147356,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "U zult toegang tot dit item en de bijbehorende gegevens. Wilt u doorgaan"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você perderá o acesso para esse item e os seus detalhes. Você deseja continuar?"
           }
         },
         "ro" : {
@@ -147762,7 +148134,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Den gjeldende versjonen av appen støttes ikke lenger. Vennligst oppdater til den nyeste versjonen."
+            "value" : "Den gjeldende versjonen av appen støttes ikke lenger. Oppdater til den nyeste versjonen."
           }
         },
         "nl" : {
@@ -149070,7 +149442,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "귀하의 개인정보가 데이터 침해 사례에 속하는 온라인 서비스로부터 유출되었습니다. 전체 세부사항을 보고 권장하는 대응을 취하려면 업그레이드 하세요."
+            "value" : "회원님의 개인정보가 데이터 침해 사례에 속하는 온라인 서비스로부터 유출되었습니다. 전체 세부사항을 보고 권장하는 대응을 취하려면 업그레이드 하세요."
           }
         },
         "nb" : {

@@ -1768,6 +1768,24 @@
             "state" : "translated",
             "value" : "Search in items shared by me"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en los elementos compartidos por mí"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en los elementos compartidos por mí"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher dans les éléments partagés par moi"
+          }
         }
       }
     },
@@ -1777,6 +1795,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search in items shared with me"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en los elementos compartidos conmigo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en los elementos compartidos conmigo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher dans les éléments partagés avec moi"
           }
         }
       }

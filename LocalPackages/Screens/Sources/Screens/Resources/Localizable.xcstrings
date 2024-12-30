@@ -5761,6 +5761,24 @@
             "state" : "translated",
             "value" : "No text could be detected in the image. Please try again, ensuring the text is clear, well-lit, and within the camera's focus."
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido detectar ningún texto en la imagen. Inténtalo de nuevo, asegurándote de que el texto esté claro, bien iluminado y dentro del enfoque de la cámara."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo detectar ningún texto en la imagen. Inténtelo de nuevo, asegurándose de que el texto esté claro, bien iluminado y dentro del enfoque de la cámara."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun texte n'a pu être détecté dans l'image. Veuillez réessayer en vous assurant que le texte est clair, bien éclairé et dans la zone de mise au point de l'appareil photo."
+          }
         }
       }
     },
@@ -5771,6 +5789,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No Text Found"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha encontrado ningún texto."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se encontró ningún texto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun texte n'a été trouvé."
           }
         }
       }
@@ -6671,7 +6707,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst logg på for å bruke Proton Pass-AutoFyll-utvidelsen"
+            "value" : "Logg på for å bruke Proton Pass-AutoFyll-utvidelsen"
           }
         },
         "nl" : {
@@ -6831,7 +6867,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vennligst logg på for å bruke Proton Pass Share-utvidelsen"
+            "value" : "Logg på for å bruke Proton Pass Share-utvidelsen"
           }
         },
         "nl" : {
@@ -10367,10 +10403,130 @@
     },
     "Upload failed" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Збой запампоўвання"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahrávání selhalo"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload mislykkedes"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hochladen fehlgeschlagen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποτυχία ανεβάσματος"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upload failed"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error de carga"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error de carga"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lähetys epäonnistui"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'importation n'a pas abouti."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengunggahan gagal"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Caricamento non riuscito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップロードに失敗しました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ატვირთვა ჩავარდა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업로드 실패함"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opplasting mislyktes"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opladen mislukt"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Încărcare eșuată"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uppladdning misslyckades"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yüklenemedi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Помилка вивантаження"
           }
         }
       }
