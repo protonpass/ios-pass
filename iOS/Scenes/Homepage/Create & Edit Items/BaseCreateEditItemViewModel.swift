@@ -124,7 +124,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published private(set) var attachedFiles: FetchableObject<[ItemFile]>?
     @Published private(set) var isUploadingFile = false
     @Published private(set) var dismissedFileAttachmentsBanner = false
-    @Published var fileToRename: FileAttachmentUiModel?
+    @Published var filePreviewMode: FileAttachmentPreviewMode?
     @Published var fileToDelete: FileAttachmentUiModel?
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
 
@@ -138,6 +138,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     let scanResponsePublisher = ScanResponsePublisher()
 
     private var pendingFileNameUpdates = [PendingFileNameUpdate]()
+
+    private lazy var renameAttachmentDelegate = RenameAttachmentDelegate()
 
     let mode: ItemMode
     let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
@@ -159,6 +161,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFilesToLink) private var getFilesToLink
+    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
 
     var fileAttachmentsEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
@@ -599,6 +602,27 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                               baseUrl: FileManager.default.temporaryDirectory)
     }
 
+    func open(attachment: FileAttachmentUiModel) {
+        switch mode {
+        case .clone, .create:
+            // When creating or cloning, all files are pending
+            if let file = files.first(where: { $0.id == attachment.id }),
+               case let .pending(pendingFile) = file {
+                filePreviewMode = .pending(pendingFile.metadata.url)
+            }
+
+        case .edit:
+            guard let file = files.first(where: { $0.id == attachment.id }) else { return }
+            switch file {
+            case let .pending(pendingFile):
+                filePreviewMode = .pending(pendingFile.metadata.url)
+
+            case let .item(itemFile):
+                filePreviewMode = .item(itemFile, self, .none)
+            }
+        }
+    }
+
     func handleAttachment(_ url: URL) {
         uploadFileTask?.cancel()
         uploadFileTask = Task { [weak self] in
@@ -691,7 +715,34 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func showRenameAlert(attachment: FileAttachmentUiModel) {
-        fileToRename = attachment
+        let alert = UIAlertController(title: #localized("Rename file"),
+                                      message: nil,
+                                      preferredStyle: .alert)
+
+        let renameHandler: (UIAlertAction) -> Void = { [weak self] _ in
+            guard let self,
+                  let updatedFileName = alert.textFields?.first?.text else { return }
+            rename(attachment: attachment, newName: updatedFileName)
+        }
+
+        let renameAction = UIAlertAction(title: #localized("Rename"),
+                                         style: .default,
+                                         handler: renameHandler)
+
+        alert.addTextField { [weak self] textField in
+            guard let self else { return }
+            textField.text = attachment.name
+            textField.autocapitalizationType = .sentences
+            textField.delegate = renameAttachmentDelegate
+            textField.setOnTextChangeListener {
+                renameAction.isEnabled = textField.text?.isEmpty == false
+            }
+        }
+
+        alert.addAction(renameAction)
+        alert.addAction(.init(title: #localized("Cancel"), style: .cancel))
+
+        router.present(for: .alert(alert))
     }
 
     func showDeleteAlert(attachment: FileAttachmentUiModel) {
@@ -744,6 +795,20 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 }
 
+extension BaseCreateEditItemViewModel: FileAttachmentPreviewHandler {
+    func downloadAndDecrypt(file: ItemFile,
+                            progress: @escaping @MainActor @Sendable (Float) -> Void) async throws -> URL {
+        guard case let .edit(itemContent) = mode else {
+            throw PassError.fileAttachment(.failedToDownloadNoFetchedFiles)
+        }
+        let userId = try await userManager.getActiveUserId()
+        return try await downloadAndDecryptFile(userId: userId,
+                                                item: itemContent,
+                                                file: file,
+                                                progress: progress)
+    }
+}
+
 private extension BaseCreateEditItemViewModel {
     func createEncryptAndUpload(_ file: PendingFileAttachment) async throws {
         var file = file
@@ -769,6 +834,25 @@ private extension BaseCreateEditItemViewModel {
 
         file.uploadState = .uploaded
         files.upsert(file)
+    }
+}
+
+private final class RenameAttachmentDelegate: NSObject, UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // Automatically focus on file name and ignore file extension
+        // base on the last position of "." character
+        guard let fullFileName = textField.text,
+              let lastDotIndex = fullFileName.lastIndex(of: ".") else { return }
+
+        let fileNameLength = fullFileName.distance(from: fullFileName.startIndex,
+                                                   to: lastDotIndex)
+
+        guard let fileNameEndPosition = textField.position(from: textField.beginningOfDocument,
+                                                           offset: fileNameLength) else {
+            return
+        }
+        textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument,
+                                                          to: fileNameEndPosition)
     }
 }
 

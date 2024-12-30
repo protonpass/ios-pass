@@ -34,7 +34,7 @@ public extension FormatFileAttachmentSizeUseCase {
 public final class FormatFileAttachmentSize: @unchecked Sendable, FormatFileAttachmentSizeUseCase {
     private let formatter: ByteCountFormatter
 
-    public init(allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB]) {
+    public init(allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB, .useGB]) {
         let formatter = ByteCountFormatter()
         formatter.allowedUnits = allowedUnits
         self.formatter = formatter

@@ -156,9 +156,27 @@ struct ProfileTabView: View {
 
     private var itemCountSection: some View {
         VStack {
-            Text("Items")
-                .profileSectionTitle()
+            if let storage = viewModel.storageUiModel {
+                HStack {
+                    Text("Data")
+                        .profileSectionTitle()
+
+                    Spacer()
+
+                    Text(verbatim: storage.used)
+                        .fontWeight(.medium)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                    Text(verbatim: "/")
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                    Text(verbatim: storage.total)
+                        .foregroundStyle(PassColor.textWeak.toColor)
+                }
                 .padding(.horizontal)
+            } else {
+                Text("Items")
+                    .profileSectionTitle()
+                    .padding(.horizontal)
+            }
             ItemCountView(plan: viewModel.plan,
                           onSelectItemType: { viewModel.handleItemTypeSelection($0) },
                           onSelectLoginsWith2fa: { viewModel.showLoginsWith2fa() })

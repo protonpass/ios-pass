@@ -36,6 +36,11 @@ protocol ProfileTabViewModelDelegate: AnyObject {
     func profileTabViewModelWantsToShowFeedback()
 }
 
+struct StorageUiModel: Sendable {
+    let used: String
+    let total: String
+}
+
 @MainActor
 final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -64,6 +69,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
+    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -116,6 +122,15 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     var isSimpleLoginAliasSyncActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
+    var storageUiModel: StorageUiModel? {
+        guard getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1),
+              let plan,
+              plan.storageAllowed,
+              let used = formatFileAttachmentSize(plan.storageUsed),
+              let total = formatFileAttachmentSize(plan.storageQuota) else { return nil }
+        return .init(used: used, total: total)
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {

@@ -292,7 +292,8 @@ private extension CreateEditNoteContentUIView {
         for file in files {
             if let handler {
                 let row =
-                    FileAttachmentRow(mode: .edit(onRename: { handler.showRenameAlert(attachment: file) },
+                    FileAttachmentRow(mode: .edit(onOpen: { handler.open(attachment: file) },
+                                                  onRename: { handler.showRenameAlert(attachment: file) },
                                                   onDelete: { handler.showDeleteAlert(attachment: file) },
                                                   onRetryUpload: { handler.retryUpload(attachment: file) }),
                                       itemContentType: handler.itemContentType,
