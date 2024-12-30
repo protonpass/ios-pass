@@ -120,6 +120,19 @@ extension DetailHistoryView {
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection(borderColor: borderColor(for: \.note))
     }
+
+    @ViewBuilder
+    func attachmentsSection(item: ItemContent) -> some View {
+        let uiModels = viewModel.fileUiModels(for: item)
+        if uiModels.isEmpty {
+            EmptyView()
+        } else {
+            FileAttachmentsViewSection(files: uiModels,
+                                       isFetching: false,
+                                       fetchError: nil,
+                                       handler: viewModel)
+        }
+    }
 }
 
 private extension DetailHistoryView {
