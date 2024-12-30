@@ -81,7 +81,6 @@ private extension CreateEditItemToolbar {
 
             if itemContentType == .note, fileAttachmentsEnabled {
                 FileAttachmentsButton(style: .circle, handler: fileAttachmentsEditHandler)
-                    .disabled(!isSaveable)
             }
 
             if !ProcessInfo.processInfo.isiOSAppOnMac, canScanDocuments {
