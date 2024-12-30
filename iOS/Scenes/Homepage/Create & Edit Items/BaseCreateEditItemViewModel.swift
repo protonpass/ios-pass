@@ -834,6 +834,7 @@ private extension BaseCreateEditItemViewModel {
 
         file.uploadState = .uploaded
         files.upsert(file)
+        addTelemetryEvent(with: .fileUploaded(mimeType: file.metadata.mimeType))
     }
 }
 
