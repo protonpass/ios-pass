@@ -620,8 +620,6 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
             case let .item(itemFile):
                 filePreviewMode = .item(itemFile, self, .none)
             }
-        } catch {
-            handle(error)
         }
     }
 
