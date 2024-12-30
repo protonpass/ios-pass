@@ -189,6 +189,8 @@ private extension TelemetryEventType {
             UIImage(systemName: "person.3.fill")!
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             UIImage(systemName: "envelope.fill")!
+        case .fileUploaded:
+            UIImage(systemName: "icloud.and.arrow.up.fill")!
         }
     }
 
@@ -224,6 +226,8 @@ private extension TelemetryEventType {
             ItemContentType.note.normMajor1Color
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMajor1Color
+        case .fileUploaded:
+            ItemContentType.identity.normMajor1Color
         }
     }
 
@@ -259,6 +263,8 @@ private extension TelemetryEventType {
             ItemContentType.note.normMinor1Color
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMinor1Color
+        case .fileUploaded:
+            ItemContentType.identity.normMinor1Color
         }
     }
 
@@ -326,6 +332,8 @@ private extension TelemetryEventType {
             "Change notification status"
         case .notificationCtaClick:
             "Notification Cta clicked"
+        case let .fileUploaded(mimeType):
+            "File uploaded (\(mimeType))"
         }
     }
 }
