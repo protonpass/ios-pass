@@ -727,10 +727,9 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                                       preferredStyle: .alert)
 
         let renameHandler: (UIAlertAction) -> Void = { [weak self] _ in
-            guard let self else { return }
-            if let updatedFileName = alert.textFields?.first?.text {
-                rename(attachment: attachment, newName: updatedFileName)
-            }
+            guard let self,
+                  let updatedFileName = alert.textFields?.first?.text else { return }
+            rename(attachment: attachment, newName: updatedFileName)
         }
 
         let renameAction = UIAlertAction(title: #localized("Rename"),
@@ -854,10 +853,9 @@ private final class RenameAttachmentDelegate: NSObject, UITextFieldDelegate {
 
         let fileNameLength = fullFileName.distance(from: fullFileName.startIndex,
                                                    to: lastDotIndex)
-        let fileNameRange = NSRange(location: 0, length: fileNameLength)
 
         guard let fileNameEndPosition = textField.position(from: textField.beginningOfDocument,
-                                                           offset: fileNameRange.length) else {
+                                                           offset: fileNameLength) else {
             return
         }
         textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument,
