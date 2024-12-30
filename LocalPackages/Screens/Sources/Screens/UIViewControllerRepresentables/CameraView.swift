@@ -21,31 +21,31 @@
 
 import SwiftUI
 
-public struct CameraView: UIViewControllerRepresentable {
+struct CameraView: UIViewControllerRepresentable {
     @Environment(\.dismiss) private var dismiss
     let onCapture: ((UIImage?) -> Void)?
 
-    public init(onCapture: @escaping (UIImage?) -> Void) {
+    init(onCapture: @escaping (UIImage?) -> Void) {
         self.onCapture = onCapture
     }
 
-    public func makeCoordinator() -> Coordinator {
+    func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    public func makeUIViewController(context: Context) -> UIImagePickerController {
+    func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.sourceType = .camera
         picker.delegate = context.coordinator
         return picker
     }
 
-    public func updateUIViewController(_ viewController: UIImagePickerController,
-                                       context: Context) {
+    func updateUIViewController(_ viewController: UIImagePickerController,
+                                context: Context) {
         // Not applicable
     }
 
-    public final class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    final class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         var parent: CameraView
 
         init(_ parent: CameraView) {
