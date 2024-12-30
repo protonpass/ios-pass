@@ -197,6 +197,7 @@ extension GeneratePasswordViewModel {
     }
 
     func changeWordSeparator(_ separator: WordSeparator) {
+        typeOfWordSeparator = separator
         wordSeparator = separator
     }
 
@@ -276,6 +277,9 @@ private extension GeneratePasswordViewModel {
         numberOfWords = passwordPolicy == nil ? wordCount : adjustToRange(numberOfWords, range: minWord...maxWord)
         activateCapitalized = passwordPolicy?.memorablePasswordMustCapitalize ?? capitalizingWords
         includeNumbers = passwordPolicy?.memorablePasswordMustIncludeNumbers ?? includingNumbers
+
+        typeOfWordSeparator = !includeNumbers &&
+            (wordSeparator == .numbersAndSymbols || wordSeparator == .numbers) ? .commas : wordSeparator
     }
 
     func adjustToRange(_ number: Double, range: ClosedRange<Double>) -> Double {
