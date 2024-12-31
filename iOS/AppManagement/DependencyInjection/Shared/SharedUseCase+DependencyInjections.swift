@@ -578,4 +578,8 @@ extension SharedUseCasesContainer {
     var getFilesToLink: Factory<any GetFilesToLinkUseCase> {
         self { GetFilesToLink() }
     }
+
+    var clearCachedFiles: Factory<any ClearCachedFilesUseCase> {
+        self { ClearCachedFiles(userManager: self.userManager) }
+    }
 }
