@@ -23,6 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
+import Macro
 import SwiftUI
 
 @MainActor
@@ -54,6 +55,8 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.clearCachedFiles) private var clearCachedFiles
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
@@ -69,6 +72,10 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: (any SettingsViewModelDelegate)?
     private var cancellables = Set<AnyCancellable>()
+
+    var fileAttachmentsActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
+    }
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
@@ -207,8 +214,23 @@ extension SettingsViewModel {
                 logger.info("Done full sync")
                 router.display(element: .successMessage(config: .refresh))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
+            }
+        }
+    }
+
+    func clearCache() {
+        Task { [weak self] in
+            guard let self else { return }
+            defer {
+                router.display(element: .globalLoading(shouldShow: false))
+            }
+            do {
+                router.display(element: .globalLoading(shouldShow: true))
+                try await clearCachedFiles()
+                router.display(element: .successMessage(#localized("Downloaded files cleared")))
+            } catch {
+                handle(error)
             }
         }
     }
