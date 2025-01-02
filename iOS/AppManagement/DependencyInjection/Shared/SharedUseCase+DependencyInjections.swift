@@ -582,4 +582,10 @@ extension SharedUseCasesContainer {
     var clearCachedFiles: Factory<any ClearCachedFilesUseCase> {
         self { ClearCachedFiles(userManager: self.userManager) }
     }
+
+    var clearCacheForLoggedOutUsers: Factory<any ClearCacheForLoggedOutUsersUseCase> {
+        self {
+            ClearCacheForLoggedOutUsers(datasource: SharedRepositoryContainer.shared.localUserDataDatasource())
+        }
+    }
 }

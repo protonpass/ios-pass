@@ -44,7 +44,9 @@ public final class ClearCachedFiles: ClearCachedFilesUseCase {
         let users = try await userManager.getAllUsers()
         let fileManager = FileManager.default
         for user in users {
-            let url = fileManager.temporaryDirectory.appending(path: user.user.ID)
+            let url = fileManager.temporaryDirectory
+                .appending(path: Constants.Attachment.rootDirectoryName)
+                .appending(path: user.user.ID)
             if fileManager.fileExists(atPath: url.path()) {
                 try fileManager.removeItem(at: url)
             }

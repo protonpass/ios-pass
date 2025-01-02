@@ -144,7 +144,7 @@ public extension FileAttachmentRepository {
         }
 
         try await FileUtils.processBlockByBlock(file.metadata.url,
-                                                blockSizeInBytes: Constants.Utils.maxChunkSizeInBytes,
+                                                blockSizeInBytes: Constants.Attachment.maxChunkSizeInBytes,
                                                 process: process)
     }
 
