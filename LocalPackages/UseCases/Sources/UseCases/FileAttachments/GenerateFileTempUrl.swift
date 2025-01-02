@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
 import Entities
 import Foundation
 
@@ -49,6 +50,7 @@ public final class GenerateFileTempUrl: GenerateFileTempUrlUseCase {
             throw PassError.fileAttachment(.failedToDownloadMissingFileName(file.fileID))
         }
         return FileManager.default.temporaryDirectory
+            .appending(path: Constants.Attachment.rootDirectoryName)
             .appending(path: userId)
             .appending(path: item.shareId)
             .appending(path: item.itemId)

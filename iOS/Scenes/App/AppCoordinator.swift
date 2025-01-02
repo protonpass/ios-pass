@@ -86,6 +86,8 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) var logOutAllAccounts
     @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) var sendErrorToSentry
     @LazyInjected(\SharedUseCasesContainer.sendMessageToSentry) var sendMessageToSentry
+    @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
+    private var clearCacheForLoggedOutUsers
 
     //    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
 
@@ -171,6 +173,7 @@ final class AppCoordinator {
             .sink { [weak self] _ in
                 guard let self else { return }
                 logOutIfNoUserDataFound()
+                clearCachedFilesForLoggedOutUsers()
             }
             .store(in: &cancellables)
     }
@@ -328,6 +331,17 @@ private extension AppCoordinator {
                     try await logOutAllAccounts()
                     appStateObserver.updateAppState(.loggedOut(.noSessionDataAtAll))
                 }
+            } catch {
+                logger.error(error)
+            }
+        }
+    }
+
+    func clearCachedFilesForLoggedOutUsers() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await clearCacheForLoggedOutUsers()
             } catch {
                 logger.error(error)
             }

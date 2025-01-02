@@ -594,7 +594,7 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 
     func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL {
         let fileSize = UInt64(data.count)
-        guard fileSize < Constants.Utils.maxFileSizeInBytes else {
+        guard fileSize < Constants.Attachment.maxFileSizeInBytes else {
             throw PassError.fileAttachment(.fileTooLarge(fileSize))
         }
         return try writeToUrl(data: data,
@@ -634,7 +634,7 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
             do {
                 isUploadingFile = true
                 let fileSize = try getFileSize(for: url)
-                if fileSize > Constants.Utils.maxFileSizeInBytes {
+                if fileSize > Constants.Attachment.maxFileSizeInBytes {
                     // Optionally remove the file, we don't care if errors occur here
                     // because it should be in temporary directory which is cleaned up
                     // by the system anyway
