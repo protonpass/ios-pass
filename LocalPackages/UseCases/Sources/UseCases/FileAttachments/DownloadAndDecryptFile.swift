@@ -60,8 +60,13 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
                         progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
         let fileManager = FileManager.default
         let url = try generateFileTempUrl(userId: userId, item: item, file: file)
-        if fileManager.fileExists(atPath: url.path()) {
-            // File already downloaded and cached
+        if fileManager.fileExists(atPath: url.path()),
+           let attributes = try? fileManager.attributesOfItem(atPath: url.path),
+           let fileSize = (attributes[FileAttributeKey.size] as? NSNumber)?.intValue,
+           // Heuristically make sure downloaded decrypted file size is >= 98% of the encrypted size
+           // to make sure file is fully downloaded. Because we dowload, decrypt and write
+           // chunk by chunk so file could be corrupted even though it exists
+           (file.size == 0) || (fileSize >= file.size * 98 / 100) {
             return url
         }
 
