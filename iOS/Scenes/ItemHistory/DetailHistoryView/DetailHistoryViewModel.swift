@@ -288,11 +288,11 @@ private extension DetailHistoryViewModel {
 
 extension DetailHistoryViewModel: FileAttachmentPreviewHandler {
     func downloadAndDecrypt(file: ItemFile,
-                            progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
+                            progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
         let userId = try await userManager.getActiveUserId()
         return try await downloadAndDecryptFile(userId: userId,
                                                 item: selectedRevisionContent,
                                                 file: file,
-                                                progress: progress)
+                                                onUpdateProgress: progress)
     }
 }

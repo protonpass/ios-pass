@@ -24,7 +24,7 @@ import Foundation
 
 public protocol FileAttachmentPreviewHandler: Sendable {
     func downloadAndDecrypt(file: ItemFile,
-                            progress: @MainActor @escaping (Float) -> Void) async throws -> URL
+                            progress: @Sendable @escaping (Float) -> Void) async throws -> URL
 }
 
 public enum FileAttachmentPreviewPostDownloadAction: String, Identifiable, Sendable {
@@ -83,8 +83,11 @@ extension FileAttachmentPreviewModel {
                 }
 
                 let url = try await handler.downloadAndDecrypt(file: itemFile) { [weak self] newProgress in
-                    guard let self else { return }
-                    progress = newProgress
+                    Task { @MainActor [weak self] in
+                        guard let self else { return }
+                        // swiftformat:disable:next redundantSelf
+                        self.progress = newProgress
+                    }
                 }
                 self.url = .fetched(url)
 

@@ -24,6 +24,7 @@ public extension PassError {
     enum APIFailureReason: CustomDebugStringConvertible, Sendable, Equatable {
         case noApiServiceLinkedToUserId
         case invalidApiHost(String)
+        case errorOrDataExpected
 
         public var debugDescription: String {
             switch self {
@@ -31,6 +32,8 @@ public extension PassError {
                 "Could not find any apiservice linked to the user id"
             case let .invalidApiHost(url):
                 "Invalid API host \(url)"
+            case .errorOrDataExpected:
+                "Error or data expected"
             }
         }
     }
