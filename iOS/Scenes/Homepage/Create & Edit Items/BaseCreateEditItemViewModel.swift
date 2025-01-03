@@ -797,7 +797,7 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 
 extension BaseCreateEditItemViewModel: FileAttachmentPreviewHandler {
     func downloadAndDecrypt(file: ItemFile,
-                            progress: @escaping @MainActor @Sendable (Float) -> Void) async throws -> URL {
+                            progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
         guard case let .edit(itemContent) = mode else {
             throw PassError.fileAttachment(.failedToDownloadNoFetchedFiles)
         }
@@ -805,7 +805,7 @@ extension BaseCreateEditItemViewModel: FileAttachmentPreviewHandler {
         return try await downloadAndDecryptFile(userId: userId,
                                                 item: itemContent,
                                                 file: file,
-                                                progress: progress)
+                                                onUpdateProgress: progress)
     }
 }
 
@@ -823,13 +823,16 @@ private extension BaseCreateEditItemViewModel {
         files.upsert(file)
 
         try await fileRepository.uploadFile(userId: userId, file: file) { [weak self] progress in
-            guard let self else { return }
-            if progress >= 1 {
-                file.uploadState = .uploaded
-            } else {
-                file.uploadState = .uploading(progress)
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                if progress >= 1 {
+                    file.uploadState = .uploaded
+                } else {
+                    file.uploadState = .uploading(progress)
+                }
+                // swiftformat:disable:next redundantSelf
+                self.files.upsert(file)
             }
-            files.upsert(file)
         }
 
         file.uploadState = .uploaded

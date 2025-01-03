@@ -29,22 +29,26 @@ public protocol DownloadAndDecryptFileUseCase: Sendable {
     func execute(userId: String,
                  item: any ItemIdentifiable,
                  file: ItemFile,
-                 progress: @MainActor @escaping (Float) -> Void) async throws -> URL
+                 onUpdateProgress: @escaping ProgressUpdate) async throws -> URL
 }
 
 public extension DownloadAndDecryptFileUseCase {
     func callAsFunction(userId: String,
                         item: any ItemIdentifiable,
                         file: ItemFile,
-                        progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
-        try await execute(userId: userId, item: item, file: file, progress: progress)
+                        onUpdateProgress: @escaping ProgressUpdate) async throws -> URL {
+        try await execute(userId: userId,
+                          item: item,
+                          file: file,
+                          onUpdateProgress: onUpdateProgress)
     }
 }
 
-public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unchecked Sendable {
+public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
     private let generateFileTempUrl: any GenerateFileTempUrlUseCase
     private let keyManager: any PassKeyManagerProtocol
     private let apiService: any ApiServiceLiteProtocol
+    private var progressObservation: NSKeyValueObservation?
 
     public init(generateFileTempUrl: any GenerateFileTempUrlUseCase,
                 keyManager: any PassKeyManagerProtocol,
@@ -57,14 +61,14 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
     public func execute(userId: String,
                         item: any ItemIdentifiable,
                         file: ItemFile,
-                        progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
+                        onUpdateProgress: @escaping ProgressUpdate) async throws -> URL {
         let fileManager = FileManager.default
         let url = try generateFileTempUrl(userId: userId, item: item, file: file)
         if fileManager.fileExists(atPath: url.path()),
            let attributes = try? fileManager.attributesOfItem(atPath: url.path),
            let fileSize = (attributes[FileAttributeKey.size] as? NSNumber)?.intValue,
            // Heuristically make sure downloaded decrypted file size is >= 98% of the encrypted size
-           // to make sure file is fully downloaded. Because we dowload, decrypt and write
+           // to make sure file is fully downloaded. Because we download, decrypt and write
            // chunk by chunk so file could be corrupted even though it exists
            (file.size == 0) || (fileSize >= file.size * 98 / 100) {
             return url
@@ -95,23 +99,21 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
         let fileHandle = try FileHandle(forWritingTo: url)
         defer { try? fileHandle.close() }
 
-        let progressTracker = UploadProgressTracker()
-        let fileSize = max(1, file.size)
-
+        let tracker = FileProgressTracker(size: file.size)
         for chunk in file.chunks {
             let path =
                 "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
-            let encryptedUrl = try await apiService.download(path: path,
-                                                             userId: userId) { bytesDownloaded in
-                progressTracker.updateProgress(bytesSent: bytesDownloaded,
-                                               fileSize: fileSize,
-                                               progress: progress)
+            let encryptedData = try await apiService.download(path: path,
+                                                              userId: userId) { progress in
+                Task {
+                    let progress = await tracker.overallProgress(currentProgress: progress,
+                                                                 chunkSize: chunk.size)
+                    onUpdateProgress(progress)
+                }
             }
-            let encryptedData = try Data(contentsOf: encryptedUrl)
             let decrypted = try AES.GCM.open(encryptedData,
                                              key: fileKey,
                                              associatedData: .fileData)
-            try? fileManager.removeItem(atPath: encryptedUrl.path())
             try fileHandle.write(contentsOf: decrypted)
         }
         return url
