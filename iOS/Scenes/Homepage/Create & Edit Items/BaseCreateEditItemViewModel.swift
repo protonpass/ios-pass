@@ -822,17 +822,15 @@ private extension BaseCreateEditItemViewModel {
         file.remoteId = remoteFile.fileID
         files.upsert(file)
 
-        try await fileRepository.uploadFile(userId: userId, file: file) { [weak self] progress in
-            Task { @MainActor [weak self] in
-                guard let self else { return }
-                if progress >= 1 {
-                    file.uploadState = .uploaded
-                } else {
-                    file.uploadState = .uploading(progress)
-                }
-                // swiftformat:disable:next redundantSelf
-                self.files.upsert(file)
+        let progressStream = try await fileRepository.uploadFile(userId: userId, file: file)
+
+        for try await progress in progressStream {
+            if progress >= 1 {
+                file.uploadState = .uploaded
+            } else {
+                file.uploadState = .uploading(progress)
             }
+            files.upsert(file)
         }
 
         file.uploadState = .uploaded
