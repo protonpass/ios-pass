@@ -24,7 +24,7 @@ import Foundation
 public extension AsyncThrowingStream where Failure == Error {
     static func asyncContinuation(_ block:
         @Sendable @escaping (Continuation) async throws -> Void) -> Self {
-        AsyncThrowingStream<Element, Failure> { continuation in
+        AsyncThrowingStream<Element, Failure>(bufferingPolicy: .bufferingNewest(1)) { continuation in
             Task {
                 do {
                     try await block(continuation)

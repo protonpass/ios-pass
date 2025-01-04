@@ -37,9 +37,8 @@ public protocol ApiServiceLiteProtocol: Sendable {
                                        infos: [MultipartInfo]) async throws
         -> AsyncThrowingStream<ProgressEvent<R>, any Error>
 
-    func download(path: String,
-                  userId: String,
-                  onUpdateProgress: @escaping ProgressUpdate) async throws -> Data
+    func download(path: String, userId: String) async throws
+        -> AsyncThrowingStream<ProgressEvent<Data>, any Error>
 }
 
 public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
@@ -72,7 +71,7 @@ public extension ApiServiceLite {
                                  infos: infos,
                                  appVersion: appVersion)
 
-        return .init { [weak self] continuation in
+        return .init(bufferingPolicy: .bufferingNewest(1)) { [weak self] continuation in
             guard let self else {
                 continuation.finish(throwing: PassError.deallocatedSelf)
                 return
@@ -105,9 +104,8 @@ public extension ApiServiceLite {
         }
     }
 
-    func download(path: String,
-                  userId: String,
-                  onUpdateProgress: @escaping ProgressUpdate) async throws -> Data {
+    func download(path: String, userId: String) async throws
+        -> AsyncThrowingStream<ProgressEvent<Data>, any Error> {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
                                  path: path,
@@ -116,20 +114,25 @@ public extension ApiServiceLite {
 
         // Use closure base instead of async version because of URLSession limitation
         // https://forums.developer.apple.com/forums/thread/738541
-        return try await withCheckedThrowingContinuation { continuation in
+        return .init(bufferingPolicy: .bufferingNewest(1)) { [weak self] continuation in
+            guard let self else {
+                continuation.finish(throwing: PassError.deallocatedSelf)
+                return
+            }
             let task = session.dataTask(with: request) { data, _, error in
                 if let error {
-                    continuation.resume(throwing: error)
+                    continuation.finish(throwing: error)
                 } else if let data {
-                    continuation.resume(returning: data)
+                    continuation.yield(.result(data))
+                    continuation.finish()
                 } else {
-                    continuation.resume(throwing: PassError.api(.errorOrDataExpected))
+                    continuation.finish(throwing: PassError.api(.errorOrDataExpected))
                 }
             }
 
             task.resume()
             progressObservation = task.progress.observe(\.fractionCompleted) { progress, _ in
-                onUpdateProgress(Float(progress.fractionCompleted))
+                continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
         }
     }

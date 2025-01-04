@@ -19,12 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Entities
 import Foundation
 
 public protocol FileAttachmentPreviewHandler: Sendable {
-    func downloadAndDecrypt(file: ItemFile,
-                            progress: @Sendable @escaping (Float) -> Void) async throws -> URL
+    func downloadAndDecrypt(file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error>
 }
 
 public enum FileAttachmentPreviewPostDownloadAction: String, Identifiable, Sendable {
@@ -82,22 +83,24 @@ extension FileAttachmentPreviewModel {
                     url = .fetching
                 }
 
-                let url = try await handler.downloadAndDecrypt(file: itemFile) { [weak self] newProgress in
-                    Task { @MainActor [weak self] in
-                        guard let self else { return }
-                        // swiftformat:disable:next redundantSelf
-                        self.progress = newProgress
-                    }
-                }
-                self.url = .fetched(url)
+                let stream = try await handler.downloadAndDecrypt(file: itemFile)
 
-                switch action {
-                case .none:
-                    break
-                case .save:
-                    urlToSave = url
-                case .share:
-                    urlToShare = url
+                for try await event in stream {
+                    switch event {
+                    case let .progress(value):
+                        progress = value
+
+                    case let .result(value):
+                        url = .fetched(value)
+                        switch action {
+                        case .none:
+                            break
+                        case .save:
+                            urlToSave = value
+                        case .share:
+                            urlToShare = value
+                        }
+                    }
                 }
             } catch {
                 url = .error(error)
