@@ -28,19 +28,16 @@ import Foundation
 public protocol DownloadAndDecryptFileUseCase: Sendable {
     func execute(userId: String,
                  item: any ItemIdentifiable,
-                 file: ItemFile,
-                 onUpdateProgress: @escaping ProgressUpdate) async throws -> URL
+                 file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error>
 }
 
 public extension DownloadAndDecryptFileUseCase {
     func callAsFunction(userId: String,
                         item: any ItemIdentifiable,
-                        file: ItemFile,
-                        onUpdateProgress: @escaping ProgressUpdate) async throws -> URL {
-        try await execute(userId: userId,
-                          item: item,
-                          file: file,
-                          onUpdateProgress: onUpdateProgress)
+                        file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
+        try await execute(userId: userId, item: item, file: file)
     }
 }
 
@@ -60,8 +57,8 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
 
     public func execute(userId: String,
                         item: any ItemIdentifiable,
-                        file: ItemFile,
-                        onUpdateProgress: @escaping ProgressUpdate) async throws -> URL {
+                        file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         let fileManager = FileManager.default
         let url = try generateFileTempUrl(userId: userId, item: item, file: file)
         if fileManager.fileExists(atPath: url.path()),
@@ -71,7 +68,10 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
            // to make sure file is fully downloaded. Because we download, decrypt and write
            // chunk by chunk so file could be corrupted even though it exists
            (file.size == 0) || (fileSize >= file.size * 98 / 100) {
-            return url
+            return .init { continuation in
+                continuation.yield(.result(url))
+                continuation.finish()
+            }
         }
 
         let itemKeys = try await keyManager.getItemKeys(userId: userId,
@@ -97,25 +97,35 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
 
         // Download, decrypt and write to file chunk by chunk
         let fileHandle = try FileHandle(forWritingTo: url)
-        defer { try? fileHandle.close() }
-
         let tracker = FileProgressTracker(size: file.size)
-        for chunk in file.chunks {
-            let path =
-                "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
-            let encryptedData = try await apiService.download(path: path,
-                                                              userId: userId) { progress in
-                Task {
-                    let progress = await tracker.overallProgress(currentProgress: progress,
-                                                                 chunkSize: chunk.size)
-                    onUpdateProgress(progress)
+
+        return .asyncContinuation { [weak self] continuation in
+            defer { try? fileHandle.close() }
+            guard let self else {
+                continuation.finish(throwing: PassError.deallocatedSelf)
+                return
+            }
+            for chunk in file.chunks {
+                let path =
+                    "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
+                let stream = try await apiService.download(path: path,
+                                                           userId: userId)
+                for try await event in stream {
+                    switch event {
+                    case let .progress(value):
+                        let overall = await tracker.overallProgress(currentProgress: value,
+                                                                    chunkSize: chunk.size)
+                        continuation.yield(.progress(overall))
+                    case let .result(encryptedData):
+                        let decrypted = try AES.GCM.open(encryptedData,
+                                                         key: fileKey,
+                                                         associatedData: .fileData)
+                        try fileHandle.write(contentsOf: decrypted)
+                    }
                 }
             }
-            let decrypted = try AES.GCM.open(encryptedData,
-                                             key: fileKey,
-                                             associatedData: .fileData)
-            try fileHandle.write(contentsOf: decrypted)
+            continuation.yield(.result(url))
+            continuation.finish()
         }
-        return url
     }
 }

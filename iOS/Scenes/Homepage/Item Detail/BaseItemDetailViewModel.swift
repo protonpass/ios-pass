@@ -472,12 +472,11 @@ private extension BaseItemDetailViewModel {
 }
 
 extension BaseItemDetailViewModel: FileAttachmentPreviewHandler {
-    func downloadAndDecrypt(file: ItemFile,
-                            progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
+    func downloadAndDecrypt(file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         let userId = try await userManager.getActiveUserId()
         return try await downloadAndDecryptFile(userId: userId,
                                                 item: itemContent,
-                                                file: file,
-                                                onUpdateProgress: progress)
+                                                file: file)
     }
 }

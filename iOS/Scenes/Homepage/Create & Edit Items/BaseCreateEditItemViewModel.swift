@@ -796,16 +796,15 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 }
 
 extension BaseCreateEditItemViewModel: FileAttachmentPreviewHandler {
-    func downloadAndDecrypt(file: ItemFile,
-                            progress: @Sendable @escaping (Float) -> Void) async throws -> URL {
+    func downloadAndDecrypt(file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         guard case let .edit(itemContent) = mode else {
             throw PassError.fileAttachment(.failedToDownloadNoFetchedFiles)
         }
         let userId = try await userManager.getActiveUserId()
         return try await downloadAndDecryptFile(userId: userId,
                                                 item: itemContent,
-                                                file: file,
-                                                onUpdateProgress: progress)
+                                                file: file)
     }
 }
 
