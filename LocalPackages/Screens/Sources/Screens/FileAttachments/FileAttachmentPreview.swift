@@ -58,8 +58,10 @@ public struct FileAttachmentPreview: View {
                                  })
                              },
                              currentValueLabel: {
-                                 Text(verbatim: "\(Int(viewModel.progress * 100))%")
-                                     .foregroundStyle(PassColor.textWeak.toColor)
+                                 if let detail = viewModel.progressDetail {
+                                     Text(verbatim: detail)
+                                         .foregroundStyle(PassColor.textWeak.toColor)
+                                 }
                              })
                              .tint(primaryTintColor.toColor)
                              .padding()
