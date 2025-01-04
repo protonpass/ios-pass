@@ -56,7 +56,6 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
-    @LazyInjected(\SharedUseCasesContainer.clearCachedFiles) private var clearCachedFiles
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
@@ -219,19 +218,16 @@ extension SettingsViewModel {
         }
     }
 
-    func clearCache() {
-        Task { [weak self] in
-            guard let self else { return }
-            defer {
-                router.display(element: .globalLoading(shouldShow: false))
+    func clearCachedFiles() {
+        do {
+            let manager = FileManager.default
+            let url = manager.temporaryDirectory.appending(path: Constants.Attachment.rootDirectoryName)
+            if manager.fileExists(atPath: url.path()) {
+                try manager.removeItem(at: url)
             }
-            do {
-                router.display(element: .globalLoading(shouldShow: true))
-                try await clearCachedFiles()
-                router.display(element: .successMessage(#localized("Downloaded files cleared")))
-            } catch {
-                handle(error)
-            }
+            router.display(element: .successMessage(#localized("Downloaded files cleared")))
+        } catch {
+            handle(error)
         }
     }
 }

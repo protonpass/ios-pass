@@ -57,6 +57,7 @@ final class FileAttachmentPreviewModel: ObservableObject {
     @Published var urlToSave: URL?
     @Published var urlToShare: URL?
     private let mode: FileAttachmentPreviewMode
+    private let formatter: ByteCountFormatter
 
     var fileName: String? {
         if case let .item(itemFile, _, _) = mode {
@@ -66,8 +67,22 @@ final class FileAttachmentPreviewModel: ObservableObject {
         }
     }
 
-    init(mode: FileAttachmentPreviewMode) {
+    var progressDetail: String? {
+        guard case let .item(itemFile, _, _) = mode else {
+            return nil
+        }
+        let total = formatter.string(fromByteCount: Int64(itemFile.size))
+        let downloadedBytes = Int64(progress * Float(itemFile.size))
+        let downloaded = formatter.string(fromByteCount: downloadedBytes)
+        return "\(Int(progress * 100))% (\(downloaded) / \(total))"
+    }
+
+    init(mode: FileAttachmentPreviewMode,
+         allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB]) {
         self.mode = mode
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = allowedUnits
+        self.formatter = formatter
     }
 }
 
