@@ -25,12 +25,17 @@ import Foundation
 @preconcurrency import ProtonCoreDoh
 import ProtonCoreNetworking
 
+public enum ProgressEvent<T: Decodable & Sendable>: Sendable {
+    case progress(Float)
+    case result(T)
+}
+
 /// Use `URLSession` to make requests that aren't supported by core modules (e.g multipart)
 public protocol ApiServiceLiteProtocol: Sendable {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
-                                       infos: [MultipartInfo],
-                                       onUpdateProgress: @escaping ProgressUpdate) async throws -> R
+                                       infos: [MultipartInfo]) async throws
+        -> AsyncThrowingStream<ProgressEvent<R>, any Error>
 
     func download(path: String,
                   userId: String,
@@ -58,9 +63,8 @@ public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
 public extension ApiServiceLite {
     func uploadMultipart<R: Decodable & Sendable>(path: String,
                                                   userId: String,
-                                                  infos: [MultipartInfo],
-                                                  onUpdateProgress: @escaping ProgressUpdate) async throws
-        -> R {
+                                                  infos: [MultipartInfo]) async throws
+        -> AsyncThrowingStream<ProgressEvent<R>, any Error> {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
                                  path: path,
@@ -68,30 +72,35 @@ public extension ApiServiceLite {
                                  infos: infos,
                                  appVersion: appVersion)
 
-        return try await withCheckedThrowingContinuation { [weak self] continuation in
-            guard let self else { return }
+        return .init { [weak self] continuation in
+            guard let self else {
+                continuation.finish(throwing: PassError.deallocatedSelf)
+                return
+            }
+
             let task = session.dataTask(with: request) { [weak self] data, _, error in
                 guard let self else {
-                    continuation.resume(throwing: PassError.deallocatedSelf)
+                    continuation.finish(throwing: PassError.deallocatedSelf)
                     return
                 }
                 if let error {
-                    continuation.resume(throwing: error)
+                    continuation.finish(throwing: error)
                 } else if let data {
                     do {
                         let response = try JSONDecoder().decode(R.self, from: data)
-                        continuation.resume(returning: response)
+                        continuation.yield(.result(response))
+                        continuation.finish()
                     } catch {
-                        continuation.resume(throwing: error)
+                        continuation.finish(throwing: error)
                     }
                 } else {
-                    continuation.resume(throwing: PassError.api(.errorOrDataExpected))
+                    continuation.finish(throwing: PassError.api(.errorOrDataExpected))
                 }
             }
 
             task.resume()
             progressObservation = task.progress.observe(\.fractionCompleted) { progress, _ in
-                onUpdateProgress(Float(progress.fractionCompleted))
+                continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
         }
     }

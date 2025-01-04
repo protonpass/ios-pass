@@ -44,9 +44,9 @@ public typealias ProgressUpdate = @Sendable (Float) -> Void
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
+    /// Returns an async stream reporting upload progress (0.0 -> 1.0)
     func uploadFile(userId: String,
-                    file: PendingFileAttachment,
-                    onUpdateProgress: @escaping ProgressUpdate) async throws
+                    file: PendingFileAttachment) async throws -> AsyncThrowingStream<Float, any Error>
     func updatePendingFileName(userId: String,
                                file: PendingFileAttachment,
                                newName: String) async throws -> Bool
@@ -91,8 +91,7 @@ public extension FileAttachmentRepository {
     }
 
     func uploadFile(userId: String,
-                    file: PendingFileAttachment,
-                    onUpdateProgress: @escaping ProgressUpdate) async throws {
+                    file: PendingFileAttachment) async throws -> AsyncThrowingStream<Float, any Error> {
         guard let remoteId = file.remoteId else {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }
@@ -100,40 +99,47 @@ public extension FileAttachmentRepository {
         let path = "/pass/v1/file/\(remoteId)/chunk"
         let tracker = FileProgressTracker(size: Int(file.metadata.size))
 
-        let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
+        return .asyncContinuation { [weak self] continuation in
             guard let self else {
-                throw PassError.fileAttachment(.failedToEncryptFile)
+                continuation.finish(throwing: PassError.deallocatedSelf)
+                return
             }
-            let encryptedData = try AES.GCM.seal(blockData.value,
-                                                 key: file.key,
-                                                 associatedData: .fileData)
-            let infos: [MultipartInfo] = [
-                .init(name: "ChunkIndex", data: blockData.index.toAsciiData),
-                .init(name: "ChunkData",
-                      fileName: "no-op", // Not used by the BE but required
-                      contentType: "application/octet-stream",
-                      data: encryptedData)
-            ]
 
-            let response: UploadMultipartResponse =
-                try await apiServiceLite.uploadMultipart(path: path,
-                                                         userId: userId,
-                                                         infos: infos) { progress in
-                    Task {
-                        let progress = await tracker.overallProgress(currentProgress: progress,
-                                                                     chunkSize: blockData.value.count)
-                        onUpdateProgress(progress)
-                    }
+            let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
+                guard let self else {
+                    continuation.finish(throwing: PassError.deallocatedSelf)
+                    return
                 }
+                let encryptedData = try AES.GCM.seal(blockData.value,
+                                                     key: file.key,
+                                                     associatedData: .fileData)
+                let infos: [MultipartInfo] = [
+                    .init(name: "ChunkIndex", data: blockData.index.toAsciiData),
+                    .init(name: "ChunkData",
+                          fileName: "no-op", // Not used by the BE but required
+                          contentType: "application/octet-stream",
+                          data: encryptedData)
+                ]
 
-            if !response.isSuccessful {
-                throw PassError.fileAttachment(.failedToUpload(response.code))
+                let eventStream: AsyncThrowingStream<ProgressEvent<UploadMultipartResponse>, any Error> =
+                    try await apiServiceLite.uploadMultipart(path: path,
+                                                             userId: userId,
+                                                             infos: infos)
+
+                for try await case let .progress(progress) in eventStream {
+                    let overallProgress =
+                        await tracker.overallProgress(currentProgress: progress,
+                                                      chunkSize: blockData.value.count)
+                    continuation.yield(overallProgress)
+                }
             }
-        }
 
-        try await FileUtils.processBlockByBlock(file.metadata.url,
-                                                blockSizeInBytes: Constants.Attachment.maxChunkSizeInBytes,
-                                                process: process)
+            let blockSize = Constants.Attachment.maxChunkSizeInBytes
+            try await FileUtils.processBlockByBlock(file.metadata.url,
+                                                    blockSizeInBytes: blockSize,
+                                                    process: process)
+            continuation.finish()
+        }
     }
 
     func updatePendingFileName(userId: String,
