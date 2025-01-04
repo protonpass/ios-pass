@@ -39,8 +39,6 @@ private struct UploadMultipartResponse: Decodable {
     }
 }
 
-public typealias ProgressUpdate = @Sendable (Float) -> Void
-
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
