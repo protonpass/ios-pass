@@ -328,7 +328,7 @@ private extension SettingsView {
                 .padding(.top, DesignConstant.sectionPadding / 2)
 
             if viewModel.fileAttachmentsActive {
-                OptionRow(action: viewModel.clearCache,
+                OptionRow(action: viewModel.clearCachedFiles,
                           height: .medium,
                           content: {
                               Text("Clear downloaded files")
