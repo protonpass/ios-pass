@@ -57,6 +57,8 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
                          existingFileIdsToRemove: [String],
                          item: any ItemIdentifiable) async throws
     func getActiveItemFiles(userId: String, item: any ItemIdentifiable) async throws -> [ItemFile]
+    func getItemFilesForAllRevisions(userId: String,
+                                     item: any ItemIdentifiable) async throws -> [ItemFile]
 }
 
 public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
@@ -237,15 +239,41 @@ public extension FileAttachmentRepository {
     }
 
     func getActiveItemFiles(userId: String, item: any ItemIdentifiable) async throws -> [ItemFile] {
+        try await getAllFiles(userId: userId, item: item) { [weak self] lastId in
+            guard let self else {
+                throw PassError.deallocatedSelf
+            }
+            return try await remoteFileDatasource.getActiveFiles(userId: userId,
+                                                                 item: item,
+                                                                 lastId: lastId)
+        }
+    }
+
+    func getItemFilesForAllRevisions(userId: String,
+                                     item: any ItemIdentifiable) async throws -> [ItemFile] {
+        try await getAllFiles(userId: userId, item: item) { [weak self] lastId in
+            guard let self else {
+                throw PassError.deallocatedSelf
+            }
+            return try await remoteFileDatasource.getFilesForAllRevisions(userId: userId,
+                                                                          item: item,
+                                                                          lastId: lastId)
+        }
+    }
+}
+
+private extension FileAttachmentRepository {
+    func getAllFiles(userId: String,
+                     item: any ItemIdentifiable,
+                     getFiles: (_ lastId: String?) async throws -> PaginatedItemFiles) async throws
+        -> [ItemFile] {
         var lastId: String?
         var files = [ItemFile]()
         let itemKeys = try await keyManager.getItemKeys(userId: userId,
                                                         shareId: item.shareId,
                                                         itemId: item.itemId)
         while true {
-            let response = try await remoteFileDatasource.getActiveFiles(userId: userId,
-                                                                         item: item,
-                                                                         lastId: lastId)
+            let response = try await getFiles(lastId)
             for var file in response.files {
                 guard let itemKey = itemKeys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
                     throw PassError.crypto(.missingItemKeyRotation(file.itemKeyRotation))
@@ -274,9 +302,7 @@ public extension FileAttachmentRepository {
             }
         }
     }
-}
 
-private extension FileAttachmentRepository {
     func generateEncryptedMetadata(name: String,
                                    mimeType: String,
                                    key: Data) throws -> String {

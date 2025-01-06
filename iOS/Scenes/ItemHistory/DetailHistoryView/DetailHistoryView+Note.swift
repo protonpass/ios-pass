@@ -23,6 +23,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 extension DetailHistoryView {
@@ -45,6 +46,17 @@ extension DetailHistoryView {
             noteRow(item: itemContent)
                 .padding(DesignConstant.sectionPadding)
                 .roundedDetailSection(borderColor: borderColor(for: \.note))
+
+            ForEach(viewModel.fileUiModels(for: itemContent)) { file in
+                FileAttachmentRow(mode: .view(onOpen: { viewModel.open(file) },
+                                              onSave: { viewModel.save(file) },
+                                              onShare: { viewModel.share(file) }),
+                                  itemContentType: viewModel.itemContentType,
+                                  uiModel: file,
+                                  primaryTintColor: viewModel.fileAttachmentsSectionPrimaryColor,
+                                  secondaryTintColor: viewModel.fileAttachmentsSectionSecondaryColor)
+                    .padding(.top, 8)
+            }
         }
         .frame(maxWidth: .infinity)
         .padding()

@@ -54,6 +54,7 @@ struct NoteDetailSection: View {
                     // swiftlint:disable:next deprecated_foregroundcolor_modifier
                     .foregroundColor(PassColor.textNorm)
                     .isEditable(false)
+                    .frame(maxHeight: .infinity)
                     .onTapGesture {
                         // Pure heuristic
                         if note.count > 400 {
@@ -61,7 +62,7 @@ struct NoteDetailSection: View {
                         }
                     }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         }
         .padding(DesignConstant.sectionPadding)
         .tint(itemContent.type.normMajor2Color.toColor)
