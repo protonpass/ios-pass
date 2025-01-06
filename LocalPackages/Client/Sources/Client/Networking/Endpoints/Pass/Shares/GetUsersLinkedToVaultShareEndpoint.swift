@@ -21,6 +21,7 @@
 import Entities
 import ProtonCoreNetworking
 
+// periphery:ignore
 public struct PaginatedUsersLinkedToShare: Decodable, Sendable {
     public let shares: [UserShareInfos]
     public let total: Int

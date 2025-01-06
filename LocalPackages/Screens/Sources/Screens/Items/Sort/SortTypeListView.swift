@@ -23,15 +23,15 @@ import DesignSystem
 import Entities
 import SwiftUI
 
-public struct SortTypeListView: View {
+struct SortTypeListView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var selectedSortType: SortType
 
-    public init(selectedSortType: Binding<SortType>) {
+    init(selectedSortType: Binding<SortType>) {
         _selectedSortType = selectedSortType
     }
 
-    public var body: some View {
+    var body: some View {
         NavigationStack {
             VStack(alignment: .center, spacing: 0) {
                 ForEach(SortType.allCases, id: \.self) { type in

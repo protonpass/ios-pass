@@ -29,7 +29,6 @@ public struct InAppModalView: View {
 
     @StateObject private var viewModel: InAppModalViewModel
     private let notification: InAppNotification
-    private let borderColor: UIColor = PassColor.inputBorderNorm
     private let onAppear: () -> Void
     private let onDisappear: () -> Void
     private let onTap: (InAppNotification) -> Void
