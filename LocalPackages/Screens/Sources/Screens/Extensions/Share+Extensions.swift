@@ -26,16 +26,8 @@ public extension Share {
         vaultContent?.display.color.color.color
     }
 
-    var backgroundColor: UIColor? {
-        mainColor?.withAlphaComponent(0.16)
-    }
-
     var vaultBigIcon: UIImage? {
         vaultContent?.display.icon.icon.bigImage
-    }
-
-    var vaultSmallIcon: UIImage? {
-        vaultContent?.display.icon.icon.smallImage
     }
 }
 

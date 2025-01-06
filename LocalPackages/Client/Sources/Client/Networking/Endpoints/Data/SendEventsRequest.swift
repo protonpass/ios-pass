@@ -29,7 +29,7 @@ struct SendEventsRequest: Encodable, Sendable {
     }
 }
 
-public typealias DimensionsValue = Encodable & Sendable
+typealias DimensionsValue = Encodable & Sendable
 struct Dimensions: Encodable, Sendable {
     var properties: [String: any DimensionsValue]
 
@@ -69,29 +69,6 @@ struct Dimensions: Encodable, Sendable {
         var stringValue: String
 
         init(stringValue: String) { self.stringValue = stringValue }
-    }
-}
-
-// Helper enum for flexible encoding of values with various types
-enum CodableValue: Encodable {
-    case string(String)
-    case int(Int)
-    case double(Double)
-    case bool(Bool)
-
-    // Encoding logic for each case
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        switch self {
-        case let .string(value):
-            try container.encode(value)
-        case let .int(value):
-            try container.encode(value)
-        case let .double(value):
-            try container.encode(value)
-        case let .bool(value):
-            try container.encode(value)
-        }
     }
 }
 
