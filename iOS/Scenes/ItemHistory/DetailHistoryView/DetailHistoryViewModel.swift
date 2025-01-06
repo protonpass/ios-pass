@@ -76,30 +76,30 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     }
 
     func fileUiModels(for item: ItemContent) -> [FileAttachmentUiModel] {
-        let files = files.filter { file in
-            if let revisionRemoved = file.revisionRemoved {
+        files.compactMap { file in
+            let eligible = if let revisionRemoved = file.revisionRemoved {
                 revisionRemoved >= item.item.revision
             } else {
                 file.revisionAdded <= item.item.revision
             }
-        }
-        var uiModels = [FileAttachmentUiModel]()
-        for file in files {
-            let formattedSize = formatFileAttachmentSize(file.size)
-            if let name = file.name,
-               let mimeType = file.mimeType {
-                let fileGroup = getFileGroup(mimeType: mimeType)
-                uiModels.append(.init(id: file.fileID,
-                                      url: nil,
-                                      state: .uploaded,
-                                      name: name,
-                                      group: fileGroup,
-                                      formattedSize: formattedSize))
-            } else {
+
+            guard eligible else { return nil }
+
+            guard let name = file.name,
+                  let mimeType = file.mimeType else {
                 assertionFailure("Missing file name and MIME type")
+                return nil
             }
+
+            let formattedSize = formatFileAttachmentSize(file.size)
+            let fileGroup = getFileGroup(mimeType: mimeType)
+            return .init(id: file.fileID,
+                         url: nil,
+                         state: .uploaded,
+                         name: name,
+                         group: fileGroup,
+                         formattedSize: formattedSize)
         }
-        return uiModels
     }
 }
 

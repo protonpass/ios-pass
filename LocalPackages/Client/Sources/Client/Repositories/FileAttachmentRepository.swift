@@ -239,7 +239,7 @@ public extension FileAttachmentRepository {
     }
 
     func getActiveItemFiles(userId: String, item: any ItemIdentifiable) async throws -> [ItemFile] {
-        try await getFilesOfAllPages(userId: userId, item: item) { [weak self] lastId in
+        try await getAllFiles(userId: userId, item: item) { [weak self] lastId in
             guard let self else {
                 throw PassError.deallocatedSelf
             }
@@ -251,7 +251,7 @@ public extension FileAttachmentRepository {
 
     func getItemFilesForAllRevisions(userId: String,
                                      item: any ItemIdentifiable) async throws -> [ItemFile] {
-        try await getFilesOfAllPages(userId: userId, item: item) { [weak self] lastId in
+        try await getAllFiles(userId: userId, item: item) { [weak self] lastId in
             guard let self else {
                 throw PassError.deallocatedSelf
             }
@@ -263,9 +263,9 @@ public extension FileAttachmentRepository {
 }
 
 private extension FileAttachmentRepository {
-    func getFilesOfAllPages(userId: String,
-                            item: any ItemIdentifiable,
-                            getFiles: (_ lastId: String?) async throws -> PaginatedItemFiles) async throws
+    func getAllFiles(userId: String,
+                     item: any ItemIdentifiable,
+                     getFiles: (_ lastId: String?) async throws -> PaginatedItemFiles) async throws
         -> [ItemFile] {
         var lastId: String?
         var files = [ItemFile]()
