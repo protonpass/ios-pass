@@ -55,6 +55,21 @@ struct DetailHistoryView: View {
                       secondaryButton: .cancel())
             }
             .showSpinner(viewModel.restoringItem)
+            .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
+                FileAttachmentPreview(mode: mode,
+                                      primaryTintColor: viewModel.itemContentType.normMajor2Color,
+                                      secondaryTintColor: viewModel.itemContentType.normMinor1Color)
+            }
+            .sheet(isPresented: $viewModel.urlToSave.mappedToBool()) {
+                if let url = viewModel.urlToSave {
+                    ExportDocumentView(url: url)
+                }
+            }
+            .sheet(isPresented: $viewModel.urlToShare.mappedToBool()) {
+                if let url = viewModel.urlToShare {
+                    ActivityView(items: [url])
+                }
+            }
     }
 }
 
@@ -119,6 +134,17 @@ extension DetailHistoryView {
         }
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection(borderColor: borderColor(for: \.note))
+    }
+
+    @ViewBuilder
+    func attachmentsSection(item: ItemContent) -> some View {
+        let uiModels = viewModel.fileUiModels(for: item)
+        if !uiModels.isEmpty {
+            FileAttachmentsViewSection(files: uiModels,
+                                       isFetching: false,
+                                       fetchError: nil,
+                                       handler: viewModel)
+        }
     }
 }
 

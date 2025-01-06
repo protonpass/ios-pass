@@ -22,11 +22,11 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct GetActiveItemFilesResponse: Decodable, Sendable {
-    public let files: PaginatedActiveItemFiles
+public struct GetItemFilesResponse: Decodable, Sendable {
+    public let files: PaginatedItemFiles
 }
 
-public struct PaginatedActiveItemFiles: Decodable, Sendable {
+public struct PaginatedItemFiles: Decodable, Sendable {
     public let files: [ItemFile]
     public let total: Int
     public let lastID: String?
@@ -34,7 +34,7 @@ public struct PaginatedActiveItemFiles: Decodable, Sendable {
 
 struct GetActiveItemFilesEndpoint: Endpoint, @unchecked Sendable {
     typealias Body = EmptyRequest
-    typealias Response = GetActiveItemFilesResponse
+    typealias Response = GetItemFilesResponse
 
     var debugDescription: String
     var path: String

@@ -41,6 +41,9 @@ extension DetailHistoryView {
                     customDetailSection(customSection: customSection)
                 }
             }
+
+            attachmentsSection(item: itemContent)
+                .padding(.top, 8)
         }
         .frame(maxWidth: .infinity)
     }

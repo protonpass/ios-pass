@@ -39,6 +39,9 @@ extension DetailHistoryView {
 
             noteFields(item: itemContent)
                 .padding(.top, 8)
+
+            attachmentsSection(item: itemContent)
+                .padding(.top, 8)
         }
         .frame(maxWidth: .infinity)
         .padding()

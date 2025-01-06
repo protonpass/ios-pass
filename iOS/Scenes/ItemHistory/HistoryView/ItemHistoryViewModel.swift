@@ -28,6 +28,7 @@ import Foundation
 final class ItemHistoryViewModel: ObservableObject, Sendable {
     @Published private(set) var lastUsedTime: String?
     @Published private(set) var history = [ItemContent]()
+    @Published private(set) var files = [ItemFile]()
     @Published private(set) var loading = true
 
     let item: ItemContent
@@ -35,6 +36,8 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository)
+    private var fileAttachmentRepository
 
     private var canLoadMoreItems = true
     private var currentTask: Task<Void, Never>?
@@ -71,6 +74,12 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
                                                      shareId: item.shareId,
                                                      itemId: item.itemId,
                                                      lastToken: lastToken)
+
+                if item.item.hasFiles || item.item.hasHadFiles, files.isEmpty {
+                    files =
+                        try await fileAttachmentRepository.getItemFilesForAllRevisions(userId: userId,
+                                                                                       item: item)
+                }
 
                 history.append(contentsOf: items.data)
                 guard items.lastToken != nil else {

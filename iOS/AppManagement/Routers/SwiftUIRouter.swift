@@ -32,7 +32,9 @@ struct ContactsInfos: Hashable {
 enum GeneralRouterDestination: Hashable {
     case userSharePermission
     case shareSummary
-    case historyDetail(currentRevision: ItemContent, pastRevision: ItemContent)
+    case historyDetail(currentRevision: ItemContent,
+                       pastRevision: ItemContent,
+                       files: [ItemFile])
     case protonAddressesList([ProtonAddress])
     case aliasesList([AliasMonitorInfo])
     case breachDetail(BreachDetailsInfo)
@@ -95,9 +97,12 @@ extension View {
                 UserPermissionView()
             case .shareSummary:
                 SharingSummaryView()
-            case let .historyDetail(currentRevision: currentRevision, pastRevision: pastRevision):
-                DetailHistoryView(viewModel: DetailHistoryViewModel(currentRevision: currentRevision,
-                                                                    pastRevision: pastRevision))
+            case let .historyDetail(currentRevision: currentRevision,
+                                    pastRevision: pastRevision,
+                                    files):
+                DetailHistoryView(viewModel: .init(currentRevision: currentRevision,
+                                                   pastRevision: pastRevision,
+                                                   files: files))
             case let .protonAddressesList(addresses):
                 MonitorProtonAddressesView(viewModel: .init(addresses: addresses))
             case let .aliasesList(infos):
