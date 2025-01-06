@@ -25,6 +25,8 @@ import Entities
 import Factory
 import Foundation
 import Macro
+import Screens
+import UIKit
 
 enum SelectedRevision {
     case current, past
@@ -35,16 +37,25 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     @Published var selectedItemIndex = 0
     @Published private(set) var restoringItem = false
     @Published private(set) var selectedRevision: SelectedRevision = .past
+    @Published var filePreviewMode: FileAttachmentPreviewMode?
+    @Published var urlToSave: URL?
+    @Published var urlToShare: URL?
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
+    @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
+    @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
+    @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
 
     private var cancellables = Set<AnyCancellable>()
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
     let currentRevision: ItemContent
     let pastRevision: ItemContent
+    let files: [ItemFile]
 
     var selectedRevisionContent: ItemContent {
         switch selectedRevision {
@@ -55,10 +66,40 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
         }
     }
 
-    init(currentRevision: ItemContent, pastRevision: ItemContent) {
+    init(currentRevision: ItemContent,
+         pastRevision: ItemContent,
+         files: [ItemFile]) {
         self.currentRevision = currentRevision
         self.pastRevision = pastRevision
+        self.files = files
         setUp()
+    }
+
+    func fileUiModels(for item: ItemContent) -> [FileAttachmentUiModel] {
+        files.compactMap { file in
+            let eligible = if let revisionRemoved = file.revisionRemoved {
+                revisionRemoved >= item.item.revision
+            } else {
+                file.revisionAdded <= item.item.revision
+            }
+
+            guard eligible else { return nil }
+
+            guard let name = file.name,
+                  let mimeType = file.mimeType else {
+                assertionFailure("Missing file name and MIME type")
+                return nil
+            }
+
+            let formattedSize = formatFileAttachmentSize(file.size)
+            let fileGroup = getFileGroup(mimeType: mimeType)
+            return .init(id: file.fileID,
+                         url: nil,
+                         state: .uploaded,
+                         name: name,
+                         group: fileGroup,
+                         formattedSize: formattedSize)
+        }
     }
 }
 
@@ -95,9 +136,14 @@ extension DetailHistoryViewModel {
                                                     shareId: currentRevision.shareId)
                 router.present(for: .restoreHistory)
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
@@ -173,5 +219,80 @@ private extension DetailHistoryViewModel {
 
     func copy(_ keypath: KeyPath<ItemContent, String?>, message: String) {
         copy(selectedRevisionContent[keyPath: keypath], message: message)
+    }
+}
+
+extension DetailHistoryViewModel: FileAttachmentsViewHandler {
+    var fileAttachmentsSectionPrimaryColor: UIColor {
+        itemContentType.normMajor2Color
+    }
+
+    var fileAttachmentsSectionSecondaryColor: UIColor {
+        itemContentType.normMinor1Color
+    }
+
+    var itemContentType: ItemContentType {
+        currentRevision.type
+    }
+
+    func retryFetchingAttachments() {
+        // Not applicable
+    }
+
+    func open(_ file: FileAttachmentUiModel) {
+        openPreview(file, postAction: .none)
+    }
+
+    func save(_ file: FileAttachmentUiModel) {
+        openPreview(file, postAction: .save)
+    }
+
+    func share(_ file: FileAttachmentUiModel) {
+        openPreview(file, postAction: .share)
+    }
+}
+
+private extension DetailHistoryViewModel {
+    func openPreview(_ file: FileAttachmentUiModel,
+                     postAction: FileAttachmentPreviewPostDownloadAction) {
+        Task {
+            do {
+                guard let file = files.first(where: { $0.fileID == file.id }) else {
+                    throw PassError.fileAttachment(.missingFile(file.id))
+                }
+
+                let userId = try await userManager.getActiveUserId()
+                let url = try generateFileTempUrl(userId: userId,
+                                                  item: selectedRevisionContent,
+                                                  file: file)
+                if FileManager.default.fileExists(atPath: url.path()) {
+                    // File already downloaded => open directly
+                    switch postAction {
+                    case .save:
+                        urlToSave = url
+                    case .share:
+                        urlToShare = url
+                    case .none:
+                        filePreviewMode = .item(file, self, postAction)
+                    }
+                } else {
+                    // File not downloaded => open preview page to download
+                    filePreviewMode = .item(file, self, postAction)
+                }
+            } catch {
+                handle(error)
+            }
+        }
+    }
+}
+
+extension DetailHistoryViewModel: FileAttachmentPreviewHandler {
+    func downloadAndDecrypt(file: ItemFile,
+                            progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
+        let userId = try await userManager.getActiveUserId()
+        return try await downloadAndDecryptFile(userId: userId,
+                                                item: selectedRevisionContent,
+                                                file: file,
+                                                progress: progress)
     }
 }

@@ -36,7 +36,10 @@ public protocol RemoteFileDatasourceProtocol: Sendable {
                          fileIdsToRemove: [String]) async throws
     func getActiveFiles(userId: String,
                         item: any ItemIdentifiable,
-                        lastId: String?) async throws -> PaginatedActiveItemFiles
+                        lastId: String?) async throws -> PaginatedItemFiles
+    func getFilesForAllRevisions(userId: String,
+                                 item: any ItemIdentifiable,
+                                 lastId: String?) async throws -> PaginatedItemFiles
     func getChunkContent(userId: String,
                          item: any ItemIdentifiable,
                          fileId: String,
@@ -84,8 +87,16 @@ public extension RemoteFileDatasource {
 
     func getActiveFiles(userId: String,
                         item: any ItemIdentifiable,
-                        lastId: String?) async throws -> PaginatedActiveItemFiles {
+                        lastId: String?) async throws -> PaginatedItemFiles {
         let endpoint = GetActiveItemFilesEndpoint(item: item, lastId: lastId)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.files
+    }
+
+    func getFilesForAllRevisions(userId: String,
+                                 item: any ItemIdentifiable,
+                                 lastId: String?) async throws -> PaginatedItemFiles {
+        let endpoint = GetItemFilesForAllRevisionsEndpoint(item: item, lastId: lastId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.files
     }
