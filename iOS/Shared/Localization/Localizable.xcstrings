@@ -34001,6 +34001,16 @@
         }
       }
     },
+    "Clear downloaded files" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear downloaded files"
+          }
+        }
+      }
+    },
     "Clipboard" : {
       "localizations" : {
         "be" : {
@@ -47908,6 +47918,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tải lại các nội dung của bạn một lần nữa để đảm vào bạn đã được đồng bộ"
+          }
+        }
+      }
+    },
+    "Downloaded files cleared" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloaded files cleared"
           }
         }
       }
@@ -102079,6 +102099,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xóa tất cả liên kết không hoạt động"
+          }
+        }
+      }
+    },
+    "Remove cached attachments from previous downloads" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove cached attachments from previous downloads"
           }
         }
       }

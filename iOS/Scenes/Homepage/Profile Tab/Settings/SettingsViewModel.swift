@@ -23,6 +23,7 @@ import Combine
 import Core
 import Entities
 import Factory
+import Macro
 import SwiftUI
 
 @MainActor
@@ -54,6 +55,7 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
     @LazyInjected(\SharedUseCasesContainer.fullContentSync) private var fullContentSync
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedServiceContainer.appContentManager) private var appContentManager
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @Published private(set) var selectedBrowser: Browser
     @Published private(set) var selectedTheme: Theme
@@ -69,6 +71,10 @@ final class SettingsViewModel: ObservableObject, DeinitPrintable {
 
     weak var delegate: (any SettingsViewModelDelegate)?
     private var cancellables = Set<AnyCancellable>()
+
+    var fileAttachmentsActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
+    }
 
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
@@ -207,9 +213,21 @@ extension SettingsViewModel {
                 logger.info("Done full sync")
                 router.display(element: .successMessage(config: .refresh))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
+        }
+    }
+
+    func clearCachedFiles() {
+        do {
+            let manager = FileManager.default
+            let url = manager.temporaryDirectory.appending(path: Constants.Attachment.rootDirectoryName)
+            if manager.fileExists(atPath: url.path()) {
+                try manager.removeItem(at: url)
+            }
+            router.display(element: .successMessage(#localized("Downloaded files cleared")))
+        } catch {
+            handle(error)
         }
     }
 }

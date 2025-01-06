@@ -19,12 +19,13 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Entities
 import Foundation
 
 public protocol FileAttachmentPreviewHandler: Sendable {
-    func downloadAndDecrypt(file: ItemFile,
-                            progress: @MainActor @escaping (Float) -> Void) async throws -> URL
+    func downloadAndDecrypt(file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error>
 }
 
 public enum FileAttachmentPreviewPostDownloadAction: String, Identifiable, Sendable {
@@ -56,6 +57,7 @@ final class FileAttachmentPreviewModel: ObservableObject {
     @Published var urlToSave: URL?
     @Published var urlToShare: URL?
     private let mode: FileAttachmentPreviewMode
+    private let formatter: ByteCountFormatter
 
     var fileName: String? {
         if case let .item(itemFile, _, _) = mode {
@@ -65,8 +67,21 @@ final class FileAttachmentPreviewModel: ObservableObject {
         }
     }
 
-    init(mode: FileAttachmentPreviewMode) {
+    var progressDetail: String? {
+        guard case let .item(itemFile, _, _) = mode else {
+            return nil
+        }
+        let total = formatter.string(fromByteCount: Int64(itemFile.size))
+        let downloadedBytes = Int64(progress * Float(itemFile.size))
+        let downloaded = formatter.string(fromByteCount: downloadedBytes)
+        return "\(Int(progress * 100))% (\(downloaded) / \(total))"
+    }
+
+    init(mode: FileAttachmentPreviewMode,
+         allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB]) {
         self.mode = mode
+        formatter = .init()
+        formatter.allowedUnits = allowedUnits
     }
 }
 
@@ -82,19 +97,24 @@ extension FileAttachmentPreviewModel {
                     url = .fetching
                 }
 
-                let url = try await handler.downloadAndDecrypt(file: itemFile) { [weak self] newProgress in
-                    guard let self else { return }
-                    progress = newProgress
-                }
-                self.url = .fetched(url)
+                let stream = try await handler.downloadAndDecrypt(file: itemFile)
 
-                switch action {
-                case .none:
-                    break
-                case .save:
-                    urlToSave = url
-                case .share:
-                    urlToShare = url
+                for try await event in stream {
+                    switch event {
+                    case let .progress(value):
+                        progress = value
+
+                    case let .result(value):
+                        url = .fetched(value)
+                        switch action {
+                        case .none:
+                            break
+                        case .save:
+                            urlToSave = value
+                        case .share:
+                            urlToShare = value
+                        }
+                    }
                 }
             } catch {
                 url = .error(error)

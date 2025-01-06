@@ -20,6 +20,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Combine
 import Entities
 import Factory
@@ -287,12 +288,11 @@ private extension DetailHistoryViewModel {
 }
 
 extension DetailHistoryViewModel: FileAttachmentPreviewHandler {
-    func downloadAndDecrypt(file: ItemFile,
-                            progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
+    func downloadAndDecrypt(file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         let userId = try await userManager.getActiveUserId()
         return try await downloadAndDecryptFile(userId: userId,
                                                 item: selectedRevisionContent,
-                                                file: file,
-                                                progress: progress)
+                                                file: file)
     }
 }
