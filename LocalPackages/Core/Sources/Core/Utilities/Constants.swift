@@ -45,8 +45,12 @@ public enum Constants {
 
         public static let defaultPageSize = 100
         public static let batchSize = 500
+    }
+
+    public enum Attachment {
         public static let maxFileSizeInBytes = 100 * 1_024 * 1_024 // 100 MB
         public static let maxChunkSizeInBytes = 10 * 1_024 * 1_024 // 10 MB
+        public static let rootDirectoryName = "attachment"
     }
 
     public enum ContentFormatVersion {

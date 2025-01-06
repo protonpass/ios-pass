@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
 import Entities
 import Foundation
 
@@ -42,10 +43,14 @@ public final class GenerateFileTempUrl: GenerateFileTempUrlUseCase {
     public func execute(userId: String,
                         item: any ItemIdentifiable,
                         file: ItemFile) throws -> URL {
-        guard let name = file.name else {
+        // When initializing FileHandle using FileHandle(forWritingTo:), file name with spaces
+        // fails the initialization hence break the whole download process.
+        // So we replace spaces by hyphens to bypass this system bug.
+        guard let name = file.name?.replacingOccurrences(of: " ", with: "_") else {
             throw PassError.fileAttachment(.failedToDownloadMissingFileName(file.fileID))
         }
         return FileManager.default.temporaryDirectory
+            .appending(path: Constants.Attachment.rootDirectoryName)
             .appending(path: userId)
             .appending(path: item.shareId)
             .appending(path: item.itemId)

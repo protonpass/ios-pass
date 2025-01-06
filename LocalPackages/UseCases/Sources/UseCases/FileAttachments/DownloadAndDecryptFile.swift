@@ -28,23 +28,24 @@ import Foundation
 public protocol DownloadAndDecryptFileUseCase: Sendable {
     func execute(userId: String,
                  item: any ItemIdentifiable,
-                 file: ItemFile,
-                 progress: @MainActor @escaping (Float) -> Void) async throws -> URL
+                 file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error>
 }
 
 public extension DownloadAndDecryptFileUseCase {
     func callAsFunction(userId: String,
                         item: any ItemIdentifiable,
-                        file: ItemFile,
-                        progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
-        try await execute(userId: userId, item: item, file: file, progress: progress)
+                        file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
+        try await execute(userId: userId, item: item, file: file)
     }
 }
 
-public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unchecked Sendable {
+public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
     private let generateFileTempUrl: any GenerateFileTempUrlUseCase
     private let keyManager: any PassKeyManagerProtocol
     private let apiService: any ApiServiceLiteProtocol
+    private var progressObservation: NSKeyValueObservation?
 
     public init(generateFileTempUrl: any GenerateFileTempUrlUseCase,
                 keyManager: any PassKeyManagerProtocol,
@@ -56,13 +57,21 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
 
     public func execute(userId: String,
                         item: any ItemIdentifiable,
-                        file: ItemFile,
-                        progress: @MainActor @escaping (Float) -> Void) async throws -> URL {
+                        file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         let fileManager = FileManager.default
         let url = try generateFileTempUrl(userId: userId, item: item, file: file)
-        if fileManager.fileExists(atPath: url.path()) {
-            // File already downloaded and cached
-            return url
+        if fileManager.fileExists(atPath: url.path()),
+           let attributes = try? fileManager.attributesOfItem(atPath: url.path),
+           let fileSize = (attributes[FileAttributeKey.size] as? NSNumber)?.intValue,
+           // Heuristically make sure downloaded decrypted file size is >= 98% of the encrypted size
+           // to make sure file is fully downloaded. Because we download, decrypt and write
+           // chunk by chunk so file could be corrupted even though it exists
+           (file.size == 0) || (fileSize >= file.size * 98 / 100) {
+            return .init { continuation in
+                continuation.yield(.result(url))
+                continuation.finish()
+            }
         }
 
         let itemKeys = try await keyManager.getItemKeys(userId: userId,
@@ -88,27 +97,35 @@ public final class DownloadAndDecryptFile: DownloadAndDecryptFileUseCase, @unche
 
         // Download, decrypt and write to file chunk by chunk
         let fileHandle = try FileHandle(forWritingTo: url)
-        defer { try? fileHandle.close() }
+        let tracker = FileProgressTracker(size: file.size)
 
-        let progressTracker = UploadProgressTracker()
-        let fileSize = max(1, file.size)
-
-        for chunk in file.chunks {
-            let path =
-                "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
-            let encryptedUrl = try await apiService.download(path: path,
-                                                             userId: userId) { bytesDownloaded in
-                progressTracker.updateProgress(bytesSent: bytesDownloaded,
-                                               fileSize: fileSize,
-                                               progress: progress)
+        return .asyncContinuation { [weak self] continuation in
+            defer { try? fileHandle.close() }
+            guard let self else {
+                continuation.finish(throwing: PassError.deallocatedSelf)
+                return
             }
-            let encryptedData = try Data(contentsOf: encryptedUrl)
-            let decrypted = try AES.GCM.open(encryptedData,
-                                             key: fileKey,
-                                             associatedData: .fileData)
-            try? fileManager.removeItem(atPath: encryptedUrl.path())
-            try fileHandle.write(contentsOf: decrypted)
+            for chunk in file.chunks {
+                let path =
+                    "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
+                let stream = try await apiService.download(path: path,
+                                                           userId: userId)
+                for try await event in stream {
+                    switch event {
+                    case let .progress(value):
+                        let overall = await tracker.overallProgress(currentProgress: value,
+                                                                    chunkSize: chunk.size)
+                        continuation.yield(.progress(overall))
+                    case let .result(encryptedData):
+                        let decrypted = try AES.GCM.open(encryptedData,
+                                                         key: fileKey,
+                                                         associatedData: .fileData)
+                        try fileHandle.write(contentsOf: decrypted)
+                    }
+                }
+            }
+            continuation.yield(.result(url))
+            continuation.finish()
         }
-        return url
     }
 }

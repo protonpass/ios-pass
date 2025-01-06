@@ -594,7 +594,7 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 
     func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL {
         let fileSize = UInt64(data.count)
-        guard fileSize < Constants.Utils.maxFileSizeInBytes else {
+        guard fileSize < Constants.Attachment.maxFileSizeInBytes else {
             throw PassError.fileAttachment(.fileTooLarge(fileSize))
         }
         return try writeToUrl(data: data,
@@ -634,7 +634,7 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
             do {
                 isUploadingFile = true
                 let fileSize = try getFileSize(for: url)
-                if fileSize > Constants.Utils.maxFileSizeInBytes {
+                if fileSize > Constants.Attachment.maxFileSizeInBytes {
                     // Optionally remove the file, we don't care if errors occur here
                     // because it should be in temporary directory which is cleaned up
                     // by the system anyway
@@ -796,16 +796,15 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
 }
 
 extension BaseCreateEditItemViewModel: FileAttachmentPreviewHandler {
-    func downloadAndDecrypt(file: ItemFile,
-                            progress: @escaping @MainActor @Sendable (Float) -> Void) async throws -> URL {
+    func downloadAndDecrypt(file: ItemFile) async throws
+        -> AsyncThrowingStream<ProgressEvent<URL>, any Error> {
         guard case let .edit(itemContent) = mode else {
             throw PassError.fileAttachment(.failedToDownloadNoFetchedFiles)
         }
         let userId = try await userManager.getActiveUserId()
         return try await downloadAndDecryptFile(userId: userId,
                                                 item: itemContent,
-                                                file: file,
-                                                progress: progress)
+                                                file: file)
     }
 }
 
@@ -822,8 +821,9 @@ private extension BaseCreateEditItemViewModel {
         file.remoteId = remoteFile.fileID
         files.upsert(file)
 
-        try await fileRepository.uploadFile(userId: userId, file: file) { [weak self] progress in
-            guard let self else { return }
+        let progressStream = try await fileRepository.uploadFile(userId: userId, file: file)
+
+        for try await progress in progressStream {
             if progress >= 1 {
                 file.uploadState = .uploaded
             } else {

@@ -309,7 +309,7 @@ private extension SettingsView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, DesignConstant.sectionPadding)
 
-            OptionRow(action: { viewModel.forceSync() },
+            OptionRow(action: viewModel.forceSync,
                       height: .medium,
                       content: {
                           Text("Force synchronization")
@@ -326,6 +326,27 @@ private extension SettingsView {
                 .sectionTitleText()
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.top, DesignConstant.sectionPadding / 2)
+
+            if viewModel.fileAttachmentsActive {
+                OptionRow(action: viewModel.clearCachedFiles,
+                          height: .medium,
+                          content: {
+                              Text("Clear downloaded files")
+                                  .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                          },
+                          trailing: {
+                              CircleButton(icon: IconProvider.trash,
+                                           iconColor: PassColor.interactionNormMajor2,
+                                           backgroundColor: PassColor.interactionNormMinor1)
+                          })
+                          .roundedEditableSection()
+                          .padding(.top, DesignConstant.sectionPadding * 2)
+
+                Text("Remove cached attachments from previous downloads")
+                    .sectionTitleText()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.top, DesignConstant.sectionPadding / 2)
+            }
         }
     }
 }
