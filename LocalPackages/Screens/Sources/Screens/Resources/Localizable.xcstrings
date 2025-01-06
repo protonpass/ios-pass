@@ -5756,6 +5756,30 @@
     },
     "No text could be detected in the image. Please try again, ensuring the text is clear, well-lit, and within the camera's focus." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тэкст на відарысе не выяўлены. Пераканайцеся, што тэкст добра чытаецца, хапае асвятлення і відарыс знаходзіцца ў фокусе камеры."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na snímku se nepodařilo rozpoznat žádný text. Zkuste to znovu a ujistěte se, že je text zřetelný, dobře osvětlený a zaostřený."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der kunne ikke registreres nogen tekst på billedet. Prøv igen, og sørg for, at teksten er tydelig, godt oplyst og inden for kameraets fokus."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν ήταν δυνατός ο εντοπισμός κειμένου στην εικόνα. Παρακαλούμε δοκιμάστε ξανά, διασφαλίζοντας ότι το κείμενο είναι καθαρό, καλά φωτισμένο και εντός της εστίασης της κάμερας."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5774,10 +5798,70 @@
             "value" : "No se pudo detectar ningún texto en la imagen. Inténtelo de nuevo, asegurándose de que el texto esté claro, bien iluminado y dentro del enfoque de la cámara."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuvassa ei havaittu tekstiä. Yritä uudelleen ja varmista, että teksti on selkeää, hyvin valaistua ja kameran tarkennusalueella."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun texte n'a pu être détecté dans l'image. Veuillez réessayer en vous assurant que le texte est clair, bien éclairé et dans la zone de mise au point de l'appareil photo."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada teks yang dapat dideteksi pada gambar. Silakan coba lagi dengan memastikan bahwa teks ini terlihat jelas, terang, dan berada dalam fokus kamera."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non è stato rilevato alcun testo nell'immagine. Riprova, assicurandoti che il testo sia chiaro, ben illuminato e messo a fuoco dalla fotocamera."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამოსახულებაში ტექსტი აღმოჩენილი არაა. თავიდან სცადეთ და დარწმუნდით, რომ ტექსტი მკაფიოა, კარგი განათებით და კამერის ფოკუსშია."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지 속에서 감지된 텍스트가 없습니다. 텍스트가 선명하고, 카메라가 초점이 맞춰진 상태에서 다시 시도하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen tekst kunne oppdages i bildet. Prøv igjen, og sørg for at teksten er klar, godt opplyst og innenfor kameraets fokus."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er kon geen tekst worden gevonden in de afbeelding. Probeer het nog een keer ervoor zorgend dat de tekst duidelijk en goed is en binnen de focus van de camera."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu a putut fi detectat niciun text în imagine. Mai încercați, asigurându-vă că textul este clar, bine iluminat și în focalizarea camerei."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na obrázku nebolo možné rozpoznať žiadny text. Skúste to znova, prosím, a uistite sa, že text je jasný, dobre osvetlený a v rámci zaostrenia fotoaparátu."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görselde metin algılanamadı. Lütfen metnin net, iyi aydınlatılmış ve kameranın odak noktasında olduğundan emin olarak yeniden deneyin."
           }
         }
       }
@@ -5785,6 +5869,36 @@
     "No Text Found" : {
       "comment" : "Title of the alert when no text is detected after scanning a photo",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тэкст не знойдзены"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenalezen žádný text"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen tekst fundet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keinen Text gefunden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δε Βρέθηκε Κείμενο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5803,10 +5917,76 @@
             "value" : "No se encontró ningún texto."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tekstiä ei löytynyt"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun texte n'a été trouvé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun testo trovato"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ტექსტი აღმოჩენილი არაა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "발견된 텍스트 없음"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen tekst funnet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen tekst gevonden"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie znaleziono tekstu"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu s-a găsit text"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenašiel sa žiadny text"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen text hittad"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herhangi bir metin bulunamadı"
           }
         }
       }
@@ -10170,7 +10350,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このアクションは取り消しできません"
+            "value" : "この操作は取り消しできません"
           }
         },
         "ka" : {
@@ -10505,10 +10685,22 @@
             "value" : "Opladen mislukt"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falha no envio"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Încărcare eșuată"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nahrávanie zlyhalo"
           }
         },
         "sv" : {

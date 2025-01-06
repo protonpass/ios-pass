@@ -3860,25 +3860,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld сімвалаў"
+                  "value" : "%lld сімвалы"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld сімвалы"
+                  "value" : "%lld сімвалаў"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld сімвала"
+                  "value" : "%lld сімвал"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld сімвалы"
+                  "value" : "%lld сімвалаў"
                 }
               }
             }
@@ -4913,25 +4913,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld пераслана"
+                  "value" : "%lld перасылкі"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld пераслана"
+                  "value" : "%lld перасылак"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасланы"
+                  "value" : "%lld перасылка"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld пераслана"
+                  "value" : "%lld перасылак"
                 }
               }
             }
@@ -11446,7 +11446,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld вынікі"
+                  "value" : "%lld вынікаў"
                 }
               }
             }
@@ -23697,7 +23697,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aliasy v koši budou nadále přeposílat e-maily. Pokud chcete přestat dostávat e-maily na tuto adresu, zakažte ji."
+            "value" : "Aliasy v koši budou nadále přeposílat e-maily. Pokud chcete přestat dostávat e-maily na tuto adresu, deaktivujte ji."
           }
         },
         "da" : {
@@ -44209,10 +44209,124 @@
     },
     "Data" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Даныя"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεδομένα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Data"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Données"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dati"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონაცემები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "데이터"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gegevens"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dados"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Údaje"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veriler"
           }
         }
       }
@@ -47020,7 +47134,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Místo toho deaktivovat"
+            "value" : "Deaktivovat"
           }
         },
         "da" : {
@@ -57432,6 +57546,36 @@
     },
     "File attachments" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Файлы з далучэннямі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přiložené soubory"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filvedhæftninger"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateianhänge"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Συνημμένα αρχεία"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57450,16 +57594,106 @@
             "value" : "Archivos adjuntos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liitetiedostot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fichiers joints"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lampiran berkas"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File allegati"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმაგრებული ფაილები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첨부 파일"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filvedlegg"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestandsbijlagen"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fișiere atașate"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Priložené súbory"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filbilagor"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek dosyalar"
           }
         }
       }
     },
     "File attachments are available with Pass Plus. Upgrade for immediate access." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Файлы з далучэннямі даступны з Pass Plus. Палепшыце для неадкладнага доступу."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přílohy souborů jsou k dispozici v Pass Plus. Navyšte tarif pro okamžitý přístup."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fil-vedhæftninger er tilgængelig med Pass Plus. Opgrader for at få adgang med det samme."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Τα συνημμένα αρχεία είναι διαθέσιμα με το Pass Plus. Αναβαθμίστε για άμεση πρόσβαση."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57478,10 +57712,70 @@
             "value" : "Pass Plus permite adjuntar archivos. Mejore su plan para obtener acceso inmediato."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiedostoliitteet sisältyvät Pass Plussaan. Hanki ne heti päivittämällä tilauksesi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pass Plus permet de joindre des fichiers. Changez d'abonnement pour en profiter immédiatement."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lampiran berkas tersedia dengan Pass Plus. Tingkatkan akun Anda untuk memperoleh akses ke fitur ini dengan segera."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I file allegati sono disponibili con Pass Plus. Effettua l'upgrade per l'accesso immediato."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმაგრებული ფაილების მართვა Pass Plus-ს აქვს. ასწიეთ სატარიფო გეგმა მასთან წვდომისთვის."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 첨부는 Pass Plus에서 사용 가능합니다. 업그레이드하여 즉시 이용하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filvedlegg er tilgjengelig med Pass Plus. Oppgrader for umiddelbar tilgang."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bestandsbijlagen zijn beschikbaar met Pass Plus. Upgrade voor directe toegang."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fișierele atașate sunt disponibile cu Pass Plus. Modificați tipul de abonament pentru a avea acces imediat."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filbilagor är nu tillgängliga med Pass Plus. Uppgradera för omedelbar åtkomst."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek dosyalar Pass Plus tarifesi ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
           }
         }
       }
@@ -59207,6 +59501,12 @@
             "value" : "Til engangsdeling."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für einmaliges Teilen."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -59821,6 +60121,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fra dit alias <%@>"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von deinem Alias <%@>"
           }
         },
         "el" : {
@@ -82334,6 +82640,36 @@
     "NEW" : {
       "comment" : "Text for the top right badge for a button of a new feature. Always in majuscule.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "НОВАЯ"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOVÉ"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NY"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NEU"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ΝΕΟ"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82352,10 +82688,88 @@
             "value" : "NUEVO"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "UUSI"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "NOUVEAU"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BARU"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOVITA'"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ახალი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "신규"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NY"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NIEUW"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOVO"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOU"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOVÉ"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NYTT"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "YENİ"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "НОВА"
           }
         }
       }
@@ -83464,6 +83878,30 @@
     },
     "No items are shared with you" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ніводны элемент не абагулены з вамі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nejsou s vámi sdíleny žádné položky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen elementer er delt med dig"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν υπάρχουν στοιχεία σε κοινή χρήση με εσάς"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83482,10 +83920,70 @@
             "value" : "No se comparte ningún elemento con usted."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinulle ei ole jaettu kohteita"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun élément n’est partagé avec vous."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun elemento condiviso con te"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენთვის ელემენტები არ გაუზიარებიათ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나와 공유된 항목이 없습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen elementer er delt med deg"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er worden geen items met u gedeeld"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu vi s-a partajat nimic"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie sú s vami zdieľané žiadne položky"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inga objekt delade med dig"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sizinle paylaşılmış bir öge yok"
           }
         }
       }
@@ -114696,6 +115194,12 @@
             "value" : "Del element"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element teilen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115764,6 +116268,12 @@
             "value" : "Delt via"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteilt über"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115786,6 +116296,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compartido por"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaettu käyttäen"
           }
         },
         "fr" : {
@@ -117773,6 +118289,36 @@
     },
     "Show shared by me" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паказаць абагуленыя мной"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit položky sdílené mnou"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis delt af mig"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von mir geteilte anzeigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προβολή κοινοποιημένων από εμένα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -117791,16 +118337,112 @@
             "value" : "Mostrar los elementos compartidos por mí"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä minun jakamani"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Montrer les éléments partagés par moi"
+            "value" : "Afficher les éléments partagés par moi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra condiviso da me"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩემი გაზიარებულების ჩვენება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내가 공유한 항목 보기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis delt av meg"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toon gedeeld door mij"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar compartilhados por mim"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare partajate de mine"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť mnou zdieľané"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vila delat av mig"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benimle paylaşılanları görüntüle"
           }
         }
       }
     },
     "Show shared with me" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паказаць абагуленыя са мной"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit položky sdílené se mnou"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis delt med mig"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit mir geteilte anzeigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προβολή κοινοποιημένων με εμένα"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -117819,10 +118461,76 @@
             "value" : "Mostrar los elementos compartidos conmigo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä minulle jaetut"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Montrer les éléments partagés avec moi"
+            "value" : "Afficher les éléments partagés avec moi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra condiviso con me"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩემთვის გაზიარებულების ჩვენება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나와 공유된 항목 보기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis delt med meg"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toon gedeeld met mij"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar compartilhados comigo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare partajate cu mine"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť pre mňa zdieľané"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa delat med mig"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benim paylaştıklarımı görüntüle"
           }
         }
       }
@@ -122751,6 +123459,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tryk for detaljer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für Details hier tippen"
           }
         },
         "el" : {
@@ -134372,6 +135086,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nyttig til permanent deling."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nützlich für permanentes Teilen."
           }
         },
         "el" : {
@@ -146294,6 +147014,30 @@
     },
     "You have not shared any items" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы не абагульвалі ніякія элементы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nesdíleli jste žádné položky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ikke delt nogen elementer"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν έχετε κοινοποιήσει κανένα στοιχείο"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -146312,10 +147056,76 @@
             "value" : "No compartió ningún elemento."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Et ole jakanut kohteita"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vous n'avez partagé aucun élément."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda belum membagikan item apa pun"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non hai condiviso alcun elemento"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელემენტები არ გაგიზიარებიათ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "공유한 항목이 없습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ikke delt noen elementer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Je hebt geen items gedeeld"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu ați partajat nimic"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nezdieľali ste žiadne položky"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har inte delat några objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herhangi bir öge paylaşmamışsınız"
           }
         }
       }
@@ -148725,19 +149535,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Adresa de e-mail va fost compromisă în %lld divulgări."
+                  "value" : "Adresa de e-mail a fost compromisă în %lld divulgări."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Adresa de e-mail va fost compromisă în %lld divulgare."
+                  "value" : "Adresa de e-mail a fost compromisă în %lld divulgare."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Adresa de e-mail va fost compromisă în %lld de divulgări."
+                  "value" : "Adresa de e-mail a fost compromisă în %lld de divulgări."
                 }
               }
             }
@@ -149002,7 +149812,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresa de e-mail v-a fost divulgată în cel puțin o compromitere a datelor."
+            "value" : "Adresa de e-mail a fost divulgată în cel puțin o compromitere a datelor."
           }
         },
         "sk" : {
