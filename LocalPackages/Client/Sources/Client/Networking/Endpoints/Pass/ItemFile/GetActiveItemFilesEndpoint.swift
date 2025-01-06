@@ -22,8 +22,8 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct GetItemFilesResponse: Decodable, Sendable {
-    public let files: PaginatedItemFiles
+struct GetItemFilesResponse: Decodable, Sendable {
+    let files: PaginatedItemFiles
 }
 
 public struct PaginatedItemFiles: Decodable, Sendable {

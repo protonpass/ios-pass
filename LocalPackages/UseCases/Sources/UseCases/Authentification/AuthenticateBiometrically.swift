@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
