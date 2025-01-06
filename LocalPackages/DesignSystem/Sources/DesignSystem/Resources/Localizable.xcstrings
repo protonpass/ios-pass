@@ -4,6 +4,36 @@
     "Camera Unavailable" : {
       "comment" : "Please refer to the comment for string \"Privacy or Restrictions settings have disabled the use of the camera. You can change this in Settings.\"",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Камера недаступна"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera není dostupná"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera ikke tilgængeligt"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera nicht verfügbar"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κάμερα μη διαθέσιμη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22,10 +52,88 @@
             "value" : "La cámara no está disponible."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera ei ole käytettävissä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'appareil photo n'est pas disponible."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera Tidak Tersedia"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotocamera non disponibile"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კამერა ხელმისაწვდომი არაა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "카메라 사용 불가"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera utilgjengelig"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera niet beschikbaar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Câmera indisponível"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cameră indisponibilă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotoaparát nedostupný"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera otillgänglig"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kamera kullanılamıyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Камера Недоступна"
           }
         }
       }
@@ -993,6 +1101,30 @@
     "Privacy or Restrictions settings have disabled the use of the camera. You can change this in Settings." : {
       "comment" : "Message shown when users try to take a photo to attach to an item when camera permission is denied. The message is identical with the iOS default one. You could deny camera access for an app to trigger the system prompt and copy the translation.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Налады прыватнасці або абмежаванні адключылі выкарыстанне камеры. Змяніць дазволы можна ў наладах."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavení soukromí nebo omezení deaktivovalo používání kamery. Toto nastavení můžete změnit v Nastavení."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indstillinger for beskyttelse af personlige oplysninger eller begrænsninger har deaktiveret brugen af kameraet. Du kan ændre dette i Indstillinger."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι ρυθμίσεις απορρήτου ή περιορισμών έχουν απενεργοποιήσει τη χρήση της κάμερας. Μπορείτε να το αλλάξετε στις Ρυθμίσεις."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1015,6 +1147,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les paramètres de confidentialité ou de restrictions ont désactivé l'utilisation de la caméra. Vous pouvez modifier cela dans les paramètres."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengaturan Privasi atau Pembatasan yang ada saat ini telah menonaktifkan penggunaan kamera. Anda dapat mengubah hal ini pada menu Pengaturan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le impostazioni di privacy o restrizioni hanno disabilitato l'uso della fotocamera. Puoi modificarlo nelle Impostazioni."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კონფიდენციალობის ან აკრძალვების პარამეტრებმა კამერის გამოყენება აკრძალეს. ამის შეცვლა მორგების დიალოგიდან შეგიძლიათ."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "카메라 사용에 대한 프라이버시 및 제한 설정이 비활성화되었습니다. 설정에서 변경할 수 있습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Innstillinger for personvern eller begrensninger har deaktivert bruken av kameraet. Du kan endre dette i innstillinger."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy of restricties instellingen hebben het gebruik van de camera uitgeschakeld. U kunt dit wijzigen in Instellingen."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setările de confidențialitate sau de restricții au dezactivat utilizarea camerei. Puteți schimba acest lucru în setări."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavenia ochrany súkromia alebo obmedzenia zakázali používanie fotoaparátu. Môžete to zmeniť v Nastaveniach."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Integritets- eller restriktionsinställningar har inaktiverat kameraanvändning. Du kan ändra detta i Inställningar."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gizlilik veya kısıtlamalar ayarları kamerayı kullanımdan kaldırmış. Bu durumu Ayarlar bölümünden değiştirebilirsiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Приватність або Обмеження вимкнули використання камери. Це можна змінити в налаштуваннях."
           }
         }
       }
@@ -1564,7 +1762,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Item ini lawas"
+            "value" : "Item ini telah usang"
           }
         },
         "it" : {
