@@ -80,9 +80,8 @@ final class FileAttachmentPreviewModel: ObservableObject {
     init(mode: FileAttachmentPreviewMode,
          allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB]) {
         self.mode = mode
-        let formatter = ByteCountFormatter()
+        formatter = .init()
         formatter.allowedUnits = allowedUnits
-        self.formatter = formatter
     }
 }
 

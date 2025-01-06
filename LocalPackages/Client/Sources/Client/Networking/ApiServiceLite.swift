@@ -46,7 +46,7 @@ public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
     private let appVersion: String
     private let doh: any DoHInterface
     private let authManager: any AuthManagerProtocol
-    private nonisolated(unsafe) var progressObservation: NSKeyValueObservation?
+    private nonisolated(unsafe) var observations: [URLRequest: NSKeyValueObservation] = [:]
 
     public init(session: URLSession = .shared,
                 appVersion: String,
@@ -78,9 +78,10 @@ public extension ApiServiceLite {
             }
 
             let task = session.dataTask(with: request) { [weak self] data, _, error in
-                guard let self else {
-                    continuation.finish(throwing: PassError.deallocatedSelf)
-                    return
+                defer {
+                    if let self {
+                        self.observations[request] = nil
+                    }
                 }
                 if let error {
                     continuation.finish(throwing: error)
@@ -98,7 +99,7 @@ public extension ApiServiceLite {
             }
 
             task.resume()
-            progressObservation = task.progress.observe(\.fractionCompleted) { progress, _ in
+            observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
         }
@@ -119,7 +120,13 @@ public extension ApiServiceLite {
                 continuation.finish(throwing: PassError.deallocatedSelf)
                 return
             }
-            let task = session.dataTask(with: request) { data, _, error in
+
+            let task = session.dataTask(with: request) { [weak self] data, _, error in
+                defer {
+                    if let self {
+                        self.observations[request] = nil
+                    }
+                }
                 if let error {
                     continuation.finish(throwing: error)
                 } else if let data {
@@ -131,7 +138,7 @@ public extension ApiServiceLite {
             }
 
             task.resume()
-            progressObservation = task.progress.observe(\.fractionCompleted) { progress, _ in
+            observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
                 continuation.yield(.progress(Float(progress.fractionCompleted)))
             }
         }
