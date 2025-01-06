@@ -25,11 +25,17 @@ public extension AsyncThrowingStream where Failure == Error {
     static func asyncContinuation(_ block:
         @Sendable @escaping (Continuation) async throws -> Void) -> Self {
         AsyncThrowingStream<Element, Failure>(bufferingPolicy: .bufferingNewest(1)) { continuation in
-            Task {
+            let task = Task {
                 do {
                     try await block(continuation)
                 } catch {
                     continuation.finish(throwing: error)
+                }
+            }
+            continuation.onTermination = { @Sendable _ in
+                if !task.isCancelled {
+                    print("Cancelling AsyncStream inner task")
+                    task.cancel()
                 }
             }
         }
