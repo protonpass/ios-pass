@@ -25,40 +25,34 @@ import Foundation
 @preconcurrency import ProtonCoreDoh
 import ProtonCoreNetworking
 
+public enum ProgressEvent<T: Decodable & Sendable>: Sendable {
+    case progress(Float)
+    case result(T)
+}
+
 /// Use `URLSession` to make requests that aren't supported by core modules (e.g multipart)
 public protocol ApiServiceLiteProtocol: Sendable {
     func uploadMultipart<R: Decodable>(path: String,
                                        userId: String,
-                                       infos: [MultipartInfo],
-                                       onSendBytes: @MainActor @escaping (Int) -> Void) async throws -> R
+                                       infos: [MultipartInfo]) async throws
+        -> AsyncThrowingStream<ProgressEvent<R>, any Error>
 
-    func download(path: String,
-                  userId: String,
-                  onDownloadBytes: @MainActor @escaping (Int) -> Void) async throws -> URL
-}
-
-private struct TrackedResult<T: Sendable>: Sendable {
-    let request: URLRequest?
-    let value: T
+    func download(path: String, userId: String) async throws
+        -> AsyncThrowingStream<ProgressEvent<Data>, any Error>
 }
 
 public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
-    private lazy var session = URLSession(configuration: .default,
-                                          delegate: self,
-                                          delegateQueue: nil)
+    private let session: URLSession
     private let appVersion: String
     private let doh: any DoHInterface
     private let authManager: any AuthManagerProtocol
+    private nonisolated(unsafe) var observations: [URLRequest: NSKeyValueObservation] = [:]
 
-    private nonisolated(unsafe) var cancellables = Set<AnyCancellable>()
-    private let uploadProgress = PassthroughSubject<TrackedResult<Int64>, Never>()
-    private let downloadProgress = PassthroughSubject<TrackedResult<Int64>, Never>()
-    private let downloadResult = PassthroughSubject<TrackedResult<URL>, Never>()
-    private let sessionError = PassthroughSubject<TrackedResult<Error>, Never>()
-
-    public init(appVersion: String,
+    public init(session: URLSession = .shared,
+                appVersion: String,
                 doh: any DoHInterface,
                 authManager: any AuthManagerProtocol) {
+        self.session = session
         self.appVersion = appVersion
         self.doh = doh
         self.authManager = authManager
@@ -68,30 +62,51 @@ public actor ApiServiceLite: NSObject, ApiServiceLiteProtocol, DeinitPrintable {
 public extension ApiServiceLite {
     func uploadMultipart<R: Decodable & Sendable>(path: String,
                                                   userId: String,
-                                                  infos: [MultipartInfo],
-                                                  onSendBytes: @MainActor @escaping (Int) -> Void) async throws
-        -> R {
+                                                  infos: [MultipartInfo]) async throws
+        -> AsyncThrowingStream<ProgressEvent<R>, any Error> {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
                                  path: path,
                                  credential: .init(credential),
                                  infos: infos,
                                  appVersion: appVersion)
-        uploadProgress
-            .filterValue(by: request)
-            .sink { [weak self] progress in
-                guard let self else { return }
-                updateProgress(progress: progress, onSendBytes)
-            }
-            .store(in: &cancellables)
 
-        let (data, _) = try await session.data(for: request)
-        return try JSONDecoder().decode(R.self, from: data)
+        return .init(bufferingPolicy: .bufferingNewest(1)) { [weak self] continuation in
+            guard let self else {
+                continuation.finish(throwing: PassError.deallocatedSelf)
+                return
+            }
+
+            let task = session.dataTask(with: request) { [weak self] data, _, error in
+                defer {
+                    if let self {
+                        self.observations[request] = nil
+                    }
+                }
+                if let error {
+                    continuation.finish(throwing: error)
+                } else if let data {
+                    do {
+                        let response = try JSONDecoder().decode(R.self, from: data)
+                        continuation.yield(.result(response))
+                        continuation.finish()
+                    } catch {
+                        continuation.finish(throwing: error)
+                    }
+                } else {
+                    continuation.finish(throwing: PassError.api(.errorOrDataExpected))
+                }
+            }
+
+            task.resume()
+            observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
+                continuation.yield(.progress(Float(progress.fractionCompleted)))
+            }
+        }
     }
 
-    func download(path: String,
-                  userId: String,
-                  onDownloadBytes: @MainActor @escaping (Int) -> Void) async throws -> URL {
+    func download(path: String, userId: String) async throws
+        -> AsyncThrowingStream<ProgressEvent<Data>, any Error> {
         let (url, credential) = try getUrlAndCredentials(userId: userId)
         let request = URLRequest(url: url,
                                  path: path,
@@ -100,79 +115,33 @@ public extension ApiServiceLite {
 
         // Use closure base instead of async version because of URLSession limitation
         // https://forums.developer.apple.com/forums/thread/738541
-        return try await withCheckedThrowingContinuation { continuation in
-            downloadProgress
-                .filterValue(by: request)
-                .sink { [weak self] bytesDownloaded in
-                    guard let self else { return }
-                    updateProgress(progress: bytesDownloaded, onDownloadBytes)
-                }
-                .store(in: &cancellables)
+        return .init(bufferingPolicy: .bufferingNewest(1)) { [weak self] continuation in
+            guard let self else {
+                continuation.finish(throwing: PassError.deallocatedSelf)
+                return
+            }
 
-            downloadResult
-                .filterValue(by: request)
-                .sink { url in
-                    continuation.resume(returning: url)
+            let task = session.dataTask(with: request) { [weak self] data, _, error in
+                defer {
+                    if let self {
+                        self.observations[request] = nil
+                    }
                 }
-                .store(in: &cancellables)
-
-            sessionError
-                .filterValue(by: request)
-                .sink { error in
-                    continuation.resume(throwing: error)
+                if let error {
+                    continuation.finish(throwing: error)
+                } else if let data {
+                    continuation.yield(.result(data))
+                    continuation.finish()
+                } else {
+                    continuation.finish(throwing: PassError.api(.errorOrDataExpected))
                 }
-                .store(in: &cancellables)
+            }
 
-            let task = session.downloadTask(with: request)
-            task.delegate = self
             task.resume()
+            observations[request] = task.progress.observe(\.fractionCompleted) { progress, _ in
+                continuation.yield(.progress(Float(progress.fractionCompleted)))
+            }
         }
-    }
-
-    private nonisolated func updateProgress(progress: Int64,
-                                            _ onProgress: @MainActor @escaping (Int) -> Void) {
-        Task { @MainActor in
-            onProgress(Int(progress))
-        }
-    }
-}
-
-extension ApiServiceLite: URLSessionDataDelegate, URLSessionDownloadDelegate {
-    public nonisolated func urlSession(_ session: URLSession,
-                                       task: URLSessionTask,
-                                       didSendBodyData bytesSent: Int64,
-                                       totalBytesSent: Int64,
-                                       totalBytesExpectedToSend: Int64) {
-        uploadProgress.send(bytesSent, for: task.originalRequest)
-    }
-
-    public nonisolated func urlSession(_ session: URLSession,
-                                       downloadTask: URLSessionDownloadTask,
-                                       didFinishDownloadingTo location: URL) {
-        downloadResult.send(location, for: downloadTask.originalRequest)
-    }
-
-    public nonisolated func urlSession(_ session: URLSession,
-                                       didBecomeInvalidWithError error: (any Error)?) {
-        if let error {
-            sessionError.send(error, for: nil)
-        }
-    }
-
-    public nonisolated func urlSession(_ session: URLSession,
-                                       task: URLSessionTask,
-                                       didCompleteWithError error: (any Error)?) {
-        if let error {
-            sessionError.send(error, for: task.originalRequest)
-        }
-    }
-
-    public nonisolated func urlSession(_ session: URLSession,
-                                       downloadTask: URLSessionDownloadTask,
-                                       didWriteData bytesWritten: Int64,
-                                       totalBytesWritten: Int64,
-                                       totalBytesExpectedToWrite: Int64) {
-        downloadProgress.send(bytesWritten, for: downloadTask.originalRequest)
     }
 }
 
@@ -188,18 +157,5 @@ private extension ApiServiceLite {
         }
 
         return (url, credential)
-    }
-}
-
-private extension PassthroughSubject where Failure == Never {
-    func send<T: Sendable>(_ value: T, for request: URLRequest?) where Output == TrackedResult<T> {
-        send(TrackedResult(request: request, value: value))
-    }
-
-    func filterValue<T: Sendable>(by request: URLRequest)
-        -> AnyPublisher<T, Never> where Output == TrackedResult<T> {
-        filter { $0.request == request }
-            .map(\.value)
-            .eraseToAnyPublisher()
     }
 }

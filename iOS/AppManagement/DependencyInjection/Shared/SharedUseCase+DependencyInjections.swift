@@ -578,4 +578,10 @@ extension SharedUseCasesContainer {
     var getFilesToLink: Factory<any GetFilesToLinkUseCase> {
         self { GetFilesToLink() }
     }
+
+    var clearCacheForLoggedOutUsers: Factory<any ClearCacheForLoggedOutUsersUseCase> {
+        self {
+            ClearCacheForLoggedOutUsers(datasource: SharedRepositoryContainer.shared.localUserDataDatasource())
+        }
+    }
 }

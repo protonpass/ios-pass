@@ -42,9 +42,9 @@ private struct UploadMultipartResponse: Decodable {
 public protocol FileAttachmentRepositoryProtocol: Sendable {
     func createPendingFile(userId: String,
                            file: PendingFileAttachment) async throws -> RemotePendingFile
+    /// Returns an async stream reporting upload progress (0.0 -> 1.0)
     func uploadFile(userId: String,
-                    file: PendingFileAttachment,
-                    progress: @MainActor @escaping (Float) -> Void) async throws
+                    file: PendingFileAttachment) async throws -> AsyncThrowingStream<Float, any Error>
     func updatePendingFileName(userId: String,
                                file: PendingFileAttachment,
                                newName: String) async throws -> Bool
@@ -67,8 +67,6 @@ public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
     private let apiServiceLite: any ApiServiceLiteProtocol
     private let keyManager: any PassKeyManagerProtocol
 
-    private var cancellables = Set<AnyCancellable>()
-
     public init(localItemDatasource: any LocalItemDatasourceProtocol,
                 remoteFileDatasource: any RemoteFileDatasourceProtocol,
                 apiServiceLite: any ApiServiceLiteProtocol,
@@ -77,19 +75,6 @@ public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
         self.remoteFileDatasource = remoteFileDatasource
         self.apiServiceLite = apiServiceLite
         self.keyManager = keyManager
-    }
-}
-
-@MainActor
-public final class UploadProgressTracker {
-    private var totalBytesSent: Int = 0
-
-    public nonisolated init() {}
-
-    public func updateProgress(bytesSent: Int, fileSize: Int, progress: @escaping (Float) -> Void) {
-        totalBytesSent += bytesSent
-        let progressValue = Float(totalBytesSent) / Float(fileSize)
-        progress(progressValue)
     }
 }
 
@@ -104,48 +89,55 @@ public extension FileAttachmentRepository {
     }
 
     func uploadFile(userId: String,
-                    file: PendingFileAttachment,
-                    progress: @MainActor @escaping (Float) -> Void) async throws {
+                    file: PendingFileAttachment) async throws -> AsyncThrowingStream<Float, any Error> {
         guard let remoteId = file.remoteId else {
             throw PassError.fileAttachment(.failedToUploadMissingRemoteId)
         }
 
-        let progressTracker = UploadProgressTracker()
-
-        // Make sure file size is not 0 to avoid crash (can not divide by 0)
-        let fileSize = max(1, Int(file.metadata.size))
         let path = "/pass/v1/file/\(remoteId)/chunk"
+        let tracker = FileProgressTracker(size: Int(file.metadata.size))
 
-        let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
+        return .asyncContinuation { [weak self] continuation in
             guard let self else {
-                throw PassError.fileAttachment(.failedToEncryptFile)
+                continuation.finish(throwing: PassError.deallocatedSelf)
+                return
             }
-            let encryptedData = try AES.GCM.seal(blockData.value,
-                                                 key: file.key,
-                                                 associatedData: .fileData)
-            let infos: [MultipartInfo] = [
-                .init(name: "ChunkIndex", data: blockData.index.toAsciiData),
-                .init(name: "ChunkData",
-                      fileName: "no-op", // Not used by the BE but required
-                      contentType: "application/octet-stream",
-                      data: encryptedData)
-            ]
 
-            let response: UploadMultipartResponse =
-                try await apiServiceLite.uploadMultipart(path: path,
-                                                         userId: userId,
-                                                         infos: infos) { bytesSent in
-                    progressTracker.updateProgress(bytesSent: bytesSent, fileSize: fileSize, progress: progress)
+            let process: (FileUtils.FileBlockData) async throws -> Void = { [weak self] blockData in
+                guard let self else {
+                    continuation.finish(throwing: PassError.deallocatedSelf)
+                    return
                 }
+                let encryptedData = try AES.GCM.seal(blockData.value,
+                                                     key: file.key,
+                                                     associatedData: .fileData)
+                let infos: [MultipartInfo] = [
+                    .init(name: "ChunkIndex", data: blockData.index.toAsciiData),
+                    .init(name: "ChunkData",
+                          fileName: "no-op", // Not used by the BE but required
+                          contentType: "application/octet-stream",
+                          data: encryptedData)
+                ]
 
-            if !response.isSuccessful {
-                throw PassError.fileAttachment(.failedToUpload(response.code))
+                let eventStream: AsyncThrowingStream<ProgressEvent<UploadMultipartResponse>, any Error> =
+                    try await apiServiceLite.uploadMultipart(path: path,
+                                                             userId: userId,
+                                                             infos: infos)
+
+                for try await case let .progress(progress) in eventStream {
+                    let overallProgress =
+                        await tracker.overallProgress(currentProgress: progress,
+                                                      chunkSize: blockData.value.count)
+                    continuation.yield(overallProgress)
+                }
             }
-        }
 
-        try await FileUtils.processBlockByBlock(file.metadata.url,
-                                                blockSizeInBytes: Constants.Utils.maxChunkSizeInBytes,
-                                                process: process)
+            let blockSize = Constants.Attachment.maxChunkSizeInBytes
+            try await FileUtils.processBlockByBlock(file.metadata.url,
+                                                    blockSizeInBytes: blockSize,
+                                                    process: process)
+            continuation.finish()
+        }
     }
 
     func updatePendingFileName(userId: String,

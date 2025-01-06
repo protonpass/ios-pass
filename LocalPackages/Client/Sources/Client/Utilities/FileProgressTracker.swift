@@ -1,6 +1,6 @@
 //
-// APIFailureReason.swift
-// Proton Pass - Created on 26/07/2024.
+// FileProgressTracker.swift
+// Proton Pass - Created on 03/01/2024.
 // Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,21 +20,22 @@
 
 import Foundation
 
-public extension PassError {
-    enum APIFailureReason: CustomDebugStringConvertible, Sendable, Equatable {
-        case noApiServiceLinkedToUserId
-        case invalidApiHost(String)
-        case errorOrDataExpected
+// Track file download and upload progress
+public actor FileProgressTracker {
+    private let size: Int
+    private var processedBytesCount = 0
 
-        public var debugDescription: String {
-            switch self {
-            case .noApiServiceLinkedToUserId:
-                "Could not find any apiservice linked to the user id"
-            case let .invalidApiHost(url):
-                "Invalid API host \(url)"
-            case .errorOrDataExpected:
-                "Error or data expected"
-            }
+    public init(size: Int) {
+        self.size = max(1, size)
+    }
+
+    public func overallProgress(currentProgress: Float, chunkSize: Int) -> Float {
+        let recentlyProcessed = currentProgress * Float(chunkSize)
+        let progress = (Float(processedBytesCount) + recentlyProcessed) / Float(size)
+        if currentProgress >= 1.0 {
+            // Chunk is completely downloaded/uploaded
+            processedBytesCount += Int(recentlyProcessed)
         }
+        return progress
     }
 }
