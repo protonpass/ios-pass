@@ -139,9 +139,7 @@ extension DetailHistoryView {
     @ViewBuilder
     func attachmentsSection(item: ItemContent) -> some View {
         let uiModels = viewModel.fileUiModels(for: item)
-        if uiModels.isEmpty {
-            EmptyView()
-        } else {
+        if !uiModels.isEmpty {
             FileAttachmentsViewSection(files: uiModels,
                                        isFetching: false,
                                        fetchError: nil,
