@@ -1494,6 +1494,16 @@
         }
       }
     },
+    "Add mailbox" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add mailbox"
+          }
+        }
+      }
+    },
     "Add username field" : {
       "localizations" : {
         "be" : {
@@ -9053,6 +9063,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chia sẻ"
+          }
+        }
+      }
+    },
+    "Share aliases with others by adding their inbox as an additional mailbox." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share aliases with others by adding their inbox as an additional mailbox."
           }
         }
       }
