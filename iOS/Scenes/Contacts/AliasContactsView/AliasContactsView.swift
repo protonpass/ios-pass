@@ -20,13 +20,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import Client
 import DesignSystem
 import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
-import Screens
 import SwiftUI
 
 private enum AliasContactsSheetState {

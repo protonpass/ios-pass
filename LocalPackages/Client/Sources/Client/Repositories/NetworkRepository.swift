@@ -22,6 +22,7 @@ import ProtonCoreServices
 
 public protocol NetworkRepositoryProtocol: Sendable {
     func revokeCurrentSession(userId: String) async throws
+    // periphery:ignore
     func forkSession(userId: String, payload: String?, childClientId: String, independent: Int) async throws
         -> String
 }

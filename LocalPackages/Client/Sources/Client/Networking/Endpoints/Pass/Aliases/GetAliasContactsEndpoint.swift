@@ -21,12 +21,8 @@
 import Entities
 import ProtonCoreNetworking
 
-public struct GetAliasContactsQuery: Sendable {
-    public let lastContactId: Int?
-
-    public init(lastContactId: Int?) {
-        self.lastContactId = lastContactId
-    }
+struct GetAliasContactsQuery: Sendable {
+    let lastContactId: Int?
 }
 
 public struct PaginatedAliasContacts: Decodable, Sendable, Equatable, Hashable {

@@ -23,7 +23,6 @@ import Core
 import Entities
 
 public protocol InAppNotificationRepositoryProtocol: AnyObject, Sendable {
-    func getNotifications(userId: String) async throws -> [InAppNotification]
     func getPaginatedNotifications(lastNotificationId: String?, userId: String) async throws
         -> PaginatedInAppNotifications
     func changeNotificationStatus(notificationId: String,
@@ -45,11 +44,6 @@ public actor InAppNotificationRepository: InAppNotificationRepositoryProtocol {
         self.localDatasource = localDatasource
         self.remoteDatasource = remoteDatasource
         logger = .init(manager: logManager)
-    }
-
-    public func getNotifications(userId: String) async throws -> [InAppNotification] {
-        logger.trace("Fetching all user local in app notification for user id: \(userId)")
-        return try await localDatasource.getAllNotificationsByPriority(userId: userId)
     }
 
     public func getPaginatedNotifications(lastNotificationId: String?,

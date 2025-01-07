@@ -18,10 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import Entities
 import Foundation
-import Macro
 
 public protocol DateSortable: Hashable, Sendable {
     var dateForSorting: Date { get }

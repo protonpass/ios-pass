@@ -23,7 +23,6 @@
 // periphery:ignore:all
 import CoreData
 import CryptoKit
-import Entities
 import Foundation
 import ProtonCoreLogin
 

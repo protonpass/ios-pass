@@ -122,6 +122,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     @discardableResult
     func move(currentShareId: String, toShareId: String) async throws -> [SymmetricallyEncryptedItem]
 
+    // periphery:ignore
     /// Delete all local items
     func deleteAllItemsLocally() async throws
 
@@ -149,9 +150,6 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
-
-    func fetchAndRefreshItems(userId: String,
-                              shareId: String) async throws -> [ItemContent]
 }
 
 public extension ItemRepositoryProtocol {
@@ -239,36 +237,6 @@ public extension ItemRepository {
         let itemsContent: [ItemContent] = try await items.asyncCompactMap { [weak self] item in
             guard let self else { return nil }
             return try await item.getItemContent(symmetricKey: getSymmetricKey())
-        }
-
-        return itemsContent
-    }
-
-    func fetchAndRefreshItems(userId: String,
-                              shareId: String) async throws -> [ItemContent] {
-        let itemRevisions = try await remoteDatasource.getItems(userId: userId, shareId: shareId, eventStream: nil)
-        logger.trace("Encrypting \(itemRevisions.count) remote items for share \(shareId)")
-        var encryptedItems = [SymmetricallyEncryptedItem]()
-
-        let symmetricKey = try await getSymmetricKey()
-        for itemRevision in itemRevisions {
-            let encrypedItem = try await symmetricallyEncrypt(itemRevision: itemRevision,
-                                                              shareId: shareId,
-                                                              userId: userId,
-                                                              symmetricKey: symmetricKey)
-            encryptedItems.append(encrypedItem)
-        }
-
-        logger.trace("Removing all local old items if any for share \(shareId)")
-        try await localDatasource.removeAllItems(shareId: shareId)
-        logger.trace("Removed all local old items for share \(shareId)")
-
-        logger.trace("Saving \(itemRevisions.count) remote item revisions to local database")
-        try await localDatasource.upsertItems(encryptedItems)
-
-        let itemsContent: [ItemContent] = try await itemRevisions.asyncCompactMap { [weak self] item in
-            guard let self else { return nil }
-            return try await decrypt(userId: userId, item: item, shareId: shareId)
         }
 
         return itemsContent

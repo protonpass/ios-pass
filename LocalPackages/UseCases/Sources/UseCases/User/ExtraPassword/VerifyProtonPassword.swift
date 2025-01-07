@@ -20,7 +20,6 @@
 //
 
 import Client
-import Entities
 import Foundation
 import ProtonCoreAuthentication
 import ProtonCoreChallenge

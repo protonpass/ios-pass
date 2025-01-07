@@ -23,7 +23,7 @@ import Entities
 import SwiftUI
 
 @MainActor
-public final class TOTPCircularTimerViewModel: ObservableObject {
+final class TOTPCircularTimerViewModel: ObservableObject {
     @Published private(set) var remainingSeconds = 1.0
     @Published private(set) var percentage = 1.0
     private var timerTask: Task<Void, Never>?

@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import LocalAuthentication
-import Macro
 
 public extension LABiometryType {
     var usable: Bool {

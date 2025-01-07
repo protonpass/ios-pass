@@ -36,8 +36,8 @@ public struct CreateAContactRequest: Sendable, Encodable {
     }
 }
 
-public struct CreateAContactResponse: Decodable, Sendable {
-    public let contact: AliasContact
+struct CreateAContactResponse: Decodable, Sendable {
+    let contact: AliasContact
 }
 
 struct CreateAContactEndpoint: Endpoint {
