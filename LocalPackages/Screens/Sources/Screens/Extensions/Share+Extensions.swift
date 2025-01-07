@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import DesignSystem
 import Entities
 import UIKit
 
@@ -27,16 +26,8 @@ public extension Share {
         vaultContent?.display.color.color.color
     }
 
-    var backgroundColor: UIColor? {
-        mainColor?.withAlphaComponent(0.16)
-    }
-
     var vaultBigIcon: UIImage? {
         vaultContent?.display.icon.icon.bigImage
-    }
-
-    var vaultSmallIcon: UIImage? {
-        vaultContent?.display.icon.icon.smallImage
     }
 }
 

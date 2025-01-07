@@ -22,7 +22,6 @@ import Client
 import Entities
 import Factory
 import Foundation
-import Macro
 import ProtonCoreUIFoundations
 import UIKit
 

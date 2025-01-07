@@ -20,7 +20,6 @@
 
 import Combine
 import DocScanner
-import Entities
 import SwiftUI
 
 // MARK: - Doc & credit card scanner View extension

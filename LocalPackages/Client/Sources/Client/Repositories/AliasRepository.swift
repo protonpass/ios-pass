@@ -70,6 +70,7 @@ public protocol AliasRepositoryProtocol: Sendable {
                        shareId: String,
                        itemId: String,
                        request: CreateAContactRequest) async throws -> AliasContactLite
+    // periphery:ignore
     func getContactInfos(userId: String,
                          shareId: String,
                          itemId: String,

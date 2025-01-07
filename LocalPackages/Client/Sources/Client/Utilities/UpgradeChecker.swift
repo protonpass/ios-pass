@@ -96,6 +96,7 @@ public extension UpgradeChecker {
 
 public protocol LimitationCounterProtocol: AnyObject, Sendable {
     func getAliasCount() -> Int
+    // periphery:ignore
     func getSharesCount() -> Int
     func getVaultsCount() -> Int
     func getTOTPCount() -> Int

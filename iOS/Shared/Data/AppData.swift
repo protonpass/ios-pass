@@ -21,7 +21,6 @@
 import Client
 import Core
 import CryptoKit
-import Entities
 import Foundation
 import ProtonCoreLogin
 import ProtonCoreNetworking

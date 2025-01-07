@@ -22,7 +22,6 @@
 @_spi(QA) import Client
 import Combine
 import Core
-import DesignSystem
 import Entities
 import Factory
 import SwiftUI

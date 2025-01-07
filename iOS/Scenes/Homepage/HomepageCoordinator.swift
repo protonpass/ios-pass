@@ -218,7 +218,7 @@ private extension HomepageCoordinator {
                 case let .precise(vault):
                     createButtonDisabled = !vault.canEdit
                 default:
-                    true
+                    createButtonDisabled = true
                 }
                 homepageTabDelegate?.disableCreateButton(createButtonDisabled)
             }
@@ -1705,7 +1705,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
 
     nonisolated func syncEventLoopDidFailLoop(userId: String, error: any Error) {
         // Silently fail & not show error to users
-        logger.error(error)
+        logger.error(message: "User \(userId)", error: error)
     }
 
     nonisolated func syncEventLoopDidBeginExecutingAdditionalTask(userId: String, label: String) {

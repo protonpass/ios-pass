@@ -22,7 +22,6 @@
 
 import Client
 import Core
-import Entities
 @preconcurrency import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 import UIKit
