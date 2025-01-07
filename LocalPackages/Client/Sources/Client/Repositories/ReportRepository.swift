@@ -22,10 +22,6 @@ import Foundation
 @preconcurrency import ProtonCoreLogin
 import ProtonCoreServices
 
-enum ReportRepositoryError: Error {
-    case noUserData
-}
-
 public enum ReportFileKey: String, CaseIterable {
     case hostApp = "File0"
     case autofill = "File1"
