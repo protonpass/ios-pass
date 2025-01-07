@@ -125083,6 +125083,16 @@
         }
       }
     },
+    "Tap the gear icon to customize the alias the way you want." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the gear icon to customize the alias the way you want."
+          }
+        }
+      }
+    },
     "Terms of service" : {
       "localizations" : {
         "be" : {
