@@ -31,7 +31,7 @@ public extension TipBanner {
         let title: LocalizedStringKey?
         let description: LocalizedStringKey
         let cta: CTA?
-        let trailingBackground: UIImage?
+        let trailingBackground: TrailingBackground?
 
         public enum ArrowMode {
             case none
@@ -40,13 +40,23 @@ public extension TipBanner {
         }
 
         public struct CTA {
-            public let title: String
-            public let action: @Sendable () -> Void
+            let title: String
+            let action: @Sendable () -> Void
 
-            init(title: String,
-                 action: @Sendable @escaping () -> Void) {
+            public init(title: String,
+                        action: @Sendable @escaping () -> Void) {
                 self.title = title
                 self.action = action
+            }
+        }
+
+        public struct TrailingBackground {
+            let image: UIImage
+            let offset: CGSize
+
+            public init(image: UIImage, offset: CGSize) {
+                self.image = image
+                self.offset = offset
             }
         }
 
@@ -66,7 +76,7 @@ public extension TipBanner {
                     title: LocalizedStringKey? = nil,
                     description: LocalizedStringKey,
                     cta: CTA? = nil,
-                    trailingBackground: UIImage? = nil) {
+                    trailingBackground: TrailingBackground? = nil) {
             self.cornerRadius = cornerRadius
             self.contentPadding = contentPadding
             self.arrowMode = arrowMode
@@ -80,6 +90,7 @@ public extension TipBanner {
 }
 
 public struct TipBanner: View {
+    @Environment(\.colorScheme) private var colorScheme
     private let configuration: Configuration
     private let onDismiss: () -> Void
 
@@ -91,6 +102,7 @@ public struct TipBanner: View {
     public var body: some View {
         ZStack(alignment: .topTrailing) {
             gradientBackground
+            trailingBackground
 
             HStack {
                 VStack(alignment: .leading) {
@@ -98,6 +110,8 @@ public struct TipBanner: View {
                         .fontWeight(.medium)
                     Text(configuration.description)
                 }
+                .environment(\.colorScheme, .dark)
+                .foregroundStyle(PassColor.textNorm.toColor)
                 .font(.callout)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -122,6 +136,7 @@ public struct TipBanner: View {
                     .padding(.top, configuration.topPadding * 2 / 3)
                     .padding(.trailing, configuration.contentPadding * 2 / 3)
             }
+            .environment(\.colorScheme, .dark)
         }
         .foregroundStyle(PassColor.textNorm.toColor)
         .clipShape(shape)
@@ -156,6 +171,31 @@ private extension TipBanner {
                               location: 1.00)
             ],
             center: UnitPoint(x: 0.85, y: 0.19))
-            .opacity(0.5)
+            .overlay(Color.black.opacity(gradientBackgroundOpcacity))
+    }
+
+    var gradientBackgroundOpcacity: CGFloat {
+        switch colorScheme {
+        case .dark:
+            0.5
+        default:
+            0.3
+        }
+    }
+
+    @ViewBuilder
+    var trailingBackground: some View {
+        GeometryReader { proxy in
+            if let background = configuration.trailingBackground {
+                HStack {
+                    Spacer()
+                    Image(uiImage: background.image)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: proxy.size.width / 2, maxHeight: proxy.size.height)
+                        .offset(background.offset)
+                }
+            }
+        }
     }
 }

@@ -79,9 +79,7 @@ struct AliasDetailView: View {
 
                         if viewModel.contacts != nil, viewModel.isAliasOwner {
                             contactRow
-                            TipBanner(configuration: .init(arrowMode: .topLeft(padding: 20),
-                                                           description: contactTipDescription),
-                                      onDismiss: {})
+                            contactTip
                                 .padding(.vertical, 8)
                         }
 
@@ -300,6 +298,14 @@ struct AliasDetailView: View {
         }
         .animation(.default, value: viewModel.contacts)
         .buttonStyle(.plain)
+    }
+
+    private var contactTip: some View {
+        TipBanner(configuration: .init(arrowMode: .topLeft(padding: 20),
+                                       description: contactTipDescription,
+                                       trailingBackground: .init(image: PassIcon.protonStamp,
+                                                                 offset: .init(width: 40, height: -20))),
+                  onDismiss: {})
     }
 
     private var contactTipDescription: LocalizedStringKey {
