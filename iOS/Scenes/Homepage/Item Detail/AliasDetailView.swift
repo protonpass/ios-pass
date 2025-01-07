@@ -79,14 +79,10 @@ struct AliasDetailView: View {
 
                         if viewModel.contacts != nil, viewModel.isAliasOwner {
                             contactRow
-
-                            // swiftlint:disable:next line_length
-                            Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .font(.footnote)
-                                .foregroundStyle(PassColor.textWeak.toColor)
-                                .padding(.top, 8)
-                                .padding(.bottom, DesignConstant.sectionPadding)
+                            TipBanner(configuration: .init(arrowMode: .topLeft(padding: 20),
+                                                           description: contactTipDescription),
+                                      onDismiss: {})
+                                .padding(.vertical, 8)
                         }
 
                         if let stats = viewModel.aliasInfos?.stats {
@@ -304,6 +300,10 @@ struct AliasDetailView: View {
         }
         .animation(.default, value: viewModel.contacts)
         .buttonStyle(.plain)
+    }
+
+    private var contactTipDescription: LocalizedStringKey {
+        "Every time your alias receives an email from someone, a new contact is automatically created."
     }
 
     @ViewBuilder

@@ -134,7 +134,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     override func refresh() {
-        aliasInfos = nil
         error = nil
         super.refresh()
         getAlias()
