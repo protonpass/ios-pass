@@ -40,6 +40,7 @@ public extension PassError {
         case fileTooLarge(UInt64)
         case missingItemKey(Int)
         case missingFile(String)
+        case emptyFile
 
         public var debugDescription: String {
             switch self {
@@ -77,6 +78,8 @@ public extension PassError {
                 "Missing item key rotation \(rotation)"
             case let .missingFile(id):
                 "Missing file \(id)"
+            case .emptyFile:
+                "Empty file"
             }
         }
     }
