@@ -872,6 +872,16 @@ private final class RenameAttachmentDelegate: NSObject, UITextFieldDelegate {
         textField.selectedTextRange = textField.textRange(from: textField.beginningOfDocument,
                                                           to: fileNameEndPosition)
     }
+
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        // Disallow leading and trailing spaces for file names
+        guard let currentText = textField.text,
+              let stringRange = Range(range, in: currentText) else { return true }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        return !updatedText.hasPrefix(" ") && !updatedText.hasSuffix(" ")
+    }
 }
 
 // swiftlint:enable file_length
