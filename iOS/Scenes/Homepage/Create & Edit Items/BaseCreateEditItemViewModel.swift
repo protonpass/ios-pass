@@ -468,12 +468,22 @@ private extension BaseCreateEditItemViewModel {
 
     func handle(_ error: any Error) {
         logger.error(error)
+
+        var customErrorMessage: String?
         if let passError = error as? PassError,
-           case let .fileAttachment(reason) = passError,
-           case .fileTooLarge = reason {
-            let message =
+           case let .fileAttachment(reason) = passError {
+            customErrorMessage = switch reason {
+            case .fileTooLarge:
                 #localized("The selected file exceeds the size limit. Please choose a file smaller than 100 MB.")
-            router.display(element: .errorMessage(message))
+            case .emptyFile:
+                #localized("The selected file is empty. Please check the file and try again.")
+            default:
+                nil
+            }
+        }
+
+        if let customErrorMessage {
+            router.display(element: .errorMessage(customErrorMessage))
         } else {
             router.display(element: .displayErrorBanner(error))
         }
@@ -593,6 +603,9 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
     }
 
     func writeToTemporaryDirectory(data: Data, fileName: String) throws -> URL {
+        guard !data.isEmpty else {
+            throw PassError.fileAttachment(.emptyFile)
+        }
         let fileSize = UInt64(data.count)
         guard fileSize < Constants.Attachment.maxFileSizeInBytes else {
             throw PassError.fileAttachment(.fileTooLarge(fileSize))
@@ -634,6 +647,10 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
             do {
                 isUploadingFile = true
                 let fileSize = try getFileSize(for: url)
+                if fileSize == 0 {
+                    throw PassError.fileAttachment(.emptyFile)
+                }
+
                 if fileSize > Constants.Attachment.maxFileSizeInBytes {
                     // Optionally remove the file, we don't care if errors occur here
                     // because it should be in temporary directory which is cleaned up

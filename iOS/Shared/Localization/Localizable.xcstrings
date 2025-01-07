@@ -124713,6 +124713,16 @@
         }
       }
     },
+    "The selected file is empty. Please check the file and try again." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected file is empty. Please check the file and try again."
+          }
+        }
+      }
+    },
     "Theme" : {
       "localizations" : {
         "be" : {
