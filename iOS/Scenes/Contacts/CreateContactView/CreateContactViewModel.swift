@@ -25,7 +25,6 @@ import Combine
 import Entities
 import Factory
 import Foundation
-import Macro
 
 @MainActor
 final class CreateContactViewModel: ObservableObject, Sendable {

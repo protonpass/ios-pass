@@ -23,7 +23,6 @@ import Core
 import CoreData
 import CryptoKit
 import Factory
-@preconcurrency import PassRustCore
 import ProtonCoreFeatureFlags
 import ProtonCoreLogin
 @preconcurrency import ProtonCoreServices

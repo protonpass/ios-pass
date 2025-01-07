@@ -20,7 +20,6 @@
 
 import DesignSystem
 import Factory
-import Macro
 import SwiftUI
 
 struct BiometricAuthenticationView: View {

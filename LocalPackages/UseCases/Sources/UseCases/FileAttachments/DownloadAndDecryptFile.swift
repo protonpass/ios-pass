@@ -45,7 +45,6 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
     private let generateFileTempUrl: any GenerateFileTempUrlUseCase
     private let keyManager: any PassKeyManagerProtocol
     private let apiService: any ApiServiceLiteProtocol
-    private var progressObservation: NSKeyValueObservation?
 
     public init(generateFileTempUrl: any GenerateFileTempUrlUseCase,
                 keyManager: any PassKeyManagerProtocol,

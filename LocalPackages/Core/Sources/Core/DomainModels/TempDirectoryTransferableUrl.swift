@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import CoreTransferable
-import Entities
 import Foundation
 
 public struct TempDirectoryTransferableUrl: Sendable, Transferable {

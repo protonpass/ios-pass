@@ -26,7 +26,7 @@ import ProtonCoreNetworking
 struct EmptyRequest: Encodable, Sendable {}
 
 /// For octet-stream endpoints
-public struct EmptyResponse: Decodable, Sendable {}
+struct EmptyResponse: Decodable, Sendable {}
 
 /// Holds responses that only have `code` field
 struct CodeOnlyResponse: Decodable, Sendable {

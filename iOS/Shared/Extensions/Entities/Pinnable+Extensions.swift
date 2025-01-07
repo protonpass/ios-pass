@@ -20,7 +20,6 @@
 
 import DesignSystem
 import Entities
-import Macro
 import SwiftUI
 
 extension Pinnable {

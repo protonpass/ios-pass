@@ -35,7 +35,9 @@ public protocol AuthManagerProtocol: Sendable, AuthDelegate {
     func setUp()
     func setUpDelegate(_ delegate: any AuthHelperDelegate)
     func getCredential(userId: String) -> AuthCredential?
+    // periphery:ignore
     func clearSessions(sessionId: String)
+    // periphery:ignore
     func clearSessions(userId: String)
     func getAllCurrentCredentials() -> [Credential]
     func removeCredentials(userId: String)
@@ -154,8 +156,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: sessionUID, module: passModule)
                 let newCredentials = getCredentials(credential: credential,
-                                                    module: passModule,
-                                                    lastTimeUpdated: .now)
+                                                    module: passModule)
                 let newAuthCredential = newCredentials.authCredential
                     .updatedKeepingKeyAndPasswordDataIntact(credential: credential)
                 cachedCredentials[key] = Credentials(credential: credential,
@@ -185,8 +186,7 @@ public final class AuthManager: @unchecked Sendable, AuthManagerProtocol {
             for passModule in PassModule.allCases {
                 let key = CredentialsKey(sessionId: credential.UID, module: passModule)
                 let newCredentials = getCredentials(credential: credential,
-                                                    module: passModule,
-                                                    lastTimeUpdated: .now)
+                                                    module: passModule)
                 cachedCredentials[key] = newCredentials
             }
             saveCachedCredentialsToKeychain()
@@ -314,8 +314,7 @@ private extension AuthManager {
 
     func getCredentials(credential: Credential,
                         authCredential: AuthCredential? = nil,
-                        module: PassModule,
-                        lastTimeUpdated: Date) -> Credentials {
+                        module: PassModule) -> Credentials {
         Credentials(credential: credential,
                     authCredential: authCredential ?? AuthCredential(credential),
                     module: module)

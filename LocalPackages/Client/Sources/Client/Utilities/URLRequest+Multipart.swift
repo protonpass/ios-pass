@@ -91,6 +91,7 @@ extension URLRequest {
 
 private extension [String: String] {
     // Construct base headers with common required ones
+    // periphery:ignore
     init(credential: Credential, appVersion: String) {
         var headers = [String: String]()
         headers["Accept"] = "application/vnd.protonmail.v1+json"

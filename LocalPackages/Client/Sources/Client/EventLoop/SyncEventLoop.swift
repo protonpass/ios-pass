@@ -85,6 +85,7 @@ public protocol SyncEventLoopProtocol: Sendable {
     func reset()
     func start()
     func stop()
+    // periphery:ignore
     func addAdditionalTask(_ task: SyncEventLoop.AdditionalTask)
 }
 

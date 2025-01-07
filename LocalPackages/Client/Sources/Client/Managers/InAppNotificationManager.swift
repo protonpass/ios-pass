@@ -39,6 +39,7 @@ public protocol InAppNotificationManagerProtocol: Sendable {
     @_spi(QA) func addMockNotification(notification: InAppNotification) async
     @_spi(QA) func removeMockNotification() async
 
+    // periphery:ignore
     @_spi(Test) func getCurrentNofications() async -> [InAppNotification]
 }
 
@@ -58,8 +59,6 @@ public actor InAppNotificationManager: InAppNotificationManagerProtocol {
     private var displayState: InAppNotificationDisplayState = .inactive
 
     private let delayBetweenNotifications: TimeInterval
-    private nonisolated(unsafe) var cancellables: Set<AnyCancellable> = []
-    private nonisolated(unsafe) var task: Task<Void, Never>?
 
     private var mockNotification: InAppNotification?
 
@@ -163,29 +162,6 @@ public extension InAppNotificationManager {
 }
 
 private extension InAppNotificationManager {
-    func setup() {
-        Task {
-            do {
-                let userId = try await userManager.getActiveUserId()
-                notifications = try await repository.getNotifications(userId: userId)
-            } catch {
-                logger.error(message: "Could not load local in app notifications", error: error)
-            }
-        }
-
-        userManager.currentActiveUser
-            .dropFirst()
-            .sink { [weak self] _ in
-                guard let self else { return }
-                task?.cancel()
-                task = Task { [weak self] in
-                    guard let self else { return }
-                    _ = try? await fetchNotifications()
-                }
-            }
-            .store(in: &cancellables)
-    }
-
     /// Display notification at most once every 30 minutes
     /// - Returns: A bool equals to `true` when there is more than 30 minutes past since last notification
     /// displayed

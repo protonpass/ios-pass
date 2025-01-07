@@ -24,7 +24,6 @@ import Core
 import CryptoKit
 import Entities
 import Factory
-import Macro
 import Screens
 import SwiftUI
 

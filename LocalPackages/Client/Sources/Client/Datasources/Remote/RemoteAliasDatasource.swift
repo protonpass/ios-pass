@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import Entities
 import Foundation
 
@@ -63,6 +62,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
                             shareId: String,
                             itemId: String,
                             request: CreateAContactRequest) async throws -> AliasContactLite
+    // periphery:ignore
     func getAliasContactInfos(userId: String,
                               shareId: String,
                               itemId: String,

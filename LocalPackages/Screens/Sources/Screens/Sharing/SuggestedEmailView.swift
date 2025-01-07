@@ -20,7 +20,6 @@
 //
 
 import DesignSystem
-import Entities
 import SwiftUI
 
 struct SuggestedEmailView: View {
