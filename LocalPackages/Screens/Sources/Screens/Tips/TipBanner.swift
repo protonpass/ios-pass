@@ -104,7 +104,9 @@ public struct TipBanner: View {
                 if let cta = configuration.cta {
                     CapsuleTextButton(title: cta.title,
                                       titleColor: PassColor.textInvert,
+                                      font: .callout.weight(.medium),
                                       backgroundColor: .white,
+                                      maxWidth: nil,
                                       action: cta.action)
                 }
             }

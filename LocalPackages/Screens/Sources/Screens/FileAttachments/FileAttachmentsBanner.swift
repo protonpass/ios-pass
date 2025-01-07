@@ -61,7 +61,7 @@ private extension FileAttachmentsBanner {
                     .font(.callout)
                     .minimumScaleFactor(0.75)
             }
-            .foregroundStyle(.white)
+            .foregroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .padding()
 
@@ -74,7 +74,7 @@ private extension FileAttachmentsBanner {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 24)
-                    .foregroundStyle(UIColor.darkGray.toColor)
+                    .foregroundStyle(PassColor.textNorm.toColor)
                     .padding(12)
                     .buttonEmbeded(action: onClose)
             }
