@@ -4468,6 +4468,17 @@
         }
       }
     },
+    "Did you know?" : {
+      "comment" : "Title of the informative banner to give hints about features.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Did you know?"
+          }
+        }
+      }
+    },
     "Empty" : {
       "localizations" : {
         "be" : {
