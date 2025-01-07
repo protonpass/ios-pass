@@ -37,7 +37,7 @@ public enum AliasOptionsSheetState {
 
         return switch self {
         case .mailbox:
-            OptionRowHeight.compact.value * CGFloat(elementCount) + 100 // nav bar + close button
+            OptionRowHeight.compact.value * CGFloat(elementCount) + 60 // nav bar
         case .suffix:
             OptionRowHeight.compact.value * CGFloat(elementCount) + 60 // nav bar
         }

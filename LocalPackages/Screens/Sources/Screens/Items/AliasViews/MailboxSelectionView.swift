@@ -21,6 +21,7 @@
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -63,16 +64,10 @@ struct MailboxSelectionView: View {
                             }
                         }
 
-                        // Gimmick view to take up space
-                        closeButton
-                            .opacity(0)
-                            .padding()
-                            .disabled(true)
+                        tip
                     }
+                    .padding(.horizontal)
                 }
-
-                closeButton
-                    .padding()
             }
             .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
@@ -84,11 +79,18 @@ struct MailboxSelectionView: View {
             }
         }
     }
+}
 
-    private var closeButton: some View {
-        Button(action: onDismiss) {
-            Text("Close")
-                .foregroundStyle(PassColor.textNorm.toColor)
-        }
+private extension MailboxSelectionView {
+    var tip: some View {
+        TipBanner(configuration: .init(arrowMode: .none,
+                                       description: tipDescription,
+                                       cta: .init(title: #localized("Add mailbox"),
+                                                  action: {})),
+                  onDismiss: {})
+    }
+
+    var tipDescription: LocalizedStringKey {
+        "Share aliases with others by adding their inbox as an additional mailbox."
     }
 }
