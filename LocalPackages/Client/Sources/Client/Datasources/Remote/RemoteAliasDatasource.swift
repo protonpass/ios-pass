@@ -62,6 +62,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
                             shareId: String,
                             itemId: String,
                             request: CreateAContactRequest) async throws -> AliasContactLite
+    // periphery:ignore
     func getAliasContactInfos(userId: String,
                               shareId: String,
                               itemId: String,
