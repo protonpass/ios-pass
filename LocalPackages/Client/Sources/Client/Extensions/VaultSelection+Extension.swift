@@ -25,7 +25,7 @@ public extension VaultSelection {
     var searchBarPlaceholder: String {
         switch self {
         case .all:
-            #localized("Search in all vaults...", bundle: .module)
+            #localized("Search in all items...", bundle: .module)
         case let .precise(share):
             #localized("Search in %@...", bundle: .module, share.vaultContent?.name ?? "")
         case .trash:
