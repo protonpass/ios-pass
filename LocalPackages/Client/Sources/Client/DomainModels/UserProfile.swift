@@ -36,10 +36,6 @@ public struct UserProfile: Sendable, Identifiable {
         self.updateTime = updateTime
     }
 
-    public func copy(userData: UserData) -> UserProfile {
-        UserProfile(userdata: userData, isActive: isActive, updateTime: updateTime)
-    }
-
     public func copy(isActive: Bool) -> UserProfile {
         UserProfile(userdata: userdata, isActive: isActive, updateTime: updateTime)
     }

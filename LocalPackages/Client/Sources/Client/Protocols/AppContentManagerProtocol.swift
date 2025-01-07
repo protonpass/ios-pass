@@ -23,9 +23,7 @@ import Entities
 
 // sourcery: AutoMockable
 public protocol AppContentManagerProtocol: Sendable {
-    nonisolated var vaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never> { get }
-    var currentVaults: CurrentValueSubject<[Share], Never> { get }
-    var vaultSelection: VaultSelection { get }
+    nonisolated var currentVaults: CurrentValueSubject<[Share], Never> { get }
     var hasOnlyOneOwnedVault: Bool { get }
 
     func refresh(userId: String) async throws

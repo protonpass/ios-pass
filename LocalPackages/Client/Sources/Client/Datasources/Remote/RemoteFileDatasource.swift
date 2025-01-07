@@ -40,10 +40,6 @@ public protocol RemoteFileDatasourceProtocol: Sendable {
     func getFilesForAllRevisions(userId: String,
                                  item: any ItemIdentifiable,
                                  lastId: String?) async throws -> PaginatedItemFiles
-    func getChunkContent(userId: String,
-                         item: any ItemIdentifiable,
-                         fileId: String,
-                         chunkId: String) async throws -> Data
 }
 
 public final class RemoteFileDatasource:
@@ -99,28 +95,5 @@ public extension RemoteFileDatasource {
         let endpoint = GetItemFilesForAllRevisionsEndpoint(item: item, lastId: lastId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.files
-    }
-
-    func getChunkContent(userId: String,
-                         item: any ItemIdentifiable,
-                         fileId: String,
-                         chunkId: String) async throws -> Data {
-        let endpoint = GetChunkContentEndpoint(shareId: item.shareId,
-                                               itemId: item.itemId,
-                                               fileId: fileId,
-                                               chunkId: chunkId)
-        let response = try await execExpectingData(userId: userId, endpoint: endpoint)
-
-        switch response.httpCode {
-        case 200, 204:
-            if let data = response.data {
-                return data
-            } else {
-                throw PassError.fileAttachment(.noDataForChunk(chunkId))
-            }
-
-        default:
-            throw PassError.network(.unexpectedHttpStatusCode(response.httpCode))
-        }
     }
 }

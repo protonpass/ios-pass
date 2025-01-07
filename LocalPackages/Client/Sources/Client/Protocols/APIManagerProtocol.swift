@@ -23,6 +23,7 @@ import ProtonCoreServices
 
 public protocol APIManagerProtocol: Sendable {
     func getApiService(userId: String) throws -> any APIService
+    // periphery:ignore
     func getUnauthApiService() -> any APIService
     func reset()
 }
