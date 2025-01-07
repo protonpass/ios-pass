@@ -30,10 +30,6 @@ import Foundation
 private struct UploadMultipartResponse: Decodable {
     let code: Int
 
-    var isSuccessful: Bool {
-        code == 1_000
-    }
-
     enum CodingKeys: String, CodingKey {
         case code = "Code"
     }
