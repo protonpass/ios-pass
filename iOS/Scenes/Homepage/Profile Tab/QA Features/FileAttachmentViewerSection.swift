@@ -46,6 +46,8 @@ struct FileAttachmentViewerSection: View {
                 Text(verbatim: "Empty temporary directory")
             }
             picker
+            NavigationLink(destination: { StorageCounterPreview() },
+                           label: { Text(verbatim: "Storage counter preview") })
         }, header: {
             Text(verbatim: "File attachments")
         })
@@ -96,5 +98,19 @@ private extension FileAttachmentViewerSection {
         } catch {
             print("Failed to empty temporary directory: \(error)")
         }
+    }
+}
+
+private struct StorageCounterPreview: View {
+    @State private var used: Float = 0
+    private let total: Float = 10_000_000
+    private let step: Float = 100_000
+
+    var body: some View {
+        VStack {
+            StorageCounter(used: Int(used), total: Int(total))
+            Slider(value: $used, in: step...total, step: step)
+        }
+        .padding()
     }
 }

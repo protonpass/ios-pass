@@ -157,18 +157,10 @@ struct ProfileTabView: View {
         VStack {
             if let storage = viewModel.storageUiModel {
                 HStack {
-                    Text("Data")
-                        .profileSectionTitle()
-
+                    Text("Storage")
+                        .profileSectionTitle(maxWidth: nil)
                     Spacer()
-
-                    Text(verbatim: storage.used)
-                        .fontWeight(.medium)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                    Text(verbatim: "/")
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                    Text(verbatim: storage.total)
-                        .foregroundStyle(PassColor.textWeak.toColor)
+                    StorageCounter(used: storage.used, total: storage.total)
                 }
                 .padding(.horizontal)
             } else {
@@ -416,10 +408,10 @@ struct ProfileTabView: View {
 }
 
 private extension View {
-    func profileSectionTitle() -> some View {
+    func profileSectionTitle(maxWidth: CGFloat? = .infinity) -> some View {
         foregroundStyle(PassColor.textNorm.toColor)
             .font(.callout.weight(.bold))
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: maxWidth, alignment: .leading)
     }
 }
 
