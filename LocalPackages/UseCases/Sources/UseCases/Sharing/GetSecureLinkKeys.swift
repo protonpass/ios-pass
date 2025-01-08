@@ -26,13 +26,13 @@ import Entities
 import Foundation
 
 public protocol GetSecureLinkKeysUseCase: Sendable {
-    func execute(item: ItemContent) async throws -> SecureLinkKeys
+    func execute(item: ItemContent, share: Share) async throws -> SecureLinkKeys
 }
 
 public extension GetSecureLinkKeysUseCase {
-    func callAsFunction(item: ItemContent) async throws
+    func callAsFunction(item: ItemContent, share: Share) async throws
         -> SecureLinkKeys {
-        try await execute(item: item)
+        try await execute(item: item, share: share)
     }
 }
 
@@ -49,11 +49,16 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     /// Generates link and encoded item keys
     /// - Parameter item: Item to be publicly shared
     /// - Returns: A tuple with the link and item encoded keys
-    public func execute(item: ItemContent) async throws -> SecureLinkKeys {
+    public func execute(item: ItemContent, share: Share) async throws -> SecureLinkKeys {
         let userId = try await userManager.getActiveUserId()
-        let itemKeyInfo = try await passKeyManager.getLatestItemKey(userId: userId,
-                                                                    shareId: item.shareId,
-                                                                    itemId: item.itemId)
+
+        let itemKeyInfo: any ShareKeyProtocol = if share.shareType == .vault {
+            try await passKeyManager.getLatestItemKey(userId: userId,
+                                                      shareId: item.shareId,
+                                                      itemId: item.itemId)
+        } else {
+            try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
+        }
 
         let shareKeyInfo = try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
 
