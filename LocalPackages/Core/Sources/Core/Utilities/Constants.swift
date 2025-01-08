@@ -51,6 +51,11 @@ public enum Constants {
         public static let maxFileSizeInBytes = 100 * 1_024 * 1_024 // 100 MB
         public static let maxChunkSizeInBytes = 10 * 1_024 * 1_024 // 10 MB
         public static let rootDirectoryName = "attachment"
+        public static var formatter: ByteCountFormatter {
+            let formatter = ByteCountFormatter()
+            formatter.countStyle = .binary
+            return formatter
+        }
     }
 
     public enum ContentFormatVersion {

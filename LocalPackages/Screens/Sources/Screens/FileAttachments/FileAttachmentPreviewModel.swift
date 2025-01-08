@@ -20,6 +20,7 @@
 //
 
 import Client
+import Core
 import Entities
 import Foundation
 
@@ -78,10 +79,9 @@ final class FileAttachmentPreviewModel: ObservableObject {
     }
 
     init(mode: FileAttachmentPreviewMode,
-         allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB]) {
+         formatter: ByteCountFormatter = Constants.Attachment.formatter) {
         self.mode = mode
-        formatter = .init()
-        formatter.allowedUnits = allowedUnits
+        self.formatter = formatter
     }
 }
 
