@@ -20,6 +20,7 @@
 //
 
 import AVFoundation
+import Core
 import DesignSystem
 import DocScanner
 import Entities
@@ -220,7 +221,7 @@ private struct CapturedPhotoEditor: View {
 
     init(capturedImage: UIImage,
          defaultQuality: Float = 50.0,
-         allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB],
+         formatter: ByteCountFormatter = Constants.Attachment.formatter,
          primaryTintColor: UIColor,
          secondaryTintColor: UIColor,
          onSave: @escaping (CapturedPhoto) -> Void) {
@@ -229,8 +230,6 @@ private struct CapturedPhotoEditor: View {
         _bytesCount = .init(initialValue: capturedImage
             .jpegData(compressionQuality: CGFloat(defaultQuality) / 100.0)?.count ?? 0)
 
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = allowedUnits
         self.formatter = formatter
 
         self.capturedImage = capturedImage

@@ -36,8 +36,8 @@ protocol ProfileTabViewModelDelegate: AnyObject {
 }
 
 struct StorageUiModel: Sendable {
-    let used: String
-    let total: String
+    let used: Int
+    let total: Int
 }
 
 @MainActor
@@ -68,7 +68,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
-    @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -126,10 +125,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     var storageUiModel: StorageUiModel? {
         guard getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1),
               let plan,
-              plan.storageAllowed,
-              let used = formatFileAttachmentSize(plan.storageUsed),
-              let total = formatFileAttachmentSize(plan.storageQuota) else { return nil }
-        return .init(used: used, total: total)
+              plan.storageAllowed else { return nil }
+        return .init(used: plan.storageUsed, total: plan.storageQuota)
     }
 
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {

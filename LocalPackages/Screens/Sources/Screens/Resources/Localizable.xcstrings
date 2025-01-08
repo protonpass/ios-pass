@@ -1,6 +1,17 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%1$@ of %2$@" : {
+      "comment" : "For displaying storage usage. For example \"100MB of 2.5GB\".",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ of %2$@"
+          }
+        }
+      }
+    },
     "%lld files" : {
       "localizations" : {
         "be" : {
