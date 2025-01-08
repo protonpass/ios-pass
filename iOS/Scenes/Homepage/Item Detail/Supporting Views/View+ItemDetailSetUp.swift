@@ -56,6 +56,15 @@ struct ItemDetailSetUpModifier: ViewModifier {
             } message: {
                 Text("You will lose access to this item and its details. Do you want to continue?")
             }
+            .alert("Move this item", isPresented: $viewModel.showingVaultMoveAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Move") {
+                    viewModel.moveToAnotherVault()
+                }
+            } message: {
+                // swiftlint:disable:next line_length
+                Text("This item is currently shared. Moving it to another vault will remove access to it for all other users")
+            }
             .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
                 FileAttachmentPreview(mode: mode,
                                       primaryTintColor: viewModel.itemContentType.normMajor2Color,
