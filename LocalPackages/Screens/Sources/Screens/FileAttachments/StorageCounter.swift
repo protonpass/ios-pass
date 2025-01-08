@@ -26,9 +26,11 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct StorageCounter: View {
+    @State private var showUpsell = false
     private let percentage: Int
     private let detail: String
     private let level: Level
+    private let onUpgrade: () -> Void
 
     private enum Level {
         case low, medium, full
@@ -67,14 +69,14 @@ public struct StorageCounter: View {
 
     public init(used: Int,
                 total: Int,
-                formatter: ByteCountFormatter = Constants.Attachment.formatter) {
+                formatter: ByteCountFormatter = Constants.Attachment.formatter,
+                onUpgrade: @escaping () -> Void) {
         let percentage = Int(Float(used) / Float(total) * 100)
         let formattedUsed = formatter.string(fromByteCount: Int64(used))
         let formattedTotal = formatter.string(fromByteCount: Int64(total))
 
         self.percentage = percentage
-        let usage = #localized("%1$@ of %2$@", formattedUsed, formattedTotal)
-        detail = "\(usage) (\(percentage)%)"
+        detail = #localized("%1$@ of %2$@", formattedUsed, formattedTotal)
         level = switch percentage {
         case 0...74:
             .low
@@ -83,11 +85,12 @@ public struct StorageCounter: View {
         default:
             .full
         }
+        self.onUpgrade = onUpgrade
     }
 
     public var body: some View {
         HStack {
-            Text(verbatim: detail)
+            Text(verbatim: "\(detail) (\(percentage)%)")
                 .font(.callout)
                 .fontWeight(level.textFontWeight)
                 .foregroundStyle(level.textColor.toColor)
@@ -105,6 +108,76 @@ public struct StorageCounter: View {
                     .foregroundStyle(level.progressColor.toColor)
                     .frame(maxHeight: 18)
             }
+        }
+        .buttonEmbeded {
+            if percentage >= 100 {
+                showUpsell.toggle()
+            }
+        }
+        .sheet(isPresented: $showUpsell) {
+            StorageUpsell(detail: detail, onUpgrade: onUpgrade)
+                .presentationDetents([.medium])
+        }
+    }
+}
+
+private struct StorageUpsell: View {
+    @Environment(\.dismiss) private var dismiss
+
+    let detail: String
+    let onUpgrade: () -> Void
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+
+            VStack {
+                Spacer(minLength: 40)
+                Color.gray
+                    .frame(width: 100, height: 100)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                HStack {
+                    Text(verbatim: detail)
+                        .font(.headline)
+                        .fontWeight(.medium)
+
+                    Image(uiImage: IconProvider.exclamationCircleFilled)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 20)
+                }
+                .foregroundStyle(PassColor.signalDanger.toColor)
+                .padding(.vertical, 24)
+
+                Text("Your storage is full.")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+
+                Text("Upgrade to increase your storage capacity.")
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .padding(.top)
+
+                CapsuleTextButton(title: #localized("Upgrade"),
+                                  titleColor: PassColor.textInvert,
+                                  backgroundColor: PassColor.interactionNormMajor1,
+                                  action: onUpgrade)
+                    .padding(.top, 40)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .padding()
+
+            Button(action: dismiss.callAsFunction) {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .padding(4)
+                    .frame(width: 30, height: 30)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
+            .padding(16)
+            .buttonStyle(.plain)
         }
     }
 }
