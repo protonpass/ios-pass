@@ -160,7 +160,9 @@ struct ProfileTabView: View {
                     Text("Storage")
                         .profileSectionTitle(maxWidth: nil)
                     Spacer()
-                    StorageCounter(used: storage.used, total: storage.total)
+                    StorageCounter(used: storage.used,
+                                   total: storage.total,
+                                   onUpgrade: viewModel.upgrade)
                 }
                 .padding(.horizontal)
             } else {
