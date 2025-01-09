@@ -346,4 +346,24 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         closureToggleAliasStatus()
         return stubbedToggleAliasStatusResult
     }
+    // MARK: - resetHistory
+    public var resetHistoryUserIdShareIdItemIdThrowableError17: Error?
+    public var closureResetHistory: () -> () = {}
+    public var invokedResetHistoryfunction = false
+    public var invokedResetHistoryCount = 0
+    public var invokedResetHistoryParameters: (userId: String, shareId: String, itemId: String)?
+    public var invokedResetHistoryParametersList = [(userId: String, shareId: String, itemId: String)]()
+    public var stubbedResetHistoryResult: Item!
+
+    public func resetHistory(userId: String, shareId: String, itemId: String) async throws -> Item {
+        invokedResetHistoryfunction = true
+        invokedResetHistoryCount += 1
+        invokedResetHistoryParameters = (userId, shareId, itemId)
+        invokedResetHistoryParametersList.append((userId, shareId, itemId))
+        if let error = resetHistoryUserIdShareIdItemIdThrowableError17 {
+            throw error
+        }
+        closureResetHistory()
+        return stubbedResetHistoryResult
+    }
 }
