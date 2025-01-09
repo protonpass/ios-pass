@@ -69667,6 +69667,16 @@
         }
       }
     },
+    "Item history successfully reset" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item history successfully reset"
+          }
+        }
+      }
+    },
     "Item ID" : {
       "localizations" : {
         "be" : {
@@ -104214,6 +104224,16 @@
         }
       }
     },
+    "Reset" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        }
+      }
+    },
     "Reset filters" : {
       "comment" : "Reset to default filters (display all types of item & sort by most recently use time)",
       "localizations" : {
@@ -104371,6 +104391,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đặt lại bộ lọc"
+          }
+        }
+      }
+    },
+    "Reset history" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset history"
+          }
+        }
+      }
+    },
+    "Reset history for this item?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset history for this item?"
+          }
+        }
+      }
+    },
+    "Resetting history will permanently delete all past versions and cannot be undone." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetting history will permanently delete all past versions and cannot be undone."
           }
         }
       }

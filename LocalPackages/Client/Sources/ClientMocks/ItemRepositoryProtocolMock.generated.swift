@@ -738,25 +738,23 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllItemsContent()
         return stubbedGetAllItemsContentResult
     }
-    // MARK: - fetchAndRefreshItems
-    public var fetchAndRefreshItemsUserIdShareIdThrowableError37: Error?
-    public var closureFetchAndRefreshItems: () -> () = {}
-    public var invokedFetchAndRefreshItemsfunction = false
-    public var invokedFetchAndRefreshItemsCount = 0
-    public var invokedFetchAndRefreshItemsParameters: (userId: String, shareId: String)?
-    public var invokedFetchAndRefreshItemsParametersList = [(userId: String, shareId: String)]()
-    public var stubbedFetchAndRefreshItemsResult: [ItemContent]!
+    // MARK: - resetHistory
+    public var resetHistoryThrowableError37: Error?
+    public var closureResetHistory: () -> () = {}
+    public var invokedResetHistoryfunction = false
+    public var invokedResetHistoryCount = 0
+    public var invokedResetHistoryParameters: (item: any ItemIdentifiable, Void)?
+    public var invokedResetHistoryParametersList = [(item: any ItemIdentifiable, Void)]()
 
-    public func fetchAndRefreshItems(userId: String, shareId: String) async throws -> [ItemContent] {
-        invokedFetchAndRefreshItemsfunction = true
-        invokedFetchAndRefreshItemsCount += 1
-        invokedFetchAndRefreshItemsParameters = (userId, shareId)
-        invokedFetchAndRefreshItemsParametersList.append((userId, shareId))
-        if let error = fetchAndRefreshItemsUserIdShareIdThrowableError37 {
+    public func resetHistory(_ item: any ItemIdentifiable) async throws {
+        invokedResetHistoryfunction = true
+        invokedResetHistoryCount += 1
+        invokedResetHistoryParameters = (item, ())
+        invokedResetHistoryParametersList.append((item, ()))
+        if let error = resetHistoryThrowableError37 {
             throw error
         }
-        closureFetchAndRefreshItems()
-        return stubbedFetchAndRefreshItemsResult
+        closureResetHistory()
     }
     // MARK: - totpCreationDateThreshold
     public var totpCreationDateThresholdNumberOfTotpThrowableError38: Error?
