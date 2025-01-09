@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "StorageFullLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "StorageFull.svg",
       "idiom" : "universal"
     }
