@@ -21,6 +21,10 @@
 import Entities
 import ProtonCoreNetworking
 
+struct LinkPendingFilesResponse: Decodable, Sendable {
+    let item: Item
+}
+
 struct LinkPendingFilesRequest: Encodable, Sendable {
     let itemRevision: Int64
     let filesToAdd: [FileToAdd]
@@ -45,7 +49,7 @@ public struct FileToAdd: Encodable, Sendable {
 
 struct LinkPendingFilesEndpoint: Endpoint {
     typealias Body = LinkPendingFilesRequest
-    typealias Response = CodeOnlyResponse
+    typealias Response = LinkPendingFilesResponse
 
     var debugDescription: String
     var path: String
