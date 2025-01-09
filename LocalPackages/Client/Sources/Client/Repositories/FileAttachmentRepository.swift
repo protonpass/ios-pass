@@ -58,16 +58,16 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
 }
 
 public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
-    private let localItemDatasource: any LocalItemDatasourceProtocol
+    private let itemRepository: any ItemRepositoryProtocol
     private let remoteFileDatasource: any RemoteFileDatasourceProtocol
     private let apiServiceLite: any ApiServiceLiteProtocol
     private let keyManager: any PassKeyManagerProtocol
 
-    public init(localItemDatasource: any LocalItemDatasourceProtocol,
+    public init(itemRepository: any ItemRepositoryProtocol,
                 remoteFileDatasource: any RemoteFileDatasourceProtocol,
                 apiServiceLite: any ApiServiceLiteProtocol,
                 keyManager: any PassKeyManagerProtocol) {
-        self.localItemDatasource = localItemDatasource
+        self.itemRepository = itemRepository
         self.remoteFileDatasource = remoteFileDatasource
         self.apiServiceLite = apiServiceLite
         self.keyManager = keyManager
@@ -207,11 +207,12 @@ public extension FileAttachmentRepository {
 
         var existingFileIdsToRemove = existingFileIdsToRemove
 
-        guard let item = try await localItemDatasource.getItem(shareId: item.shareId,
-                                                               itemId: item.itemId) else {
+        guard let item = try await itemRepository.getItem(shareId: item.shareId,
+                                                          itemId: item.itemId) else {
             throw PassError.itemNotFound(item)
         }
         let threshold = 10
+        var updatedItem: Item
         while true {
             let toAdd = filesToAdd.popAndRemoveFirstElements(threshold)
             let toRemove = existingFileIdsToRemove.popAndRemoveFirstElements(threshold)
@@ -219,11 +220,14 @@ public extension FileAttachmentRepository {
             if toAdd.isEmpty, toRemove.isEmpty {
                 return
             }
-            try await remoteFileDatasource.linkFilesToItem(userId: userId,
-                                                           item: item,
-                                                           filesToAdd: toAdd,
-                                                           fileIdsToRemove: toRemove)
+            updatedItem = try await remoteFileDatasource.linkFilesToItem(userId: userId,
+                                                                         item: item,
+                                                                         filesToAdd: toAdd,
+                                                                         fileIdsToRemove: toRemove)
         }
+        try await itemRepository.upsertItems(userId: userId,
+                                             items: [updatedItem],
+                                             shareId: item.shareId)
     }
 
     func getActiveItemFiles(userId: String, item: any ItemIdentifiable) async throws -> [ItemFile] {
