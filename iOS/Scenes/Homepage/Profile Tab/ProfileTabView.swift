@@ -162,6 +162,7 @@ struct ProfileTabView: View {
                     Spacer()
                     StorageCounter(used: storage.used,
                                    total: storage.total,
+                                   shouldUpsell: viewModel.shouldUpsellStorage,
                                    onUpgrade: viewModel.upgrade)
                 }
                 .padding(.horizontal)

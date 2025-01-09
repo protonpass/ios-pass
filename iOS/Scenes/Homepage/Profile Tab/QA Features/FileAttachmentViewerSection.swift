@@ -108,7 +108,10 @@ private struct StorageCounterPreview: View {
 
     var body: some View {
         VStack {
-            StorageCounter(used: Int(used), total: Int(total), onUpgrade: {})
+            StorageCounter(used: Int(used),
+                           total: Int(total),
+                           shouldUpsell: true,
+                           onUpgrade: {})
             Slider(value: $used, in: step...total, step: step)
         }
         .padding()

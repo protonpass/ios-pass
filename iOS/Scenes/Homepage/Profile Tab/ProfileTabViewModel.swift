@@ -129,6 +129,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         return .init(used: plan.storageUsed, total: plan.storageQuota)
     }
 
+    var shouldUpsellStorage: Bool {
+        guard let plan else { return false }
+        return !plan.isFreeUser && !plan.isBusinessUser
+    }
+
     init(childCoordinatorDelegate: any ChildCoordinatorDelegate) {
         let access = accessRepository.access.value?.access
         plan = access?.plan
