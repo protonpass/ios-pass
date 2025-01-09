@@ -30,6 +30,7 @@ public struct StorageCounter: View {
     private let percentage: Int
     private let detail: String
     private let level: Level
+    private let shouldUpsell: Bool
     private let onUpgrade: () -> Void
 
     private enum Level {
@@ -69,6 +70,7 @@ public struct StorageCounter: View {
 
     public init(used: Int,
                 total: Int,
+                shouldUpsell: Bool,
                 formatter: ByteCountFormatter = Constants.Attachment.formatter,
                 onUpgrade: @escaping () -> Void) {
         let percentage = Int(Float(used) / Float(total) * 100)
@@ -85,6 +87,7 @@ public struct StorageCounter: View {
         default:
             .full
         }
+        self.shouldUpsell = shouldUpsell
         self.onUpgrade = onUpgrade
     }
 
@@ -109,9 +112,11 @@ public struct StorageCounter: View {
                     .frame(maxHeight: 18)
             }
         }
-        .buttonEmbeded {
-            if percentage >= 100 {
-                showUpsell.toggle()
+        .if(shouldUpsell) { view in
+            view.buttonEmbeded {
+                if percentage >= 100 {
+                    showUpsell.toggle()
+                }
             }
         }
         .sheet(isPresented: $showUpsell) {
@@ -132,11 +137,13 @@ private struct StorageUpsell: View {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
 
-            VStack {
-                Spacer(minLength: 40)
-                Color.gray
-                    .frame(width: 100, height: 100)
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
+            VStack(spacing: DesignConstant.sectionPadding) {
+                Image(uiImage: PassIcon.storageFull)
+                    .resizable()
+                    .scaledToFit()
+                    .padding(.top)
+
+                Spacer()
 
                 HStack {
                     Text(verbatim: detail)
@@ -149,7 +156,8 @@ private struct StorageUpsell: View {
                         .frame(height: 20)
                 }
                 .foregroundStyle(PassColor.signalDanger.toColor)
-                .padding(.vertical, 24)
+
+                Spacer()
 
                 Text("Your storage is full.")
                     .font(.title)
@@ -158,13 +166,12 @@ private struct StorageUpsell: View {
 
                 Text("Upgrade to increase your storage capacity.")
                     .foregroundStyle(PassColor.textWeak.toColor)
-                    .padding(.top)
+                Spacer()
 
                 CapsuleTextButton(title: #localized("Upgrade"),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNormMajor1,
                                   action: onUpgrade)
-                    .padding(.top, 40)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .padding()

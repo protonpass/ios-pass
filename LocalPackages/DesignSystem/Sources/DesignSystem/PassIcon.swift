@@ -50,6 +50,7 @@ public extension PassIcon {
     static let documentScan = Self.icon(named: "DocumentScan")
     static let images = Self.icon(named: "Images")
     static let rename = Self.icon(named: "Rename")
+    static let storageFull = Self.icon(named: "StorageFull")
 
     static let fileTypeImage = Self.icon(named: "FileTypeImage")
     static let fileTypePhoto = Self.icon(named: "FileTypePhoto")
