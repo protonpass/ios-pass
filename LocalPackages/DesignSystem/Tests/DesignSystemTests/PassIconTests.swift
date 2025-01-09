@@ -44,6 +44,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.documentScan
         _ = PassIcon.images
         _ = PassIcon.rename
+        _ = PassIcon.storageFull
 
         _ = PassIcon.fileTypeImage
         _ = PassIcon.fileTypePhoto
