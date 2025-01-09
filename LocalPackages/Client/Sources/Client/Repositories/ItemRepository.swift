@@ -150,6 +150,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func updateItemFlags(flags: [ItemFlag], shareId: String, itemId: String) async throws
 
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
+
+    func resetHistory(_ item: any ItemIdentifiable) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -667,6 +669,16 @@ public extension ItemRepository {
             try await localDatasource.upsertItems([encryptedItem])
             logger.trace("Saved item \(updatedAlias.itemID) to local database")
         }
+    }
+
+    func resetHistory(_ item: any ItemIdentifiable) async throws {
+        logger.trace("Resetting history \(item.debugDescription)")
+        let userId = try await userManager.getActiveUserId()
+        let updatedItem = try await remoteDatasource.resetHistory(userId: userId,
+                                                                  shareId: item.shareId,
+                                                                  itemId: item.itemId)
+        try await upsertItems(userId: userId, items: [updatedItem], shareId: item.shareId)
+        logger.trace("Finish resetting history \(item.debugDescription)")
     }
 }
 

@@ -39,8 +39,7 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedRepositoryContainer.remoteItemDatasource)
-    private var remoteItemDatasource
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository)
     private var fileAttachmentRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
@@ -129,12 +128,9 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
             }
 
             do {
-                let userId = try await userManager.getActiveUserId()
-                _ = try await remoteItemDatasource.resetHistory(userId: userId,
-                                                                shareId: item.shareId,
-                                                                itemId: item.itemId)
+                try await itemRepository.resetHistory(item)
                 router.display(element: .infosMessage(#localized("Item history successfully reset"),
-                                                      config: .init(dismissBeforeShowing: true)))
+                                                      config: .dismissAndRefresh))
             } catch {
                 handle(error)
             }
