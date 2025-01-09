@@ -30,6 +30,7 @@ struct ItemHistoryView: View {
     @StateObject var viewModel: ItemHistoryViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var path = NavigationPath()
+    @State private var showResetHistoryAlert = false
 
     private enum ElementSizes {
         static let circleSize: CGFloat = 15
@@ -63,6 +64,18 @@ struct ItemHistoryView: View {
         .showSpinner(viewModel.loading)
         .routingProvided
         .navigationStackEmbeded($path)
+        .alert("Reset history for this item?",
+               isPresented: $showResetHistoryAlert,
+               actions: {
+                   Button(role: .destructive,
+                          action: viewModel.resetHistory,
+                          label: { Text("Reset") })
+
+                   Button(role: .cancel, action: {}, label: { Text("Cancel") })
+               },
+               message: {
+                   Text("Resetting history will permanently delete all past versions and cannot be undone.")
+               })
     }
 }
 
@@ -216,6 +229,22 @@ private extension ItemHistoryView {
                          backgroundColor: viewModel.item.contentData.type.normMinor1Color,
                          accessibilityLabel: "Close") {
                 dismiss()
+            }
+        }
+
+        if viewModel.fileAttachmentsEnabled {
+            ToolbarItem(placement: .topBarTrailing) {
+                Menu(content: {
+                    Button("Reset history",
+                           systemImage: "arrow.counterclockwise.circle",
+                           role: .destructive,
+                           action: { showResetHistoryAlert.toggle() })
+                }, label: {
+                    CircleButton(icon: IconProvider.threeDotsVertical,
+                                 iconColor: viewModel.item.type.normMajor2Color,
+                                 backgroundColor: viewModel.item.type.normMinor1Color,
+                                 accessibilityLabel: "Item's action Menu")
+                })
             }
         }
     }
