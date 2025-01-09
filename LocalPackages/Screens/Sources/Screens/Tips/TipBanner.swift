@@ -90,7 +90,6 @@ public extension TipBanner {
 }
 
 public struct TipBanner: View {
-    @Environment(\.colorScheme) private var colorScheme
     private let configuration: Configuration
     private let onDismiss: () -> Void
 
@@ -101,7 +100,7 @@ public struct TipBanner: View {
 
     public var body: some View {
         ZStack(alignment: .topTrailing) {
-            gradientBackground
+            BannerEllipticalGradient()
             trailingBackground
 
             HStack {
@@ -159,27 +158,6 @@ private extension TipBanner {
                                                arrowPosition: .topRight,
                                                arrowSize: configuration.arrowSize,
                                                arrowPadding: padding))
-        }
-    }
-
-    var gradientBackground: some View {
-        EllipticalGradient(stops:
-            [
-                Gradient.Stop(color: Color(red: 0.57, green: 0.32, blue: 0.92),
-                              location: 0.00),
-                Gradient.Stop(color: Color(red: 0.36, green: 0.33, blue: 0.93),
-                              location: 1.00)
-            ],
-            center: UnitPoint(x: 0.85, y: 0.19))
-            .overlay(Color.black.opacity(gradientBackgroundOpcacity))
-    }
-
-    var gradientBackgroundOpcacity: CGFloat {
-        switch colorScheme {
-        case .dark:
-            0.5
-        default:
-            0.3
         }
     }
 
