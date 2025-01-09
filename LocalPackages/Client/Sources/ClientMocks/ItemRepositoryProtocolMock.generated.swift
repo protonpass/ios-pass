@@ -738,8 +738,26 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureGetAllItemsContent()
         return stubbedGetAllItemsContentResult
     }
+    // MARK: - resetHistory
+    public var resetHistoryThrowableError37: Error?
+    public var closureResetHistory: () -> () = {}
+    public var invokedResetHistoryfunction = false
+    public var invokedResetHistoryCount = 0
+    public var invokedResetHistoryParameters: (item: any ItemIdentifiable, Void)?
+    public var invokedResetHistoryParametersList = [(item: any ItemIdentifiable, Void)]()
+
+    public func resetHistory(_ item: any ItemIdentifiable) async throws {
+        invokedResetHistoryfunction = true
+        invokedResetHistoryCount += 1
+        invokedResetHistoryParameters = (item, ())
+        invokedResetHistoryParametersList.append((item, ()))
+        if let error = resetHistoryThrowableError37 {
+            throw error
+        }
+        closureResetHistory()
+    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError37: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError38: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -752,7 +770,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError37 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError38 {
             throw error
         }
         closureTotpCreationDateThreshold()
