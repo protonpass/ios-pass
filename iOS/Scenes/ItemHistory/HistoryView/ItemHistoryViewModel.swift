@@ -20,9 +20,11 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Client
 import Entities
 import Factory
 import Foundation
+import Macro
 
 @MainActor
 final class ItemHistoryViewModel: ObservableObject, Sendable {
@@ -35,13 +37,20 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
 
     private let getItemHistory = resolve(\UseCasesContainer.getItemHistory)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository)
     private var fileAttachmentRepository
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private var canLoadMoreItems = true
     private var currentTask: Task<Void, Never>?
     private var lastToken: String?
+
+    var fileAttachmentsEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1)
+    }
 
     init(item: ItemContent) {
         self.item = item
@@ -88,7 +97,7 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
                 }
                 lastToken = items.lastToken
             } catch {
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -108,10 +117,34 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
         }
         loadItemHistory()
     }
+
+    func resetHistory() {
+        loading = true
+
+        Task { [weak self] in
+            guard let self else { return }
+            defer {
+                loading = false
+            }
+
+            do {
+                try await itemRepository.resetHistory(item)
+                router.display(element: .infosMessage(#localized("Item history successfully reset"),
+                                                      config: .dismissAndRefresh))
+            } catch {
+                handle(error)
+            }
+        }
+    }
 }
 
 private extension ItemHistoryViewModel {
     func setUp() {
         loadItemHistory()
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
