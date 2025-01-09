@@ -25,14 +25,16 @@ import Entities
 import Foundation
 
 public protocol CreateSecureLinkUseCase: Sendable {
-    func execute(item: ItemContent, expirationTime: Int, maxReadCount: Int?) async throws -> NewSecureLink
+    func execute(item: ItemContent, share: Share, expirationTime: Int, maxReadCount: Int?) async throws
+        -> NewSecureLink
 }
 
 public extension CreateSecureLinkUseCase {
     func callAsFunction(item: ItemContent,
+                        share: Share,
                         expirationTime: Int,
                         maxReadCount: Int? = nil) async throws -> NewSecureLink {
-        try await execute(item: item, expirationTime: expirationTime, maxReadCount: maxReadCount)
+        try await execute(item: item, share: share, expirationTime: expirationTime, maxReadCount: maxReadCount)
     }
 }
 
@@ -53,9 +55,10 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
     }
 
     public func execute(item: ItemContent,
+                        share: Share,
                         expirationTime: Int,
                         maxReadCount: Int?) async throws -> NewSecureLink {
-        let keys = try await getSecureLinkKeys(item: item)
+        let keys = try await getSecureLinkKeys(item: item, share: share)
         let userId = try await userManager.getActiveUserId()
         let configuration = SecureLinkCreationConfiguration(shareId: item.shareId,
                                                             itemId: item.itemId,

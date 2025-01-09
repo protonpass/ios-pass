@@ -86,11 +86,13 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
     let createSecureLink = resolve(\UseCasesContainer.createSecureLink)
 
     let itemContent: ItemContent
+    private let share: Share
+
     weak var sheetPresentation: UISheetPresentationController?
 
-    init(itemContent: ItemContent) {
+    init(itemContent: ItemContent, share: Share) {
         self.itemContent = itemContent
-
+        self.share = share
         Publishers.CombineLatest($link, $readCount)
             .sink { [weak self] link, count in
                 guard let self else { return }
@@ -129,6 +131,7 @@ final class CreateSecureLinkViewModel: ObservableObject, Sendable {
             do {
                 loading = true
                 let result = try await createSecureLink(item: itemContent,
+                                                        share: share,
                                                         expirationTime: selectedExpiration.seconds,
                                                         maxReadCount: readCount.nilIfZero)
                 link = result
