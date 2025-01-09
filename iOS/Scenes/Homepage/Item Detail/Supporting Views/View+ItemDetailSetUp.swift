@@ -63,7 +63,7 @@ struct ItemDetailSetUpModifier: ViewModifier {
                 }
             } message: {
                 // swiftlint:disable:next line_length
-                Text("This item is currently shared. Moving it to another vault will remove access to it for all other users")
+                Text("This item is currently shared. Moving it to another vault will remove access for all other users.")
             }
             .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
                 FileAttachmentPreview(mode: mode,

@@ -83,7 +83,6 @@ struct ItemDetailToolbar: ToolbarContent {
                                         viewModel.moveToAnotherVault()
                                     }
                                 }
-                            //                                    .hidden(!viewModel.isAllowedToEdit)
                         }
 
                         Label(viewModel.itemContent.item.pinTitle,

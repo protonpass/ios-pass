@@ -125354,12 +125354,12 @@
         }
       }
     },
-    "This item is currently shared. Moving it to another vault will remove access to it for all other users" : {
+    "This item is currently shared. Moving it to another vault will remove access for all other users." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "This item is currently shared. Moving it to another vault will remove access to it for all other users"
+            "value" : "This item is currently shared. Moving it to another vault will remove access for all other users."
           }
         }
       }
