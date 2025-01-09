@@ -26,26 +26,6 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
 
     public init() {}
 
-    // MARK: - vaultSyncEventStream
-    public var invokedVaultSyncEventStreamSetter = false
-    public var invokedVaultSyncEventStreamSetterCount = 0
-    public var invokedVaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never>?
-    public var invokedVaultSyncEventStreamList = [PassthroughSubject<VaultSyncProgressEvent, Never>?]()
-    public var invokedVaultSyncEventStreamGetter = false
-    public var invokedVaultSyncEventStreamGetterCount = 0
-    public var stubbedVaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never>!
-    public var vaultSyncEventStream: PassthroughSubject<VaultSyncProgressEvent, Never> {
-        set {
-            invokedVaultSyncEventStreamSetter = true
-            invokedVaultSyncEventStreamSetterCount += 1
-            invokedVaultSyncEventStream = newValue
-            invokedVaultSyncEventStreamList.append(newValue)
-        } get {
-            invokedVaultSyncEventStreamGetter = true
-            invokedVaultSyncEventStreamGetterCount += 1
-            return stubbedVaultSyncEventStream
-        }
-    }
     // MARK: - currentVaults
     public var invokedCurrentVaultsSetter = false
     public var invokedCurrentVaultsSetterCount = 0
@@ -64,26 +44,6 @@ public final class AppContentManagerProtocolMock: @unchecked Sendable, AppConten
             invokedCurrentVaultsGetter = true
             invokedCurrentVaultsGetterCount += 1
             return stubbedCurrentVaults
-        }
-    }
-    // MARK: - vaultSelection
-    public var invokedVaultSelectionSetter = false
-    public var invokedVaultSelectionSetterCount = 0
-    public var invokedVaultSelection: VaultSelection?
-    public var invokedVaultSelectionList = [VaultSelection?]()
-    public var invokedVaultSelectionGetter = false
-    public var invokedVaultSelectionGetterCount = 0
-    public var stubbedVaultSelection: VaultSelection!
-    public var vaultSelection: VaultSelection {
-        set {
-            invokedVaultSelectionSetter = true
-            invokedVaultSelectionSetterCount += 1
-            invokedVaultSelection = newValue
-            invokedVaultSelectionList.append(newValue)
-        } get {
-            invokedVaultSelectionGetter = true
-            invokedVaultSelectionGetterCount += 1
-            return stubbedVaultSelection
         }
     }
     // MARK: - hasOnlyOneOwnedVault
