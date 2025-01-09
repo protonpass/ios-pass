@@ -186,22 +186,21 @@ private extension ManageSharedShareView {
 
 private extension ManageSharedShareView {
     func inviteMore(isVaultSharing: Bool) -> some View {
-        Button {
-            viewModel.shareWithMorePeople(iSharingVault: isVaultSharing)
-        } label: {
-            VStack {
+        VStack {
+            Button {
+                viewModel.shareWithMorePeople(iSharingVault: isVaultSharing)
+            } label: {
                 Label(isVaultSharing ? "Invite more users to the vault" : "Invite more users to the item",
                       image: Image(uiImage: IconProvider.userPlus))
                     .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
-
-                if isVaultSharing, viewModel.showVaultLimitMessage {
-                    vaultLimitReachedMessage
-                }
+            }
+            .disabled(isVaultSharing && viewModel.reachedLimit && !viewModel.isBusinessUser)
+            if isVaultSharing, viewModel.showVaultLimitMessage {
+                vaultLimitReachedMessage
             }
         }
         .padding(.vertical, 12)
-        .disabled(isVaultSharing && viewModel.reachedLimit && !viewModel.isBusinessUser)
     }
 }
 

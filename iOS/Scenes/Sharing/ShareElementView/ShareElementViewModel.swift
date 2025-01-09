@@ -65,7 +65,7 @@ final class ShareElementViewModel: ObservableObject {
     }
 
     func secureLinkSharing() {
-        router.present(for: .createSecureLink(itemContent))
+        router.present(for: .createSecureLink(itemContent, share))
     }
 
     func manageAccess() {

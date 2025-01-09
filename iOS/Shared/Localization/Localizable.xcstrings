@@ -81861,6 +81861,16 @@
         }
       }
     },
+    "Move" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move"
+          }
+        }
+      }
+    },
     "Move all items to another vault" : {
       "comment" : "Item moving to other vault",
       "localizations" : {
@@ -82018,6 +82028,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chuyển tất cả nội dung sang kho lưu trữ khác"
+          }
+        }
+      }
+    },
+    "Move this item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move this item"
           }
         }
       }
@@ -125330,6 +125350,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đây là lần thử cuối cùng của bạn. Bạn sẽ bị đăng xuất sau khi xác thực thất bại một lần nữa."
+          }
+        }
+      }
+    },
+    "This item is currently shared. Moving it to another vault will remove access for all other users." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This item is currently shared. Moving it to another vault will remove access for all other users."
           }
         }
       }
