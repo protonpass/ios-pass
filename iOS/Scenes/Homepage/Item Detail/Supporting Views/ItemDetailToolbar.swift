@@ -74,10 +74,15 @@ struct ItemDetailToolbar: ToolbarContent {
                     }
 
                     Menu(content: {
-                        if viewModel.itemIsLinkToVault {
+                        if viewModel.itemIsLinkToVault, viewModel.isAllowedToEdit {
                             Label("Move to another vault", uiImage: IconProvider.folderArrowIn)
-                                .buttonEmbeded { viewModel.moveToAnotherVault() }
-                                .hidden(!viewModel.isAllowedToEdit)
+                                .buttonEmbeded {
+                                    if viewModel.itemContent.shared {
+                                        viewModel.showingVaultMoveAlert.toggle()
+                                    } else {
+                                        viewModel.moveToAnotherVault()
+                                    }
+                                }
                         }
 
                         Label(viewModel.itemContent.item.pinTitle,

@@ -74,9 +74,13 @@ public final class SendShareInvite: @unchecked Sendable, SendShareInviteUseCase 
         let key: any ShareKeyProtocol = if baseInfo.shareTargetType == .vault {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)
         } else if let itemId {
-            try await passKeyManager.getLatestItemKey(userId: userId,
-                                                      shareId: share.id,
-                                                      itemId: itemId)
+            if share.shareType == .vault {
+                try await passKeyManager.getLatestItemKey(userId: userId,
+                                                          shareId: share.id,
+                                                          itemId: itemId)
+            } else {
+                try await passKeyManager.getLatestShareKey(userId: userId, shareId: share.id)
+            }
         } else {
             throw PassError.sharing(.failedEncryptionKeysFetching)
         }

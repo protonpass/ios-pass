@@ -565,8 +565,8 @@ extension HomepageCoordinator {
                     presentPasswordReusedListView(for: content)
                 case let .changePassword(mode):
                     presentChangePassword(mode: mode)
-                case let .createSecureLink(item):
-                    presentCreateSecureLinkView(for: item)
+                case let .createSecureLink(item, share):
+                    presentCreateSecureLinkView(for: item, and: share)
                 case .enableExtraPassword:
                     beginEnableExtraPasswordFlow()
                 case .secureLinks:
@@ -924,10 +924,10 @@ extension HomepageCoordinator {
         present(viewController)
     }
 
-    func presentCreateSecureLinkView(for item: ItemContent) {
+    func presentCreateSecureLinkView(for item: ItemContent, and share: Share) {
         let presentCreateSecureLinkView: () -> Void = { [weak self] in
             guard let self else { return }
-            let viewModel = CreateSecureLinkViewModel(itemContent: item)
+            let viewModel = CreateSecureLinkViewModel(itemContent: item, share: share)
             let view = CreateSecureLinkView(viewModel: viewModel)
             let viewController = UIHostingController(rootView: view)
             viewController.setDetentType(.custom(CreateSecureLinkViewModelState.default.sheetHeight),

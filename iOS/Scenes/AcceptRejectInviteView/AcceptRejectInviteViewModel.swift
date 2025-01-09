@@ -94,17 +94,18 @@ private extension AcceptRejectInviteViewModel {
         if userInvite.isVault, userInvite.vaultData != nil {
             decodeVaultData()
         }
+
         appContentManager.$state
             .receive(on: DispatchQueue.main)
             .sink { [weak self] state in
                 guard let self,
                       let sharesData = state.loadedContent,
                       let shareContent = sharesData.shares
-                      .first(where: { $0.share.targetID == self.userInvite.targetID }) else {
+                      .first(where: { $0.share.targetID == self.userInvite.targetID }),
+                      !shareContent.items.isEmpty
+                else {
                     return
                 }
-                executingAction = false
-                shouldCloseSheet = true
                 displayItemPage(shareContent: shareContent)
             }.store(in: &cancellables)
     }
@@ -130,9 +131,12 @@ private extension AcceptRejectInviteViewModel {
     func displayItemPage(shareContent: ShareContent) {
         guard !userInvite.isVault,
               let item = shareContent.items.first else {
+            cleanup()
             return
         }
         Task { [weak self] in
+            // swiftlint:disable:next discouraged_optional_self
+            defer { self?.cleanup() }
             guard let self else {
                 return
             }
@@ -146,5 +150,10 @@ private extension AcceptRejectInviteViewModel {
                 logger.error(message: "Error displaying item detail after accepting item invitation", error: error)
             }
         }
+    }
+
+    func cleanup() {
+        executingAction = false
+        shouldCloseSheet = true
     }
 }
