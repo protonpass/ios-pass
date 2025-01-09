@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import Core
 import Foundation
 
 public protocol FormatFileAttachmentSizeUseCase: Sendable {
@@ -34,9 +35,7 @@ public extension FormatFileAttachmentSizeUseCase {
 public final class FormatFileAttachmentSize: @unchecked Sendable, FormatFileAttachmentSizeUseCase {
     private let formatter: ByteCountFormatter
 
-    public init(allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB, .useGB]) {
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = allowedUnits
+    public init(formatter: ByteCountFormatter = Constants.Attachment.formatter) {
         self.formatter = formatter
     }
 

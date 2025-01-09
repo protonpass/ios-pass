@@ -20,6 +20,7 @@
 //
 
 import AVFoundation
+import Core
 import DesignSystem
 import DocScanner
 import Entities
@@ -51,6 +52,16 @@ public struct FileAttachmentsButton: View {
     }
 
     public var body: some View {
+        if handler.isFreeUser {
+            attachFileButton {
+                handler.upsellFileAttachments()
+            }
+        } else {
+            content
+        }
+    }
+
+    private var content: some View {
         Menu(content: {
             ForEach(FileAttachmentMethod.allCases, id: \.self) { method in
                 Label(title: {
@@ -64,18 +75,7 @@ public struct FileAttachmentsButton: View {
                 }
             }
         }, label: {
-            switch style {
-            case .circle:
-                CircleButton(icon: IconProvider.paperClipVertical,
-                             iconColor: handler.fileAttachmentsSectionPrimaryColor,
-                             backgroundColor: handler.fileAttachmentsSectionSecondaryColor)
-
-            case .capsule:
-                CapsuleTextButton(title: #localized("Attach a file"),
-                                  titleColor: handler.fileAttachmentsSectionPrimaryColor,
-                                  backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
-                                  height: 48)
-            }
+            attachFileButton()
         })
         .sheet(isPresented: $showCamera) {
             CameraView {
@@ -128,11 +128,25 @@ public struct FileAttachmentsButton: View {
         }
     }
 
-    private func handle(_ method: FileAttachmentMethod) {
-        guard !handler.isFreeUser else {
-            handler.upsellFileAttachments()
-            return
+    @ViewBuilder
+    private func attachFileButton(_ action: (() -> Void)? = nil) -> some View {
+        switch style {
+        case .circle:
+            CircleButton(icon: IconProvider.paperClipVertical,
+                         iconColor: handler.fileAttachmentsSectionPrimaryColor,
+                         backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
+                         action: action)
+
+        case .capsule:
+            CapsuleTextButton(title: #localized("Attach a file"),
+                              titleColor: handler.fileAttachmentsSectionPrimaryColor,
+                              backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
+                              height: 48,
+                              action: action)
         }
+    }
+
+    private func handle(_ method: FileAttachmentMethod) {
         switch method {
         case .takePhoto:
             checkCameraPermission {
@@ -207,7 +221,7 @@ private struct CapturedPhotoEditor: View {
 
     init(capturedImage: UIImage,
          defaultQuality: Float = 50.0,
-         allowedUnits: ByteCountFormatter.Units = [.useBytes, .useKB, .useMB],
+         formatter: ByteCountFormatter = Constants.Attachment.formatter,
          primaryTintColor: UIColor,
          secondaryTintColor: UIColor,
          onSave: @escaping (CapturedPhoto) -> Void) {
@@ -216,8 +230,6 @@ private struct CapturedPhotoEditor: View {
         _bytesCount = .init(initialValue: capturedImage
             .jpegData(compressionQuality: CGFloat(defaultQuality) / 100.0)?.count ?? 0)
 
-        let formatter = ByteCountFormatter()
-        formatter.allowedUnits = allowedUnits
         self.formatter = formatter
 
         self.capturedImage = capturedImage

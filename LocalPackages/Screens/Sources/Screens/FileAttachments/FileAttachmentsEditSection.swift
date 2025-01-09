@@ -114,6 +114,13 @@ public struct FileAttachmentsEditSection: View {
                                  action: { showDeleteAllAlert.toggle() })
                         .opacityReduced(isUploading)
                 }
+
+                if handler.isFreeUser {
+                    Image(uiImage: PassIcon.passSubscriptionBadge)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(height: 24)
+                }
             }
 
             ForEach(files) { file in

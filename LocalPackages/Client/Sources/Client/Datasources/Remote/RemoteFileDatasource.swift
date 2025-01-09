@@ -33,7 +33,7 @@ public protocol RemoteFileDatasourceProtocol: Sendable {
     func linkFilesToItem(userId: String,
                          item: SymmetricallyEncryptedItem,
                          filesToAdd: [FileToAdd],
-                         fileIdsToRemove: [String]) async throws
+                         fileIdsToRemove: [String]) async throws -> Item
     func getActiveFiles(userId: String,
                         item: any ItemIdentifiable,
                         lastId: String?) async throws -> PaginatedItemFiles
@@ -74,11 +74,12 @@ public extension RemoteFileDatasource {
     func linkFilesToItem(userId: String,
                          item: SymmetricallyEncryptedItem,
                          filesToAdd: [FileToAdd],
-                         fileIdsToRemove: [String]) async throws {
+                         fileIdsToRemove: [String]) async throws -> Item {
         let endpoint = LinkPendingFilesEndpoint(item: item,
                                                 filesToAdd: filesToAdd,
                                                 fileIdsToRemove: fileIdsToRemove)
-        _ = try await exec(userId: userId, endpoint: endpoint)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.item
     }
 
     func getActiveFiles(userId: String,
