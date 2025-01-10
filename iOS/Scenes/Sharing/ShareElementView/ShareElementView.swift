@@ -38,18 +38,12 @@ struct ShareElementView: View {
                 itemSharing
             }
 
-            if viewModel.isShared {
-                manageAccessButton
-                Divider()
-            }
-
-            if !viewModel.itemContent.isAlias {
+            if !viewModel.itemContent.isAlias, !viewModel.itemContent.shared {
                 secureLink
             }
 
-            if !viewModel.isShared, viewModel.share.isVaultRepresentation {
-                currentVault
-                    .padding(.top, 12)
+            if viewModel.isShared {
+                manageAccessButton
             }
         }
         .frame(maxWidth: .infinity)
@@ -71,8 +65,6 @@ struct ShareElementView: View {
 
 private extension ShareElementView {
     var itemSharing: some View {
-        // swiftlint:disable:next todo
-        // TODO: add feature discovery
         HStack {
             SquircleThumbnail(data: .icon(IconProvider.userPlus),
                               tintColor: PassColor.interactionNormMajor2,
@@ -177,17 +169,7 @@ private extension ShareElementView {
         }
         .contentShape(.rect)
         .padding()
-        .roundedEditableSection()
+        .roundedEditableSection(backgroundColor: PassColor.backgroundNorm)
         .onTapGesture { viewModel.manageAccess() }
-    }
-}
-
-private extension ShareElementView {
-    var currentVault: some View {
-        Button { viewModel.shareVault() } label: {
-            Text("Share entire vault instead?")
-                .foregroundStyle(PassColor.interactionNorm.toColor)
-                .frame(maxWidth: .infinity, alignment: .center)
-        }
     }
 }
