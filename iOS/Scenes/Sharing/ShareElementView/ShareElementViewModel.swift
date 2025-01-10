@@ -60,10 +60,6 @@ final class ShareElementViewModel: ObservableObject {
         getPassUserInfos()
     }
 
-    func shareVault() {
-        complete(with: .vault(share))
-    }
-
     func secureLinkSharing() {
         router.present(for: .createSecureLink(itemContent, share))
     }
