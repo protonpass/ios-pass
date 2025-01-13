@@ -31,6 +31,7 @@ import ProtonCoreChallenge
 @preconcurrency import ProtonCoreForceUpgrade
 @preconcurrency import ProtonCoreFoundations
 import ProtonCoreHumanVerification
+@preconcurrency import ProtonCoreLogin
 @preconcurrency import ProtonCoreNetworking
 @preconcurrency import ProtonCoreObservability
 @preconcurrency import ProtonCoreServices
@@ -53,7 +54,7 @@ private extension [APIManagerElements] {
     }
 }
 
-public final class APIManager: @unchecked Sendable, APIManagerProtocol {
+public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManagerProvider {
     private let logger: Logger
     private let doh: any DoHInterface
     private let themeProvider: any ThemeProvider

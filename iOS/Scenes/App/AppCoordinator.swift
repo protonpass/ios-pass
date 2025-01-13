@@ -89,6 +89,8 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
     private var clearCacheForLoggedOutUsers
 
+    @LazyInjected(\SharedToolingContainer.authDeviceManagerUI) var authDeviceManagerUI
+
     //    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
 
     private var task: Task<Void, Never>?
@@ -137,6 +139,7 @@ final class AppCoordinator {
                        authManager.getCredential(userId: userId)?.sessionID != nil {
                         registerForPushNotificationsIfNeededAndAddHandlers( /* uid: sessionID */ )
                     }
+                    authDeviceManagerUI.setup()
                 case let .manuallyLoggedIn(userData, extraPassword):
                     Task { [weak self] in
                         guard let self else {
@@ -151,6 +154,7 @@ final class AppCoordinator {
                             showHomeScene(mode: .manualLogin)
                         }
                         registerForPushNotificationsIfNeededAndAddHandlers(/* uid: userData.credential.sessionID */ )
+                        authDeviceManagerUI.setup()
                     }
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
