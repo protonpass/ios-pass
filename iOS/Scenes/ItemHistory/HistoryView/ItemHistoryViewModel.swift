@@ -40,6 +40,8 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
+    @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
+
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository)
     private var fileAttachmentRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
@@ -84,10 +86,12 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
                                                      itemId: item.itemId,
                                                      lastToken: lastToken)
 
-                if item.item.hasFiles || item.item.hasHadFiles, files.isEmpty {
+                let share = try? await shareRepository.getShare(shareId: item.shareId)
+                if let share, item.item.hasFiles || item.item.hasHadFiles, files.isEmpty {
                     files =
                         try await fileAttachmentRepository.getItemFilesForAllRevisions(userId: userId,
-                                                                                       item: item)
+                                                                                       item: item,
+                                                                                       share: share)
                 }
 
                 history.append(contentsOf: items.data)

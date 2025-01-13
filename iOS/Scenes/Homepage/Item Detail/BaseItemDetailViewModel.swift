@@ -139,7 +139,7 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     var canShareItem: Bool {
-        vault?.vault.shareRole != .read
+        vault?.vault.shareRole != .read && !itemContent.isAlias
     }
 
     // swiftlint:disable:next todo
@@ -208,14 +208,15 @@ class BaseItemDetailViewModel: ObservableObject {
     }
 
     func fetchAttachments() async {
-        guard fileAttachmentsEnabled, itemContent.item.hasFiles else { return }
+        guard fileAttachmentsEnabled, itemContent.item.hasFiles, let share = vault?.vault else { return }
         do {
             if files.isError {
                 files = .fetching
             }
             let userId = try await userManager.getActiveUserId()
             let files = try await fileRepository.getActiveItemFiles(userId: userId,
-                                                                    item: itemContent)
+                                                                    item: itemContent,
+                                                                    share: share)
             self.files = .fetched(files)
         } catch {
             files = .error(error)
@@ -395,7 +396,7 @@ private extension BaseItemDetailViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
+                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery && itemSharingEnabled
             } catch {
                 handle(error)
             }

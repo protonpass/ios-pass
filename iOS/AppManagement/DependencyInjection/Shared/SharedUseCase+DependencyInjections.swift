@@ -571,6 +571,7 @@ extension SharedUseCasesContainer {
 
     var downloadAndDecryptFile: Factory<any DownloadAndDecryptFileUseCase> {
         self { DownloadAndDecryptFile(generateFileTempUrl: self.generateFileTempUrl(),
+                                      shareRepository: SharedRepositoryContainer.shared.shareRepository(),
                                       keyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                       apiService: SharedToolingContainer.shared.apiServiceLite()) }
     }
