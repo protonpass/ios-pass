@@ -123,7 +123,7 @@ private extension ShareElementViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
+                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery && itemSharingEnabled
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }

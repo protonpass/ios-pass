@@ -109,4 +109,24 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         closureGetItemKeys()
         return stubbedGetItemKeysResult
     }
+    // MARK: - getShareKeys
+    public var getShareKeysUserIdShareIdThrowableError5: Error?
+    public var closureGetShareKeys: () -> () = {}
+    public var invokedGetShareKeysfunction = false
+    public var invokedGetShareKeysCount = 0
+    public var invokedGetShareKeysParameters: (userId: String, shareId: String)?
+    public var invokedGetShareKeysParametersList = [(userId: String, shareId: String)]()
+    public var stubbedGetShareKeysResult: [DecryptedShareKey]!
+
+    public func getShareKeys(userId: String, shareId: String) async throws -> [DecryptedShareKey] {
+        invokedGetShareKeysfunction = true
+        invokedGetShareKeysCount += 1
+        invokedGetShareKeysParameters = (userId, shareId)
+        invokedGetShareKeysParametersList.append((userId, shareId))
+        if let error = getShareKeysUserIdShareIdThrowableError5 {
+            throw error
+        }
+        closureGetShareKeys()
+        return stubbedGetShareKeysResult
+    }
 }
