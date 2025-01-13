@@ -28,7 +28,7 @@ import Foundation
 @preconcurrency import ProtonCoreLogin
 
 // sourcery: AutoMockable
-public protocol UserManagerProtocol: Sendable {
+public protocol UserManagerProtocol: Sendable, UserManagerProvider {
     var currentActiveUser: CurrentValueSubject<UserData?, Never> { get }
     var allUserAccounts: CurrentValueSubject<[UserData], Never> { get }
 

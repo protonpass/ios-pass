@@ -28,6 +28,7 @@ import LocalAuthentication
 import ProtonCoreDoh
 import ProtonCoreKeymaker
 import ProtonCoreLogin
+import ProtonCoreLoginUI
 
 /// Contain tools shared between main iOS app and extensions
 final class SharedToolingContainer: SharedContainer, AutoRegistering {
@@ -178,5 +179,16 @@ extension SharedToolingContainer {
     /// Used when users enable biometric authentication. Always fallback to device passcode in this case.
     var localAuthenticationEnablingPolicy: Factory<LAPolicy> {
         self { .deviceOwnerAuthentication }
+    }
+}
+
+extension SharedToolingContainer {
+    var authDeviceManagerUI: Factory<AuthDeviceManagerUI> {
+        self {
+            let authDeviceManager = AuthDeviceManager(userManagerProvider: SharedServiceContainer.shared
+                .userManager(),
+                apiManagerProvider: self.apiManager())
+            return AuthDeviceManagerUI(authDeviceManager: authDeviceManager)
+        }
     }
 }
