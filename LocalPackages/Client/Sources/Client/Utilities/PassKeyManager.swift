@@ -68,6 +68,9 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 
     /// Get all decrypted item keys
     func getItemKeys(userId: String, shareId: String, itemId: String) async throws -> [DecryptedItemKey]
+
+    /// Get the latest key of an item to encrypt item content
+    func getShareKeys(userId: String, shareId: String) async throws -> [DecryptedShareKey]
 }
 
 public actor PassKeyManager: PassKeyManagerProtocol {
@@ -152,6 +155,17 @@ public extension PassKeyManager {
             decryptedKeys.append(decryptedKey)
         }
         logger.trace("Decrypted \(encryptedKeys.count) item keys itemId \(itemId), shareId \(shareId)")
+        return decryptedKeys
+    }
+
+    func getShareKeys(userId: String, shareId: String) async throws -> [DecryptedShareKey] {
+        let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
+
+        var decryptedKeys = [DecryptedShareKey]()
+        for encryptedKey in allEncryptedShareKeys {
+            let decryptedKey = try await decryptAndCache(encryptedKey)
+            decryptedKeys.append(decryptedKey)
+        }
         return decryptedKeys
     }
 }

@@ -105,8 +105,10 @@ struct NoteDetailView: View {
                         }
                     }
 
-                    ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                             action: { viewModel.showItemHistory() })
+                    if viewModel.canShareItem {
+                        ItemDetailHistorySection(itemContent: viewModel.itemContent,
+                                                 action: { viewModel.showItemHistory() })
+                    }
 
                     ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent,
