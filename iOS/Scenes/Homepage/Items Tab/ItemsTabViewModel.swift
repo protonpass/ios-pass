@@ -429,6 +429,10 @@ extension ItemsTabViewModel {
         }
     }
 
+    func hasSharedItems() -> Bool {
+        currentSelectedItems.value.contains { $0.isShared }
+    }
+
     func presentVaultListToMoveSelectedItems() {
         let items = currentSelectedItems.value
         router.present(for: .moveItemsBetweenVaults(.selectedItems(items)))

@@ -35,6 +35,8 @@ struct ItemsTabView: View {
 
     @State private var aliasToTrash: (any ItemTypeIdentifiable)?
 
+    @State private var showSharedItemsAlert = false
+
     @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
     private var useSwiftUIList = false
 
@@ -74,6 +76,15 @@ struct ItemsTabView: View {
         .onChange(of: viewModel.selectedSortType) { type in
             viewModel.filterAndSortItems(sortType: type)
         }
+        .alert("Moving items", isPresented: $showSharedItemsAlert) {
+            Button("Cancel", role: .cancel) {}
+            Button("Move") {
+                viewModel.presentVaultListToMoveSelectedItems()
+            }
+        } message: {
+            // swiftlint:disable:next line_length
+            Text("At least one of the selected items is currently shared. Moving it to another vault will remove access for all other users.")
+        }
     }
 
     private var fullSyncProgressView: some View {
@@ -91,7 +102,13 @@ struct ItemsTabView: View {
                                onShowVaultList: { viewModel.presentVaultList() },
                                onPin: { viewModel.pinSelectedItems() },
                                onUnpin: { viewModel.unpinSelectedItems() },
-                               onMove: { viewModel.presentVaultListToMoveSelectedItems() },
+                               onMove: {
+                                   if viewModel.hasSharedItems() {
+                                       showSharedItemsAlert.toggle()
+                                   } else {
+                                       viewModel.presentVaultListToMoveSelectedItems()
+                                   }
+                               },
                                onTrash: { viewModel.trashSelectedItems() },
                                onRestore: { viewModel.restoreSelectedItems() },
                                onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() },
