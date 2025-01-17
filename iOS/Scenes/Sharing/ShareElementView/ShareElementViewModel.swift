@@ -112,11 +112,6 @@ final class ShareElementViewModel: ObservableObject {
 }
 
 private extension ShareElementViewModel {
-    func complete(with element: SharingElementData) {
-        setShareInviteVault(with: element)
-        router.present(for: .sharingFlow(.topMost))
-    }
-
     func getPassUserInfos() {
         Task { [weak self] in
             guard let self else { return }

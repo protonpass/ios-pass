@@ -139,7 +139,7 @@ private extension SharingSummaryView {
             VStack(alignment: .leading, spacing: 15) {
                 Text(infos.role.title)
                     .foregroundStyle(PassColor.textNorm.toColor)
-                Text(infos.role.description)
+                Text(infos.role.description(isItemSharing: infos.shareElement.isItem))
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
