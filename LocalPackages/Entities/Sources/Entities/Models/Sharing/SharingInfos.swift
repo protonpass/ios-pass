@@ -22,6 +22,13 @@ public enum SharingElementData: Sendable {
     case vault(Share)
     case item(item: ItemContent, share: Share)
     case new(VaultContent, ItemContent)
+
+    public var isItem: Bool {
+        if case .item = self {
+            return true
+        }
+        return false
+    }
 }
 
 public extension SharingElementData {

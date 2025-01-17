@@ -27322,6 +27322,16 @@
         }
       }
     },
+    "At least one of the selected items is currently shared. Moving it to another vault will remove access for all other users." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At least one of the selected items is currently shared. Moving it to another vault will remove access for all other users."
+          }
+        }
+      }
+    },
     "Attach" : {
       "comment" : "Title of the button to attach files and photos to a bug report",
       "localizations" : {
@@ -30638,6 +30648,26 @@
         }
       }
     },
+    "Can edit and delete this item." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can edit and delete this item."
+          }
+        }
+      }
+    },
+    "Can grant and revoke access to the item." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can grant and revoke access to the item."
+          }
+        }
+      }
+    },
     "Can grant and revoke access to this vault" : {
       "localizations" : {
         "be" : {
@@ -30955,6 +30985,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cho phép xem nội dung trong kho lưu trữ này"
+          }
+        }
+      }
+    },
+    "Can view this item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can view this item"
           }
         }
       }
@@ -82238,6 +82278,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Перемістити до смітника"
+          }
+        }
+      }
+    },
+    "Moving items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moving items"
           }
         }
       }
