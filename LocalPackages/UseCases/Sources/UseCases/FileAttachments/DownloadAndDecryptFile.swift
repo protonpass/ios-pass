@@ -76,19 +76,14 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
             }
         }
         guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
-            throw PassError.fileAttachment(.missingShare)
+            throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
         }
 
-        let itemKeys: [any ShareKeyProtocol] = if share.shareType == .item {
-            try await keyManager.getShareKeys(userId: userId,
-                                              shareId: item.shareId)
-        } else {
-            try await keyManager.getItemKeys(userId: userId,
-                                             shareId: item.shareId,
-                                             itemId: item.itemId)
-        }
+        let keys = try await keyManager.getShareKeys(userId: userId,
+                                                     share: share,
+                                                     item: item)
 
-        guard let itemKey = itemKeys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+        guard let itemKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
             throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
         }
 

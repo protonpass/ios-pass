@@ -265,18 +265,13 @@ private extension FileAttachmentRepository {
         var lastId: String?
         var files = [ItemFile]()
 
-        let itemKeys: [any ShareKeyProtocol] = if share.shareType == .item {
-            try await keyManager.getShareKeys(userId: userId, shareId: item.shareId)
-        } else {
-            try await keyManager.getItemKeys(userId: userId,
-                                             shareId: item.shareId,
-                                             itemId: item.itemId)
-        }
-
+        let keys = try await keyManager.getShareKeys(userId: userId,
+                                                     share: share,
+                                                     item: item)
         while true {
             let response = try await getFiles(lastId)
             for var file in response.files {
-                guard let itemKey = itemKeys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+                guard let itemKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
                     throw PassError.crypto(.missingItemKeyRotation(file.itemKeyRotation))
                 }
 

@@ -96,6 +96,10 @@ private extension SharedUseCasesContainer {
     var passMonitorRepository: any PassMonitorRepositoryProtocol {
         SharedRepositoryContainer.shared.passMonitorRepository()
     }
+
+    var shareRepository: any ShareRepositoryProtocol {
+        SharedRepositoryContainer.shared.shareRepository()
+    }
 }
 
 // MARK: App
@@ -186,7 +190,7 @@ extension SharedUseCasesContainer {
     var indexAllLoginItems: Factory<any IndexAllLoginItemsUseCase> {
         self { IndexAllLoginItems(userManager: self.userManager,
                                   itemRepository: self.itemRepository,
-                                  shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                  shareRepository: self.shareRepository,
                                   localAccessDatasource: SharedRepositoryContainer.shared.localAccessDatasource(),
                                   credentialManager: self.credentialManager,
                                   mapLoginItem: self.mapLoginItem(),
@@ -286,7 +290,7 @@ extension SharedUseCasesContainer {
 
     var deleteLocalDataBeforeFullSync: Factory<any DeleteLocalDataBeforeFullSyncUseCase> {
         self { DeleteLocalDataBeforeFullSync(itemRepository: self.itemRepository,
-                                             shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                             shareRepository: self.shareRepository,
                                              shareKeyRepository: SharedRepositoryContainer.shared
                                                  .shareKeyRepository()) }
     }
@@ -571,7 +575,7 @@ extension SharedUseCasesContainer {
 
     var downloadAndDecryptFile: Factory<any DownloadAndDecryptFileUseCase> {
         self { DownloadAndDecryptFile(generateFileTempUrl: self.generateFileTempUrl(),
-                                      shareRepository: SharedRepositoryContainer.shared.shareRepository(),
+                                      shareRepository: self.shareRepository,
                                       keyManager: SharedRepositoryContainer.shared.passKeyManager(),
                                       apiService: SharedToolingContainer.shared.apiServiceLite()) }
     }

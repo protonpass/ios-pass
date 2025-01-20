@@ -69,8 +69,28 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         closureGetLatestShareKey()
         return stubbedGetLatestShareKeyResult
     }
+    // MARK: - getShareKeys
+    public var getShareKeysUserIdShareItemThrowableError3: Error?
+    public var closureGetShareKeys: () -> () = {}
+    public var invokedGetShareKeysfunction = false
+    public var invokedGetShareKeysCount = 0
+    public var invokedGetShareKeysParameters: (userId: String, share: Share, item: any ItemIdentifiable)?
+    public var invokedGetShareKeysParametersList = [(userId: String, share: Share, item: any ItemIdentifiable)]()
+    public var stubbedGetShareKeysResult: [any ShareKeyProtocol]!
+
+    public func getShareKeys(userId: String, share: Share, item: any ItemIdentifiable) async throws -> [any ShareKeyProtocol] {
+        invokedGetShareKeysfunction = true
+        invokedGetShareKeysCount += 1
+        invokedGetShareKeysParameters = (userId, share, item)
+        invokedGetShareKeysParametersList.append((userId, share, item))
+        if let error = getShareKeysUserIdShareItemThrowableError3 {
+            throw error
+        }
+        closureGetShareKeys()
+        return stubbedGetShareKeysResult
+    }
     // MARK: - getLatestItemKey
-    public var getLatestItemKeyUserIdShareIdItemIdThrowableError3: Error?
+    public var getLatestItemKeyUserIdShareIdItemIdThrowableError4: Error?
     public var closureGetLatestItemKey: () -> () = {}
     public var invokedGetLatestItemKeyfunction = false
     public var invokedGetLatestItemKeyCount = 0
@@ -83,14 +103,14 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetLatestItemKeyCount += 1
         invokedGetLatestItemKeyParameters = (userId, shareId, itemId)
         invokedGetLatestItemKeyParametersList.append((userId, shareId, itemId))
-        if let error = getLatestItemKeyUserIdShareIdItemIdThrowableError3 {
+        if let error = getLatestItemKeyUserIdShareIdItemIdThrowableError4 {
             throw error
         }
         closureGetLatestItemKey()
         return stubbedGetLatestItemKeyResult
     }
     // MARK: - getItemKeys
-    public var getItemKeysUserIdShareIdItemIdThrowableError4: Error?
+    public var getItemKeysUserIdShareIdItemIdThrowableError5: Error?
     public var closureGetItemKeys: () -> () = {}
     public var invokedGetItemKeysfunction = false
     public var invokedGetItemKeysCount = 0
@@ -103,30 +123,10 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         invokedGetItemKeysCount += 1
         invokedGetItemKeysParameters = (userId, shareId, itemId)
         invokedGetItemKeysParametersList.append((userId, shareId, itemId))
-        if let error = getItemKeysUserIdShareIdItemIdThrowableError4 {
+        if let error = getItemKeysUserIdShareIdItemIdThrowableError5 {
             throw error
         }
         closureGetItemKeys()
         return stubbedGetItemKeysResult
-    }
-    // MARK: - getShareKeys
-    public var getShareKeysUserIdShareIdThrowableError5: Error?
-    public var closureGetShareKeys: () -> () = {}
-    public var invokedGetShareKeysfunction = false
-    public var invokedGetShareKeysCount = 0
-    public var invokedGetShareKeysParameters: (userId: String, shareId: String)?
-    public var invokedGetShareKeysParametersList = [(userId: String, shareId: String)]()
-    public var stubbedGetShareKeysResult: [DecryptedShareKey]!
-
-    public func getShareKeys(userId: String, shareId: String) async throws -> [DecryptedShareKey] {
-        invokedGetShareKeysfunction = true
-        invokedGetShareKeysCount += 1
-        invokedGetShareKeysParameters = (userId, shareId)
-        invokedGetShareKeysParametersList.append((userId, shareId))
-        if let error = getShareKeysUserIdShareIdThrowableError5 {
-            throw error
-        }
-        closureGetShareKeys()
-        return stubbedGetShareKeysResult
     }
 }
