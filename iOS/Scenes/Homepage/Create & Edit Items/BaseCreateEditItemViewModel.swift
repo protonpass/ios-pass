@@ -331,7 +331,8 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
             attachedFiles = .fetching
             let userId = try await userManager.getActiveUserId()
             let files = try await fileRepository.getActiveItemFiles(userId: userId,
-                                                                    item: itemContent)
+                                                                    item: itemContent,
+                                                                    share: selectedVault)
             attachedFiles = .fetched(files)
             for file in files {
                 self.files.upsert(file)

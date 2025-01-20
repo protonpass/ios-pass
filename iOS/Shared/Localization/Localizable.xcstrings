@@ -27394,6 +27394,16 @@
         }
       }
     },
+    "At least one of the selected items is currently shared. Moving it to another vault will remove access for all other users." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "At least one of the selected items is currently shared. Moving it to another vault will remove access for all other users."
+          }
+        }
+      }
+    },
     "Attach" : {
       "comment" : "Title of the button to attach files and photos to a bug report",
       "localizations" : {
@@ -30710,6 +30720,26 @@
         }
       }
     },
+    "Can edit and delete this item." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can edit and delete this item."
+          }
+        }
+      }
+    },
+    "Can grant and revoke access to the item." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can grant and revoke access to the item."
+          }
+        }
+      }
+    },
     "Can grant and revoke access to this vault" : {
       "localizations" : {
         "be" : {
@@ -31027,6 +31057,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cho phép xem nội dung trong kho lưu trữ này"
+          }
+        }
+      }
+    },
+    "Can view this item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Can view this item"
           }
         }
       }
@@ -82908,6 +82948,16 @@
         }
       }
     },
+    "Moving items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Moving items"
+          }
+        }
+      }
+    },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
       "localizations" : {
@@ -116384,148 +116434,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chia sẽ bảng nhớ tạm giữa các thiết bị"
-          }
-        }
-      }
-    },
-    "Share entire vault instead?" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Замест гэтага абагуліць сховішча поўнасцю?"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sdílet místo toho celý trezor?"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Del hele boksen i stedet?"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Stattdessen gesamten Tresor teilen?"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αντ' αυτού, κοινοποιήστε όλη την κρύπτη;"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Share entire vault instead?"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Prefieres compartir la caja fuerte entera en cambio?"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "¿Compartir la bóveda entera en cambio?"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jaetaanko sen sijaan koko holvi?"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Voulez-vous partager l'ensemble du coffre-fort à la place ?"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bagikan seluruh brankas?"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Condividere l'intera cassaforte?"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "代わりに保管庫全体を共有しますか？"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გავაზიარო მთელი საცავი ამის მაგიერ?"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "대신 전체 금고를 공유하시겠어요?"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dele hele hvelvet istedenfor?"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "De hele kluis delen?"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Compartilhar o cofre inteiro?"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Partajați în schimb tot seiful?"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zdieľať namiesto toho celý trezor?"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dela hela valvet istället?"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bunun yerine tüm kasa paylaşılsın mı?"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Натомість надати доступ до всього сховища?"
           }
         }
       }

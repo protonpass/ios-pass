@@ -71,7 +71,9 @@ private extension CreditCardDetailView {
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                             action: { viewModel.showItemHistory() })
+                                             action: {
+                                                 viewModel.canShareItem ? viewModel.showItemHistory() : nil
+                                             })
 
                     ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent,

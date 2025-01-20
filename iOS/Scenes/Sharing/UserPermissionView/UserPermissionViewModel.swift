@@ -37,6 +37,10 @@ final class UserPermissionViewModel: ObservableObject, Sendable {
         emails.count == 1
     }
 
+    var isItemSharing: Bool {
+        shareInviteService.currentSelectedElement.value?.isItem ?? false
+    }
+
     init() {
         setUp()
     }

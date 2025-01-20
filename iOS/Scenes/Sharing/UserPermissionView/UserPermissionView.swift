@@ -101,7 +101,7 @@ private extension UserPermissionView {
                         viewModel.setRoleForAll(with: role)
                     }, label: {
                         Text(role.title)
-                        Text(role.description)
+                        Text(role.description(isItemSharing: viewModel.isItemSharing))
                     })
                 }
             }
@@ -153,7 +153,7 @@ private extension UserPermissionView {
                         viewModel.updateRole(for: email, with: role)
                     }, label: {
                         Text(role.title)
-                        Text(role.description)
+                        Text(role.description(isItemSharing: viewModel.isItemSharing))
                     })
                 }, icon: {
                     if currentRole == role {
@@ -200,7 +200,7 @@ private extension UserPermissionView {
                                 .foregroundStyle(PassColor.textNorm.toColor)
                                 .padding(.bottom, 2)
 
-                            Text(role.description)
+                            Text(role.description(isItemSharing: viewModel.isItemSharing))
                                 .foregroundStyle(PassColor.textWeak.toColor)
                         }
                         Spacer()

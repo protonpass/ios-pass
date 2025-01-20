@@ -192,7 +192,7 @@ public extension Share {
     }
 
     var canEdit: Bool {
-        shareRole != ShareRole.read
+        shareType == .vault ? shareRole != ShareRole.read : shareRole != ShareRole.read && isOwner
     }
 
     var totalOverallMembers: Int {
