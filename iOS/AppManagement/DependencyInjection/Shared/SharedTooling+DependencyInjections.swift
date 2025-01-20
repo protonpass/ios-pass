@@ -181,14 +181,3 @@ extension SharedToolingContainer {
         self { .deviceOwnerAuthentication }
     }
 }
-
-extension SharedToolingContainer {
-    var authDeviceManagerUI: Factory<AuthDeviceManagerUI> {
-        self {
-            let authDeviceManager = AuthDeviceManager(userManagerProvider: SharedServiceContainer.shared
-                .userManager(),
-                apiManagerProvider: self.apiManager())
-            return AuthDeviceManagerUI(authDeviceManager: authDeviceManager)
-        }
-    }
-}
