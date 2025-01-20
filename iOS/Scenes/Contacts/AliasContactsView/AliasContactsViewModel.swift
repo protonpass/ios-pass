@@ -122,7 +122,7 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
     }
 
     func copyContact(_ contact: AliasContact) {
-        router.action(.copyToClipboard(text: contact.email, message: #localized("Contact copied")))
+        router.action(.copyToClipboard(text: contact.reverseAlias, message: #localized("Contact copied")))
     }
 
     // https://stackoverflow.com/questions/71260260/what-method-do-i-call-to-open-the-ios-mail-app-with-swiftui
