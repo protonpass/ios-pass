@@ -60,10 +60,6 @@ final class ShareElementViewModel: ObservableObject {
         getPassUserInfos()
     }
 
-    func shareVault() {
-        complete(with: .vault(share))
-    }
-
     func secureLinkSharing() {
         router.present(for: .createSecureLink(itemContent, share))
     }
@@ -116,18 +112,13 @@ final class ShareElementViewModel: ObservableObject {
 }
 
 private extension ShareElementViewModel {
-    func complete(with element: SharingElementData) {
-        setShareInviteVault(with: element)
-        router.present(for: .sharingFlow(.topMost))
-    }
-
     func getPassUserInfos() {
         Task { [weak self] in
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
+                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery && itemSharingEnabled
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }

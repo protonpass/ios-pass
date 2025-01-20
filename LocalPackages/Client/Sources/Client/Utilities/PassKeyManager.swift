@@ -63,6 +63,11 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
     /// Get share key with latest rotation
     func getLatestShareKey(userId: String, shareId: String) async throws -> DecryptedShareKey
 
+    /// Get all share keys
+    func getShareKeys(userId: String,
+                      share: Share,
+                      item: any ItemIdentifiable) async throws -> [any ShareKeyProtocol]
+
     /// Get the latest key of an item to encrypt item content
     func getLatestItemKey(userId: String, shareId: String, itemId: String) async throws -> DecryptedItemKey
 
@@ -115,6 +120,31 @@ public extension PassKeyManager {
         let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
         let latestShareKey = try allEncryptedShareKeys.latestKey()
         return try await decryptAndCache(latestShareKey)
+    }
+
+    func getShareKeys(userId: String,
+                      share: Share,
+                      item: any ItemIdentifiable) async throws -> [any ShareKeyProtocol] {
+        switch share.shareType {
+        case .vault:
+            return try await getItemKeys(userId: userId,
+                                         shareId: item.shareId,
+                                         itemId: item.itemId)
+
+        case .item:
+            let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId,
+                                                                             shareId: item.shareId)
+
+            var decryptedKeys = [DecryptedShareKey]()
+            for encryptedKey in allEncryptedShareKeys {
+                let decryptedKey = try await decryptAndCache(encryptedKey)
+                decryptedKeys.append(decryptedKey)
+            }
+            return decryptedKeys
+
+        case .unknown:
+            throw PassError.unknownShareType
+        }
     }
 
     func getLatestItemKey(userId: String,

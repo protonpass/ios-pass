@@ -1696,7 +1696,7 @@ extension HomepageCoordinator: SyncEventLoopDelegate {
                     return
                 }
 
-                await refresh()
+                await refresh(exitEditMode: false)
             }
         } else {
             logger.info("Has no new events for userId \(userId). Do nothing.")

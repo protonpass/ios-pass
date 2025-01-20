@@ -43,14 +43,17 @@ public extension DownloadAndDecryptFileUseCase {
 
 public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
     private let generateFileTempUrl: any GenerateFileTempUrlUseCase
+    private let shareRepository: any ShareRepositoryProtocol
     private let keyManager: any PassKeyManagerProtocol
     private let apiService: any ApiServiceLiteProtocol
 
     public init(generateFileTempUrl: any GenerateFileTempUrlUseCase,
+                shareRepository: any ShareRepositoryProtocol,
                 keyManager: any PassKeyManagerProtocol,
                 apiService: any ApiServiceLiteProtocol) {
         self.generateFileTempUrl = generateFileTempUrl
         self.keyManager = keyManager
+        self.shareRepository = shareRepository
         self.apiService = apiService
     }
 
@@ -72,12 +75,15 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
                 continuation.finish()
             }
         }
+        guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
+            throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
+        }
 
-        let itemKeys = try await keyManager.getItemKeys(userId: userId,
-                                                        shareId: item.shareId,
-                                                        itemId: item.itemId)
+        let keys = try await keyManager.getShareKeys(userId: userId,
+                                                     share: share,
+                                                     item: item)
 
-        guard let itemKey = itemKeys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+        guard let itemKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
             throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
         }
 
