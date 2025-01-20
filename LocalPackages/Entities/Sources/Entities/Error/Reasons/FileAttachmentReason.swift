@@ -41,7 +41,6 @@ public extension PassError {
         case missingItemKey(Int)
         case missingFile(String)
         case emptyFile
-        case missingShare
 
         public var debugDescription: String {
             switch self {
@@ -81,8 +80,6 @@ public extension PassError {
                 "Missing file \(id)"
             case .emptyFile:
                 "Empty file"
-            case .missingShare:
-                "Could not find decoding information"
             }
         }
     }
