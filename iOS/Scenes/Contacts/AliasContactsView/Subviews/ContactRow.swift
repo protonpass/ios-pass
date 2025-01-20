@@ -54,7 +54,7 @@ struct ContactRow: View {
                                action: onSend)
                     }
 
-                    button(title: "Copy address",
+                    button(title: "Copy forwarding address",
                            icon: IconProvider.squares,
                            action: onCopyAddress)
 
