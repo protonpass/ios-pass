@@ -63,14 +63,16 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
     /// Get share key with latest rotation
     func getLatestShareKey(userId: String, shareId: String) async throws -> DecryptedShareKey
 
+    /// Get all share keys
+    func getShareKeys(userId: String,
+                      share: Share,
+                      item: any ItemIdentifiable) async throws -> [any ShareKeyProtocol]
+
     /// Get the latest key of an item to encrypt item content
     func getLatestItemKey(userId: String, shareId: String, itemId: String) async throws -> DecryptedItemKey
 
     /// Get all decrypted item keys
     func getItemKeys(userId: String, shareId: String, itemId: String) async throws -> [DecryptedItemKey]
-
-    /// Get the latest key of an item to encrypt item content
-    func getShareKeys(userId: String, shareId: String) async throws -> [DecryptedShareKey]
 }
 
 public actor PassKeyManager: PassKeyManagerProtocol {
@@ -120,6 +122,31 @@ public extension PassKeyManager {
         return try await decryptAndCache(latestShareKey)
     }
 
+    func getShareKeys(userId: String,
+                      share: Share,
+                      item: any ItemIdentifiable) async throws -> [any ShareKeyProtocol] {
+        switch share.shareType {
+        case .vault:
+            return try await getItemKeys(userId: userId,
+                                         shareId: item.shareId,
+                                         itemId: item.itemId)
+
+        case .item:
+            let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId,
+                                                                             shareId: item.shareId)
+
+            var decryptedKeys = [DecryptedShareKey]()
+            for encryptedKey in allEncryptedShareKeys {
+                let decryptedKey = try await decryptAndCache(encryptedKey)
+                decryptedKeys.append(decryptedKey)
+            }
+            return decryptedKeys
+
+        case .unknown:
+            throw PassError.unknownShareType
+        }
+    }
+
     func getLatestItemKey(userId: String,
                           shareId: String,
                           itemId: String) async throws -> DecryptedItemKey {
@@ -155,17 +182,6 @@ public extension PassKeyManager {
             decryptedKeys.append(decryptedKey)
         }
         logger.trace("Decrypted \(encryptedKeys.count) item keys itemId \(itemId), shareId \(shareId)")
-        return decryptedKeys
-    }
-
-    func getShareKeys(userId: String, shareId: String) async throws -> [DecryptedShareKey] {
-        let allEncryptedShareKeys = try await shareKeyRepository.getKeys(userId: userId, shareId: shareId)
-
-        var decryptedKeys = [DecryptedShareKey]()
-        for encryptedKey in allEncryptedShareKeys {
-            let decryptedKey = try await decryptAndCache(encryptedKey)
-            decryptedKeys.append(decryptedKey)
-        }
         return decryptedKeys
     }
 }
