@@ -4,10 +4,136 @@
     "%1$@ of %2$@" : {
       "comment" : "For displaying storage usage. For example \"100MB of 2.5GB\".",
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ z %2$@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ af %2$@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ von %2$@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ από %2$@"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ of %2$@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@/%2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ sur %2$@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ dari %2$@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ di %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ の中の%1$@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@-დან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ 중 %1$@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ av %2$@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ van %2$@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ de %2$@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ din %2$@"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ z %2$@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ od %2$@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ av %2$@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ / %2$@"
           }
         }
       }
@@ -4168,6 +4294,12 @@
             "value" : "Výmazať všetko"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izbriši vse"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5833,6 +5965,12 @@
             "value" : "Non è stato rilevato alcun testo nell'immagine. Riprova, assicurandoti che il testo sia chiaro, ben illuminato e messo a fuoco dalla fotocamera."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像内にテキストが検出されませんでした。テキストが鮮明で明るく、カメラのフォーカス内であることを確認し、再度お試しください。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5857,6 +5995,12 @@
             "value" : "Er kon geen tekst worden gevonden in de afbeelding. Probeer het nog een keer ervoor zorgend dat de tekst duidelijk en goed is en binnen de focus van de camera."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum texto pôde ser detectado na imagem. Tente novamente, garantindo que o texto esteja claro, bem iluminado e dentro do foco da câmera."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5866,13 +6010,25 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Na obrázku nebolo možné rozpoznať žiadny text. Skúste to znova, prosím, a uistite sa, že text je jasný, dobre osvetlený a v rámci zaostrenia fotoaparátu."
+            "value" : "Na obrázku nebolo možné rozpoznať žiadny text. Skúste to prosím znova a uistite sa, že je text jasný, dobre osvetlený a v rámci zaostrenia fotoaparátu."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen text kunde upptäckas i bilden. Försök igen och se till att bilden är tydlig, välbelyst och i kamerans fokus."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Görselde metin algılanamadı. Lütfen metnin net, iyi aydınlatılmış ve kameranın odak noktasında olduğundan emin olarak yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не виявлено жодного тексту у зображенні. Будь ласка, спробуйте ще раз, переконайтеся в тому, що текст чіткий, добре зрозумілий та знаходиться на зображенні камери."
           }
         }
       }
@@ -5940,10 +6096,22 @@
             "value" : "Aucun texte n'a été trouvé."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada teks yang ditemukan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessun testo trovato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "テキストが見つかりません"
           }
         },
         "ka" : {
@@ -5976,6 +6144,12 @@
             "value" : "Nie znaleziono tekstu"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum texto encontrado"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5998,6 +6172,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhangi bir metin bulunamadı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Текст не знайдено"
           }
         }
       }
@@ -7732,6 +7912,12 @@
             "value" : "Premenovať"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preimenuj"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9417,7 +9603,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suffix"
+            "value" : "接尾辞"
           }
         },
         "ka" : {
@@ -10104,6 +10290,12 @@
             "value" : "Odfotiť"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zajemi fotografijo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10509,7 +10701,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "スペルやキーワードを変えて検索してみる"
+            "value" : "別のスペルやキーワードを使用して検索してみてください"
           }
         },
         "ka" : {
@@ -10754,10 +10946,124 @@
     },
     "Upgrade to increase your storage capacity." : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navyšte tarif pro zvýšení kapacity úložiště."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opgrader for at øge din lagerkapacitet."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αναβαθμίστε για να αυξήσετε τον αποθηκευτικό σας χώρο."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgrade to increase your storage capacity."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejora para aumentar el almacenamiento."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejore para aumentar el almacenamiento."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päivitä lisätäksesi tallennuskapasiteettiasi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passez à un abonnement supérieur pour augmenter votre espace de stockage."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tingkatkan untuk menambah kapasitas penyimpanan Anda."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esegui l'upgrade per aumentare la tua capacità di archiviazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップグレードすると、ストレージ容量が増えます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ასწიეთ ტარიფი მეტი საცავის მისაღებად."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장 공간을 늘리려면 업그레이드 하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader for å øke lagringskapasiteten."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade om uw opslagcapaciteit te vergroten."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faça uma atualização para aumentar sua capacidade de armazenamento."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Treceți la alt tip de plan pentru a vă mări capacitatea de stocare."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgradujte a zvýšte kapacitu úložiska."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uppgradera för att öka din lagringskapacitet."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depolama alanınızı artırmak için tarifenizi yükseltin."
           }
         }
       }
@@ -10866,6 +11172,12 @@
             "value" : "Opladen mislukt"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przesyłanie nie powiodło się"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10924,6 +11236,12 @@
             "value" : "Overfør filer fra din enhed"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateien von deinem Gerät hochladen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10975,7 +11293,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このコンピュータからファイルを取り込む"
+            "value" : "デバイスからファイルをアップロード"
           }
         },
         "ka" : {
@@ -11258,7 +11576,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Kami mendeteksi bahwa Anda memiliki %lld alias yang ada di SimpleLogin namun belum tercatat pada Proton Pass. Apakah Anda ingin mengimpor alias ini?"
+                  "value" : "Kami mendeteksi bahwa Anda memiliki %lld alias yang terdapat pada SimpleLogin namun tidak ada pada Proton Pass. Apakah Anda ingin mengimpor alias ini?"
                 }
               }
             }
@@ -11674,10 +11992,142 @@
     },
     "Your storage is full." : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaše úložiště je plné."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Din lagerplads er fyldt."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Speicherplatz ist voll."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ο αποθηκευτικός σας χώρος είναι γεμάτος."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Your storage is full."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El almacenamiento está lleno."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El almacenamiento está lleno."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tallennustilasi on täynnä."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre espace de stockage est plein."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penyimpanan Anda penuh."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spazio di archiviazione pieno."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストレージがいっぱいです。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი საცავი სავსეა."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장공간이 가득 찼습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagringsplassen din er full."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uw opslagruimte is vol."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przestrzeń dyskowa jest pełna."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seu armazenamento está cheio."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spațiul de stocare este plin."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaše úložisko je plné."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaša shramba je polna."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ditt lagringsutrymme fullt."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depolama alanınız dolmuş."
           }
         }
       }
