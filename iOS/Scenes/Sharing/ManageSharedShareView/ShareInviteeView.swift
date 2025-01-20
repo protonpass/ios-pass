@@ -110,7 +110,7 @@ private extension ShareInviteeView {
                                 onSelect(.updateRole(shareId: shareId, role: role))
                             }, label: {
                                 Text(role.title)
-                                Text(role.description)
+                                Text(role.description(isItemSharing: invitee.shareType == .item))
                             })
                         }, icon: {
                             if currentRole == role {

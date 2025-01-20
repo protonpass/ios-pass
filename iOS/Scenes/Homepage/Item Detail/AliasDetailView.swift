@@ -103,7 +103,9 @@ struct AliasDetailView: View {
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                             action: { viewModel.showItemHistory() })
+                                             action: {
+                                                 viewModel.canShareItem ? viewModel.showItemHistory() : nil
+                                             })
 
                     ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                               itemContent: viewModel.itemContent,
