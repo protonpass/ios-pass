@@ -26,7 +26,7 @@ import UIKit
 enum AppearanceSettings {
     static func apply() {
         Task { @MainActor in
-//            Brand.currentBrand = .pass
+            Brand.currentBrand = .pass
 
             UIView.appearance(whenContainedInInstancesOf: [UIAlertController.self]).tintColor =
                 PassColor.interactionNorm

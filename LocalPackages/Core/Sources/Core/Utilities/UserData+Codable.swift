@@ -83,7 +83,8 @@ public extension UserData {
                         orgPrivateKey: nil,
                         email: nil,
                         displayName: nil,
-                        keys: [])
+                        keys: [],
+                        flags: .default)
 
         return .init(credential: credential,
                      user: user,
