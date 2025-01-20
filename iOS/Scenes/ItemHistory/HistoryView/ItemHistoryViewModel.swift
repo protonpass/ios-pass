@@ -86,8 +86,8 @@ final class ItemHistoryViewModel: ObservableObject, Sendable {
                                                      itemId: item.itemId,
                                                      lastToken: lastToken)
 
-                let share = try? await shareRepository.getShare(shareId: item.shareId)
-                if let share, item.item.hasFiles || item.item.hasHadFiles, files.isEmpty {
+                if let share = try await shareRepository.getShare(shareId: item.shareId),
+                   item.item.hasFiles || item.item.hasHadFiles, files.isEmpty {
                     files =
                         try await fileAttachmentRepository.getItemFilesForAllRevisions(userId: userId,
                                                                                        item: item,
