@@ -839,6 +839,12 @@
             "value" : "%@ ønsker at dele et element med dig."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ möchte etwas mit dir teilen."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2994,6 +3000,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld blokerede"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld gesperrt"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld gesperrt"
                 }
               }
             }
@@ -11298,6 +11322,24 @@
             }
           }
         },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vastaus"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld vastausta"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -11341,6 +11383,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld risposte"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 답장"
                 }
               }
             }
@@ -14897,7 +14951,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保管庫 20 個"
+            "value" : "20 個の保管庫"
           }
         },
         "ka" : {
@@ -15462,6 +15516,12 @@
             "value" : "Accepter og se elementet"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annehmen und das Element anzeigen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15538,6 +15598,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accepteer en bekijk item"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaakceptuj i zobacz element"
           }
         },
         "pt-BR" : {
@@ -19293,6 +19359,12 @@
             "value" : "Geavanceerd alias beheer is beschikbaar met Pass Plus. Upgrade voor directe toegang."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaawansowane zarządzanie aliasami jest dostępne w planie Pass Plus. Ulepsz konto, aby uzyskać natychmiastowy dostęp."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21891,7 +21963,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "エイリアスはドット(.)で始めることができません"
+            "value" : "エイリアスはドット(.)で始めることはできません"
           }
         },
         "ka" : {
@@ -22199,7 +22271,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コピーされたエイリアス"
+            "value" : "エイリアスをコピーしました"
           }
         },
         "ka" : {
@@ -22359,7 +22431,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "作成されたエイリアス"
+            "value" : "エイリアスが作成されました"
           }
         },
         "ka" : {
@@ -22963,7 +23035,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ログイン項目「%@」のエイリアス"
+            "value" : "ログインアイテム「%@」のエイリアス"
           }
         },
         "ka" : {
@@ -23443,7 +23515,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "更新されたエイリアス"
+            "value" : "エイリアスが更新されました"
           }
         },
         "ka" : {
@@ -29290,7 +29362,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "違反詳細アクション メニュー"
+            "value" : "侵害詳細アクション メニュー"
           }
         },
         "ka" : {
@@ -30084,7 +30156,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "解決された違反"
+            "value" : "解決された侵害"
           }
         },
         "ka" : {
@@ -30245,7 +30317,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この機能を利用するにはカメラの許可が必要"
+            "value" : "この機能を利用するにはカメラへのアクセス許可が必要です"
           }
         },
         "ka" : {
@@ -34043,10 +34115,148 @@
     },
     "Clear downloaded files" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдаліць спампаваныя файлы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smazat stažené soubory"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ryd downloadede filer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heruntergeladene Dateien löschen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εκκαθάριση ληφθέντων αρχείων"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clear downloaded files"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar los archivos descargados"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar los archivos descargados"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tyhjennä ladatut tiedostot"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effacer les fichiers téléchargés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bersihkan berkas terunduh"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancella i file scaricati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ダウンロード済みファイルを消去"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადმოწერილი ფაილების გაწმენდა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다운로드된 파일 지우기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tøm nedlastede filer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedownloade bestanden wissen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyczyść pobrane pliki"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpar arquivos baixados"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminare fișiere descărcate"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vymazať stiahnuté súbory"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rensa nedladdade filer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirilmiş dosyaları temizle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очистити завантажені файли"
           }
         }
       }
@@ -36045,7 +36255,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "おめでとうございます\n あなたのアクセス確認されました"
+            "value" : "おめでとうございます\n アクセスが確認されました"
           }
         },
         "ka" : {
@@ -37153,7 +37363,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2要素認証コードをコピーする"
+            "value" : "二要素認証コードをコピー"
           }
         },
         "ka" : {
@@ -37473,7 +37683,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "エイリアスアドレスをコピーする"
+            "value" : "エイリアスアドレスをコピー"
           }
         },
         "ka" : {
@@ -37953,7 +38163,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カード所有者名をコピーする"
+            "value" : "カード名義人名をコピー"
           }
         },
         "ka" : {
@@ -38273,7 +38483,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "有効期限をコピーする"
+            "value" : "有効期限をコピー"
           }
         },
         "ka" : {
@@ -38753,7 +38963,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メモの内容をコピーする"
+            "value" : "メモの内容をコピー"
           }
         },
         "ka" : {
@@ -42413,7 +42623,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "クレジットカード更新"
+            "value" : "クレジットカードが更新されました"
           }
         },
         "ka" : {
@@ -45323,6 +45533,12 @@
             "value" : "Vymazať %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izbriši %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46504,7 +46720,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保管庫を削除?"
+            "value" : "保管庫を削除しますか？"
           }
         },
         "ka" : {
@@ -47840,10 +48056,142 @@
     },
     "Downloaded files cleared" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Спампаваныя файлы ачышчаны"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stažené soubory smazány"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Downloadede filer ryddet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heruntergeladene Dateien gelöscht."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Τα ληφθέντα αρχεία εκκαθαρίστηκαν"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Downloaded files cleared"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los archivos han sido borrados."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los archivos han sido borrados."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ladatut tiedostot tyhjennettiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les fichiers téléchargés ont été effacés."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berkas terunduh dibersihkan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I file scaricati sono stati cancellati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ダウンロードしたファイルを消去しました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადმოწერილი ფაილები გასუფთავდა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다운로드된 파일을 지웠습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nedlastede filer tømt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gedownloade bestanden gewist"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os arquivos baixados foram limpos"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fișierele descărcate s-au eliminat."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stiahnuté súbory vymazané"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nedladdade filer rensade"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirilmiş dosyalar temizlendi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завантажені файли очищено"
           }
         }
       }
@@ -53782,7 +54130,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PINコードの入力"
+            "value" : "PIN コードを入力してください"
           }
         },
         "ka" : {
@@ -57236,7 +57584,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ご意見"
+            "value" : "フィードバック"
           }
         },
         "ka" : {
@@ -57554,6 +57902,12 @@
             "value" : "File allegati"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添付ファイル"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57578,6 +57932,18 @@
             "value" : "Bestandsbijlagen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Załączanie plików"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anexos de arquivo"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57600,6 +57966,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ek dosyalar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вкладені файли"
           }
         }
       }
@@ -57672,6 +58044,12 @@
             "value" : "I file allegati sono disponibili con Pass Plus. Effettua l'upgrade per l'accesso immediato."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ファイル添付はPass Plusで利用可能です。すぐにアクセスするにはアップグレードしてください。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57696,10 +58074,22 @@
             "value" : "Bestandsbijlagen zijn beschikbaar met Pass Plus. Upgrade voor directe toegang."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anexos de arquivo estão disponíveis com o Pass Plus. Atualize para acesso imediato."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fișierele atașate sunt disponibile cu Pass Plus. Modificați tipul de abonament pentru a avea acces imediat."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Súbory s prílohami sú k dostupné v službe Pass Plus. Upgradujte a získajte okamžitý prístup."
           }
         },
         "sv" : {
@@ -57712,6 +58102,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ek dosyalar Pass Plus tarifesi ile kullanılabilir. Hemen erişmek için tarifenizi yükseltin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вкладення файлів доступні з Pass Plus. Для негайного доступу оновіть тарифний план."
           }
         }
       }
@@ -62236,6 +62632,12 @@
             "value" : "Získať Pass Unlimited"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pridobi Pass Unlimited"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -62495,7 +62897,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "設定に移動に移動します。"
+            "value" : "設定に移動"
           }
         },
         "ka" : {
@@ -64403,7 +64805,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ピンを隠す"
+            "value" : "ピンを非表示"
           }
         },
         "ka" : {
@@ -64563,7 +64965,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "セキュリティコードを隠す"
+            "value" : "セキュリティコードを非表示"
           }
         },
         "ka" : {
@@ -68992,6 +69394,12 @@
             "value" : "Inviter flere brugere til elementet"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lade weitere Benutzer zu diesem Element ein"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69126,6 +69534,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inviter flere brugere til boksen"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lade weitere Benutzer zu diesem Tresor ein"
           }
         },
         "el" : {
@@ -69509,6 +69923,12 @@
             "value" : "Item"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -69525,6 +69945,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Položka"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet"
           }
         },
         "sv" : {
@@ -69709,10 +70135,124 @@
     },
     "Item history successfully reset" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historie položky úspěšně resetována"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elementhistorik nulstillet"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επιτυχής επαναφορά ιστορικού του στοιχείου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item history successfully reset"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha resablecido el historial de este elemento."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El historial de este elemento fue restablecido."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kohdehistoria nollattiin"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'historique de cet élément a été réinitialisé."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riwayat item berhasil diatur ulang"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cronologia degli elementi reimpostata correttamente"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテム履歴を正常にリセットしました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელემენტის ისტორიის ჩამოყრა წარმატებით დასრულდა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "항목 기록 성공적으로 재설정됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elementhistorikk er tilbakestilt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item historiek succesvol gereset"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Histórico do item redefinido com sucesso"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Istoricul articolelor a fost resetat"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "História položky bola úspešne resetovaná"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Objekthistoriken har återställts"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge geçmişi sıfırlandı"
           }
         }
       }
@@ -70274,7 +70814,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "アイテムは保管庫%@に移動しました"
+            "value" : "アイテムを保管庫に移動しました « %@»"
           }
         },
         "ka" : {
@@ -72633,7 +73173,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "暗証番号、コード、自分へのメモを書き留める"
+            "value" : "PIN、コード、自分へのメモを書き留める"
           }
         },
         "ka" : {
@@ -74766,6 +75306,12 @@
             "value" : "Opustiť"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapusti"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74804,6 +75350,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Forlad dette element?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Element verlassen?"
           }
         },
         "el" : {
@@ -76327,7 +76879,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@にログイン"
+            "value" : "%@ のログイン"
           }
         },
         "ka" : {
@@ -76971,7 +77523,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ログイン復旧"
+            "value" : "ログインが復元されました"
           }
         },
         "ka" : {
@@ -77865,6 +78417,12 @@
             "value" : "Handlingsmenu for postkasse"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postfach-Aktionsmenü"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78415,6 +78973,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nastaviť ako predvolené"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nastavite na splošno"
           }
         },
         "sv" : {
@@ -80524,7 +81088,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rediger"
+            "value" : "Ændr"
           }
         },
         "de" : {
@@ -81789,10 +82353,142 @@
     },
     "Move" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přesunout"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flyt"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verschieben"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μετακίνηση"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Move"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siirrä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplacer"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pindahkan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sposta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移動"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადატანა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이동"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verplaatsen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przenieś"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mutare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presunúť"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premakni"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytta"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taşı"
           }
         }
       }
@@ -81960,10 +82656,130 @@
     },
     "Move this item" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Přesunout tuto položku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flyt dette element"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Element verschieben"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μετακίνηση αυτού του στοιχείου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Move this item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover este elemento"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover este elemento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siirrä tämä kohde"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Déplacer cet élément"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pindahkan item ini"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sposta questo elemento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアイテムを移動"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ამ ელემენტის გადატანა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목 이동"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytt dette elementet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit item verplaatsen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mover este item"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mutare acest element"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presunúť túto položku"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flytta detta objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ögeyi taşı"
           }
         }
       }
@@ -82145,7 +82961,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Flyt til Papirkurv"
+            "value" : "Flyt til papirkurv"
           }
         },
         "de" : {
@@ -82370,7 +83186,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "フルネーム"
+            "value" : "カード名義人"
           }
         },
         "ka" : {
@@ -82688,6 +83504,12 @@
             "value" : "NOVITA'"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最新"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82712,6 +83534,12 @@
             "value" : "NIEUW"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOWY"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -82728,6 +83556,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "NOVÉ"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "NOVO"
           }
         },
         "sv" : {
@@ -83247,7 +84081,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ingen aktivitet i de sidste 14 dage."
+            "value" : "Ingen aktivitet i de seneste 14 dage."
           }
         },
         "de" : {
@@ -83549,7 +84383,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ingen brud registreret"
+            "value" : "Ingen databrud registreret"
           }
         },
         "de" : {
@@ -83872,6 +84706,12 @@
             "value" : "Ingen elementer er delt med dig"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es wurden keine Elemente mit dir geteilt"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83908,10 +84748,22 @@
             "value" : "Aucun élément n’est partagé avec vous."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada item yang telah dibagikan dengan Anda"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nessun elemento condiviso con te"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたと共有されたアイテムはありません"
           }
         },
         "ka" : {
@@ -83938,6 +84790,12 @@
             "value" : "Er worden geen items met u gedeeld"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum item é compartilhado com você"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83960,6 +84818,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sizinle paylaşılmış bir öge yok"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "З вами не поділились жодним елементом"
           }
         }
       }
@@ -85460,7 +86324,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "今ではない"
+            "value" : "また今度"
           }
         },
         "ka" : {
@@ -85980,6 +86844,12 @@
             "value" : "Poznámka • SimpleLogin"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opomba • SimpleLogin"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86077,7 +86947,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コピーされたノート内容"
+            "value" : "メモの内容がコピーされました"
           }
         },
         "ka" : {
@@ -86237,7 +87107,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ノートが作成されました"
+            "value" : "メモが作成されました"
           }
         },
         "ka" : {
@@ -86558,7 +87428,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ノートがごみ箱に移動されました"
+            "value" : "メモがごみ箱に移動されました"
           }
         },
         "ka" : {
@@ -87038,7 +87908,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ノートを更新しました"
+            "value" : "メモが更新されました"
           }
         },
         "ka" : {
@@ -90008,7 +90878,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "「システム設定」→「パスワード」→「パスワードオプション」を開く。"
+            "value" : "「システム設定」→「パスワード」→「パスワードオプション」を開く"
           }
         },
         "ka" : {
@@ -93617,13 +94487,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Supprimer définitivement %lld élément"
+                  "value" : "%lld élément supprimé définitivement"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Supprimer définitivement %lld éléments"
+                  "value" : "%lld éléments supprimés définitivement"
                 }
               }
             }
@@ -94668,7 +95538,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pin "
+            "value" : "ピン留め "
           }
         },
         "ka" : {
@@ -94988,7 +95858,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PINコードセット"
+            "value" : "PINコードが設定されました"
           }
         },
         "ka" : {
@@ -95308,7 +96178,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "暗証番号が一致しません"
+            "value" : "PINが一致しません"
           }
         },
         "ka" : {
@@ -95468,7 +96338,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "設定でカメラへのアクセスを許可してください。"
+            "value" : "設定でカメラへのアクセスを許可してください"
           }
         },
         "ka" : {
@@ -98736,7 +99606,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "プロフィール"
+            "value" : "プロファイル"
           }
         },
         "ka" : {
@@ -99791,6 +100661,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass genererer en videresendelsesadresse (også kaldet et omvendt alias)."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass erzeugt eine Weiterleitungsadresse (auch als Reverse Alias bezeichnet)."
           }
         },
         "el" : {
@@ -101822,7 +102698,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "エイリアスを削除する"
+            "value" : "エイリアスを削除"
           }
         },
         "ka" : {
@@ -102061,10 +102937,142 @@
     },
     "Remove cached attachments from previous downloads" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдаліць кэшыраваныя далучэнні кэшу ад папярэдніх спампоўванняў"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odebrat z mezipaměti přílohy předchozích stahování"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjern cachelagrede vedhæftede filer fra tidligere downloads"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zwischengespeicherte Anhänge aus früheren Downloads entfernen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κατάργηση προσωρινά αποθηκευμένων συνημμένων από προηγούμενες λήψεις"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Remove cached attachments from previous downloads"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar los archivos adjuntos en caché de descargas anteriores"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Borrar los archivos adjuntos en caché de descargas anteriores"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poista välimuistissa olevat liitetiedostot aiemmista latauksista"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retirer les pièces jointes mises en cache des téléchargements précédents"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus lampiran dalam tembolok dari unduhan sebelumnya"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rimuovi gli allegati memorizzati nella cache dai download precedenti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "以前のダウンロードからキャッシュされた添付ファイルを削除"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაკეშილი მიმაგრებული ფაილების წაშლა წინა გადმოწერებიდან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이전 다운로드에서 캐싱된 첨부파일 삭제"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjern bufrede vedlegg fra tidligere nedlastinger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwijder bijlagen van vorige downloads uit de cache"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remover anexos em cache de downloads anteriores"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminare fișiere atașate descărcărilor anterioare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstránenie dočasne uložených príloh z predchádzajúcich sťahovaní"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort cachade bilagor från tidigare nedladdningar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Önceki indirmelerden ön bellekte kalan ek dosyaları kaldır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалення з попередніх завантажень"
           }
         }
       }
@@ -102240,7 +103248,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odstranit dodatečné heslo"
+            "value" : "Odebrat dodatečné heslo"
           }
         },
         "da" : {
@@ -103151,6 +104159,12 @@
             "value" : "Premenovať"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preimenuj"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103297,6 +104311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Premenovať súbor"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preimenuj datoteko"
           }
         },
         "sv" : {
@@ -104276,10 +105296,136 @@
     },
     "Reset" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetovat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nulstil"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurücksetzen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επαναφορά"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reset"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nollaa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atur ulang"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Azzera"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "リセット"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩამოყრა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "초기화"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilbakestill"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redefinir"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetovať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponastavi"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Återställ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sıfırla"
           }
         }
       }
@@ -104447,30 +105593,384 @@
     },
     "Reset history" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetovat historii"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nulstil historik"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlauf löschen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επαναφορά ιστορικού"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reset history"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer el historial"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restablecer el historial"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nollaa historia"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réinitialiser l'historique"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atur ulang riwayat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Azzera cronologia"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履歴をリセット"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ისტორიის ჩამოყრა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 초기화"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilbakestill historikk"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reset historiek"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redefinir histórico"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetare istoric"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetovať históriu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Återställ historik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmişi sıfırla"
           }
         }
       }
     },
     "Reset history for this item?" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetovat historii této položky?"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nulstil historik for dette element?"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlauf für dieses Element löschen?"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Να γίνει επαναφορά ιστορικού αυτού του στοιχείου;"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reset history for this item?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Quieres restablecer el historial de este elemento?"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Desea restablecer el historial de este elemento?"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nollataanko tämän kohteen historia?"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voulez-vous réinitialiser l'historique de cet élément ?"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atur ulang riwayat untuk item ini?"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reimpostare la cronologia per questo elemento?"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアイテムの履歴をリセットしますか？"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩამოვყარო ისტორია ამ ელემენტისთვის?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목의 기록을 초기화할까요?"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilbakestille historikken for dette elementet?"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historiek van dit item resetten"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redefinir histórico para esse item?"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetați istoricul pentru acest articol?"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetovať históriu tejto položky?"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Återställ historik för detta objekt?"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ögenin geçmişi sıfırlansın mı?"
           }
         }
       }
     },
     "Resetting history will permanently delete all past versions and cannot be undone." : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetování historie trvale smaže všechny předchozí verze a nelze to vrátit zpět."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nulstilling af historikken sletter alle tidligere versioner permanent og kan ikke fortrydes."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η επαναφορά ιστορικού θα διαγράψει οριστικά όλες τις παλαιότερες εκδόσεις και δεν είναι δυνατό να αναιρεθεί."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resetting history will permanently delete all past versions and cannot be undone."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al restablecer el historial se eliminará permanentemente todas las versiones anteriores y no se podrá deshacer."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al restablecer el historial se eliminará permanentemente todas las versiones anteriores y no se podrá deshacer."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historian nollaus poistaa kaikki aiemmat versiot pysyvästi, eikä sitä voi perua."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La réinitialisation de l'historique supprimera définitivement toutes les versions précédentes et ne peut pas être annulée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mengatur ulang riwayat akan menghapus semua versi lama secara permanen dan tidak dapat diurungkan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La reimpostazione della cronologia eliminerà definitivamente tutte le versioni precedenti e non potrà essere annullata."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "履歴をリセットすると過去のバージョンが完全に削除され、元に戻すことはできません。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ისტორიის ჩამოყრა სამუდამოდ წაშლის ყველა ძველ ვერსიას და ეს ქმედება შეუქცევადია."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기록 재설정은 모든 과거 버전들을 삭제하며 되돌릴 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilbakestilling av historikk vil slette alle tidligere versjoner permanent og kan ikke angres."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het resetten van de historiek zal alle voorgaande versies definitief verwijderen en kan niet ongedaan worden gemaakt."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redefinir o histórico excluirá permanentemente todas as versões anteriores e não poderá ser desfeito."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetarea istoricului va șterge definitiv toate versiunile anterioare și nu poate fi anulată."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resetovanie histórie natrvalo vymaže všetky predchádzajúce verzie a nie je možné vrátiť ich späť."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Återställning av historik kommer att ta bort alla tidigare versioner permanent och kan inte ångras."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geçmişi sıfırlamak tüm eski sürümleri kalıcı olarak siler ve bu işlem geri alınamaz."
           }
         }
       }
@@ -110077,7 +111577,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "セキュアなパスワード・マネージャーなど"
+            "value" : "セキュアなパスワードマネージャーなど"
           }
         },
         "ka" : {
@@ -111142,6 +112642,12 @@
             "value" : "Se oversigt over medlemmer og tilladelser"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übersicht über Mitglieder und Berechtigungen anzeigen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -111218,6 +112724,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zie de leden en permissies overzicht"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veja a visão geral dos membros e das permissões"
           }
         },
         "ro" : {
@@ -112804,6 +114316,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odoslať email"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pošlji sporočilo"
           }
         },
         "sv" : {
@@ -115198,6 +116716,12 @@
             "value" : "Zdieľať položku"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daj predmet v skupno rabo"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -115616,7 +117140,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保管庫シェア"
+            "value" : "保管庫を共有"
           }
         },
         "ka" : {
@@ -115988,6 +117512,12 @@
             "value" : "Mnou zdieľané"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaj delim z drugimi"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -116104,6 +117634,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gedeeld item uitnodiging"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaproszenie do udostępnionego elementu"
           }
         },
         "pt-BR" : {
@@ -116248,6 +117784,12 @@
             "value" : "Gedeeld via"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępniono przez"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -116264,6 +117806,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zdieľané cez"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deljeno preko"
           }
         },
         "sv" : {
@@ -116363,7 +117911,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "共有されたもの"
+            "value" : "私と共有中"
           }
         },
         "ka" : {
@@ -117620,7 +119168,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "どうするか教えて"
+            "value" : "方法を表示"
           }
         },
         "ka" : {
@@ -118245,10 +119793,22 @@
             "value" : "Afficher les éléments partagés par moi"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tampilkan dibagikan oleh saya"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra condiviso da me"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "私が共有したものを表示"
           }
         },
         "ka" : {
@@ -118303,6 +119863,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Benimle paylaşılanları görüntüle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поширено мною"
           }
         }
       }
@@ -118369,10 +119935,22 @@
             "value" : "Afficher les éléments partagés avec moi"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tampilkan dibagikan oleh saya"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mostra condiviso con me"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "私と共有されたものを表示"
           }
         },
         "ka" : {
@@ -118427,6 +120005,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Benim paylaştıklarımı görüntüle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поширено для мене"
           }
         }
       }
@@ -121099,10 +122683,160 @@
     },
     "Storage" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховішча"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Úložiště"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagerplads"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speicher"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποθηκευτικός χώρος"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Storage"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almacenamiento"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Almacenamiento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tallennustila"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Espace de stockage"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penyimpanan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archiviazione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストレージ容量"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장공간"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagring"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opslagruimte"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przestrzeń dyskowa"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Armazenamento"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spațiu de stocare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Úložisko"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shramba"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagringsutrymme"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depolama alanı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сховище"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lưu trữ"
           }
         }
       }
@@ -121665,7 +123399,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suffix"
+            "value" : "接尾辞"
           }
         },
         "ka" : {
@@ -124311,6 +126045,12 @@
             "value" : "Det viste navn, når der sendes en e-mail fra dette alias."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Anzeigename, wenn eine E-Mail von diesem Alias versendet wird."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124571,10 +126311,124 @@
     },
     "The selected file is empty. Please check the file and try again." : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vybraný soubor je prázdný. Zkontrolujte prosím soubor a zkuste to znovu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den valgte fil er tom. Tjek venligst filen og prøv igen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το επιλεγμένο αρχείο είναι άδειο. Παρακαλούμε ελέγξτε το αρχείο και δοκιμάστε ξανά."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "The selected file is empty. Please check the file and try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El archivo seleccionado está vacío. Verifica el archivo e intenta nuevamente."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El archivo seleccionado está vacío. Verifique el archivo e intente nuevamente."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valittu tiedosto on tyhjä. Tarkista tiedosto ja yritä uudelleen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le fichier sélectionné est vide. Veuillez vérifier le fichier et essayer à nouveau."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berkas yang dipilih kosong. Silakan periksa ulang berkas dan coba lagi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il file selezionato è vuoto. Controlla il file e riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選択したファイルが空です。ファイルを確認して再度お試し下さい。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არჩეული ფაილი ცარიელია. შეამოწმეთ ფაილი და თავიდან სცადეთ."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "선택된 파일은 비어있습니다. 파일을 확인 후 다시 시도하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valgt fil er tom. Sjekk filen og forsøk igjen."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het geselecteerde bestand is leeg. Controleer het bestand en probeer opnieuw."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O arquivo selecionado está vazio. Verifique o arquivo e tente novamente."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fișierul selectat este gol. Verificați fișierul și reîncercați."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zvolený súbor je prázdny. Skontrolujte súbor a skúste to znova, prosím."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den valda filen är tom. Kontrollera filen och försök igen."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seçilmiş dosya boş. Lütfen dosyayı denetleyip yeniden deneyin."
           }
         }
       }
@@ -125222,10 +127076,124 @@
     },
     "This item is currently shared. Moving it to another vault will remove access for all other users." : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tato položka je v současné době sdílená. Přesunutím do jiného trezoru se zruší přístup pro všechny ostatní uživatele."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette element er i øjeblikket delt. Hvis du flytter det til en anden boks, fjernes adgangen for alle andre brugere."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτό το στοιχείο είναι κοινόχρηστο. Αν μεταφερθεί σε άλλη κρύπτη, όλοι οι υπόλοιποι χρήστες θα χάσουν την πρόσβασή τους σε αυτό."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "This item is currently shared. Moving it to another vault will remove access for all other users."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este elemento está compartido actualmente. Si lo mueves a otra caja fuerte, se eliminará el acceso para todos los demás usuarios."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este elemento está compartido actualmente. Si lo mueve a otra bóveda, se eliminará el acceso para todos los demás usuarios."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä kohde on tällä hetkellä jaettuna. Sen siirtäminen toiseen holviin poistaa pääsyn kaikilta muilta käyttäjiltä."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'élément est actuellement partagé. Son déplacement vers un autre coffre-fort retirera également son accès aux autres utilisateurs."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ini saat ini dibagikan. Memindahkannya ke brankas yang lain akan menghilangkan akses untuk semua pengguna lain."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo elemento è attualmente condiviso. Lo spostamento in un altro deposito rimuoverà l'accesso per tutti gli altri utenti."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアイテムは現在共有されています。他の保管庫に移動すると、他のすべてのユーザーのアクセスが削除されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს ელემენტი ამჟამად გაზიარებულია. მისი სხვა საცავში გადატანა სხვა მომხმარებლებს მასზე წვდომას დაუკავრავს."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목은 현재 공유되는 중 입니다. 다른 금고로 이동하면 모든 다른 사용자의 접근 권한이 없어집니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette elementet er for øyeblikket delt. Hvis du flytter det til et annet hvelv, fjernes tilgangen for alle andre brukere."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit item wordt momenteel gedeeld. Als u het naar een andere kluis verplaatst, wordt de toegang voor alle andere gebruikers geblokkeerd."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este item está compartilhado no momento. Movê-lo para outro cofre removerá o acesso de todos os outros usuários."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Articolul este partajat în acest moment. Dacă îl mutați în alt seif, ceilalți utilizatori nu-l vor mai putea accesa."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Táto položka je v súčasnosti zdieľaná. Jej presunutím do iného trezora sa zruší prístup pre všetkých ostatných používateľov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta objekt delas för närvarande. Att flytta det till ett annat valv kommer att ta bort åtkomst för alla andra användare."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öge şu anda paylaşılıyor. Başka bir kasaya taşırsanız diğer kullanıcıların erişimi kaldırılacak."
           }
         }
       }
@@ -125307,7 +127275,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この項目は監視されていません"
+            "value" : "このアイテムは監視されていません"
           }
         },
         "ka" : {
@@ -125467,7 +127435,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このログイン項目にはすでに2要素認証シークレットが含まれています"
+            "value" : "このログインアイテムにはすでに2要素認証シークレットが含まれています"
           }
         },
         "ka" : {
@@ -125787,7 +127755,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このサービスは 2FA を提供します。アカウントのセキュリティを強化するには、これを有効にします。"
+            "value" : "このサービスは 2FA を提供しています。アカウントのセキュリティを強化するには、これを有効にしてください。"
           }
         },
         "ka" : {
@@ -125947,7 +127915,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "これにより、保管庫 « %@ » とそのすべての内容が完全に削除されます。 ボールト名を入力して削除を確認します。"
+            "value" : "これにより、保管庫 « %@ » とそのすべての内容が完全に削除されます。保管庫名を入力して削除を確認します。"
           }
         },
         "ka" : {
@@ -127518,7 +129486,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コピーされた TOTP コード"
+            "value" : "TOTP をコピーしました"
           }
         },
         "ka" : {
@@ -128336,7 +130304,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このフォルダーの所有権を%@に移転しますか？"
+            "value" : "この保管庫の所有権を%@に移転しますか？"
           }
         },
         "ka" : {
@@ -128657,7 +130625,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ごみ箱は空っぽです"
+            "value" : "ごみ箱は空です"
           }
         },
         "ka" : {
@@ -129297,7 +131265,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "パスワードの自動入力をオンにし、Proton Passからの入力を許可する。"
+            "value" : "パスワードの自動入力をオンにし、Proton Passからの入力を許可する"
           }
         },
         "ka" : {
@@ -129778,7 +131746,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "確認のため、もう一度暗証番号を入力します。"
+            "value" : "確認のため、もう一度PINコードをを入力してください"
           }
         },
         "ka" : {
@@ -133745,7 +135713,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "スパムやフィッシングから受信トレイを守る"
+            "value" : "メールエイリアスを使用して受信トレイと本人確認を保護します"
           }
         },
         "ka" : {
@@ -134710,7 +136678,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ログインで使用されます"
+                  "value" : "%lld 個のログインで使用されます"
                 }
               }
             }
@@ -136655,7 +138623,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたと共有しているフォルダー"
+            "value" : "あなたと共有している保管庫"
           }
         },
         "ka" : {
@@ -137893,7 +139861,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "検証"
+            "value" : "認証"
           }
         },
         "ka" : {
@@ -138367,7 +140335,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "表示切り替え"
+            "value" : "表示"
           }
         },
         "ka" : {
@@ -139001,7 +140969,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "詳細を見る"
+            "value" : "詳細を表示"
           }
         },
         "ka" : {
@@ -139642,7 +141610,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ビューアー"
+            "value" : "閲覧者"
           }
         },
         "ka" : {
@@ -140017,7 +141985,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Slab"
+            "value" : "Ranljivo"
           }
         },
         "sv" : {
@@ -140578,7 +142546,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Kami mendeteksi bahwa Anda memiliki %lld alias yang ada di SimpleLogin namun belum tercatat pada Proton Pass. Apakah Anda ingin mengimpor alias ini?"
+                  "value" : "Kami mendeteksi bahwa Anda memiliki %lld alias yang terdapat pada SimpleLogin namun tidak ada pada Proton Pass. Apakah Anda ingin mengimpor alias ini?"
                 }
               }
             }
@@ -142036,7 +144004,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コピーされたウェブサイト"
+            "value" : "ウェブサイトをコピーしました"
           }
         },
         "ka" : {
@@ -142718,7 +144686,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pri premikanju predmetov med trezorji bomo ohranili do zadnjih 50 sprememb, izvedenih na vsakem predmetu"
+            "value" : "Pri premikanju predmetov med trezorji bomo ohranili do zadnjih 50 sprememb, izvedenih na vsakem predmetu."
           }
         },
         "sv" : {
@@ -142765,6 +144733,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Med andre Proton Pass-brugere"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit anderen Proton Pass-Benutzern"
           }
         },
         "el" : {
@@ -147006,6 +148980,12 @@
             "value" : "Non hai condiviso alcun elemento"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アイテムを共有していません"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -147027,7 +149007,19 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Je hebt geen items gedeeld"
+            "value" : "U heeft geen items gedeeld"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udostępniłeś żadnego elementu."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você não compartilhou nenhum item"
           }
         },
         "ro" : {
@@ -147052,6 +149044,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhangi bir öge paylaşmamışsınız"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви не поділились нічим іншим"
           }
         }
       }
@@ -151008,7 +153006,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vaša košarica je prazna"
+            "value" : "Vaš trezor je prazen"
           }
         },
         "sv" : {
