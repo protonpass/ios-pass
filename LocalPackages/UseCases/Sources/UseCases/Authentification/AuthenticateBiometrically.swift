@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
-import Entities
 import LocalAuthentication
 
 /// Biometrically authenticate with a given reason
@@ -50,9 +49,14 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
     public func execute(policy: LAPolicy, reason: String) async throws -> Bool {
         let context = LAContext()
         do {
-            if try checkIfUserBiometricsSettingsChanged(context: context) {
-                throw PassError.biometricChange
-            }
+            // swiftlint:disable:next todo
+            // TODO: `evaluatedPolicyDomainState` is deprecated on iOS 18
+            // Think about other way to make biometric change detection future proof
+            /*
+             if try checkIfUserBiometricsSettingsChanged(context: context) {
+                 throw PassError.biometricChange
+             }
+             */
 
             return try await context.evaluatePolicy(policy, localizedReason: reason)
         } catch {
@@ -60,6 +64,7 @@ public final class AuthenticateBiometrically: AuthenticateBiometricallyUseCase {
         }
     }
 
+    // periphery:ignore
     private func checkIfUserBiometricsSettingsChanged(context: LAContext) throws -> Bool {
         let biometricKey = Constants.biometricStateKey
         // If there is no saved policy state yet, save it
