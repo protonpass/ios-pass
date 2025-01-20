@@ -94,10 +94,10 @@ private extension LogInDetailView {
                                 .padding(.top, 8)
                         }
 
-                        if viewModel.canShareItem {
-                            ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                                     action: { viewModel.showItemHistory() })
-                        }
+                        ItemDetailHistorySection(itemContent: viewModel.itemContent,
+                                                 action: {
+                                                     viewModel.canShareItem ? viewModel.showItemHistory() : nil
+                                                 })
 
                         ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
                                                   itemContent: viewModel.itemContent,

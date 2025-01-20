@@ -71,7 +71,8 @@ private extension IdentityDetailView {
                     }
 
                     ItemDetailHistorySection(itemContent: viewModel.itemContent,
-                                             action: { viewModel.canShareItem ? viewModel.showItemHistory() : nil
+                                             action: {
+                                                 viewModel.canShareItem ? viewModel.showItemHistory() : nil
                                              })
 
                     ItemDetailMoreInfoSection(isExpanded: $viewModel.moreInfoSectionExpanded,
