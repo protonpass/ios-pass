@@ -58,6 +58,18 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     let pastRevision: ItemContent
     let files: [ItemFile]
 
+    private var currentFiles: [FileAttachmentUiModel] {
+        filterFiles(for: currentRevision)
+    }
+
+    private var pastFiles: [FileAttachmentUiModel] {
+        filterFiles(for: pastRevision)
+    }
+
+    var hasFileDifferences: Bool {
+        Set(currentFiles.map(\.id)) != Set(pastFiles.map(\.id))
+    }
+
     var selectedRevisionContent: ItemContent {
         switch selectedRevision {
         case .past:
@@ -77,30 +89,7 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     }
 
     func fileUiModels(for item: ItemContent) -> [FileAttachmentUiModel] {
-        files.compactMap { file in
-            let eligible = if let revisionRemoved = file.revisionRemoved {
-                revisionRemoved >= item.item.revision
-            } else {
-                file.revisionAdded <= item.item.revision
-            }
-
-            guard eligible else { return nil }
-
-            guard let name = file.name,
-                  let mimeType = file.mimeType else {
-                assertionFailure("Missing file name and MIME type")
-                return nil
-            }
-
-            let formattedSize = formatFileAttachmentSize(file.size)
-            let fileGroup = getFileGroup(mimeType: mimeType)
-            return .init(id: file.fileID,
-                         url: nil,
-                         state: .uploaded,
-                         name: name,
-                         group: fileGroup,
-                         formattedSize: formattedSize)
-        }
+        item.item.revision == currentRevision.item.revision ? currentFiles : pastFiles
     }
 }
 
@@ -254,6 +243,33 @@ extension DetailHistoryViewModel: FileAttachmentsViewHandler {
 }
 
 private extension DetailHistoryViewModel {
+    func filterFiles(for item: ItemContent) -> [FileAttachmentUiModel] {
+        files.compactMap { file in
+            let eligible = if let revisionRemoved = file.revisionRemoved {
+                revisionRemoved >= item.item.revision
+            } else {
+                file.revisionAdded <= item.item.revision
+            }
+
+            guard eligible else { return nil }
+
+            guard let name = file.name,
+                  let mimeType = file.mimeType else {
+                assertionFailure("Missing file name and MIME type")
+                return nil
+            }
+
+            let formattedSize = formatFileAttachmentSize(file.size)
+            let fileGroup = getFileGroup(mimeType: mimeType)
+            return .init(id: file.fileID,
+                         url: nil,
+                         state: .uploaded,
+                         name: name,
+                         group: fileGroup,
+                         formattedSize: formattedSize)
+        }
+    }
+
     func openPreview(_ file: FileAttachmentUiModel,
                      postAction: FileAttachmentPreviewPostDownloadAction) {
         Task {

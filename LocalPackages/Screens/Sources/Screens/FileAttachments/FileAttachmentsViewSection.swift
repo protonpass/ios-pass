@@ -42,15 +42,18 @@ public struct FileAttachmentsViewSection: View {
     private let isFetching: Bool
     /// Error while fetching already attached files
     private let fetchError: (any Error)?
+    private let borderColor: UIColor?
     private let handler: any FileAttachmentsViewHandler
 
     public init(files: [FileAttachmentUiModel],
                 isFetching: Bool,
                 fetchError: (any Error)?,
+                borderColor: UIColor? = nil,
                 handler: any FileAttachmentsViewHandler) {
         self.files = files
         self.isFetching = isFetching
         self.fetchError = fetchError
+        self.borderColor = borderColor
         self.handler = handler
     }
 
@@ -102,6 +105,6 @@ public struct FileAttachmentsViewSection: View {
         .animation(.default, value: isFetching)
         .animation(.default, value: fetchError.debugDescription)
         .padding(DesignConstant.sectionPadding)
-        .roundedDetailSection()
+        .roundedDetailSection(borderColor: borderColor ?? PassColor.inputBorderNorm)
     }
 }
