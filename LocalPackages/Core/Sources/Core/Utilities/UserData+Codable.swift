@@ -84,7 +84,7 @@ public extension UserData {
                         email: nil,
                         displayName: nil,
                         keys: [],
-                        flags: .default)
+                        flags: .init(hasTemporaryPassword: false, sso: false))
 
         return .init(credential: credential,
                      user: user,
