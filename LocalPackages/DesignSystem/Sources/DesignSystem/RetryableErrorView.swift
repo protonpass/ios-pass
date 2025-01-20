@@ -56,7 +56,7 @@ public struct RetryableErrorView: View {
         switch mode {
         case let .vertical(textColor):
             VStack {
-                Text(verbatim: error.localizedDescription)
+                Text(verbatim: error.localizedDebugDescription)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(textColor.toColor)
                 retryButton
@@ -65,7 +65,7 @@ public struct RetryableErrorView: View {
 
         case let .horizontal(textColor):
             HStack {
-                Text(verbatim: error.localizedDescription)
+                Text(verbatim: error.localizedDebugDescription)
                     .font(.callout)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundStyle(textColor.toColor)
@@ -83,5 +83,16 @@ private extension RetryableErrorView {
             .foregroundStyle(tintColor.toColor)
             .labelStyle(.rightIcon)
             .buttonEmbeded(action: onRetry)
+    }
+}
+
+private extension Error {
+    var localizedDebugDescription: String {
+        if let debugDescription = (self as? CustomDebugStringConvertible)?.debugDescription,
+           debugDescription != localizedDescription {
+            "\(localizedDescription) \(debugDescription)"
+        } else {
+            localizedDescription
+        }
     }
 }
