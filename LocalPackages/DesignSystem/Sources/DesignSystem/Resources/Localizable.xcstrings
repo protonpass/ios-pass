@@ -76,6 +76,12 @@
             "value" : "Fotocamera non disponibile"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カメラが利用できません"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -535,7 +541,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "変更を破棄？"
+            "value" : "変更を破棄しますか？"
           }
         },
         "ka" : {
@@ -1143,6 +1149,12 @@
             "value" : "Los ajustes de privacidad o restricciones han desactivado el uso de la cámara. Puede cambiar esto en los ajustes."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietosuoja- tai rajoitusasetukset ovat estäneet kameran käytön. Voit sallia kameran käytön Asetuksissa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1161,6 +1173,12 @@
             "value" : "Le impostazioni di privacy o restrizioni hanno disabilitato l'uso della fotocamera. Puoi modificarlo nelle Impostazioni."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシーまたは制限設定がカメラの使用を無効にしています。これは設定で変更できます。"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1170,7 +1188,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "카메라 사용에 대한 프라이버시 및 제한 설정이 비활성화되었습니다. 설정에서 변경할 수 있습니다."
+            "value" : "프라이버시 혹은 제한 설정이 카메라 사용을 비활성화했습니다. 설정에서 변경할 수 있습니다."
           }
         },
         "nb" : {
@@ -1183,6 +1201,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Privacy of restricties instellingen hebben het gebruik van de camera uitgeschakeld. U kunt dit wijzigen in Instellingen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "As configurações de Privacidade ou Restrições desabilitaram o uso da câmera. Você pode alterar isso em Configurações."
           }
         },
         "ro" : {
@@ -1614,7 +1638,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この項目に関するいくつかの変更があり、前のページに移動しました。"
+            "value" : "このアイテムに関するいくつかの変更があり、前のページに移動しました。"
           }
         },
         "ka" : {
@@ -1774,7 +1798,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "この項目は古いものです"
+            "value" : "このアイテムは古いものです"
           }
         },
         "ka" : {

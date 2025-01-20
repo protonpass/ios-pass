@@ -718,7 +718,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "マッチシステム"
+            "value" : "システムに合わせる"
           }
         },
         "ka" : {
@@ -1603,10 +1603,130 @@
     },
     "Search in all items..." : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hledání ve všech položkách..."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søg i alle elementer..."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αναζήτηση σε όλα τα στοιχεία..."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Search in all items..."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en todas los elementos..."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buscar en todas los elementos..."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Etsi kaikista kohteista..."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rechercher dans tous les éléments…"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cari dalam semua item..."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cerca in tutti gli elementi..."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてのアイテムを検索…"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ძებნა ყველა ელემენტში…"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "전체 금고 내에서 검색..."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Søk i alle elementer…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zoeken in alle items..."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przeszukaj wszystkie elementy…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar em todos os itens..."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Căutare în toate articolele…"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hľadať vo všetkých položkách…"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sök i alla objekt..."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tüm ögelerde ara..."
           }
         }
       }
@@ -1667,10 +1787,22 @@
             "value" : "Rechercher dans les éléments partagés par moi"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cari dalam item dibagikan oleh saya"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerca negli elementi condivisi da me"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分が共有した中から検索"
           }
         },
         "ka" : {
@@ -1697,6 +1829,12 @@
             "value" : "Zoeken in items gedeeld door mij"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar em itens compartilhados por mim"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1719,6 +1857,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Benim paylaştıklarım içinde ara"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пошук в Поширено мною..."
           }
         }
       }
@@ -1779,10 +1923,22 @@
             "value" : "Rechercher dans les éléments partagés avec moi"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cari dalam item dibagikan dengan saya"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cerca negli elementi condivisi con me"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "私と共有されたアイテムから検索"
           }
         },
         "ka" : {
@@ -1809,6 +1965,12 @@
             "value" : "Zoeken in items gedeeld met mij"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesquisar em Itens compartilhados comigo"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1831,6 +1993,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Benimle paylaşılanlar içinde ara"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пошук в Поширено мені..."
           }
         }
       }
