@@ -28,6 +28,7 @@ import Macro
 import ProtonCoreAccountRecovery
 import ProtonCoreFeatureFlags
 @preconcurrency import ProtonCoreLogin
+@preconcurrency import ProtonCoreLoginUI
 import ProtonCorePushNotifications
 import SwiftUI
 
@@ -89,7 +90,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
     private var clearCacheForLoggedOutUsers
 
-    @LazyInjected(\SharedToolingContainer.authDeviceManagerUI) var authDeviceManagerUI
+    private var authDeviceManagerUI: AuthDeviceManagerUI?
 
     //    @LazyInjected(\ServiceContainer.pushNotificationService) private var pushNotificationService
 
@@ -139,7 +140,7 @@ final class AppCoordinator {
                        authManager.getCredential(userId: userId)?.sessionID != nil {
                         registerForPushNotificationsIfNeededAndAddHandlers( /* uid: sessionID */ )
                     }
-                    authDeviceManagerUI.setup()
+                    authDeviceManagerUI?.setup()
                 case let .manuallyLoggedIn(userData, extraPassword):
                     Task { [weak self] in
                         guard let self else {
@@ -154,7 +155,7 @@ final class AppCoordinator {
                             showHomeScene(mode: .manualLogin)
                         }
                         registerForPushNotificationsIfNeededAndAddHandlers(/* uid: userData.credential.sessionID */ )
-                        authDeviceManagerUI.setup()
+                        authDeviceManagerUI?.setup()
                     }
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -189,6 +190,9 @@ final class AppCoordinator {
             start()
             refreshFeatureFlags()
             setUpCoreTelemetry()
+
+            authDeviceManagerUI = AuthDeviceManagerUI(authDeviceManager: .init(userManagerProvider: userManager,
+                                                                               apiManagerProvider: apiManager))
 
             authManager.sessionWasInvalidated
                 .receive(on: DispatchQueue.main)
