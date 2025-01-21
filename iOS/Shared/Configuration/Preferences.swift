@@ -172,7 +172,8 @@ extension Preferences: @unchecked Sendable, PreferencesMigrator {
                                        clipboardExpiration: clipboardExpiration,
                                        shareClipboard: shareClipboard,
                                        alwaysShowUsernameField: false,
-                                       lastActiveTimestamp: nil)
+                                       lastActiveTimestamp: nil,
+                                       aliasDiscovery: [])
         let user = UserPreferences(spotlightEnabled: spotlightEnabled,
                                    spotlightSearchableContent: spotlightSearchableContent,
                                    spotlightSearchableVaults: spotlightSearchableVaults,
