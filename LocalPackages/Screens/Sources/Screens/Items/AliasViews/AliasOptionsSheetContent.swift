@@ -34,11 +34,12 @@ public struct AliasOptionsSheetContent: View {
     private let onAddDomain: () -> Void
     private let onDismiss: () -> Void
 
-    public init(state: AliasOptionsSheetState,
+    public init(module: PassModule,
+                state: AliasOptionsSheetState,
                 onAddMailbox: @escaping () -> Void,
                 onAddDomain: @escaping () -> Void,
                 onDismiss: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(state: state))
+        _viewModel = .init(wrappedValue: .init(module: module, state: state))
         self.onAddMailbox = onAddMailbox
         self.onAddDomain = onAddDomain
         self.onDismiss = onDismiss
@@ -72,8 +73,8 @@ public struct AliasOptionsSheetContent: View {
 
 @MainActor
 private final class AliasOptionsSheetContentViewModel: ObservableObject {
-    @Published private(set) var showMailboxTip = true
-    @Published private(set) var showDomainTip = true
+    @Published private(set) var showMailboxTip: Bool
+    @Published private(set) var showDomainTip: Bool
     let state: AliasOptionsSheetState
 
     var height: CGFloat {
@@ -96,8 +97,12 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
         return OptionRowHeight.compact.value * CGFloat(elementCount) + tipHeight + 60 // nav bar
     }
 
-    init(state: AliasOptionsSheetState) {
+    init(module: PassModule,
+         state: AliasOptionsSheetState) {
         self.state = state
+
+        showMailboxTip = module == .hostApp
+        showDomainTip = module == .hostApp
     }
 
     func dismissMailboxTip(completion: (() -> Void)? = nil) {
