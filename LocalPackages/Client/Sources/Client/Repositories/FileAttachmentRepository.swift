@@ -56,18 +56,24 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
     func getItemFilesForAllRevisions(userId: String,
                                      item: any ItemIdentifiable,
                                      share: Share) async throws -> [ItemFile]
+    func restoreFiles(userId: String,
+                      item: any ItemIdentifiable,
+                      files: [ItemFile]) async throws
 }
 
 public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
+    private let shareRepository: any ShareRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let remoteFileDatasource: any RemoteFileDatasourceProtocol
     private let apiServiceLite: any ApiServiceLiteProtocol
     private let keyManager: any PassKeyManagerProtocol
 
-    public init(itemRepository: any ItemRepositoryProtocol,
+    public init(shareRepository: any ShareRepositoryProtocol,
+                itemRepository: any ItemRepositoryProtocol,
                 remoteFileDatasource: any RemoteFileDatasourceProtocol,
                 apiServiceLite: any ApiServiceLiteProtocol,
                 keyManager: any PassKeyManagerProtocol) {
+        self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.remoteFileDatasource = remoteFileDatasource
         self.apiServiceLite = apiServiceLite
@@ -252,6 +258,51 @@ public extension FileAttachmentRepository {
             return try await remoteFileDatasource.getFilesForAllRevisions(userId: userId,
                                                                           item: item,
                                                                           lastId: lastId)
+        }
+    }
+
+    func restoreFiles(userId: String,
+                      item: any ItemIdentifiable,
+                      files: [ItemFile]) async throws {
+        guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
+            throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
+        }
+        let keys = try await keyManager.getShareKeys(userId: userId,
+                                                     share: share,
+                                                     item: item)
+        guard let latestKey = keys.max(by: { $0.keyRotation > $1.keyRotation }) else {
+            throw PassError.keysNotFound(shareID: item.shareId)
+        }
+
+        for file in files {
+            guard let usedKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+                throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
+            }
+
+            guard let encryptedFileKey = try file.fileKey.base64Decode() else {
+                throw PassError.crypto(.failedToBase64Decode)
+            }
+
+            // Open the file key
+            let decryptedFileKey = try AES.GCM.open(encryptedFileKey,
+                                                    key: usedKey.keyData,
+                                                    associatedData: .fileKey)
+
+            // Re-encrypt the file key with the latest share key
+            let reencryptedFileKey = try AES.GCM.seal(decryptedFileKey,
+                                                      key: latestKey.keyData,
+                                                      associatedData: .fileKey)
+
+            let encodedFileKey = reencryptedFileKey.base64EncodedString()
+            let updatedItem =
+                try await remoteFileDatasource.restoreFile(userId: userId,
+                                                           item: item,
+                                                           fileId: file.fileID,
+                                                           fileKey: encodedFileKey,
+                                                           itemKeyRevision: Int(latestKey.keyRotation))
+            try await itemRepository.upsertItems(userId: userId,
+                                                 items: [updatedItem],
+                                                 shareId: item.shareId)
         }
     }
 }
