@@ -79,14 +79,12 @@ struct AliasDetailView: View {
 
                         if viewModel.contacts != nil, viewModel.isAliasOwner {
                             contactRow
+                                .padding(.bottom, viewModel.showContactsTip ? 0 : 8)
 
-                            // swiftlint:disable:next line_length
-                            Text("To keep your personal email address hidden, you can create an alias contact that masks your address.")
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .font(.footnote)
-                                .foregroundStyle(PassColor.textWeak.toColor)
-                                .padding(.top, 8)
-                                .padding(.bottom, DesignConstant.sectionPadding)
+                            if viewModel.showContactsTip {
+                                contactTip
+                                    .padding(.vertical, 8)
+                            }
                         }
 
                         if let stats = viewModel.aliasInfos?.stats {
@@ -119,6 +117,7 @@ struct AliasDetailView: View {
             .animation(.default, value: viewModel.moreInfoSectionExpanded)
             .animation(.default, value: viewModel.aliasInfos)
             .animation(.default, value: viewModel.contacts)
+            .animation(.default, value: viewModel.showContactsTip)
             .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
@@ -304,6 +303,18 @@ struct AliasDetailView: View {
         }
         .animation(.default, value: viewModel.contacts)
         .buttonStyle(.plain)
+    }
+
+    private var contactTip: some View {
+        TipBanner(configuration: .init(arrowMode: .topLeft(padding: 20),
+                                       description: contactTipDescription,
+                                       trailingBackground: .init(image: PassIcon.protonStamp,
+                                                                 offset: .init(width: 40, height: -20))),
+                  onDismiss: viewModel.dismissContactsTip)
+    }
+
+    private var contactTipDescription: LocalizedStringKey {
+        "Every time your alias receives an email from someone, a new contact is automatically created."
     }
 
     @ViewBuilder

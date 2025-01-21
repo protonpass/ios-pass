@@ -87,18 +87,9 @@ private extension FileAttachmentsBanner {
     }
 
     var gradientBackground: some View {
-        EllipticalGradient(stops:
-            [
-                Gradient.Stop(color: Color(red: 0.57, green: 0.32, blue: 0.92),
-                              location: 0.00),
-                Gradient.Stop(color: Color(red: 0.36, green: 0.33, blue: 0.93),
-                              location: 1.00)
-            ],
-            center: UnitPoint(x: 0.85, y: 0.19))
-            .opacity(0.5)
+        BannerEllipticalGradient()
             .clipShape(roundedRectangle)
             .overlay(roundedRectangle.strokeBorder(Color.white.opacity(0.1), lineWidth: 2))
-            .padding(2)
     }
 
     var roundedRectangle: RoundedRectangle {

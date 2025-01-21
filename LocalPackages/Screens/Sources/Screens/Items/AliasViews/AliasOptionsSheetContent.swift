@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Foundation
@@ -26,46 +27,133 @@ import SwiftUI
 public enum AliasOptionsSheetState {
     case mailbox(Binding<AliasLinkedMailboxSelection>, String)
     case suffix(Binding<SuffixSelection>)
+}
+
+public struct AliasOptionsSheetContent: View {
+    @StateObject private var viewModel: AliasOptionsSheetContentViewModel
+    private let onAddMailbox: () -> Void
+    private let onAddDomain: () -> Void
+    private let onDismiss: () -> Void
+
+    public init(module: PassModule,
+                preferencesManager: any PreferencesManagerProtocol,
+                state: AliasOptionsSheetState,
+                onAddMailbox: @escaping () -> Void,
+                onAddDomain: @escaping () -> Void,
+                onDismiss: @escaping () -> Void,
+                onError: @escaping (any Error) -> Void) {
+        _viewModel = .init(wrappedValue: .init(module: module,
+                                               preferencesManager: preferencesManager,
+                                               state: state,
+                                               onError: onError))
+        self.onAddMailbox = onAddMailbox
+        self.onAddDomain = onAddDomain
+        self.onDismiss = onDismiss
+    }
+
+    public var body: some View {
+        Group {
+            switch viewModel.state {
+            case let .mailbox(mailboxSelection, title):
+                MailboxSelectionView(mailboxSelection: mailboxSelection,
+                                     title: title,
+                                     showTip: viewModel.showMailboxTip,
+                                     onAddMailbox: {
+                                         viewModel.dismissMailboxTip(completion: onAddMailbox)
+                                     },
+                                     onDismissTip: { viewModel.dismissMailboxTip() })
+            case let .suffix(suffixSelection):
+                SuffixSelectionView(selection: suffixSelection,
+                                    showTip: viewModel.showDomainTip,
+                                    onAddDomain: {
+                                        viewModel.dismissDomainTip(completion: onAddDomain)
+                                    },
+                                    onDismissTip: { viewModel.dismissDomainTip() },
+                                    onDismiss: onDismiss)
+            }
+        }
+        .presentationDetents([.height(viewModel.height)])
+        .presentationDragIndicator(.visible)
+    }
+}
+
+@MainActor
+private final class AliasOptionsSheetContentViewModel: ObservableObject {
+    @Published private(set) var showMailboxTip = false
+    @Published private(set) var showDomainTip = false
+    private let preferencesManager: any PreferencesManagerProtocol
+    private let onError: (any Error) -> Void
+    let state: AliasOptionsSheetState
+
+    private var aliasDiscovery: AliasDiscovery {
+        preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
+    }
 
     var height: CGFloat {
-        let elementCount = switch self {
+        let elementCount = switch state {
         case let .mailbox(selection, _):
             selection.wrappedValue.allUserMailboxes.count
         case let .suffix(selection):
             selection.wrappedValue.suffixes.count
         }
 
-        return switch self {
+        let showTip = switch state {
         case .mailbox:
-            OptionRowHeight.compact.value * CGFloat(elementCount) + 100 // nav bar + close button
+            showMailboxTip
         case .suffix:
-            OptionRowHeight.compact.value * CGFloat(elementCount) + 60 // nav bar
+            showDomainTip
+        }
+
+        let tipHeight: CGFloat = showTip ? 120 : 0
+
+        return OptionRowHeight.compact.value * CGFloat(elementCount) + tipHeight + 60 // nav bar
+    }
+
+    init(module: PassModule,
+         preferencesManager: any PreferencesManagerProtocol,
+         state: AliasOptionsSheetState,
+         onError: @escaping (any Error) -> Void) {
+        self.state = state
+        self.preferencesManager = preferencesManager
+        self.onError = onError
+
+        if module == .hostApp {
+            showMailboxTip = !aliasDiscovery.contains(.mailboxes)
+            showDomainTip = !aliasDiscovery.contains(.customDomains)
         }
     }
-}
 
-public struct AliasOptionsSheetContent: View {
-    private let state: AliasOptionsSheetState
-    private let onDismiss: () -> Void
-
-    public init(state: AliasOptionsSheetState,
-                onDismiss: @escaping () -> Void) {
-        self.state = state
-        self.onDismiss = onDismiss
-    }
-
-    public var body: some View {
-        Group {
-            switch state {
-            case let .mailbox(mailboxSelection, title):
-                MailboxSelectionView(mailboxSelection: mailboxSelection,
-                                     title: title,
-                                     onDismiss: onDismiss)
-            case let .suffix(suffixSelection):
-                SuffixSelectionView(selection: suffixSelection, onDismiss: onDismiss)
+    func dismissMailboxTip(completion: (() -> Void)? = nil) {
+        Task { [weak self] in
+            guard let self else { return }
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.mailboxes) else { return }
+            do {
+                aliasDiscovery.flip(.mailboxes)
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
+                showMailboxTip = false
+                completion?()
+            } catch {
+                onError(error)
             }
         }
-        .presentationDetents([.height(state.height)])
-        .presentationDragIndicator(.visible)
+    }
+
+    func dismissDomainTip(completion: (() -> Void)? = nil) {
+        Task { [weak self] in
+            guard let self else { return }
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.customDomains) else { return }
+            do {
+                aliasDiscovery.flip(.customDomains)
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
+                showDomainTip = false
+                completion?()
+            } catch {
+                onError(error)
+            }
+        }
     }
 }

@@ -44,6 +44,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var state: State = .loading
     @Published private(set) var prefixError: AliasPrefixError?
     @Published private(set) var canCreateAlias = true
+    @Published private(set) var showAdvancedOptionsTipBanner = false
     @Published var mailboxSelection: AliasLinkedMailboxSelection = .defaultEmpty
     @Published var suffixSelection: SuffixSelection = .defaultEmpty
 
@@ -73,6 +74,9 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+
+    let module = resolve(\SharedToolingContainer.module)
 
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
@@ -80,6 +84,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     var isAliasOwner: Bool {
         alias?.mailboxes.isEmpty == false
+    }
+
+    private var aliasDiscovery: AliasDiscovery {
+        preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
     }
 
     override var isSaveable: Bool {
@@ -108,6 +116,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             note = itemContent.note
         }
         getAliasAndAliasOptions()
+
+        showAdvancedOptionsTipBanner = !aliasDiscovery.contains(.advancedOptions)
 
         $prefix
             .removeDuplicates()
@@ -239,6 +249,30 @@ extension CreateEditAliasViewModel {
                 state = .error(error)
             }
         }
+    }
+
+    func dismissAdvancedOptionsTipBanner() {
+        Task { [weak self] in
+            guard let self else { return }
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.advancedOptions) else { return }
+            aliasDiscovery.flip(.advancedOptions)
+            do {
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
+                showAdvancedOptionsTipBanner = false
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func addMailbox() {
+        router.present(for: .addMailbox)
+    }
+
+    func addDomain() {
+        router.navigate(to: .urlPage(urlString: "https://pass.proton.me/settings#aliases"))
     }
 }
 

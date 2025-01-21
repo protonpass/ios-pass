@@ -38,6 +38,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var error: (any Error)?
     @Published private(set) var aliasEnabled = false
     @Published private(set) var togglingAliasStatus = false
+    @Published private(set) var showContactsTip = false
 
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
 
@@ -61,6 +62,10 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         }
     }
 
+    private var aliasDiscovery: AliasDiscovery {
+        preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
+    }
+
     override func bindValues() {
         super.bindValues()
         aliasEmail = itemContent.item.aliasEmail ?? ""
@@ -71,6 +76,8 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         } else {
             fatalError("Expecting alias type")
         }
+
+        showContactsTip = !aliasDiscovery.contains(.contacts)
 
         aliasRepository.contactsUpdated
             .receive(on: DispatchQueue.main)
@@ -134,7 +141,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     override func refresh() {
-        aliasInfos = nil
         error = nil
         super.refresh()
         getAlias()
@@ -159,6 +165,22 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                              shareId: itemContent.shareId,
                              alias: aliasInfos,
                              contacts: contacts)
+    }
+
+    func dismissContactsTip() {
+        Task { [weak self] in
+            guard let self else { return }
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.contacts) else { return }
+            aliasDiscovery.flip(.contacts)
+            do {
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
+                showContactsTip = false
+            } catch {
+                handle(error)
+            }
+        }
     }
 }
 
