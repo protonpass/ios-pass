@@ -54223,6 +54223,16 @@
         }
       }
     },
+    "Every time your alias receives an email from someone, a new contact is automatically created." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Every time your alias receives an email from someone, a new contact is automatically created."
+          }
+        }
+      }
+    },
     "Exclude from monitoring" : {
       "localizations" : {
         "be" : {
@@ -125069,6 +125079,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Натисніть тут для подробиць"
+          }
+        }
+      }
+    },
+    "Tap the gear icon to customize the alias the way you want." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap the gear icon to customize the alias the way you want."
           }
         }
       }

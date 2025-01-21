@@ -44,11 +44,14 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @Published private(set) var prefixError: AliasPrefixError?
     @Published var mailboxSelection: AliasLinkedMailboxSelection
     @Published var suffixSelection: SuffixSelection
+    let module = resolve(\SharedToolingContainer.module)
 
     private var cancellables = Set<AnyCancellable>()
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
+    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
 
@@ -94,7 +97,16 @@ extension CreateAliasLiteViewModel {
         aliasCreationDelegate?.aliasLiteCreationInfo(info)
     }
 
+    func addMailbox() {
+        router.present(for: .addMailbox)
+    }
+
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }

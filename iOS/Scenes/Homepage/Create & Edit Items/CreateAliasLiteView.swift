@@ -111,8 +111,13 @@ struct CreateAliasLiteView: View {
                 }
             }
             .optionalSheet(binding: $sheetState) { state in
-                AliasOptionsSheetContent(state: state,
-                                         onDismiss: { sheetState = nil })
+                AliasOptionsSheetContent(module: viewModel.module,
+                                         preferencesManager: viewModel.preferencesManager,
+                                         state: state,
+                                         onAddMailbox: viewModel.addMailbox,
+                                         onAddDomain: { /* Not applicable */ },
+                                         onDismiss: { sheetState = nil },
+                                         onError: { viewModel.handle($0) })
                     .environment(\.colorScheme, colorScheme)
             }
         }
