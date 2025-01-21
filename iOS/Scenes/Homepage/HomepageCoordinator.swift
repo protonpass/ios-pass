@@ -585,6 +585,11 @@ extension HomepageCoordinator {
                     presentBreachDetail(breach: breach)
                 case let .breach(breach):
                     presentBreach(breach: breach)
+                case .addMailbox:
+                    dismissAllViewControllers { [weak self] in
+                        guard let self else { return }
+                        present(AddCustomEmailView(viewModel: .init(validationType: .mailbox(nil))))
+                    }
                 }
             }
             .store(in: &cancellables)

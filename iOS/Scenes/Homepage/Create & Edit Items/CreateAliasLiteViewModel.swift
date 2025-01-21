@@ -94,6 +94,10 @@ extension CreateAliasLiteViewModel {
         aliasCreationDelegate?.aliasLiteCreationInfo(info)
     }
 
+    func addMailbox() {
+        router.present(for: .addMailbox)
+    }
+
     func upgrade() {
         router.present(for: .upgradeFlow)
     }

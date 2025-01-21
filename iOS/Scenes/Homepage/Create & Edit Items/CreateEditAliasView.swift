@@ -193,6 +193,8 @@ struct CreateEditAliasView: View {
         .itemCreateEditSetUp(viewModel)
         .optionalSheet(binding: $sheetState) { state in
             AliasOptionsSheetContent(state: state,
+                                     onAddMailbox: viewModel.addMailbox,
+                                     onAddDomain: viewModel.addDomain,
                                      onDismiss: { sheetState = nil })
                 .environment(\.colorScheme, colorScheme)
         }
