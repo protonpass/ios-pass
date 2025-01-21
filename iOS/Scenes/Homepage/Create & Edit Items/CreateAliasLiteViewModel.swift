@@ -50,6 +50,8 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
+    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
 
@@ -101,5 +103,10 @@ extension CreateAliasLiteViewModel {
 
     func upgrade() {
         router.present(for: .upgradeFlow)
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
