@@ -262,6 +262,7 @@ private extension DetailHistoryViewModel {
             let formattedSize = formatFileAttachmentSize(file.size)
             let fileGroup = getFileGroup(mimeType: mimeType)
             return .init(id: file.fileID,
+                         persistentFileUID: file.persistentFileUID,
                          url: nil,
                          state: .uploaded,
                          name: name,
