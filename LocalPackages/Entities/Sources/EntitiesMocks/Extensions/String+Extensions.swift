@@ -28,7 +28,7 @@ public enum AllowedCharacter: String {
     case separator = "-.,_"
 }
 
-extension String {
+public extension String {
     static func random(allowedCharacters: [AllowedCharacter] = [.lowercase, .uppercase, .digit],
                        length: Int = 10) -> String {
         let allCharacters = allowedCharacters.map(\.rawValue).reduce(into: "") { $0 += $1 }
