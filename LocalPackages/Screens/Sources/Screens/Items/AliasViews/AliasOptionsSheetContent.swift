@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import DesignSystem
 import Entities
 import Foundation
@@ -35,11 +36,16 @@ public struct AliasOptionsSheetContent: View {
     private let onDismiss: () -> Void
 
     public init(module: PassModule,
+                preferencesManager: any PreferencesManagerProtocol,
                 state: AliasOptionsSheetState,
                 onAddMailbox: @escaping () -> Void,
                 onAddDomain: @escaping () -> Void,
-                onDismiss: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(module: module, state: state))
+                onDismiss: @escaping () -> Void,
+                onError: @escaping (any Error) -> Void) {
+        _viewModel = .init(wrappedValue: .init(module: module,
+                                               preferencesManager: preferencesManager,
+                                               state: state,
+                                               onError: onError))
         self.onAddMailbox = onAddMailbox
         self.onAddDomain = onAddDomain
         self.onDismiss = onDismiss
@@ -73,9 +79,15 @@ public struct AliasOptionsSheetContent: View {
 
 @MainActor
 private final class AliasOptionsSheetContentViewModel: ObservableObject {
-    @Published private(set) var showMailboxTip: Bool
-    @Published private(set) var showDomainTip: Bool
+    @Published private(set) var showMailboxTip = false
+    @Published private(set) var showDomainTip = false
+    private let preferencesManager: any PreferencesManagerProtocol
+    private let onError: (any Error) -> Void
     let state: AliasOptionsSheetState
+
+    private var aliasDiscovery: AliasDiscovery {
+        preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
+    }
 
     var height: CGFloat {
         let elementCount = switch state {
@@ -98,20 +110,50 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
     }
 
     init(module: PassModule,
-         state: AliasOptionsSheetState) {
+         preferencesManager: any PreferencesManagerProtocol,
+         state: AliasOptionsSheetState,
+         onError: @escaping (any Error) -> Void) {
         self.state = state
+        self.preferencesManager = preferencesManager
+        self.onError = onError
 
-        showMailboxTip = module == .hostApp
-        showDomainTip = module == .hostApp
+        if module == .hostApp {
+            showMailboxTip = !aliasDiscovery.contains(.mailboxes)
+            showDomainTip = !aliasDiscovery.contains(.customDomains)
+        }
     }
 
     func dismissMailboxTip(completion: (() -> Void)? = nil) {
-        showMailboxTip = false
-        completion?()
+        Task { [weak self] in
+            guard let self else { return }
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.mailboxes) else { return }
+            do {
+                aliasDiscovery.flip(.mailboxes)
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
+                showMailboxTip = false
+                completion?()
+            } catch {
+                onError(error)
+            }
+        }
     }
 
     func dismissDomainTip(completion: (() -> Void)? = nil) {
-        showDomainTip = false
-        completion?()
+        Task { [weak self] in
+            guard let self else { return }
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.customDomains) else { return }
+            do {
+                aliasDiscovery.flip(.customDomains)
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
+                showDomainTip = false
+                completion?()
+            } catch {
+                onError(error)
+            }
+        }
     }
 }
