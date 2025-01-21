@@ -20,11 +20,15 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
 struct SuffixSelectionView: View {
     @Binding var selection: SuffixSelection
+    let showTip: Bool
+    let onAddDomain: () -> Void
+    let onDismissTip: () -> Void
     let onDismiss: () -> Void
 
     private var tintColor: UIColor { PassColor.aliasInteractionNormMajor2 }
@@ -62,9 +66,15 @@ struct SuffixSelectionView: View {
                                     .padding(.horizontal)
                             }
                         }
+
+                        if showTip {
+                            tip
+                        }
                     }
+                    .padding(.horizontal)
                 }
             }
+            .animation(.default, value: showTip)
             .background(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -75,8 +85,22 @@ struct SuffixSelectionView: View {
             }
         }
     }
+}
 
-    private func isSelected(_ suffix: Suffix) -> Bool {
+private extension SuffixSelectionView {
+    func isSelected(_ suffix: Suffix) -> Bool {
         suffix == selection.selectedSuffix
+    }
+
+    var tip: some View {
+        TipBanner(configuration: .init(arrowMode: .none,
+                                       description: tipDescription,
+                                       cta: .init(title: #localized("Add domain"),
+                                                  action: onAddDomain)),
+                  onDismiss: onDismissTip)
+    }
+
+    var tipDescription: LocalizedStringKey {
+        "By adding your domain, you can create aliases like hi@my-domain.com."
     }
 }

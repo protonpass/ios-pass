@@ -125,9 +125,8 @@ struct CreateEditAliasView: View {
                                                 onSelectSuffix: {
                                                     sheetState = .suffix($viewModel.suffixSelection)
                                                 })
-                        } else {
-                            AdvancedOptionsSection(isShowingAdvancedOptions: $isShowingAdvancedOptions)
-                                .padding(.vertical)
+                        } else if viewModel.showAdvancedOptionsTipBanner {
+                            advancedOptionsTipBanner
                         }
                     }
 
@@ -166,6 +165,7 @@ struct CreateEditAliasView: View {
                 .animation(.default, value: viewModel.mailboxSelection)
                 .animation(.default, value: viewModel.alias)
                 .animation(.default, value: viewModel.showFileAttachmentsBanner)
+                .animation(.default, value: viewModel.showAdvancedOptionsTipBanner)
             }
             .onChange(of: focusedField) { focusedField in
                 if case .note = focusedField {
@@ -192,8 +192,13 @@ struct CreateEditAliasView: View {
         }
         .itemCreateEditSetUp(viewModel)
         .optionalSheet(binding: $sheetState) { state in
-            AliasOptionsSheetContent(state: state,
-                                     onDismiss: { sheetState = nil })
+            AliasOptionsSheetContent(module: viewModel.module,
+                                     preferencesManager: viewModel.preferencesManager,
+                                     state: state,
+                                     onAddMailbox: viewModel.addMailbox,
+                                     onAddDomain: viewModel.addDomain,
+                                     onDismiss: { sheetState = nil },
+                                     onError: { viewModel.handle($0) })
                 .environment(\.colorScheme, colorScheme)
         }
     }
@@ -255,38 +260,54 @@ struct CreateEditAliasView: View {
         HStack {
             ItemDetailSectionIcon(icon: IconProvider.alias, color: tintColor)
 
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("You are about to create")
-                    .sectionTitleText()
+            HStack {
+                VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                    Text("You are about to create")
+                        .sectionTitleText()
 
-                if viewModel.prefixError != nil {
-                    Text(viewModel.prefix + viewModel.suffix)
-                        .foregroundStyle(PassColor.signalDanger.toColor)
-                } else {
-                    switch viewModel.state {
-                    case .loading:
-                        ZStack {
-                            // Dummy text to make ZStack occupy a correct height
-                            Text(verbatim: "Dummy text")
-                                .opacity(0)
-                            SkeletonBlock(tintColor: tintColor)
-                                .clipShape(Capsule())
-                                .shimmering()
+                    if viewModel.prefixError != nil {
+                        Text(viewModel.prefix + viewModel.suffix)
+                            .foregroundStyle(PassColor.signalDanger.toColor)
+                    } else {
+                        switch viewModel.state {
+                        case .loading:
+                            ZStack {
+                                // Dummy text to make ZStack occupy a correct height
+                                Text(verbatim: "Dummy text")
+                                    .opacity(0)
+                                SkeletonBlock(tintColor: tintColor)
+                                    .clipShape(Capsule())
+                                    .shimmering()
+                            }
+
+                        default:
+                            Text(viewModel.prefix)
+                                .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
+                                Text(viewModel.suffix)
+                                .adaptiveForegroundStyle(viewModel.itemContentType.normMajor2Color.toColor)
                         }
-
-                    default:
-                        Text(viewModel.prefix)
-                            .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
-                            Text(viewModel.suffix)
-                            .adaptiveForegroundStyle(viewModel.itemContentType.normMajor2Color.toColor)
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                if !isShowingAdvancedOptions {
+                    ItemDetailSectionIcon(icon: IconProvider.cogWheel, color: PassColor.textWeak)
+                        .buttonEmbeded {
+                            isShowingAdvancedOptions.toggle()
+                            viewModel.dismissAdvancedOptionsTipBanner()
+                        }
+                }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .animation(.default, value: viewModel.prefixError)
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection()
+    }
+
+    private var advancedOptionsTipBanner: some View {
+        TipBanner(configuration: .init(arrowMode: .topRight(padding: 0),
+                                       description: "Tap the gear icon to customize the alias the way you want."),
+                  onDismiss: viewModel.dismissAdvancedOptionsTipBanner)
     }
 }
 

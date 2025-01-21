@@ -21,6 +21,7 @@
 import DesignSystem
 import Entities
 import Factory
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -28,7 +29,9 @@ struct MailboxSelectionView: View {
     @Binding var mailboxSelection: AliasLinkedMailboxSelection
     let title: String
     var tint = PassColor.aliasInteractionNormMajor2.toColor
-    let onDismiss: () -> Void
+    let showTip: Bool
+    let onAddMailbox: () -> Void
+    let onDismissTip: () -> Void
 
     var body: some View {
         NavigationStack {
@@ -63,18 +66,15 @@ struct MailboxSelectionView: View {
                             }
                         }
 
-                        // Gimmick view to take up space
-                        closeButton
-                            .opacity(0)
-                            .padding()
-                            .disabled(true)
+                        if showTip {
+                            tip
+                        }
                     }
+                    .padding(.horizontal)
                 }
-
-                closeButton
-                    .padding()
             }
             .background(PassColor.backgroundWeak.toColor)
+            .animation(.default, value: showTip)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -84,11 +84,18 @@ struct MailboxSelectionView: View {
             }
         }
     }
+}
 
-    private var closeButton: some View {
-        Button(action: onDismiss) {
-            Text("Close")
-                .foregroundStyle(PassColor.textNorm.toColor)
-        }
+private extension MailboxSelectionView {
+    var tip: some View {
+        TipBanner(configuration: .init(arrowMode: .none,
+                                       description: tipDescription,
+                                       cta: .init(title: #localized("Add mailbox"),
+                                                  action: onAddMailbox)),
+                  onDismiss: onDismissTip)
+    }
+
+    var tipDescription: LocalizedStringKey {
+        "Share aliases with others by adding their inbox as an additional mailbox."
     }
 }
