@@ -81,7 +81,8 @@ struct PreferencesTests {
             clipboardExpiration: .twoMinutes,
             shareClipboard: true, 
             alwaysShowUsernameField: false,
-            lastActiveTimestamp: nil)
+            lastActiveTimestamp: nil,
+            aliasDiscovery: [])
         try decodeAndAssert(SharedPreferences.self, json: json, expectation: expectation)
     }
 

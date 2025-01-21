@@ -67,6 +67,9 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
     /// This is used as an additional information to decide whether to ask for local authentication or not
     public var lastActiveTimestamp: TimeInterval?
 
+    /// Keep track of shown alias related features
+    public var aliasDiscovery: AliasDiscovery
+
     public var localAuthenticationPolicy: LAPolicy {
         fallbackToPasscode ? .deviceOwnerAuthentication : .deviceOwnerAuthenticationWithBiometrics
     }
@@ -84,7 +87,8 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
                 clipboardExpiration: ClipboardExpiration,
                 shareClipboard: Bool,
                 alwaysShowUsernameField: Bool,
-                lastActiveTimestamp: TimeInterval?) {
+                lastActiveTimestamp: TimeInterval?,
+                aliasDiscovery: AliasDiscovery) {
         self.quickTypeBar = quickTypeBar
         self.automaticallyCopyTotpCode = automaticallyCopyTotpCode
         self.theme = theme
@@ -99,6 +103,7 @@ public struct SharedPreferences: Codable, Equatable, Sendable {
         self.shareClipboard = shareClipboard
         self.alwaysShowUsernameField = alwaysShowUsernameField
         self.lastActiveTimestamp = lastActiveTimestamp
+        self.aliasDiscovery = aliasDiscovery
     }
 }
 
@@ -118,6 +123,7 @@ private extension SharedPreferences {
         static let shareClipboard = false
         static let alwaysShowUsernameField = false
         static let lastActiveTimestamp: TimeInterval? = nil
+        static let aliasDiscovery: AliasDiscovery = []
     }
 
     enum CodingKeys: String, CodingKey {
@@ -135,6 +141,7 @@ private extension SharedPreferences {
         case shareClipboard
         case alwaysShowUsernameField
         case lastActiveTimestamp
+        case aliasDiscovery
     }
 }
 
@@ -158,6 +165,13 @@ public extension SharedPreferences {
         let shareClipboard = try container.decodeIfPresent(Bool.self, forKey: .shareClipboard)
         let alwaysShowUsernameField = try container.decodeIfPresent(Bool.self, forKey: .alwaysShowUsernameField)
         let lastActiveTimestamp = try container.decodeIfPresent(TimeInterval.self, forKey: .lastActiveTimestamp)
+
+        let aliasDiscovery: AliasDiscovery = if let value = try container.decodeIfPresent(Int.self,
+                                                                                          forKey: .aliasDiscovery) {
+            .init(rawValue: value)
+        } else {
+            Default.aliasDiscovery
+        }
         self.init(quickTypeBar: quickTypeBar ?? Default.quickTypeBar,
                   automaticallyCopyTotpCode: automaticallyCopyTotpCode ?? Default.automaticallyCopyTotpCode,
                   theme: theme ?? Default.theme,
@@ -171,7 +185,8 @@ public extension SharedPreferences {
                   clipboardExpiration: clipboardExpiration ?? Default.clipboardExpiration,
                   shareClipboard: shareClipboard ?? Default.shareClipboard,
                   alwaysShowUsernameField: alwaysShowUsernameField ?? Default.alwaysShowUsernameField,
-                  lastActiveTimestamp: lastActiveTimestamp ?? Default.lastActiveTimestamp)
+                  lastActiveTimestamp: lastActiveTimestamp ?? Default.lastActiveTimestamp,
+                  aliasDiscovery: aliasDiscovery)
     }
 }
 
@@ -190,6 +205,7 @@ extension SharedPreferences: Defaultable {
               clipboardExpiration: Default.clipboardExpiration,
               shareClipboard: Default.shareClipboard,
               alwaysShowUsernameField: Default.alwaysShowUsernameField,
-              lastActiveTimestamp: Default.lastActiveTimestamp)
+              lastActiveTimestamp: Default.lastActiveTimestamp,
+              aliasDiscovery: Default.aliasDiscovery)
     }
 }
