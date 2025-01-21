@@ -79,6 +79,7 @@ struct AliasDetailView: View {
 
                         if viewModel.contacts != nil, viewModel.isAliasOwner {
                             contactRow
+                                .padding(.bottom, viewModel.showContactsTip ? 0 : 8)
 
                             if viewModel.showContactsTip {
                                 contactTip
