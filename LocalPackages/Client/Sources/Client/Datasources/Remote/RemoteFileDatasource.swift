@@ -40,6 +40,11 @@ public protocol RemoteFileDatasourceProtocol: Sendable {
     func getFilesForAllRevisions(userId: String,
                                  item: any ItemIdentifiable,
                                  lastId: String?) async throws -> PaginatedItemFiles
+    func restoreFile(userId: String,
+                     item: any ItemIdentifiable,
+                     fileId: String,
+                     fileKey: String,
+                     itemKeyRevision: Int) async throws -> Item
 }
 
 public final class RemoteFileDatasource:
@@ -96,5 +101,19 @@ public extension RemoteFileDatasource {
         let endpoint = GetItemFilesForAllRevisionsEndpoint(item: item, lastId: lastId)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.files
+    }
+
+    func restoreFile(userId: String,
+                     item: any ItemIdentifiable,
+                     fileId: String,
+                     fileKey: String,
+                     itemKeyRevision: Int) async throws -> Item {
+        let endpoint = RestoreFileEndpoint(shareId: item.shareId,
+                                           itemId: item.itemId,
+                                           fileId: fileId,
+                                           fileKey: fileKey,
+                                           itemKeyRotation: itemKeyRevision)
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.result.item
     }
 }
