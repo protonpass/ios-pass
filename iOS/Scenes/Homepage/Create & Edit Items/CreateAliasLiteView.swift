@@ -111,7 +111,8 @@ struct CreateAliasLiteView: View {
                 }
             }
             .optionalSheet(binding: $sheetState) { state in
-                AliasOptionsSheetContent(state: state,
+                AliasOptionsSheetContent(module: viewModel.module,
+                                         state: state,
                                          onAddMailbox: viewModel.addMailbox,
                                          onAddDomain: { /* Not applicable */ },
                                          onDismiss: { sheetState = nil })

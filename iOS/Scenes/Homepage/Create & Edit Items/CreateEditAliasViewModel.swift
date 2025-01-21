@@ -76,6 +76,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
+    let module = resolve(\SharedToolingContainer.module)
+
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
     }
