@@ -125,7 +125,7 @@ struct CreateEditAliasView: View {
                                                 onSelectSuffix: {
                                                     sheetState = .suffix($viewModel.suffixSelection)
                                                 })
-                        } else {
+                        } else if viewModel.showAdvancedOptionsTipBanner {
                             advancedOptionsTipBanner
                         }
                     }
@@ -165,6 +165,7 @@ struct CreateEditAliasView: View {
                 .animation(.default, value: viewModel.mailboxSelection)
                 .animation(.default, value: viewModel.alias)
                 .animation(.default, value: viewModel.showFileAttachmentsBanner)
+                .animation(.default, value: viewModel.showAdvancedOptionsTipBanner)
             }
             .onChange(of: focusedField) { focusedField in
                 if case .note = focusedField {
@@ -300,7 +301,7 @@ struct CreateEditAliasView: View {
     private var advancedOptionsTipBanner: some View {
         TipBanner(configuration: .init(arrowMode: .topRight(padding: 0),
                                        description: "Tap the gear icon to customize the alias the way you want."),
-                  onDismiss: {})
+                  onDismiss: viewModel.dismissAdvancedOptionsTipBanner)
     }
 }
 

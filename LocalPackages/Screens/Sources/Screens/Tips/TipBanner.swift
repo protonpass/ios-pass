@@ -41,10 +41,10 @@ public extension TipBanner {
 
         public struct CTA {
             let title: String
-            let action: @Sendable () -> Void
+            let action: () -> Void
 
             public init(title: String,
-                        action: @Sendable @escaping () -> Void) {
+                        action: @escaping () -> Void) {
                 self.title = title
                 self.action = action
             }
@@ -111,6 +111,7 @@ public struct TipBanner: View {
                 }
                 .environment(\.colorScheme, .dark)
                 .foregroundStyle(PassColor.textNorm.toColor)
+                .tint(PassColor.textNorm.toColor)
                 .font(.callout)
                 .frame(maxWidth: .infinity, alignment: .leading)
 

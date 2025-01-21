@@ -29,7 +29,9 @@ struct MailboxSelectionView: View {
     @Binding var mailboxSelection: AliasLinkedMailboxSelection
     let title: String
     var tint = PassColor.aliasInteractionNormMajor2.toColor
-    let onDismiss: () -> Void
+    let showTip: Bool
+    let onAddMailbox: () -> Void
+    let onDismissTip: () -> Void
 
     var body: some View {
         NavigationStack {
@@ -64,12 +66,15 @@ struct MailboxSelectionView: View {
                             }
                         }
 
-                        tip
+                        if showTip {
+                            tip
+                        }
                     }
                     .padding(.horizontal)
                 }
             }
             .background(PassColor.backgroundWeak.toColor)
+            .animation(.default, value: showTip)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -86,8 +91,8 @@ private extension MailboxSelectionView {
         TipBanner(configuration: .init(arrowMode: .none,
                                        description: tipDescription,
                                        cta: .init(title: #localized("Add mailbox"),
-                                                  action: {})),
-                  onDismiss: {})
+                                                  action: onAddMailbox)),
+                  onDismiss: onDismissTip)
     }
 
     var tipDescription: LocalizedStringKey {
