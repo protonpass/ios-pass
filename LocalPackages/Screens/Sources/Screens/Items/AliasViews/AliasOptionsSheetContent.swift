@@ -26,46 +26,83 @@ import SwiftUI
 public enum AliasOptionsSheetState {
     case mailbox(Binding<AliasLinkedMailboxSelection>, String)
     case suffix(Binding<SuffixSelection>)
+}
+
+public struct AliasOptionsSheetContent: View {
+    @StateObject private var viewModel: AliasOptionsSheetContentViewModel
+    private let onDismiss: () -> Void
+
+    public init(state: AliasOptionsSheetState,
+                onDismiss: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(state: state))
+        self.onDismiss = onDismiss
+    }
+
+    public var body: some View {
+        Group {
+            switch viewModel.state {
+            case let .mailbox(mailboxSelection, title):
+                MailboxSelectionView(mailboxSelection: mailboxSelection,
+                                     title: title,
+                                     showTip: viewModel.showMailboxTip,
+                                     onAddMailbox: viewModel.addMailbox,
+                                     onDismissTip: viewModel.dismissMailboxTip)
+            case let .suffix(suffixSelection):
+                SuffixSelectionView(selection: suffixSelection,
+                                    showTip: viewModel.showDomainTip,
+                                    onAddDomain: viewModel.addDomain,
+                                    onDismissTip: viewModel.dismissDomainTip,
+                                    onDismiss: onDismiss)
+            }
+        }
+        .presentationDetents([.height(viewModel.height)])
+        .presentationDragIndicator(.visible)
+    }
+}
+
+@MainActor
+private final class AliasOptionsSheetContentViewModel: ObservableObject {
+    @Published private(set) var showMailboxTip = true
+    @Published private(set) var showDomainTip = true
+    let state: AliasOptionsSheetState
 
     var height: CGFloat {
-        let elementCount = switch self {
+        let elementCount = switch state {
         case let .mailbox(selection, _):
             selection.wrappedValue.allUserMailboxes.count
         case let .suffix(selection):
             selection.wrappedValue.suffixes.count
         }
 
-        return switch self {
+        let showTip = switch state {
         case .mailbox:
-            OptionRowHeight.compact.value * CGFloat(elementCount) + 60 // nav bar
+            showMailboxTip
         case .suffix:
-            OptionRowHeight.compact.value * CGFloat(elementCount) + 60 // nav bar
+            showDomainTip
         }
+
+        let tipHeight: CGFloat = showTip ? 120 : 0
+
+        return OptionRowHeight.compact.value * CGFloat(elementCount) + tipHeight + 60 // nav bar
     }
-}
 
-public struct AliasOptionsSheetContent: View {
-    private let state: AliasOptionsSheetState
-    private let onDismiss: () -> Void
-
-    public init(state: AliasOptionsSheetState,
-                onDismiss: @escaping () -> Void) {
+    init(state: AliasOptionsSheetState) {
         self.state = state
-        self.onDismiss = onDismiss
     }
 
-    public var body: some View {
-        Group {
-            switch state {
-            case let .mailbox(mailboxSelection, title):
-                MailboxSelectionView(mailboxSelection: mailboxSelection,
-                                     title: title,
-                                     onDismiss: onDismiss)
-            case let .suffix(suffixSelection):
-                SuffixSelectionView(selection: suffixSelection, onDismiss: onDismiss)
-            }
-        }
-        .presentationDetents([.height(state.height)])
-        .presentationDragIndicator(.visible)
+    func addMailbox() {
+        print(#function)
+    }
+
+    func dismissMailboxTip() {
+        showMailboxTip = false
+    }
+
+    func addDomain() {
+        print(#function)
+    }
+
+    func dismissDomainTip() {
+        showDomainTip = false
     }
 }

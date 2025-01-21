@@ -1494,6 +1494,16 @@
         }
       }
     },
+    "Add domain" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add domain"
+          }
+        }
+      }
+    },
     "Add mailbox" : {
       "localizations" : {
         "en" : {
@@ -2447,6 +2457,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вкладення"
+          }
+        }
+      }
+    },
+    "By adding your domain, you can create aliases like hi@my-domain.com." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "By adding your domain, you can create aliases like hi@my-domain.com."
           }
         }
       }
