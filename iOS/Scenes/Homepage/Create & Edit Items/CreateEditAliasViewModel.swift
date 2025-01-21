@@ -44,6 +44,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var state: State = .loading
     @Published private(set) var prefixError: AliasPrefixError?
     @Published private(set) var canCreateAlias = true
+    @Published private(set) var showAdvancedOptionsTipBanner = true
     @Published var mailboxSelection: AliasLinkedMailboxSelection = .defaultEmpty
     @Published var suffixSelection: SuffixSelection = .defaultEmpty
 
@@ -239,6 +240,10 @@ extension CreateEditAliasViewModel {
                 state = .error(error)
             }
         }
+    }
+
+    func dismissAdvancedOptionsTipBanner() {
+        showAdvancedOptionsTipBanner = false
     }
 }
 
