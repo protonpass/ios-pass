@@ -294,6 +294,7 @@ struct CreateEditAliasView: View {
                     ItemDetailSectionIcon(icon: IconProvider.cogWheel, color: PassColor.textWeak)
                         .buttonEmbeded {
                             isShowingAdvancedOptions.toggle()
+                            viewModel.dismissAdvancedOptionsTipBanner()
                         }
                 }
             }
