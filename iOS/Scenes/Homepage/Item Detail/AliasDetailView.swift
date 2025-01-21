@@ -79,8 +79,11 @@ struct AliasDetailView: View {
 
                         if viewModel.contacts != nil, viewModel.isAliasOwner {
                             contactRow
-                            contactTip
-                                .padding(.vertical, 8)
+
+                            if viewModel.showContactsTip {
+                                contactTip
+                                    .padding(.vertical, 8)
+                            }
                         }
 
                         if let stats = viewModel.aliasInfos?.stats {
@@ -113,6 +116,7 @@ struct AliasDetailView: View {
             .animation(.default, value: viewModel.moreInfoSectionExpanded)
             .animation(.default, value: viewModel.aliasInfos)
             .animation(.default, value: viewModel.contacts)
+            .animation(.default, value: viewModel.showContactsTip)
             .onChange(of: viewModel.moreInfoSectionExpanded) { _ in
                 withAnimation { value.scrollTo(bottomID, anchor: .bottom) }
             }
@@ -305,7 +309,7 @@ struct AliasDetailView: View {
                                        description: contactTipDescription,
                                        trailingBackground: .init(image: PassIcon.protonStamp,
                                                                  offset: .init(width: 40, height: -20))),
-                  onDismiss: {})
+                  onDismiss: viewModel.dismissContactsTip)
     }
 
     private var contactTipDescription: LocalizedStringKey {
