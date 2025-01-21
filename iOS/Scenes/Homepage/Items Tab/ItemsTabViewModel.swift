@@ -590,7 +590,10 @@ extension ItemsTabViewModel {
     }
 
     func handleThumbnailSelection(_ item: ItemUiModel) {
-        if isEditable(item) {
+        let shares = appContentManager.getAllShares()
+        let isMultiEditable = shares.first { $0.id == item.shareId }?.canMutiSelectEdit ?? false
+
+        if isMultiEditable {
             selectOrDeselect(item)
             isEditMode = true
         }
