@@ -37,6 +37,6 @@ extension SharedPreferences {
               shareClipboard: .random(),
               alwaysShowUsernameField: .random(),
               lastActiveTimestamp: .random(in: 1...1000),
-              aliasDiscover: [])
+              aliasDiscovery: [])
     }
 }

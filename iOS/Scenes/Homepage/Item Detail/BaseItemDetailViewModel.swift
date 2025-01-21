@@ -112,6 +112,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
     @LazyInjected(\SharedUseCasesContainer.downloadAndDecryptFile) private var downloadAndDecryptFile
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
+    @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
 
     var isAllowedToEdit: Bool {
         guard let vault else {
