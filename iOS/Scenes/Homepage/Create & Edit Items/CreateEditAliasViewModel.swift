@@ -44,7 +44,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var state: State = .loading
     @Published private(set) var prefixError: AliasPrefixError?
     @Published private(set) var canCreateAlias = true
-    @Published private(set) var showAdvancedOptionsTipBanner = true
+    @Published private(set) var showAdvancedOptionsTipBanner = false
     @Published var mailboxSelection: AliasLinkedMailboxSelection = .defaultEmpty
     @Published var suffixSelection: SuffixSelection = .defaultEmpty
 
@@ -86,6 +86,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         alias?.mailboxes.isEmpty == false
     }
 
+    private var aliasDiscovery: AliasDiscovery {
+        preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
+    }
+
     override var isSaveable: Bool {
         guard super.isSaveable else { return false }
         return switch mode {
@@ -112,6 +116,8 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             note = itemContent.note
         }
         getAliasAndAliasOptions()
+
+        showAdvancedOptionsTipBanner = !aliasDiscovery.contains(.advancedOptions)
 
         $prefix
             .removeDuplicates()
@@ -246,7 +252,19 @@ extension CreateEditAliasViewModel {
     }
 
     func dismissAdvancedOptionsTipBanner() {
-        showAdvancedOptionsTipBanner = false
+        Task { [weak self] in
+            guard let self else { return }
+            var aliasDiscovery = aliasDiscovery
+            guard !aliasDiscovery.contains(.advancedOptions) else { return }
+            aliasDiscovery.flip(.advancedOptions)
+            do {
+                try await preferencesManager.updateSharedPreferences(\.aliasDiscovery,
+                                                                     value: aliasDiscovery)
+                showAdvancedOptionsTipBanner = false
+            } catch {
+                handle(error)
+            }
+        }
     }
 
     func addMailbox() {

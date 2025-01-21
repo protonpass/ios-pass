@@ -466,7 +466,11 @@ private extension BaseCreateEditItemViewModel {
         logger.info("Done linking files to \(item.debugDescription)")
         return true
     }
+}
 
+// MARK: - Public APIs
+
+extension BaseCreateEditItemViewModel {
     func handle(_ error: any Error) {
         logger.error(error)
 
@@ -489,11 +493,7 @@ private extension BaseCreateEditItemViewModel {
             router.display(element: .displayErrorBanner(error))
         }
     }
-}
 
-// MARK: - Public APIs
-
-extension BaseCreateEditItemViewModel {
     func dismissFileAttachmentsBanner() {
         Task {
             do {
