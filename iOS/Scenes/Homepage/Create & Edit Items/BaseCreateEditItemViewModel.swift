@@ -185,6 +185,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
             switch file {
             case let .pending(pending):
                 uiModels.append(.init(id: pending.id,
+                                      persistentFileUID: nil,
                                       url: pending.metadata.url,
                                       state: pending.uploadState,
                                       name: pending.metadata.name,
@@ -196,6 +197,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
                    let mimeType = itemFile.mimeType {
                     let fileGroup = getFileGroup(mimeType: mimeType)
                     uiModels.append(.init(id: itemFile.fileID,
+                                          persistentFileUID: itemFile.persistentFileUID,
                                           url: nil,
                                           state: .uploaded,
                                           name: name,
