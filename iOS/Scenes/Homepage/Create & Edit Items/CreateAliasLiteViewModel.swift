@@ -44,6 +44,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @Published private(set) var prefixError: AliasPrefixError?
     @Published var mailboxSelection: AliasLinkedMailboxSelection
     @Published var suffixSelection: SuffixSelection
+    let module = resolve(\SharedToolingContainer.module)
 
     private var cancellables = Set<AnyCancellable>()
 
