@@ -74,6 +74,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
@@ -244,6 +245,14 @@ extension CreateEditAliasViewModel {
 
     func dismissAdvancedOptionsTipBanner() {
         showAdvancedOptionsTipBanner = false
+    }
+
+    func addMailbox() {
+        router.present(for: .addMailbox)
+    }
+
+    func addDomain() {
+        router.navigate(to: .urlPage(urlString: "https://pass.proton.me/settings#aliases"))
     }
 }
 

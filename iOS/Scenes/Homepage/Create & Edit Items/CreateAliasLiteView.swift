@@ -112,6 +112,8 @@ struct CreateAliasLiteView: View {
             }
             .optionalSheet(binding: $sheetState) { state in
                 AliasOptionsSheetContent(state: state,
+                                         onAddMailbox: viewModel.addMailbox,
+                                         onAddDomain: { /* Not applicable */ },
                                          onDismiss: { sheetState = nil })
                     .environment(\.colorScheme, colorScheme)
             }

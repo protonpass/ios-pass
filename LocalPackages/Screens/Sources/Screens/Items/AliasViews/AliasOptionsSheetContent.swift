@@ -30,11 +30,17 @@ public enum AliasOptionsSheetState {
 
 public struct AliasOptionsSheetContent: View {
     @StateObject private var viewModel: AliasOptionsSheetContentViewModel
+    private let onAddMailbox: () -> Void
+    private let onAddDomain: () -> Void
     private let onDismiss: () -> Void
 
     public init(state: AliasOptionsSheetState,
+                onAddMailbox: @escaping () -> Void,
+                onAddDomain: @escaping () -> Void,
                 onDismiss: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(state: state))
+        self.onAddMailbox = onAddMailbox
+        self.onAddDomain = onAddDomain
         self.onDismiss = onDismiss
     }
 
@@ -45,13 +51,17 @@ public struct AliasOptionsSheetContent: View {
                 MailboxSelectionView(mailboxSelection: mailboxSelection,
                                      title: title,
                                      showTip: viewModel.showMailboxTip,
-                                     onAddMailbox: viewModel.addMailbox,
-                                     onDismissTip: viewModel.dismissMailboxTip)
+                                     onAddMailbox: {
+                                         viewModel.dismissMailboxTip(completion: onAddMailbox)
+                                     },
+                                     onDismissTip: { viewModel.dismissMailboxTip() })
             case let .suffix(suffixSelection):
                 SuffixSelectionView(selection: suffixSelection,
                                     showTip: viewModel.showDomainTip,
-                                    onAddDomain: viewModel.addDomain,
-                                    onDismissTip: viewModel.dismissDomainTip,
+                                    onAddDomain: {
+                                        viewModel.dismissDomainTip(completion: onAddDomain)
+                                    },
+                                    onDismissTip: { viewModel.dismissDomainTip() },
                                     onDismiss: onDismiss)
             }
         }
@@ -90,19 +100,13 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
         self.state = state
     }
 
-    func addMailbox() {
-        print(#function)
-    }
-
-    func dismissMailboxTip() {
+    func dismissMailboxTip(completion: (() -> Void)? = nil) {
         showMailboxTip = false
+        completion?()
     }
 
-    func addDomain() {
-        print(#function)
-    }
-
-    func dismissDomainTip() {
+    func dismissDomainTip(completion: (() -> Void)? = nil) {
         showDomainTip = false
+        completion?()
     }
 }
