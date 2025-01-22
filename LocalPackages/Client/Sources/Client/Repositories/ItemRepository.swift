@@ -53,7 +53,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
     /// Get alias item by alias email
-    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
+    func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem?
 
     func changeAliasStatus(userId: String, items: [any ItemIdentifiable], enabled: Bool) async throws
 
@@ -262,8 +262,8 @@ public extension ItemRepository {
                          total: paginatedItems.total)
     }
 
-    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
-        try await localDatasource.getAliasItem(email: email)
+    func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem? {
+        try await localDatasource.getAliasItem(email: email, shareId: shareId)
     }
 
     func refreshItems(userId: String,
