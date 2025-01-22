@@ -29,7 +29,7 @@ public extension ItemFile {
                        chunks: [FileChunk] = [],
                        revisionAdded: Int = .random(in: 1...1_000),
                        revisionRemoved: Int = .random(in: 1...1_000),
-                       persistentFileUID: String = .random(),
+                       persistentFileUID: String? = nil,
                        createTime: Int = .random(in: 1...1_000),
                        modifyTime: Int = .random(in: 1...1_000)) -> Self {
         .init(fileID: fileID,
@@ -40,7 +40,7 @@ public extension ItemFile {
               chunks: chunks,
               revisionAdded: revisionAdded,
               revisionRemoved: revisionRemoved,
-              persistentFileUID: persistentFileUID,
+              persistentFileUID: persistentFileUID ?? .random(),
               createTime: createTime,
               modifyTime: modifyTime)
     }

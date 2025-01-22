@@ -25,6 +25,11 @@ import ProtonCoreNetworking
 struct RestoreFileRequest: Encodable {
     let fileKey: String
     let itemKeyRotation: Int
+
+    enum CodingKeys: String, CodingKey {
+        case fileKey = "FileKey"
+        case itemKeyRotation = "ItemKeyRotation"
+    }
 }
 
 struct RestoreFileResponse: Decodable {
@@ -53,6 +58,6 @@ struct RestoreFileEndpoint: Endpoint {
         debugDescription = "Restore file"
         path = "/pass/v1/share/\(shareId)/item/\(itemId)/file/\(fileId)/restore"
         method = .post
-        body = .init(fileKey: fileId, itemKeyRotation: itemKeyRotation)
+        body = .init(fileKey: fileKey, itemKeyRotation: itemKeyRotation)
     }
 }

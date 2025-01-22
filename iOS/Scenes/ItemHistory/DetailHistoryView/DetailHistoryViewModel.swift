@@ -44,6 +44,7 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
@@ -120,10 +121,29 @@ extension DetailHistoryViewModel {
                                                     itemUuid: pastRevision.itemUuid,
                                                     data: pastRevision.contentData,
                                                     customFields: pastRevision.customFields)
-                try await itemRepository.updateItem(userId: userId,
-                                                    oldItem: currentRevision.item,
-                                                    newItemContent: protobuff,
-                                                    shareId: currentRevision.shareId)
+                let updatedItem = try await itemRepository.updateItem(userId: userId,
+                                                                      oldItem: currentRevision.item,
+                                                                      newItemContent: protobuff,
+                                                                      shareId: currentRevision.shareId)
+
+                let currentFileIds = currentFiles.compactMapToSet(\.persistentFileUID)
+                let pastFileIds = pastFiles.compactMapToSet(\.persistentFileUID)
+
+                let persistentIdsToRemove = Array(currentFileIds.subtracting(pastFileIds))
+                let persistentIdsToRestore = pastFileIds.subtracting(currentFileIds)
+
+                let filesToRemove = files.filter { persistentIdsToRemove.contains($0.persistentFileUID) }
+                let filesToRestore = files.filter { persistentIdsToRestore.contains($0.persistentFileUID) }
+
+                try await fileAttachmentRepository.linkFilesToItem(userId: userId,
+                                                                   pendingFilesToAdd: [],
+                                                                   existingFileIdsToRemove: filesToRemove
+                                                                       .map(\.fileID),
+                                                                   item: updatedItem)
+                try await fileAttachmentRepository.restoreFiles(userId: userId,
+                                                                item: updatedItem,
+                                                                files: filesToRestore)
+
                 router.present(for: .restoreHistory)
             } catch {
                 handle(error)
@@ -246,7 +266,7 @@ private extension DetailHistoryViewModel {
     func filterFiles(for item: ItemContent) -> [FileAttachmentUiModel] {
         files.compactMap { file in
             let eligible = if let revisionRemoved = file.revisionRemoved {
-                revisionRemoved >= item.item.revision
+                revisionRemoved > item.item.revision
             } else {
                 file.revisionAdded <= item.item.revision
             }
