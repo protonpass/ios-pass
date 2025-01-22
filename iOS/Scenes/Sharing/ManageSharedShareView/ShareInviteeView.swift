@@ -74,6 +74,9 @@ private extension ShareInviteeView {
                     if canSeeAccessLevel {
                         Text(invitee.subtitle)
                             .foregroundStyle(PassColor.textWeak.toColor)
+                    } else {
+                        Text(invitee.owner ? "Owner" : "Viewer")
+                            .foregroundStyle(PassColor.textWeak.toColor)
                     }
                 }
             }

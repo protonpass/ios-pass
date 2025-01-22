@@ -121,7 +121,10 @@ public extension ShareInviteRepository {
                      inviteesData: [InviteeData],
                      targetType: TargetType) async throws -> Bool {
         let userInvites = inviteesData.existingUserInvitesRequests(targetType: targetType, itemId: itemId)
-        let newUserInvites = inviteesData.newUserInvitesRequests(targetType: targetType, itemId: itemId)
+        var newUserInvites = [InviteNewUserToShareRequest]()
+        if targetType != .item {
+            newUserInvites = inviteesData.newUserInvitesRequests(targetType: targetType, itemId: itemId)
+        }
 
         if userInvites.isEmpty, newUserInvites.isEmpty {
             return false
