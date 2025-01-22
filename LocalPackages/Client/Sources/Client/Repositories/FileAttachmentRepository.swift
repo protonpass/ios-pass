@@ -265,14 +265,12 @@ public extension FileAttachmentRepository {
     func restoreFiles(userId: String,
                       item: any ItemIdentifiable,
                       files: [ItemFile]) async throws {
-        guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
-            throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
-        }
         let keys = try await getShareKeys(userId: userId, item: item)
         guard let latestKey = keys.max(by: { $0.keyRotation > $1.keyRotation }) else {
             throw PassError.keysNotFound(shareID: item.shareId)
         }
 
+        var updatedItem: Item?
         for file in files {
             guard let usedKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
                 throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
@@ -293,12 +291,14 @@ public extension FileAttachmentRepository {
                                                       associatedData: .fileKey)
 
             let encodedFileKey = reencryptedFileKey.base64EncodedString()
-            let updatedItem =
-                try await remoteFileDatasource.restoreFile(userId: userId,
-                                                           item: item,
-                                                           fileId: file.fileID,
-                                                           fileKey: encodedFileKey,
-                                                           itemKeyRevision: Int(latestKey.keyRotation))
+            updatedItem = try await remoteFileDatasource.restoreFile(userId: userId,
+                                                                     item: item,
+                                                                     fileId: file.fileID,
+                                                                     fileKey: encodedFileKey,
+                                                                     itemKeyRevision: Int(latestKey.keyRotation))
+        }
+
+        if let updatedItem {
             try await itemRepository.upsertItems(userId: userId,
                                                  items: [updatedItem],
                                                  shareId: item.shareId)
