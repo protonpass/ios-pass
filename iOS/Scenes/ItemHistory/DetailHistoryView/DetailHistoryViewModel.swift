@@ -132,13 +132,14 @@ extension DetailHistoryViewModel {
                 let persistentIdsToRemove = Array(currentFileIds.subtracting(pastFileIds))
                 let persistentIdsToRestore = pastFileIds.subtracting(currentFileIds)
 
-                let filesToRemove = files.filter { persistentIdsToRemove.contains($0.persistentFileUID) }
+                let fileIdsToRemove = files.compactMap { file -> String? in
+                    persistentIdsToRemove.contains(file.persistentFileUID) ? file.fileID : nil
+                }
                 let filesToRestore = files.filter { persistentIdsToRestore.contains($0.persistentFileUID) }
 
                 try await fileAttachmentRepository.linkFilesToItem(userId: userId,
                                                                    pendingFilesToAdd: [],
-                                                                   existingFileIdsToRemove: filesToRemove
-                                                                       .map(\.fileID),
+                                                                   existingFileIdsToRemove: fileIdsToRemove,
                                                                    item: updatedItem)
                 try await fileAttachmentRepository.restoreFiles(userId: userId,
                                                                 item: updatedItem,
