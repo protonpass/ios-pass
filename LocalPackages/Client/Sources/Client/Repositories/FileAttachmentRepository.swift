@@ -219,22 +219,24 @@ public extension FileAttachmentRepository {
             throw PassError.itemNotFound(item)
         }
         let threshold = 10
-        var updatedItem: Item
+        var updatedItem: Item?
         while true {
             let toAdd = filesToAdd.popAndRemoveFirstElements(threshold)
             let toRemove = existingFileIdsToRemove.popAndRemoveFirstElements(threshold)
 
             if toAdd.isEmpty, toRemove.isEmpty {
-                return
+                break
             }
             updatedItem = try await remoteFileDatasource.linkFilesToItem(userId: userId,
                                                                          item: item,
                                                                          filesToAdd: toAdd,
                                                                          fileIdsToRemove: toRemove)
         }
-        try await itemRepository.upsertItems(userId: userId,
-                                             items: [updatedItem],
-                                             shareId: item.shareId)
+        if let updatedItem {
+            try await itemRepository.upsertItems(userId: userId,
+                                                 items: [updatedItem],
+                                                 shareId: item.shareId)
+        }
     }
 
     func getActiveItemFiles(userId: String, item: any ItemIdentifiable, share: Share) async throws -> [ItemFile] {
