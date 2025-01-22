@@ -30,7 +30,7 @@ public struct SharesData: Hashable, Sendable {
     public init(shares: [ShareContent], trashedItems: [ItemUiModel]) {
         self.shares = shares
         self.trashedItems = trashedItems
-        itemsSharedByMe = shares.filter(\.share.owner).flatMap(\.items).filter(\.isShared)
+        itemsSharedByMe = shares.filter { $0.share.shareRole == .admin }.flatMap(\.items).filter(\.isShared)
         itemsSharedWithMe = shares.filter { !$0.share.isVaultRepresentation && !$0.share.owner }.flatMap(\.items)
     }
 

@@ -144,12 +144,10 @@ class BaseItemDetailViewModel: ObservableObject {
         vault?.vault.shareRole != .read && !itemContent.isAlias
     }
 
-    // swiftlint:disable:next todo
-    // TODO: have to check the calculation with new endpoints
     var numberOfSharedMembers: Int {
         var members = itemContent.item.shareCount
 
-        if let vault = vault?.vault, vault.isVaultRepresentation, vault.shared {
+        if let vault = vault?.vault, vault.shared {
             members += vault.members
         }
 
