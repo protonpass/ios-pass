@@ -165,11 +165,9 @@ public extension FileAttachmentRepository {
             throw PassError.fileAttachment(.failedToUpdateMissingMimeType)
         }
 
-        let itemKeys = try await keyManager.getItemKeys(userId: userId,
-                                                        shareId: item.shareId,
-                                                        itemId: item.itemId)
+        let keys = try await getShareKeys(userId: userId, item: item)
 
-        guard let itemKey = itemKeys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+        guard let itemKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
             throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
         }
 
@@ -197,9 +195,10 @@ public extension FileAttachmentRepository {
                          pendingFilesToAdd: [PendingFileAttachment],
                          existingFileIdsToRemove: [String],
                          item: any ItemIdentifiable) async throws {
-        let itemKey = try await keyManager.getLatestItemKey(userId: userId,
-                                                            shareId: item.shareId,
-                                                            itemId: item.itemId)
+        let keys = try await getShareKeys(userId: userId, item: item)
+        guard let itemKey = keys.max(by: { $0.keyRotation > $1.keyRotation }) else {
+            throw PassError.keysNotFound(shareID: item.shareId)
+        }
         var filesToAdd = [FileToAdd]()
         for file in pendingFilesToAdd {
             guard let remoteId = file.remoteId else {
@@ -269,9 +268,7 @@ public extension FileAttachmentRepository {
         guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
             throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
         }
-        let keys = try await keyManager.getShareKeys(userId: userId,
-                                                     share: share,
-                                                     item: item)
+        let keys = try await getShareKeys(userId: userId, item: item)
         guard let latestKey = keys.max(by: { $0.keyRotation > $1.keyRotation }) else {
             throw PassError.keysNotFound(shareID: item.shareId)
         }
@@ -363,5 +360,14 @@ private extension FileAttachmentRepository {
                                                  key: key,
                                                  associatedData: .fileData)
         return encryptedProtobuf.base64EncodedString()
+    }
+
+    func getShareKeys(userId: String,
+                      item: any ItemIdentifiable) async throws -> [any ShareKeyProtocol] {
+        guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
+            throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
+        }
+
+        return try await keyManager.getShareKeys(userId: userId, share: share, item: item)
     }
 }
