@@ -58,7 +58,7 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
             passwordStrength = getPasswordStrength(password: password)
             urls = data.urls
             totpUri = data.totpUri
-            getAliasItem(email: data.email)
+            getAliasItem(email: data.email, shareId: item.vault.shareID)
 
             if !data.totpUri.isEmpty {
                 checkTotpState()
@@ -90,11 +90,11 @@ extension LoginDetailViewModel {
 }
 
 private extension LoginDetailViewModel {
-    func getAliasItem(email: String) {
+    func getAliasItem(email: String, shareId: String) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                aliasItem = try await itemRepository.getAliasItem(email: email)
+                aliasItem = try await itemRepository.getAliasItem(email: email, shareId: shareId)
             } catch {
                 handle(error)
             }
