@@ -115,11 +115,11 @@ extension AccountViewModel {
 
     var canChangePassword: Bool {
         featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
+            && !(userManager.currentActiveUser.value?.user.isSSOAccount ?? false)
     }
 
     var canChangeMailboxPassword: Bool {
-        guard featureFlagsRepository.isEnabled(CoreFeatureFlagType.changePassword, reloadValue: true)
-        else { return false }
+        guard canChangePassword else { return false }
         return passwordMode == .loginAndMailboxPassword
     }
 
