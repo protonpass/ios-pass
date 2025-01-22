@@ -171,20 +171,20 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         return stubbedGetItemResult
     }
     // MARK: - getAliasItem
-    public var getAliasItemEmailThrowableError6: Error?
+    public var getAliasItemEmailShareIdThrowableError6: Error?
     public var closureGetAliasItem: () -> () = {}
     public var invokedGetAliasItemfunction = false
     public var invokedGetAliasItemCount = 0
-    public var invokedGetAliasItemParameters: (email: String, Void)?
-    public var invokedGetAliasItemParametersList = [(email: String, Void)]()
+    public var invokedGetAliasItemParameters: (email: String, shareId: String)?
+    public var invokedGetAliasItemParametersList = [(email: String, shareId: String)]()
     public var stubbedGetAliasItemResult: SymmetricallyEncryptedItem?
 
-    public func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
+    public func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem? {
         invokedGetAliasItemfunction = true
         invokedGetAliasItemCount += 1
-        invokedGetAliasItemParameters = (email, ())
-        invokedGetAliasItemParametersList.append((email, ()))
-        if let error = getAliasItemEmailThrowableError6 {
+        invokedGetAliasItemParameters = (email, shareId)
+        invokedGetAliasItemParametersList.append((email, shareId))
+        if let error = getAliasItemEmailShareIdThrowableError6 {
             throw error
         }
         closureGetAliasItem()
