@@ -148,7 +148,13 @@ private extension AliasContactsView {
             Section {
                 ForEach(viewModel.contactsInfos.blockContacts) { contact in
                     ContactRow(contact: contact,
-                               onSend: { viewModel.openMail(emailTo: contact.reverseAlias) },
+                               onSend: {
+                                   if viewModel.isFreeUser {
+                                       viewModel.upsell()
+                                   } else {
+                                       viewModel.openMail(emailTo: contact.reverseAlias)
+                                   }
+                               },
                                onCopyAddress: { viewModel.copyContact(contact) },
                                onToggleState: { viewModel.toggleContactState(contact) },
                                onDelete: { viewModel.delete(contact: contact) })

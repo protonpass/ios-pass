@@ -105,7 +105,7 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             urls = data.urls
             totpUri = data.totpUri
             totpManager.bind(uri: data.totpUri)
-            getAliasItem(email: data.email)
+            getAliasItem(email: data.email, shareId: itemContent.shareId)
 
             if !data.totpUri.isEmpty {
                 checkTotpState()
@@ -121,11 +121,11 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 // MARK: - Private APIs
 
 private extension LogInDetailViewModel {
-    func getAliasItem(email: String) {
+    func getAliasItem(email: String, shareId: String) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                aliasItem = try await itemRepository.getAliasItem(email: email)
+                aliasItem = try await itemRepository.getAliasItem(email: email, shareId: shareId)
             } catch {
                 handle(error)
             }

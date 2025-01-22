@@ -38,7 +38,7 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     func getItem(shareId: String, itemId: String) async throws -> SymmetricallyEncryptedItem?
 
     /// Get alias item by alias email
-    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem?
+    func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem?
 
     // periphery:ignore
     /// Get total items of a share (both active and trashed ones)
@@ -135,10 +135,13 @@ public extension LocalItemDatasource {
         return try itemEntities.map { try $0.toEncryptedItem() }.first
     }
 
-    func getAliasItem(email: String) async throws -> SymmetricallyEncryptedItem? {
+    func getAliasItem(email: String, shareId: String) async throws -> SymmetricallyEncryptedItem? {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
-        fetchRequest.predicate = .init(format: "aliasEmail = %@", email)
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "aliasEmail = %@", email),
+            .init(format: "shareID = %@", shareId)
+        ])
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         assert(itemEntities.count <= 1, "Could not have more than 1 matched alias item")
         return try itemEntities.map { try $0.toEncryptedItem() }.first

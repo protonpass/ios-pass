@@ -192,6 +192,10 @@ public extension Share {
     }
 
     var canEdit: Bool {
+        shareRole != ShareRole.read
+    }
+
+    var canMutiSelectEdit: Bool {
         shareType == .vault ? shareRole != ShareRole.read : shareRole != ShareRole.read && isOwner
     }
 
