@@ -142,7 +142,7 @@ extension LocalItemDatasourceTests {
         }
         
         // Then
-        let optionalAlias = try await sut.getAliasItem(email: givenAliasEmail)
+        let optionalAlias = try await sut.getAliasItem(email: givenAliasEmail, shareId: givenShareId)
         let item = try await XCTUnwrapAsync(optionalAlias)
         XCTAssertEqual(item, givenInsertedItem)
     }

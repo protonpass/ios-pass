@@ -107,6 +107,10 @@ final class AliasContactsViewModel: ObservableObject, Sendable {
         IDs(shareId: infos.shareId, itemId: infos.itemId)
     }
 
+    var isFreeUser: Bool {
+        plan?.isFreeUser ?? true
+    }
+
     var canManageAliases: Bool {
         plan?.manageAlias ?? false
     }

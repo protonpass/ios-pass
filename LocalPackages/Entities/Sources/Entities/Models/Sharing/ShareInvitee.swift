@@ -27,6 +27,7 @@ public protocol ShareInvitee: Identifiable, Equatable {
     var subtitle: String { get }
     var isPending: Bool { get }
     var isAdmin: Bool { get }
+    var owner: Bool { get }
     var shareRole: ShareRole { get }
     var shareType: TargetType { get }
     var options: [ShareInviteeOption] { get }

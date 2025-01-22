@@ -66,6 +66,10 @@ extension UserShareInfos: @retroactive ShareInvitee {
 }
 
 extension ShareExistingUserInvite: @retroactive ShareInvitee {
+    public var owner: Bool {
+        false
+    }
+
     public var email: String {
         invitedEmail
     }
@@ -91,6 +95,10 @@ extension ShareExistingUserInvite: @retroactive ShareInvitee {
 }
 
 extension ShareNewUserInvite: @retroactive ShareInvitee {
+    public var owner: Bool {
+        false
+    }
+
     public var email: String {
         invitedEmail
     }
