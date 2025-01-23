@@ -41,7 +41,7 @@ public extension VerifyExtraPasswordUseCase {
     }
 }
 
-public actor VerifyExtraPassword: Sendable, VerifyExtraPasswordUseCase {
+public actor VerifyExtraPassword: VerifyExtraPasswordUseCase {
     public init() {}
 
     public func execute(repository: any ExtraPasswordRepositoryProtocol,

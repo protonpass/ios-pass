@@ -28,6 +28,7 @@ public enum InternalNavigationDestination: Equatable, Sendable {
     case addressBreach(addressID: String)
     case upgrade
     case viewItem(shareID: String, itemID: String)
+    case aliasManagement
     case unknown(urlString: String)
 
     /// Parse the URL and return the corresponding enum case with parameters
@@ -71,6 +72,8 @@ public enum InternalNavigationDestination: Equatable, Sendable {
             if let shareID = queryParams["ShareID"], let itemID = queryParams["ItemID"] {
                 return .viewItem(shareID: shareID, itemID: itemID)
             }
+        case "alias_management":
+            return .aliasManagement
         default:
             return .unknown(urlString: urlString)
         }

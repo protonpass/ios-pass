@@ -32,7 +32,7 @@ import SwiftUI
 typealias SectionedItemSearchResult = SectionedObjects<ItemSearchResult>
 
 @MainActor
-final class TotpLoginsViewModel: ObservableObject, Sendable {
+final class TotpLoginsViewModel: ObservableObject {
     @Published private(set) var loading = true
     @Published private(set) var results: FetchableObject<[SectionedItemSearchResult]> = .fetching
     @Published var query = ""

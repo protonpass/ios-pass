@@ -26,7 +26,7 @@ import Factory
 import Foundation
 
 @MainActor
-final class PasswordReusedViewModel: ObservableObject, Sendable {
+final class PasswordReusedViewModel: ObservableObject {
     @Published private(set) var reusedItems: [ItemContent] = []
     @Published private(set) var loading = false
 

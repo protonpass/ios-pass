@@ -34,7 +34,7 @@ import SwiftUI
 import UseCases
 
 @MainActor
-final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
+final class AliasSyncConfigurationViewModel: ObservableObject {
     @Published var selectedVault: VaultListUiModel?
     @Published private(set) var vaults: [VaultListUiModel] = []
     @Published var defaultDomain: Domain?
