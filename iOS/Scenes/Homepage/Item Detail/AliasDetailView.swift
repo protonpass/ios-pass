@@ -77,11 +77,12 @@ struct AliasDetailView: View {
                                 .padding(.bottom, 8)
                         }
 
+                        let showTip = viewModel.aliasDiscoveryActive && viewModel.showContactsTip
                         if viewModel.contacts != nil, viewModel.isAliasOwner {
                             contactRow
-                                .padding(.bottom, viewModel.showContactsTip ? 0 : 8)
+                                .padding(.bottom, showTip ? 0 : 8)
 
-                            if viewModel.showContactsTip {
+                            if showTip {
                                 contactTip
                                     .padding(.vertical, 8)
                             }

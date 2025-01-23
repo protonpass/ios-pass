@@ -44,6 +44,10 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     private var task: Task<Void, Never>?
 
+    var aliasDiscoveryActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
+    }
+
     var isAdvancedAliasManagementActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
     }

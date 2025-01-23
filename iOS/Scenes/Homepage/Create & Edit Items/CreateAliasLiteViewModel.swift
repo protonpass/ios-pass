@@ -52,8 +52,13 @@ final class CreateAliasLiteViewModel: ObservableObject {
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
+
+    var aliasDiscoveryActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
+    }
 
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
         canCreateAlias = options.canCreateAlias
