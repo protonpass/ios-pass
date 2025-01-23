@@ -125,7 +125,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
                                                              lastContactId: nil)
         } catch {
             if let apiError = error.asPassApiError,
-                apiError == .notAllowed || apiError == .itemDoesNotExist {
+               apiError == .notAllowed || apiError == .itemDoesNotExist {
                 // Happen when alias is not created by this user so we ignore this error
                 return
             }
