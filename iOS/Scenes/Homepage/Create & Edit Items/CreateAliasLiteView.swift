@@ -114,6 +114,7 @@ struct CreateAliasLiteView: View {
                 AliasOptionsSheetContent(module: viewModel.module,
                                          preferencesManager: viewModel.preferencesManager,
                                          state: state,
+                                         aliasDiscoveryActive: viewModel.aliasDiscoveryActive,
                                          onAddMailbox: viewModel.addMailbox,
                                          onAddDomain: { /* Not applicable */ },
                                          onDismiss: { sheetState = nil },
