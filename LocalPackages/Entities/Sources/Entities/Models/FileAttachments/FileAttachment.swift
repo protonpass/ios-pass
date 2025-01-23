@@ -65,6 +65,7 @@ public enum FileAttachmentUploadState: Sendable, Equatable {
 
 public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
     public let id: String
+    public let persistentFileUID: String?
     /// Local URL to the file
     public let url: URL?
     public let state: FileAttachmentUploadState
@@ -73,12 +74,14 @@ public struct FileAttachmentUiModel: Sendable, Equatable, Identifiable {
     public let formattedSize: String?
 
     public init(id: String,
+                persistentFileUID: String?,
                 url: URL?,
                 state: FileAttachmentUploadState,
                 name: String,
                 group: FileGroup,
                 formattedSize: String?) {
         self.id = id
+        self.persistentFileUID = persistentFileUID
         self.url = url
         self.state = state
         self.name = name

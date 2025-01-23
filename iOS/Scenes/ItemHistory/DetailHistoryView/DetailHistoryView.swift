@@ -139,10 +139,12 @@ extension DetailHistoryView {
     @ViewBuilder
     func attachmentsSection(item: ItemContent) -> some View {
         let uiModels = viewModel.fileUiModels(for: item)
+        let borderColor = viewModel.hasFileDifferences ? PassColor.signalWarning : nil
         if !uiModels.isEmpty {
             FileAttachmentsViewSection(files: uiModels,
                                        isFetching: false,
                                        fetchError: nil,
+                                       borderColor: borderColor,
                                        handler: viewModel)
         }
     }

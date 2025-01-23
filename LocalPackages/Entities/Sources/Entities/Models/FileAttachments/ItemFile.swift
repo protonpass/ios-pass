@@ -30,6 +30,7 @@ public struct ItemFile: Decodable, Sendable, Equatable, Hashable {
     public let chunks: [FileChunk]
     public let revisionAdded: Int
     public let revisionRemoved: Int?
+    public let persistentFileUID: String
     public let createTime: Int
     public let modifyTime: Int
 
@@ -45,6 +46,7 @@ public struct ItemFile: Decodable, Sendable, Equatable, Hashable {
                 chunks: [FileChunk],
                 revisionAdded: Int,
                 revisionRemoved: Int,
+                persistentFileUID: String,
                 createTime: Int,
                 modifyTime: Int) {
         self.fileID = fileID
@@ -55,6 +57,7 @@ public struct ItemFile: Decodable, Sendable, Equatable, Hashable {
         self.chunks = chunks
         self.revisionAdded = revisionAdded
         self.revisionRemoved = revisionRemoved
+        self.persistentFileUID = persistentFileUID
         self.createTime = createTime
         self.modifyTime = modifyTime
     }
