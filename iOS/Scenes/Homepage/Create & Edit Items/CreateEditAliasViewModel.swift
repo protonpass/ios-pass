@@ -26,6 +26,10 @@ import Factory
 import ProtonCoreLogin
 import SwiftUI
 
+extension Notification.Name {
+    static let addedNewMailbox = Notification.Name(rawValue: "addedNewMailbox")
+}
+
 @MainActor
 final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -84,6 +88,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     var isAliasOwner: Bool {
         alias?.mailboxes.isEmpty == false
+    }
+
+    var aliasDiscoveryActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
     }
 
     private var aliasDiscovery: AliasDiscovery {
@@ -145,6 +153,14 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             .eraseToAnyPublisher()
             .dropFirst()
             .receive(on: RunLoop.main)
+            .sink { [weak self] _ in
+                guard let self else { return }
+                getAliasAndAliasOptions()
+            }
+            .store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: .addedNewMailbox)
             .sink { [weak self] _ in
                 guard let self else { return }
                 getAliasAndAliasOptions()
