@@ -23,7 +23,7 @@
 import Foundation
 
 @MainActor
-final class AliasSyncConfigurationViewModel: ObservableObject, Sendable {
+final class AliasSyncConfigurationViewModel: ObservableObject {
     init() {
         setUp()
     }

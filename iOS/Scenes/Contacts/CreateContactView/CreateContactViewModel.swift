@@ -27,7 +27,7 @@ import Factory
 import Foundation
 
 @MainActor
-final class CreateContactViewModel: ObservableObject, Sendable {
+final class CreateContactViewModel: ObservableObject {
     @Published var email = ""
     @Published var name = ""
     @Published private(set) var canSave = false

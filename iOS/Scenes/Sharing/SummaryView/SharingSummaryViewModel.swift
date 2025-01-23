@@ -27,7 +27,7 @@ import Foundation
 import Macro
 
 @MainActor
-final class SharingSummaryViewModel: ObservableObject, Sendable {
+final class SharingSummaryViewModel: ObservableObject {
     @Published private(set) var infos = [SharingInfos]()
     @Published private(set) var sendingInvite = false
     @Published var showContactSupportAlert = false

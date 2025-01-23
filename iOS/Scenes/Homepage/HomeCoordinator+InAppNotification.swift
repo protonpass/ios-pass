@@ -179,6 +179,8 @@ private extension HomepageCoordinator {
                     router.present(for: .upgradeFlow)
                 case let .viewItem(shareID, itemID):
                     try await itemDetail(shareID: shareID, itemID: itemID)
+                case .aliasManagement:
+                    router.present(for: .aliasesSyncConfiguration)
                 case let .unknown(url):
                     logger.trace("Unknown navigation destination: \(url)")
                 }

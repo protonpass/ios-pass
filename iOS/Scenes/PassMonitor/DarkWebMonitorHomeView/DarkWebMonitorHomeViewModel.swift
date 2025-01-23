@@ -28,7 +28,7 @@ import Foundation
 import UseCases
 
 @MainActor
-final class DarkWebMonitorHomeViewModel: ObservableObject, Sendable {
+final class DarkWebMonitorHomeViewModel: ObservableObject {
     @Published private(set) var access: Access?
     @Published private(set) var userBreaches: UserBreaches
     @Published private(set) var aliasBreachesState: FetchableObject<[AliasMonitorInfo]> = .fetching
