@@ -54,4 +54,6 @@ public enum PassApiError: Int, Error {
 
     /// To many wrong attempts (e.g wrong extra password many times)
     case tooManyWrongAttempts = 2_026
+
+    case itemDoesNotExist = 2_501
 }
