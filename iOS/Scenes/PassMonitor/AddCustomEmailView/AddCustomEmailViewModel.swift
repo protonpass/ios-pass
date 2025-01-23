@@ -129,6 +129,7 @@ final class AddCustomEmailViewModel: ObservableObject {
                     _ = try await aliasRepository.verifyMailbox(userId: userId,
                                                                 mailboxID: mailbox.mailboxID,
                                                                 code: code)
+                    NotificationCenter.default.post(name: .addedNewMailbox, object: nil)
                 }
                 finishedVerification = true
             } catch {
