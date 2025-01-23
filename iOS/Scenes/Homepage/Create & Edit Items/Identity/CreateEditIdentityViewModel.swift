@@ -101,7 +101,7 @@ struct HiddenStringValue: Sendable {
 }
 
 @MainActor
-final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel, Sendable {
+final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var title = ""
 
     /// Personal details

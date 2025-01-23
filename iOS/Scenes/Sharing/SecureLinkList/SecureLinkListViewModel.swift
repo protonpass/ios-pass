@@ -34,7 +34,7 @@ enum SecureLinkListDisplay: Int {
 }
 
 @MainActor
-final class SecureLinkListViewModel: ObservableObject, Sendable {
+final class SecureLinkListViewModel: ObservableObject {
     @AppStorage("secureLinkListDisplay") var display: SecureLinkListDisplay = .grid
     @Published private(set) var secureLinks = [SecureLinkListUIModel]()
     @Published private(set) var loading = false

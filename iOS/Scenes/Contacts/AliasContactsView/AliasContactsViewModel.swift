@@ -75,7 +75,7 @@ struct AliasContactsModel: Sendable, Hashable {
 }
 
 @MainActor
-final class AliasContactsViewModel: ObservableObject, Sendable {
+final class AliasContactsViewModel: ObservableObject {
     @Published var aliasName = ""
     @Published private(set) var displayName = ""
     @Published private(set) var showExplanation = false
