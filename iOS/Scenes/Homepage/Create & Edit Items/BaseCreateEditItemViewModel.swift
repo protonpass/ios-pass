@@ -185,6 +185,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
             switch file {
             case let .pending(pending):
                 uiModels.append(.init(id: pending.id,
+                                      persistentFileUID: nil,
                                       url: pending.metadata.url,
                                       state: pending.uploadState,
                                       name: pending.metadata.name,
@@ -196,6 +197,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
                    let mimeType = itemFile.mimeType {
                     let fileGroup = getFileGroup(mimeType: mimeType)
                     uiModels.append(.init(id: itemFile.fileID,
+                                          persistentFileUID: itemFile.persistentFileUID,
                                           url: nil,
                                           state: .uploaded,
                                           name: name,
@@ -425,22 +427,24 @@ private extension BaseCreateEditItemViewModel {
         let renamedFiles = try await processPendingFileNameUpdates()
         edited = edited || renamedFiles
 
-        let linkedFiles = try await linkFiles(to: oldItem)
-        edited = edited || linkedFiles
-
         guard let newItemContent = await generateItemContent() else {
             logger.warning("No new item content")
             return edited
         }
-        guard !oldItemContent.protobuf.isLooselyEqual(to: newItemContent) else {
-            logger.trace("Skipped editing because no changes \(oldItemContent.debugDescription)")
-            return edited
+
+        var updatedItem: any ItemIdentifiable = oldItem
+        if !oldItemContent.protobuf.isLooselyEqual(to: newItemContent) {
+            updatedItem = try await itemRepository.updateItem(userId: oldItem.userId,
+                                                              oldItem: oldItem.item,
+                                                              newItemContent: newItemContent,
+                                                              shareId: oldItem.shareId)
+            edited = true
         }
-        try await itemRepository.updateItem(userId: oldItem.userId,
-                                            oldItem: oldItem.item,
-                                            newItemContent: newItemContent,
-                                            shareId: oldItem.shareId)
-        return true
+
+        let linkedFiles = try await linkFiles(to: updatedItem)
+        edited = edited || linkedFiles
+
+        return edited
     }
 
     func linkFiles(to item: any ItemIdentifiable) async throws -> Bool {

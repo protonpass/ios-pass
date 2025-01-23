@@ -44,6 +44,7 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemRepository = resolve(\SharedRepositoryContainer.itemRepository)
+    @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileAttachmentRepository
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
@@ -57,6 +58,18 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     let currentRevision: ItemContent
     let pastRevision: ItemContent
     let files: [ItemFile]
+
+    private var currentFiles: [FileAttachmentUiModel] {
+        filterFiles(for: currentRevision)
+    }
+
+    private var pastFiles: [FileAttachmentUiModel] {
+        filterFiles(for: pastRevision)
+    }
+
+    var hasFileDifferences: Bool {
+        Set(currentFiles.map(\.id)) != Set(pastFiles.map(\.id))
+    }
 
     var selectedRevisionContent: ItemContent {
         switch selectedRevision {
@@ -77,30 +90,7 @@ final class DetailHistoryViewModel: ObservableObject, Sendable {
     }
 
     func fileUiModels(for item: ItemContent) -> [FileAttachmentUiModel] {
-        files.compactMap { file in
-            let eligible = if let revisionRemoved = file.revisionRemoved {
-                revisionRemoved >= item.item.revision
-            } else {
-                file.revisionAdded <= item.item.revision
-            }
-
-            guard eligible else { return nil }
-
-            guard let name = file.name,
-                  let mimeType = file.mimeType else {
-                assertionFailure("Missing file name and MIME type")
-                return nil
-            }
-
-            let formattedSize = formatFileAttachmentSize(file.size)
-            let fileGroup = getFileGroup(mimeType: mimeType)
-            return .init(id: file.fileID,
-                         url: nil,
-                         state: .uploaded,
-                         name: name,
-                         group: fileGroup,
-                         formattedSize: formattedSize)
-        }
+        item.item.revision == currentRevision.item.revision ? currentFiles : pastFiles
     }
 }
 
@@ -131,10 +121,30 @@ extension DetailHistoryViewModel {
                                                     itemUuid: pastRevision.itemUuid,
                                                     data: pastRevision.contentData,
                                                     customFields: pastRevision.customFields)
-                try await itemRepository.updateItem(userId: userId,
-                                                    oldItem: currentRevision.item,
-                                                    newItemContent: protobuff,
-                                                    shareId: currentRevision.shareId)
+                let updatedItem = try await itemRepository.updateItem(userId: userId,
+                                                                      oldItem: currentRevision.item,
+                                                                      newItemContent: protobuff,
+                                                                      shareId: currentRevision.shareId)
+
+                let currentFileIds = currentFiles.compactMapToSet(\.persistentFileUID)
+                let pastFileIds = pastFiles.compactMapToSet(\.persistentFileUID)
+
+                let persistentIdsToRemove = Array(currentFileIds.subtracting(pastFileIds))
+                let persistentIdsToRestore = pastFileIds.subtracting(currentFileIds)
+
+                let fileIdsToRemove = files.compactMap { file -> String? in
+                    persistentIdsToRemove.contains(file.persistentFileUID) ? file.fileID : nil
+                }
+                let filesToRestore = files.filter { persistentIdsToRestore.contains($0.persistentFileUID) }
+
+                try await fileAttachmentRepository.linkFilesToItem(userId: userId,
+                                                                   pendingFilesToAdd: [],
+                                                                   existingFileIdsToRemove: fileIdsToRemove,
+                                                                   item: updatedItem)
+                try await fileAttachmentRepository.restoreFiles(userId: userId,
+                                                                item: updatedItem,
+                                                                files: filesToRestore)
+
                 router.present(for: .restoreHistory)
             } catch {
                 handle(error)
@@ -254,6 +264,34 @@ extension DetailHistoryViewModel: FileAttachmentsViewHandler {
 }
 
 private extension DetailHistoryViewModel {
+    func filterFiles(for item: ItemContent) -> [FileAttachmentUiModel] {
+        files.compactMap { file in
+            let eligible = if let revisionRemoved = file.revisionRemoved {
+                revisionRemoved > item.item.revision
+            } else {
+                file.revisionAdded <= item.item.revision
+            }
+
+            guard eligible else { return nil }
+
+            guard let name = file.name,
+                  let mimeType = file.mimeType else {
+                assertionFailure("Missing file name and MIME type")
+                return nil
+            }
+
+            let formattedSize = formatFileAttachmentSize(file.size)
+            let fileGroup = getFileGroup(mimeType: mimeType)
+            return .init(id: file.fileID,
+                         persistentFileUID: file.persistentFileUID,
+                         url: nil,
+                         state: .uploaded,
+                         name: name,
+                         group: fileGroup,
+                         formattedSize: formattedSize)
+        }
+    }
+
     func openPreview(_ file: FileAttachmentUiModel,
                      postAction: FileAttachmentPreviewPostDownloadAction) {
         Task {
