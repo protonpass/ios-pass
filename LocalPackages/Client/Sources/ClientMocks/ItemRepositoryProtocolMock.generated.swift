@@ -461,8 +461,9 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
     public var invokedUpdateItemCount = 0
     public var invokedUpdateItemParameters: (userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String)?
     public var invokedUpdateItemParametersList = [(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String)]()
+    public var stubbedUpdateItemResult: SymmetricallyEncryptedItem!
 
-    public func updateItem(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String) async throws {
+    public func updateItem(userId: String, oldItem: Item, newItemContent: any ProtobufableItemContentProtocol, shareId: String) async throws -> SymmetricallyEncryptedItem {
         invokedUpdateItemfunction = true
         invokedUpdateItemCount += 1
         invokedUpdateItemParameters = (userId, oldItem, newItemContent, shareId)
@@ -471,6 +472,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
             throw error
         }
         closureUpdateItem()
+        return stubbedUpdateItemResult
     }
     // MARK: - upsertItems
     public var upsertItemsUserIdItemsShareIdThrowableError22: Error?

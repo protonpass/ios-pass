@@ -63,6 +63,7 @@ class BaseItemDetailViewModel: ObservableObject {
                let mimeType = file.mimeType {
                 let fileGroup = getFileGroup(mimeType: mimeType)
                 uiModels.append(.init(id: file.fileID,
+                                      persistentFileUID: file.persistentFileUID,
                                       url: nil,
                                       state: .uploaded,
                                       name: name,

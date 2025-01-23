@@ -109,7 +109,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func updateItem(userId: String,
                     oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
-                    shareId: String) async throws
+                    shareId: String) async throws -> SymmetricallyEncryptedItem
 
     func upsertItems(userId: String, items: [Item], shareId: String) async throws
 
@@ -552,7 +552,7 @@ public extension ItemRepository {
     func updateItem(userId: String,
                     oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
-                    shareId: String) async throws {
+                    shareId: String) async throws -> SymmetricallyEncryptedItem {
         let itemId = oldItem.itemID
         logger.trace("Updating item \(itemId) for share \(shareId)")
 
@@ -584,6 +584,7 @@ public extension ItemRepository {
         itemsWereUpdated.send()
         try await refreshPinnedItemDataStream()
         logger.trace("Finished updating locally item \(itemId) for share \(shareId)")
+        return encryptedItem
     }
 
     func upsertItems(userId: String, items: [Item], shareId: String) async throws {

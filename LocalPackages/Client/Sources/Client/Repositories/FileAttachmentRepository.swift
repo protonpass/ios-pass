@@ -56,18 +56,24 @@ public protocol FileAttachmentRepositoryProtocol: Sendable {
     func getItemFilesForAllRevisions(userId: String,
                                      item: any ItemIdentifiable,
                                      share: Share) async throws -> [ItemFile]
+    func restoreFiles(userId: String,
+                      item: any ItemIdentifiable,
+                      files: [ItemFile]) async throws
 }
 
 public actor FileAttachmentRepository: FileAttachmentRepositoryProtocol {
+    private let shareRepository: any ShareRepositoryProtocol
     private let itemRepository: any ItemRepositoryProtocol
     private let remoteFileDatasource: any RemoteFileDatasourceProtocol
     private let apiServiceLite: any ApiServiceLiteProtocol
     private let keyManager: any PassKeyManagerProtocol
 
-    public init(itemRepository: any ItemRepositoryProtocol,
+    public init(shareRepository: any ShareRepositoryProtocol,
+                itemRepository: any ItemRepositoryProtocol,
                 remoteFileDatasource: any RemoteFileDatasourceProtocol,
                 apiServiceLite: any ApiServiceLiteProtocol,
                 keyManager: any PassKeyManagerProtocol) {
+        self.shareRepository = shareRepository
         self.itemRepository = itemRepository
         self.remoteFileDatasource = remoteFileDatasource
         self.apiServiceLite = apiServiceLite
@@ -159,11 +165,9 @@ public extension FileAttachmentRepository {
             throw PassError.fileAttachment(.failedToUpdateMissingMimeType)
         }
 
-        let itemKeys = try await keyManager.getItemKeys(userId: userId,
-                                                        shareId: item.shareId,
-                                                        itemId: item.itemId)
+        let keys = try await getShareKeys(userId: userId, item: item)
 
-        guard let itemKey = itemKeys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+        guard let itemKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
             throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
         }
 
@@ -191,9 +195,10 @@ public extension FileAttachmentRepository {
                          pendingFilesToAdd: [PendingFileAttachment],
                          existingFileIdsToRemove: [String],
                          item: any ItemIdentifiable) async throws {
-        let itemKey = try await keyManager.getLatestItemKey(userId: userId,
-                                                            shareId: item.shareId,
-                                                            itemId: item.itemId)
+        let keys = try await getShareKeys(userId: userId, item: item)
+        guard let itemKey = keys.max(by: { $0.keyRotation > $1.keyRotation }) else {
+            throw PassError.keysNotFound(shareID: item.shareId)
+        }
         var filesToAdd = [FileToAdd]()
         for file in pendingFilesToAdd {
             guard let remoteId = file.remoteId else {
@@ -213,22 +218,24 @@ public extension FileAttachmentRepository {
             throw PassError.itemNotFound(item)
         }
         let threshold = 10
-        var updatedItem: Item
+        var updatedItem: Item?
         while true {
             let toAdd = filesToAdd.popAndRemoveFirstElements(threshold)
             let toRemove = existingFileIdsToRemove.popAndRemoveFirstElements(threshold)
 
             if toAdd.isEmpty, toRemove.isEmpty {
-                return
+                break
             }
             updatedItem = try await remoteFileDatasource.linkFilesToItem(userId: userId,
                                                                          item: item,
                                                                          filesToAdd: toAdd,
                                                                          fileIdsToRemove: toRemove)
         }
-        try await itemRepository.upsertItems(userId: userId,
-                                             items: [updatedItem],
-                                             shareId: item.shareId)
+        if let updatedItem {
+            try await itemRepository.upsertItems(userId: userId,
+                                                 items: [updatedItem],
+                                                 shareId: item.shareId)
+        }
     }
 
     func getActiveItemFiles(userId: String, item: any ItemIdentifiable, share: Share) async throws -> [ItemFile] {
@@ -252,6 +259,49 @@ public extension FileAttachmentRepository {
             return try await remoteFileDatasource.getFilesForAllRevisions(userId: userId,
                                                                           item: item,
                                                                           lastId: lastId)
+        }
+    }
+
+    func restoreFiles(userId: String,
+                      item: any ItemIdentifiable,
+                      files: [ItemFile]) async throws {
+        let keys = try await getShareKeys(userId: userId, item: item)
+        guard let latestKey = keys.max(by: { $0.keyRotation > $1.keyRotation }) else {
+            throw PassError.keysNotFound(shareID: item.shareId)
+        }
+
+        var updatedItem: Item?
+        for file in files {
+            guard let usedKey = keys.first(where: { $0.keyRotation == file.itemKeyRotation }) else {
+                throw PassError.fileAttachment(.missingItemKey(file.itemKeyRotation))
+            }
+
+            guard let encryptedFileKey = try file.fileKey.base64Decode() else {
+                throw PassError.crypto(.failedToBase64Decode)
+            }
+
+            // Open the file key
+            let decryptedFileKey = try AES.GCM.open(encryptedFileKey,
+                                                    key: usedKey.keyData,
+                                                    associatedData: .fileKey)
+
+            // Re-encrypt the file key with the latest share key
+            let reencryptedFileKey = try AES.GCM.seal(decryptedFileKey,
+                                                      key: latestKey.keyData,
+                                                      associatedData: .fileKey)
+
+            let encodedFileKey = reencryptedFileKey.base64EncodedString()
+            updatedItem = try await remoteFileDatasource.restoreFile(userId: userId,
+                                                                     item: item,
+                                                                     fileId: file.fileID,
+                                                                     fileKey: encodedFileKey,
+                                                                     itemKeyRevision: Int(latestKey.keyRotation))
+        }
+
+        if let updatedItem {
+            try await itemRepository.upsertItems(userId: userId,
+                                                 items: [updatedItem],
+                                                 shareId: item.shareId)
         }
     }
 }
@@ -310,5 +360,14 @@ private extension FileAttachmentRepository {
                                                  key: key,
                                                  associatedData: .fileData)
         return encryptedProtobuf.base64EncodedString()
+    }
+
+    func getShareKeys(userId: String,
+                      item: any ItemIdentifiable) async throws -> [any ShareKeyProtocol] {
+        guard let share = try await shareRepository.getShare(shareId: item.shareId) else {
+            throw PassError.shareNotFoundInLocalDB(shareID: item.shareId)
+        }
+
+        return try await keyManager.getShareKeys(userId: userId, share: share, item: item)
     }
 }
