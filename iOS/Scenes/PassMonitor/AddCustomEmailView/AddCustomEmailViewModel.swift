@@ -26,7 +26,7 @@ import Foundation
 import Macro
 
 @MainActor
-final class AddCustomEmailViewModel: ObservableObject, Sendable {
+final class AddCustomEmailViewModel: ObservableObject {
     @Published var email = ""
     @Published var code = ""
     @Published private(set) var finishedVerification = false

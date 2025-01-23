@@ -27,7 +27,7 @@ import Factory
 import Foundation
 
 @MainActor
-final class PassMonitorViewModel: ObservableObject, Sendable {
+final class PassMonitorViewModel: ObservableObject {
     @Published private(set) var weaknessStats: WeaknessStats?
     @Published private(set) var breaches: UserBreaches?
     @Published private(set) var numberOfBreaches = 0

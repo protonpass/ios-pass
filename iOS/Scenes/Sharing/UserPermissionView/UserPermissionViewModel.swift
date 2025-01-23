@@ -25,7 +25,7 @@ import Factory
 import Foundation
 
 @MainActor
-final class UserPermissionViewModel: ObservableObject, Sendable {
+final class UserPermissionViewModel: ObservableObject {
     @Published private(set) var selectedUserRole: ShareRole = .read
     @Published private(set) var emails = [String: ShareRole]()
     @Published private(set) var canContinue = false

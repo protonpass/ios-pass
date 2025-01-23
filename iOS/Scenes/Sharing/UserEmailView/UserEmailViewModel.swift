@@ -43,7 +43,7 @@ enum RecommendationsState: Equatable {
 }
 
 @MainActor
-final class UserEmailViewModel: ObservableObject, Sendable {
+final class UserEmailViewModel: ObservableObject {
     @Published var email = ""
     @Published var selectedEmails: [String] = []
     @Published var highlightedEmail: String?
