@@ -86,6 +86,10 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         alias?.mailboxes.isEmpty == false
     }
 
+    var aliasDiscoveryActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
+    }
+
     private var aliasDiscovery: AliasDiscovery {
         preferencesManager.sharedPreferences.unwrapped().aliasDiscovery
     }
