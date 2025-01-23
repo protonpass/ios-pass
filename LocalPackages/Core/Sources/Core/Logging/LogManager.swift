@@ -48,7 +48,7 @@ public struct LogManagerConfig: Sendable {
     }
 }
 
-public actor LogManager: LogManagerProtocol, Sendable {
+public actor LogManager: LogManagerProtocol {
     private let url: URL
     private var fileExists = false
     private var currentSavedlogs = [String]()

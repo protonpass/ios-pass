@@ -73,7 +73,7 @@ enum CreateSecureLinkViewModelState {
 }
 
 @MainActor
-final class CreateSecureLinkViewModel: ObservableObject, Sendable {
+final class CreateSecureLinkViewModel: ObservableObject {
     @Published private(set) var link: NewSecureLink?
     @Published var selectedExpiration: SecureLinkExpiration = .day(7)
     @Published var loading = false
