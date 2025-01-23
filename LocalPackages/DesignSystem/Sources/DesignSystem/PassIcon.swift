@@ -30,6 +30,7 @@ private extension PassIcon {
 }
 
 public extension PassIcon {
+    static let aliasSync = Self.icon(named: "AliasSync")
     static let autoFillOnWebPreview = Self.icon(named: "AutoFillOnWebPreview")
     static let enableAutoFillStep2a = Self.icon(named: "EnableAutoFillStep2a")
     static let enableAutoFillStep2b = Self.icon(named: "EnableAutoFillStep2b")
