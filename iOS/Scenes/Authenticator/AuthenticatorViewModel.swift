@@ -27,7 +27,7 @@ import Foundation
 import Macro
 
 @MainActor
-final class AuthenticatorViewModel: ObservableObject, Sendable {
+final class AuthenticatorViewModel: ObservableObject {
     @Published private(set) var displayedItems = [AuthenticatorItem]()
     @Published var searchText = ""
 

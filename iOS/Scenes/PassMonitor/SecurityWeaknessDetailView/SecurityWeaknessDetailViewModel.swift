@@ -36,7 +36,7 @@ extension SecuritySectionedData {
 }
 
 @MainActor
-final class SecurityWeaknessDetailViewModel: ObservableObject, Sendable {
+final class SecurityWeaknessDetailViewModel: ObservableObject {
     @Published private(set) var state: FetchableObject<SecuritySectionedData> = .fetching
 
     let type: SecurityWeakness

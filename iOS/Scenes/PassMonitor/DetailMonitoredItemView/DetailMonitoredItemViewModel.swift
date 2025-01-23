@@ -38,7 +38,7 @@ struct DetailMonitoredItemUiModel: Sendable, Hashable {
 }
 
 @MainActor
-final class DetailMonitoredItemViewModel: ObservableObject, Sendable {
+final class DetailMonitoredItemViewModel: ObservableObject {
     @Published private(set) var state: FetchableObject<DetailMonitoredItemUiModel> = .fetching
     @Published private(set) var shouldDismiss = false
 

@@ -27,7 +27,7 @@ import Foundation
 import Macro
 
 @MainActor
-final class ItemHistoryViewModel: ObservableObject, Sendable {
+final class ItemHistoryViewModel: ObservableObject {
     @Published private(set) var lastUsedTime: String?
     @Published private(set) var history = [ItemContent]()
     @Published private(set) var files = [ItemFile]()

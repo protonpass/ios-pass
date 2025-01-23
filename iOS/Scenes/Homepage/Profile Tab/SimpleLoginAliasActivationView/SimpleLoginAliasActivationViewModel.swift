@@ -31,7 +31,7 @@ import SwiftUI
 import UseCases
 
 @MainActor
-final class SimpleLoginAliasActivationViewModel: ObservableObject, Sendable {
+final class SimpleLoginAliasActivationViewModel: ObservableObject {
     @Published var selectedVault: VaultListUiModel?
     @Published private(set) var vaults: [VaultListUiModel] = []
 

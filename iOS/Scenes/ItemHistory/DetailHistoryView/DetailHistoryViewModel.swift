@@ -34,7 +34,7 @@ enum SelectedRevision {
 }
 
 @MainActor
-final class DetailHistoryViewModel: ObservableObject, Sendable {
+final class DetailHistoryViewModel: ObservableObject {
     @Published var selectedItemIndex = 0
     @Published private(set) var restoringItem = false
     @Published private(set) var selectedRevision: SelectedRevision = .past
