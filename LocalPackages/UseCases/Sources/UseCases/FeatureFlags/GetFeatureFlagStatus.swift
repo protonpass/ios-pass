@@ -22,7 +22,6 @@
 
 // periphery:ignore:all
 
-import Client
 import Core
 import Foundation
 import ProtonCoreFeatureFlags
@@ -41,16 +40,13 @@ public extension GetFeatureFlagStatusUseCase {
 public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStatusUseCase {
     private let bundle: Bundle
     private let userDefault: UserDefaults
-    private let userManager: any UserManagerProtocol
     private let featureFlagsRepository: any FeatureFlagsRepositoryProtocol
 
     public init(bundle: Bundle = .main,
                 userDefault: UserDefaults = kSharedUserDefaults,
-                userManager: any UserManagerProtocol,
                 repository: any FeatureFlagsRepositoryProtocol) {
         self.bundle = bundle
         self.userDefault = userDefault
-        self.userManager = userManager
         featureFlagsRepository = repository
     }
 
@@ -59,9 +55,6 @@ public final class GetFeatureFlagStatus: @unchecked Sendable, GetFeatureFlagStat
             return true
         }
 
-        if let userId = userManager.activeUserId {
-            featureFlagsRepository.setUserId(userId)
-        }
         return featureFlagsRepository.isEnabled(flag, reloadValue: true)
     }
 }

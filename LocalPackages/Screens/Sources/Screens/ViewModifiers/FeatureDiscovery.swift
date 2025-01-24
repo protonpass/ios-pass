@@ -77,7 +77,7 @@ private final class FeatureDiscoveryOverlayViewModel: ObservableObject {
 public enum NewFeature: Sendable {
     case itemSharing(canDisplay: Bool)
 
-    var storageKey: String {
+    public var storageKey: String {
         switch self {
         case .itemSharing:
             "itemSharing"
