@@ -145367,162 +145367,163 @@
         }
       }
     },
-    "Would you want to associate « %@ » with « %@ »?" : {
+    "Would you want to associate \"%1$@\" with \"%2$@\"?" : {
+      "comment" : "Show when autofilling a login item on a website/app that is not yet associated to it. First placeholder is the URL of the website or app, the second placeholder is the title of the login item.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ці хочаце вы звязаць « %@ » з « %@ »?"
+            "value" : "Ці хочаце вы звязаць \"%1$@\" з \"%2$@\"?"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chcete přiřadit « %@ » k « %@ »?"
+            "value" : "Chcete přiřadit \"%1$@\" k \"%2$@\"?"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vil du gerne tilknytte »%@« med »%@«?"
+            "value" : "Vil du gerne tilknytte \"%1$@\" med \"%2$@\"?"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Möchtest du \"%@\" mit \"%@\" verknüpfen?"
+            "value" : "Möchtest du \"%1$@\" mit \"%2$@\" verknüpfen?"
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Θέλετε να συσχετίσετε « %@ » με το « %@ »;"
+            "value" : "Θέλετε να συσχετίσετε \"%1$@\" με το \"%2$@\";"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Would you want to associate « %@ » with « %@ »?"
+            "value" : "Would you want to associate \"%1$@\" with \"%2$@\"?"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Quieres asociar \" %@ \" a \" %@ \"?"
+            "value" : "¿Quieres asociar \"%1$@\" a \"%2$@\"?"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Desea asociar «%@» con «%@»?"
+            "value" : "¿Desea asociar \"%1$@\" con \"%2$@\"?"
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haluatko liittää osoitteen \"%@\" kirjautumistietoon \"%@\"?"
+            "value" : "Haluatko liittää osoitteen \"%1$@\" kirjautumistietoon \"%2$@\"?"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voulez-vous associer « %@ » à « %@ » ?"
+            "value" : "Voulez-vous associer \"%1$@\" à \"%2$@\" ?"
           }
         },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Apakah Anda ingin mengaitkan \"%@\" dengan \"%@\"?"
+            "value" : "Apakah Anda ingin mengaitkan \"%1$@\" dengan \"%2$@\"?"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vuoi associare « %@ » a « %@ »?"
+            "value" : "Vuoi associare \"%1$@\" a \"%2$@\"?"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« %@ » を « %@ » に関連付けますか?"
+            "value" : "\"%1$@\" を \"%2$@\" に関連付けますか?"
           }
         },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "მართლა გნებავთ „%@“-ის ასოცირება „%@“-სთან?"
+            "value" : "მართლა გნებავთ „%1$@“-ის ასოცირება „%2$@“-სთან?"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« %@ » 그리고 « %@ » 을(를) 연결하시겠습니까?"
+            "value" : "\"%1$@\" 그리고 \"%2$@\" 을(를) 연결하시겠습니까?"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ønsker du å assosiere \"%@\" med \"%@\"?"
+            "value" : "Ønsker du å assosiere \"%1$@\" med \"%2$@\"?"
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wilt u \"%@\" associeren met \"%@\"?"
+            "value" : "Wilt u \"%1$@\" associeren met \"%2$@\"?"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Czy chcesz powiązać « %@ » z « %@ »?"
+            "value" : "Czy chcesz powiązać \"%1$@\" z \"%2$@\"?"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Você gostaria de associar « %@ » com « %@ »?"
+            "value" : "Você gostaria de associar \"%1$@\" com \"%2$@\"?"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Doriți să asociați „%@” cu „%@”?"
+            "value" : "Doriți să asociați „%1$@” cu „%2$@”?"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chcete priradiť « %@ » k « %@ »?"
+            "value" : "Chcete priradiť \"%1$@\" k \"%2$@\"?"
           }
         },
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ali želite povezati « %@ » z « %@ »?"
+            "value" : "Ali želite povezati \"%1$@\" z \"%2$@\"?"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vill du associera « %@ » med « %@ »?"
+            "value" : "Vill du associera \"%1$@\" med \"%2$@\"?"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "« %@ » ile « %@ » ilişkilendirilsin mi?"
+            "value" : "\"%1$@\" ile \"%2$@\" ilişkilendirilsin mi?"
           }
         },
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Хочете пов'язати « %@ » з « %@ »?"
+            "value" : "Хочете пов'язати \"%1$@\" з \"%2$@\"?"
           }
         },
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bạn có muốn liên kết « %@ » với « %@ » không?"
+            "value" : "Bạn có muốn liên kết \"%1$@\" với \"%2$@\" không?"
           }
         }
       }
