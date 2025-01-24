@@ -57,7 +57,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let telemetryEventRepository = resolve(\SharedRepositoryContainer.telemetryEventRepository)
     let urlOpener = UrlOpener()
-    private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
+    let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private let organizationRepository = resolve(\SharedRepositoryContainer.organizationRepository)
     let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let refreshInvitations = resolve(\UseCasesContainer.refreshInvitations)
@@ -80,6 +80,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) var itemRepository
     @LazyInjected(\SharedRepositoryContainer.shareRepository) var shareRepository
     @LazyInjected(\SharedRepositoryContainer.passMonitorRepository) var passMonitorRepository
+    @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -98,7 +99,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     var addAndSwitchToNewUserAccount
     @LazyInjected(\ SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
 
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -134,7 +135,12 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         finalizeInitialization()
         start()
         synchroniseData()
-        loadAccesses()
+        loadAccesses { [weak self] in
+            // Do not suggest SL sync if the user just logged in
+            // to avoid showing too many things (onboarding, full sync progress...)
+            guard let self, await !loginMethod.isManualLogIn() else { return }
+            try await suggestSimpleLoginSyncIfApplicable()
+        }
         refreshOrganizationAndOverrideSecuritySettings()
         refreshAccessAndMonitorStateSync()
         refreshSettings()
@@ -337,11 +343,12 @@ private extension HomepageCoordinator {
         }
     }
 
-    func loadAccesses() {
+    func loadAccesses(completion: @escaping () async throws -> Void) {
         Task { [weak self] in
             guard let self else { return }
             do {
                 try await accessRepository.loadAccesses()
+                try await completion()
             } catch {
                 logger.error(error)
             }
@@ -575,8 +582,15 @@ extension HomepageCoordinator {
                     presentSecureLinkDetail(link: link)
                 case .addAccount:
                     beginAddAccountFlow()
-                case .simpleLoginSyncActivation:
-                    present(SimpleLoginAliasActivationView())
+                case let .simpleLoginSyncActivation(dismissAllSheets):
+                    if dismissAllSheets {
+                        dismissAllViewControllers { [weak self] in
+                            guard let self else { return }
+                            present(SimpleLoginAliasActivationView())
+                        }
+                    } else {
+                        present(SimpleLoginAliasActivationView())
+                    }
                 case .aliasesSyncConfiguration:
                     present(AliasSyncConfigurationView())
                 case .loginsWith2fa:
