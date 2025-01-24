@@ -71,8 +71,8 @@ struct CredentialsView: View {
                },
                message: {
                    if let information = viewModel.notMatchedItemInformation {
-                       // swiftlint:disable:next line_length
-                       Text("Would you want to associate « \(information.url) » with « \(information.item.itemTitle) »?")
+                       Text(verbatim: #localized("Would you want to associate \"%1$@\" with \"%2$@\"?",
+                                                 information.url, information.item.itemTitle))
                    }
                })
         .sheet(isPresented: selectPasskeySheetBinding) {
