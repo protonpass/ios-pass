@@ -20,7 +20,6 @@
 
 import Core
 import DesignSystem
-import Entities
 import Factory
 import Observation
 import Screens

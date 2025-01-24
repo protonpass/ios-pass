@@ -22,7 +22,6 @@
 
 // periphery:ignore:all
 
-import Client
 import Core
 import Foundation
 import ProtonCoreFeatureFlags
