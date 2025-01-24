@@ -141,6 +141,7 @@ final class AppCoordinator {
                         registerForPushNotificationsIfNeededAndAddHandlers( /* uid: sessionID */ )
                     }
                     authDeviceManagerUI?.setup()
+                    fetchAuthPendingDevices()
                 case let .manuallyLoggedIn(userData, extraPassword):
                     Task { [weak self] in
                         guard let self else {
@@ -156,6 +157,7 @@ final class AppCoordinator {
                         }
                         registerForPushNotificationsIfNeededAndAddHandlers(/* uid: userData.credential.sessionID */ )
                         authDeviceManagerUI?.setup()
+                        fetchAuthPendingDevices()
                     }
                 case .undefined:
                     logger.warning("Undefined app state. Don't know what to do...")
@@ -353,6 +355,13 @@ private extension AppCoordinator {
             } catch {
                 logger.error(error)
             }
+        }
+    }
+
+    func fetchAuthPendingDevices() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [weak self] in
+            guard let self else { return }
+            authDeviceManagerUI?.forceFetchPendingDevices()
         }
     }
 }
