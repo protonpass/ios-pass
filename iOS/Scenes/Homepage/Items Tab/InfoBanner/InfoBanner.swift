@@ -29,7 +29,7 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
         [.trial, .autofill, .aliases]
     }
 
-    case trial, autofill, aliases, invite([UserInvite]), slSync(Int)
+    case trial, autofill, aliases, invite([UserInvite])
 
     var id: String {
         switch self {
@@ -41,8 +41,6 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
             "aliases"
         case .invite:
             "invite"
-        case .slSync:
-            "slSync"
         }
     }
 
@@ -83,27 +81,11 @@ enum InfoBanner: CaseIterable, Equatable, Hashable {
                          ctaTitle: nil,
                          backgroundColor: PassColor.backgroundMedium.toColor,
                          foregroundColor: PassColor.textNorm.toColor)
-        case let .slSync(missingAliases):
-            return .init(title: #localized("Enable SimpleLogin sync"),
-                         description: #localized("We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?",
-                                                 missingAliases),
-                         icon: PassIcon.slSyncIcon,
-                         ctaTitle: #localized("Sync aliases"),
-                         backgroundColor: PassColor.aliasInteractionNormMinor1.toColor,
-                         foregroundColor: PassColor.textNorm.toColor,
-                         closeButtonColor: PassColor.textNorm.toColor,
-                         typeOfCtaButton: .capsule(buttonTitle: PassColor.textInvert,
-                                                   buttonBackground: PassColor.aliasInteractionNormMajor1))
         }
     }
 
     var isInvite: Bool {
         if case .invite = self { return true }
-        return false
-    }
-
-    var isSlSync: Bool {
-        if case .slSync = self { return true }
         return false
     }
 }

@@ -37,7 +37,7 @@ public struct AliasSyncView: View {
 
     public var body: some View {
         ZStack(alignment: .topTrailing) {
-            PassColor.backgroundNorm.toColor
+            PassColor.backgroundWeak.toColor
                 .ignoresSafeArea()
 
             VStack {
