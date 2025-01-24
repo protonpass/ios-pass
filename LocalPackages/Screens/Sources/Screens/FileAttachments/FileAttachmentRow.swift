@@ -91,7 +91,7 @@ private extension FileAttachmentRow {
     @ViewBuilder
     var content: some View {
         let style = itemContentType.style(for: mode)
-        HStack {
+        HStack(spacing: DesignConstant.sectionPadding) {
             Image(uiImage: uiModel.group.icon)
                 .resizable()
                 .scaledToFit()
