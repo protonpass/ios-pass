@@ -1,6 +1,16 @@
 {
   "images" : [
     {
+      "filename" : "AliasSyncLight.svg",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
       "filename" : "AliasSync.svg",
       "idiom" : "universal"
     }

@@ -126,7 +126,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
     }
 
     func showSimpleLoginAliasesActivation() {
-        router.present(for: .simpleLoginSyncActivation)
+        router.present(for: .simpleLoginSyncActivation(dismissAllSheets: false))
     }
 
     func setDefaultMailBox(mailbox: Mailbox) {

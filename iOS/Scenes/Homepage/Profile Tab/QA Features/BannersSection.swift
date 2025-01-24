@@ -70,7 +70,6 @@ private struct ManageBannersView: View {
             }
 
             InfoBannerView(banner: .invite([.mocked]), dismiss: {}, action: {})
-            InfoBannerView(banner: .slSync(100), dismiss: {}, action: {})
         }
         .navigationBarTitleDisplayMode(.inline)
     }
