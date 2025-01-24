@@ -488,6 +488,7 @@
 		5B3FD1A42BFCE24E00434294 /* CreateEditIdentityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3FD1A22BFCE24E00434294 /* CreateEditIdentityView.swift */; };
 		5B3FD1A52BFCE24E00434294 /* CreateEditIdentityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3FD1A32BFCE24E00434294 /* CreateEditIdentityViewModel.swift */; };
 		5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */; };
+		5B4459AB2D43B74F00E1F198 /* FeatureDiscoverySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4459AA2D43B74300E1F198 /* FeatureDiscoverySection.swift */; };
 		5B4E53D52BD651F600E8D54A /* BreachEntities+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */; };
 		5B4E53D82BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */; };
 		5B4E53DA2BD6A02500E8D54A /* DateFormatter+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B4E53D92BD6A02500E8D54A /* DateFormatter+Extensions.swift */; };
@@ -1005,6 +1006,7 @@
 		5B3FD1A22BFCE24E00434294 /* CreateEditIdentityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditIdentityView.swift; sourceTree = "<group>"; };
 		5B3FD1A32BFCE24E00434294 /* CreateEditIdentityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditIdentityViewModel.swift; sourceTree = "<group>"; };
 		5B41C99B2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LABiometryType+Extensions.swift"; sourceTree = "<group>"; };
+		5B4459AA2D43B74300E1F198 /* FeatureDiscoverySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatureDiscoverySection.swift; sourceTree = "<group>"; };
 		5B4E53D42BD651F600E8D54A /* BreachEntities+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BreachEntities+Extensions.swift"; sourceTree = "<group>"; };
 		5B4E53D72BD65E6700E8D54A /* BreachEntitiesExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreachEntitiesExtensionsTests.swift; sourceTree = "<group>"; };
 		5B4E53D92BD6A02500E8D54A /* DateFormatter+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DateFormatter+Extensions.swift"; sourceTree = "<group>"; };
@@ -1282,6 +1284,7 @@
 		353739DF29EAE84000A3255E /* QA Features */ = {
 			isa = PBXGroup;
 			children = (
+				5B4459AA2D43B74300E1F198 /* FeatureDiscoverySection.swift */,
 				533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */,
 				5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */,
 				358FB6DC2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift */,
@@ -3435,6 +3438,7 @@
 				358FB6DD2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift in Sources */,
 				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
 				66CA927A29F9643900F2FC59 /* PaymentsManager.swift in Sources */,
+				5B4459AB2D43B74F00E1F198 /* FeatureDiscoverySection.swift in Sources */,
 				3559BA9D2A5B32550020E172 /* Browser+Extensions.swift in Sources */,
 				35C1439C298C042C00F91161 /* ItemDetailTitleView.swift in Sources */,
 				3547ABEE287777B700EE85E1 /* CreateEditAliasView.swift in Sources */,
