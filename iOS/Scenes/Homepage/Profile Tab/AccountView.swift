@@ -150,10 +150,12 @@ struct AccountView: View {
                               .padding(.vertical)
                 }
 
-                if viewModel.extraPasswordEnabled {
-                    extraPasswordEnabledRow
-                } else {
-                    extraPasswordDisabledRow
+                if viewModel.canSetExtraPassword {
+                    if viewModel.extraPasswordEnabled {
+                        extraPasswordEnabledRow
+                    } else {
+                        extraPasswordDisabledRow
+                    }
                 }
                 // swiftlint:disable:next line_length
                 Text(verbatim: "The extra password will be required to use Pass. It acts as an additional password on top of your Proton password.")

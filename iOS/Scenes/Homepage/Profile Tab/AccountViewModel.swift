@@ -66,6 +66,10 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     var username: String { userManager.currentActiveUser.value?.user.email ?? "" }
 
+    var canSetExtraPassword: Bool {
+        !(userManager.currentActiveUser.value?.user.isSSOAccount ?? false)
+    }
+
     init(isShownAsSheet: Bool) {
         self.isShownAsSheet = isShownAsSheet
         setup()
