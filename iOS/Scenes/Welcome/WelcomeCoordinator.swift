@@ -48,10 +48,12 @@ final class WelcomeCoordinator: DeinitPrintable {
     var rootViewController: UIViewController { welcomeViewController }
 
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
+    @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
 
     init(apiService: any APIService, theme: Theme) {
         self.apiService = apiService
         self.theme = theme
+        featureFlagsRepository.clearUserId()
     }
 }
 
