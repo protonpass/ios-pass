@@ -34,17 +34,23 @@ struct GenericCredentialItemRow: View {
         } label: {
             switch item {
             case let .uiModel(uiModel):
-                GeneralItemRow(thumbnailView: { ItemSquircleThumbnail(data: uiModel.thumbnailData()) },
+                GeneralItemRow(thumbnailView: {
+                                   ItemSquircleThumbnail(data: uiModel.thumbnailData(),
+                                                         pinned: uiModel.pinned)
+                               },
                                title: uiModel.title,
                                titleLineLimit: 2,
                                description: uiModel.description,
                                secondaryTitle: secondaryTitle,
-                               secondaryTitleColor: PassColor.textWeak)
+                               secondaryTitleColor: PassColor.textWeak,
+                               hasTotp: uiModel.hasTotpUri,
+                               isShared: uiModel.isShared)
                     .frame(maxWidth: .infinity, alignment: .leading)
             case let .searchResult(result):
                 HStack {
                     VStack {
-                        ItemSquircleThumbnail(data: result.thumbnailData())
+                        ItemSquircleThumbnail(data: result.thumbnailData(),
+                                              pinned: result.pinned)
                     }
                     .frame(maxHeight: .infinity, alignment: .top)
 

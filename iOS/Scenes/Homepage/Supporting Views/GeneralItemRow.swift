@@ -31,6 +31,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
     let secondaryTitleColor: UIColor?
     let description: String?
     let descriptionLineLimit: Int
+    let hasTotp: Bool
     let isShared: Bool
 
     init(@ViewBuilder thumbnailView: () -> ThumbnailView,
@@ -40,6 +41,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
          descriptionLineLimit: Int = 1,
          secondaryTitle: String? = nil,
          secondaryTitleColor: UIColor? = nil,
+         hasTotp: Bool = false,
          isShared: Bool = false) {
         self.thumbnailView = thumbnailView()
         self.title = title
@@ -48,6 +50,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
         self.descriptionLineLimit = descriptionLineLimit
         self.secondaryTitle = secondaryTitle
         self.secondaryTitleColor = secondaryTitleColor
+        self.hasTotp = hasTotp
         self.isShared = isShared
     }
 
@@ -64,8 +67,17 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                 HStack {
                     Text(titleTexts)
                         .lineLimit(titleLineLimit)
+                        .multilineTextAlignment(.leading)
                         .truncationMode(secondaryTitle == nil ? .tail : .middle)
                         .fixedSize(horizontal: false, vertical: true)
+
+                    if hasTotp {
+                        Image(uiImage: PassIcon.shieldLock)
+                            .resizable()
+                            .frame(width: 16, height: 16)
+                            .foregroundStyle(PassColor.loginInteractionNormMajor1.toColor)
+                    }
+
                     if isShared {
                         Image(uiImage: IconProvider.usersFilled)
                             .resizable()

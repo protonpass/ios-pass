@@ -93,6 +93,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.protonStamp
         _ = PassIcon.scanner
         _ = PassIcon.shieldCheck
+        _ = PassIcon.shieldLock
         _ = PassIcon.swirls
 
         _ = PassIcon.tabProfilePaidSelected
