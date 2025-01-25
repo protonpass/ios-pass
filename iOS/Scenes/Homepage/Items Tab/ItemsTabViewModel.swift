@@ -79,9 +79,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
-    @LazyInjected(\SharedRepositoryContainer.aliasRepository)
-    private var aliasRepository: any AliasRepositoryProtocol
-    @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
@@ -310,16 +307,6 @@ private extension ItemsTabViewModel {
             handle(error: error)
             return []
         }
-    }
-
-    func checkPendingAliases() async throws -> Int? {
-        guard let userData = accessRepository.access.value?.access.userData,
-              !userData.aliasSyncEnabled else {
-            return nil
-        }
-        let userId = try await userManager.getActiveUserId()
-        let number = try await aliasRepository.getAliasSyncStatus(userId: userId).pendingAliasCount
-        return number > 0 ? number : nil
     }
 
     func selectOrDeselect(_ item: ItemUiModel) {
