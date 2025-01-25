@@ -321,6 +321,7 @@ private struct ItemRow: View {
                            },
                            title: item.title,
                            description: item.description,
+                           hasTotp: item.hasTotpUri,
                            isShared: item.isShared)
                 .if(!isEditMode) { view in
                     view.itemContextMenu(item: item,
