@@ -21,7 +21,7 @@
 import Foundation
 
 /// Proton Pass errors
-public enum PassError: Error, CustomDebugStringConvertible {
+public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     /// AutoFill extension
     case credentialProvider(CredentialProviderFailureReason)
     case deallocatedSelf
@@ -56,6 +56,7 @@ public enum PassError: Error, CustomDebugStringConvertible {
     case payments(PaymentFailureReason)
     case api(APIFailureReason)
     case fileAttachment(FileAttachmentReason)
+    case csv(CsvFailureReason)
 
     public var debugDescription: String {
         switch self {
@@ -125,6 +126,12 @@ public enum PassError: Error, CustomDebugStringConvertible {
             reason.debugDescription
         case let .fileAttachment(reason):
             reason.debugDescription
+        case let .csv(reason):
+            reason.debugDescription
         }
+    }
+
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.debugDescription == rhs.debugDescription
     }
 }
