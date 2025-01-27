@@ -138,6 +138,28 @@
         }
       }
     },
+    "%lld aliases present in SimpleLogin but missing in Proton Pass." : {
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld alias present in SimpleLogin but missing in Proton Pass."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld aliases present in SimpleLogin but missing in Proton Pass."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld files" : {
       "localizations" : {
         "be" : {
@@ -6681,6 +6703,154 @@
         }
       }
     },
+    "Once synced, deleting aliases in Pass will also delete them in SimpleLogin." : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пасля сінхранізацыі выдаленне псеўданімаў у Pass прывядзе да іх выдалення ў SimpleLogin."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po synchronizaci se smazáním aliasů v Pass smažou také aliasy v SimpleLogin."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Når de er synkroniseret, vil sletning af aliasser i Pass også slette dem i SimpleLogin."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nach der Synchronisierung werden Aliasnamen, die in Pass gelöscht werden, auch in SimpleLogin gelöscht."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μόλις συγχρονιστούν, η διαγραφή ψευδωνύμων στο Pass θα τα διαγράψει επίσης στο SimpleLogin."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Once synced, deleting aliases in Pass will also delete them in SimpleLogin."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una vez sincronizado, al eliminar los alias en Pass también se eliminarán en SimpleLogin."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una vez sincronizado, al eliminar los alias en Pass también se eliminarán en SimpleLogin."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synkronoinnin jälkeen aliasten poistaminen Passista poistaa ne myös SimpleLoginista."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une fois synchronisés, la suppression d'alias dans Pass les supprimera également dans SimpleLogin."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setelah data tersinkron, menghapus alias di Pass akan turut menghapus alias yang sama pada SimpleLogin."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una volta sincronizzati, l'eliminazione degli alias in Pass li eliminerà anche in SimpleLogin."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "一度同期すると、Passでエイリアスを削除するとSimpleLoginでも削除されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "როცა სინქრონიზაცია დასრულდება, Pass-ში ფსევდონიმების წაშლა მათ SimpleLogin-დანაც წაშლის."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "한 번 연동하면, Pass에서 별칭 삭제 시 SimpleLogin에서도 삭제됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Når de er synkronisert, vil sletting av aliaser i Pass også slette dem i SimpleLogin."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eenmaal gesynchroniseerd, zal het verwijderen van aliassen in Pass ze ook verwijderen in SimpleLogin."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po synchronizacji usunięte aliasy w Proton Pass zostaną również usunięte w SimpleLogin."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Após a sincronização, a exclusão de aliases no Pass também os excluirá no SimpleLogin."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "După sincronizare, aliasurile șterse din Pass vor fi șterse și din SimpleLogin."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po synchronizácii sa odstránením aliasov v Pass odstránia aj v SimpleLogin."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "När de väl har synkroniserats kommer borttagning av alias i Pass också att tas bort i SimpleLogin."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eşitlendikten sonra Pass içinden silinen takma adlar SimpleLogin üzerinden de silinir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Після синхронізації, видалення псевдонімів у Pass також видалить їх у SimpleLogin."
+          }
+        }
+      }
+    },
     "Open" : {
       "localizations" : {
         "be" : {
@@ -10347,6 +10517,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Синхронізувати псевдоніми"
+          }
+        }
+      }
+    },
+    "Sync your aliases from SimpleLogin" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sync your aliases from SimpleLogin"
           }
         }
       }

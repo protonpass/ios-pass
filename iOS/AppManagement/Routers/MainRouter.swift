@@ -103,7 +103,7 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case secureLinks
     case secureLinkDetail(SecureLinkListUIModel)
     case addAccount
-    case simpleLoginSyncActivation
+    case simpleLoginSyncActivation(dismissAllSheets: Bool)
     case aliasesSyncConfiguration
     case loginsWith2fa
     case breachDetail(Breach)
