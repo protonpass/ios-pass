@@ -113,6 +113,7 @@ public extension PassIcon {
     static let protonStamp = Self.icon(named: "ProtonStamp")
     static let scanner = Self.icon(named: "Scanner")
     static let shieldCheck = Self.icon(named: "ShieldCheck")
+    static let shieldLock = Self.icon(named: "ShieldLock")
     static let swirls = Self.icon(named: "Swirls")
     static let aliasSlash = Self.icon(named: "AliasSlash")
 
