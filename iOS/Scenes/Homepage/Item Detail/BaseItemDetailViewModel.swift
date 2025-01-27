@@ -46,6 +46,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
     @Published var showingLeaveShareAlert = false
+    @Published var deleteShareItemAlert = false
     @Published var showingVaultMoveAlert = false
 
     @Published private(set) var canDisplayFeatureDiscovery = false

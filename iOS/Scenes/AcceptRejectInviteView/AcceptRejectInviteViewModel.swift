@@ -101,9 +101,11 @@ private extension AcceptRejectInviteViewModel {
                 guard let self,
                       let sharesData = state.loadedContent,
                       let shareContent = sharesData.shares
-                      .first(where: { $0.share.targetID == self.userInvite.targetID }),
-                      !shareContent.items.isEmpty
+                      .first(where: { $0.share.targetID == self.userInvite.targetID })
                 else {
+                    return
+                }
+                if !shareContent.share.isVaultRepresentation, shareContent.items.isEmpty {
                     return
                 }
                 displayItemPage(shareContent: shareContent)
