@@ -399,7 +399,7 @@ private extension BaseItemDetailViewModel {
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
                 guard let vault else { return }
                 canDisplayFeatureDiscovery = passUserInfos
-                    .canDisplayFeatureDiscovery && itemSharingEnabled && vault.vault.shareRole != .read
+                    .canDisplayFeatureDiscovery && itemSharingEnabled && vault.vault.shareRole == .admin
             } catch {
                 handle(error)
             }
