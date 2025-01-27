@@ -26,25 +26,13 @@ struct InfoBannerView: View {
     let dismiss: () -> Void
     let action: () -> Void
 
-    static let height: CGFloat = 150
+    static let height: CGFloat = 140
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            if banner.isSlSync {
-                VStack {
-                    informationDisplayView
-                    Text("Once synced, deleting aliases in Pass will also delete them in SimpleLogin.")
-                        .font(.system(size: 12))
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
+            informationDisplayView
                 .padding(.horizontal, 16)
                 .padding(.vertical, 5)
-            } else {
-                informationDisplayView
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 5)
-            }
             if !banner.isInvite {
                 closeButtonView
             }
@@ -69,7 +57,7 @@ private extension InfoBannerView {
                     .minimumScaleFactor(0.75)
                     .font(.body.weight(.bold))
                     .lineLimit(2)
-                    .frame(maxHeight: banner.isSlSync ? nil : .infinity)
+                    .frame(maxHeight: .infinity)
 
                 Text(banner.detail.description)
                     .minimumScaleFactor(0.75)
@@ -81,9 +69,7 @@ private extension InfoBannerView {
                 }
             }
             .foregroundStyle(banner.detail.foregroundColor)
-            .if(!banner.isSlSync) { view in
-                view.padding(.vertical, 16)
-            }
+            .padding(.vertical, 16)
 
             Spacer()
 
