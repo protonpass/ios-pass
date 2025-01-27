@@ -46897,6 +46897,16 @@
         }
       }
     },
+    "Delete this item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this item"
+          }
+        }
+      }
+    },
     "Delete vault" : {
       "localizations" : {
         "be" : {
@@ -127532,6 +127542,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đây là lần thử cuối cùng của bạn. Bạn sẽ bị đăng xuất sau khi xác thực thất bại một lần nữa."
+          }
+        }
+      }
+    },
+    "This item is currently shared. Deleting it will remove access for all other users." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This item is currently shared. Deleting it will remove access for all other users."
           }
         }
       }
