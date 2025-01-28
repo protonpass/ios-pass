@@ -102,6 +102,12 @@ public extension PassIcon {
     static let onboardAutoFillStep4 = Self.icon(named: "OnboardAutoFillStep4")
     static let onboardAutoFillStep5 = Self.icon(named: "OnboardAutoFillStep5")
 
+    static let firstLoginScreen = Self.icon(named: "FirstLoginScreen")
+    static let secondLoginScreen = Self.icon(named: "SecondLoginScreen")
+    static let thirdLoginScreen = Self.icon(named: "ThirdLoginScreen")
+    static let fourthLoginScreen = Self.icon(named: "FourthLoginScreen")
+    static let loginDeviceIcons = Self.icon(named: "LoginDeviceIcons")
+
     static let passCreditCardOneStripe = Self.icon(named: "PassCreditCardOneStripe")
     static let passCreditCardTwoStripes = Self.icon(named: "PassCreditCardTwoStripes")
     static let passIcon = Self.icon(named: "PassIcon")
