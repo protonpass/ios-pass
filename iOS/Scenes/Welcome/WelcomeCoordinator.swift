@@ -27,6 +27,7 @@ import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCoreServices
+import SwiftUI
 import UIKit
 
 @MainActor
@@ -49,6 +50,7 @@ final class WelcomeCoordinator: DeinitPrintable {
 
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
     init(apiService: any APIService, theme: Theme) {
         self.apiService = apiService
@@ -59,16 +61,33 @@ final class WelcomeCoordinator: DeinitPrintable {
 
 private extension WelcomeCoordinator {
     func makeWelcomeViewController() -> UIViewController {
-        let welcomeViewController =
-            WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
-                                  delegate: self,
-                                  username: nil,
-                                  signupAvailable: true)
+        // TODO: implement a/b testing for the login
+        let welcomeViewController = UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] in
+            guard let self else { return }
+            beginAddAccountFlow()
+        }))
+//            WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
+//                                  delegate: self,
+//                                  username: nil,
+//                                  signupAvailable: true)
         welcomeViewController.view?.addShakeMotionDetector { [weak self] in
             guard let self else { return }
             presentReportBugsAlert()
         }
         return welcomeViewController
+    }
+
+    func beginAddAccountFlow() {
+        let options = LoginCustomizationOptions(inAppTheme: { [weak self] in
+            guard let self else { return .default }
+            return getSharedPreferences().theme.inAppTheme
+        })
+        logInAndSignUp.presentLoginFlow(over: rootViewController,
+                                        customization: options,
+                                        completion: { [weak self] result in
+                                            guard let self else { return }
+                                            handle(result)
+                                        })
     }
 
     @objc
@@ -135,6 +154,13 @@ private extension WelcomeCoordinator {
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }
+
+    func oldLoginFlow() -> UIViewController {
+        WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
+                              delegate: self,
+                              username: nil,
+                              signupAvailable: true)
+    }
 }
 
 // MARK: - WelcomeViewControllerDelegate
@@ -193,4 +219,147 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
         logInAndSignUp = makeLoginAndSignUp()
         delegate?.welcomeCoordinator(didFinishWith: logInData)
     }
+
+//    private func testHandle(logInData: LoginData) {
+//        // Have to refresh `logInAndSignUp` in case `logInData` is ignored and user has to authenticate again.
+//        logInAndSignUp = makeLoginAndSignUp()
+//        delegate?.welcomeCoordinator(didFinishWith: logInData)
+//    }
+
+    func handle(_ result: LoginResult) {
+        switch result {
+        case .dismissed:
+            return
+        case let .loggedIn(logInData), let .signedUp(logInData):
+            logInAndSignUp = makeLoginAndSignUp()
+
+//            if logInData.scopes.contains(where: { $0 == "pass" }) {
+            handle(logInData: logInData)
+//            }
+//            else {
+//                let onSuccess: () -> Void = { [weak self] in
+//                    guard let self else { return }
+//                    rootViewController.dismiss(animated: true) { [weak self] in
+//                        guard let self else { return }
+//                        handle(logInData: logInData)
+            ////                        finalizeAddingAccount(userData: logInData, hasExtraPassword: true)
+//                    }
+//                }
+//
+//                let onFailure: () -> Void = { [weak self] in
+//                    guard let self else { return }
+//                    rootViewController.dismiss(animated: true)
+//                }
+//
+//                let username = logInData.credential.userName
+//                let view = ExtraPasswordLockView(apiServicing: apiManager,
+//                                                 email: logInData.user.email ?? username,
+//                                                 username: username,
+//                                                 userId: logInData.user.ID,
+//                                                 onSuccess: onSuccess,
+//                                                 onFailure: onFailure)
+//                present(view, dismissible: false)
+//            }
+        }
+    }
 }
+
+//
+// import Foundation
+// import Macro
+// import ProtonCoreLogin
+// import ProtonCoreLoginUI
+// import ProtonCoreServices
+// import SwiftUI
+//
+// extension HomepageCoordinator {
+//    func beginAddAccountFlow() {
+//        let options = LoginCustomizationOptions(inAppTheme: { [weak self] in
+//            guard let self else { return .default }
+//            return getSharedPreferences().theme.inAppTheme
+//        })
+//        logInAndSignUp.presentLoginFlow(over: rootViewController,
+//                                        customization: options,
+//                                        completion: { [weak self] result in
+//                                            guard let self else { return }
+//                                            handle(result)
+//                                        })
+//    }
+//
+//    func makeLoginAndSignUp() -> LoginAndSignup {
+//        let params = SignupParameters(separateDomainsButton: true,
+//                                      passwordRestrictions: .default,
+//                                      summaryScreenVariant: .noSummaryScreen)
+//        return .init(appName: "Proton Pass",
+//                     clientApp: .pass,
+//                     apiService: apiManager.getUnauthApiService(),
+//                     minimumAccountType: .external,
+//                     paymentsAvailability: .notAvailable,
+//                     signupAvailability: .available(parameters: params))
+//    }
+// }
+//
+// private extension HomepageCoordinator {
+//    func handle(_ result: LoginResult) {
+//        switch result {
+//        case .dismissed:
+//            return
+//        case let .loggedIn(logInData), let .signedUp(logInData):
+//            logInAndSignUp = makeLoginAndSignUp()
+//
+//            if logInData.scopes.contains(where: { $0 == "pass" }) {
+//                finalizeAddingAccount(userData: logInData, hasExtraPassword: false)
+//            } else {
+//                let onSuccess: () -> Void = { [weak self] in
+//                    guard let self else { return }
+//                    rootViewController.dismiss(animated: true) { [weak self] in
+//                        guard let self else { return }
+//                        finalizeAddingAccount(userData: logInData, hasExtraPassword: true)
+//                    }
+//                }
+//
+//                let onFailure: () -> Void = { [weak self] in
+//                    guard let self else { return }
+//                    rootViewController.dismiss(animated: true)
+//                }
+//
+//                let username = logInData.credential.userName
+//                let view = ExtraPasswordLockView(apiServicing: apiManager,
+//                                                 email: logInData.user.email ?? username,
+//                                                 username: username,
+//                                                 userId: logInData.user.ID,
+//                                                 onSuccess: onSuccess,
+//                                                 onFailure: onFailure)
+//                present(view, dismissible: false)
+//            }
+//        }
+//    }
+//
+//    func finalizeAddingAccount(userData: UserData, hasExtraPassword: Bool) {
+//        Task { [weak self] in
+//            guard let self else { return }
+//            do {
+//                router.display(element: .globalLoading(shouldShow: true))
+//                guard try await canAddNewAccount(userId: userData.user.ID) else {
+//                    router.display(element: .globalLoading(shouldShow: false))
+//                    let message = #localized("Only one free Proton Pass account is allowed")
+//                    bannerManager.displayTopErrorMessage(message)
+//                    authManager.removeCredentials(userId: userData.user.ID)
+//                    return
+//                }
+//                router.display(element: .globalLoading(shouldShow: false))
+//
+//                addTelemetryEvent(with: .multiAccountAddAccount)
+//
+//                router.present(for: .fullSync)
+//                logger.info("Doing full sync")
+//                try await addAndSwitchToNewUserAccount(userData: userData,
+//                                                       hasExtraPassword: hasExtraPassword)
+//                logger.info("Done full sync")
+//                router.display(element: .successMessage(config: .refresh))
+//            } catch {
+//                handle(error: error)
+//            }
+//        }
+//    }
+// }
