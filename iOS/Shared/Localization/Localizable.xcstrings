@@ -63042,6 +63042,9 @@
         }
       }
     },
+    "Get Started" : {
+
+    },
     "Go back" : {
       "comment" : "accessibility",
       "localizations" : {

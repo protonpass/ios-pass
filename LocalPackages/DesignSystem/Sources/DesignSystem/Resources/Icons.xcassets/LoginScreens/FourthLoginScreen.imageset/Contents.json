@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "FourthLoginScreen.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
