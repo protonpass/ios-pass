@@ -220,12 +220,6 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
         delegate?.welcomeCoordinator(didFinishWith: logInData)
     }
 
-//    private func testHandle(logInData: LoginData) {
-//        // Have to refresh `logInAndSignUp` in case `logInData` is ignored and user has to authenticate again.
-//        logInAndSignUp = makeLoginAndSignUp()
-//        delegate?.welcomeCoordinator(didFinishWith: logInData)
-//    }
-
     func handle(_ result: LoginResult) {
         switch result {
         case .dismissed:
