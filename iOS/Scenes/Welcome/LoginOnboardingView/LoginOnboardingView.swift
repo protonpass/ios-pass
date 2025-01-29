@@ -26,8 +26,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct LoginOnboardingView: View {
-    @StateObject private var viewModel = LoginOnboardingViewModel()
-
     let onAction: () -> Void
 
     private struct CarouselItem {
@@ -69,9 +67,8 @@ struct LoginOnboardingView: View {
                 pageIndicators
 
                 carrousel
-
-                bottomActionButton
             }
+            bottomActionButton
         }
         .background(RadialGradientView())
     }
@@ -96,7 +93,7 @@ private extension LoginOnboardingView {
     var carrousel: some View {
         TabView(selection: $currentPage) {
             ForEach(0..<items.count, id: \.self) { index in
-                VStack(alignment: .center) {
+                VStack(alignment: .center, spacing: 0) {
                     VStack(spacing: 8) {
                         Text(items[index].title)
                             .font(.title)
@@ -112,28 +109,21 @@ private extension LoginOnboardingView {
                     .padding(.horizontal, 36)
                     Image(uiImage: items[index].image)
                         .resizable()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .layoutPriority(1)
-                        .offset(y: 30)
-                        .mask(LinearGradient(gradient:
-                            Gradient(stops: [
-                                .init(color: .black, location: 0),
-                                .init(color: .clear, location: 1),
-                                .init(color: .black, location: 1),
-                                .init(color: .clear, location: 1)
-                            ]),
-                            startPoint: .top,
-                            endPoint: .bottom))
                         .overlay {
                             if let secondaryImage = items[currentPage].secondaryImage {
                                 VStack {
+                                    Spacer()
+                                    Spacer()
                                     Spacer()
                                     Image(uiImage: secondaryImage)
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 177)
                                         .foregroundStyle(.white)
+                                    Spacer()
                                 }
                             }
                         }
@@ -146,7 +136,7 @@ private extension LoginOnboardingView {
     }
 
     var bottomActionButton: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 30) {
             CapsuleTextButton(title: #localized("Get Started"),
                               titleColor: PassColor.textNorm,
                               backgroundColor: PassColor.interactionNorm,
