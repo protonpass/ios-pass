@@ -65,6 +65,14 @@ struct ItemDetailSetUpModifier: ViewModifier {
                 // swiftlint:disable:next line_length
                 Text("This item is currently shared. Moving it to another vault will remove access for all other users.")
             }
+            .alert("Delete this item", isPresented: $viewModel.deleteShareItemAlert) {
+                Button("Cancel", role: .cancel) {}
+                Button("Delete") {
+                    viewModel.itemToBeDeleted = viewModel.itemContent
+                }
+            } message: {
+                Text("This item is currently shared. Deleting it will remove access for all other users.")
+            }
             .fullScreenCover(item: $viewModel.filePreviewMode) { mode in
                 FileAttachmentPreview(mode: mode,
                                       primaryTintColor: viewModel.itemContentType.normMajor2Color,
