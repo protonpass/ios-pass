@@ -162,7 +162,7 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     }
 
     func canTransferOwnership(to invitee: any ShareInvitee) -> Bool {
-        guard invitee.shareType == .vault, invitee.owner else {
+        guard invitee.shareType == .vault, !invitee.owner else {
             return false
         }
         return canUserTransferVaultOwnership(for: share, to: invitee)
