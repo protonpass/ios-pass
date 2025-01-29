@@ -59,17 +59,19 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
-                VStack(spacing: 0) {
-                    OptionRow(action: { viewModel.showSecurityKeys() },
-                              height: .tall,
-                              content: {
-                                  Text("Security keys")
-                                      .foregroundStyle(PassColor.textNorm.toColor)
-                              },
-                              trailing: { ChevronRight() })
+                if !viewModel.isSSOUser {
+                    VStack(spacing: 0) {
+                        OptionRow(action: { viewModel.showSecurityKeys() },
+                                  height: .tall,
+                                  content: {
+                                      Text("Security keys")
+                                          .foregroundStyle(PassColor.textNorm.toColor)
+                                  },
+                                  trailing: { ChevronRight() })
+                    }
+                    .roundedEditableSection()
+                    .padding(.top)
                 }
-                .roundedEditableSection()
-                .padding(.top)
 
                 if viewModel.canChangePassword {
                     VStack(spacing: 0) {
@@ -150,7 +152,7 @@ struct AccountView: View {
                               .padding(.vertical)
                 }
 
-                if viewModel.canSetExtraPassword {
+                if !viewModel.isSSOUser {
                     if viewModel.extraPasswordEnabled {
                         extraPasswordEnabledRow
                     } else {
