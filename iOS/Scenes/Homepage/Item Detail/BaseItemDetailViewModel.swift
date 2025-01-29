@@ -46,6 +46,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published var moreInfoSectionExpanded = false
     @Published var showingTrashAliasAlert = false
     @Published var showingLeaveShareAlert = false
+    @Published var deleteShareItemAlert = false
     @Published var showingVaultMoveAlert = false
 
     @Published private(set) var canDisplayFeatureDiscovery = false
@@ -398,7 +399,7 @@ private extension BaseItemDetailViewModel {
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
                 guard let vault else { return }
                 canDisplayFeatureDiscovery = passUserInfos
-                    .canDisplayFeatureDiscovery && itemSharingEnabled && vault.vault.shareRole != .read
+                    .canDisplayFeatureDiscovery && itemSharingEnabled && vault.vault.shareRole == .admin
             } catch {
                 handle(error)
             }
