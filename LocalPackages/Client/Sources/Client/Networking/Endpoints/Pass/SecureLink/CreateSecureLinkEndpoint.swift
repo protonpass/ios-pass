@@ -44,6 +44,8 @@ struct CreateSecureLinkRequest: Encodable, Sendable {
     /// ShareKey rotation used for encrypting the encryptedLinkKey
     let linkKeyShareKeyRotation: Int64
 
+    let linkKeyEncryptedWithItemKey: Bool
+
     enum CodingKeys: String, CodingKey {
         case revision = "Revision"
         case expirationTime = "ExpirationTime"
@@ -51,6 +53,7 @@ struct CreateSecureLinkRequest: Encodable, Sendable {
         case encryptedItemKey = "EncryptedItemKey"
         case encryptedLinkKey = "EncryptedLinkKey"
         case linkKeyShareKeyRotation = "LinkKeyShareKeyRotation"
+        case linkKeyEncryptedWithItemKey = "LinkKeyEncryptedWithItemKey"
     }
 }
 

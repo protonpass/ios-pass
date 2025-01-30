@@ -19,7 +19,6 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import UseCases
-import Client
 import Core
 import Foundation
 import ProtonCoreFeatureFlags
