@@ -99,11 +99,12 @@ final class SecureLinkListViewModel: ObservableObject {
             if links == nil || (links?.isEmpty ?? true) {
                 loading = true
             }
-            do {
-                try await secureLinkManager.updateSecureLinks()
-            } catch {
-                router.display(element: .displayErrorBanner(error))
-            }
+            await refresh()
+//            do {
+//                try await secureLinkManager.updateSecureLinks()
+//            } catch {
+//                router.display(element: .displayErrorBanner(error))
+//            }
         }
     }
 
