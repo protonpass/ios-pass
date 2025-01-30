@@ -82,6 +82,8 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         }
     }
 
+//    public let apiServiceWereUpdated: PassthroughSubject<Void, Never> = .init()
+
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,
                 themeProvider: any ThemeProvider,
@@ -114,7 +116,6 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         if allCurrentApiServices.isEmpty {
             let elements = makeAPIManagerElements(credential: nil)
             allCurrentApiServices.append(elements)
-            fetchUnauthSessionIfNeeded(apiService: elements.apiService)
         }
 
         if let apiService = allCurrentApiServices.first {
@@ -131,7 +132,6 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         }
         let elements = makeAPIManagerElements(credential: nil)
         allCurrentApiServices.append(elements)
-//        fetchUnauthSessionIfNeeded(apiService: elements.apiService)
         return elements.apiService
     }
 
@@ -147,9 +147,8 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         throw PassError.api(.noApiServiceLinkedToUserId)
     }
 
+    // Called when signing out the last user
     public func reset() {
-        // swiftlint:disable:next todo
-        // TODO: Should maybe remove all apiservices
         allCurrentApiServices.removeAll()
 //        getUnauthApiService()
 //        if let apiService = allCurrentApiServices.first {
@@ -200,33 +199,6 @@ private extension APIManager {
         FeatureFlagsRepository.shared.setApiService(apiService)
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
-
-    func fetchUnauthSessionIfNeeded(apiService: any APIService) {
-        apiService.acquireSessionIfNeeded { [weak self] result in
-            guard let self else {
-                return
-            }
-            switch result {
-            case let .success(value):
-                switch value {
-                case let .sessionAlreadyPresent(session), let .sessionFetchedAndAvailable(session):
-                    if Bundle.main.isQaBuild {
-                        logger.trace("UnauthSession: \(session)")
-                    } else {
-                        logger.trace("UnauthSession Id: \(session.sessionID)")
-                    }
-                case .sessionUnavailableAndNotFetched:
-                    logger.trace("session Unavailable And Not Fetched")
-                }
-            // session was already available, or servers were
-            // reached but returned 4xx/5xx.
-            // In both cases we're done here
-            case let .failure(error):
-                // servers not reachable
-                logger.error(error)
-            }
-        }
-    }
 }
 
 // MARK: - AuthHelperDelegate
@@ -264,9 +236,7 @@ extension APIManager: AuthHelperDelegate {
                     return element
                 }
                 element.apiService.setSessionUID(uid: sessionUID)
-                return APIManagerElements(apiService: element.apiService,
-                                          humanVerification: element.humanVerification,
-                                          isAuthenticated: element.isAuthenticated)
+                return element
             }
         } else {
             // Credentials not yet exist
@@ -277,6 +247,8 @@ extension APIManager: AuthHelperDelegate {
         if let apiService = allCurrentApiServices.first {
             setUpCore(apiService: apiService.apiService)
         }
+//        apiServiceWereUpdated.send(())
+
         logger.info("Session credentials are updated")
     }
 }

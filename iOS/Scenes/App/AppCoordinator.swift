@@ -222,6 +222,15 @@ final class AppCoordinator {
                     }
                 }
                 .store(in: &cancellables)
+
+//            apiManager.apiServiceWereUpdated
+//                .receive(on: DispatchQueue.main)
+//                .sink { [weak self] in
+//                    guard let self else { return }
+//                    setUpCoreTelemetry()
+//                    refreshFeatureFlags()
+//                }
+//                .store(in: &cancellables)
             return true
         } catch {
             appStateObserver.updateAppState(.loggedOut(.failedToSetUpAppCoordinator(error)))
