@@ -47,10 +47,19 @@ public final class RecreateSecureLink: RecreateSecureLinkUseCase {
     public func execute(for link: SecureLink) async throws -> String {
         let userId = try await userManager.getActiveUserId()
 
-        let shareKey = try await passKeyManager.getShareKey(userId: userId,
-                                                            shareId: link.shareID,
-                                                            keyRotation: link
-                                                                .linkKeyShareKeyRotation)
+        let shareKey: any ShareKeyProtocol = if link.linkKeyEncryptedWithItemKey {
+            try await passKeyManager.getItemKey(userId: userId,
+                                                shareId: link.shareID,
+                                                itemId: link.itemID,
+                                                keyRotation: link.linkKeyShareKeyRotation)
+//            getLatestItemKey(userId: userId,
+//                                                      shareId: link.shareID,
+//                                                      itemId: link.itemID)
+        } else {
+            try await passKeyManager.getShareKey(userId: userId,
+                                                 shareId: link.shareID,
+                                                 keyRotation: link.linkKeyShareKeyRotation)
+        }
 
         guard let linkKeyData = try link.encryptedLinkKey.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
@@ -63,3 +72,11 @@ public final class RecreateSecureLink: RecreateSecureLinkUseCase {
         return "\(link.linkURL)#\(decryptedLinkKeyData.base64URLSafeEncodedString())"
     }
 }
+
+// let shareKeyInfo: any ShareKeyProtocol = if encryptedWithItemKey {
+//         try await passKeyManager.getLatestItemKey(userId: userId,
+//                                                   shareId: item.shareId,
+//                                                   itemId: item.itemId)
+//     } else {
+//         try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
+//     }
