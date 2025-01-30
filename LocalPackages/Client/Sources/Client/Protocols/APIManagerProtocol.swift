@@ -18,10 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import Foundation
 import ProtonCoreServices
 
 public protocol APIManagerProtocol: Sendable {
+//    var apiServiceWereUpdated: PassthroughSubject<Void, Never> { get }
     func getApiService(userId: String) throws -> any APIService
     // periphery:ignore
     func getUnauthApiService() -> any APIService
