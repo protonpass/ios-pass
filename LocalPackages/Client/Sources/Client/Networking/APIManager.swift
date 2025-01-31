@@ -149,11 +149,6 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
     // Called when signing out the last user
     public func reset() {
         allCurrentApiServices.removeAll()
-
-//        getUnauthApiService()
-//        if let apiService = allCurrentApiServices.first {
-//            setUpCore(apiService: apiService.apiService)
-//        }
     }
 
     public func removeApiService(for userId: String) {
