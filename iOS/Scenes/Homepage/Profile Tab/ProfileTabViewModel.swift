@@ -121,7 +121,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     var isSimpleLoginAliasSyncActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
     }
-    
+
     var isSSOUser: Bool {
         (userManager.currentActiveUser.value?.user.isSSOAccount ?? false)
     }

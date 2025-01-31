@@ -59,7 +59,7 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
-                if viewModel.showSecurityKeys {
+                if viewModel.shouldShowSecurityKeys {
                     VStack(spacing: 0) {
                         OptionRow(action: { viewModel.showSecurityKeys() },
                                   height: .tall,
