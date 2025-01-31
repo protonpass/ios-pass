@@ -23,6 +23,7 @@ import Foundation
 import ProtonCoreServices
 
 public protocol APIManagerProtocol: Sendable {
+    // periphery:ignore
     var apiServiceWereUpdated: PassthroughSubject<any APIService, Never> { get }
 
     func getApiService(userId: String) throws -> any APIService
