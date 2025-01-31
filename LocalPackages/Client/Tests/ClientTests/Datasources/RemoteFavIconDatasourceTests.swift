@@ -19,11 +19,14 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 @testable import Client
+import Combine
 import Core
 import ProtonCoreServices
 import XCTest
 
 final class APIManagerProtocolMock: APIManagerProtocol {
+    let apiServiceWereUpdated: PassthroughSubject<any APIService, Never> = .init()
+
     func getApiService(userId: String) throws -> any APIService {
         PMAPIService.dummyService()
     }
@@ -33,6 +36,10 @@ final class APIManagerProtocolMock: APIManagerProtocol {
     }
     
     func reset() {
+        
+    }
+    
+    func removeApiService(for userId: String) {
         
     }
 }
