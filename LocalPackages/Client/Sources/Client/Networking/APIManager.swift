@@ -160,10 +160,7 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         if let credentials = authManager.getCredential(userId: userId) {
             allCurrentApiServices.removeAll { $0.apiService.sessionUID == credentials.sessionID }
         }
-        if let apiService = allCurrentApiServices.first {
-            apiServiceWereUpdated.send(apiService.apiService)
-            setUpCore(apiService: apiService.apiService)
-        }
+        updateTools()
     }
 }
 
@@ -257,12 +254,16 @@ extension APIManager: AuthHelperDelegate {
             allCurrentApiServices.append(makeAPIManagerElements(credential: credential))
         }
 
+        updateTools()
+
+        logger.info("Session credentials are updated")
+    }
+
+    func updateTools() {
         if let apiService = allCurrentApiServices.first {
             apiServiceWereUpdated.send(apiService.apiService)
             setUpCore(apiService: apiService.apiService)
         }
-
-        logger.info("Session credentials are updated")
     }
 }
 
