@@ -89,6 +89,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.sendMessageToSentry) var sendMessageToSentry
     @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
     private var clearCacheForLoggedOutUsers
+    @LazyInjected(\SharedServiceContainer.telemetryService) private var telemetryService
 
     private var authDeviceManagerUI: AuthDeviceManagerUI?
 
@@ -223,14 +224,14 @@ final class AppCoordinator {
                 }
                 .store(in: &cancellables)
 
-//            apiManager.apiServiceWereUpdated
-//                .receive(on: DispatchQueue.main)
-//                .sink { [weak self] in
-//                    guard let self else { return }
-//                    setUpCoreTelemetry()
-//                    refreshFeatureFlags()
-//                }
-//                .store(in: &cancellables)
+            apiManager.apiServiceWereUpdated
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] apiService in
+                    guard let self else { return }
+                    featureFlagsRepository.setApiService(apiService)
+                    telemetryService.setApiService(apiService: apiService)
+                }
+                .store(in: &cancellables)
             return true
         } catch {
             appStateObserver.updateAppState(.loggedOut(.failedToSetUpAppCoordinator(error)))
