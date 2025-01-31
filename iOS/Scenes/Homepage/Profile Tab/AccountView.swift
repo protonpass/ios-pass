@@ -59,7 +59,7 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
-                if !viewModel.isSSOUser {
+                if viewModel.showSecurityKeys {
                     VStack(spacing: 0) {
                         OptionRow(action: { viewModel.showSecurityKeys() },
                                   height: .tall,
@@ -232,7 +232,7 @@ struct AccountView: View {
                          action: { viewModel.goBack() })
         }
         ToolbarItem(placement: .topBarTrailing) {
-            if viewModel.plan?.hideUpgrade == false {
+            if viewModel.plan?.hideUpgrade == false, !viewModel.isSSOUser {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),
                                    titleColor: ColorProvider.TextInverted,
