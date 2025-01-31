@@ -173,7 +173,8 @@ extension SharedUseCasesContainer {
     }
 
     var setUpCoreTelemetry: Factory<any SetUpCoreTelemetryUseCase> {
-        self { SetUpCoreTelemetry(apiServicing: SharedToolingContainer.shared.apiManager(),
+        self { SetUpCoreTelemetry(telemetryService: SharedServiceContainer.shared.telemetryService(),
+                                  apiServicing: SharedToolingContainer.shared.apiManager(),
                                   logManager: self.logManager,
                                   userSettingsRepository: self.userSettingsRepository,
                                   userManager: self.userManager) }
