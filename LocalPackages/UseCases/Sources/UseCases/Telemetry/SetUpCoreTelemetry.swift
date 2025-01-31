@@ -42,7 +42,7 @@ public final class SetUpCoreTelemetry: SetUpCoreTelemetryUseCase {
     private let userManager: any UserManagerProtocol
     private let logger: Logger
 
-    public init(telemetryService: any TelemetryServiceProtocol = TelemetryService.shared,
+    public init(telemetryService: any TelemetryServiceProtocol,
                 apiServicing: any APIManagerProtocol,
                 logManager: any LogManagerProtocol,
                 userSettingsRepository: any UserSettingsRepositoryProtocol,
