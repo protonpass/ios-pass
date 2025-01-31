@@ -67,8 +67,6 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     var username: String { userManager.currentActiveUser.value?.user.email ?? "" }
 
-    
-    
     var isSSOUser: Bool {
         (userManager.currentActiveUser.value?.user.isSSOAccount ?? false)
     }
@@ -282,12 +280,12 @@ private extension AccountViewModel {
             logger.error(error)
         }
     }
-    
+
     private func checkFidoActivation() {
         Task { @MainActor [weak self] in
             guard let self, let userId = try? await userManager.getActiveUserId() else { return }
             let settings = await userSettingsRepository.getSettings(for: userId)
-        
+
             shouldShowSecurityKeys = settings.twoFactor.type == .fido2 && !isSSOUser
         }
     }
