@@ -28,7 +28,6 @@ import ProtonCoreChallenge
 @preconcurrency import ProtonCoreCryptoGoInterface
 @preconcurrency import ProtonCoreDoh
 @preconcurrency import ProtonCoreEnvironment
-@preconcurrency import ProtonCoreFeatureFlags
 @preconcurrency import ProtonCoreForceUpgrade
 @preconcurrency import ProtonCoreFoundations
 import ProtonCoreHumanVerification
@@ -36,7 +35,6 @@ import ProtonCoreHumanVerification
 @preconcurrency import ProtonCoreNetworking
 @preconcurrency import ProtonCoreObservability
 @preconcurrency import ProtonCoreServices
-@preconcurrency import ProtonCoreTelemetry
 
 private struct APIManagerElements: Sendable {
     let apiService: any APIService
@@ -82,7 +80,7 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         }
     }
 
-//    public let apiServiceWereUpdated: PassthroughSubject<Void, Never> = .init()
+    public let apiServiceWereUpdated: PassthroughSubject<any APIService, Never> = .init()
 
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,
@@ -131,6 +129,7 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
             return unauthApiService
         }
         let elements = makeAPIManagerElements(credential: nil)
+
         allCurrentApiServices.append(elements)
         return elements.apiService
     }
@@ -150,10 +149,21 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
     // Called when signing out the last user
     public func reset() {
         allCurrentApiServices.removeAll()
+
 //        getUnauthApiService()
 //        if let apiService = allCurrentApiServices.first {
 //            setUpCore(apiService: apiService.apiService)
 //        }
+    }
+
+    public func removeApiService(for userId: String) {
+        if let credentials = authManager.getCredential(userId: userId) {
+            allCurrentApiServices.removeAll { $0.apiService.sessionUID == credentials.sessionID }
+        }
+        if let apiService = allCurrentApiServices.first {
+            apiServiceWereUpdated.send(apiService.apiService)
+            setUpCore(apiService: apiService.apiService)
+        }
     }
 }
 
@@ -189,14 +199,17 @@ private extension APIManager {
 
         apiService.loggingDelegate = self
         apiService.forceUpgradeDelegate = forceUpgradeHelper
+        var isAuthenticated = false
+        if let credential {
+            isAuthenticated = !credential.isForUnauthenticatedSession
+        }
+
         return .init(apiService: apiService,
                      humanVerification: humanHelper,
-                     isAuthenticated: credential?.isForUnauthenticatedSession == false)
+                     isAuthenticated: isAuthenticated)
     }
 
     func setUpCore(apiService: any APIService) {
-        TelemetryService.shared.setApiService(apiService: apiService)
-        FeatureFlagsRepository.shared.setApiService(apiService)
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
     }
 }
@@ -245,9 +258,9 @@ extension APIManager: AuthHelperDelegate {
         }
 
         if let apiService = allCurrentApiServices.first {
+            apiServiceWereUpdated.send(apiService.apiService)
             setUpCore(apiService: apiService.apiService)
         }
-//        apiServiceWereUpdated.send(())
 
         logger.info("Session credentials are updated")
     }
