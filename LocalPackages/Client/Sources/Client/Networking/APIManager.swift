@@ -80,6 +80,8 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         }
     }
 
+    public let apiServiceWereUpdated: PassthroughSubject<any APIService, Never> = .init()
+
     public init(authManager: any AuthManagerProtocol,
                 userManager: any UserManagerProtocol,
                 themeProvider: any ThemeProvider,
@@ -105,14 +107,13 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
             forceUpgradeHelper = .init(config: .desktop)
         }
 
-        for credential in authManager.getAllCurrentCredentials() {
+        for credential in authManager.getAllCurrentCredentials() where !credential.isForUnauthenticatedSession {
             allCurrentApiServices.append(makeAPIManagerElements(credential: credential))
         }
 
         if allCurrentApiServices.isEmpty {
             let elements = makeAPIManagerElements(credential: nil)
             allCurrentApiServices.append(elements)
-            fetchUnauthSessionIfNeeded(apiService: elements.apiService)
         }
 
         if let apiService = allCurrentApiServices.first {
@@ -128,8 +129,8 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
             return unauthApiService
         }
         let elements = makeAPIManagerElements(credential: nil)
+
         allCurrentApiServices.append(elements)
-        fetchUnauthSessionIfNeeded(apiService: elements.apiService)
         return elements.apiService
     }
 
@@ -145,13 +146,16 @@ public final class APIManager: @unchecked Sendable, APIManagerProtocol, APIManag
         throw PassError.api(.noApiServiceLinkedToUserId)
     }
 
+    // Called when signing out the last user
     public func reset() {
-        // swiftlint:disable:next todo
-        // TODO: Should maybe remove all apiservices
-        getUnauthApiService()
-        if let apiService = allCurrentApiServices.first {
-            setUpCore(apiService: apiService.apiService)
+        allCurrentApiServices.removeAll()
+    }
+
+    public func removeApiService(for userId: String) {
+        if let credentials = authManager.getCredential(userId: userId) {
+            allCurrentApiServices.removeAll { $0.apiService.sessionUID == credentials.sessionID }
         }
+        updateTools()
     }
 }
 
@@ -187,40 +191,18 @@ private extension APIManager {
 
         apiService.loggingDelegate = self
         apiService.forceUpgradeDelegate = forceUpgradeHelper
+        var isAuthenticated = false
+        if let credential {
+            isAuthenticated = !credential.isForUnauthenticatedSession
+        }
+
         return .init(apiService: apiService,
                      humanVerification: humanHelper,
-                     isAuthenticated: credential?.isForUnauthenticatedSession == false)
+                     isAuthenticated: isAuthenticated)
     }
 
     func setUpCore(apiService: any APIService) {
         ObservabilityEnv.current.setupWorld(requestPerformer: apiService)
-    }
-
-    func fetchUnauthSessionIfNeeded(apiService: any APIService) {
-        apiService.acquireSessionIfNeeded { [weak self] result in
-            guard let self else {
-                return
-            }
-            switch result {
-            case let .success(value):
-                switch value {
-                case let .sessionAlreadyPresent(session), let .sessionFetchedAndAvailable(session):
-                    if Bundle.main.isQaBuild {
-                        logger.trace("UnauthSession: \(session)")
-                    } else {
-                        logger.trace("UnauthSession Id: \(session.sessionID)")
-                    }
-                case .sessionUnavailableAndNotFetched:
-                    logger.trace("session Unavailable And Not Fetched")
-                }
-            // session was already available, or servers were
-            // reached but returned 4xx/5xx.
-            // In both cases we're done here
-            case let .failure(error):
-                // servers not reachable
-                logger.error(error)
-            }
-        }
     }
 }
 
@@ -253,13 +235,30 @@ extension APIManager: AuthHelperDelegate {
 
                 return element.copy(isAuthenticated: !authCredential.isForUnauthenticatedSession)
             }
+        } else if allCurrentApiServices.contains(where: \.apiService.sessionUID.isEmpty) {
+            allCurrentApiServices = allCurrentApiServices.map { element in
+                guard element.apiService.sessionUID.isEmpty else {
+                    return element
+                }
+                element.apiService.setSessionUID(uid: sessionUID)
+                return element
+            }
         } else {
             // Credentials not yet exist
             // => make a new ApiService
             allCurrentApiServices.append(makeAPIManagerElements(credential: credential))
         }
 
+        updateTools()
+
         logger.info("Session credentials are updated")
+    }
+
+    func updateTools() {
+        if let apiService = allCurrentApiServices.first {
+            apiServiceWereUpdated.send(apiService.apiService)
+            setUpCore(apiService: apiService.apiService)
+        }
     }
 }
 

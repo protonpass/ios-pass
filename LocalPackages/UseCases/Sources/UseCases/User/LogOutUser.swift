@@ -160,6 +160,7 @@ private extension LogOutUser {
 
         // Removes all flags linked to user account
         featureFlagsRepository.resetFlags(for: userId)
+        apiManager.removeApiService(for: userId)
         authManager.removeCredentials(userId: userId)
         try await accessRepository.loadAccesses()
         DispatchQueue.main.async {
