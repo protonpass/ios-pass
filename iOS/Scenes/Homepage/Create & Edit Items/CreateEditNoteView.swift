@@ -153,6 +153,8 @@ private final class CreateEditNoteContentUIView: UIView {
     weak var delegate: (any CreateEditNoteContentUIViewDelegate)?
     weak var handler: (any FileAttachmentsEditHandler)?
 
+    private var didCalculateInitialHeightForContent = false
+
     private var cancellables = Set<AnyCancellable>()
     weak var scanResponsePublisher: ScanResponsePublisher? {
         didSet {
@@ -190,6 +192,17 @@ private final class CreateEditNoteContentUIView: UIView {
         titleTextField.text = title
         contentTextView.text = content
         updatePlaceholderVisibility()
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // We rely on `sizeThatFits` function to calculate the needed height for note content
+        // so we need to wait until the text view is fully rendered (width != 0)
+        // Otherwise the calculated height is not correct
+        if !didCalculateInitialHeightForContent, contentTextView.frame.size.width != 0 {
+            updateContentTextViewHeight()
+            didCalculateInitialHeightForContent = true
+        }
     }
 }
 
@@ -347,13 +360,6 @@ private extension CreateEditNoteContentUIView {
 }
 
 extension CreateEditNoteContentUIView: UITextFieldDelegate {
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        // Note title is focused automatically by default
-        // we update the height of contentTextView here because its height
-        // is not known at the initialization of this page
-        updateContentTextViewHeight()
-    }
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
