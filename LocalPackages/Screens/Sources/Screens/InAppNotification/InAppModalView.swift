@@ -77,6 +77,10 @@ public struct InAppModalView: View {
                     .minimumScaleFactor(0.8)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
+                    .if(notification.content.safeImageUrl == nil) { view in
+                        // Add top padding when no image to avoid clashing with the close button
+                        view.padding(.top, 40)
+                    }
 
                 Text(verbatim: notification.content.message)
                     .foregroundStyle(PassColor.textWeak.toColor)
