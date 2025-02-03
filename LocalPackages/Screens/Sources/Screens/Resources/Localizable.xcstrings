@@ -3966,6 +3966,16 @@
         }
       }
     },
+    "Create an Account" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create an Account"
+          }
+        }
+      }
+    },
     "Create login" : {
       "localizations" : {
         "be" : {
@@ -5976,16 +5986,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Get alerts when your email is found on the Dark web."
-          }
-        }
-      }
-    },
-    "Get Started" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Get Started"
           }
         }
       }
@@ -9915,6 +9915,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Share passwords and sensitive information securely and effortlessly."
+          }
+        }
+      }
+    },
+    "Sign In" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign In"
           }
         }
       }
