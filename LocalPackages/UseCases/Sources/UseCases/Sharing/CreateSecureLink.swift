@@ -28,8 +28,7 @@ public protocol CreateSecureLinkUseCase: Sendable {
     func execute(item: ItemContent,
                  share: Share,
                  expirationTime: Int,
-                 maxReadCount: Int?) async throws
-        -> NewSecureLink
+                 maxReadCount: Int?) async throws -> NewSecureLink
 }
 
 public extension CreateSecureLinkUseCase {
@@ -65,7 +64,8 @@ public final class CreateSecureLink: CreateSecureLinkUseCase {
                         expirationTime: Int,
                         maxReadCount: Int?) async throws -> NewSecureLink {
         let encryptedWithItemKey = getFeatureFlagStatus(for: FeatureFlagType.passSecureLinkCryptoChangeV1)
-        let keys = try await getSecureLinkKeys(item: item, share: share,
+        let keys = try await getSecureLinkKeys(item: item,
+                                               share: share,
                                                encryptedWithItemKey: encryptedWithItemKey)
         let userId = try await userManager.getActiveUserId()
         let configuration = SecureLinkCreationConfiguration(shareId: item.shareId,
