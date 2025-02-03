@@ -167,13 +167,6 @@ private extension WelcomeCoordinator {
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }
-
-    func oldLoginFlow() -> UIViewController {
-        WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
-                              delegate: self,
-                              username: nil,
-                              signupAvailable: true)
-    }
 }
 
 // MARK: - WelcomeViewControllerDelegate

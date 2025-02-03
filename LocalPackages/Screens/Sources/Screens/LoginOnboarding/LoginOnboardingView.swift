@@ -175,6 +175,7 @@ private extension LoginOnboardingView {
     }
 }
 
+// periphery:ignore
 // swiftlint:disable:next discouraged_previewprovider
 struct LoginOnboardingView_Previews: PreviewProvider {
     static var previews: some View {
