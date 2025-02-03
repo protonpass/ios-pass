@@ -83,7 +83,7 @@ private extension ShareInviteeView {
 
             Spacer()
 
-            if isAdmin, !isCurrentUser {
+            if isAdmin, !isCurrentUser, !invitee.owner {
                 trailingView
             }
         }
@@ -123,9 +123,11 @@ private extension ShareInviteeView {
                     }
 
                 case .revokeAccess:
-                    button(option: option,
-                           title: "Revoke access",
-                           image: IconProvider.circleSlash)
+                    if !isCurrentUser {
+                        button(option: option,
+                               title: "Revoke access",
+                               image: IconProvider.circleSlash)
+                    }
 
                 case .confirmTransferOwnership:
                     if canTransferOwnership {
