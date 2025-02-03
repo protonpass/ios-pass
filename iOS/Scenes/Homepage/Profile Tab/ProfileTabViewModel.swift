@@ -122,6 +122,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
     }
 
+    var isSSOUser: Bool {
+        (userManager.currentActiveUser.value?.user.isSSOAccount ?? false)
+    }
+
     var storageUiModel: StorageUiModel? {
         guard getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentsV1),
               let plan,
