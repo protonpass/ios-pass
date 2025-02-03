@@ -28,9 +28,9 @@ import SwiftUI
 public struct LoginOnboardingView: View {
     @State private var currentPage: Int = 0
 
-    let onAction: () -> Void
+    private let onAction: (Bool) -> Void
 
-    public init(onAction: @escaping () -> Void) {
+    public init(onAction: @escaping (_ signUp: Bool) -> Void) {
         self.onAction = onAction
     }
 
@@ -75,7 +75,17 @@ public struct LoginOnboardingView: View {
 
                 carrousel
             }
-            bottomActionButton
+            VStack(spacing: 8) {
+                bottomActionButton(signUp: true)
+                bottomActionButton(signUp: false)
+                Image(uiImage: IconProvider.footer)
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(height: 25)
+                    .padding(.top, 10)
+            }.padding(.horizontal, 36)
         }
         .background(RadialGradientView())
     }
@@ -144,28 +154,31 @@ private extension LoginOnboardingView {
         .animation(.easeInOut, value: currentPage)
     }
 
-    var bottomActionButton: some View {
-        VStack(spacing: 30) {
-            CapsuleTextButton(title: #localized("Get Started"),
+    @ViewBuilder
+    func bottomActionButton(signUp: Bool) -> some View {
+        if signUp {
+            CapsuleTextButton(title: #localized("Create an Account"),
                               titleColor: PassColor.textNorm,
-                              backgroundColor: PassColor.interactionNorm,
-                              action: onAction)
+                              backgroundColor: signUp ? PassColor.interactionNorm : .clear,
+                              action: {
+                                  onAction(signUp)
+                              })
+                              .padding(.horizontal, DesignConstant.sectionPadding)
+        } else {
+            CapsuleTextBorderedButton(title: #localized("Sign In"),
+                                      titleColor: Color.white,
+                                      borderColor: Color.white,
+                                      borderWidth: 1,
+                                      action: { onAction(signUp) })
                 .padding(.horizontal, DesignConstant.sectionPadding)
-            Image(uiImage: IconProvider.footer)
-                .resizable()
-                .renderingMode(.template)
-                .scaledToFit()
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .frame(height: 25)
         }
-        .padding(.horizontal, 36)
     }
 }
 
 // swiftlint:disable:next discouraged_previewprovider
 struct LoginOnboardingView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginOnboardingView(onAction: {})
+        LoginOnboardingView(onAction: { _ in })
     }
 }
 

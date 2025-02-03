@@ -116,3 +116,58 @@ public struct DisablableCapsuleTextButton: View {
         .animation(.default, value: disabled)
     }
 }
+
+/// A capsule button with a text as title
+public struct CapsuleTextBorderedButton: View {
+    let title: String
+    let titleColor: Color
+    let font: Font
+    let borderColor: Color
+    let borderWidth: CGFloat
+    let height: CGFloat
+    let maxWidth: CGFloat?
+    let action: (() -> Void)?
+
+    public init(title: String,
+                titleColor: Color,
+                font: Font = .callout,
+                borderColor: Color,
+                borderWidth: CGFloat = 1,
+                height: CGFloat = 40,
+                maxWidth: CGFloat? = .infinity,
+                action: (() -> Void)? = nil) {
+        self.title = title
+        self.titleColor = titleColor
+        self.font = font
+        self.borderColor = borderColor
+        self.height = height
+        self.maxWidth = maxWidth
+        self.action = action
+        self.borderWidth = borderWidth
+    }
+
+    public var body: some View {
+        if let action {
+            Button(action: action) {
+                realBody
+            }
+        } else {
+            realBody
+        }
+    }
+}
+
+private extension CapsuleTextBorderedButton {
+    var realBody: some View {
+        Text(title)
+            .font(font)
+            .foregroundStyle(titleColor)
+            .frame(height: height)
+            .frame(maxWidth: maxWidth)
+            .padding(.horizontal, 16)
+            .background(.clear)
+            .clipShape(Capsule())
+            .overlay(Capsule()
+                .stroke(borderColor, lineWidth: borderWidth))
+    }
+}
