@@ -162,6 +162,7 @@ private extension LoginOnboardingView {
     }
 }
 
+// swiftlint:disable:next discouraged_previewprovider
 struct LoginOnboardingView_Previews: PreviewProvider {
     static var previews: some View {
         LoginOnboardingView(onAction: {})
