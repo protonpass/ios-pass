@@ -25,16 +25,25 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-struct LoginOnboardingView: View {
+public struct LoginOnboardingView: View {
+    @State private var currentPage: Int = 0
+
     let onAction: () -> Void
 
+    public init(onAction: @escaping () -> Void) {
+        self.onAction = onAction
+    }
+
     private struct CarouselItem {
-        let title: String
-        let subtitle: String
+        let title: LocalizedStringKey
+        let subtitle: LocalizedStringKey
         let image: UIImage
         let secondaryImage: UIImage?
 
-        init(title: String, subtitle: String, image: UIImage, secondaryImage: UIImage? = nil) {
+        init(title: LocalizedStringKey,
+             subtitle: LocalizedStringKey,
+             image: UIImage,
+             secondaryImage: UIImage? = nil) {
             self.title = title
             self.subtitle = subtitle
             self.image = image
@@ -59,9 +68,7 @@ struct LoginOnboardingView: View {
                      image: PassIcon.fourthLoginScreen)
     ]
 
-    @State private var currentPage: Int = 0
-
-    var body: some View {
+    public var body: some View {
         ZStack(alignment: .bottom) {
             VStack {
                 pageIndicators
@@ -99,6 +106,8 @@ private extension LoginOnboardingView {
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundStyle(PassColor.textNorm.toColor)
+                            .multilineTextAlignment(.center)
+                            .frame(maxWidth: .infinity, alignment: .center)
                         Text(items[index].subtitle)
                             .font(.title3)
                             .foregroundStyle(PassColor.textWeak.toColor)

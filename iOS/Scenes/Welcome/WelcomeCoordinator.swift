@@ -27,6 +27,7 @@ import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCoreServices
+import Screens
 import SwiftUI
 import UIKit
 
