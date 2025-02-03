@@ -1829,6 +1829,12 @@
             "value" : "Zoeken in items gedeeld door mij"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szukaj w udostępnionych przez Ciebie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
