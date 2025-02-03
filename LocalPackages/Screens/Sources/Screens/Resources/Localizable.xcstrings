@@ -2445,6 +2445,16 @@
         }
       }
     },
+    "All your passwords." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "All your passwords."
+          }
+        }
+      }
+    },
     "Attach a file" : {
       "localizations" : {
         "be" : {
@@ -5960,6 +5970,26 @@
         }
       }
     },
+    "Get alerts when your email is found on the Dark web." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get alerts when your email is found on the Dark web."
+          }
+        }
+      }
+    },
+    "Get Started" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get Started"
+          }
+        }
+      }
+    },
     "Invalid TOTP URI" : {
       "localizations" : {
         "be" : {
@@ -8154,6 +8184,16 @@
         }
       }
     },
+    "Protect your inbox." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protect your inbox."
+          }
+        }
+      }
+    },
     "Quick actions on items" : {
       "localizations" : {
         "be" : {
@@ -9417,6 +9457,26 @@
         }
       }
     },
+    "Secure sharing." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secure sharing."
+          }
+        }
+      }
+    },
+    "Securely in one place and protected by the most trusted name in privacy." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Securely in one place and protected by the most trusted name in privacy."
+          }
+        }
+      }
+    },
     "Select an existing login or create a new one." : {
       "localizations" : {
         "be" : {
@@ -9845,6 +9905,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Başka birinin gelen kutusunu ek e-posta kutusu olarak ekleyerek takma adları onlarla paylaşabilirsiniz."
+          }
+        }
+      }
+    },
+    "Share passwords and sensitive information securely and effortlessly." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share passwords and sensitive information securely and effortlessly."
           }
         }
       }
@@ -10325,6 +10395,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sắp xếp theo"
+          }
+        }
+      }
+    },
+    "Stay Informed." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stay Informed."
           }
         }
       }
@@ -12173,6 +12253,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вивантажити файли з вашого пристрою"
+          }
+        }
+      }
+    },
+    "Use Hide-My-Email aliases against phishing threats." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use Hide-My-Email aliases against phishing threats."
           }
         }
       }
