@@ -44,7 +44,7 @@ extension HomepageCoordinator {
                                      })
             vc = UIHostingController(rootView: view)
             vc?.sheetPresentationController?.detents = [.medium()]
-            if let vc {
+            if let vc, rootViewController.presentedViewController == nil {
                 present(vc, dismissible: false)
             }
         } catch {
