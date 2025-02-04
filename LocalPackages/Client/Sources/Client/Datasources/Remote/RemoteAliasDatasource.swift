@@ -53,6 +53,9 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
                        transferMailboxId: Int?) async throws
     func verifyMailbox(userId: String, mailboxID: Int, request: VerifyMailboxRequest) async throws -> Mailbox
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox
+    func changeMailboxEmail(userId: String,
+                            mailboxId: Int,
+                            newEmail: String) async throws -> Mailbox
 
     func getAliasContacts(userId: String,
                           shareId: String,
@@ -193,6 +196,14 @@ public extension RemoteAliasDatasource {
 
     func resendMailboxVerificationEmail(userId: String, mailboxID: Int) async throws -> Mailbox {
         let endpoint = ResendMailboxVerificationEmailEndpoint(mailboxID: "\(mailboxID)")
+        let response = try await exec(userId: userId, endpoint: endpoint)
+        return response.mailbox
+    }
+
+    func changeMailboxEmail(userId: String,
+                            mailboxId: Int,
+                            newEmail: String) async throws -> Mailbox {
+        let endpoint = ChangeMailboxEmailEndpoint(mailboxId: mailboxId, newEmail: newEmail)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.mailbox
     }

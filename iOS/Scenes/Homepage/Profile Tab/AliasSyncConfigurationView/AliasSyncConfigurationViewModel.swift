@@ -167,6 +167,8 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
             }
         }
     }
+
+    func changeMailboxEmail(mailbox: Mailbox, newMailboxEmail: String) {}
 }
 
 private extension AliasSyncConfigurationViewModel {
