@@ -52,6 +52,13 @@ final class ShareElementViewModel: ObservableObject {
         share.shared || itemContent.shared
     }
 
+    var showSecureLinkCreation: Bool {
+        !itemContent
+            .isAlias &&
+            (share.shareType == .vault ? share.shareRole == .admin : share
+                .shareRole == .admin && getFeatureFlagStatus(for: FeatureFlagType.passSecureLinkCryptoChangeV1))
+    }
+
     init(share: Share, itemContent: ItemContent, itemCount: Int?) {
         self.share = share
         self.itemContent = itemContent

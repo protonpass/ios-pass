@@ -40,7 +40,7 @@ struct ShareElementView: View {
                 itemSharing
             }
 
-            if !viewModel.itemContent.isAlias /* , !viewModel.itemContent.shared */ {
+            if viewModel.showSecureLinkCreation {
                 secureLink
             }
 
