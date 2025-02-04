@@ -7,7 +7,7 @@ Improvements:
 - Fixed issue where long notes were not fully visible when editing
 - Improved discovery of alias-related features
 - Added deep link support for alias management
-- Core libraries upgraded from 27.0.0 to 29.0.5
+- Core libraries upgraded from 27.0.0 to 29.0.6
 
 # Version 1.14.3
 Better authentication:
