@@ -166,7 +166,7 @@ struct AliasSyncConfigurationView: View {
             .presentationDetents([.medium])
             .presentationDragIndicator(.hidden)
         }
-        .showSpinner(viewModel.loading)
+        .showSpinner(viewModel.loading || viewModel.changingMailboxEmail)
         .sheetDestinations(sheetDestination: $router.presentedSheet)
         .navigationStackEmbeded($router.path)
         .onChange(of: viewModel.defaultDomain) { domain in
@@ -196,11 +196,17 @@ struct AliasSyncConfigurationView: View {
                isPresented: $mailboxToChange.mappedToBool(),
                actions: {
                    TextField("Email address", text: $newMailboxEmail)
+                       .keyboardType(.emailAddress)
+                       .textContentType(.emailAddress)
+                       .textInputAutocapitalization(.never)
+
                    Button(role: nil,
                           action: {
                               if let mailboxToChange {
                                   viewModel.changeMailboxEmail(mailbox: mailboxToChange,
-                                                               newMailboxEmail: newMailboxEmail)
+                                                               newMailboxEmail: newMailboxEmail) {
+                                      router.present(sheet: .addEmail(.mailbox($0)))
+                                  }
                                   newMailboxEmail = ""
                               }
                           },
@@ -280,7 +286,7 @@ private struct MailboxElementRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(mailBox.email)
+                Text(mailBox.displayedEmail)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -304,18 +310,18 @@ private struct MailboxElementRow: View {
 
             if showMenu, !isDefault {
                 Menu(content: {
-                    if mailBox.verified {
-                        Label(title: { Text("Make default") },
-                              icon: { Image(uiImage: IconProvider.star) })
-                            .buttonEmbeded { setDefault(mailBox) }
+                    if mailBox.verificationNeeded {
+                        Label(title: { Text("Verify") },
+                              icon: { Image(uiImage: IconProvider.checkmarkCircle) })
+                            .buttonEmbeded { verify(mailBox) }
                     } else {
                         Label(title: { Text("Change mailbox email") },
                               icon: { Image(uiImage: IconProvider.pencil) })
                             .buttonEmbeded { changeEmail(mailBox) }
 
-                        Label(title: { Text("Verify") },
-                              icon: { Image(uiImage: IconProvider.checkmarkCircle) })
-                            .buttonEmbeded { verify(mailBox) }
+                        Label(title: { Text("Make default") },
+                              icon: { Image(uiImage: IconProvider.star) })
+                            .buttonEmbeded { setDefault(mailBox) }
                     }
 
                     Divider()
