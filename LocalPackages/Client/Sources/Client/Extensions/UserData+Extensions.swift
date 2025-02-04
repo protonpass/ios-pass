@@ -23,6 +23,6 @@ import ProtonCoreLogin
 
 public extension UserData {
     func address(for email: String) -> Address? {
-        addresses.first(where: { $0.email == email })
+        addresses.first(where: { $0.email.lowercased() == email.lowercased() })
     }
 }
