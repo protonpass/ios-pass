@@ -137,7 +137,7 @@ private extension AcceptInvitation {
     func fetchInvitedAddress(with userInvite: UserInvite, userData: UserData) async throws -> Address? {
         guard let invitedAddress = userData.address(for: userInvite.invitedEmail) else {
             return try await updateUserAddresses()?
-                .first(where: { $0.email == userInvite.invitedEmail })
+                .first(where: { $0.email.lowercased() == userInvite.invitedEmail.lowercased() })
         }
         return invitedAddress
     }
