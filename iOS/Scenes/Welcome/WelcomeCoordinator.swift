@@ -53,6 +53,8 @@ final class WelcomeCoordinator: DeinitPrintable {
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
+    @LazyInjected(\SharedServiceContainer.abTestingManager) var abTestingManager
+
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
     init(apiService: any APIService, theme: Theme) {
@@ -65,10 +67,7 @@ final class WelcomeCoordinator: DeinitPrintable {
 private extension WelcomeCoordinator {
     func makeWelcomeViewController() -> UIViewController {
         let welcomeViewController = if getFeatureFlagStatus(for: FeatureFlagType.passLoginFlow) {
-            UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
-                guard let self else { return }
-                beginAddAccountFlow(isSigningUp: signUp)
-            }))
+            createLoginFlow()
         } else {
             WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
                                   delegate: self,
@@ -166,6 +165,22 @@ private extension WelcomeCoordinator {
                      minimumAccountType: .external,
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
+    }
+
+    func createLoginFlow() -> UIViewController {
+        let loginVariant = abTestingManager.variant(for: "LoginFlowExperiment", type: LoginFlowExperiment.self)
+        switch loginVariant {
+        case .new:
+            return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
+                guard let self else { return }
+                beginAddAccountFlow(isSigningUp: signUp)
+            }))
+        default:
+            return WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
+                                         delegate: self,
+                                         username: nil,
+                                         signupAvailable: true)
+        }
     }
 }
 
