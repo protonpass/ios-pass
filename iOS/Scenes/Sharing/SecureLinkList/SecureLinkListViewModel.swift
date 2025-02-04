@@ -100,11 +100,6 @@ final class SecureLinkListViewModel: ObservableObject {
                 loading = true
             }
             await refresh()
-//            do {
-//                try await secureLinkManager.updateSecureLinks()
-//            } catch {
-//                router.display(element: .displayErrorBanner(error))
-//            }
         }
     }
 
@@ -181,7 +176,7 @@ private extension SecureLinkListViewModel {
                 .first(where: { $0.shareId == link.shareID && $0.item.itemID == link.itemID }) else {
                 return nil
             }
-            let url = try await recreateSecureLink(for: link)
+            let url = try await recreateSecureLink(for: link, itemContent: content)
             return SecureLinkListUIModel(secureLink: link, itemContent: content, url: url)
         }
         if secureLinks != items {

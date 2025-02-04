@@ -63,15 +63,6 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
             try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
         }
 
-        let test = true
-//        let shareKeyInfo: any ShareKeyProtocol = if test /* encryptedWithItemKey */ {
-//            try await passKeyManager.getLatestItemKey(userId: userId,
-//                                                      shareId: item.shareId,
-//                                                      itemId: item.itemId)
-//        } else {
-//            try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
-//        }
-
         let shareKeyInfo = try await passKeyManager.getLatestShareKey(userId: userId, shareId: item.shareId)
 
         let linkKey = try Data.random()
@@ -81,7 +72,7 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
                                                 associatedData: .itemKey)
 
         let encryptedLinkKey = try AES.GCM.seal(linkKey,
-                                                key: /* encryptedWithItemKey */ test ? itemKeyInfo
+                                                key: encryptedWithItemKey ? itemKeyInfo
                                                     .keyData : shareKeyInfo.keyData,
                                                 associatedData: .linkKey)
 
