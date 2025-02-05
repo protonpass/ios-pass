@@ -20,7 +20,8 @@
 
 import Foundation
 
-public struct CsvLogin: Sendable {
+public struct CsvLogin: Sendable, Identifiable {
+    public let id: String = UUID().uuidString
     public let name: String
     public let url: String
     public let email: String

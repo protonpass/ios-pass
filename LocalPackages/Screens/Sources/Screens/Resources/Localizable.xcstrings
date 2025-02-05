@@ -6812,6 +6812,27 @@
         }
       }
     },
+    "Import" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import"
+          }
+        }
+      }
+    },
+    "Import logins (%1$lld/%2$lld)" : {
+      "comment" : "Title of the importer, first placeholder is the number of selected logins to import, second placeholder is the total number of logins.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import logins (%1$lld/%2$lld)"
+          }
+        }
+      }
+    },
     "Invalid TOTP URI" : {
       "localizations" : {
         "be" : {
