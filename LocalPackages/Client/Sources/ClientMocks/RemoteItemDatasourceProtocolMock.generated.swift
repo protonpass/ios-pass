@@ -366,4 +366,24 @@ public final class RemoteItemDatasourceProtocolMock: @unchecked Sendable, Remote
         closureResetHistory()
         return stubbedResetHistoryResult
     }
+    // MARK: - importItems
+    public var importItemsUserIdShareIdItemsThrowableError18: Error?
+    public var closureImportItems: () -> () = {}
+    public var invokedImportItemsfunction = false
+    public var invokedImportItemsCount = 0
+    public var invokedImportItemsParameters: (userId: String, shareId: String, items: [ItemToImport])?
+    public var invokedImportItemsParametersList = [(userId: String, shareId: String, items: [ItemToImport])]()
+    public var stubbedImportItemsResult: [Item]!
+
+    public func importItems(userId: String, shareId: String, items: [ItemToImport]) async throws -> [Item] {
+        invokedImportItemsfunction = true
+        invokedImportItemsCount += 1
+        invokedImportItemsParameters = (userId, shareId, items)
+        invokedImportItemsParametersList.append((userId, shareId, items))
+        if let error = importItemsUserIdShareIdItemsThrowableError18 {
+            throw error
+        }
+        closureImportItems()
+        return stubbedImportItemsResult
+    }
 }

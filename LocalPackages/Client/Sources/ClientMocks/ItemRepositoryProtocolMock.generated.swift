@@ -758,8 +758,26 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         }
         closureResetHistory()
     }
+    // MARK: - importLogins
+    public var importLoginsShareIdLoginsThrowableError38: Error?
+    public var closureImportLogins: () -> () = {}
+    public var invokedImportLoginsfunction = false
+    public var invokedImportLoginsCount = 0
+    public var invokedImportLoginsParameters: (shareId: String, logins: [CsvLogin])?
+    public var invokedImportLoginsParametersList = [(shareId: String, logins: [CsvLogin])]()
+
+    public func importLogins(shareId: String, logins: [CsvLogin]) async throws {
+        invokedImportLoginsfunction = true
+        invokedImportLoginsCount += 1
+        invokedImportLoginsParameters = (shareId, logins)
+        invokedImportLoginsParametersList.append((shareId, logins))
+        if let error = importLoginsShareIdLoginsThrowableError38 {
+            throw error
+        }
+        closureImportLogins()
+    }
     // MARK: - totpCreationDateThreshold
-    public var totpCreationDateThresholdNumberOfTotpThrowableError38: Error?
+    public var totpCreationDateThresholdNumberOfTotpThrowableError39: Error?
     public var closureTotpCreationDateThreshold: () -> () = {}
     public var invokedTotpCreationDateThresholdfunction = false
     public var invokedTotpCreationDateThresholdCount = 0
@@ -772,7 +790,7 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         invokedTotpCreationDateThresholdCount += 1
         invokedTotpCreationDateThresholdParameters = (numberOfTotp, ())
         invokedTotpCreationDateThresholdParametersList.append((numberOfTotp, ()))
-        if let error = totpCreationDateThresholdNumberOfTotpThrowableError38 {
+        if let error = totpCreationDateThresholdNumberOfTotpThrowableError39 {
             throw error
         }
         closureTotpCreationDateThreshold()

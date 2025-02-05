@@ -153,6 +153,8 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     func getAllItemsContent(items: [any ItemIdentifiable]) async throws -> [ItemContent]
 
     func resetHistory(_ item: any ItemIdentifiable) async throws
+
+    func importLogins(shareId: String, logins: [CsvLogin]) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -681,6 +683,37 @@ public extension ItemRepository {
                                                                   itemId: item.itemId)
         try await upsertItems(userId: userId, items: [updatedItem], shareId: item.shareId)
         logger.trace("Finish resetting history \(item.debugDescription)")
+    }
+
+    func importLogins(shareId: String, logins: [CsvLogin]) async throws {
+        logger.trace("Importing \(logins.count) logins")
+        let userId = try await userManager.getActiveUserId()
+        let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
+        let chunks = logins.chunked(into: 100)
+        for chunk in chunks {
+            let itemsToImport: [ItemToImport] = try chunk.map { login in
+                let loginData = ItemContentData.login(.init(email: login.email,
+                                                            username: login.username,
+                                                            password: login.password,
+                                                            totpUri: "",
+                                                            urls: [login.url],
+                                                            allowedAndroidApps: [],
+                                                            passkeys: []))
+                let content = ItemContentProtobuf(name: login.name,
+                                                  note: "",
+                                                  itemUuid: UUID().uuidString,
+                                                  data: loginData,
+                                                  customFields: [])
+                return try .init(vaultKey: vaultKey, itemContent: content)
+            }
+            logger.debug("Bulk importing \(itemsToImport.count) logins")
+            let items = try await remoteDatasource.importItems(userId: userId,
+                                                               shareId: shareId,
+                                                               items: itemsToImport)
+            try await upsertItems(userId: userId, items: items, shareId: shareId)
+        }
+        itemsWereUpdated.send()
+        logger.info("Imported \(logins.count) logins")
     }
 }
 
