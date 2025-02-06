@@ -21,6 +21,7 @@
 import Client
 import Core
 import Factory
+@preconcurrency import ProtonCoreTelemetry
 
 final class SharedServiceContainer: SharedContainer, AutoRegistering {
     static let shared = SharedServiceContainer()
@@ -133,6 +134,10 @@ extension SharedServiceContainer {
                                             userManager: self.userManager(),
                                             logManager: self.logManager)
         }
+    }
+
+    var telemetryService: Factory<any TelemetryServiceProtocol> {
+        self { TelemetryService.shared }
     }
 
     var abTestingManager: Factory<any ABTestingManagerProtocol> {

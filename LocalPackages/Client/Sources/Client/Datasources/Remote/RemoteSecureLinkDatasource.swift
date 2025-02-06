@@ -42,7 +42,9 @@ public extension RemoteSecureLinkDatasource {
                                               maxReadCount: configuration.maxReadCount,
                                               encryptedItemKey: configuration.encryptedItemKey,
                                               encryptedLinkKey: configuration.encryptedLinkKey,
-                                              linkKeyShareKeyRotation: configuration.linkKeyShareKeyRotation)
+                                              linkKeyShareKeyRotation: configuration.linkKeyShareKeyRotation,
+                                              linkKeyEncryptedWithItemKey: configuration
+                                                  .linkKeyEncryptedWithItemKey)
         let endpoint = CreatePublicLinkEndpoint(shareId: configuration.shareId,
                                                 itemId: configuration.itemId,
                                                 request: request)

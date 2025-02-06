@@ -1104,7 +1104,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Şifre %%%@ çözüldü..."
+            "value" : "Şifre %%%@ oranında çözüldü..."
           }
         },
         "uk" : {
@@ -10401,7 +10401,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 他のログインはこのパスワードを使用します"
+                  "value" : "%lld 個の他のログインがこのパスワードを使用しています"
                 }
               }
             }
@@ -11214,6 +11214,36 @@
     "%lld replies" : {
       "comment" : "Number of replies from an alias",
       "localizations" : {
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odpovědi"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odpovědí"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odpověď"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odpovědí"
+                }
+              }
+            }
+          }
+        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -11388,6 +11418,36 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld件の返信"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld პასუხი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld პასუხი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -11454,6 +11514,60 @@
             }
           }
         },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Răspunsuri: %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Răspunsuri: %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Răspunsuri: %lld"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odpovede"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odpovedí"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odpoveď"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odpovedí"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -11467,6 +11581,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld svar"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld yanıt"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld yanıt"
                 }
               }
             }
@@ -11716,7 +11848,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 結果"
+                  "value" : "%lld 件の結果"
                 }
               }
             }
@@ -27486,6 +27618,12 @@
             "value" : "Pelo menos um dos itens selecionados está atualmente compartilhado. Movê-lo para outro cofre removerá o acesso de todos os outros usuários."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cel puțin unul dintre articolele selectate este partajat deja. Mutarea acestuia în alt seif va elimina accesul pentru toți ceilalți utilizatori."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30116,7 +30254,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "침해 사례 감지됨"
+            "value" : "유출 사례 감지됨"
           }
         },
         "nb" : {
@@ -30926,6 +31064,12 @@
             "value" : "Pode editar e excluir este item."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poate edita și șterge acest articol."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31048,6 +31192,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pode conceder ou revogar acesso para o item."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poate acorda și anula accesul la articol."
           }
         },
         "sk" : {
@@ -31499,6 +31649,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pode ver esse item"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poate vedea acest articol"
           }
         },
         "sk" : {
@@ -33119,6 +33275,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lưu ý: bạn sẽ không thể truy cập vào tài khoản Proton Pass nếu không có mật khẩu này."
+          }
+        }
+      }
+    },
+    "Change mailbox email" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change mailbox email"
           }
         }
       }
@@ -38958,6 +39124,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Copiar o endereço de encaminhamento"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiere adresă de redirecționare"
           }
         },
         "sk" : {
@@ -46897,6 +47069,118 @@
         }
       }
     },
+    "Delete this item" : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smazat tuto položku"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slet dette element"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαγραφή αυτού του στοιχείου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete this item"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar este elemento"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eliminar este elemento"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimer cet élément"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina questo elemento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアイテムを削除"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ამ ელემენტის წაშლა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목 삭제"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slett dette elementet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit item verwijderen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluir este item"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ștergere acest articol"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vymazať túto položku"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta bort detta objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ögeyi sil"
+          }
+        }
+      }
+    },
     "Delete vault" : {
       "localizations" : {
         "be" : {
@@ -49331,7 +49615,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "タイトルを編集"
+            "value" : "フィールド名を編集"
           }
         },
         "ka" : {
@@ -49491,7 +49775,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "タイトルを編集"
+            "value" : "名前を編集"
           }
         },
         "ka" : {
@@ -49812,7 +50096,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "エディター"
+            "value" : "編集者"
           }
         },
         "ka" : {
@@ -54731,6 +55015,12 @@
             "value" : "Cada vez que seu alias receber um e-mail de alguém, um contato será criado automaticamente."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De fiecare dată când aliasul primește un mesaj de la cineva, este creat automat un contact."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57047,7 +57337,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Parola suplimentară trebuie să aibă cel puțin %lld caractere."
+                  "value" : "Parola suplimentară trebuie să aibă cel puțin %lld de caractere."
                 }
               }
             }
@@ -57326,13 +57616,73 @@
             "value" : "Face ID"
           }
         },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Face ID"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
         "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Face ID"
@@ -57345,6 +57695,18 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Face ID"
@@ -62645,7 +63007,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "BusinessPassを入手する"
+            "value" : "Pass Businessを入手する"
           }
         },
         "ka" : {
@@ -63441,7 +63803,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メールエイリアスを使用"
+            "value" : "さようならスパムや詐欺"
           }
         },
         "ka" : {
@@ -63601,7 +63963,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "コードを受け取っていない場合は、"
+            "value" : "コードを受け取っていませんか?"
           }
         },
         "ka" : {
@@ -83580,6 +83942,12 @@
             "value" : "Movendo itens"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se mută articolele"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86728,7 +87096,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton ya da SimleLogin tarafından bile görülemez."
+            "value" : "Proton ya da SimpleLogin tarafından bile görülemez."
           }
         },
         "uk" : {
@@ -102846,13 +103214,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar"
+            "value" : "Eliminar"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar"
+            "value" : "Eliminar"
           }
         },
         "fi" : {
@@ -103006,13 +103374,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar el alias"
+            "value" : "Eliminar el alias"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar el alias"
+            "value" : "Eliminar el alias"
           }
         },
         "fi" : {
@@ -103320,13 +103688,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar los archivos adjuntos en caché de descargas anteriores"
+            "value" : "Eliminar los archivos adjuntos en caché de descargas anteriores"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar los archivos adjuntos en caché de descargas anteriores"
+            "value" : "Eliminar los archivos adjuntos en caché de descargas anteriores"
           }
         },
         "fi" : {
@@ -103462,13 +103830,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar la sección personalizada"
+            "value" : "Eliminar la sección personalizada"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar la sección personalizada"
+            "value" : "Eliminar la sección personalizada"
           }
         },
         "fi" : {
@@ -103622,13 +103990,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar la contraseña adicional"
+            "value" : "Eliminar la contraseña adicional"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar la contraseña adicional"
+            "value" : "Eliminar la contraseña adicional"
           }
         },
         "fi" : {
@@ -103788,7 +104156,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar el campo"
+            "value" : "Eliminar el campo"
           }
         },
         "fi" : {
@@ -103942,13 +104310,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar el enlace inactivo"
+            "value" : "Eliminar el enlace inactivo"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar enlace inactivo"
+            "value" : "Eliminar el enlace inactivo"
           }
         },
         "fi" : {
@@ -104096,13 +104464,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar el enlace"
+            "value" : "Eliminar el enlace"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Eliminar enlace"
+            "value" : "Eliminar el enlace"
           }
         },
         "fi" : {
@@ -104256,13 +104624,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar la sección"
+            "value" : "Eliminar la sección"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Borrar la sección"
+            "value" : "Eliminar la sección"
           }
         },
         "fi" : {
@@ -107042,7 +107410,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このバージョンを復元?"
+            "value" : "このバージョンを復元しますか？"
           }
         },
         "ka" : {
@@ -119207,6 +119575,12 @@
             "value" : "Mostra il campo personalizzato"
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カスタムフィールドを表示"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
@@ -120183,6 +120557,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toon gedeeld door mij"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż udostępnione przez Ciebie"
           }
         },
         "pt-BR" : {
@@ -125665,6 +126045,12 @@
             "value" : "Toque no ícone da engrenagem para personalizar o alias que deseja."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atingeți pictograma cu roata zimțată pentru vă a personaliza aliasul cum doriți."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127532,6 +127918,118 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đây là lần thử cuối cùng của bạn. Bạn sẽ bị đăng xuất sau khi xác thực thất bại một lần nữa."
+          }
+        }
+      }
+    },
+    "This item is currently shared. Deleting it will remove access for all other users." : {
+      "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tato položka je v současné době sdílena. Jejím smazáním se zruší přístup pro všechny ostatní uživatele."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette element er i øjeblikket delt. Hvis du sletter det, fjernes adgangen for alle andre brugere."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτό το στοιχείο είναι κοινόχρηστο. Αν διαγραφεί, όλοι οι υπόλοιποι χρήστες θα χάσουν την πρόσβασή τους σε αυτό."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This item is currently shared. Deleting it will remove access for all other users."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este elemento está compartido actualmente. Si lo eliminas, se eliminará el acceso para todos los demás usuarios."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este elemento está compartido actualmente. Si lo elimina, se eliminará el acceso para todos los demás usuarios."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cet élément est actuellement partagé. Sa suppression retirera également son accès aux autres utilisateurs."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo elemento è attualmente condiviso. L'eliminazione rimuoverà l'accesso per tutti gli altri utenti."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアイテムは現在共有されています。削除すると、他のすべてのユーザーのアクセス権が削除されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს ელემენტი ამჟამად გაზიარებულია. მისი წაშლა სხვა მომხმარებლებს მასზე წვდომას დაუკავრავს."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 아이템은 현재 공유되어있습니다. 이 항목을 삭제하면 다른 모든 사람들의 접근 권한이 제거됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette elementet er for øyeblikket delt. Hvis du sletter det, fjernes tilgangen for alle andre brukere."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit item wordt momenteel gedeeld. Als u het verwijdert, wordt de toegang voor alle andere gebruikers uitgeschakeld."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esse item está atualmente compartilhado. Eliminá-lo removerá o acesso de todos os outros usuários."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acest articol este partajat. Dacă îl ștergeți, ceilalți utilizatori nu-l vor mai putea accesa."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Táto položka je v súčasnosti zdieľaná. Jej odstránením sa zruší prístup pre všetkých ostatných používateľov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta objekt delas för närvarande. Att ta bort det kommer ta bort åtkomst för alla andra användare."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu öge şu anda paylaşılıyor. Silerseniz diğer tüm kullanıcıların erişimi kaldırılacak."
           }
         }
       }
@@ -130033,13 +130531,79 @@
     },
     "Touch ID" : {
       "localizations" : {
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
         "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID"
@@ -130052,6 +130616,18 @@
           }
         },
         "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID"
@@ -145665,7 +146241,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tulis tentang kami di Reddit"
+            "value" : "Tulis kepada kami di Reddit"
           }
         },
         "it" : {
@@ -148612,7 +149188,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "監視から除外されたログイン項目はありません"
+            "value" : "監視から除外されたログインアイテムはありません"
           }
         },
         "ka" : {
@@ -148772,7 +149348,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ログイン項目に再利用されたパスワードがありません"
+            "value" : "ログインアイテムに再利用されたパスワードはありません"
           }
         },
         "ka" : {
@@ -151797,7 +152373,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "あなたの暴露された情報"
+            "value" : "あなたの危険に晒された情報"
           }
         },
         "ka" : {

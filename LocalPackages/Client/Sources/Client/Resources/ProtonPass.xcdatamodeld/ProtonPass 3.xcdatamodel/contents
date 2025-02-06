@@ -134,10 +134,6 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
-    <entity name="PublicKeyEntity" representedClassName="PublicKeyEntity" syncable="YES">
-        <attribute name="email" attributeType="String"/>
-        <attribute name="value" attributeType="String"/>
-    </entity>
     <entity name="SearchEntryEntity" representedClassName="SearchEntryEntity" syncable="YES">
         <attribute name="itemID" attributeType="String"/>
         <attribute name="shareID" attributeType="String"/>

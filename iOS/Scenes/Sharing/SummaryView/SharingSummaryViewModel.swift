@@ -68,8 +68,8 @@ final class SharingSummaryViewModel: ObservableObject {
                 async let getPlan = accessRepository.getPlan(userId: nil)
                 async let sendShareInvite = sendShareInvite(with: infos)
 
-                plan = try await getPlan
-                let sharedElement = try await sendShareInvite
+                let (fetchedPlan, sharedElement) = try await (getPlan, sendShareInvite)
+                plan = fetchedPlan
 
                 if let baseInfo = infos.first {
                     switch baseInfo.shareElement {
