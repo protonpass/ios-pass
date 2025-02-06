@@ -107,7 +107,7 @@ private extension TelemetryEventType {
 
 public extension EventInfo {
     init(event: TelemetryEvent, userTier: String) {
-        measurementGroup = "pass.any.user_actions"
+        measurementGroup = event.measurementGroup
         self.event = event.type.eventName
         var baseDimensions = [String: DimensionsValue]()
         if let dimensionType = event.dimensionType {
@@ -120,6 +120,12 @@ public extension EventInfo {
 
         if let extraDimensionsElements = event.type.extraValues {
             baseDimensions = baseDimensions.merging(extraDimensionsElements) { current, _ in current }
+        }
+        if let flow = event.flow {
+            baseDimensions["flow"] = flow
+        }
+        if let item = event.item {
+            baseDimensions["item"] = item
         }
 
         dimensions = Dimensions(properties: baseDimensions)
@@ -150,6 +156,33 @@ private extension TelemetryEvent {
             "app"
         case .autofillTriggeredFromSource:
             "source"
+        default:
+            nil
+        }
+    }
+
+    var measurementGroup: String {
+        switch type {
+        case .newLoginFlow:
+            "account.any.signup"
+        default:
+            "pass.any.user_actions"
+        }
+    }
+
+    var flow: String? {
+        switch type {
+        case .newLoginFlow:
+            "pass_new_login"
+        default:
+            nil
+        }
+    }
+
+    var item: String? {
+        switch type {
+        case let .newLoginFlow(_, item):
+            item
         default:
             nil
         }
