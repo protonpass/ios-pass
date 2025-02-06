@@ -158,8 +158,8 @@ private extension LoginOnboardingView {
     func bottomActionButton(signUp: Bool) -> some View {
         if signUp {
             CapsuleTextButton(title: #localized("Create an Account"),
-                              titleColor: PassColor.textNorm,
-                              backgroundColor: signUp ? PassColor.interactionNorm : .clear,
+                              titleColor: .white,
+                              backgroundColor: signUp ? UIColor(red: 110, green: 74, blue: 255) : .clear,
                               action: {
                                   onAction(signUp)
                               })

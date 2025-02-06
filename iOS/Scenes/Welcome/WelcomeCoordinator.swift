@@ -52,7 +52,6 @@ final class WelcomeCoordinator: DeinitPrintable {
 
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedServiceContainer.abTestingManager) var abTestingManager
     @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
 
@@ -67,14 +66,7 @@ final class WelcomeCoordinator: DeinitPrintable {
 
 private extension WelcomeCoordinator {
     func makeWelcomeViewController() -> UIViewController {
-        let welcomeViewController = if getFeatureFlagStatus(for: FeatureFlagType.passLoginFlow) {
-            createLoginFlow()
-        } else {
-            WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
-                                  delegate: self,
-                                  username: nil,
-                                  signupAvailable: true)
-        }
+        let welcomeViewController = createLoginFlow()
 
         welcomeViewController.view?.addShakeMotionDetector { [weak self] in
             guard let self else { return }
@@ -171,6 +163,13 @@ private extension WelcomeCoordinator {
     }
 
     func createLoginFlow() -> UIViewController {
+        if UserDefaults.standard.bool(forKey: Constants.QA.newLoginFlow) {
+            return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
+                guard let self else { return }
+                beginAddAccountFlow(isSigningUp: signUp)
+            }))
+        }
+
         let loginVariant = abTestingManager.variant(for: "LoginFlowExperiment", type: LoginFlowExperiment.self)
         switch loginVariant {
         case .new:
