@@ -1,3 +1,14 @@
+# Version 1.15.0
+Individual item sharing:
+You can now share items individually, giving you greater control and flexibility over what you share.
+
+Improvements:
+- Added a badge for logins with 2FA enabled
+- Fixed issue where long notes were not fully visible when editing
+- Improved discovery of alias-related features
+- Added deep link support for alias management
+- Core libraries upgraded from 27.0.0 to 29.0.6
+
 # Version 1.14.3
 Better authentication:
 Now, when autofilling, you'll only need Face ID or Touch ID for authentication if you've used the app recently—no need to reauthenticate within the app. This streamlines your experience while keeping your data secure.

@@ -25,12 +25,12 @@ import CryptoKit
 import Entities
 
 public protocol RecreateSecureLinkUseCase: Sendable {
-    func execute(for link: SecureLink) async throws -> String
+    func execute(for link: SecureLink, itemContent: ItemContent) async throws -> String
 }
 
 public extension RecreateSecureLinkUseCase {
-    func callAsFunction(for link: SecureLink) async throws -> String {
-        try await execute(for: link)
+    func callAsFunction(for link: SecureLink, itemContent: ItemContent) async throws -> String {
+        try await execute(for: link, itemContent: itemContent)
     }
 }
 
@@ -44,13 +44,24 @@ public final class RecreateSecureLink: RecreateSecureLinkUseCase {
         self.userManager = userManager
     }
 
-    public func execute(for link: SecureLink) async throws -> String {
+    public func execute(for link: SecureLink, itemContent: ItemContent) async throws -> String {
         let userId = try await userManager.getActiveUserId()
-
-        let shareKey = try await passKeyManager.getShareKey(userId: userId,
-                                                            shareId: link.shareID,
-                                                            keyRotation: link
-                                                                .linkKeyShareKeyRotation)
+        let shareKey: any ShareKeyProtocol = if link.linkKeyEncryptedWithItemKey {
+            if itemContent.item.itemKey == nil {
+                try await passKeyManager.getShareKey(userId: userId,
+                                                     shareId: link.shareID,
+                                                     keyRotation: link.linkKeyShareKeyRotation)
+            } else {
+                try await passKeyManager.getItemKey(userId: userId,
+                                                    shareId: link.shareID,
+                                                    itemId: link.itemID,
+                                                    keyRotation: link.linkKeyShareKeyRotation)
+            }
+        } else {
+            try await passKeyManager.getShareKey(userId: userId,
+                                                 shareId: link.shareID,
+                                                 keyRotation: link.linkKeyShareKeyRotation)
+        }
 
         guard let linkKeyData = try link.encryptedLinkKey.base64Decode() else {
             throw PassError.crypto(.failedToBase64Decode)
