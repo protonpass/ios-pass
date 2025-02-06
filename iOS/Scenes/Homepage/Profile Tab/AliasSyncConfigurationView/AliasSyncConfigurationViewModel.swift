@@ -47,6 +47,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
     private(set) var plan: Plan?
 
     @Published private(set) var loading = false
+    @Published private(set) var changingMailboxEmail = false
     @Published private(set) var showSyncSection = false
     @Published var error: (any Error)?
 
@@ -162,6 +163,29 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
                 try await aliasRepository.deleteMailbox(userId: userId,
                                                         mailboxID: mailbox.mailboxID,
                                                         transferMailboxID: transferMailboxId)
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func changeMailboxEmail(mailbox: Mailbox,
+                            newMailboxEmail: String,
+                            completion: @escaping (Mailbox) -> Void) {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { changingMailboxEmail = false }
+            changingMailboxEmail = true
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let updatedMailbox =
+                    try await aliasRepository.changeMailboxEmail(userId: userId,
+                                                                 mailboxId: mailbox.mailboxID,
+                                                                 newMailboxEmail: newMailboxEmail)
+                if let index = mailboxes.firstIndex(where: { $0.mailboxID == updatedMailbox.mailboxID }) {
+                    mailboxes[index] = updatedMailbox
+                }
+                completion(updatedMailbox)
             } catch {
                 handle(error: error)
             }
