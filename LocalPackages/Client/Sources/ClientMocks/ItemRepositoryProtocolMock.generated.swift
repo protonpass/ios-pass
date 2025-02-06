@@ -759,19 +759,19 @@ public final class ItemRepositoryProtocolMock: @unchecked Sendable, ItemReposito
         closureResetHistory()
     }
     // MARK: - importLogins
-    public var importLoginsShareIdLoginsThrowableError38: Error?
+    public var importLoginsUserIdShareIdLoginsThrowableError38: Error?
     public var closureImportLogins: () -> () = {}
     public var invokedImportLoginsfunction = false
     public var invokedImportLoginsCount = 0
-    public var invokedImportLoginsParameters: (shareId: String, logins: [CsvLogin])?
-    public var invokedImportLoginsParametersList = [(shareId: String, logins: [CsvLogin])]()
+    public var invokedImportLoginsParameters: (userId: String, shareId: String, logins: [CsvLogin])?
+    public var invokedImportLoginsParametersList = [(userId: String, shareId: String, logins: [CsvLogin])]()
 
-    public func importLogins(shareId: String, logins: [CsvLogin]) async throws {
+    public func importLogins(userId: String, shareId: String, logins: [CsvLogin]) async throws {
         invokedImportLoginsfunction = true
         invokedImportLoginsCount += 1
-        invokedImportLoginsParameters = (shareId, logins)
-        invokedImportLoginsParametersList.append((shareId, logins))
-        if let error = importLoginsShareIdLoginsThrowableError38 {
+        invokedImportLoginsParameters = (userId, shareId, logins)
+        invokedImportLoginsParametersList.append((userId, shareId, logins))
+        if let error = importLoginsUserIdShareIdLoginsThrowableError38 {
             throw error
         }
         closureImportLogins()
