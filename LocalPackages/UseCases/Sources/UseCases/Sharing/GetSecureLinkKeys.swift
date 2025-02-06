@@ -26,13 +26,14 @@ import Entities
 import Foundation
 
 public protocol GetSecureLinkKeysUseCase: Sendable {
-    func execute(item: ItemContent, share: Share) async throws -> SecureLinkKeys
+    func execute(item: ItemContent, share: Share, encryptedWithItemKey: Bool) async throws -> SecureLinkKeys
 }
 
 public extension GetSecureLinkKeysUseCase {
-    func callAsFunction(item: ItemContent, share: Share) async throws
-        -> SecureLinkKeys {
-        try await execute(item: item, share: share)
+    func callAsFunction(item: ItemContent,
+                        share: Share,
+                        encryptedWithItemKey: Bool) async throws -> SecureLinkKeys {
+        try await execute(item: item, share: share, encryptedWithItemKey: encryptedWithItemKey)
     }
 }
 
@@ -49,7 +50,9 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
     /// Generates link and encoded item keys
     /// - Parameter item: Item to be publicly shared
     /// - Returns: A tuple with the link and item encoded keys
-    public func execute(item: ItemContent, share: Share) async throws -> SecureLinkKeys {
+    public func execute(item: ItemContent,
+                        share: Share,
+                        encryptedWithItemKey: Bool) async throws -> SecureLinkKeys {
         let userId = try await userManager.getActiveUserId()
 
         let itemKeyInfo: any ShareKeyProtocol = if share.shareType == .vault {
@@ -69,7 +72,8 @@ public final class GetSecureLinkKeys: GetSecureLinkKeysUseCase {
                                                 associatedData: .itemKey)
 
         let encryptedLinkKey = try AES.GCM.seal(linkKey,
-                                                key: shareKeyInfo.keyData,
+                                                key: encryptedWithItemKey ? itemKeyInfo
+                                                    .keyData : shareKeyInfo.keyData,
                                                 associatedData: .linkKey)
 
         return SecureLinkKeys(linkKey: linkKey.base64URLSafeEncodedString(),

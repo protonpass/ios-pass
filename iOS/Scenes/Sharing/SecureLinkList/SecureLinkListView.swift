@@ -68,8 +68,8 @@ struct SecureLinkListView: View {
                 view.searchable(text: $viewModel.searchText,
                                 prompt: "Search")
             }
-            .refreshable {
-                await viewModel.refresh()
+            .refreshable { [weak viewModel] in
+                await viewModel?.refresh()
             }
             .task {
                 await viewModel.load()

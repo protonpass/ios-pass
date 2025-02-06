@@ -113,7 +113,7 @@ struct ProfileTabView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            if viewModel.plan?.hideUpgrade == false {
+            if viewModel.plan?.hideUpgrade == false, !viewModel.isSSOUser {
                 CapsuleLabelButton(icon: PassIcon.brandPass,
                                    title: #localized("Upgrade"),
                                    titleColor: PassColor.interactionNorm,
