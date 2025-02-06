@@ -154,7 +154,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
 
     func resetHistory(_ item: any ItemIdentifiable) async throws
 
-    func importLogins(shareId: String, logins: [CsvLogin]) async throws
+    func importLogins(userId: String, shareId: String, logins: [CsvLogin]) async throws
 }
 
 public extension ItemRepositoryProtocol {
@@ -685,9 +685,8 @@ public extension ItemRepository {
         logger.trace("Finish resetting history \(item.debugDescription)")
     }
 
-    func importLogins(shareId: String, logins: [CsvLogin]) async throws {
-        logger.trace("Importing \(logins.count) logins")
-        let userId = try await userManager.getActiveUserId()
+    func importLogins(userId: String, shareId: String, logins: [CsvLogin]) async throws {
+        logger.trace("Importing \(logins.count) logins for user \(userId)")
         let vaultKey = try await passKeyManager.getLatestShareKey(userId: userId, shareId: shareId)
         let chunks = logins.chunked(into: 100)
         for chunk in chunks {
@@ -713,7 +712,7 @@ public extension ItemRepository {
             try await upsertItems(userId: userId, items: items, shareId: shareId)
         }
         itemsWereUpdated.send()
-        logger.info("Imported \(logins.count) logins")
+        logger.info("Imported \(logins.count) logins for user \(userId)")
     }
 }
 
