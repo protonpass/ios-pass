@@ -129,4 +129,24 @@ public final class PassKeyManagerProtocolMock: @unchecked Sendable, PassKeyManag
         closureGetItemKeys()
         return stubbedGetItemKeysResult
     }
+    // MARK: - getItemKey
+    public var getItemKeyUserIdShareIdItemIdKeyRotationThrowableError6: Error?
+    public var closureGetItemKey: () -> () = {}
+    public var invokedGetItemKeyfunction = false
+    public var invokedGetItemKeyCount = 0
+    public var invokedGetItemKeyParameters: (userId: String, shareId: String, itemId: String, keyRotation: Int64)?
+    public var invokedGetItemKeyParametersList = [(userId: String, shareId: String, itemId: String, keyRotation: Int64)]()
+    public var stubbedGetItemKeyResult: DecryptedItemKey!
+
+    public func getItemKey(userId: String, shareId: String, itemId: String, keyRotation: Int64) async throws -> DecryptedItemKey {
+        invokedGetItemKeyfunction = true
+        invokedGetItemKeyCount += 1
+        invokedGetItemKeyParameters = (userId, shareId, itemId, keyRotation)
+        invokedGetItemKeyParametersList.append((userId, shareId, itemId, keyRotation))
+        if let error = getItemKeyUserIdShareIdItemIdKeyRotationThrowableError6 {
+            throw error
+        }
+        closureGetItemKey()
+        return stubbedGetItemKeyResult
+    }
 }
