@@ -73,6 +73,11 @@ public protocol PassKeyManagerProtocol: Sendable, AnyObject {
 
     /// Get all decrypted item keys
     func getItemKeys(userId: String, shareId: String, itemId: String) async throws -> [DecryptedItemKey]
+
+    func getItemKey(userId: String,
+                    shareId: String,
+                    itemId: String,
+                    keyRotation: Int64) async throws -> DecryptedItemKey
 }
 
 public actor PassKeyManager: PassKeyManagerProtocol {
@@ -183,6 +188,17 @@ public extension PassKeyManager {
         }
         logger.trace("Decrypted \(encryptedKeys.count) item keys itemId \(itemId), shareId \(shareId)")
         return decryptedKeys
+    }
+
+    func getItemKey(userId: String,
+                    shareId: String,
+                    itemId: String,
+                    keyRotation: Int64) async throws -> DecryptedItemKey {
+        guard let key = try await getItemKeys(userId: userId, shareId: shareId, itemId: itemId)
+            .first(where: { $0.keyRotation == keyRotation }) else {
+            throw PassError.keysNotFound(shareID: shareId)
+        }
+        return key
     }
 }
 
