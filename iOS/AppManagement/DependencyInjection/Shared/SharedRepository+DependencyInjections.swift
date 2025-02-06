@@ -123,10 +123,6 @@ extension SharedRepositoryContainer {
         self { RemoteShareDatasource(apiServicing: self.apiManager) }
     }
 
-    var localPublicKeyDatasource: Factory<any LocalPublicKeyDatasourceProtocol> {
-        self { LocalPublicKeyDatasource(databaseService: self.databaseService) }
-    }
-
     var remotePublicKeyDatasource: Factory<any RemotePublicKeyDatasourceProtocol> {
         self { RemotePublicKeyDatasource(apiServicing: self.apiManager) }
     }
@@ -312,8 +308,7 @@ extension SharedRepositoryContainer {
 
     var publicKeyRepository: Factory<any PublicKeyRepositoryProtocol> {
         self {
-            PublicKeyRepository(localPublicKeyDatasource: self.localPublicKeyDatasource(),
-                                remotePublicKeyDatasource: self.remotePublicKeyDatasource(),
+            PublicKeyRepository(datasource: self.remotePublicKeyDatasource(),
                                 userManager: self.userManager,
                                 logManager: self.logManager)
         }
