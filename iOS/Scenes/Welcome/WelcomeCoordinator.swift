@@ -54,6 +54,7 @@ final class WelcomeCoordinator: DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedServiceContainer.abTestingManager) var abTestingManager
+    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
 
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
@@ -88,12 +89,14 @@ private extension WelcomeCoordinator {
             return getSharedPreferences().theme.inAppTheme
         })
         if isSigningUp {
+            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_up"))
             logInAndSignUp.presentSignupFlow(over: rootViewController,
                                              customization: options) { [weak self] result in
                 guard let self else { return }
                 handle(result)
             }
         } else {
+            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_in"))
             logInAndSignUp.presentLoginFlow(over: rootViewController,
                                             customization: options) { [weak self] result in
                 guard let self else { return }
@@ -171,6 +174,7 @@ private extension WelcomeCoordinator {
         let loginVariant = abTestingManager.variant(for: "LoginFlowExperiment", type: LoginFlowExperiment.self)
         switch loginVariant {
         case .new:
+            addTelemetryEvent(with: .newLoginFlow(event: "fe.welcome.displayed", item: nil))
             return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
                 guard let self else { return }
                 beginAddAccountFlow(isSigningUp: signUp)
@@ -247,34 +251,7 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
             return
         case let .loggedIn(logInData), let .signedUp(logInData):
             logInAndSignUp = makeLoginAndSignUp()
-
-//            if logInData.scopes.contains(where: { $0 == "pass" }) {
             handle(logInData: logInData)
-//            }
-//            else {
-//                let onSuccess: () -> Void = { [weak self] in
-//                    guard let self else { return }
-//                    rootViewController.dismiss(animated: true) { [weak self] in
-//                        guard let self else { return }
-//                        handle(logInData: logInData)
-            ////                        finalizeAddingAccount(userData: logInData, hasExtraPassword: true)
-//                    }
-//                }
-//
-//                let onFailure: () -> Void = { [weak self] in
-//                    guard let self else { return }
-//                    rootViewController.dismiss(animated: true)
-//                }
-//
-//                let username = logInData.credential.userName
-//                let view = ExtraPasswordLockView(apiServicing: apiManager,
-//                                                 email: logInData.user.email ?? username,
-//                                                 username: username,
-//                                                 userId: logInData.user.ID,
-//                                                 onSuccess: onSuccess,
-//                                                 onFailure: onFailure)
-//                present(view, dismissible: false)
-//            }
         }
     }
 }

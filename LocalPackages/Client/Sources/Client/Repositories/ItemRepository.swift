@@ -106,6 +106,7 @@ public protocol ItemRepositoryProtocol: Sendable, TOTPCheckerProtocol {
     /// Permanently delete selected items
     func delete(userId: String, items: [any ItemIdentifiable]) async throws
 
+    @discardableResult
     func updateItem(userId: String,
                     oldItem: Item,
                     newItemContent: any ProtobufableItemContentProtocol,
