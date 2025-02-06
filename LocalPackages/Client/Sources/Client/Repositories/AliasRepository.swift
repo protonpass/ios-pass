@@ -36,6 +36,9 @@ public protocol AliasRepositoryProtocol: Sendable {
     func getAliasDetails(userId: String?, shareId: String, itemId: String) async throws -> Alias
     @discardableResult
     func changeMailboxes(shareId: String, itemId: String, mailboxIDs: [Int]) async throws -> Alias
+    func changeMailboxEmail(userId: String,
+                            mailboxId: Int,
+                            newMailboxEmail: String) async throws -> Mailbox
 
     // MARK: - Simple login alias Sync
 
@@ -141,6 +144,14 @@ public extension AliasRepository {
                                                           shareId: shareId,
                                                           itemId: itemId,
                                                           mailboxIDs: mailboxIDs)
+    }
+
+    func changeMailboxEmail(userId: String,
+                            mailboxId: Int,
+                            newMailboxEmail: String) async throws -> Mailbox {
+        try await remoteDatasource.changeMailboxEmail(userId: userId,
+                                                      mailboxId: mailboxId,
+                                                      newEmail: newMailboxEmail)
     }
 }
 
