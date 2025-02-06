@@ -27,17 +27,14 @@ public protocol PublicKeyRepositoryProtocol: Sendable {
 }
 
 public actor PublicKeyRepository: PublicKeyRepositoryProtocol {
-    private let localPublicKeyDatasource: any LocalPublicKeyDatasourceProtocol
-    private let remotePublicKeyDatasource: any RemotePublicKeyDatasourceProtocol
+    private let datasource: any RemotePublicKeyDatasourceProtocol
     private let userManager: any UserManagerProtocol
     private let logger: Logger
 
-    public init(localPublicKeyDatasource: any LocalPublicKeyDatasourceProtocol,
-                remotePublicKeyDatasource: any RemotePublicKeyDatasourceProtocol,
+    public init(datasource: any RemotePublicKeyDatasourceProtocol,
                 userManager: any UserManagerProtocol,
                 logManager: any LogManagerProtocol) {
-        self.localPublicKeyDatasource = localPublicKeyDatasource
-        self.remotePublicKeyDatasource = remotePublicKeyDatasource
+        self.datasource = datasource
         self.userManager = userManager
         logger = .init(manager: logManager)
     }
@@ -46,24 +43,9 @@ public actor PublicKeyRepository: PublicKeyRepositoryProtocol {
 public extension PublicKeyRepository {
     func getPublicKeys(email: String) async throws -> [PublicKey] {
         logger.trace("Getting public keys for email \(email)")
-        let localPublicKeys = try await localPublicKeyDatasource.getPublicKeys(email: email)
-        let currentUserId = try await userManager.getActiveUserId()
-
-        if localPublicKeys.isEmpty {
-            logger.trace("No public keys in local for email \(email)")
-            logger.trace("Fetching public keys from remote for email \(email)")
-            let remotePublicKeys =
-                try await remotePublicKeyDatasource.getPublicKeys(userId: currentUserId, email: email)
-
-            let count = remotePublicKeys.count
-            logger.trace("Fetched \(count) public keys from remote for email \(email)")
-            try await localPublicKeyDatasource.insertPublicKeys(remotePublicKeys,
-                                                                email: email)
-            logger.trace("Inserted \(count) remote public keys to local for email \(email)")
-            return remotePublicKeys
-        }
-
-        logger.trace("Found \(localPublicKeys.count) public keys in local for email \(email)")
-        return localPublicKeys
+        let userId = try await userManager.getActiveUserId()
+        let keys = try await datasource.getPublicKeys(userId: userId, email: email)
+        logger.trace("Got \(keys.count) public keys for email \(email)")
+        return keys
     }
 }
