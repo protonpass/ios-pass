@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import DesignSystem
 import Entities
 import Macro
@@ -25,38 +26,51 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct ImporterView: View {
-    @Environment(\.dismiss) private var dismiss
-    @State private var excludedIds: Set<String> = .init()
+    @StateObject private var viewModel: ImporterViewModel
+    private let onClose: () -> Void
 
-    private let logins: [CsvLogin]
-    private let onImport: ([CsvLogin]) -> Void
-
-    public init(logins: [CsvLogin],
-                onImport: @escaping ([CsvLogin]) -> Void) {
-        self.logins = logins
-        self.onImport = onImport
+    public init(logManager: any LogManagerProtocol,
+                logins: [CsvLogin],
+                proceedImportation: @escaping ([CsvLogin]) async throws -> Void,
+                onClose: @escaping () -> Void) {
+        _viewModel = .init(wrappedValue: .init(logManager: logManager,
+                                               logins: logins,
+                                               proceedImportation: proceedImportation))
+        self.onClose = onClose
     }
 
     public var body: some View {
         ScrollView {
             LazyVStack {
-                ForEach(logins) { login in
+                ForEach(viewModel.logins) { login in
                     LoginRow(login: login,
-                             isSelected: !excludedIds.contains(where: { $0 == login.id })) {
-                        if excludedIds.contains(where: { $0 == login.id }) {
-                            excludedIds.remove(login.id)
-                        } else {
-                            excludedIds.insert(login.id)
-                        }
-                    }
-                    .padding([.horizontal, .top])
+                             isSelected: viewModel.isSelected(login),
+                             onTap: { viewModel.toggleSelection(login) })
+                        .padding([.horizontal, .top])
                 }
             }
         }
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.inline)
         .fullSheetBackground()
+        .showSpinner(viewModel.importing)
         .navigationStackEmbeded()
+        .alert("Succesful import",
+               isPresented: $viewModel.importSuccessMessage.mappedToBool(),
+               actions: { Button("OK", action: onClose) },
+               message: {
+                   if let message = viewModel.importSuccessMessage {
+                       Text(message)
+                   }
+               })
+        .alert("Error occurred",
+               isPresented: $viewModel.error.mappedToBool(),
+               actions: { Button("OK", action: onClose) },
+               message: {
+                   if let error = viewModel.error {
+                       Text(error.localizedDescription)
+                   }
+               })
     }
 }
 
@@ -68,13 +82,13 @@ private extension ImporterView {
                          iconColor: PassColor.loginInteractionNormMajor2,
                          backgroundColor: PassColor.loginInteractionNormMinor1,
                          accessibilityLabel: "Close",
-                         action: dismiss.callAsFunction)
+                         action: onClose)
         }
 
         ToolbarItem(placement: .principal) {
             Text(#localized("Import logins (%1$lld/%2$lld)",
-                            logins.count - excludedIds.count,
-                            logins.count))
+                            viewModel.selectedCount,
+                            viewModel.logins.count))
                 .navigationTitleText()
                 .monospacedDigit()
         }
@@ -85,10 +99,8 @@ private extension ImporterView {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.loginInteractionNormMajor1,
                                         disableBackgroundColor: PassColor.loginInteractionNormMinor1,
-                                        disabled: excludedIds.count == logins.count) {
-                let loginsToImport = logins.filter { !excludedIds.contains($0.id) }
-                onImport(loginsToImport)
-            }
+                                        disabled: viewModel.selectedCount <= 0,
+                                        action: viewModel.startImporting)
         }
     }
 }
