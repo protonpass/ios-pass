@@ -41,6 +41,8 @@ struct AliasSyncConfigurationView: View {
 
     @State private var sheetState: AliasSyncConfigurationSheetState?
     @State private var mailboxToDelete: Mailbox?
+    @State private var mailboxToChange: Mailbox?
+    @State private var newMailboxEmail = ""
 
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
@@ -77,6 +79,7 @@ struct AliasSyncConfigurationView: View {
                                 MailboxElementRow(mailBox: mailbox,
                                                   isDefault: mailbox == viewModel.defaultMailbox,
                                                   showMenu: viewModel.isAdvancedAliasManagementActive,
+                                                  changeEmail: { mailboxToChange = $0 },
                                                   setDefault: { mailbox in
                                                       viewModel.setDefaultMailBox(mailbox: mailbox)
                                                   },
@@ -163,7 +166,7 @@ struct AliasSyncConfigurationView: View {
             .presentationDetents([.medium])
             .presentationDragIndicator(.hidden)
         }
-        .showSpinner(viewModel.loading)
+        .showSpinner(viewModel.loading || viewModel.changingMailboxEmail)
         .sheetDestinations(sheetDestination: $router.presentedSheet)
         .navigationStackEmbeded($router.path)
         .onChange(of: viewModel.defaultDomain) { domain in
@@ -188,6 +191,33 @@ struct AliasSyncConfigurationView: View {
                    if let error = viewModel.error {
                        Text(error.localizedDescription)
                    }
+               })
+        .alert("Change mailbox email",
+               isPresented: $mailboxToChange.mappedToBool(),
+               actions: {
+                   TextField("Email address", text: $newMailboxEmail)
+                       .keyboardType(.emailAddress)
+                       .textContentType(.emailAddress)
+                       .textInputAutocapitalization(.never)
+
+                   Button(role: nil,
+                          action: {
+                              if let mailboxToChange {
+                                  viewModel.changeMailboxEmail(mailbox: mailboxToChange,
+                                                               newMailboxEmail: newMailboxEmail) {
+                                      router.present(sheet: .addEmail(.mailbox($0)))
+                                  }
+                                  newMailboxEmail = ""
+                              }
+                          },
+                          label: { Text("Confirm") })
+
+                   Button(role: .cancel,
+                          action: { newMailboxEmail = "" },
+                          label: { Text("Cancel") })
+               },
+               message: {
+                   Text(verbatim: mailboxToChange?.email ?? "")
                })
         .task {
             await viewModel.loadData()
@@ -248,6 +278,7 @@ private struct MailboxElementRow: View {
     let mailBox: Mailbox
     let isDefault: Bool
     let showMenu: Bool
+    let changeEmail: (Mailbox) -> Void
     let setDefault: (Mailbox) -> Void
     let delete: (Mailbox) -> Void
     let verify: (Mailbox) -> Void
@@ -255,7 +286,7 @@ private struct MailboxElementRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(mailBox.email)
+                Text(mailBox.displayedEmail)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -279,14 +310,18 @@ private struct MailboxElementRow: View {
 
             if showMenu, !isDefault {
                 Menu(content: {
-                    if mailBox.verified {
-                        Label(title: { Text("Make default") },
-                              icon: { Image(uiImage: IconProvider.star) })
-                            .buttonEmbeded { setDefault(mailBox) }
-                    } else {
+                    if mailBox.verificationNeeded {
                         Label(title: { Text("Verify") },
                               icon: { Image(uiImage: IconProvider.checkmarkCircle) })
                             .buttonEmbeded { verify(mailBox) }
+                    } else {
+                        Label(title: { Text("Change mailbox email") },
+                              icon: { Image(uiImage: IconProvider.pencil) })
+                            .buttonEmbeded { changeEmail(mailBox) }
+
+                        Label(title: { Text("Make default") },
+                              icon: { Image(uiImage: IconProvider.star) })
+                            .buttonEmbeded { setDefault(mailBox) }
                     }
 
                     Divider()

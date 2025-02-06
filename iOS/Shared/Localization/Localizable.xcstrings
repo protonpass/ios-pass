@@ -33279,6 +33279,16 @@
         }
       }
     },
+    "Change mailbox email" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Change mailbox email"
+          }
+        }
+      }
+    },
     "Change mailbox password" : {
       "localizations" : {
         "be" : {
