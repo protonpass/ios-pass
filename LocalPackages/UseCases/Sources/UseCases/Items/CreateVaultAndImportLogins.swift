@@ -49,10 +49,11 @@ public final class CreateVaultAndImportLogins: CreateVaultAndImportLoginsUseCase
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd 'at' HH.mm.ss"
         let vaultName = vaultName ?? "Imported on \(formatter.string(from: .now))"
-        let share = try await shareRepository.createVault(.init(name: vaultName,
-                                                                description: "",
-                                                                color: .color1,
-                                                                icon: .icon1))
+        let share = try await shareRepository.createVault(userId: userId,
+                                                          vault: .init(name: vaultName,
+                                                                       description: "",
+                                                                       color: .color1,
+                                                                       icon: .icon1))
         try await itemRepository.importLogins(userId: userId,
                                               shareId: share.shareId,
                                               logins: logins)
