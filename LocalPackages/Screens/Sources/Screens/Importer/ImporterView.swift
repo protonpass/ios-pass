@@ -22,6 +22,7 @@ import Core
 import DesignSystem
 import Entities
 import Macro
+import ProtonCoreLogin
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -30,10 +31,12 @@ public struct ImporterView: View {
     private let onClose: () -> Void
 
     public init(logManager: any LogManagerProtocol,
+                users: [UserUiModel],
                 logins: [CsvLogin],
-                proceedImportation: @escaping ([CsvLogin]) async throws -> Void,
+                proceedImportation: @escaping (UserUiModel?, [CsvLogin]) async throws -> Void,
                 onClose: @escaping () -> Void) {
         _viewModel = .init(wrappedValue: .init(logManager: logManager,
+                                               users: users,
                                                logins: logins,
                                                proceedImportation: proceedImportation))
         self.onClose = onClose
@@ -42,6 +45,12 @@ public struct ImporterView: View {
     public var body: some View {
         ScrollView {
             LazyVStack {
+                if viewModel.users.count > 1 {
+                    UserAccountSelectionMenu(selectedUser: $viewModel.selectedUser,
+                                             users: viewModel.users,
+                                             allowNoSelection: false)
+                        .padding(.horizontal)
+                }
                 ForEach(viewModel.logins) { login in
                     LoginRow(login: login,
                              isSelected: viewModel.isSelected(login),
@@ -99,7 +108,7 @@ private extension ImporterView {
                                         disableTitleColor: PassColor.textHint,
                                         backgroundColor: PassColor.loginInteractionNormMajor1,
                                         disableBackgroundColor: PassColor.loginInteractionNormMinor1,
-                                        disabled: viewModel.selectedCount <= 0,
+                                        disabled: viewModel.selectedCount <= 0 || viewModel.importing,
                                         action: viewModel.startImporting)
         }
     }
