@@ -281,20 +281,20 @@ public final class ShareRepositoryProtocolMock: @unchecked Sendable, ShareReposi
         return stubbedDeleteShareResult
     }
     // MARK: - createVault
-    public var createVaultThrowableError14: Error?
+    public var createVaultUserIdVaultThrowableError14: Error?
     public var closureCreateVault: () -> () = {}
     public var invokedCreateVaultfunction = false
     public var invokedCreateVaultCount = 0
-    public var invokedCreateVaultParameters: (vault: VaultContent, Void)?
-    public var invokedCreateVaultParametersList = [(vault: VaultContent, Void)]()
+    public var invokedCreateVaultParameters: (userId: String?, vault: VaultContent)?
+    public var invokedCreateVaultParametersList = [(userId: String?, vault: VaultContent)]()
     public var stubbedCreateVaultResult: Share!
 
-    public func createVault(_ vault: VaultContent) async throws -> Share {
+    public func createVault(userId: String?, vault: VaultContent) async throws -> Share {
         invokedCreateVaultfunction = true
         invokedCreateVaultCount += 1
-        invokedCreateVaultParameters = (vault, ())
-        invokedCreateVaultParametersList.append((vault, ()))
-        if let error = createVaultThrowableError14 {
+        invokedCreateVaultParameters = (userId, vault)
+        invokedCreateVaultParametersList.append((userId, vault))
+        if let error = createVaultUserIdVaultThrowableError14 {
             throw error
         }
         closureCreateVault()
