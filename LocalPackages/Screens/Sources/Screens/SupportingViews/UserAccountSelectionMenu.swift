@@ -27,25 +27,30 @@ import SwiftUI
 public struct UserAccountSelectionMenu: View {
     @Binding private var selectedUser: UserUiModel?
     private let users: [UserUiModel]
+    private let allowNoSelection: Bool
 
     public init(selectedUser: Binding<UserUiModel?>,
-                users: [UserUiModel]) {
+                users: [UserUiModel],
+                allowNoSelection: Bool = true) {
         _selectedUser = selectedUser
         self.users = users
+        self.allowNoSelection = allowNoSelection
     }
 
     public var body: some View {
         let allAccountsMessage = #localized("All accounts (%lld)", users.count)
         Menu(content: {
-            Button(action: {
-                selectedUser = nil
-            }, label: {
-                if selectedUser == nil {
-                    Label(allAccountsMessage, systemImage: "checkmark")
-                } else {
-                    Text(verbatim: allAccountsMessage)
-                }
-            })
+            if allowNoSelection {
+                Button(action: {
+                    selectedUser = nil
+                }, label: {
+                    if selectedUser == nil {
+                        Label(allAccountsMessage, systemImage: "checkmark")
+                    } else {
+                        Text(verbatim: allAccountsMessage)
+                    }
+                })
+            }
 
             Section {
                 ForEach(users) { user in
