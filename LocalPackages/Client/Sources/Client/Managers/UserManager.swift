@@ -209,6 +209,6 @@ private extension [UserProfile] {
     }
 
     var userDatas: [UserData] {
-        self.map(\.userdata)
+        self.sorted(by: { $0.isActive && !$1.isActive }).map(\.userdata)
     }
 }

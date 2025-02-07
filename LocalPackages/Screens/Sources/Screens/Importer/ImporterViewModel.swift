@@ -22,16 +22,19 @@ import Core
 import Entities
 import Foundation
 import Macro
+import ProtonCoreLogin
 
 @MainActor
 final class ImporterViewModel: ObservableObject {
     @Published private(set) var importing = false
     @Published private var excludedIds: Set<String> = .init()
+    @Published var selectedUser: UserUiModel?
     @Published var importSuccessMessage: String?
     @Published var error: (any Error)?
 
-    private let proceedImportation: ([CsvLogin]) async throws -> Void
+    private let proceedImportation: (UserUiModel?, [CsvLogin]) async throws -> Void
     private let logger: Logger
+    let users: [UserUiModel]
     let logins: [CsvLogin]
 
     var selectedCount: Int {
@@ -39,9 +42,12 @@ final class ImporterViewModel: ObservableObject {
     }
 
     init(logManager: any LogManagerProtocol,
+         users: [UserUiModel],
          logins: [CsvLogin],
-         proceedImportation: @escaping ([CsvLogin]) async throws -> Void) {
+         proceedImportation: @escaping (UserUiModel?, [CsvLogin]) async throws -> Void) {
         logger = .init(manager: logManager)
+        self.users = users
+        selectedUser = users.first
         self.logins = logins
         self.proceedImportation = proceedImportation
     }
@@ -67,7 +73,7 @@ extension ImporterViewModel {
             importing = true
             do {
                 let loginsToImport = logins.filter { !excludedIds.contains($0.id) }
-                try await proceedImportation(loginsToImport)
+                try await proceedImportation(selectedUser, loginsToImport)
                 importSuccessMessage = #localized("%lld logins imported", selectedCount)
             } catch {
                 self.error = error
