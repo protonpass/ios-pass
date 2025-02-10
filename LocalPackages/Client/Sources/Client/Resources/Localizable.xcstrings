@@ -1572,7 +1572,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Iskanje v %@..."
+            "value" : "Iskanje v %@ ..."
           }
         },
         "sv" : {
@@ -1613,6 +1613,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Søg i alle elementer..."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In allen Einträgen suchen ..."
           }
         },
         "el" : {

@@ -1330,7 +1330,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 項目"
+                  "value" : "%lld個のアイテム"
                 }
               },
               "zero" : {
@@ -3101,6 +3101,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ved at tilføje dit domæne kan du oprette aliasser som hi@my-domain.com."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn du deine Domain hinzufügst, kannst du Aliase wie hallo@mein-domain.de erstellen."
           }
         },
         "el" : {
@@ -5324,7 +5330,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Visste du?"
+            "value" : "Visste du at?"
           }
         },
         "nl" : {
@@ -6617,7 +6623,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass hakkında ayrıntılı bilgi alın"
+            "value" : "Pass ile ilgili ayrıntılı bilgi alın"
           }
         },
         "uk" : {
@@ -7156,7 +7162,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "今じゃない"
+            "value" : "また今度"
           }
         },
         "ka" : {
@@ -8401,7 +8407,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "項目を長押しすると、追加のオプションが表示されます。"
+            "value" : "アイテムを長押しすると、追加オプションが表示されます。"
           }
         },
         "ka" : {
@@ -10398,7 +10404,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kirjattu ulos"
+            "value" : "Kirjauduttu ulos"
           }
         },
         "fr" : {
@@ -11315,6 +11321,12 @@
             "value" : "Synkroniser dine aliasser fra SimpleLogin"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronisiere deine Aliasse von SimpleLogin"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11337,6 +11349,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sincronice sus alias desde SimpleLogin"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synkronoi aliaksesi SimpleLoginista"
           }
         },
         "fr" : {
@@ -12845,13 +12863,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Abbiamo rilevato che hai un alias %lld presente in SimpleLogin ma mancante in Proton Pass. Desideri importarlo?"
+                  "value" : "Abbiamo rilevato che hai %lld alias presente in SimpleLogin ma mancante in Proton Pass. Desideri importarlo?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Abbiamo rilevato che hai alias %lld presenti in SimpleLogin ma mancanti in Proton Pass. Desideri importarli?"
+                  "value" : "Abbiamo rilevato che hai %lld alias presenti in SimpleLogin ma mancanti in Proton Pass. Desideri importarli?"
                 }
               }
             }
