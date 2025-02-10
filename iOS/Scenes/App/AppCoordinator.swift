@@ -90,6 +90,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
     private var clearCacheForLoggedOutUsers
     @LazyInjected(\SharedServiceContainer.telemetryService) private var telemetryService
+    @LazyInjected(\SharedRepositoryContainer.telemetryEventRepository) private var telemetryEventRepository
 
     private var authDeviceManagerUI: AuthDeviceManagerUI?
 
@@ -182,6 +183,7 @@ final class AppCoordinator {
                 guard let self else { return }
                 logOutIfNoUserDataFound()
                 clearCachedFilesForLoggedOutUsers()
+                sendAllEventsIfApplicable()
             }
             .store(in: &cancellables)
     }
@@ -397,6 +399,17 @@ private extension AppCoordinator {
 //        for accountRecoveryType in NotificationType.allAccountRecoveryTypes {
 //            pushNotificationService.registerHandler(passHandler, forType: accountRecoveryType)
 //        }
+    }
+
+    func sendAllEventsIfApplicable() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await telemetryEventRepository.sendAllUnAuthEventsIfApplicable()
+            } catch {
+                logger.error(error)
+            }
+        }
     }
 }
 

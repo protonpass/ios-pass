@@ -106,7 +106,7 @@ private extension TelemetryEventType {
 }
 
 public extension EventInfo {
-    init(event: TelemetryEvent, userTier: String) {
+    init(event: TelemetryEvent, userTier: String?) {
         measurementGroup = event.measurementGroup
         self.event = event.type.eventName
         var baseDimensions = [String: DimensionsValue]()
@@ -116,7 +116,9 @@ public extension EventInfo {
         if let dimensionLocation = event.dimensionLocation {
             baseDimensions["location"] = dimensionLocation
         }
-        baseDimensions["user_tier"] = userTier
+        if let userTier {
+            baseDimensions["user_tier"] = userTier
+        }
 
         if let extraDimensionsElements = event.type.extraValues {
             baseDimensions = baseDimensions.merging(extraDimensionsElements) { current, _ in current }

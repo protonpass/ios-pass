@@ -39,6 +39,9 @@ public protocol TelemetryEventRepositoryProtocol: Sendable {
 
     @discardableResult
     func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult
+
+    @discardableResult
+    func sendAllUnAuthEventsIfApplicable() async throws -> TelemetryEventSendResult
 }
 
 public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
@@ -122,6 +125,22 @@ public extension TelemetryEventRepository {
         return .allEventsSent(userIds: sentUserIds)
     }
 
+    func sendAllUnAuthEventsIfApplicable() async throws -> TelemetryEventSendResult {
+        guard try await scheduler.shouldSendEvents() else {
+            logger.debug("Threshold not reached")
+            return .thresholdNotReached
+        }
+
+        var sentUserIds = Set<String>()
+        sentUserIds.insert(Constants.unAuthUserId)
+
+        try await sendAllTelemetryEvents(userId: Constants.unAuthUserId)
+
+        logger.info("Sent all events")
+        try await scheduler.randomNextThreshold()
+        return .allEventsSent(userIds: sentUserIds)
+    }
+
     @_spi(QA)
     func forceSendAllEvents() async throws {
         logger.debug("Force sending all events")
@@ -146,14 +165,14 @@ private extension TelemetryEventRepository {
         }
     }
 
-    func sendAllTelemetryEvents(userId: String, plan: Plan) async throws {
+    func sendAllTelemetryEvents(userId: String, plan: Plan? = nil) async throws {
         while true {
             let events = try await localDatasource.getOldestEvents(count: batchSize,
                                                                    userId: userId)
             if events.isEmpty {
                 break
             }
-            let eventInfos = events.map { EventInfo(event: $0, userTier: plan.internalName) }
+            let eventInfos = events.map { EventInfo(event: $0, userTier: plan?.internalName) }
             try await remoteDatasource.send(userId: userId, events: eventInfos)
             try await localDatasource.remove(events: events, userId: userId)
         }
