@@ -469,6 +469,10 @@
 		538548F42D58ACF300AEFB66 /* Action.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 538548E62D58ACF300AEFB66 /* Action.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */; };
 		53B153882D59EFC100D21AF9 /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
+		53C769982D5A3F9F0079C757 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
+		53C769992D5A42B60079C757 /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
+		53C7699A2D5A42B90079C757 /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
+		53C7699B2D5A42BE0079C757 /* Pass-Constant-Scientist.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3569AE412A6983440026B780 /* Pass-Constant-Scientist.plist */; };
 		53D6B3962D58C12B003EA6D3 /* LoggerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */; };
 		53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 53E07DC12D58BD29009D6EE5 /* Screens */; };
 		53E07DC32D58BD50009D6EE5 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
@@ -3163,6 +3167,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				53C7699B2D5A42BE0079C757 /* Pass-Constant-Scientist.plist in Resources */,
+				53C769992D5A42B60079C757 /* Pass-Constant-Black.plist in Resources */,
+				53C7699A2D5A42B90079C757 /* Pass-Constant-Prod.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3856,6 +3863,7 @@
 				53E7E7EC2D58C01F00587153 /* CustomFieldEditionCoordinator.swift in Sources */,
 				5347B57C2D58BA3C0014013F /* SharedServices+DependencyInjections.swift in Sources */,
 				53E7E7ED2D58C02A00587153 /* CustomCoordinator.swift in Sources */,
+				53C769982D5A3F9F0079C757 /* AppearanceSettings.swift in Sources */,
 				537FC0782D59ECA500011AEA /* CustomFieldTypesView.swift in Sources */,
 				5347B57D2D58BA3C0014013F /* SharedTooling+DependencyInjections.swift in Sources */,
 				5347B57E2D58BA3C0014013F /* SharedRouter+DependencyInjections.swift in Sources */,
