@@ -170,7 +170,9 @@ private extension WelcomeCoordinator {
             }))
         }
 
-        let loginVariant = abTestingManager.variant(for: "LoginFlowExperiment", type: LoginFlowExperiment.self)
+        let loginVariant = abTestingManager.variant(for: "LoginFlowExperiment",
+                                                    type: LoginFlowExperiment.self,
+                                                    default: .new)
         switch loginVariant {
         case .new:
             addTelemetryEvent(with: .newLoginFlow(event: "fe.welcome.displayed", item: nil))
