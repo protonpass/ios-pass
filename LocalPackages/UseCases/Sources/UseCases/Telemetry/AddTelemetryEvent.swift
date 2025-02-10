@@ -23,13 +23,13 @@ import Core
 import Entities
 
 public protocol AddTelemetryEventUseCase: Sendable {
-    func execute(with eventType: TelemetryEventType)
+    func execute(with eventType: TelemetryEventType, isUnAuthenticated: Bool)
     func execute(with eventTypes: [TelemetryEventType])
 }
 
 public extension AddTelemetryEventUseCase {
-    func callAsFunction(with eventType: TelemetryEventType) {
-        execute(with: eventType)
+    func callAsFunction(with eventType: TelemetryEventType, isUnAuthenticated: Bool = false) {
+        execute(with: eventType, isUnAuthenticated: isUnAuthenticated)
     }
 
     func callAsFunction(with eventTypes: [TelemetryEventType]) {
@@ -50,11 +50,11 @@ public final class AddTelemetryEvent: @unchecked Sendable, AddTelemetryEventUseC
         logger = .init(manager: logManager)
     }
 
-    public func execute(with eventType: TelemetryEventType) {
+    public func execute(with eventType: TelemetryEventType, isUnAuthenticated: Bool = false) {
         Task { [weak self] in
             guard let self else { return }
             do {
-                let userId = try await userManager.getActiveUserId()
+                let userId = isUnAuthenticated ? Constants.unAuthUserId : try await userManager.getActiveUserId()
                 try await repository.addNewEvent(userId: userId, type: eventType)
             } catch {
                 logger.error(error)

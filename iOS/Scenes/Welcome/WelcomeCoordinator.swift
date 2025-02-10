@@ -81,14 +81,16 @@ private extension WelcomeCoordinator {
             return getSharedPreferences().theme.inAppTheme
         })
         if isSigningUp {
-            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_up"))
+            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_up"),
+                              isUnAuthenticated: true)
             logInAndSignUp.presentSignupFlow(over: rootViewController,
                                              customization: options) { [weak self] result in
                 guard let self else { return }
                 handle(result)
             }
         } else {
-            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_in"))
+            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_in"),
+                              isUnAuthenticated: true)
             logInAndSignUp.presentLoginFlow(over: rootViewController,
                                             customization: options) { [weak self] result in
                 guard let self else { return }
@@ -175,7 +177,8 @@ private extension WelcomeCoordinator {
                                                     default: .new)
         switch loginVariant {
         case .new:
-            addTelemetryEvent(with: .newLoginFlow(event: "fe.welcome.displayed", item: nil))
+            addTelemetryEvent(with: .newLoginFlow(event: "fe.welcome.displayed", item: nil),
+                              isUnAuthenticated: true)
             return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
                 guard let self else { return }
                 beginAddAccountFlow(isSigningUp: signUp)
