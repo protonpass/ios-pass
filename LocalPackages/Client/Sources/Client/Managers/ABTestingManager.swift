@@ -31,7 +31,16 @@ public enum LoginFlowExperiment: String, ABTestVariant {
 }
 
 public protocol ABTestingManagerProtocol: Sendable {
-    func variant<T: ABTestVariant>(for experiment: String, type: T.Type) -> T?
+    func variant<T: ABTestVariant>(for experiment: String,
+                                   type: T.Type,
+                                   default: T?) -> T?
+}
+
+public extension ABTestingManagerProtocol {
+    // periphery:ignore
+    func variant<T: ABTestVariant>(for experiment: String, type: T.Type) -> T? {
+        variant(for: experiment, type: type, default: nil)
+    }
 }
 
 /// A generic A/B test manager that deterministically assigns a variant
@@ -63,11 +72,15 @@ public final class ABTestingManager: ABTestingManagerProtocol {
     /// - Parameters:
     ///   - experiment: A unique string identifier for the experiment.
     ///   - type: The enum type conforming to `ABTestVariant` that represents the possible variants.
+    ///   - default: The default variant when not enabled. If `null` is passed, the first variant is choosen as
+    /// default one.
     /// - Returns: A variant of the specified enum.
     ///
     /// The method works by combining the experiment identifier with the installation ID,
     /// hashing the result with SHA‑256, and using the first byte of the hash to select a variant.
-    public func variant<T: ABTestVariant>(for experiment: String, type: T.Type) -> T? {
+    public func variant<T: ABTestVariant>(for experiment: String,
+                                          type: T.Type,
+                                          default: T?) -> T? {
         // Combine the experiment identifier with the persistent installation id.
         let combinedString = experiment + installationId
         let data = Data(combinedString.utf8)
@@ -78,8 +91,8 @@ public final class ABTestingManager: ABTestingManagerProtocol {
 
         // Use the first byte of the hash to decide which variant to assign.
         guard let firstByte = hashData.first else {
-            // Fallback: return the first variant if the hash is unexpectedly empty.
-            return cases[0]
+            // Fallback: return the default variant if the hash is unexpectedly empty.
+            return `default` ?? cases[0]
         }
 
         let variantIndex = Int(firstByte) % T.allCases.count

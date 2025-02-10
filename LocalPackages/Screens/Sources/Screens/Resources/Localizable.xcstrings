@@ -4314,12 +4314,12 @@
         }
       }
     },
-    "Create an Account" : {
+    "Create an account" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Create an Account"
+            "value" : "Create an account"
           }
         }
       }
@@ -10255,12 +10255,12 @@
         }
       }
     },
-    "Sign In" : {
+    "Sign in" : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sign In"
+            "value" : "Sign in"
           }
         }
       }
