@@ -482,7 +482,6 @@
 		5B229A662A863F6D0009103E /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
 		5B229A692A863FBC0009103E /* SharedRouter+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */; };
 		5B229A6A2A863FF20009103E /* SharedRouter+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */; };
-		5B387F7E2D54F28A006E0312 /* NewLoginSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B387F7D2D54F289006E0312 /* NewLoginSection.swift */; };
 		5B39DF7F2B501C020009D53E /* DetailHistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */; };
 		5B39DF802B501C020009D53E /* DetailHistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */; };
 		5B3AD42B2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
@@ -509,6 +508,7 @@
 		5B5DBF182B68048600F72F6C /* TotpLoginsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5DBF162B68048600F72F6C /* TotpLoginsView.swift */; };
 		5B5DBF192B68048600F72F6C /* TotpLoginsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5DBF172B68048600F72F6C /* TotpLoginsViewModel.swift */; };
 		5B5DBF1B2B6961EE00F72F6C /* ItemContent+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */; };
+		5B5E0DC12D5A4EBB00E7BCD4 /* NewLoginSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5E0DC02D5A4EBB00E7BCD4 /* NewLoginSection.swift */; };
 		5B62931C2CDA215E006C3C67 /* ContactRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62931B2CDA215B006C3C67 /* ContactRow.swift */; };
 		5B62931E2CDA27C6006C3C67 /* AliasContactsEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B62931D2CDA27C4006C3C67 /* AliasContactsEmptyView.swift */; };
 		5B6293212CDA287E006C3C67 /* AliasExplanationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6293202CDA287D006C3C67 /* AliasExplanationView.swift */; };
@@ -1002,7 +1002,6 @@
 		5B1F5CCA2A5D822300A6C3ED /* BugReportView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugReportView.swift; sourceTree = "<group>"; };
 		5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFieldTypes.swift; sourceTree = "<group>"; };
 		5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedRouter+DependencyInjections.swift"; sourceTree = "<group>"; };
-		5B387F7D2D54F289006E0312 /* NewLoginSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginSection.swift; sourceTree = "<group>"; };
 		5B39DF7D2B501C020009D53E /* DetailHistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryView.swift; sourceTree = "<group>"; };
 		5B39DF7E2B501C020009D53E /* DetailHistoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailHistoryViewModel.swift; sourceTree = "<group>"; };
 		5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemUiModel+Extensions.swift"; sourceTree = "<group>"; };
@@ -1029,6 +1028,7 @@
 		5B5DBF162B68048600F72F6C /* TotpLoginsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpLoginsView.swift; sourceTree = "<group>"; };
 		5B5DBF172B68048600F72F6C /* TotpLoginsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotpLoginsViewModel.swift; sourceTree = "<group>"; };
 		5B5DBF1A2B6961EE00F72F6C /* ItemContent+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ItemContent+Extensions.swift"; sourceTree = "<group>"; };
+		5B5E0DC02D5A4EBB00E7BCD4 /* NewLoginSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewLoginSection.swift; sourceTree = "<group>"; };
 		5B62931B2CDA215B006C3C67 /* ContactRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactRow.swift; sourceTree = "<group>"; };
 		5B62931D2CDA27C4006C3C67 /* AliasContactsEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasContactsEmptyView.swift; sourceTree = "<group>"; };
 		5B6293202CDA287D006C3C67 /* AliasExplanationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasExplanationView.swift; sourceTree = "<group>"; };
@@ -1288,7 +1288,7 @@
 		353739DF29EAE84000A3255E /* QA Features */ = {
 			isa = PBXGroup;
 			children = (
-				5B387F7D2D54F289006E0312 /* NewLoginSection.swift */,
+				5B5E0DC02D5A4EBB00E7BCD4 /* NewLoginSection.swift */,
 				5B4459AA2D43B74300E1F198 /* FeatureDiscoverySection.swift */,
 				533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */,
 				5BC4F6772CE639E9005D49FC /* InAppNotificationSection.swift */,
@@ -3653,7 +3653,7 @@
 				35EDB30D2C13101600FE441C /* EnableExtraPasswordViewModel.swift in Sources */,
 				5B1453E22A727EFF0048B022 /* AcceptRejectInviteViewModel.swift in Sources */,
 				35B9321C2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift in Sources */,
-				5B387F7E2D54F28A006E0312 /* NewLoginSection.swift in Sources */,
+				5B5E0DC12D5A4EBB00E7BCD4 /* NewLoginSection.swift in Sources */,
 				35E50656286F830A00A3F6EA /* SceneDelegate.swift in Sources */,
 				3560844729DDA23C001F7487 /* ExtensionSettingsViewModel.swift in Sources */,
 				5B1092D92B56E17B002621A4 /* DetailHistoryView+CreditCard.swift in Sources */,
