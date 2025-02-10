@@ -157,17 +157,15 @@ private extension LoginOnboardingView {
     @ViewBuilder
     func bottomActionButton(signUp: Bool) -> some View {
         if signUp {
-            CapsuleTextButton(title: #localized("Create an Account"),
+            CapsuleTextButton(title: #localized("Create an account"),
                               titleColor: .white,
                               backgroundColor: signUp ? UIColor(red: 110, green: 74, blue: 255) : .clear,
-                              action: {
-                                  onAction(signUp)
-                              })
-                              .padding(.horizontal, DesignConstant.sectionPadding)
+                              action: { onAction(signUp) })
+                .padding(.horizontal, DesignConstant.sectionPadding)
         } else {
-            CapsuleTextBorderedButton(title: #localized("Sign In"),
-                                      titleColor: Color.white,
-                                      borderColor: Color.white,
+            CapsuleTextBorderedButton(title: #localized("Sign in"),
+                                      titleColor: .white,
+                                      borderColor: .white,
                                       borderWidth: 1,
                                       action: { onAction(signUp) })
                 .padding(.horizontal, DesignConstant.sectionPadding)
@@ -183,7 +181,7 @@ struct LoginOnboardingView_Previews: PreviewProvider {
     }
 }
 
-struct RadialGradientView: View {
+private struct RadialGradientView: View {
     var body: some View {
         ZStack {
             Color(red: 0.12, green: 0.12, blue: 0.19) // #1F1F31
@@ -203,8 +201,7 @@ struct RadialGradientView: View {
             ]),
             center: UnitPoint(x: 1.1, y: 1.1),
             startRadius: 0,
-            endRadius: UIScreen.main.bounds
-                .width * 1.5) /* max(UIScreen.main.bounds.width, UIScreen.main.bounds.height) * 1.2896) */
+            endRadius: UIScreen.main.bounds.width * 1.5)
                 .edgesIgnoringSafeArea(.all)
         }
     }
