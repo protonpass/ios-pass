@@ -57,6 +57,7 @@ struct QAFeaturesView: View {
                     PasswordPolicySection()
 
                     if #available(iOS 17, *) {
+                        NewLoginSection()
                         FeatureDiscoverySection()
                         InAppNotificationSection()
                     }

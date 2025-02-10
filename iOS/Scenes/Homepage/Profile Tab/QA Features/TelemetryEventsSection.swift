@@ -191,6 +191,8 @@ private extension TelemetryEventType {
             UIImage(systemName: "envelope.fill")!
         case .fileUploaded:
             UIImage(systemName: "icloud.and.arrow.up.fill")!
+        case .newLoginFlow:
+            UIImage(systemName: "house")!
         }
     }
 
@@ -222,7 +224,8 @@ private extension TelemetryEventType {
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
              .multiAccountAddAccount,
-             .multiAccountRemoveAccount:
+             .multiAccountRemoveAccount,
+             .newLoginFlow:
             ItemContentType.note.normMajor1Color
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMajor1Color
@@ -259,7 +262,8 @@ private extension TelemetryEventType {
              .monitorItemDetailFromReusedPassword,
              .monitorItemDetailFromWeakPassword,
              .multiAccountAddAccount,
-             .multiAccountRemoveAccount:
+             .multiAccountRemoveAccount,
+             .newLoginFlow:
             ItemContentType.note.normMinor1Color
         case .notificationChangeStatus, .notificationCtaClick, .notificationDisplay:
             ItemContentType.creditCard.normMinor1Color
@@ -334,6 +338,8 @@ private extension TelemetryEventType {
             "Notification Cta clicked"
         case let .fileUploaded(mimeType):
             "File uploaded (\(mimeType))"
+        case let .newLoginFlow(event, item):
+            "New Login flow with event (\(event)) and item (\(String(describing: item)))"
         }
     }
 }
