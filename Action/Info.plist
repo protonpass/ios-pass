@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MODULE</key>
+	<string>ACTION_EXTENSION</string>
+	<key>IS_QA_BUILD</key>
+	<string>$(IS_QA_BUILD)</string>
+	<key>APP_VERSION_IDENTIFIER</key>
+	<string>$(APP_VERSION_IDENTIFIER)</string>
 	<key>NSExtension</key>
 	<dict>
 		<key>NSExtensionAttributes</key>

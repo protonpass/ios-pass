@@ -1,6 +1,6 @@
 //
-// CsvLogin.swift
-// Proton Pass - Created on 26/01/2025.
+// ExtensionFailureReason.swift
+// Proton Pass - Created on 10/02/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -20,23 +20,21 @@
 
 import Foundation
 
-public struct CsvLogin: Sendable, Identifiable, Equatable {
-    public let id: String = UUID().uuidString
-    public let name: String
-    public let url: String
-    public let email: String
-    public let username: String
-    public let password: String
+public extension PassError {
+    enum ExtensionFailureReason: CustomDebugStringConvertible, Sendable {
+        case noInputItems
+        case noAttachments
+        case noCsvContent
 
-    public init(name: String,
-                url: String,
-                email: String,
-                username: String,
-                password: String) {
-        self.name = name
-        self.url = url
-        self.email = email
-        self.username = username
-        self.password = password
+        public var debugDescription: String {
+            switch self {
+            case .noInputItems:
+                "No input items"
+            case .noAttachments:
+                "No attachents found"
+            case .noCsvContent:
+                "No CSV content found"
+            }
+        }
     }
 }

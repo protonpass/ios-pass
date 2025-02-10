@@ -94,7 +94,7 @@ extension SharedToolingContainer {
             .onArg(PassModule.shareExtension) {
                 "ios-pass-share@\(Bundle.main.fullAppVersionName)"
             }
-            .onArg(PassModule.shareExtension) {
+            .onArg(PassModule.actionExtension) {
                 "ios-pass-action@\(Bundle.main.fullAppVersionName)"
             }
     }

@@ -22,7 +22,6 @@ import Combine
 import DesignSystem
 import Factory
 import Screens
-import SwiftUI
 import UIKit
 
 @MainActor
@@ -93,7 +92,11 @@ private extension ActionCoordinator {
     func beginFlow() async {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
-            await parseCsvAndBegingImportFlow()
+            showView(ActionView(context: context)
+                .localAuthentication(onFailure: { [weak self] _ in
+                    guard let self else { return }
+//                    logOut(userId: userId)
+                }))
         } else {
             showNotLoggedInView()
         }
@@ -109,10 +112,6 @@ private extension ActionCoordinator {
             dismissExtension()
         }
         showView(view)
-    }
-
-    func parseCsvAndBegingImportFlow() async {
-        showView(Text(verbatim: #function))
     }
 }
 

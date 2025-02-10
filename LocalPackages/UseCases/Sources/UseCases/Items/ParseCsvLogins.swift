@@ -38,7 +38,12 @@ public final class ParseCsvLogins: ParseCsvLoginsUseCase {
     }
 
     public func execute(_ csv: String) async throws -> [CsvLogin] {
-        let rows = csv.components(separatedBy: "\n")
+        var rows = csv.components(separatedBy: "\n")
+
+        // Some CSV files have empty last row, so we remove it
+        if rows.last?.isEmpty == true {
+            _ = rows.popLast()
+        }
 
         var results = [CsvLogin]()
         for (index, row) in rows.enumerated() {
