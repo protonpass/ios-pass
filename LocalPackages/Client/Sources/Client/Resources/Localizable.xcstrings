@@ -1,6 +1,16 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "Action extension logs" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Action extension logs"
+          }
+        }
+      }
+    },
     "Application logs" : {
       "localizations" : {
         "be" : {
