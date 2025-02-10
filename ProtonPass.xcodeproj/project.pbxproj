@@ -426,15 +426,55 @@
 		40EC90962D1AE426004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90952D1AE426004FCA37 /* ProtonCorePaymentsV2 */; };
 		40EC90982D1AE440004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90972D1AE440004FCA37 /* ProtonCorePaymentsV2 */; };
 		40EC909A2D1AE451004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */; };
+		53021A5E2D58BF1600CB2491 /* CustomFieldAdditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A642A0BE49B00FBCEEC /* CustomFieldAdditionCoordinator.swift */; };
+		53021A5F2D58BF3D00CB2491 /* SecureLinkListUIModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD613882C2028FE00968E0F /* SecureLinkListUIModel.swift */; };
 		53043D972D1D8D580088D6EE /* UpsellEntry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */; };
 		53043D982D1D8D580088D6EE /* UpsellEntry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */; };
 		53043D992D1D8D9E0088D6EE /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
 		53043D9A2D1D8D9E0088D6EE /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
+		530505AC2D58C1E000CD0E5E /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
 		533EAB952D3F975E00217171 /* AliasDiscoverySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */; };
+		5347B5782D58BA3C0014013F /* SharedDataContainer+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */; };
+		5347B5792D58BA3C0014013F /* SharedViewContainer+DependencyInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BE64E6A2AB4653000777366 /* SharedViewContainer+DependencyInjection.swift */; };
+		5347B57A2D58BA3C0014013F /* SharedRepository+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B9321B2A6ABDB3004A8643 /* SharedRepository+DependencyInjections.swift */; };
+		5347B57B2D58BA3C0014013F /* SharedUseCase+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BFFB5112A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift */; };
+		5347B57C2D58BA3C0014013F /* SharedServices+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */; };
+		5347B57D2D58BA3C0014013F /* SharedTooling+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C75012A30776100272CE8 /* SharedTooling+DependencyInjections.swift */; };
+		5347B57E2D58BA3C0014013F /* SharedRouter+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B229A682A863FBC0009103E /* SharedRouter+DependencyInjections.swift */; };
+		5347B5802D58BA960014013F /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 5347B57F2D58BA960014013F /* MBProgressHUD */; };
+		5347B5822D58BAB80014013F /* Client in Frameworks */ = {isa = PBXBuildFile; productRef = 5347B5812D58BAB80014013F /* Client */; };
+		5347B5842D58BABB0014013F /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = 5347B5832D58BABB0014013F /* Core */; };
+		5347B5852D58BADF0014013F /* Preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356043F828ED6B54003BDDDC /* Preferences.swift */; };
+		5347B5862D58BAFA0014013F /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
+		5347B5872D58BB1D0014013F /* ItemContextMenuHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355BFDA129C6FD5200A32AD6 /* ItemContextMenuHandler.swift */; };
+		5347B5882D58BB230014013F /* AppContentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3569B29A29B76BF60070830B /* AppContentManager.swift */; };
+		5347B5892D58BB430014013F /* AppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354F1F1929D8C2A200A6B1E8 /* AppData.swift */; };
+		5347B58A2D58BB6E0014013F /* Factory+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355E92772A59D2D500C22703 /* Factory+Extensions.swift */; };
 		536CA2C42CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */; };
+		5379EA9D2D59EE6500F56DBC /* Entities in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EA9C2D59EE6500F56DBC /* Entities */; };
+		5379EA9F2D59EE6B00F56DBC /* CodeScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EA9E2D59EE6B00F56DBC /* CodeScanner */; };
+		5379EAA12D59EE9D00F56DBC /* Factory in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA02D59EE9D00F56DBC /* Factory */; };
+		5379EAA32D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA22D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation */; };
+		5379EAA52D59EEAD00F56DBC /* ProtonCoreForceUpgrade in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA42D59EEAD00F56DBC /* ProtonCoreForceUpgrade */; };
+		5379EAA72D59EEB800F56DBC /* ProtonCorePasswordChange in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA62D59EEB800F56DBC /* ProtonCorePasswordChange */; };
+		5379EAA92D59EEBC00F56DBC /* UseCases in Frameworks */ = {isa = PBXBuildFile; productRef = 5379EAA82D59EEBC00F56DBC /* UseCases */; };
+		537FC0722D59EBE100011AEA /* DocScanner in Frameworks */ = {isa = PBXBuildFile; productRef = 537FC0712D59EBE100011AEA /* DocScanner */; };
+		537FC0732D59EBFD00011AEA /* URL+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3552A28C29EC8B5200ABDB6E /* URL+Extensions.swift */; };
+		537FC0752D59EC3300011AEA /* DesignSystem in Frameworks */ = {isa = PBXBuildFile; productRef = 537FC0742D59EC3300011AEA /* DesignSystem */; };
+		537FC0762D59EC5700011AEA /* ItemContentType+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3572E5222993D68800775FAC /* ItemContentType+Extensions.swift */; };
+		537FC0772D59EC8300011AEA /* UpsellEntry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */; };
+		537FC0782D59ECA500011AEA /* CustomFieldTypesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A582A0BD12600FBCEEC /* CustomFieldTypesView.swift */; };
+		537FC0792D59ECB900011AEA /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
 		538548E82D58ACF300AEFB66 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */; };
 		538548F42D58ACF300AEFB66 /* Action.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 538548E62D58ACF300AEFB66 /* Action.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */; };
+		53B153882D59EFC100D21AF9 /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
+		53D6B3962D58C12B003EA6D3 /* LoggerManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */; };
+		53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */ = {isa = PBXBuildFile; productRef = 53E07DC12D58BD29009D6EE5 /* Screens */; };
+		53E07DC32D58BD50009D6EE5 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
+		53E07DC42D58BD6C009D6EE5 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
+		53E7E7EC2D58C01F00587153 /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
+		53E7E7ED2D58C02A00587153 /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5733D3FF2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */; };
 		5733D4012AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */; };
 		575D3C252AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 575D3C242AE910D90012434B /* ProtonCoreTestingToolkitUnitTestsCore */; };
@@ -1255,7 +1295,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5379EAA52D59EEAD00F56DBC /* ProtonCoreForceUpgrade in Frameworks */,
+				5347B5802D58BA960014013F /* MBProgressHUD in Frameworks */,
+				5379EAA12D59EE9D00F56DBC /* Factory in Frameworks */,
+				5379EAA72D59EEB800F56DBC /* ProtonCorePasswordChange in Frameworks */,
+				5347B5842D58BABB0014013F /* Core in Frameworks */,
+				537FC0752D59EC3300011AEA /* DesignSystem in Frameworks */,
+				5379EAA92D59EEBC00F56DBC /* UseCases in Frameworks */,
+				5379EAA32D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation in Frameworks */,
+				537FC0722D59EBE100011AEA /* DocScanner in Frameworks */,
 				538548E82D58ACF300AEFB66 /* UniformTypeIdentifiers.framework in Frameworks */,
+				5379EA9D2D59EE6500F56DBC /* Entities in Frameworks */,
+				5347B5822D58BAB80014013F /* Client in Frameworks */,
+				53E07DC22D58BD29009D6EE5 /* Screens in Frameworks */,
+				5379EA9F2D59EE6B00F56DBC /* CodeScanner in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2906,6 +2959,19 @@
 			);
 			name = Action;
 			packageProductDependencies = (
+				5347B57F2D58BA960014013F /* MBProgressHUD */,
+				5347B5812D58BAB80014013F /* Client */,
+				5347B5832D58BABB0014013F /* Core */,
+				53E07DC12D58BD29009D6EE5 /* Screens */,
+				537FC0712D59EBE100011AEA /* DocScanner */,
+				537FC0742D59EC3300011AEA /* DesignSystem */,
+				5379EA9C2D59EE6500F56DBC /* Entities */,
+				5379EA9E2D59EE6B00F56DBC /* CodeScanner */,
+				5379EAA02D59EE9D00F56DBC /* Factory */,
+				5379EAA22D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation */,
+				5379EAA42D59EEAD00F56DBC /* ProtonCoreForceUpgrade */,
+				5379EAA62D59EEB800F56DBC /* ProtonCorePasswordChange */,
+				5379EAA82D59EEBC00F56DBC /* UseCases */,
 			);
 			productName = Action;
 			productReference = 538548E62D58ACF300AEFB66 /* Action.appex */;
@@ -3770,6 +3836,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5347B5782D58BA3C0014013F /* SharedDataContainer+DependencyInjections.swift in Sources */,
+				5347B58A2D58BB6E0014013F /* Factory+Extensions.swift in Sources */,
+				5347B5792D58BA3C0014013F /* SharedViewContainer+DependencyInjection.swift in Sources */,
+				53B153882D59EFC100D21AF9 /* ItemUiModel+Extensions.swift in Sources */,
+				5347B5872D58BB1D0014013F /* ItemContextMenuHandler.swift in Sources */,
+				530505AC2D58C1E000CD0E5E /* ItemTypeIdentifiable+Extensions.swift in Sources */,
+				53021A5E2D58BF1600CB2491 /* CustomFieldAdditionCoordinator.swift in Sources */,
+				5347B5852D58BADF0014013F /* Preferences.swift in Sources */,
+				5347B5882D58BB230014013F /* AppContentManager.swift in Sources */,
+				537FC0762D59EC5700011AEA /* ItemContentType+Extensions.swift in Sources */,
+				537FC0792D59ECB900011AEA /* UpsellingViewConfiguration+Extensions.swift in Sources */,
+				537FC0772D59EC8300011AEA /* UpsellEntry+Extensions.swift in Sources */,
+				53E07DC32D58BD50009D6EE5 /* ItemTypeFilter.swift in Sources */,
+				53E07DC42D58BD6C009D6EE5 /* BaseCreateEditItemViewModel.swift in Sources */,
+				5347B57A2D58BA3C0014013F /* SharedRepository+DependencyInjections.swift in Sources */,
+				537FC0732D59EBFD00011AEA /* URL+Extensions.swift in Sources */,
+				5347B57B2D58BA3C0014013F /* SharedUseCase+DependencyInjections.swift in Sources */,
+				53E7E7EC2D58C01F00587153 /* CustomFieldEditionCoordinator.swift in Sources */,
+				5347B57C2D58BA3C0014013F /* SharedServices+DependencyInjections.swift in Sources */,
+				53E7E7ED2D58C02A00587153 /* CustomCoordinator.swift in Sources */,
+				537FC0782D59ECA500011AEA /* CustomFieldTypesView.swift in Sources */,
+				5347B57D2D58BA3C0014013F /* SharedTooling+DependencyInjections.swift in Sources */,
+				5347B57E2D58BA3C0014013F /* SharedRouter+DependencyInjections.swift in Sources */,
+				5347B5862D58BAFA0014013F /* MainRouter.swift in Sources */,
+				5347B5892D58BB430014013F /* AppData.swift in Sources */,
+				53021A5F2D58BF3D00CB2491 /* SecureLinkListUIModel.swift in Sources */,
+				53D6B3962D58C12B003EA6D3 /* LoggerManager+Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5431,7 +5524,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Action/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Action;
+				INFOPLIST_KEY_CFBundleDisplayName = "Proton Pass";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5471,7 +5564,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Action/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Action;
+				INFOPLIST_KEY_CFBundleDisplayName = "Proton Pass";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5509,7 +5602,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Action/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Action;
+				INFOPLIST_KEY_CFBundleDisplayName = "Proton Pass";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5547,7 +5640,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Action/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Action;
+				INFOPLIST_KEY_CFBundleDisplayName = "Proton Pass";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5989,6 +6082,64 @@
 		40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProtonCorePaymentsV2;
+		5347B57F2D58BA960014013F /* MBProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
+			productName = MBProgressHUD;
+		};
+		5347B5812D58BAB80014013F /* Client */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Client;
+		};
+		5347B5832D58BABB0014013F /* Core */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Core;
+		};
+		5379EA9C2D59EE6500F56DBC /* Entities */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Entities;
+		};
+		5379EA9E2D59EE6B00F56DBC /* CodeScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 356A34C62978630100969BA2 /* XCRemoteSwiftPackageReference "CodeScanner" */;
+			productName = CodeScanner;
+		};
+		5379EAA02D59EE9D00F56DBC /* Factory */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5B0C74F62A2F4B1200272CE8 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = Factory;
+		};
+		5379EAA22D59EEA700F56DBC /* ProtonCoreCryptoGoImplementation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			productName = ProtonCoreCryptoGoImplementation;
+		};
+		5379EAA42D59EEAD00F56DBC /* ProtonCoreForceUpgrade */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			productName = ProtonCoreForceUpgrade;
+		};
+		5379EAA62D59EEB800F56DBC /* ProtonCorePasswordChange */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			productName = ProtonCorePasswordChange;
+		};
+		5379EAA82D59EEBC00F56DBC /* UseCases */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = UseCases;
+		};
+		537FC0712D59EBE100011AEA /* DocScanner */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 35ABE1282AA08275001E20F9 /* XCRemoteSwiftPackageReference "DocScanner" */;
+			productName = DocScanner;
+		};
+		537FC0742D59EC3300011AEA /* DesignSystem */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DesignSystem;
+		};
+		53E07DC12D58BD29009D6EE5 /* Screens */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Screens;
 		};
 		5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */ = {
 			isa = XCSwiftPackageProductDependency;
