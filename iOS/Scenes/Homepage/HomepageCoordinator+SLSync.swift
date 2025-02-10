@@ -26,7 +26,7 @@ import SwiftUI
 extension HomepageCoordinator {
     func suggestSimpleLoginSyncIfApplicable() async throws {
         do {
-            guard !preferencesManager.appPreferences.unwrapped().dismissedAliasesSyncExplanation,
+            guard !preferencesManager.userPreferences.unwrapped().dismissedAliasesSyncSheet,
                   getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync),
                   let count = try await getPendingAliasCount() else {
                 return
@@ -72,8 +72,8 @@ private extension HomepageCoordinator {
             guard let self else { return }
             do {
                 viewController?.dismiss(animated: true)
-                try await preferencesManager.updateAppPreferences(\.dismissedAliasesSyncExplanation,
-                                                                  value: true)
+                try await preferencesManager.updateUserPreferences(\.dismissedAliasesSyncSheet,
+                                                                   value: true)
             } catch {
                 handle(error: error)
             }
