@@ -7245,7 +7245,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 項目"
+                  "value" : "%lld個のアイテム"
                 }
               },
               "zero" : {
@@ -11214,6 +11214,36 @@
     "%lld replies" : {
       "comment" : "Number of replies from an alias",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld адказы"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld адказаў"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld адказ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld адказаў"
+                }
+              }
+            }
+          }
+        },
         "cs" : {
           "variations" : {
             "plural" : {
@@ -24644,7 +24674,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alla nuvarande intrång kommer att markeras som lösta. I händelse av framtida dataintrång kommer du att notifierad."
+            "value" : "Alla nuvarande intrång kommer att markeras som lösta. I händelse av framtida dataintrång kommer du att bli aviserad."
           }
         },
         "tr" : {
@@ -27528,6 +27558,12 @@
     },
     "At least one of the selected items is currently shared. Moving it to another vault will remove access for all other users." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прынамсі адзін з выбраных элементаў у цяперашні час абагулены. Яго перамяшчэнне ў іншае сховішча пазбавіць доступу ўсіх іншых карыстальнікаў."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30962,6 +30998,12 @@
     },
     "Can edit and delete this item." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Можа рэдагаваць і выдаляць гэты элемент."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31092,6 +31134,12 @@
     },
     "Can grant and revoke access to the item." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Можа даваць і адклікаць дазвол на гэты элемент."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31543,6 +31591,12 @@
     },
     "Can view this item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Можа праглядаць гэты элемент"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33281,10 +33335,124 @@
     },
     "Change mailbox email" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змяніць электронную пошту скрыні"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Změna e-mailu schránky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skift postkassens e-mail"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Postfach ändern"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αλλαγή ηλεκτρονικού ταχυδρομείου γραμματοκιβωτίου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Change mailbox email"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar el correo electrónico del buzón"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambiar el correo electrónico del buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaihda postilaatikon sähköpostiosoitetta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier l'e-mail de la boite de réception"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cambia l'email della casella email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックスを変更"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის ელფოსტის შეცვლა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함 이메일 변경"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endre e-post for postboks"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wijzig mailbox e-mail"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alterar o e-mail da caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modificare adresă de e-mail cont"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmeniť email poštovej schránky"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kutunun e-posta adresini değiştir"
           }
         }
       }
@@ -39024,6 +39192,12 @@
     },
     "Copy forwarding address" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Капіяваць адрас перасылкі"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47071,6 +47245,12 @@
     },
     "Delete this item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдаліць гэты элемент"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47081,6 +47261,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Slet dette element"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eintrag löschen"
           }
         },
         "el" : {
@@ -47105,6 +47291,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eliminar este elemento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poista tämä kohde"
           }
         },
         "fr" : {
@@ -52670,13 +52862,13 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Omogočite nadzor, da boste obveščeni, če so vaši vzdevki pricurljali."
+            "value" : "Omogočite nadzor, da boste obveščeni, če so vaši vzdevki izpostavljeni."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktivera övervakning för att bli notifierad om dina alias läckt."
+            "value" : "Aktivera övervakning för att bli aviserad om dina alias läckt."
           }
         },
         "tr" : {
@@ -52836,7 +53028,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktivera övervakning för att bli notifierad om dina Proton-adresser läckt."
+            "value" : "Aktivera övervakning för att bli aviserad om dina Proton-adresser läckt."
           }
         },
         "tr" : {
@@ -53256,7 +53448,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "次のレベルのパスワード管理の場合:"
+            "value" : "次のレベルのパスワード管理をお楽しみください"
           }
         },
         "ka" : {
@@ -53577,7 +53769,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "カスタムフィールドのタイトル"
+            "value" : "フィールド名を入力してください"
           }
         },
         "ka" : {
@@ -54925,6 +55117,12 @@
     },
     "Every time your alias receives an email from someone, a new contact is automatically created." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новы кантакт аўтаматычна ствараецца. Гэта адбываецца кожны раз, калі ваш псеўданім атрымлівае ліст ад каго-небудзь."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55278,7 +55476,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "監視対象外"
+            "value" : "監視から除外されました"
           }
         },
         "ka" : {
@@ -57610,7 +57808,19 @@
     },
     "Face ID" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Face ID"
@@ -57635,6 +57845,12 @@
           }
         },
         "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "fi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Face ID"
@@ -57707,6 +57923,12 @@
           }
         },
         "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Face ID"
+          }
+        },
+        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Face ID"
@@ -58835,7 +59057,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Filbilagor är nu tillgängliga med Pass Plus. Uppgradera för omedelbar åtkomst."
+            "value" : "Filbilagor är tillgängliga med Pass Plus. Uppgradera för omedelbar åtkomst."
           }
         },
         "tr" : {
@@ -62901,13 +63123,13 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prejmite obvestilo, če je pricurljal vaš e-poštni naslov, geslo ali drugi osebni podatki"
+            "value" : "Prejmite obvestilo, če so vaši e-poštni naslov, geslo ali drugi osebni podatki izpostavljeni."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bli notifierad om din e-post, lösenord eller annan personlig data har läckt"
+            "value" : "Bli aviserad om din e-post, lösenord eller annan personlig data läckt"
           }
         },
         "tr" : {
@@ -63381,7 +63603,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pridobi Pass Unlimited"
+            "value" : "Pridobite Pass Unlimited"
           }
         },
         "sv" : {
@@ -63951,7 +64173,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Belum menerima kodenya?"
+            "value" : "Belum menerima kode verifikasi?"
           }
         },
         "it" : {
@@ -66393,7 +66615,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nadzor vzdevkov Hide-my-email se je nadaljeval"
+            "value" : "Nadzor vzdevkov Hide-my-email se nadaljuje"
           }
         },
         "sv" : {
@@ -70091,7 +70313,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Povabilo poslano."
+            "value" : "Povabilo poslano"
           }
         },
         "sv" : {
@@ -70881,6 +71103,12 @@
     },
     "Item history successfully reset" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гісторыя элемента паспяхова скінута"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -70992,7 +71220,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Objekthistoriken har återställts"
+            "value" : "Objekthistorik återställt"
           }
         },
         "tr" : {
@@ -71294,7 +71522,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ID artikla je kopiran"
+            "value" : "ID predmeta je kopiran"
           }
         },
         "sv" : {
@@ -71614,7 +71842,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Predmet premaknjen v trezor « %@ »"
+            "value" : "Predmet premaknjen v trezor \"%@\""
           }
         },
         "sv" : {
@@ -73173,7 +73401,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Predmeti iz « %@ » premaknjeni v trezor « %@ »"
+            "value" : "Predmeti iz \"%@\" premaknjeni v trezor \"%@\""
           }
         },
         "sv" : {
@@ -79428,7 +79656,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-posta kutusu, bir takma ada gönderilen e-postaların yönlendirildiği yerdir. Gmail, Outlook, Proton Mail gibi normal e-posta kutunuzdur."
+            "value" : "E-posta kutusu, bir takma ada gönderilen e-postaların iletildiği yerdir. Gmail, Outlook, Proton Mail gibi normal e-posta kutunuzdur."
           }
         },
         "uk" : {
@@ -79724,7 +79952,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nastavite na splošno"
+            "value" : "Nastavi za privzeto"
           }
         },
         "sv" : {
@@ -80666,7 +80894,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Največje število ogledov"
+            "value" : "Največje število ogledov:"
           }
         },
         "sv" : {
@@ -81468,7 +81696,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Manjka Uporabniško Ime"
+            "value" : "Manjka uporabniško ime"
           }
         },
         "sv" : {
@@ -83099,6 +83327,12 @@
     },
     "Move" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перамясціць"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83402,6 +83636,12 @@
     },
     "Move this item" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перамясціць гэты элемент"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83821,7 +84061,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Premakni v smeti"
+            "value" : "Premakni v smetnjak"
           }
         },
         "sv" : {
@@ -83846,6 +84086,12 @@
     },
     "Moving items" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перамяшчэнне элементаў"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -83856,6 +84102,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Flytter elementer"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einträge verschieben"
           }
         },
         "el" : {
@@ -85517,7 +85769,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zaznane niso bile nobene kršitve"
+            "value" : "Zaznane niso bile nobene kršitve za"
           }
         },
         "sv" : {
@@ -97424,7 +97676,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prosimo, da med vsiljeno pošto preverite e-poštno sporočilo z naslovom \"Prosimo, potrdite svoj e-poštni naslov za Proton Pass\"\n\nČe ne najdete takšne e-pošte, lahko [zahtevate novo kodo](https://proton.me)."
+            "value" : "V mapi z neželeno pošto preverite e-poštno sporočilo z naslovom \"Potrdite svoj e-poštni naslov za Proton Pass\"\n\nČe ne najdete takšne e-pošte, lahko [zahtevate novo kodo](https://proton.me)."
           }
         },
         "sv" : {
@@ -106008,6 +106260,12 @@
     },
     "Reset" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скінуць"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -106311,6 +106569,12 @@
     },
     "Reset history" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скінуць гісторыю"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -106441,6 +106705,12 @@
     },
     "Reset history for this item?" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скінуць гісторыю для гэтага элемента?"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -106571,6 +106841,12 @@
     },
     "Resetting history will permanently delete all past versions and cannot be undone." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скіданне гісторыі прывядзе да незваротнага выдалення ўсіх мінулых версій і гэту аперацыю немагчыма будзе адрабіць."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -112776,7 +113052,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "検証番号"
+            "value" : "セキュリティコード"
           }
         },
         "ka" : {
@@ -112936,7 +113212,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "認証番号をコピーしました"
+            "value" : "セキュリティコードをコピーしました"
           }
         },
         "ka" : {
@@ -114190,7 +114466,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "項目を選択する"
+            "value" : "アイテムの選択"
           }
         },
         "ka" : {
@@ -116583,7 +116859,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "2FA を設定"
+            "value" : "2要素認証を設定"
           }
         },
         "ka" : {
@@ -118274,6 +118550,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Delte element-invitation"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteilte Eintrageinladung"
           }
         },
         "el" : {
@@ -123222,7 +123504,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Izboljšajte spletno varnost"
+            "value" : "Izboljšajte svojo spletno varnost"
           }
         },
         "sv" : {
@@ -127924,6 +128206,12 @@
     },
     "This item is currently shared. Deleting it will remove access for all other users." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэты элемент у цяперашні час абагулены. Яго выдаленне пазбавіць доступу ўсіх іншых карыстальнікаў."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -128036,6 +128324,12 @@
     },
     "This item is currently shared. Moving it to another vault will remove access for all other users." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэты элемент у цяпершані час абагулены. Яго перамяшчэнне пазбавіць доступу ўсіх іншых карыстальнікаў."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -128715,7 +129009,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "このサービスは 2FA を提供しています。アカウントのセキュリティを強化するには、これを有効にしてください。"
+            "value" : "このサービスは 2要素認証を提供しています。アカウントのセキュリティを強化するには、これを有効にしてください。"
           }
         },
         "ka" : {
@@ -128929,7 +129223,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S tem boste trajno izbrisali trezor « %@ » in vso njegovo vsebino. Vnesite ime trezorja, da potrdite izbris."
+            "value" : "S tem boste trajno izbrisali trezor \"%@\" in vso njegovo vsebino. Vnesite ime trezorja, da potrdite izbris."
           }
         },
         "sv" : {
@@ -130531,7 +130825,19 @@
     },
     "Touch ID" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
         "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID"
@@ -130556,6 +130862,12 @@
           }
         },
         "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "fi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID"
@@ -130628,6 +130940,12 @@
           }
         },
         "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touch ID"
+          }
+        },
+        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID"
@@ -146156,6 +146474,12 @@
             "value" : "Você gostaria de associar «%1$@» com «%2$@»?"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doriți să asociați „%1$@” cu „%2$@”?"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -149923,7 +150247,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Έχετε φτάσει στο όριο των κρυπτών που μπορείτε να δημιουργήσετε. Κάντε αναβάθμιση σε πρόγραμμα επί πληρωμή για να δημιουργήσετε πολλαπλές κρύπτες."
+            "value" : "Έχετε φτάσει στο όριο των κρυπτών που μπορείτε να δημιουργήσετε. Κάντε αναβάθμιση σε πλάνο επί πληρωμή για να δημιουργήσετε πολλαπλές κρύπτες."
           }
         },
         "en" : {
@@ -151515,7 +151839,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verkkotunnuksesi"
+            "value" : "Sinun verkkotunnuksesi"
           }
         },
         "fr" : {
@@ -152032,25 +152356,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah"
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitev"
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvi."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah"
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah."
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Vaša e-poštni naslova sta pricurljala v %lld kršitev"
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah."
                 }
               }
             }
