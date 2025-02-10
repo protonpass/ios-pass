@@ -156,7 +156,6 @@ extension Preferences: @unchecked Sendable, PreferencesMigrator {
                                  dismissedBannerIds: dismissedBannerIds,
                                  dismissedCustomDomainExplanation: false,
                                  didMigratePreferences: true,
-                                 dismissedAliasesSyncExplanation: false,
                                  hasVisitedContactPage: false,
                                  dismissedFileAttachmentsBanner: false)
         let shared = SharedPreferences(quickTypeBar: quickTypeBar,
@@ -180,7 +179,8 @@ extension Preferences: @unchecked Sendable, PreferencesMigrator {
                                    extraPasswordEnabled: false,
                                    protonPasswordFailedVerificationCount: 0,
                                    lastSelectedShareId: nil,
-                                   lastCreatedItemShareId: nil)
+                                   lastCreatedItemShareId: nil,
+                                   dismissedAliasesSyncSheet: false)
         return (app, shared, user)
     }
 }

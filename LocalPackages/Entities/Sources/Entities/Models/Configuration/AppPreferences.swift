@@ -38,9 +38,6 @@ public struct AppPreferences: Codable, Equatable, Sendable {
     /// Whether to show or not custom domain explanation when viewing monitored aliases
     public var dismissedCustomDomainExplanation: Bool
 
-    /// Whether to show or not SimpleLogin alias sync explanation when in profile tab
-    public var dismissedAliasesSyncExplanation: Bool
-
     // swiftlint:disable:next todo
     // TODO: Introduced in april 2024, can be removed several months later
     public var didMigratePreferences: Bool
@@ -55,7 +52,6 @@ public struct AppPreferences: Codable, Equatable, Sendable {
                 dismissedBannerIds: [String],
                 dismissedCustomDomainExplanation: Bool,
                 didMigratePreferences: Bool,
-                dismissedAliasesSyncExplanation: Bool,
                 hasVisitedContactPage: Bool,
                 dismissedFileAttachmentsBanner: Bool) {
         self.onboarded = onboarded
@@ -64,7 +60,6 @@ public struct AppPreferences: Codable, Equatable, Sendable {
         self.dismissedBannerIds = dismissedBannerIds
         self.dismissedCustomDomainExplanation = dismissedCustomDomainExplanation
         self.didMigratePreferences = didMigratePreferences
-        self.dismissedAliasesSyncExplanation = dismissedAliasesSyncExplanation
         self.hasVisitedContactPage = hasVisitedContactPage
         self.dismissedFileAttachmentsBanner = dismissedFileAttachmentsBanner
     }
@@ -78,7 +73,6 @@ private extension AppPreferences {
         static let dismissedBannerIds: [String] = []
         static let dismissedCustomDomainExplanation = false
         static let didMigratePreferences = false
-        static let dismissedAliasesSyncExplanation = false
         static let hasVisitedContactPage = false
         static let dismissedFileAttachmentsBanner = false
     }
@@ -90,7 +84,6 @@ private extension AppPreferences {
         case dismissedBannerIds
         case dismissedCustomDomainExplanation
         case didMigratePreferences
-        case dismissedAliasesSyncExplanation
         case hasVisitedContactPage
         case dismissedFileAttachmentsBanner
     }
@@ -108,8 +101,6 @@ public extension AppPreferences {
             try container.decodeIfPresent(Bool.self, forKey: .dismissedCustomDomainExplanation)
         let didMigratePreferences = try container.decodeIfPresent(Bool.self,
                                                                   forKey: .didMigratePreferences)
-        let dismissedAliasesSyncExplanation = try container.decodeIfPresent(Bool.self,
-                                                                            forKey: .dismissedAliasesSyncExplanation)
 
         let hasVisitedContactPage = try container.decodeIfPresent(Bool.self,
                                                                   forKey: .hasVisitedContactPage)
@@ -122,8 +113,6 @@ public extension AppPreferences {
                   dismissedCustomDomainExplanation: dismissedCustomDomainExplanation ?? Default
                       .dismissedCustomDomainExplanation,
                   didMigratePreferences: didMigratePreferences ?? Default.didMigratePreferences,
-                  dismissedAliasesSyncExplanation: dismissedAliasesSyncExplanation ?? Default
-                      .dismissedAliasesSyncExplanation,
                   hasVisitedContactPage: hasVisitedContactPage ?? Default.hasVisitedContactPage,
                   dismissedFileAttachmentsBanner: dismissedFileAttachmentsBanner ?? Default
                       .dismissedFileAttachmentsBanner)
@@ -138,7 +127,6 @@ extension AppPreferences: Defaultable {
               dismissedBannerIds: Default.dismissedBannerIds,
               dismissedCustomDomainExplanation: Default.dismissedCustomDomainExplanation,
               didMigratePreferences: Default.didMigratePreferences,
-              dismissedAliasesSyncExplanation: Default.dismissedAliasesSyncExplanation,
               hasVisitedContactPage: Default.hasVisitedContactPage,
               dismissedFileAttachmentsBanner: Default.dismissedFileAttachmentsBanner)
     }
