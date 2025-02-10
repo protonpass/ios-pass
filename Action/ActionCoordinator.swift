@@ -18,18 +18,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Combine
+import DesignSystem
 import Factory
+import Screens
+import SwiftUI
 import UIKit
 
 @MainActor
 final class ActionCoordinator {
+    private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
+    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
+    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
+    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
 
+    private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
     private var context: NSExtensionContext? { rootViewController?.extensionContext }
 
+    private var cancellables = Set<AnyCancellable>()
+
     init(rootViewController: UIViewController?) {
         self.rootViewController = rootViewController
+        AppearanceSettings.apply()
+        setUpSentry()
+        setUpRouter()
+        setCoreLoggerEnvironment()
     }
 }
 
@@ -39,15 +57,77 @@ extension ActionCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
+            await beginFlow()
         } catch {
-//            alert(error: error) { [weak self] in
-//                guard let self else { return }
-//                dismissExtension()
-//            }
+            alert(error: error) { [weak self] in
+                guard let self else { return }
+                dismissExtension()
+            }
         }
     }
 }
 
 // MARK: Private APIs
 
-private extension ActionCoordinator {}
+private extension ActionCoordinator {
+    func setUpRouter() {
+        router
+            .globalElementDisplay
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .globalLoading(shouldShow):
+                    if shouldShow {
+                        showLoadingHud()
+                    } else {
+                        hideLoadingHud()
+                    }
+                default:
+                    return
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func beginFlow() async {
+        if let activeUserId = userManager.activeUserId,
+           credentialProvider.isAuthenticated(userId: activeUserId) {
+            await parseCsvAndBegingImportFlow()
+        } else {
+            showNotLoggedInView()
+        }
+    }
+
+    func dismissExtension() {
+        context?.completeRequest(returningItems: nil)
+    }
+
+    func showNotLoggedInView() {
+        let view = NotLoggedInView(variant: .actionExtension) { [weak self] in
+            guard let self else { return }
+            dismissExtension()
+        }
+        showView(view)
+    }
+
+    func parseCsvAndBegingImportFlow() async {
+        showView(Text(verbatim: #function))
+    }
+}
+
+// MARK: ExtensionCoordinator
+
+extension ActionCoordinator: ExtensionCoordinator {
+    func getRootViewController() -> UIViewController? {
+        rootViewController
+    }
+
+    func getLastChildViewController() -> UIViewController? {
+        lastChildViewController
+    }
+
+    func setLastChildViewController(_ viewController: UIViewController) {
+        lastChildViewController = viewController
+    }
+}

@@ -124,7 +124,7 @@ extension ShareCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
-            try await beginFlow()
+            await beginFlow()
         } catch {
             alert(error: error) { [weak self] in
                 guard let self else { return }
@@ -315,10 +315,10 @@ private extension ShareCoordinator {
         }
     }
 
-    func beginFlow() async throws {
-        let userId = try await userManager.getActiveUserId()
-        if credentialProvider.isAuthenticated(userId: userId) {
-            await parseSharedContentAndBeginShareFlow(userId: userId)
+    func beginFlow() async {
+        if let activeUserId = userManager.activeUserId,
+           credentialProvider.isAuthenticated(userId: activeUserId) {
+            await parseSharedContentAndBeginShareFlow(userId: activeUserId)
         } else {
             showNotLoggedInView()
         }

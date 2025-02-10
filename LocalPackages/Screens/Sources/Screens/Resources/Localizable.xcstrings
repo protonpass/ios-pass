@@ -8706,6 +8706,16 @@
         }
       }
     },
+    "Please sign in to use Proton Pass Action extension" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please sign in to use Proton Pass Action extension"
+          }
+        }
+      }
+    },
     "Please sign in to use Proton Pass AutoFill extension" : {
       "localizations" : {
         "be" : {
