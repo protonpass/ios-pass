@@ -140,6 +140,10 @@ extension SharedServiceContainer {
         self { TelemetryService.shared }
     }
 
+    var abTestingManager: Factory<any ABTestingManagerProtocol> {
+        self { ABTestingManager() }
+    }
+
     // swiftlint:disable:next todo
     // TODO: transform vault Manager
 //    var appContentManager: Factory<any AppContentManagerServicing> {

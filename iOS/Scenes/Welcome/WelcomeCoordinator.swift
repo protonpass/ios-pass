@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import DesignSystem
 import Entities
@@ -27,6 +28,8 @@ import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCoreServices
+import Screens
+import SwiftUI
 import UIKit
 
 @MainActor
@@ -49,6 +52,10 @@ final class WelcomeCoordinator: DeinitPrintable {
 
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
+    @LazyInjected(\SharedServiceContainer.abTestingManager) var abTestingManager
+    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
+
+    let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
     init(apiService: any APIService, theme: Theme) {
         self.apiService = apiService
@@ -59,16 +66,37 @@ final class WelcomeCoordinator: DeinitPrintable {
 
 private extension WelcomeCoordinator {
     func makeWelcomeViewController() -> UIViewController {
-        let welcomeViewController =
-            WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
-                                  delegate: self,
-                                  username: nil,
-                                  signupAvailable: true)
+        let welcomeViewController = createLoginFlow()
+
         welcomeViewController.view?.addShakeMotionDetector { [weak self] in
             guard let self else { return }
             presentReportBugsAlert()
         }
         return welcomeViewController
+    }
+
+    func beginAddAccountFlow(isSigningUp: Bool) {
+        let options = LoginCustomizationOptions(inAppTheme: { [weak self] in
+            guard let self else { return .default }
+            return getSharedPreferences().theme.inAppTheme
+        })
+        if isSigningUp {
+            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_up"),
+                              isUnAuthenticated: true)
+            logInAndSignUp.presentSignupFlow(over: rootViewController,
+                                             customization: options) { [weak self] result in
+                guard let self else { return }
+                handle(result)
+            }
+        } else {
+            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_in"),
+                              isUnAuthenticated: true)
+            logInAndSignUp.presentLoginFlow(over: rootViewController,
+                                            customization: options) { [weak self] result in
+                guard let self else { return }
+                handle(result)
+            }
+        }
     }
 
     @objc
@@ -135,6 +163,33 @@ private extension WelcomeCoordinator {
                      paymentsAvailability: .notAvailable,
                      signupAvailability: .available(parameters: signUpParameters))
     }
+
+    func createLoginFlow() -> UIViewController {
+        if UserDefaults.standard.bool(forKey: Constants.QA.newLoginFlow) {
+            return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
+                guard let self else { return }
+                beginAddAccountFlow(isSigningUp: signUp)
+            }))
+        }
+
+        let loginVariant = abTestingManager.variant(for: "LoginFlowExperiment",
+                                                    type: LoginFlowExperiment.self,
+                                                    default: .new)
+        switch loginVariant {
+        case .new:
+            addTelemetryEvent(with: .newLoginFlow(event: "fe.welcome.displayed", item: nil),
+                              isUnAuthenticated: true)
+            return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
+                guard let self else { return }
+                beginAddAccountFlow(isSigningUp: signUp)
+            }))
+        default:
+            return WelcomeViewController(variant: .pass(.init(body: #localized("Secure password manager and more"))),
+                                         delegate: self,
+                                         username: nil,
+                                         signupAvailable: true)
+        }
+    }
 }
 
 // MARK: - WelcomeViewControllerDelegate
@@ -192,5 +247,15 @@ extension WelcomeCoordinator: WelcomeViewControllerDelegate {
         // Have to refresh `logInAndSignUp` in case `logInData` is ignored and user has to authenticate again.
         logInAndSignUp = makeLoginAndSignUp()
         delegate?.welcomeCoordinator(didFinishWith: logInData)
+    }
+
+    func handle(_ result: LoginResult) {
+        switch result {
+        case .dismissed:
+            return
+        case let .loggedIn(logInData), let .signedUp(logInData):
+            logInAndSignUp = makeLoginAndSignUp()
+            handle(logInData: logInData)
+        }
     }
 }
