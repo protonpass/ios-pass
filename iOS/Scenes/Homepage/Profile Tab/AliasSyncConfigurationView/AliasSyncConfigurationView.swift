@@ -308,26 +308,28 @@ private struct MailboxElementRow: View {
 
             Spacer()
 
-            if showMenu, !isDefault {
+            if showMenu {
                 Menu(content: {
+                    Label(title: { Text("Change mailbox email") },
+                          icon: { Image(uiImage: IconProvider.pencil) })
+                        .buttonEmbeded { changeEmail(mailBox) }
+
                     if mailBox.verificationNeeded {
                         Label(title: { Text("Verify") },
                               icon: { Image(uiImage: IconProvider.checkmarkCircle) })
                             .buttonEmbeded { verify(mailBox) }
-                    } else {
-                        Label(title: { Text("Change mailbox email") },
-                              icon: { Image(uiImage: IconProvider.pencil) })
-                            .buttonEmbeded { changeEmail(mailBox) }
-
+                    } else if !isDefault {
                         Label(title: { Text("Make default") },
                               icon: { Image(uiImage: IconProvider.star) })
                             .buttonEmbeded { setDefault(mailBox) }
                     }
 
-                    Divider()
-                    Label(title: { Text("Delete") },
-                          icon: { Image(uiImage: IconProvider.trash) })
-                        .buttonEmbeded { delete(mailBox) }
+                    if !isDefault {
+                        Divider()
+                        Label(title: { Text("Delete") },
+                              icon: { Image(uiImage: IconProvider.trash) })
+                            .buttonEmbeded { delete(mailBox) }
+                    }
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.textWeak,
