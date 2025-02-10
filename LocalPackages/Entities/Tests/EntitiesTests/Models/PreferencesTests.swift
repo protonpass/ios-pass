@@ -44,8 +44,7 @@ struct PreferencesTests {
                                          dismissedBannerIds: ["a", "b", "c"], 
                                          dismissedCustomDomainExplanation:
                                             AppPreferences.default.dismissedCustomDomainExplanation,
-                                         didMigratePreferences: AppPreferences.default.didMigratePreferences, 
-                                         dismissedAliasesSyncExplanation: AppPreferences.default.dismissedAliasesSyncExplanation,
+                                         didMigratePreferences: AppPreferences.default.didMigratePreferences,
                                          hasVisitedContactPage: AppPreferences.default.hasVisitedContactPage,
                                          dismissedFileAttachmentsBanner: AppPreferences.default.dismissedFileAttachmentsBanner)
         try decodeAndAssert(AppPreferences.self, json: json, expectation: expectation)
@@ -105,7 +104,8 @@ struct PreferencesTests {
             extraPasswordEnabled: UserPreferences.default.extraPasswordEnabled, 
             protonPasswordFailedVerificationCount: UserPreferences.default.protonPasswordFailedVerificationCount, 
             lastSelectedShareId: UserPreferences.default.lastSelectedShareId,
-            lastCreatedItemShareId: UserPreferences.default.lastCreatedItemShareId)
+            lastCreatedItemShareId: UserPreferences.default.lastCreatedItemShareId,
+            dismissedAliasesSyncSheet: UserPreferences.default.dismissedAliasesSyncSheet)
         try decodeAndAssert(UserPreferences.self, json: json, expectation: expectation)
     }
 

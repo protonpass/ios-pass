@@ -44,13 +44,17 @@ public struct UserPreferences: Codable, Equatable, Sendable {
     /// `shareId` of the last created item
     public var lastCreatedItemShareId: String?
 
+    /// Whether to show or not SimpleLogin alias sync explanation sheet
+    public var dismissedAliasesSyncSheet: Bool
+
     public init(spotlightEnabled: Bool,
                 spotlightSearchableContent: SpotlightSearchableContent,
                 spotlightSearchableVaults: SpotlightSearchableVaults,
                 extraPasswordEnabled: Bool,
                 protonPasswordFailedVerificationCount: Int,
                 lastSelectedShareId: String?,
-                lastCreatedItemShareId: String?) {
+                lastCreatedItemShareId: String?,
+                dismissedAliasesSyncSheet: Bool) {
         self.spotlightEnabled = spotlightEnabled
         self.spotlightSearchableContent = spotlightSearchableContent
         self.spotlightSearchableVaults = spotlightSearchableVaults
@@ -58,6 +62,7 @@ public struct UserPreferences: Codable, Equatable, Sendable {
         self.protonPasswordFailedVerificationCount = protonPasswordFailedVerificationCount
         self.lastSelectedShareId = lastSelectedShareId
         self.lastCreatedItemShareId = lastCreatedItemShareId
+        self.dismissedAliasesSyncSheet = dismissedAliasesSyncSheet
     }
 }
 
@@ -70,6 +75,7 @@ private extension UserPreferences {
         static let protonPasswordFailedVerificationCount = 0
         static let lastSelectedShareId: String? = nil
         static let lastCreatedItemShareId: String? = nil
+        static let dismissedAliasesSyncSheet = false
     }
 
     enum CodingKeys: String, CodingKey {
@@ -80,6 +86,7 @@ private extension UserPreferences {
         case protonPasswordFailedVerificationCount
         case lastSelectedShareId
         case lastCreatedItemShareId
+        case dismissedAliasesSyncSheet
     }
 }
 
@@ -97,6 +104,8 @@ public extension UserPreferences {
             try container.decodeIfPresent(Int.self, forKey: .protonPasswordFailedVerificationCount)
         let lastSelectedShareId = try container.decodeIfPresent(String?.self, forKey: .lastSelectedShareId)
         let lastCreatedItemShareId = try container.decodeIfPresent(String?.self, forKey: .lastCreatedItemShareId)
+        let dismissedAliasesSyncSheet =
+            try container.decodeIfPresent(Bool.self, forKey: .dismissedAliasesSyncSheet)
         self.init(spotlightEnabled: spotlightEnabled ?? Default.spotlightEnabled,
                   spotlightSearchableContent: spotlightSearchableContent ?? Default.spotlightSearchableContent,
                   spotlightSearchableVaults: spotlightSearchableVaults ?? Default.spotlightSearchableVaults,
@@ -104,7 +113,9 @@ public extension UserPreferences {
                   protonPasswordFailedVerificationCount: protonPasswordFailedVerificationCount
                       ?? Default.protonPasswordFailedVerificationCount,
                   lastSelectedShareId: lastSelectedShareId ?? Default.lastSelectedShareId,
-                  lastCreatedItemShareId: lastCreatedItemShareId ?? Default.lastCreatedItemShareId)
+                  lastCreatedItemShareId: lastCreatedItemShareId ?? Default.lastCreatedItemShareId,
+                  dismissedAliasesSyncSheet: dismissedAliasesSyncSheet ?? Default
+                      .dismissedAliasesSyncSheet)
     }
 }
 
@@ -116,7 +127,8 @@ extension UserPreferences: Defaultable {
               extraPasswordEnabled: Default.extraPasswordEnabled,
               protonPasswordFailedVerificationCount: Default.protonPasswordFailedVerificationCount,
               lastSelectedShareId: Default.lastSelectedShareId,
-              lastCreatedItemShareId: Default.lastCreatedItemShareId)
+              lastCreatedItemShareId: Default.lastCreatedItemShareId,
+              dismissedAliasesSyncSheet: Default.dismissedAliasesSyncSheet)
     }
 }
 

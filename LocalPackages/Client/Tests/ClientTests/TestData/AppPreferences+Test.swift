@@ -29,7 +29,6 @@ extension AppPreferences {
               dismissedBannerIds: .random(randomElement: .random()),
               dismissedCustomDomainExplanation: .random(),
               didMigratePreferences: .random(), 
-              dismissedAliasesSyncExplanation: .random(),
               hasVisitedContactPage: false,
               dismissedFileAttachmentsBanner: false)
     }
