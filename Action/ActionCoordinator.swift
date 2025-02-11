@@ -32,8 +32,10 @@ final class ActionCoordinator {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
+    @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -92,13 +94,32 @@ private extension ActionCoordinator {
     func beginFlow() async {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
-            showView(ActionView(context: context)
+            let view = ActionView(context: context)
                 .localAuthentication(onFailure: { [weak self] _ in
                     guard let self else { return }
-//                    logOut(userId: userId)
-                }))
+                    logOut(userId: activeUserId)
+                })
+            showView(view)
         } else {
             showNotLoggedInView()
+        }
+    }
+
+    func logOut(userId: String,
+                error: (any Error)? = nil,
+                sessionId: String? = nil) {
+        Task { [weak self] in
+            guard let self else { return }
+            if let error {
+                sendErrorToSentry(error, userId: userId, sessionId: sessionId)
+            }
+
+            do {
+                try await logOutAllAccounts()
+                showNotLoggedInView()
+            } catch {
+                logger.error(error)
+            }
         }
     }
 
