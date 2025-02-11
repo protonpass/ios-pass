@@ -520,6 +520,11 @@ extension ProfileTabViewModel: ImporterDatasource {
             throw PassError.importer(.noCsvUrl)
         }
 
+        _ = csvUrl.startAccessingSecurityScopedResource()
+        defer {
+            csvUrl.stopAccessingSecurityScopedResource()
+        }
+
         let data = try Data(contentsOf: csvUrl)
         guard let csvString = String(data: data, encoding: .utf8) else {
             throw PassError.importer(.noCsvContent)
