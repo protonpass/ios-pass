@@ -24,7 +24,6 @@ public extension PassError {
     enum ExtensionFailureReason: CustomDebugStringConvertible, Sendable {
         case noInputItems
         case noAttachments
-        case noCsvContent
 
         public var debugDescription: String {
             switch self {
@@ -32,8 +31,6 @@ public extension PassError {
                 "No input items"
             case .noAttachments:
                 "No attachents found"
-            case .noCsvContent:
-                "No CSV content found"
             }
         }
     }

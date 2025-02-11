@@ -62,7 +62,7 @@ public struct ImporterView: View {
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
         .task { await viewModel.fetchData() }
-        .alert("Succesful import",
+        .alert("Imported successfully",
                isPresented: $viewModel.importSuccessMessage.mappedToBool(),
                actions: { Button("OK", action: onClose) },
                message: {

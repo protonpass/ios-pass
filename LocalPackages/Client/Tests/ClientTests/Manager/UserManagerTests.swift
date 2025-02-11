@@ -58,7 +58,9 @@ extension UserManagerTests {
     func testSetUp() async throws {
         var mockedUserDatas = [UserProfile].random(randomElement: UserProfile(userdata: .random(), isActive: false, updateTime: 0))
         mockedUserDatas.markLastProfileActive()
-        let mockedUserIds = mockedUserDatas.map(\.userdata.user.ID)
+        let mockedUserIds = mockedUserDatas
+            .sorted(by: { $0.isActive && !$1.isActive })
+            .map(\.userdata.user.ID)
         userDataDatasource.stubbedGetAllResult = mockedUserDatas
         
         let mockedActiveUserId = mockedUserDatas.last!.userdata.user.ID

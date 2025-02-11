@@ -7016,6 +7016,17 @@
         }
       }
     },
+    "Imported successfully" : {
+      "comment" : "Title of the alert after successfully importing items",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imported successfully"
+          }
+        }
+      }
+    },
     "Invalid TOTP URI" : {
       "localizations" : {
         "be" : {
@@ -12207,17 +12218,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bilgi alın."
-          }
-        }
-      }
-    },
-    "Succesful import" : {
-      "comment" : "Title of the alert after successfully importing items",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Succesful import"
           }
         }
       }
