@@ -21,6 +21,7 @@
 import ProtonCoreCryptoGoImplementation
 import UIKit
 
+// periphery:ignore
 final class ActionViewController: UIViewController {
     private lazy var coordinator = ActionCoordinator(rootViewController: self)
 
