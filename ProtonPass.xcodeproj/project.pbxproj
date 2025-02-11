@@ -835,10 +835,7 @@
 		35533BBE29D618A200EC58DE /* AccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountView.swift; sourceTree = "<group>"; };
 		35533BC029D618B800EC58DE /* AccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountViewModel.swift; sourceTree = "<group>"; };
 		3553C22A2965754C0087518A /* LoggerManager+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoggerManager+Extensions.swift"; sourceTree = "<group>"; };
-		3555800D28F04D30009C3B88 /* AutoFill-Debug-QA.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Debug-QA.xcconfig"; sourceTree = "<group>"; };
-		3555801128F04DB6009C3B88 /* AutoFill-Release-QA.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release-QA.xcconfig"; sourceTree = "<group>"; };
-		3555801328F04DE3009C3B88 /* AutoFill-Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AutoFill-Release.xcconfig"; sourceTree = "<group>"; };
-		3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "iOS-Release-Beta.xcconfig"; sourceTree = "<group>"; };
+		3555C1792A2F810B00A257D7 /* Release-Beta.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Release-Beta.xcconfig"; sourceTree = "<group>"; };
 		3556949C29D45FD5005DD2EB /* MoveVaultListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveVaultListView.swift; sourceTree = "<group>"; };
 		3556949E29D46001005DD2EB /* MoveVaultListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveVaultListViewModel.swift; sourceTree = "<group>"; };
 		355723C12BF37F5E00C76244 /* HomepageCoordinator+UniqueSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+UniqueSheet.swift"; sourceTree = "<group>"; };
@@ -986,7 +983,7 @@
 		35C0D1C62B20B567005D48A6 /* TOTPRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TOTPRow.swift; sourceTree = "<group>"; };
 		35C1439B298C042C00F91161 /* ItemDetailTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailTitleView.swift; sourceTree = "<group>"; };
 		35C1E7152CB917AF009A40E9 /* HistoryItemUiModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryItemUiModel.swift; sourceTree = "<group>"; };
-		35C2161529EA8991001720FF /* iOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release.xcconfig"; sourceTree = "<group>"; };
+		35C2161529EA8991001720FF /* Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		35C2162629EA8B0B001720FF /* macOS-Release.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release.xcconfig"; sourceTree = "<group>"; };
 		35C2162829EA911E001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		35C2162E29EA9558001720FF /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
@@ -1016,8 +1013,8 @@
 		35E50655286F830A00A3F6EA /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		35E50658286F838800A3F6EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		35E5065A286F865900A3F6EA /* macOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = macOSApp.swift; sourceTree = "<group>"; };
-		35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Debug-QA.xcconfig"; sourceTree = "<group>"; };
-		35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "iOS-Release-QA.xcconfig"; sourceTree = "<group>"; };
+		35E506CC286FA0BD00A3F6EA /* Debug.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
+		35E506CD286FA0BD00A3F6EA /* Release-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "Release-QA.xcconfig"; sourceTree = "<group>"; };
 		35E506D5286FB12000A3F6EA /* macOS-Debug-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Debug-QA.xcconfig"; sourceTree = "<group>"; };
 		35E506D6286FB12000A3F6EA /* macOS-Release-QA.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = "macOS-Release-QA.xcconfig"; sourceTree = "<group>"; };
 		35E506DD286FB1D300A3F6EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1449,7 +1446,6 @@
 				3544F5E528E2341900834CA4 /* MainInterface.storyboard */,
 				3544F5E828E2341900834CA4 /* Info.plist */,
 				3544F5E928E2341900834CA4 /* AutoFill.entitlements */,
-				3555800C28F04CFF009C3B88 /* BuildConfigs */,
 			);
 			path = AutoFill;
 			sourceTree = "<group>";
@@ -1552,16 +1548,6 @@
 				3552D0C82CA6D5DE004156D8 /* ItemsForTextInsertionViewModel.swift */,
 			);
 			path = ItemsForTextInsertionView;
-			sourceTree = "<group>";
-		};
-		3555800C28F04CFF009C3B88 /* BuildConfigs */ = {
-			isa = PBXGroup;
-			children = (
-				3555800D28F04D30009C3B88 /* AutoFill-Debug-QA.xcconfig */,
-				3555801128F04DB6009C3B88 /* AutoFill-Release-QA.xcconfig */,
-				3555801328F04DE3009C3B88 /* AutoFill-Release.xcconfig */,
-			);
-			path = BuildConfigs;
 			sourceTree = "<group>";
 		};
 		3559BA9A2A5B31900020E172 /* Configuration */ = {
@@ -1957,10 +1943,10 @@
 		35E506C9286FA06300A3F6EA /* BuildConfigs */ = {
 			isa = PBXGroup;
 			children = (
-				35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */,
-				35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */,
-				35C2161529EA8991001720FF /* iOS-Release.xcconfig */,
-				3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */,
+				35E506CC286FA0BD00A3F6EA /* Debug.xcconfig */,
+				35E506CD286FA0BD00A3F6EA /* Release-QA.xcconfig */,
+				35C2161529EA8991001720FF /* Release.xcconfig */,
+				3555C1792A2F810B00A257D7 /* Release-Beta.xcconfig */,
 			);
 			path = BuildConfigs;
 			sourceTree = "<group>";
@@ -3965,7 +3951,7 @@
 /* Begin XCBuildConfiguration section */
 		3544F5EE28E2341900834CA4 /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */;
+			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4052,7 +4038,7 @@
 		};
 		3544F5F128E2341900834CA4 /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */;
+			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* Release-QA.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APP_VERSION_IDENTIFIER = "";
@@ -4343,7 +4329,7 @@
 		};
 		3555C16D2A2F80BC00A257D7 /* Release-Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */;
+			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* Release-Beta.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -4532,7 +4518,7 @@
 		};
 		3555C1702A2F80BC00A257D7 /* Release-Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */;
+			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* Release-Beta.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -4702,7 +4688,7 @@
 		};
 		35C2161829EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35C2161529EA8991001720FF /* iOS-Release.xcconfig */;
+			baseConfigurationReference = 35C2161529EA8991001720FF /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -4891,7 +4877,7 @@
 		};
 		35C2161B29EA8A0B001720FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35C2161529EA8991001720FF /* iOS-Release.xcconfig */;
+			baseConfigurationReference = 35C2161529EA8991001720FF /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -5005,7 +4991,7 @@
 		};
 		35C9B81F2B5E8AA90062D787 /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */;
+			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				APP_VERSION_IDENTIFIER = "";
@@ -5093,7 +5079,7 @@
 		};
 		35C9B8202B5E8AA90062D787 /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */;
+			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* Release-QA.xcconfig */;
 			buildSettings = {
 				APP_VERSION_IDENTIFIER = "";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -5135,7 +5121,7 @@
 		};
 		35C9B8212B5E8AA90062D787 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35C2161529EA8991001720FF /* iOS-Release.xcconfig */;
+			baseConfigurationReference = 35C2161529EA8991001720FF /* Release.xcconfig */;
 			buildSettings = {
 				APP_VERSION_IDENTIFIER = "";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -5177,7 +5163,7 @@
 		};
 		35C9B8222B5E8AA90062D787 /* Release-Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */;
+			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* Release-Beta.xcconfig */;
 			buildSettings = {
 				APP_VERSION_IDENTIFIER = "";
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -5282,7 +5268,7 @@
 		};
 		35E5064D286F819F00A3F6EA /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */;
+			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconQA;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -5418,7 +5404,7 @@
 		};
 		35E506C2286F9D1E00A3F6EA /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */;
+			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* Release-QA.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconQA;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -5496,7 +5482,7 @@
 		};
 		538548F52D58ACF300AEFB66 /* Debug-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* iOS-Debug-QA.xcconfig */;
+			baseConfigurationReference = 35E506CC286FA0BD00A3F6EA /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -5581,7 +5567,7 @@
 		};
 		538548F62D58ACF300AEFB66 /* Release-QA */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* iOS-Release-QA.xcconfig */;
+			baseConfigurationReference = 35E506CD286FA0BD00A3F6EA /* Release-QA.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -5620,7 +5606,7 @@
 		};
 		538548F72D58ACF300AEFB66 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 35C2161529EA8991001720FF /* iOS-Release.xcconfig */;
+			baseConfigurationReference = 35C2161529EA8991001720FF /* Release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -5659,7 +5645,7 @@
 		};
 		538548F82D58ACF300AEFB66 /* Release-Beta */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* iOS-Release-Beta.xcconfig */;
+			baseConfigurationReference = 3555C1792A2F810B00A257D7 /* Release-Beta.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
