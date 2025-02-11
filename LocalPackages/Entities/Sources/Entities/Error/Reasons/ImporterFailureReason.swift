@@ -24,14 +24,20 @@ import Foundation
 public extension PassError {
     enum ImporterFailureReason: CustomDebugStringConvertible, Sendable {
         case missingDatasource
+        case noCsvUrl
         case noLoginsFound
+        case noCsvContent
 
         public var debugDescription: String {
             switch self {
             case .missingDatasource:
                 "Datasource is not set"
+            case .noCsvUrl:
+                "No URL for CSV file"
             case .noLoginsFound:
                 "No logins found"
+            case .noCsvContent:
+                "No CSV content"
             }
         }
     }
