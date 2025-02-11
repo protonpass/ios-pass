@@ -31,14 +31,11 @@ public struct ImporterView: View {
     private let onClose: () -> Void
 
     public init(logManager: any LogManagerProtocol,
-                users: [UserUiModel],
-                logins: [CsvLogin],
-                proceedImportation: @escaping (UserUiModel?, [CsvLogin]) async throws -> Void,
+                datasource: any ImporterDatasource,
                 onClose: @escaping () -> Void) {
-        _viewModel = .init(wrappedValue: .init(logManager: logManager,
-                                               users: users,
-                                               logins: logins,
-                                               proceedImportation: proceedImportation))
+        let viewModel = ImporterViewModel(logManager: logManager)
+        viewModel.datasource = datasource
+        _viewModel = .init(wrappedValue: viewModel)
         self.onClose = onClose
     }
 
@@ -62,8 +59,9 @@ public struct ImporterView: View {
         .toolbar { toolbarContent }
         .navigationBarTitleDisplayMode(.inline)
         .fullSheetBackground()
-        .showSpinner(viewModel.importing)
+        .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
+        .task { await viewModel.fetchData() }
         .alert("Succesful import",
                isPresented: $viewModel.importSuccessMessage.mappedToBool(),
                actions: { Button("OK", action: onClose) },
@@ -94,22 +92,24 @@ private extension ImporterView {
                          action: onClose)
         }
 
-        ToolbarItem(placement: .principal) {
-            Text(#localized("Import logins (%1$lld/%2$lld)",
-                            viewModel.selectedCount,
-                            viewModel.logins.count))
-                .navigationTitleText()
-                .monospacedDigit()
-        }
+        if !viewModel.logins.isEmpty {
+            ToolbarItem(placement: .principal) {
+                Text(#localized("Import logins (%1$lld/%2$lld)",
+                                viewModel.selectedCount,
+                                viewModel.logins.count))
+                    .navigationTitleText()
+                    .monospacedDigit()
+            }
 
-        ToolbarItem(placement: .topBarTrailing) {
-            DisablableCapsuleTextButton(title: #localized("Import"),
-                                        titleColor: PassColor.textInvert,
-                                        disableTitleColor: PassColor.textHint,
-                                        backgroundColor: PassColor.loginInteractionNormMajor1,
-                                        disableBackgroundColor: PassColor.loginInteractionNormMinor1,
-                                        disabled: viewModel.selectedCount <= 0 || viewModel.importing,
-                                        action: viewModel.startImporting)
+            ToolbarItem(placement: .topBarTrailing) {
+                DisablableCapsuleTextButton(title: #localized("Import"),
+                                            titleColor: PassColor.textInvert,
+                                            disableTitleColor: PassColor.textHint,
+                                            backgroundColor: PassColor.loginInteractionNormMajor1,
+                                            disableBackgroundColor: PassColor.loginInteractionNormMinor1,
+                                            disabled: viewModel.selectedCount <= 0 || viewModel.loading,
+                                            action: viewModel.startImporting)
+            }
         }
     }
 }
