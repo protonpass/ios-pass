@@ -7005,6 +7005,16 @@
         }
       }
     },
+    "Import from Chrome" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from Chrome"
+          }
+        }
+      }
+    },
     "Import logins (%1$lld/%2$lld)" : {
       "comment" : "Title of the importer, first placeholder is the number of selected logins to import, second placeholder is the total number of logins.",
       "localizations" : {
@@ -8404,6 +8414,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mở"
+          }
+        }
+      }
+    },
+    "Open **Chrome** menu and go to **Settings**" : {
+      "comment" : "Part of instruction to import from Chrome",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open **Chrome** menu and go to **Settings**"
+          }
+        }
+      }
+    },
+    "Open **Password Manager** and tap on **Settings**" : {
+      "comment" : "Part of instruction to import from Chrome",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open **Password Manager** and tap on **Settings**"
+          }
+        }
+      }
+    },
+    "Open Chrome" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Chrome"
           }
         }
       }
@@ -10872,6 +10914,17 @@
         }
       }
     },
+    "Select **Import to Proton Pass**" : {
+      "comment" : "Please align with the translation for CFBundleDisplayName and CFBundleName of Action extension.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select **Import to Proton Pass**"
+          }
+        }
+      }
+    },
     "Select an existing login or create a new one." : {
       "localizations" : {
         "be" : {
@@ -13144,6 +13197,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Зробити фото"
+          }
+        }
+      }
+    },
+    "Tap **Export passwords**" : {
+      "comment" : "Part of instruction to import from Chrome",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap **Export passwords**"
           }
         }
       }

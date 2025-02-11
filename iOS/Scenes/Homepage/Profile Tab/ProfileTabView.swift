@@ -33,6 +33,7 @@ struct ProfileTabView: View {
     @Namespace private var animationNamespace
     @State private var showSwitcher = false
     @State private var showImportOptions = false
+    @State private var showImportFromChrome = false
     @State private var showCsvPicker = false
     @State private var showQaFeatures = false
 
@@ -57,9 +58,22 @@ struct ProfileTabView: View {
             .navigationStackEmbeded()
             .confirmationDialog("Import to Proton Pass",
                                 isPresented: $showImportOptions) {
+                #if targetEnvironment(simulator)
+                Button(role: nil,
+                       action: { showImportFromChrome.toggle() },
+                       label: { Text("Import from Chrome") })
+                #else
+                if let url = URL(string: "googlechrome://"),
+                   UIApplication.shared.canOpenURL(url) {
+                    Button(role: nil,
+                           action: { showImportFromChrome.toggle() },
+                           label: { Text("Import from Chrome") })
+                }
+                #endif
+
                 Button(role: nil,
                        action: { showCsvPicker.toggle() },
-                       label: { Text("Import from Chrome") })
+                       label: { Text("Import from CSV file") })
 
                 Button(role: nil,
                        action: { viewModel.showImportInstructions() },
@@ -76,6 +90,9 @@ struct ProfileTabView: View {
                 case let .failure(error):
                     viewModel.handle(error: error)
                 }
+            }
+            .sheet(isPresented: $showImportFromChrome) {
+                ImportFromChromeInstructions()
             }
             .sheet(isPresented: $viewModel.csvUrl.mappedToBool()) {
                 ImporterView(logManager: viewModel.logManager,
