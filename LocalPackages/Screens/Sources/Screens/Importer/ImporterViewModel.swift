@@ -24,32 +24,32 @@ import Foundation
 import Macro
 import ProtonCoreLogin
 
+public protocol ImporterDatasource: Sendable, AnyObject {
+    func getUsers() async throws -> [UserUiModel]
+    func parseLogins() async throws -> [CsvLogin]
+    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws
+}
+
 @MainActor
 final class ImporterViewModel: ObservableObject {
-    @Published private(set) var importing = false
+    @Published private(set) var logins: [CsvLogin] = []
+    @Published private(set) var loading = false
     @Published private var excludedIds: Set<String> = .init()
+    @Published private(set) var users: [UserUiModel] = []
     @Published var selectedUser: UserUiModel?
     @Published var importSuccessMessage: String?
     @Published var error: (any Error)?
 
-    private let proceedImportation: (UserUiModel?, [CsvLogin]) async throws -> Void
     private let logger: Logger
-    let users: [UserUiModel]
-    let logins: [CsvLogin]
 
     var selectedCount: Int {
         logins.count - excludedIds.count
     }
 
-    init(logManager: any LogManagerProtocol,
-         users: [UserUiModel],
-         logins: [CsvLogin],
-         proceedImportation: @escaping (UserUiModel?, [CsvLogin]) async throws -> Void) {
+    weak var datasource: (any ImporterDatasource)?
+
+    init(logManager: any LogManagerProtocol) {
         logger = .init(manager: logManager)
-        self.users = users
-        selectedUser = users.first
-        self.logins = logins
-        self.proceedImportation = proceedImportation
     }
 }
 
@@ -66,19 +66,47 @@ extension ImporterViewModel {
         }
     }
 
+    func fetchData() async {
+        do {
+            defer { loading = false }
+            loading = true
+            guard let datasource else {
+                throw PassError.importer(.missingDatasource)
+            }
+            users = try await datasource.getUsers()
+            selectedUser = users.first
+            logins = try await datasource.parseLogins()
+        } catch {
+            handle(error)
+        }
+    }
+
     func startImporting() {
         Task { [weak self] in
             guard let self else { return }
-            defer { importing = false }
-            importing = true
+            defer { loading = false }
+            loading = true
             do {
+                guard let datasource else {
+                    throw PassError.importer(.missingDatasource)
+                }
+
+                guard !logins.isEmpty else {
+                    throw PassError.importer(.noLoginsFound)
+                }
+
                 let loginsToImport = logins.filter { !excludedIds.contains($0.id) }
-                try await proceedImportation(selectedUser, loginsToImport)
+                try await datasource.proceedImportation(user: selectedUser,
+                                                        logins: loginsToImport)
                 importSuccessMessage = #localized("%lld logins imported", selectedCount)
             } catch {
-                self.error = error
-                logger.error(error)
+                handle(error)
             }
         }
+    }
+
+    func handle(_ error: any Error) {
+        self.error = error
+        logger.error(error)
     }
 }

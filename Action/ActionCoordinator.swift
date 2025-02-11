@@ -20,9 +20,11 @@
 
 import Combine
 import DesignSystem
+import Entities
 import Factory
 import Screens
 import UIKit
+import UniformTypeIdentifiers
 
 @MainActor
 final class ActionCoordinator {
@@ -33,9 +35,14 @@ final class ActionCoordinator {
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
 
     @LazyInjected(\SharedToolingContainer.logger) private var logger
+    @LazyInjected(\SharedToolingContainer.logManager) private var logManager
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
+    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) var getUserUiModels
+    @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
+    @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
+    private var createVaultAndImportLogins
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -94,11 +101,16 @@ private extension ActionCoordinator {
     func beginFlow() async {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
-            let view = ActionView(context: context)
-                .localAuthentication(onFailure: { [weak self] _ in
-                    guard let self else { return }
-                    logOut(userId: activeUserId)
-                })
+            let view = ImporterView(logManager: logManager,
+                                    datasource: self,
+                                    onClose: { [weak self] in
+                                        guard let self else { return }
+                                        dismissExtension()
+                                    })
+                                    .localAuthentication(onFailure: { [weak self] _ in
+                                        guard let self else { return }
+                                        logOut(userId: activeUserId)
+                                    })
             showView(view)
         } else {
             showNotLoggedInView()
@@ -149,5 +161,49 @@ extension ActionCoordinator: ExtensionCoordinator {
 
     func setLastChildViewController(_ viewController: UIViewController) {
         lastChildViewController = viewController
+    }
+}
+
+extension ActionCoordinator: ImporterDatasource {
+    func getUsers() async throws -> [UserUiModel] {
+        try await getUserUiModels()
+    }
+
+    func parseLogins() async throws -> [CsvLogin] {
+        guard let items = context?.inputItems as? [NSExtensionItem] else {
+            throw PassError.extension(.noInputItems)
+        }
+
+        var csvString: String?
+        for item in items {
+            guard let attachments = item.attachments else {
+                throw PassError.extension(.noAttachments)
+            }
+
+            let id = UTType.commaSeparatedText.identifier
+
+            for provider in attachments {
+                if provider.hasItemConformingToTypeIdentifier(id),
+                   let url = try await provider.loadItem(forTypeIdentifier: id) as? URL {
+                    let data = try Data(contentsOf: url)
+                    csvString = String(data: data, encoding: .utf8)
+                }
+            }
+        }
+
+        guard let csvString else {
+            throw PassError.extension(.noCsvContent)
+        }
+
+        return try await parseCsvLogins(csvString)
+    }
+
+    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws {
+        let userId: String = if let user {
+            user.id
+        } else {
+            try await userManager.getActiveUserId()
+        }
+        try await createVaultAndImportLogins(userId: userId, logins: logins)
     }
 }

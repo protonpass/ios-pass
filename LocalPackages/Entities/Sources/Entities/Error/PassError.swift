@@ -57,6 +57,7 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
     case api(APIFailureReason)
     case fileAttachment(FileAttachmentReason)
     case csv(CsvFailureReason)
+    case importer(ImporterFailureReason)
     case `extension`(ExtensionFailureReason)
 
     public var debugDescription: String {
@@ -128,6 +129,8 @@ public enum PassError: Error, CustomDebugStringConvertible, Equatable {
         case let .fileAttachment(reason):
             reason.debugDescription
         case let .csv(reason):
+            reason.debugDescription
+        case let .importer(reason):
             reason.debugDescription
         case let .extension(reason):
             reason.debugDescription
