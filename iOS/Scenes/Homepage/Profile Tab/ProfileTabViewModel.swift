@@ -129,6 +129,10 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
     }
 
+    var isCsvImportActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passIOSImportCsv)
+    }
+
     var isSSOUser: Bool {
         (userManager.currentActiveUser.value?.user.isSSOAccount ?? false)
     }
@@ -174,6 +178,11 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 // MARK: - Public APIs
 
 extension ProfileTabViewModel {
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
+    }
+
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
@@ -498,11 +507,6 @@ private extension ProfileTabViewModel {
 
     func planName(_ userId: String) -> String? {
         accesses.first(where: { $0.userId == userId })?.access.plan.displayName
-    }
-
-    func handle(error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
     }
 }
 

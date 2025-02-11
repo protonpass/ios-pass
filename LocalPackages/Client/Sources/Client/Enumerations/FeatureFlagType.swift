@@ -34,4 +34,5 @@ public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
     case passItemSharingV1 = "PassItemSharingV1"
     case passAliasDiscovery = "PassAliasDiscovery"
     case passSecureLinkCryptoChangeV1 = "PassSecureLinkCryptoChangeV1"
+    case passIOSImportCsv = "PassIOSImportCsv"
 }
