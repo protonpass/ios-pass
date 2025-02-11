@@ -1,6 +1,6 @@
 //
-// AutoFill-Release.swift
-// Proton Pass - Created on 07/10/2022.
+// Release-Beta.xcconfig
+// Proton Pass - Created on 06/06/2023.
 // Copyright (c) 2022 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -21,6 +21,6 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-#include "../../Pods/Target Support Files/Pods-AutoFill/Pods-AutoFill.release.xcconfig"
 APP_VERSION_IDENTIFIER =
 IS_QA_BUILD = NO
+IS_BETA_BUILD = YES
