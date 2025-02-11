@@ -68493,13 +68493,13 @@
         }
       }
     },
-    "Import from other formats" : {
+    "Import from other sources" : {
       "comment" : "The app only supports importing from CSV files. This is the option to open the knowledge-base article on how to import from other file formats.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Import from other formats"
+            "value" : "Import from other sources"
           }
         }
       }

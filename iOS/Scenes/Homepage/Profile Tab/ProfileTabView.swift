@@ -26,7 +26,6 @@ import ProtonCoreLogin
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
-import UniformTypeIdentifiers
 
 // swiftlint:disable:next type_body_length
 struct ProfileTabView: View {
@@ -64,18 +63,18 @@ struct ProfileTabView: View {
 
                 Button(role: nil,
                        action: { viewModel.showImportInstructions() },
-                       label: { Text("Import from other formats") })
+                       label: { Text("Import from other sources") })
 
                 Button(role: .cancel, label: { Text("Cancel") })
             }
             .fileImporter(isPresented: $showCsvPicker,
-                          allowedContentTypes: [UTType.commaSeparatedText],
+                          allowedContentTypes: [.commaSeparatedText],
                           allowsMultipleSelection: false) { result in
                 switch result {
                 case let .success(urls):
                     viewModel.csvUrl = urls.first
                 case let .failure(error):
-                    print("File import failed: \(error.localizedDescription)")
+                    viewModel.handle(error: error)
                 }
             }
             .sheet(isPresented: $viewModel.csvUrl.mappedToBool()) {
@@ -395,10 +394,16 @@ struct ProfileTabView: View {
 
     private var importSection: some View {
         TextOptionRow(title: #localized("Import to Proton Pass"),
-                      action: { showImportOptions.toggle() })
-            .frame(height: 75)
-            .roundedEditableSection()
-            .padding(.horizontal)
+                      action: {
+                          if viewModel.isCsvImportActive {
+                              showImportOptions.toggle()
+                          } else {
+                              viewModel.showImportInstructions()
+                          }
+                      })
+                      .frame(height: 75)
+                      .roundedEditableSection()
+                      .padding(.horizontal)
     }
 
     private var aboutSection: some View {

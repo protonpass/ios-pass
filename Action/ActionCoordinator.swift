@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Combine
 import DesignSystem
 import Entities
@@ -33,6 +34,7 @@ final class ActionCoordinator {
     private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
+    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedToolingContainer.logManager) private var logManager
@@ -65,6 +67,10 @@ extension ActionCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
+            guard getFeatureFlagStatus(for: FeatureFlagType.passIOSImportCsv) else {
+                dismissExtension()
+                return
+            }
             await beginFlow()
         } catch {
             alert(error: error) { [weak self] in
