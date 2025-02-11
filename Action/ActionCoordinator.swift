@@ -39,7 +39,7 @@ final class ActionCoordinator {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
-    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) var getUserUiModels
+    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
     @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
     @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
     private var createVaultAndImportLogins
@@ -192,7 +192,7 @@ extension ActionCoordinator: ImporterDatasource {
         }
 
         guard let csvString else {
-            throw PassError.extension(.noCsvContent)
+            throw PassError.importer(.noCsvContent)
         }
 
         return try await parseCsvLogins(csvString)
