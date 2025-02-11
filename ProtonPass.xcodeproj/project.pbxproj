@@ -6105,6 +6105,7 @@
 		40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ProtonCorePaymentsV2;
+		};
 		5347B57F2D58BA960014013F /* MBProgressHUD */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5B8D20622AA7454400457CA3 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
