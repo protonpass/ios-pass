@@ -422,6 +422,10 @@
 		35F8CD0929B62F230017DBC6 /* ItemTypeListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0829B62F230017DBC6 /* ItemTypeListView.swift */; };
 		35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */; };
 		35FD55A22C9072DC00805584 /* ItemCreationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */; };
+		4095AB6D2D01E4EB00EAF731 /* ProtonCorePaymentsUIV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 4095AB6C2D01E4EB00EAF731 /* ProtonCorePaymentsUIV2 */; };
+		40EC90962D1AE426004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90952D1AE426004FCA37 /* ProtonCorePaymentsV2 */; };
+		40EC90982D1AE440004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90972D1AE440004FCA37 /* ProtonCorePaymentsV2 */; };
+		40EC909A2D1AE451004FCA37 /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */; };
 		53043D972D1D8D580088D6EE /* UpsellEntry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */; };
 		53043D982D1D8D580088D6EE /* UpsellEntry+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD6138C2C202B0E00968E0F /* UpsellEntry+Extensions.swift */; };
 		53043D992D1D8D9E0088D6EE /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
@@ -1144,6 +1148,7 @@
 				5B8D20AD2AA74B6600457CA3 /* DesignSystem in Frameworks */,
 				35ABE12C2AA082BB001E20F9 /* DocScanner in Frameworks */,
 				8B70786A2BD1209600E920D7 /* ProtonCorePasswordChange in Frameworks */,
+				40EC90982D1AE440004FCA37 /* ProtonCorePaymentsV2 in Frameworks */,
 				5B8D209F2AA748F700457CA3 /* Client in Frameworks */,
 				3535182B2AE14FBD00574991 /* Screens in Frameworks */,
 				354192862AC1CB9F001F2996 /* Macro in Frameworks */,
@@ -1176,6 +1181,7 @@
 				357C71D52B5FB52C00AA0BF1 /* Screens in Frameworks */,
 				35796CFC2B5EE82D00BF4E9E /* DocScanner in Frameworks */,
 				35C9B82F2B5E99940062D787 /* Client in Frameworks */,
+				40EC909A2D1AE451004FCA37 /* ProtonCorePaymentsV2 in Frameworks */,
 				35796CFE2B5EEAC800BF4E9E /* Entities in Frameworks */,
 				35796CFA2B5EE80900BF4E9E /* ProtonCoreCryptoGoImplementation in Frameworks */,
 				35796CE92B5EE5AE00BF4E9E /* Factory in Frameworks */,
@@ -1194,7 +1200,9 @@
 				3544F5DB28E2339400834CA4 /* AuthenticationServices.framework in Frameworks */,
 				5B8D20642AA7454400457CA3 /* MBProgressHUD in Frameworks */,
 				5B0783712B1A301C0006424C /* UseCasesMocks in Frameworks */,
+				40EC90962D1AE426004FCA37 /* ProtonCorePaymentsV2 in Frameworks */,
 				359A229B2BA3702D0005C750 /* CoreMocks in Frameworks */,
+				4095AB6D2D01E4EB00EAF731 /* ProtonCorePaymentsUIV2 in Frameworks */,
 				5B0783732B1A33F90006424C /* ClientMocks in Frameworks */,
 				5B8D20A42AA74A4600457CA3 /* Core in Frameworks */,
 				353518292AE14FB700574991 /* Screens in Frameworks */,
@@ -2718,6 +2726,7 @@
 				578B8BA12AE5AB2800719DA6 /* ProtonCoreCryptoGoImplementation */,
 				578B8BA32AE5AB6600719DA6 /* ProtonCoreForceUpgrade */,
 				8B7078692BD1209600E920D7 /* ProtonCorePasswordChange */,
+				40EC90972D1AE440004FCA37 /* ProtonCorePaymentsV2 */,
 			);
 			productName = AutoFill;
 			productReference = 3544F5E028E2341800834CA4 /* AutoFill.appex */;
@@ -2771,6 +2780,7 @@
 				357C71D22B5FB51800AA0BF1 /* CodeScanner */,
 				357C71D42B5FB52C00AA0BF1 /* Screens */,
 				8B7078672BD1208400E920D7 /* ProtonCorePasswordChange */,
+				40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */,
 			);
 			productName = Share;
 			productReference = 35C9B8142B5E8AA90062D787 /* Share.appex */;
@@ -2817,6 +2827,7 @@
 				578AA8782BB1DC85003FA50B /* ProtonCoreAccountRecovery */,
 				8B7078632BD1205A00E920D7 /* ProtonCorePasswordChange */,
 				5BAB7A5E2CFDAB69001C8815 /* EntitiesMocks */,
+				40EC90952D1AE426004FCA37 /* ProtonCorePaymentsV2 */,
 			);
 			productName = "Proton Key (iOS)";
 			productReference = 35E5063B286F819F00A3F6EA /* Proton Pass.app */;
@@ -5526,7 +5537,7 @@
 			repositoryURL = "https://github.com/ProtonMail/protoncore_ios";
 			requirement = {
 				kind = exactVersion;
-				version = 29.0.7;
+				version = 29.0.9;
 			};
 		};
 		575D3C232AE9100D0012434B /* XCRemoteSwiftPackageReference "TrustKit" */ = {
@@ -5670,6 +5681,22 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
 			productName = ProtonCoreTestingToolkitUnitTestsCore;
+		};
+		4095AB6C2D01E4EB00EAF731 /* ProtonCorePaymentsUIV2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProtonCorePaymentsUIV2;
+		};
+		40EC90952D1AE426004FCA37 /* ProtonCorePaymentsV2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProtonCorePaymentsV2;
+		};
+		40EC90972D1AE440004FCA37 /* ProtonCorePaymentsV2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProtonCorePaymentsV2;
+		};
+		40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ProtonCorePaymentsV2;
 		};
 		5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */ = {
 			isa = XCSwiftPackageProductDependency;
