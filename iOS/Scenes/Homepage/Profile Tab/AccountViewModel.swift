@@ -105,14 +105,14 @@ extension AccountViewModel {
     }
 
     func manageSubscription() {
-        paymentsManager.manageSubscription { [weak self] result in
+        paymentsManager.manageSubscription(isUpgrading: false) { [weak self] result in
             guard let self else { return }
             handlePaymentsResult(result: result)
         }
     }
 
     func upgradeSubscription() {
-        paymentsManager.upgradeSubscription { [weak self] result in
+        paymentsManager.manageSubscription(isUpgrading: true) { [weak self] result in
             guard let self else { return }
             handlePaymentsResult(result: result)
         }
@@ -266,7 +266,7 @@ private extension AccountViewModel {
     func handlePaymentsResult(result: PaymentsManager.PaymentsResult) {
         switch result {
         case let .success(inAppPurchasePlan):
-            if inAppPurchasePlan != nil {
+            if inAppPurchasePlan {
                 refreshUserPlan()
             } else {
                 logger
