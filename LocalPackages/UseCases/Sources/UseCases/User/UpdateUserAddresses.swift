@@ -69,13 +69,3 @@ public final class UpdateUserAddresses: UpdateUserAddressesUseCase {
 // swiftlint:disable:next todo
 // TODO: check with account eam for the implementation of address_v2 and sendable conformance.
 extension Address: @unchecked @retroactive Sendable {}
-
-private extension AuthenticatorInterface {
-    func getAddresses(_ credential: Credential?) async throws -> [Address] {
-        try await withCheckedThrowingContinuation { continuation in
-            getAddresses(credential) { result in
-                continuation.resume(with: result)
-            }
-        }
-    }
-}
