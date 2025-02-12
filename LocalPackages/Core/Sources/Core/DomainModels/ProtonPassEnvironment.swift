@@ -20,7 +20,7 @@
 
 import Foundation
 
-public enum ProtonPassEnvironment {
+public enum ProtonPassEnvironment: Sendable {
     case black, prod, scientist(String), custom(DoHParameters)
 
     public var parameters: DoHParameters {
@@ -90,7 +90,7 @@ public enum ProtonPassEnvironment {
     }
 }
 
-public struct DoHParameters {
+public struct DoHParameters: Sendable {
     public let signupDomain: String
     public let captchaHost: String
     public let humanVerificationV3Host: String

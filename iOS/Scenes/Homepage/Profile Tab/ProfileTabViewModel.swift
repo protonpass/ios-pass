@@ -82,7 +82,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var quickTypeBar: Bool
     @Published private(set) var automaticallyCopyTotpCode: Bool
     @Published private(set) var showAutomaticCopyTotpCodeExplanation = false
-    @Published private(set) var plan: Plan?
+    @Published private(set) var plan: Entities.Plan?
     @Published private(set) var secureLinks: [SecureLink]?
 
     // Accounts management

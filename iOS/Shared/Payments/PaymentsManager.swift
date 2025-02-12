@@ -18,60 +18,80 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Client
+@preconcurrency import Client
+import Combine
 import Core
 import Entities
 import Factory
 import Foundation
+@preconcurrency import ProtonCoreDoh
 import ProtonCoreFeatureFlags
-import ProtonCorePayments
+import ProtonCoreLogin
+@preconcurrency import ProtonCorePayments
 import ProtonCorePaymentsUI
+import ProtonCorePaymentsUIV2
+import ProtonCorePaymentsV2
 
-final class PaymentsManager {
-    typealias PaymentsResult = Result<InAppPurchasePlan?, any Error>
+final class PaymentsManager: Sendable {
+    typealias PaymentsResult = Result<Bool, any Error>
 
     private let apiManager = resolve(\SharedToolingContainer.apiManager)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let authManager = resolve(\SharedToolingContainer.authManager)
-
+    private let appVersion = resolve(\SharedToolingContainer.appVersion)
+    private let doh = resolve(\SharedToolingContainer.doh)
     private let mainKeyProvider = resolve(\SharedToolingContainer.mainKeyProvider)
     private let featureFlagsRepository = resolve(\SharedRepositoryContainer.featureFlagsRepository)
 
     // Strongly reference to make the payment page responsive during payment flow
     // periphery:ignore
-    private var paymentsUI: PaymentsUI?
+    private nonisolated(unsafe) var paymentsUI: PaymentsUI?
     private let logger = resolve(\SharedToolingContainer.logger)
     private let theme = resolve(\SharedToolingContainer.theme)
     private let inMemoryTokenStorage: any PaymentTokenStorage
     private let storage: UserDefaults
+    private let paymentsV2 = PaymentsV2()
 
-    init(storage: UserDefaults) {
+    private nonisolated(unsafe) var cancellables: Set<AnyCancellable> = []
+
+    private let transactionsObserver: any TransactionsObserverProviding
+    private nonisolated(unsafe) var transactionTask: Task<Void, Never>?
+
+    init(storage: UserDefaults,
+         transactionsObserver: any TransactionsObserverProviding = TransactionsObserver.shared) {
         inMemoryTokenStorage = InMemoryTokenStorage()
         self.storage = storage
+        self.transactionsObserver = transactionsObserver
+        setup()
     }
 
-    func manageSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
-        guard !Bundle.main.isBetaBuild else { return }
-
-        do {
-            let paymentsUI = try createPaymentsUI()
-            paymentsUI.showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
-                guard let self else { return }
-                handlePaymentsResponse(result: result, completion: completion)
-            }
-        } catch {
-            completion(.failure(error))
+    @MainActor
+    func manageSubscription(isUpgrading: Bool,
+                            completion: @escaping (Result<Bool, any Error>) -> Void) {
+        guard !Bundle.main.isBetaBuild else {
+            return
         }
-    }
-
-    func upgradeSubscription(completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
-        guard !Bundle.main.isBetaBuild else { return }
-
         do {
-            let paymentsUI = try createPaymentsUI()
-            paymentsUI.showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
-                guard let self else { return }
-                handlePaymentsResponse(result: reason, completion: completion)
+            if featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2) {
+                guard let doh = doh as? ProtonPassDoH else {
+                    return
+                }
+                try createPaymentsV2UI(hideCurrentPlan: isUpgrading, doh: doh, completion: completion)
+            } else {
+                let paymentsUI = try createPaymentsUI()
+                if isUpgrading {
+                    paymentsUI
+                        .showUpgradePlan(presentationType: .modal, backendFetch: true) { [weak self] reason in
+                            guard let self else { return }
+                            handlePaymentsResponse(result: reason, completion: completion)
+                        }
+                } else {
+                    paymentsUI
+                        .showCurrentPlan(presentationType: .modal, backendFetch: true) { [weak self] result in
+                            guard let self else { return }
+                            handlePaymentsResponse(result: result, completion: completion)
+                        }
+                }
             }
         } catch {
             completion(.failure(error))
@@ -82,6 +102,29 @@ final class PaymentsManager {
 // MARK: - Utils
 
 private extension PaymentsManager {
+    func setup() {
+        userManager
+            .currentActiveUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] userData in
+                guard let self else { return }
+                if userData == nil {
+                    transactionsObserver.stop()
+                    return
+                }
+
+                guard let userData,
+                      let doh = doh as? ProtonPassDoH
+                else {
+                    transactionsObserver.stop()
+                    return
+                }
+
+                handleTransactionObserver(userData: userData, doh: doh)
+            }
+            .store(in: &cancellables)
+    }
+
     func createPaymentsUI() throws -> PaymentsUI {
         let payments = try initializePaymentsStack()
         let ui = PaymentsUI(payments: payments,
@@ -90,6 +133,45 @@ private extension PaymentsManager {
                             customization: .init(inAppTheme: { [theme] in theme.inAppTheme }))
         paymentsUI = ui
         return ui
+    }
+
+    func createPaymentsV2UI(hideCurrentPlan: Bool = false,
+                            doh: DoHInterface & ServerConfig,
+                            completion: @escaping (Result<Bool, any Error>) -> Void) throws {
+        guard let userData = userManager.currentActiveUser.value, let envString = doh as? ProtonPassDoH else {
+            throw PassError.payments(.couldNotCreatePaymentStack)
+        }
+
+        let sessionID = userData.credential.sessionID
+        let accessToken = userData.credential.accessToken
+
+        try paymentsV2.showAvailablePlans(presentationMode: .modal,
+                                          sessionID: sessionID,
+                                          accessToken: accessToken,
+                                          appVersion: appVersion,
+                                          hideCurrentPlan: hideCurrentPlan,
+                                          doh: doh)
+        paymentsV2.transactionProgress
+            .dropFirst()
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] value in
+                guard let self else { return }
+                switch value {
+                case .transactionCompleted:
+                    completion(.success(true))
+                    paymentsV2.dismissPayments()
+                case .transactionCancelledByUser:
+                    completion(.success(false)) // to be updated
+                    paymentsV2.dismissPayments()
+                case .mismatchTransactionIDs, .transactionProcessError, .unableToGetUserTransactionUUID,
+                     .unknownError:
+                    completion(.success(false)) // to be updated
+                    paymentsV2.dismissPayments()
+                default:
+                    debugPrint("\(value) not handled")
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func initializePaymentsStack() throws -> Payments {
@@ -124,27 +206,50 @@ private extension PaymentsManager {
     }
 
     func handlePaymentsResponse(result: PaymentsUIResultReason,
-                                completion: @escaping (Result<InAppPurchasePlan?, any Error>) -> Void) {
+                                completion: @escaping (Result<Bool, any Error>) -> Void) {
         switch result {
         case let .purchasedPlan(accountPlan: plan):
             logger.trace("Purchased plan: \(plan.protonName)")
-            completion(.success(plan))
+            completion(.success(true))
         case .open:
             break
         case let .planPurchaseProcessingInProgress(accountPlan: plan):
             logger.trace("Purchasing \(plan.protonName)")
         case .close:
             logger.trace("Payments closed")
-            completion(.success(nil))
+            completion(.success(true))
         case let .purchaseError(error: error):
             logger.trace("Purchase failed with error \(error)")
             completion(.failure(error))
         case .toppedUpCredits:
             logger.trace("Credits topped up")
-            completion(.success(nil))
+            completion(.success(true))
         case let .apiMightBeBlocked(message, originalError: error):
             logger.trace("\(message), error \(error)")
             completion(.failure(error))
+        }
+    }
+
+    func handleTransactionObserver(userData: UserData, doh: ProtonPassDoH) {
+        let appVersion = appVersion
+        let sessionID = userData.credential.sessionID
+        let authToken = userData.credential.accessToken
+        transactionTask?.cancel()
+        transactionTask = Task { [weak self] in
+            guard let self else { return }
+
+            let configuration = TransactionsObserverConfiguration(sessionID: sessionID,
+                                                                  authToken: authToken,
+                                                                  appVersion: appVersion,
+                                                                  doh: doh)
+
+            transactionsObserver.setConfiguration(configuration)
+
+            do {
+                try await transactionsObserver.start()
+            } catch {
+                logger.error(error)
+            }
         }
     }
 }
@@ -175,7 +280,8 @@ extension PaymentsManager: StoreKitManagerDelegate {
 }
 
 extension PaymentsManager: CurrentSubscriptionChangeDelegate {
-    func onCurrentSubscriptionChange(old: Subscription?, new: Subscription?) {
+    func onCurrentSubscriptionChange(old: ProtonCorePayments.Subscription?,
+                                     new: ProtonCorePayments.Subscription?) {
         // Nothing to do here for now, I guess?
     }
 }
