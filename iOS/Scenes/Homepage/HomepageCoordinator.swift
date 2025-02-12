@@ -852,11 +852,11 @@ extension HomepageCoordinator {
     func startUpgradeFlow() {
         dismissAllViewControllers(animated: true) { [weak self] in
             guard let self else { return }
-            paymentsManager.upgradeSubscription { [weak self] result in
+            paymentsManager.manageSubscription(isUpgrading: true) { [weak self] result in
                 guard let self else { return }
                 switch result {
-                case let .success(inAppPurchasePlan):
-                    if inAppPurchasePlan != nil {
+                case let .success(result):
+                    if result {
                         refreshAccessAndMonitorStateSync()
                     } else {
                         logger.debug("Payment is done but no plan is purchased")
