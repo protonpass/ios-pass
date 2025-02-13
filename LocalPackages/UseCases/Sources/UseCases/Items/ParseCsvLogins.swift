@@ -100,7 +100,7 @@ private extension ParseCsvLogins {
         var insideQuotes = false
         var skipNextQuote = false
 
-        for (index, char) in row.enumerated() {
+        for char in row {
             if skipNextQuote {
                 // Skip the next quote character
                 currentColumn.append(char)
