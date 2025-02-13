@@ -46,10 +46,11 @@ public final class ParseCsvLogins: ParseCsvLoginsUseCase {
         }
 
         var results = [CsvLogin]()
+        var hasNoteColumn = false
         for (index, row) in rows.enumerated() {
             if index == 0 {
                 let columnNames = row.components(separatedBy: ",")
-                guard columnNames.count == 4 else {
+                guard columnNames.count == 4 || columnNames.count == 5 else {
                     throw PassError.csv(.invalidNumberOfColumn(columnNames.count))
                 }
 
@@ -57,8 +58,13 @@ public final class ParseCsvLogins: ParseCsvLoginsUseCase {
                 try expect(columnName: "url", at: 1, for: columnNames)
                 try expect(columnName: "username", at: 2, for: columnNames)
                 try expect(columnName: "password", at: 3, for: columnNames)
+
+                hasNoteColumn = columnNames.count == 5
+                if hasNoteColumn {
+                    try expect(columnName: "note", at: 4, for: columnNames)
+                }
             } else {
-                let login = try parse(row: row, at: index)
+                let login = try parse(row: row, at: index, hasNoteColumn: hasNoteColumn)
                 results.append(login)
             }
         }
@@ -79,7 +85,7 @@ private extension ParseCsvLogins {
         }
     }
 
-    func parse(row: String, at index: Int) throws -> CsvLogin {
+    func parse(row: String, at index: Int, hasNoteColumn: Bool) throws -> CsvLogin {
         // When the content of the column has ',' characters or spaces
         // the content will be double quoted
         //
@@ -91,33 +97,45 @@ private extension ParseCsvLogins {
 
         var columns = [String]()
         var currentColumn = ""
-
         var insideQuotes = false
+        var skipNextQuote = false
 
         for (index, char) in row.enumerated() {
+            if skipNextQuote {
+                // Skip the next quote character
+                currentColumn.append(char)
+                skipNextQuote = false
+                continue
+            }
+
             if char == "\"" {
                 insideQuotes.toggle()
-                if !insideQuotes {
-                    columns.append(currentColumn)
-                    currentColumn = ""
+                // If we close the quote, check if this is an escaped quote (i.e., "")
+                if !insideQuotes, currentColumn.last == "\"" {
+                    currentColumn.removeLast() // Remove the escaped quote
+                    skipNextQuote = true // Set flag to skip the next quote
                 }
-            } else if char == ",", !insideQuotes || index == row.count - 1 {
-                columns.append(currentColumn)
-                currentColumn = ""
-            } else if index == row.count - 1, !insideQuotes {
-                currentColumn.append(char)
+            } else if char == ",", !insideQuotes {
+                // When we reach a comma outside of quotes, we have a complete column
                 columns.append(currentColumn)
                 currentColumn = ""
             } else {
+                // Accumulate characters into the current column
                 currentColumn.append(char)
             }
         }
 
+        // Append the last column if there are remaining characters
+        if !currentColumn.isEmpty {
+            columns.append(currentColumn)
+        }
+
+        // Handle trailing commas for missing columns
         if row.last == "," {
             columns.append("")
         }
 
-        guard columns.count == 4,
+        guard hasNoteColumn ? columns.count == 5 : columns.count == 4,
               let name = columns[safeIndex: 0],
               let url = columns[safeIndex: 1],
               let emailOrUsername = columns[safeIndex: 2],
@@ -139,6 +157,7 @@ private extension ParseCsvLogins {
                      url: url,
                      email: email,
                      username: username,
-                     password: password)
+                     password: password,
+                     note: columns[safeIndex: 4] ?? "")
     }
 }
