@@ -42,9 +42,9 @@ private enum ImportFromChromeStep: Sendable, CaseIterable, Identifiable {
     var description: LocalizedStringKey {
         switch self {
         case .first:
-            "Open **Chrome** menu and go to **Settings**"
+            "Open **Chrome** menu"
         case .second:
-            "Open **Password Manager** and tap on **Settings**"
+            "Go to **Password manager** and tap on **Settings**"
         case .third:
             "Tap **Export passwords**"
         case .fourth:
