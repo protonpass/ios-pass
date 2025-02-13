@@ -699,7 +699,7 @@ public extension ItemRepository {
                                                             allowedAndroidApps: [],
                                                             passkeys: []))
                 let content = ItemContentProtobuf(name: login.name,
-                                                  note: "",
+                                                  note: login.note,
                                                   itemUuid: UUID().uuidString,
                                                   data: loginData,
                                                   customFields: [])

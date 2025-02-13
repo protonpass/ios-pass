@@ -27,16 +27,19 @@ public struct CsvLogin: Sendable, Identifiable, Equatable {
     public let email: String
     public let username: String
     public let password: String
+    public let note: String
 
     public init(name: String,
                 url: String,
                 email: String,
                 username: String,
-                password: String) {
+                password: String,
+                note: String) {
         self.name = name
         self.url = url
         self.email = email
         self.username = username
         self.password = password
+        self.note = note
     }
 }
