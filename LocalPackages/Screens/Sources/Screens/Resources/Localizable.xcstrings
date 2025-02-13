@@ -6995,6 +6995,17 @@
         }
       }
     },
+    "Go to **Password manager** and tap on **Settings**" : {
+      "comment" : "Part of instruction to import from Chrome",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to **Password manager** and tap on **Settings**"
+          }
+        }
+      }
+    },
     "Import" : {
       "localizations" : {
         "en" : {
@@ -8418,24 +8429,13 @@
         }
       }
     },
-    "Open **Chrome** menu and go to **Settings**" : {
+    "Open **Chrome** menu" : {
       "comment" : "Part of instruction to import from Chrome",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open **Chrome** menu and go to **Settings**"
-          }
-        }
-      }
-    },
-    "Open **Password Manager** and tap on **Settings**" : {
-      "comment" : "Part of instruction to import from Chrome",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Open **Password Manager** and tap on **Settings**"
+            "value" : "Open **Chrome** menu"
           }
         }
       }

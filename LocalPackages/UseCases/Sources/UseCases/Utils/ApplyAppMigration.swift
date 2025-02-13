@@ -69,8 +69,8 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
         logger.trace("The following migration are missing: \(missingMigrations)")
 
         if let userData = appData.getUserData(),
-            missingMigrations.contains(.userAppData) ||
-            missingMigrations.contains(.credentialsForActionExtension) {
+           missingMigrations.contains(.userAppData) ||
+           missingMigrations.contains(.credentialsForActionExtension) {
             logger
                 .trace("Starting user data migration for app data to user manager for user id : \(userData.user.ID)")
             try await userManager.upsertAndMarkAsActive(userData: userData)
