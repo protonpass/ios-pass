@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import Macro
 @preconcurrency import ProtonCoreUIFoundations
@@ -110,12 +111,7 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
     }
 
     public func displayTopErrorMessage(_ error: some Error) {
-        let message = if let passError = error as? PassError {
-            passError.localizedDebugDescription
-        } else {
-            error.localizedDescription
-        }
-        displayTopErrorMessage(message)
+        displayTopErrorMessage(error.localizedDebugDescription)
     }
 }
 

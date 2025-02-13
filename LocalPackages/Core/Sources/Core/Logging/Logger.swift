@@ -75,17 +75,12 @@ public extension Logger {
                function: String = #function,
                line: UInt = #line,
                column: UInt = #column) -> LogEntry {
-        let message = if let passError = error as? PassError {
-            passError.localizedDebugDescription
-        } else {
-            error.localizedDescription
-        }
-        return self.error(message,
-                          timestamp: timestamp,
-                          file: file,
-                          function: function,
-                          line: line,
-                          column: column)
+        self.error(error.localizedDebugDescription,
+                   timestamp: timestamp,
+                   file: file,
+                   function: function,
+                   line: line,
+                   column: column)
     }
 
     @discardableResult

@@ -75,7 +75,7 @@ public struct ImporterView: View {
                actions: { Button("OK", action: onClose) },
                message: {
                    if let error = viewModel.error {
-                       Text(error.localizedDescription)
+                       Text(error.localizedDebugDescription)
                    }
                })
     }
