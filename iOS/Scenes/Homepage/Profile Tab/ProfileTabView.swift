@@ -34,7 +34,6 @@ struct ProfileTabView: View {
     @State private var showSwitcher = false
     @State private var showImportOptions = false
     @State private var showImportFromChrome = false
-    @State private var showCsvPicker = false
     @State private var showQaFeatures = false
 
     var body: some View {
@@ -58,22 +57,11 @@ struct ProfileTabView: View {
             .navigationStackEmbeded()
             .confirmationDialog("Import to Proton Pass",
                                 isPresented: $showImportOptions) {
-                #if targetEnvironment(simulator)
-                Button(role: nil,
-                       action: { showImportFromChrome.toggle() },
-                       label: { Text("Import from Chrome") })
-                #else
-                if let url = URL(string: "googlechrome://"),
-                   UIApplication.shared.canOpenURL(url) {
+                if viewModel.isChromeInstalled {
                     Button(role: nil,
                            action: { showImportFromChrome.toggle() },
                            label: { Text("Import from Chrome") })
                 }
-                #endif
-
-                Button(role: nil,
-                       action: { showCsvPicker.toggle() },
-                       label: { Text("Import from CSV file") })
 
                 Button(role: nil,
                        action: { viewModel.showImportInstructions() },
@@ -81,23 +69,8 @@ struct ProfileTabView: View {
 
                 Button(role: .cancel, label: { Text("Cancel") })
             }
-            .fileImporter(isPresented: $showCsvPicker,
-                          allowedContentTypes: [.commaSeparatedText],
-                          allowsMultipleSelection: false) { result in
-                switch result {
-                case let .success(urls):
-                    viewModel.csvUrl = urls.first
-                case let .failure(error):
-                    viewModel.handle(error: error)
-                }
-            }
             .sheet(isPresented: $showImportFromChrome) {
                 ImportFromChromeInstructions()
-            }
-            .sheet(isPresented: $viewModel.csvUrl.mappedToBool()) {
-                ImporterView(logManager: viewModel.logManager,
-                             datasource: viewModel,
-                             onClose: { viewModel.csvUrl = nil })
             }
             .sheet(isPresented: $showQaFeatures) {
                 QAFeaturesView()
@@ -412,7 +385,7 @@ struct ProfileTabView: View {
     private var importSection: some View {
         TextOptionRow(title: #localized("Import to Proton Pass"),
                       action: {
-                          if viewModel.isCsvImportActive {
+                          if viewModel.isCsvImportActive, viewModel.isChromeInstalled {
                               showImportOptions.toggle()
                           } else {
                               viewModel.showImportInstructions()

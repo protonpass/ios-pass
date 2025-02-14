@@ -68493,22 +68493,6 @@
         }
       }
     },
-    "Import from CSV file" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Import from CSV file"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Import from CSV file"
-          }
-        }
-      }
-    },
     "Import from other sources" : {
       "comment" : "The app only supports importing from CSV files. This is the option to open the knowledge-base article on how to import from other file formats.",
       "localizations" : {

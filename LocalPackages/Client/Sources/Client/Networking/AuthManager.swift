@@ -295,6 +295,7 @@ public extension AuthManager {
         }
     }
 
+    /// Introduced on February 2025 for CSV import support. Can be removed later on.
     func initializeCredentialsForActionExtension() {
         assertDidSetUp()
         serialAccessQueue.sync {
