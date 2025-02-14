@@ -39,9 +39,6 @@ public protocol TelemetryEventRepositoryProtocol: Sendable {
 
     @discardableResult
     func sendAllEventsIfApplicable() async throws -> TelemetryEventSendResult
-
-    @discardableResult
-    func sendAllUnAuthEventsIfApplicable() async throws -> TelemetryEventSendResult
 }
 
 public actor TelemetryEventRepository: TelemetryEventRepositoryProtocol {
@@ -119,22 +116,6 @@ public extension TelemetryEventRepository {
             try await sendAllTelemetryEvents(userId: userId, plan: plan)
             sentUserIds.insert(userId)
         }
-
-        logger.info("Sent all events")
-        try await scheduler.randomNextThreshold()
-        return .allEventsSent(userIds: sentUserIds)
-    }
-
-    func sendAllUnAuthEventsIfApplicable() async throws -> TelemetryEventSendResult {
-        guard try await scheduler.shouldSendEvents() else {
-            logger.debug("Threshold not reached")
-            return .thresholdNotReached
-        }
-
-        var sentUserIds = Set<String>()
-        sentUserIds.insert(Constants.unAuthUserId)
-
-        try await sendAllTelemetryEvents(userId: Constants.unAuthUserId)
 
         logger.info("Sent all events")
         try await scheduler.randomNextThreshold()

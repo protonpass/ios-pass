@@ -33,6 +33,10 @@ public class RemoteDatasource: @unchecked Sendable {
         try await apiServicing.getApiService(userId: userId).exec(endpoint: endpoint)
     }
 
+    func exec<E: Endpoint>(endpoint: E) async throws -> E.Response {
+        try await apiServicing.getUnauthApiService().exec(endpoint: endpoint)
+    }
+
     func execExpectingData(userId: String, endpoint: some Endpoint) async throws -> DataResponse {
         try await apiServicing.getApiService(userId: userId).execExpectingData(endpoint: endpoint)
     }
