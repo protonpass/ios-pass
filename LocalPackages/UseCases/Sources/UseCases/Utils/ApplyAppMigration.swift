@@ -68,9 +68,7 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
 
         logger.trace("The following migration are missing: \(missingMigrations)")
 
-        if let userData = appData.getUserData(),
-           missingMigrations.contains(.userAppData) ||
-           missingMigrations.contains(.credentialsForActionExtension) {
+        if let userData = appData.getUserData(), missingMigrations.contains(.userAppData) {
             logger
                 .trace("Starting user data migration for app data to user manager for user id : \(userData.user.ID)")
             try await userManager.upsertAndMarkAsActive(userData: userData)
@@ -80,6 +78,13 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
             appData.resetData()
             logger.trace("User data migration done for user id : \(userData.user.ID)")
             await dataMigrationManager.addMigration(.userAppData)
+        }
+
+        if missingMigrations.contains(.credentialsForActionExtension) {
+            logger.trace("Initializing credentials for action extension")
+            (authManager as? AuthManager)?.initializeCredentialsForActionExtension()
+            logger.trace("Initialized credentials for action extension")
+            await dataMigrationManager.addMigration(.credentialsForActionExtension)
         }
 
         if missingMigrations.contains(.userIdInItemsSearchEntriesAndShareKeys) {
