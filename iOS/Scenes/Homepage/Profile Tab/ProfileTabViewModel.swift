@@ -66,13 +66,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
-    @LazyInjected(\SharedToolingContainer.logManager) var logManager
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
-    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
-    @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
-    @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
-    private var createVaultAndImportLogins
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -119,8 +114,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     /// Accesses of all logged in accounts
     @Published private var accesses = [UserAccess]()
 
-    @Published var csvUrl: URL?
-
     private var currentUserTask: Task<Void, Never>?
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
@@ -131,6 +124,17 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     var isCsvImportActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passIOSImportCsv)
+    }
+
+    var isChromeInstalled: Bool {
+        #if DEBUG
+        return true
+        #else
+        if let url = URL(string: "googlechrome://"), UIApplication.shared.canOpenURL(url) {
+            return true
+        }
+        return false
+        #endif
     }
 
     var isSSOUser: Bool {
@@ -178,11 +182,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 // MARK: - Public APIs
 
 extension ProfileTabViewModel {
-    func handle(error: any Error) {
-        logger.error(error)
-        router.display(element: .displayErrorBanner(error))
-    }
-
     func upgrade() {
         router.present(for: .upgradeFlow)
     }
@@ -508,37 +507,10 @@ private extension ProfileTabViewModel {
     func planName(_ userId: String) -> String? {
         accesses.first(where: { $0.userId == userId })?.access.plan.displayName
     }
-}
 
-extension ProfileTabViewModel: ImporterDatasource {
-    func getUsers() async throws -> [UserUiModel] {
-        try await getUserUiModels()
-    }
-
-    func parseLogins() async throws -> [CsvLogin] {
-        guard let csvUrl else {
-            throw PassError.importer(.noCsvUrl)
-        }
-
-        _ = csvUrl.startAccessingSecurityScopedResource()
-        defer {
-            csvUrl.stopAccessingSecurityScopedResource()
-        }
-
-        let data = try Data(contentsOf: csvUrl)
-        guard let csvString = String(data: data, encoding: .utf8) else {
-            throw PassError.importer(.noCsvContent)
-        }
-        return try await parseCsvLogins(csvString)
-    }
-
-    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws {
-        let userId: String = if let user {
-            user.id
-        } else {
-            try await userManager.getActiveUserId()
-        }
-        try await createVaultAndImportLogins(userId: userId, logins: logins)
+    func handle(error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
