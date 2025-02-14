@@ -295,6 +295,18 @@ public extension AuthManager {
         }
     }
 
+    func initializeCredentialsForActionExtension() {
+        assertDidSetUp()
+        serialAccessQueue.sync {
+            if let appCredential = cachedCredentials.first(where: { $0.key.module == .hostApp }) {
+                let key = CredentialsKey(sessionId: appCredential.value.authCredential.sessionID,
+                                         module: .actionExtension)
+                cachedCredentials[key] = appCredential.value
+            }
+            saveCachedCredentialsToKeychain()
+        }
+    }
+
     @_spi(QA)
     func getAllCredentialsOfAllModules() -> [Credentials] {
         assertDidSetUp()
