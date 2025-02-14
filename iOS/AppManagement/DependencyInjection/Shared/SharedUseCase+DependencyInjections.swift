@@ -156,6 +156,13 @@ extension SharedUseCasesContainer {
                                  logManager: self.logManager) }
     }
 
+    var sendTelemetryEvent: Factory<any SendTelemetryEventUseCase> {
+        self {
+            SendTelemetryEvent(datasource: SharedRepositoryContainer.shared.remoteTelemetryEventDatasource(),
+                               logManager: self.logManager)
+        }
+    }
+
     var setUpSentry: Factory<any SetUpSentryUseCase> {
         self { SetUpSentry() }
     }
