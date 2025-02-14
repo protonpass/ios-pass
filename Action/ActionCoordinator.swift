@@ -40,6 +40,7 @@ final class ActionCoordinator {
     @LazyInjected(\SharedToolingContainer.logManager) private var logManager
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedUseCasesContainer.setUpBeforeLaunching) private var setUpBeforeLaunching
+    @LazyInjected(\SharedUseCasesContainer.getSharedPreferences) private var getSharedPreferences
     @LazyInjected(\SharedUseCasesContainer.logOutAllAccounts) private var logOutAllAccounts
     @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
     @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
@@ -107,16 +108,30 @@ private extension ActionCoordinator {
     func beginFlow() async {
         if let activeUserId = userManager.activeUserId,
            credentialProvider.isAuthenticated(userId: activeUserId) {
+            let prefs = getSharedPreferences()
             let view = ImporterView(logManager: logManager,
                                     datasource: self,
                                     onClose: { [weak self] in
                                         guard let self else { return }
                                         dismissExtension()
                                     })
-                                    .localAuthentication(onFailure: { [weak self] _ in
-                                        guard let self else { return }
-                                        logOut(userId: activeUserId)
-                                    })
+                                    .if(prefs.localAuthenticationMethod == .pin) { view in
+                                        // Only request for local authencation when it's PIN
+                                        // to workaround iOS bug which dismisses the extension after doing
+                                        // Face ID or Touch ID authentication
+                                        // Steps to reproduce:
+                                        // 1. Enable biometric authentication system wide and app wide
+                                        // 2. Open Chrome and export passwords
+                                        // 3. Select "Import to Proton Pass"
+                                        // => bug
+                                        // Only occurs when importing on the fly after exporting from Chrome
+                                        // Works fine when sharing an exported CSV
+                                        view.localAuthentication(onFailure: { [weak self] _ in
+                                            guard let self else { return }
+                                            logOut(userId: activeUserId)
+                                        })
+                                    }
+
             showView(view)
         } else {
             showNotLoggedInView()
