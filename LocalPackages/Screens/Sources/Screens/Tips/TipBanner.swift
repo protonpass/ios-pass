@@ -129,6 +129,7 @@ public struct TipBanner: View {
                                       backgroundColor: .white,
                                       maxWidth: nil,
                                       action: cta.action)
+                        .minimumScaleFactor(0.75)
                 }
             }
             .padding(.top, configuration.topPadding)
