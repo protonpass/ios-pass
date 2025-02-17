@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -105,8 +106,14 @@ public struct TipBanner: View {
 
             HStack {
                 VStack(alignment: .leading) {
-                    Text(configuration.title ?? "Did you know?")
-                        .fontWeight(.medium)
+                    if let title = configuration.title {
+                        Text(title)
+                            .fontWeight(.medium)
+                    } else {
+                        Text(#localized("Did you know?", bundle: .module))
+                            .fontWeight(.medium)
+                    }
+
                     Text(configuration.description)
                 }
                 .environment(\.colorScheme, .dark)

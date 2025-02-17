@@ -447,6 +447,27 @@ extension LocalItemDatasourceTests {
         let retrievedItem3 = try await sut.getItem(shareId: givenShareId, itemId: item3.itemId)
         XCTAssertEqual(retrievedItem3?.item.lastUseTime, 345)
     }
+
+    func testGetAliasCount() async throws {
+        // Given
+        let user1 = String.random()
+        _ = try await sut.givenInsertedItem(userId: user1, aliasEmail: .random())
+        _ = try await sut.givenInsertedItem(userId: user1)
+        _ = try await sut.givenInsertedItem(userId: user1, aliasEmail: .random())
+        _ = try await sut.givenInsertedItem(userId: user1)
+
+        let user2 = String.random()
+        _ = try await sut.givenInsertedItem(userId: user2)
+        _ = try await sut.givenInsertedItem(userId: user2)
+
+        // When
+        let aliasCount1 = try await sut.getAliasCount(userId: user1)
+        let aliasCount2 = try await sut.getAliasCount(userId: user2)
+
+        // Then
+        XCTAssertEqual(aliasCount1, 2)
+        XCTAssertEqual(aliasCount2, 0)
+    }
 }
 
 extension LocalItemDatasource {

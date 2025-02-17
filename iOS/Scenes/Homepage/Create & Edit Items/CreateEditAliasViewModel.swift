@@ -76,6 +76,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     private(set) var alias: Alias?
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
     @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
@@ -124,8 +125,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             note = itemContent.note
         }
         getAliasAndAliasOptions()
-
-        showAdvancedOptionsTipBanner = !aliasDiscovery.contains(.advancedOptions)
+        checkAdvancedOptionsTipsDisplayEligibility()
 
         $prefix
             .removeDuplicates()
@@ -224,6 +224,25 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
             prefixError = nil
         } catch {
             prefixError = error as? AliasPrefixError
+        }
+    }
+}
+
+private extension CreateEditAliasViewModel {
+    func checkAdvancedOptionsTipsDisplayEligibility() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                guard !aliasDiscovery.contains(.advancedOptions) else { return }
+                let userId = try await userManager.getActiveUserId()
+                let aliasCount = try await localItemDatasource.getAliasCount(userId: userId)
+                // We assume that when users have more than 2 aliases, they're more or less
+                // familiar with aliases so we can show tips for advanced options
+                // Otherwise if users are new, we don't overwhelm them
+                showAdvancedOptionsTipBanner = aliasCount > 2
+            } catch {
+                handle(error)
+            }
         }
     }
 }
