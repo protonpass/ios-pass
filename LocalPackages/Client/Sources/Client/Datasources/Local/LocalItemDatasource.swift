@@ -44,6 +44,8 @@ public protocol LocalItemDatasourceProtocol: Sendable {
     /// Get total items of a share (both active and trashed ones)
     func getItemCount(shareId: String) async throws -> Int
 
+    func getAliasCount(userId: String) async throws -> Int
+
     /// Insert or update a list of items
     func upsertItems(_ items: [SymmetricallyEncryptedItem]) async throws
 
@@ -152,6 +154,16 @@ public extension LocalItemDatasource {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = ItemEntity.fetchRequest()
         fetchRequest.predicate = .init(format: "shareID = %@", shareId)
+        return try await count(fetchRequest: fetchRequest, context: taskContext)
+    }
+
+    func getAliasCount(userId: String) async throws -> Int {
+        let taskContext = newTaskContext(type: .fetch)
+        let fetchRequest = ItemEntity.fetchRequest()
+        fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            .init(format: "userID = %@", userId),
+            .init(format: "aliasEmail != ''")
+        ])
         return try await count(fetchRequest: fetchRequest, context: taskContext)
     }
 
