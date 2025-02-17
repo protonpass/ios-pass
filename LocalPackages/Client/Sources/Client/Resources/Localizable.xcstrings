@@ -1603,6 +1603,12 @@
     },
     "Search in all items..." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пошук ва ўсіх элементах..."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1757,6 +1763,12 @@
             "value" : "Søg i elementer delt af mig"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In „Von mir geteilt“ suchen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1838,7 +1850,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Szukaj w udostępnionych przez Ciebie"
+            "value" : "Przeszukaj udostępnione przez Ciebie"
           }
         },
         "pt-BR" : {
@@ -1897,6 +1909,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Søg i elementer delt med mig"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In den mit mir geteilten Einträgen suchen"
           }
         },
         "el" : {
