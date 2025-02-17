@@ -50,6 +50,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let validateAliasPrefix = resolve(\SharedUseCasesContainer.validateAliasPrefix)
+    @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
@@ -103,7 +104,11 @@ extension CreateAliasLiteViewModel {
     }
 
     func addMailbox() {
-        router.present(for: .addMailbox)
+        if accessRepository.access.value?.access.plan.isFreeUser == true {
+            router.present(for: .upselling(.default, .topMost))
+        } else {
+            router.present(for: .addMailbox)
+        }
     }
 
     func upgrade() {

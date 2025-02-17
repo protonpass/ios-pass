@@ -121,8 +121,17 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
         self.onError = onError
 
         if module == .hostApp {
-            showMailboxTip = !aliasDiscovery.contains(.mailboxes)
-            showDomainTip = !aliasDiscovery.contains(.customDomains)
+            switch state {
+            case let .mailbox(selection, _):
+                if selection.wrappedValue.allUserMailboxes.count <= 1 {
+                    showMailboxTip = !aliasDiscovery.contains(.mailboxes)
+                }
+
+            case let .suffix(selection):
+                if selection.wrappedValue.suffixes.count(where: { $0.isCustom }) == 0 {
+                    showDomainTip = !aliasDiscovery.contains(.customDomains)
+                }
+            }
         }
     }
 
