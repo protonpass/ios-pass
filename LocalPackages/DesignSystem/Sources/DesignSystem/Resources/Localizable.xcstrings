@@ -1125,6 +1125,12 @@
             "value" : "Indstillinger for beskyttelse af personlige oplysninger eller begrænsninger har deaktiveret brugen af kameraet. Du kan ændre dette i Indstillinger."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Einstellungen für Datenschutz oder Einschränkungen haben die Verwendung der Kamera deaktiviert. Du kannst dies in den Einstellungen ändern."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
