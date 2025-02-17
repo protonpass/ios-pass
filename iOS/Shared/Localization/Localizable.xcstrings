@@ -3490,6 +3490,24 @@
             }
           }
         },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blockiert"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blockiert"
+                }
+              }
+            }
+          }
+        },
         "el" : {
           "variations" : {
             "plural" : {
@@ -5488,6 +5506,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld videresendelser"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld weitergeleitet"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld weitergeleitet"
                 }
               }
             }
@@ -31137,7 +31173,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Можа даваць і адклікаць дазвол на гэты элемент."
+            "value" : "Можа даваць і адклікаць доступ для гэтага элемента."
           }
         },
         "cs" : {
@@ -31696,7 +31732,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odczyt elementu"
+            "value" : "Odczyt"
           }
         },
         "pt-BR" : {
@@ -33395,6 +33431,12 @@
             "value" : "Modifier l'e-mail de la boite de réception"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubah email kotak surat"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33434,7 +33476,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alterar o e-mail da caixa de correio"
+            "value" : "Alterar e-mail da caixa de correio"
           }
         },
         "ro" : {
@@ -33447,6 +33489,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zmeniť email poštovej schránky"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ändra e-post för brevlåda"
           }
         },
         "tr" : {
@@ -37407,7 +37455,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kontaktuppgifter"
+            "value" : "Kontaktdetaljer"
           }
         },
         "tr" : {
@@ -45132,7 +45180,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pemantauan Web Gelap tersedia dengan rencana berbayar. Tingkatkan untuk akses langsung."
+            "value" : "Pemantauan Dark Web tersedia dengan paket berbayar. Tingkatkan akun Anda untuk memperoleh akses ke fitur ini dengan segera."
           }
         },
         "it" : {
@@ -47303,6 +47351,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Supprimer cet élément"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus item ini"
           }
         },
         "it" : {
@@ -51192,6 +51246,12 @@
             "value" : "Send en e-mail til denne adresse, og det vil se ud som om, den er sendt fra %@."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sende eine Nachricht an diese Adresse, und sie wird als von der folgenden Adresse gesendet erscheinen: %@"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54513,6 +54573,12 @@
             "value" : "Indtast den adresse, du vil sende en e-mail til."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gib die Adresse ein, an die du eine E-Mail senden möchtest."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55120,7 +55186,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Новы кантакт аўтаматычна ствараецца. Гэта адбываецца кожны раз, калі ваш псеўданім атрымлівае ліст ад каго-небудзь."
+            "value" : "Новы кантакт ствараецца аўтаматычна. Гэта адбываецца кожны раз, калі ваш псеўданім атрымлівае ліст ад каго-небудзь."
           }
         },
         "cs" : {
@@ -55133,6 +55199,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hver gang dit alias modtager en e-mail fra nogen, oprettes der automatisk en ny kontakt."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jedes Mal, wenn dein Alias eine E-Mail von einer Person erhält, wird automatisch ein neuer Kontakt erstellt."
           }
         },
         "el" : {
@@ -58897,7 +58969,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Załączanie plików"
+            "value" : "Załączniki"
           }
         },
         "pt-BR" : {
@@ -58956,6 +59028,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fil-vedhæftninger er tilgængelig med Pass Plus. Opgrader for at få adgang med det samme."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dateianhänge sind mit Pass Plus verfügbar. Upgrade für sofortigen Zugriff."
           }
         },
         "el" : {
@@ -71121,6 +71199,12 @@
             "value" : "Elementhistorik nulstillet"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Eintrags-Verlauf wurde zurückgesetzt."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -71946,6 +72030,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Deling af element: %lld brugere"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Einträge teilen: %lld Benutzer"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Einträge teilen: %lld Benutzer"
                 }
               }
             }
@@ -84649,7 +84751,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "NOWY"
+            "value" : "NOWOŚĆ"
           }
         },
         "pt-BR" : {
@@ -87627,7 +87729,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nie zaznaczono"
+            "value" : "Nie wybrano"
           }
         },
         "pt-BR" : {
@@ -106859,6 +106961,12 @@
             "value" : "Nulstilling af historikken sletter alle tidligere versioner permanent og kan ikke fortrydes."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den Verlauf zurückzusetzen, löscht alle früheren Versionen endgültig und kann nicht rückgängig gemacht werden."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113741,7 +113849,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Visa medlems- och rättighetsöversikt"
+            "value" : "Se översikt över medlemmar och behörigheter"
           }
         },
         "tr" : {
@@ -118485,7 +118593,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udostępniam"
+            "value" : "Udostępnione przez Ciebie"
           }
         },
         "pt-BR" : {
@@ -118941,7 +119049,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udostępnione Tobie"
+            "value" : "Udostępnione dla mnie"
           }
         },
         "pt-BR" : {
@@ -121972,6 +122080,12 @@
             "value" : "SimpleLogin-noten gemmes samme sted som alias-adressen, og selvom den er beskyttet af kryptering i hvile, er den ikke E2E-krypteret, hvilket betyder, at alle, der har adgang til SimpleLogin-databasen, kan læse den."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die SimpleLogin-Notiz wird zusammen mit der Alias-Adresse am selben Ort gespeichert und ist zwar durch eine Verschlüsselung im Ruhezustand geschützt, aber nicht E2E-verschlüsselt, d.h. jeder, der Zugang zur SimpleLogin-Datenbank hat, kann sie lesen."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -123788,7 +123902,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lagring"
+            "value" : "Lagringsplass"
           }
         },
         "nl" : {
@@ -126237,6 +126351,12 @@
     },
     "Tap the gear icon to customize the alias the way you want." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Націсніце значок шасцерні, каб наладзіць псеўданім пад свае патрабаванні."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -126247,6 +126367,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tryk på tandhjulsikonet for at tilpasse aliaset, som du vil have det."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tippe auf das Zahnrad-Symbol, um den Alias nach deinen Wünschen zu gestalten."
           }
         },
         "el" : {
@@ -127323,6 +127449,12 @@
             "value" : "Den valgte fil overskrider størrelsesgrænsen. Vælg venligst en fil, der er mindre end 100 MB."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählte Datei überschreitet die Größenbeschränkung. Bitte wähle eine Datei, die kleiner als 100 MB ist."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127441,6 +127573,12 @@
     },
     "The selected file is empty. Please check the file and try again." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбраны файл пусты. Праверце файл і паспрабуйце яшчэ раз."
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127451,6 +127589,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Den valgte fil er tom. Tjek venligst filen og prøv igen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die ausgewählte Datei ist leer. Bitte überprüfe die Datei und versuche es erneut."
           }
         },
         "el" : {
@@ -128224,6 +128368,12 @@
             "value" : "Dette element er i øjeblikket delt. Hvis du sletter det, fjernes adgangen for alle andre brugere."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieses Element wird derzeit geteilt. Wenn du es löschst, wird der Zugang für alle anderen Benutzer gesperrt."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -128252,6 +128402,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cet élément est actuellement partagé. Sa suppression retirera également son accès aux autres utilisateurs."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item ini sedang dibagikan. Dengan menghapus item ini, izin akses bagi seluruh pengguna lainnya akan dihapus."
           }
         },
         "it" : {
@@ -128340,6 +128496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dette element er i øjeblikket delt. Hvis du flytter det til en anden boks, fjernes adgangen for alle andre brugere."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dieser Eintrag wird derzeit geteilt. Wenn du ihn in einen anderen Tresor verschiebst, verlieren alle anderen Benutzer den Zugriff."
           }
         },
         "el" : {
@@ -140308,6 +140470,24 @@
             }
           }
         },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tresore teilen: %lld Mitglied"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tresore teilen: %lld Mitglieder"
+                }
+              }
+            }
+          }
+        },
         "el" : {
           "variations" : {
             "plural" : {
@@ -146378,6 +146558,12 @@
     "Would you want to associate \"%1$@\" with \"%2$@\"?" : {
       "comment" : "Show when autofilling a login item on a website/app that is not yet associated to it. First placeholder is the URL of the website or app, the second placeholder is the title of the login item.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ці хочаце вы звязаць \"%1$@\" з \"%2$@\"?"
+          }
+        },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
@@ -149313,6 +149499,12 @@
             "value" : "Du har i øjeblikket ingen login-elementer med 2FA hemmelig nøgle (TOTP)"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast derzeit keine Login-Elemente mit 2FA-Geheimschlüssel (TOTP)"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -149775,6 +149967,12 @@
             "value" : "Du har ikke delt nogen elementer"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast keine Einträge geteilt."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -149856,7 +150054,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nie udostępniłeś żadnego elementu."
+            "value" : "Nie udostępniono żadnego elementu"
           }
         },
         "pt-BR" : {
@@ -150865,6 +151063,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du vil miste adgang til dette element og dets detaljer. Ønsker du at fortsætte"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du wirst den Zugriff auf dieses Element und seine Details verlieren. Möchtest du fortfahren"
           }
         },
         "el" : {
