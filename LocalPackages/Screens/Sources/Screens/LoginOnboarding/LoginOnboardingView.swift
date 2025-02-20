@@ -112,13 +112,13 @@ private extension LoginOnboardingView {
             ForEach(0..<items.count, id: \.self) { index in
                 VStack(alignment: .center, spacing: 0) {
                     VStack(spacing: 8) {
-                        Text(items[index].title)
+                        Text(items[index].title, bundle: .module)
                             .font(.title)
                             .fontWeight(.bold)
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity, alignment: .center)
-                        Text(items[index].subtitle)
+                        Text(items[index].subtitle, bundle: .module)
                             .font(.title3)
                             .foregroundStyle(PassColor.textWeak.toColor)
                             .fixedSize(horizontal: false, vertical: true)
@@ -157,13 +157,13 @@ private extension LoginOnboardingView {
     @ViewBuilder
     func bottomActionButton(signUp: Bool) -> some View {
         if signUp {
-            CapsuleTextButton(title: #localized("Create an account"),
+            CapsuleTextButton(title: #localized("Create an account", bundle: .module),
                               titleColor: .white,
                               backgroundColor: signUp ? UIColor(red: 110, green: 74, blue: 255) : .clear,
                               action: { onAction(signUp) })
                 .padding(.horizontal, DesignConstant.sectionPadding)
         } else {
-            CapsuleTextBorderedButton(title: #localized("Sign in"),
+            CapsuleTextBorderedButton(title: #localized("Sign in", bundle: .module),
                                       titleColor: .white,
                                       borderColor: .white,
                                       borderWidth: 1,
