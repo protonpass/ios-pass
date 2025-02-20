@@ -122,7 +122,7 @@ struct ItemDetailToolbar: ToolbarContent {
 
                         Label("Move to Trash", image: IconProvider.trash)
                             .buttonEmbeded(action: {
-                                if viewModel.aliasSyncEnabled, viewModel.itemContent.isAlias {
+                                if viewModel.itemContent.isAlias {
                                     viewModel.showingTrashAliasAlert.toggle()
                                 } else {
                                     viewModel.moveToTrash()

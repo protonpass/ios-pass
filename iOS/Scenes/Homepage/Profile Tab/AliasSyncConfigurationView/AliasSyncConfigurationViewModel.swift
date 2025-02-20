@@ -58,16 +58,11 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private var selectedVaultTask: Task<Void, Never>?
     private var selectedDomainTask: Task<Void, Never>?
     private var selectedMailboxTask: Task<Void, Never>?
     private var aliasSettings: AliasSettings?
-
-    var isAdvancedAliasManagementActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
-    }
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -76,7 +71,7 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
     }
 
     var shouldUpsell: Bool {
-        !canManageAliases && isAdvancedAliasManagementActive
+        !canManageAliases
     }
 
     init() {

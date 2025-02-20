@@ -71,26 +71,24 @@ struct AliasDetailView: View {
                             .padding(.bottom, 8)
                     }
 
-                    if viewModel.isAdvancedAliasManagementActive {
-                        if let name = viewModel.aliasInfos?.name {
-                            senderNameRow(name: name)
-                                .padding(.bottom, 8)
-                        }
+                    if let name = viewModel.aliasInfos?.name {
+                        senderNameRow(name: name)
+                            .padding(.bottom, 8)
+                    }
 
-                        let showTip = viewModel.aliasDiscoveryActive && viewModel.showContactsTip
-                        if viewModel.contacts != nil, viewModel.isAliasOwner {
-                            contactRow
-                                .padding(.bottom, showTip ? 0 : 8)
+                    let showTip = viewModel.aliasDiscoveryActive && viewModel.showContactsTip
+                    if viewModel.contacts != nil, viewModel.isAliasOwner {
+                        contactRow
+                            .padding(.bottom, showTip ? 0 : 8)
 
-                            if showTip {
-                                contactTip
-                                    .padding(.vertical, 8)
-                            }
+                        if showTip {
+                            contactTip
+                                .padding(.vertical, 8)
                         }
+                    }
 
-                        if let stats = viewModel.aliasInfos?.stats {
-                            statsRow(stats: stats)
-                        }
+                    if let stats = viewModel.aliasInfos?.stats {
+                        statsRow(stats: stats)
                     }
 
                     if viewModel.showFileAttachmentsSection {
@@ -133,15 +131,13 @@ struct AliasDetailView: View {
                 animate = true
             }
         }
-        .if(viewModel.aliasSyncEnabled) {
-            $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $viewModel.showingTrashAliasAlert,
-                                                enabled: viewModel.aliasEnabled,
-                                                disableAction: { viewModel.disableAlias() },
-                                                trashAction: {
-                                                    dismiss()
-                                                    viewModel.moveToTrash()
-                                                }))
-        }
+        .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $viewModel.showingTrashAliasAlert,
+                                          enabled: viewModel.aliasEnabled,
+                                          disableAction: { viewModel.disableAlias() },
+                                          trashAction: {
+                                              dismiss()
+                                              viewModel.moveToTrash()
+                                          }))
     }
 
     private var aliasMailboxesSection: some View {
@@ -173,7 +169,7 @@ struct AliasDetailView: View {
             .onTapGesture { viewModel.copyAliasEmail() }
             .layoutPriority(1)
 
-            if viewModel.aliasSyncEnabled, viewModel.isAliasOwner {
+            if viewModel.isAliasOwner {
                 Group {
                     if viewModel.togglingAliasStatus {
                         ProgressView()

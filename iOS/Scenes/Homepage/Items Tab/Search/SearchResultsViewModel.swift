@@ -28,14 +28,11 @@ final class SearchResultsViewModel: ObservableObject {
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
     let results: any SearchResults
     let isTrash: Bool
-
-    lazy var aliasSyncEnabled = getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
          itemCount: ItemCount,

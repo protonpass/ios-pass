@@ -83,10 +83,6 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
 
     let module = resolve(\SharedToolingContainer.module)
 
-    var isAdvancedAliasManagementActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
-    }
-
     var isAliasOwner: Bool {
         alias?.mailboxes.isEmpty == false
     }
