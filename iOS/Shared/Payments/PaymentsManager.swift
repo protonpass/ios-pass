@@ -97,6 +97,17 @@ final class PaymentsManager: Sendable {
             completion(.failure(error))
         }
     }
+
+    func restorePurchases() async throws {
+        guard !Bundle.main.isBetaBuild,
+              featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2),
+              let doh = doh as? ProtonPassDoH,
+              let userData = userManager.currentActiveUser.value else { return }
+        _ = try await paymentsV2.restorePurchases(sessionId: userData.credential.sessionID,
+                                                  token: userData.credential.accessToken,
+                                                  doh: doh,
+                                                  appVersion: appVersion)
+    }
 }
 
 // MARK: - Utils
