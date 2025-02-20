@@ -1,5 +1,5 @@
 //
-// LogoutRobot.swift
+// IsUITestModeKey.swift
 // Proton Pass - Created on 2025. 02. 14..
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -18,27 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-<<<<<<< HEAD
-import fusion
+import SwiftUI
 
-class LogoutRobot: ElementsProtocol {
+private struct RunningInUITests: EnvironmentKey {
+    static let defaultValue: Bool = ProcessInfo.processInfo.arguments.contains("RunningInUITests")
+}
 
-    func logoutIfNeeded() {
-        if button("Sign in").exists() {
-            return
-        }
-
-=======
-enum LogoutRobot {
-    static func logoutIfNeeded() {
->>>>>>> e067f48e4 (TPE-981 - resurrect ui tests)
-        if HomeRobot().verify.isProfileTabExist() {
-            GetStartedRobot()
-                .tapClose()
-                .tapProfile()
-                .tapExpandProfile()
-                .tapExpandMenu()
-                .signOut()
-        }
+extension EnvironmentValues {
+    var runningInUITests: Bool {
+        self[RunningInUITests.self]
     }
 }

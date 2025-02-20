@@ -1,7 +1,8 @@
 //
-// LogoutRobot.swift
-// Proton Pass - Created on 2025. 02. 14..
-// Copyright (c) 2025 Proton Technologies AG
+//
+// ParentAccessibilityBranchKey.swift
+// Proton Pass - Created on 18/02/2025.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,28 +18,17 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
-<<<<<<< HEAD
-import fusion
+import SwiftUI
 
-class LogoutRobot: ElementsProtocol {
+struct ParentAccessibilityBranchKey: EnvironmentKey {
+    static let defaultValue: String? = nil
+}
 
-    func logoutIfNeeded() {
-        if button("Sign in").exists() {
-            return
-        }
-
-=======
-enum LogoutRobot {
-    static func logoutIfNeeded() {
->>>>>>> e067f48e4 (TPE-981 - resurrect ui tests)
-        if HomeRobot().verify.isProfileTabExist() {
-            GetStartedRobot()
-                .tapClose()
-                .tapProfile()
-                .tapExpandProfile()
-                .tapExpandMenu()
-                .signOut()
-        }
+extension EnvironmentValues {
+    var parentAccessibilityBranch: String? {
+        get { self[ParentAccessibilityBranchKey.self] }
+        set { self[ParentAccessibilityBranchKey.self] = newValue }
     }
 }
