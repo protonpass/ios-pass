@@ -34,8 +34,6 @@ public enum Constants {
     public static let biometricStateKey = "BiometricsPolicyState"
     public static let textAutoFillHistoryLimit = 5
 
-    public static let unAuthUserId = "unAuthenticatedUser"
-
     public enum PINCode {
         public static let minLength = 4
         public static let maxLength = 100

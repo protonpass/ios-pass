@@ -53,7 +53,7 @@ final class WelcomeCoordinator: DeinitPrintable {
     @LazyInjected(\UseCasesContainer.createLogsFile) private var createLogsFile
     @LazyInjected(\SharedRepositoryContainer.featureFlagsRepository) private var featureFlagsRepository
     @LazyInjected(\SharedServiceContainer.abTestingManager) var abTestingManager
-    @LazyInjected(\SharedUseCasesContainer.addTelemetryEvent) var addTelemetryEvent
+    @LazyInjected(\SharedUseCasesContainer.sendTelemetryEvent) var sendTelemetryEvent
 
     let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
 
@@ -81,16 +81,14 @@ private extension WelcomeCoordinator {
             return getSharedPreferences().theme.inAppTheme
         })
         if isSigningUp {
-            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_up"),
-                              isUnAuthenticated: true)
+            sendTelemetryEvent(.newLoginFlow(event: "user.welcome.clicked", item: "sign_up"))
             logInAndSignUp.presentSignupFlow(over: rootViewController,
                                              customization: options) { [weak self] result in
                 guard let self else { return }
                 handle(result)
             }
         } else {
-            addTelemetryEvent(with: .newLoginFlow(event: "user.welcome.clicked", item: "sign_in"),
-                              isUnAuthenticated: true)
+            sendTelemetryEvent(.newLoginFlow(event: "user.welcome.clicked", item: "sign_in"))
             logInAndSignUp.presentLoginFlow(over: rootViewController,
                                             customization: options) { [weak self] result in
                 guard let self else { return }
@@ -177,8 +175,7 @@ private extension WelcomeCoordinator {
                                                     default: .new)
         switch loginVariant {
         case .new:
-            addTelemetryEvent(with: .newLoginFlow(event: "fe.welcome.displayed", item: nil),
-                              isUnAuthenticated: true)
+            sendTelemetryEvent(.newLoginFlow(event: "fe.welcome.displayed", item: nil))
             return UIHostingController(rootView: LoginOnboardingView(onAction: { [weak self] signUp in
                 guard let self else { return }
                 beginAddAccountFlow(isSigningUp: signUp)
