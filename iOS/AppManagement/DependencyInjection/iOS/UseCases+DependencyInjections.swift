@@ -133,7 +133,9 @@ extension UseCasesContainer {
                              autofillLogManager: SharedToolingContainer.shared
                                  .specificLogManager(.autoFillExtension),
                              shareLogManager: SharedToolingContainer.shared
-                                 .specificLogManager(.shareExtension)) }
+                                 .specificLogManager(.shareExtension),
+                             actionLogManager: SharedToolingContainer.shared
+                                 .specificLogManager(.actionExtension)) }
     }
 
     var createLogsFile: Factory<any CreateLogsFileUseCase> {

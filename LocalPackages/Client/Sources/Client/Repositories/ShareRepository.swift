@@ -69,7 +69,7 @@ public protocol ShareRepositoryProtocol: Sendable {
     // MARK: - Vault Functions
 
     @discardableResult
-    func createVault(_ vault: VaultContent) async throws -> Share
+    func createVault(userId: String?, vault: VaultContent) async throws -> Share
 
     func edit(oldVault: Share, newVault: VaultContent) async throws
 
@@ -291,8 +291,14 @@ public extension ShareRepository {
 // MARK: - Vaults
 
 public extension ShareRepository {
-    func createVault(_ vault: VaultContent) async throws -> Share {
-        let userData = try await userManager.getUnwrappedActiveUserData()
+    func createVault(userId: String?, vault: VaultContent) async throws -> Share {
+        let userData: UserData = if let userId,
+                                    let userData = try await userManager.getUserData(userId) {
+            userData
+        } else {
+            try await userManager.getUnwrappedActiveUserData()
+        }
+
         let userId = userData.user.ID
         logger.trace("Creating vault for user \(userId)")
         let request = try CreateVaultRequest(userData: userData, vault: vault)

@@ -80,6 +80,13 @@ public final class ApplyAppMigration: ApplyAppMigrationUseCase {
             await dataMigrationManager.addMigration(.userAppData)
         }
 
+        if missingMigrations.contains(.credentialsForActionExtension) {
+            logger.trace("Initializing credentials for action extension")
+            (authManager as? AuthManager)?.initializeCredentialsForActionExtension()
+            logger.trace("Initialized credentials for action extension")
+            await dataMigrationManager.addMigration(.credentialsForActionExtension)
+        }
+
         if missingMigrations.contains(.userIdInItemsSearchEntriesAndShareKeys) {
             guard let userId = try? await userManager.getActiveUserId() else {
                 logger.debug("Skip user ID migrations. No active user ID found.")

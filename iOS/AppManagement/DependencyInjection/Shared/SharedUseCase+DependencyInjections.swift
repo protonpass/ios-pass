@@ -344,6 +344,15 @@ extension SharedUseCasesContainer {
         self { GetActiveLoginItems(symmetricKeyProvider: SharedDataContainer.shared.symmetricKeyProvider(),
                                    repository: self.itemRepository) }
     }
+
+    var parseCsvLogins: Factory<any ParseCsvLoginsUseCase> {
+        self { ParseCsvLogins() }
+    }
+
+    var createVaultAndImportLogins: Factory<any CreateVaultAndImportLoginsUseCase> {
+        self { CreateVaultAndImportLogins(shareRepository: self.shareRepository,
+                                          itemRepository: self.itemRepository) }
+    }
 }
 
 // MARK: - Rust Validators

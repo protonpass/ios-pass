@@ -67,23 +67,31 @@ class GetLogEntriesTests: XCTestCase {
         let mainAppLogManager = LogManagerMock()
         let autofillLogManager = LogManagerMock()
         let shareLogManager = LogManagerMock()
+        let actionLogManager = LogManagerMock()
 
         // Create an instance of GetLogEntries with mock dependencies
         let getLogEntries = GetLogEntries(mainAppLogManager: mainAppLogManager,
                                           autofillLogManager: autofillLogManager,
-                                          shareLogManager: shareLogManager)
+                                          shareLogManager: shareLogManager,
+                                          actionLogManager: actionLogManager)
 
         // Set up the expected behavior for the mock dependencies
         await mainAppLogManager.log(entry: LogEntryFactory.createMock())
         await autofillLogManager.log(entry: LogEntryFactory.createMock())
         await autofillLogManager.log(entry: LogEntryFactory.createMock())
+        await shareLogManager.log(entry: LogEntryFactory.createMock())
+        await actionLogManager.log(entry: LogEntryFactory.createMock())
 
         // Call the execute function and await the result
-        let hostAppLogEntries = try await getLogEntries.execute(for: .hostApp)
-        let autoFillLogEntries = try await getLogEntries.execute(for: .autoFillExtension)
+        let hostAppLogEntries = try await getLogEntries(for: .hostApp)
+        let autoFillLogEntries = try await getLogEntries(for: .autoFillExtension)
+        let shareLogEntries = try await getLogEntries(for: .shareExtension)
+        let actionLogEntries = try await getLogEntries(for: .actionExtension)
 
         // Assert the expected results
         XCTAssertEqual(hostAppLogEntries.count, 1)
         XCTAssertEqual(autoFillLogEntries.count, 2)
+        XCTAssertEqual(shareLogEntries.count, 1)
+        XCTAssertEqual(actionLogEntries.count, 1)
     }
 }

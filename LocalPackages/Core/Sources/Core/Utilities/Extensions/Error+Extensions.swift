@@ -21,9 +21,13 @@
 
 import Foundation
 
-public extension Error where Self: CustomDebugStringConvertible {
+public extension Error {
     /// Concatenate `localizedDescription` & `debugDescription`
     var localizedDebugDescription: String {
-        "\(localizedDescription) \(debugDescription)"
+        if let debug = self as? CustomDebugStringConvertible {
+            "\(localizedDescription) \(debug.debugDescription)"
+        } else {
+            localizedDescription
+        }
     }
 }
