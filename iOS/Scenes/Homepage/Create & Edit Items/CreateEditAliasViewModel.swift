@@ -208,10 +208,11 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         }
 
         if senderName != alias.name {
+            let trimmedSenderName = senderName.nilIfEmpty?.trimmingCharacters(in: .whitespacesAndNewlines)
             try await aliasRepository.updateSlAliasName(userId: userId,
                                                         shareId: itemContent.shareId,
                                                         itemId: itemContent.itemId,
-                                                        name: senderName.nilIfEmpty)
+                                                        name: trimmedSenderName)
             edited = true
         }
 

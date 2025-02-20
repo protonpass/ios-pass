@@ -212,7 +212,7 @@ struct CreateEditAliasView: View {
                 Text("Display name")
                     .editableSectionTitleText(for: viewModel.senderName)
 
-                TrimmingTextField("Add display name", text: $viewModel.senderName)
+                TextField("Add display name", text: $viewModel.senderName)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .focused($focusedField, equals: .senderName)
