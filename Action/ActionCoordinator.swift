@@ -29,12 +29,12 @@ import UniformTypeIdentifiers
 
 @MainActor
 final class ActionCoordinator {
-    private let credentialProvider = resolve(\SharedDataContainer.credentialProvider)
-    private let setUpSentry = resolve(\SharedUseCasesContainer.setUpSentry)
-    private let setCoreLoggerEnvironment = resolve(\SharedUseCasesContainer.setCoreLoggerEnvironment)
-    private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
-    private let sendErrorToSentry = resolve(\SharedUseCasesContainer.sendErrorToSentry)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
+    @LazyInjected(\SharedDataContainer.credentialProvider) private var credentialProvider
+    @LazyInjected(\SharedUseCasesContainer.setUpSentry) private var setUpSentry
+    @LazyInjected(\SharedUseCasesContainer.setCoreLoggerEnvironment) private var setCoreLoggerEnvironment
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedToolingContainer.logManager) private var logManager
