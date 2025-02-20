@@ -104,11 +104,8 @@ extension CreateAliasLiteViewModel {
     }
 
     func addMailbox() {
-        if accessRepository.access.value?.access.plan.isFreeUser == true {
-            router.present(for: .upselling(.default, .topMost))
-        } else {
-            router.present(for: .addMailbox)
-        }
+        router.present(for: accessRepository.access.value?.access.plan.isFreeUser == true ?
+            .upselling(.default, .topMost) : .addMailbox)
     }
 
     func upgrade() {
