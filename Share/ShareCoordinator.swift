@@ -190,14 +190,14 @@ private extension ShareCoordinator {
         for item in extensionItems {
             guard let attachments = item.attachments else { continue }
             for attachment in attachments {
-                if let url = try await Task(operation: { @Sendable in
-                    try await attachment.loadItem(forTypeIdentifier: UTType.url.identifier) as? URL
+                if let url = await Task(operation: { @Sendable in
+                    try? await attachment.loadItem(forTypeIdentifier: UTType.url.identifier) as? URL
                 }).value {
                     return .url(url)
                 }
 
-                if let text = try await Task(operation: { @Sendable in
-                    try await attachment
+                if let text = await Task(operation: { @Sendable in
+                    try? await attachment
                         .loadItem(forTypeIdentifier: UTType.plainText.identifier) as? String
                 }).value {
                     if let url = text.firstUrl() {
