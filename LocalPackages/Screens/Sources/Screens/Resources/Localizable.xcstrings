@@ -1752,6 +1752,29 @@
         }
       }
     },
+    "%lld logins imported" : {
+      "comment" : "Message of the alert after successfully importing items",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld login imported"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld logins imported"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Add account" : {
       "localizations" : {
         "be" : {
@@ -6201,6 +6224,166 @@
         }
       }
     },
+    "Error occurred" : {
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адбылася памылка"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Došlo k chybě"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der opstod en fejl"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler aufgetreten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παρουσιάστηκε σφάλμα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error occurred"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha producido un error."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocurrió un error"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tapahtui virhe"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une erreur s'est produite."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terjadi kesalahan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si è verificato un errore"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラーが発生しました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაფიქსირდა შეცდომა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오류 발생"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feil oppstod"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is iets fout gegaan."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wystąpił błąd"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocorreu um erro"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A apărut o eroare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyskytla sa chyba"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prišlo je do napake"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fel uppstod"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorun çıktı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виникла помилка"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã có lỗi xảy ra"
+          }
+        }
+      }
+    },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "localizations" : {
@@ -6808,6 +6991,59 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta adresiniz karanlık ağa düşerse uyarı alın."
+          }
+        }
+      }
+    },
+    "Go to **Password manager** and tap on **Settings**" : {
+      "comment" : "Part of instruction to import from Chrome",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Go to **Password manager** and tap on **Settings**"
+          }
+        }
+      }
+    },
+    "Import" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import"
+          }
+        }
+      }
+    },
+    "Import from Chrome" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from Chrome"
+          }
+        }
+      }
+    },
+    "Import logins (%1$lld/%2$lld)" : {
+      "comment" : "Title of the importer, first placeholder is the number of selected logins to import, second placeholder is the total number of logins.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import logins (%1$lld/%2$lld)"
+          }
+        }
+      }
+    },
+    "Imported successfully" : {
+      "comment" : "Title of the alert after successfully importing items",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imported successfully"
           }
         }
       }
@@ -8193,6 +8429,27 @@
         }
       }
     },
+    "Open **Chrome** menu" : {
+      "comment" : "Part of instruction to import from Chrome",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open **Chrome** menu"
+          }
+        }
+      }
+    },
+    "Open Chrome" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Chrome"
+          }
+        }
+      }
+    },
     "Open Settings" : {
       "localizations" : {
         "be" : {
@@ -8510,6 +8767,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đang chờ truy cập vào dữ liệu được chia sẻ"
+          }
+        }
+      }
+    },
+    "Please sign in to use Proton Pass Action extension" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please sign in to use Proton Pass Action extension"
           }
         }
       }
@@ -10643,6 +10910,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Her şeyi tek bir yerde ve güvende tutarak en güvenilir gizlilik hizmetiyle korunun."
+          }
+        }
+      }
+    },
+    "Select **Import to Proton Pass**" : {
+      "comment" : "Please align with the translation for CFBundleDisplayName and CFBundleName of Action extension.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select **Import to Proton Pass**"
           }
         }
       }
@@ -12919,6 +13197,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Зробити фото"
+          }
+        }
+      }
+    },
+    "Tap **Export passwords**" : {
+      "comment" : "Part of instruction to import from Chrome",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap **Export passwords**"
           }
         }
       }

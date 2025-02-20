@@ -32,6 +32,8 @@ struct ProfileTabView: View {
     @StateObject var viewModel: ProfileTabViewModel
     @Namespace private var animationNamespace
     @State private var showSwitcher = false
+    @State private var showImportOptions = false
+    @State private var showImportFromChrome = false
     @State private var showQaFeatures = false
 
     var body: some View {
@@ -53,6 +55,23 @@ struct ProfileTabView: View {
                                                     onAddAccount: { viewModel.addAccount() }))
             }
             .navigationStackEmbeded()
+            .confirmationDialog("Import to Proton Pass",
+                                isPresented: $showImportOptions) {
+                if viewModel.isChromeInstalled {
+                    Button(role: nil,
+                           action: { showImportFromChrome.toggle() },
+                           label: { Text("Import from Chrome") })
+                }
+
+                Button(role: nil,
+                       action: { viewModel.showImportInstructions() },
+                       label: { Text("Import from other sources") })
+
+                Button(role: .cancel, label: { Text("Cancel") })
+            }
+            .sheet(isPresented: $showImportFromChrome) {
+                ImportFromChromeInstructions()
+            }
             .sheet(isPresented: $showQaFeatures) {
                 QAFeaturesView()
             }
@@ -86,6 +105,9 @@ struct ProfileTabView: View {
                     .padding(.top)
 
                 settingsSection
+                    .padding(.top)
+
+                importSection
                     .padding(.vertical)
 
                 aboutSection
@@ -360,6 +382,20 @@ struct ProfileTabView: View {
             .padding(.horizontal)
     }
 
+    private var importSection: some View {
+        TextOptionRow(title: #localized("Import to Proton Pass"),
+                      action: {
+                          if viewModel.isCsvImportActive, viewModel.isChromeInstalled {
+                              showImportOptions.toggle()
+                          } else {
+                              viewModel.showImportInstructions()
+                          }
+                      })
+                      .frame(height: 75)
+                      .roundedEditableSection()
+                      .padding(.horizontal)
+    }
+
     private var aboutSection: some View {
         VStack(spacing: 0) {
             TextOptionRow(title: #localized("Privacy policy"), action: { viewModel.showPrivacyPolicy() })
@@ -384,10 +420,6 @@ struct ProfileTabView: View {
                 .padding(.bottom, DesignConstant.sectionPadding)
 
             VStack(spacing: 0) {
-                TextOptionRow(title: #localized("How to import to Proton Pass"),
-                              action: { viewModel.showImportInstructions() })
-
-                PassSectionDivider()
                 TextOptionRow(title: #localized("Feedback"), action: { viewModel.showFeedback() })
 
                 PassSectionDivider()

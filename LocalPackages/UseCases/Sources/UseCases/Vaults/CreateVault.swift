@@ -47,7 +47,7 @@ public final class CreateVault: CreateVaultUseCase {
     }
 
     public func execute(userId: String, with vault: VaultContent) async throws -> Share? {
-        let share = try await repository.createVault(vault)
+        let share = try await repository.createVault(userId: userId, vault: vault)
         try await appContentManager.refresh(userId: userId)
 
         return try await repository.getDecryptedShare(shareId: share.shareID)

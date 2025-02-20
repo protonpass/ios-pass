@@ -56,6 +56,7 @@ extension SharedToolingContainer {
         self { LogManager(module: .hostApp) }
             .onArg(PassModule.autoFillExtension) { LogManager(module: .autoFillExtension) }
             .onArg(PassModule.shareExtension) { LogManager(module: .shareExtension) }
+            .onArg(PassModule.actionExtension) { LogManager(module: .actionExtension) }
     }
 
     var logFormatter: Factory<any LogFormatterProtocol> {
@@ -82,6 +83,7 @@ extension SharedToolingContainer {
         self { .hostApp }
             .onArg(PassModule.autoFillExtension) { .autoFillExtension }
             .onArg(PassModule.shareExtension) { .shareExtension }
+            .onArg(PassModule.actionExtension) { .actionExtension }
     }
 
     var appVersion: Factory<String> {
@@ -91,6 +93,9 @@ extension SharedToolingContainer {
             }
             .onArg(PassModule.shareExtension) {
                 "ios-pass-share@\(Bundle.main.fullAppVersionName)"
+            }
+            .onArg(PassModule.actionExtension) {
+                "ios-pass-action@\(Bundle.main.fullAppVersionName)"
             }
     }
 

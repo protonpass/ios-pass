@@ -1,7 +1,7 @@
 //
-// iOS-Debug-QA.swift
-// Proton Pass - Created on 08/06/2022.
-// Copyright (c) 2022 Proton Technologies AG
+// ExtensionFailureReason.swift
+// Proton Pass - Created on 10/02/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,9 +18,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-// Configuration settings file format documentation can be found at:
-// https://help.apple.com/xcode/#/dev745c5c974
+import Foundation
 
-APP_VERSION_IDENTIFIER = dev
-IS_QA_BUILD = YES
-IS_BETA_BUILD = NO
+public extension PassError {
+    enum ExtensionFailureReason: CustomDebugStringConvertible, Sendable {
+        case noInputItems
+        case noAttachments
+
+        public var debugDescription: String {
+            switch self {
+            case .noInputItems:
+                "No input items"
+            case .noAttachments:
+                "No attachents found"
+            }
+        }
+    }
+}
