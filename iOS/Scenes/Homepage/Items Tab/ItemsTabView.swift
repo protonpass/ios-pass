@@ -163,21 +163,19 @@ struct ItemsTabView: View {
                 safeAreaInsets = proxy.safeAreaInsets
                 viewModel.continueFullSyncIfNeeded()
             }
-            .if(viewModel.aliasSyncEnabled) {
-                $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
-                                                    enabled: aliasToTrash?.aliasEnabled ?? false,
-                                                    disableAction: {
-                                                        if let aliasToTrash {
-                                                            viewModel.itemContextMenuHandler
-                                                                .disableAlias(aliasToTrash)
-                                                        }
-                                                    },
-                                                    trashAction: {
-                                                        if let aliasToTrash {
-                                                            viewModel.itemContextMenuHandler.trash(aliasToTrash)
-                                                        }
-                                                    }))
-            }
+            .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
+                                              enabled: aliasToTrash?.aliasEnabled ?? false,
+                                              disableAction: {
+                                                  if let aliasToTrash {
+                                                      viewModel.itemContextMenuHandler
+                                                          .disableAlias(aliasToTrash)
+                                                  }
+                                              },
+                                              trashAction: {
+                                                  if let aliasToTrash {
+                                                      viewModel.itemContextMenuHandler.trash(aliasToTrash)
+                                                  }
+                                              }))
             .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBePermanentlyDeleted,
                                                     onDisableAlias: { viewModel.disableAlias() },
                                                     onDelete: { viewModel.permanentlyDelete() }))
@@ -277,18 +275,11 @@ private extension ItemsTabView {
                 isEditable: isEditable,
                 isSelected: isSelected,
                 isTrashed: isTrashed,
-                aliasSyncEnabled: viewModel.aliasSyncEnabled,
                 onSelectThumbnail: { viewModel.handleThumbnailSelection(item) },
                 onSelectItem: { viewModel.handleSelection(item) },
                 itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                 onPermanentlyDelete: { viewModel.permanentlyDelete() },
-                onAliasTrash: {
-                    if viewModel.aliasSyncEnabled {
-                        aliasToTrash = item
-                    } else {
-                        viewModel.itemContextMenuHandler.trash(item)
-                    }
-                },
+                onAliasTrash: { aliasToTrash = item },
                 itemContextMenuHandler: viewModel.itemContextMenuHandler)
     }
 }
@@ -299,7 +290,6 @@ private struct ItemRow: View {
     let isEditable: Bool
     let isSelected: Bool
     let isTrashed: Bool
-    let aliasSyncEnabled: Bool
     let onSelectThumbnail: () -> Void
     let onSelectItem: () -> Void
     let itemToBePermanentlyDeleted: Binding<(any ItemTypeIdentifiable)?>
@@ -327,7 +317,6 @@ private struct ItemRow: View {
                     view.itemContextMenu(item: item,
                                          isTrashed: isTrashed,
                                          isEditable: isEditable,
-                                         aliasSyncEnabled: aliasSyncEnabled,
                                          onPermanentlyDelete: onPermanentlyDelete,
                                          onAliasTrash: onAliasTrash,
                                          handler: itemContextMenuHandler)
@@ -343,8 +332,7 @@ private struct ItemRow: View {
                                     isEditMode: isEditMode,
                                     isTrashed: isTrashed,
                                     isEditable: isEditable,
-                                    itemContextMenuHandler: itemContextMenuHandler,
-                                    aliasSyncEnabled: aliasSyncEnabled))
+                                    itemContextMenuHandler: itemContextMenuHandler))
         .disabled(!isEditable && isEditMode)
         .listRowSeparator(.hidden)
         .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))

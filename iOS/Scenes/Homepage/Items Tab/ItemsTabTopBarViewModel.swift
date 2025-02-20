@@ -82,7 +82,6 @@ enum ExtraBulkActionOption {
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
-    private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var actionsDisabled = true
@@ -123,8 +122,6 @@ final class ItemsTabTopBarViewModel: ObservableObject {
     init() {
         appContentManager.attach(to: self, storeIn: &cancellables)
         actionsDisabled = currentSelectedItems.value.isEmpty
-
-        let aliasSyncEnabled = getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
         currentSelectedItems
             .receive(on: DispatchQueue.main)
             .sink { [weak self] items in
@@ -140,7 +137,7 @@ final class ItemsTabTopBarViewModel: ObservableObject {
                     extraOptions.append(.pin)
                 }
 
-                if aliasSyncEnabled, items.allSatisfy(\.isAlias) {
+                if items.allSatisfy(\.isAlias) {
                     if items.allSatisfy({ $0.aliasEnabled == false }) {
                         extraOptions.append(.enableAliases)
                     } else {
