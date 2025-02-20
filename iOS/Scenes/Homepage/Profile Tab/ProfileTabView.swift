@@ -96,10 +96,8 @@ struct ProfileTabView: View {
                     autoFillDisabledSection
                 }
 
-                if viewModel.isSimpleLoginAliasSyncActive {
-                    aliasesSection
-                        .padding(.vertical)
-                }
+                aliasesSection
+                    .padding(.vertical)
 
                 secureLinkSection
                     .padding(.top)

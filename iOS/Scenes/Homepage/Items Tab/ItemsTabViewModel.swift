@@ -52,7 +52,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published private(set) var shouldShowSyncProgress = false
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
-    @Published private(set) var aliasSyncEnabled = false
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
@@ -78,7 +77,6 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
@@ -137,7 +135,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
 // MARK: - Private APIs
 
 private extension ItemsTabViewModel {
-    // swiftlint:disable:next cyclomatic_complexity function_body_length
+    // swiftlint:disable:next cyclomatic_complexity
     func setUp() {
         appContentManager.$state
             .receive(on: DispatchQueue.main)
@@ -234,15 +232,6 @@ private extension ItemsTabViewModel {
                         handle(error: error)
                     }
                 }
-            }
-            .store(in: &cancellables)
-
-        userManager
-            .currentActiveUser
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                aliasSyncEnabled = getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
             }
             .store(in: &cancellables)
 
