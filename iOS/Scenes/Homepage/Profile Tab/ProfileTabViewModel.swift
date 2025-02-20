@@ -66,8 +66,8 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
     private let getFeatureFlagStatus = resolve(\SharedUseCasesContainer.getFeatureFlagStatus)
 
-    @LazyInjected(\SharedServiceContainer.userManager) private var userManager: any UserManagerProtocol
-    @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser: any SwitchUserUseCase
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedUseCasesContainer.switchUser) private var switchUser
 
     @Published private(set) var localAuthenticationMethod: LocalAuthenticationMethodUiModel = .none
     @Published private var supportedLocalAuthenticationMethods = [LocalAuthenticationMethodUiModel]()
@@ -120,6 +120,21 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
 
     var isSimpleLoginAliasSyncActive: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
+    }
+
+    var isCsvImportActive: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passIOSImportCsv)
+    }
+
+    var isChromeInstalled: Bool {
+        #if DEBUG
+        return true
+        #else
+        if let url = URL(string: "googlechrome://"), UIApplication.shared.canOpenURL(url) {
+            return true
+        }
+        return false
+        #endif
     }
 
     var isSSOUser: Bool {

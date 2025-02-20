@@ -28,7 +28,7 @@ import SwiftUI
 
 public extension NotLoggedInView {
     enum Variant {
-        case autoFillExtension, shareExtension
+        case autoFillExtension, shareExtension, actionExtension
 
         var message: String {
             switch self {
@@ -36,6 +36,8 @@ public extension NotLoggedInView {
                 #localized("Please sign in to use Proton Pass AutoFill extension", bundle: .module)
             case .shareExtension:
                 #localized("Please sign in to use Proton Pass Share extension", bundle: .module)
+            case .actionExtension:
+                #localized("Please sign in to use Proton Pass Action extension", bundle: .module)
             }
         }
     }

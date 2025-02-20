@@ -66882,166 +66882,6 @@
         }
       }
     },
-    "How to import to Proton Pass" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Як імпартаваць у Proton Pass"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jak importovat do aplikace Proton Pass"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sådan importeres til Proton Pass"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wie man etwas in Proton Pass importiert"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Πώς να εισαγάγετε δεδομένα στο Proton Pass"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "How to import to Proton Pass"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cómo importar a Proton Pass"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cómo importar a Proton Pass"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Miten Proton Passiin tuodaan tietoja"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Importer vers Proton Pass"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cara mengimpor ke Proton Pass"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Come importare in Proton Pass"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass へのインポート方法"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "როგორ შემოვიტანო Proton Pass-ში"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass 불러오기 방법"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Slik importerer du til Proton Pass"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hoe Proton Pass importeren"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jak zaimportować hasła do Proton Pass"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Como importar para o Proton Pass"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cum se importă în Proton Pass"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ako importovať do Proton Pass"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kako uvoziti v Proton Pass"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hur man importerar till Proton Pass"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verileri Proton Pass içine aktarmak"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Як імпортувати дані до Proton Pass"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cách nhập dữ liệu vào Proton Pass"
-          }
-        }
-      }
-    },
     "How to use Proton Pass" : {
       "localizations" : {
         "be" : {
@@ -68638,6 +68478,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ngay lập tức"
+          }
+        }
+      }
+    },
+    "Import from Chrome" : {
+      "comment" : "Option to trigger the import process from CSV files",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from Chrome"
+          }
+        }
+      }
+    },
+    "Import from other sources" : {
+      "comment" : "The app only supports importing from CSV files. This is the option to open the knowledge-base article on how to import from other file formats.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import from other sources"
+          }
+        }
+      }
+    },
+    "Import to Proton Pass" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import to Proton Pass"
           }
         }
       }

@@ -72,8 +72,8 @@ public final class SetUpBeforeLaunching: SetUpBeforeLaunchingUseCase {
         do {
             try await userManager.setUp()
             try await prefererencesManager.setUp()
-            try await applyMigration()
             authManager.setUp()
+            try await applyMigration()
 
             await MainActor.run {
                 let theme = prefererencesManager.sharedPreferences.unwrapped().theme

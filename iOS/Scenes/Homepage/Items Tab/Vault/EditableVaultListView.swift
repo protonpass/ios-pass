@@ -84,8 +84,12 @@ struct EditableVaultListView: View {
                presenting: vaultToDelete,
                actions: { vault in
                    TextField("Vault name", text: $vaultNameConfirmation)
-                   Button("Delete", action: { viewModel.delete(vault: vault) })
-                       .disabled(vaultNameConfirmation != vault.vaultName)
+                   Button("Delete",
+                          action: {
+                              vaultNameConfirmation = ""
+                              viewModel.delete(vault: vault)
+                          })
+                          .disabled(vaultNameConfirmation != vault.vaultName)
                    Button("Cancel", action: { vaultNameConfirmation = "" })
                },
                message: { vault in

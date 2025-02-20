@@ -31,6 +31,8 @@ public extension PassModule {
             #localized("AutoFill extension logs", bundle: .module)
         case .shareExtension:
             #localized("Share extension logs", bundle: .module)
+        case .actionExtension:
+            #localized("Action extension logs", bundle: .module)
         }
     }
 
@@ -42,6 +44,8 @@ public extension PassModule {
             "pass_autofill_extension.log"
         case .shareExtension:
             "pass_share_extension.log"
+        case .actionExtension:
+            "pass_action_extension.log"
         }
     }
 
@@ -54,6 +58,8 @@ public extension PassModule {
             "pass_autofill_extension\(hash).log"
         case .shareExtension:
             "pass_share_extension\(hash).log"
+        case .actionExtension:
+            "pass_action_extension\(hash).log"
         }
         return fileName
     }

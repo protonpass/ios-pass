@@ -488,7 +488,7 @@ private extension AppContentManager {
                                  description: #localized("Personal"),
                                  color: .color1,
                                  icon: .icon1)
-        try await shareRepository.createVault(vault)
+        try await shareRepository.createVault(userId: nil, vault: vault)
         logger.info("Created default vault for user")
     }
 

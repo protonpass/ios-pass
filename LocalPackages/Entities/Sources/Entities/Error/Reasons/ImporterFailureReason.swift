@@ -1,7 +1,7 @@
 //
-// PassModule.swift
-// Proton Pass - Created on 09/07/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// ImporterFailureReason.swift
+// Proton Pass - Created on 06/06/2024.
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -17,12 +17,28 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
+//
 
 import Foundation
 
-// swiftlint:disable raw_value_for_camel_cased_codable_enum
-public enum PassModule: String, CaseIterable, Sendable, Codable, Hashable {
-    case hostApp, autoFillExtension, shareExtension, actionExtension
-}
+public extension PassError {
+    enum ImporterFailureReason: CustomDebugStringConvertible, Sendable {
+        case missingDatasource
+        case noCsvUrl
+        case noLoginsFound
+        case noCsvContent
 
-// swiftlint:enable raw_value_for_camel_cased_codable_enum
+        public var debugDescription: String {
+            switch self {
+            case .missingDatasource:
+                "Datasource is not set"
+            case .noCsvUrl:
+                "No URL for CSV file"
+            case .noLoginsFound:
+                "No logins found"
+            case .noCsvContent:
+                "No CSV content"
+            }
+        }
+    }
+}
