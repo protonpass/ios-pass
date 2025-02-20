@@ -67,6 +67,12 @@ final class AccountViewModel: ObservableObject, DeinitPrintable {
 
     var username: String { userManager.currentActiveUser.value?.user.email ?? "" }
 
+    var canRestorePurchases: Bool {
+        !Bundle.main.isBetaBuild &&
+            plan?.isBusinessUser == false &&
+            featureFlagsRepository.isEnabled(CoreFeatureFlagType.paymentsV2)
+    }
+
     var isSSOUser: Bool {
         (userManager.currentActiveUser.value?.user.isSSOAccount ?? false)
     }
@@ -115,6 +121,20 @@ extension AccountViewModel {
         paymentsManager.manageSubscription(isUpgrading: true) { [weak self] result in
             guard let self else { return }
             handlePaymentsResult(result: result)
+        }
+    }
+
+    func restorePurchases() {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { isLoading = false }
+            isLoading = true
+            do {
+                try await paymentsManager.restorePurchases()
+                try await accessRepository.refreshAccess(userId: nil)
+            } catch {
+                handle(error: error)
+            }
         }
     }
 
