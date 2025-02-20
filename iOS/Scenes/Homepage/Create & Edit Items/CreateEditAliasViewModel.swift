@@ -304,11 +304,7 @@ extension CreateEditAliasViewModel {
     }
 
     func addMailbox() {
-        if isFreeUser {
-            router.present(for: .upselling(.default, .topMost))
-        } else {
-            router.present(for: .addMailbox)
-        }
+        router.present(for: isFreeUser ? .upselling(.default, .topMost) : .addMailbox)
     }
 
     func addDomain() {
