@@ -24,7 +24,7 @@ import DesignSystem
 import Entities
 import Factory
 import Screens
-import UIKit
+@preconcurrency import UIKit
 import UniformTypeIdentifiers
 
 @MainActor
@@ -205,7 +205,9 @@ extension ActionCoordinator: ImporterDatasource {
 
             for provider in attachments {
                 if provider.hasItemConformingToTypeIdentifier(id),
-                   let url = try await provider.loadItem(forTypeIdentifier: id) as? URL {
+                   let url = try await Task(operation: { @Sendable in
+                       try await provider.loadItem(forTypeIdentifier: id) as? URL
+                   }).value {
                     let data = try Data(contentsOf: url)
                     csvString = String(data: data, encoding: .utf8)
                 }
