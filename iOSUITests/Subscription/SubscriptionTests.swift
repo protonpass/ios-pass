@@ -31,13 +31,13 @@ import Testing
 class SubscriptionTests: LoginBaseTestCase {
     private let welcomeRobot = WelcomeRobot()
     private let homeRobot = HomeRobot()
-    private var session: SKTestSession!
+//    private var session: SKTestSession!
 
-    override func setUpWithError() throws {
-        session = try SKTestSession(configurationFileNamed: "Proton Pass - Password Manager")
-        session.disableDialogs = true
-        session.clearTransactions()
-    }
+//    override func setUpWithError() throws {
+//        session = try SKTestSession(configurationFileNamed: "Proton Pass - Password Manager")
+//        session.disableDialogs = true
+//        session.clearTransactions()
+//    }
 
     fileprivate func createUserVerifySubscription(plan: PaymentsPlan) throws {
         let user = User(name: randomName, password: randomPassword)
