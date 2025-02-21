@@ -284,7 +284,7 @@ private struct MailboxElementRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(mailBox.displayedEmail)
+                Text(mailBox.email)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -311,7 +311,9 @@ private struct MailboxElementRow: View {
                     Label(title: { Text("Verify") },
                           icon: { Image(uiImage: IconProvider.checkmarkCircle) })
                         .buttonEmbeded(action: verify)
-                } else if !isDefault {
+                }
+
+                if mailBox.verified, !isDefault {
                     Label(title: { Text("Make default") },
                           icon: { Image(uiImage: IconProvider.star) })
                         .buttonEmbeded(action: setDefault)

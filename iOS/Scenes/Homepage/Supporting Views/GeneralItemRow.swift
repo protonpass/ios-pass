@@ -69,6 +69,7 @@ struct GeneralItemRow<ThumbnailView: View>: View {
                         .lineLimit(titleLineLimit)
                         .multilineTextAlignment(.leading)
                         .truncationMode(secondaryTitle == nil ? .tail : .middle)
+                        .frame(alignment: .leading)
                         .fixedSize(horizontal: false, vertical: true)
 
                     if hasTotp {
