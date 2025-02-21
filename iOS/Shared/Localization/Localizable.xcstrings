@@ -32100,6 +32100,16 @@
         }
       }
     },
+    "Cancel mailbox change" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel mailbox change"
+          }
+        }
+      }
+    },
     "Capital letters" : {
       "localizations" : {
         "be" : {

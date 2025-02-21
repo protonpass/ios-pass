@@ -186,6 +186,24 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
             }
         }
     }
+
+    func cancelChange(mailbox: Mailbox) {
+        Task { [weak self] in
+            guard let self else { return }
+            defer { changingMailboxEmail = false }
+            changingMailboxEmail = true
+            do {
+                let userId = try await userManager.getActiveUserId()
+                try await aliasRepository.cancelMailboxChange(userId: userId,
+                                                              mailboxId: mailbox.mailboxID)
+                if let index = mailboxes.firstIndex(where: { $0.mailboxID == mailbox.mailboxID }) {
+                    mailboxes[index].pendingEmail = nil
+                }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
 }
 
 private extension AliasSyncConfigurationViewModel {
