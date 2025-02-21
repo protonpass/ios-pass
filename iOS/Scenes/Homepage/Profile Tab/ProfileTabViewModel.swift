@@ -60,7 +60,7 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     // Use cases
     private let indexAllLoginItems = resolve(\SharedUseCasesContainer.indexAllLoginItems)
     private let unindexAllLoginItems = resolve(\SharedUseCasesContainer.unindexAllLoginItems)
-    private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
     private let secureLinkManager = resolve(\ServiceContainer.secureLinkManager)
@@ -217,7 +217,12 @@ extension ProfileTabViewModel {
     }
 
     func handleEnableAutoFillAction() {
-        openAutoFillSettings()
+        Task { [weak self] in
+            guard let self else { return }
+            if await enableAutoFill() {
+                refresh()
+            }
+        }
     }
 
     func handleItemTypeSelection(_ type: ItemContentType) {

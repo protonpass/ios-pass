@@ -69,7 +69,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let getAllPinnedItems = resolve(\UseCasesContainer.getAllPinnedItems)
     private let symmetricKeyProvider = resolve(\SharedDataContainer.symmetricKeyProvider)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
-    private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
     private let shouldDisplayUpgradeAppBanner = resolve(\UseCasesContainer.shouldDisplayUpgradeAppBanner)
     private let getAppPreferences = resolve(\SharedUseCasesContainer.getAppPreferences)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
@@ -484,7 +484,12 @@ extension ItemsTabViewModel {
         case .trial:
             delegate?.itemsTabViewModelWantsToShowTrialDetail()
         case .autofill:
-            openAutoFillSettings()
+            Task { [weak self] in
+                guard let self else { return }
+                if await enableAutoFill() {
+                    banners.removeAll(where: { $0 == .autofill })
+                }
+            }
         case .aliases:
             router.navigate(to: .urlPage(urlString: "https://proton.me/support/pass-alias-ios"))
         case let .invite(invites: invites):
