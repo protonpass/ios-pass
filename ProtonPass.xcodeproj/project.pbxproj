@@ -21,7 +21,7 @@
 		351B420E2B6419FA003FA3E3 /* LocalAuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AAA2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift */; };
 		351B420F2B641A00003FA3E3 /* BiometricAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */; };
 		351B42102B641A03003FA3E3 /* PinAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA62A4458F400AD2B9A /* PinAuthenticationView.swift */; };
-		351E31A82B271E6E00750504 /* OpenAutoFillSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E31A72B271E6E00750504 /* OpenAutoFillSettings.swift */; };
+		351E31A82B271E6E00750504 /* EnableAutoFill.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351E31A72B271E6E00750504 /* EnableAutoFill.swift */; };
 		3520F36328E325900053A606 /* CredentialsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3520F36228E325900053A606 /* CredentialsViewModel.swift */; };
 		35219D7F2AE1C38D00868F78 /* ShareInvitee+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35219D7E2AE1C38D00868F78 /* ShareInvitee+Extensions.swift */; };
 		352352B62B91DEB400603B91 /* ItemSearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 352352B52B91DEB400603B91 /* ItemSearchResultView.swift */; };
@@ -760,7 +760,7 @@
 		35116E782A82847300CAD616 /* View+ItemDetailSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ItemDetailSetUp.swift"; sourceTree = "<group>"; };
 		351225A62C502602007D266E /* HomepageCoordinator+AddAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+AddAccount.swift"; sourceTree = "<group>"; };
 		351A96002BAC7E8700D599BB /* TipKitSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TipKitSection.swift; sourceTree = "<group>"; };
-		351E31A72B271E6E00750504 /* OpenAutoFillSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenAutoFillSettings.swift; sourceTree = "<group>"; };
+		351E31A72B271E6E00750504 /* EnableAutoFill.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnableAutoFill.swift; sourceTree = "<group>"; };
 		3520F36228E325900053A606 /* CredentialsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialsViewModel.swift; sourceTree = "<group>"; };
 		35219D7E2AE1C38D00868F78 /* ShareInvitee+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareInvitee+Extensions.swift"; sourceTree = "<group>"; };
 		352352B52B91DEB400603B91 /* ItemSearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemSearchResultView.swift; sourceTree = "<group>"; };
@@ -2261,7 +2261,7 @@
 		5B503FE22A4D6D6900E6681C /* UseCases */ = {
 			isa = PBXGroup;
 			children = (
-				351E31A72B271E6E00750504 /* OpenAutoFillSettings.swift */,
+				351E31A72B271E6E00750504 /* EnableAutoFill.swift */,
 			);
 			path = UseCases;
 			sourceTree = "<group>";
@@ -3734,7 +3734,7 @@
 				35733B7529CC483300052229 /* CreateEditVaultViewModel.swift in Sources */,
 				35805D0A2BD8E39300288CC0 /* MonitorExcludedEmailView.swift in Sources */,
 				3560843A29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
-				351E31A82B271E6E00750504 /* OpenAutoFillSettings.swift in Sources */,
+				351E31A82B271E6E00750504 /* EnableAutoFill.swift in Sources */,
 				355A2E732C5B83CC00F000B3 /* HomepageCoordinator+AppCover.swift in Sources */,
 				5BDDEABD2C5916590068B9DF /* SearchViewModifier.swift in Sources */,
 				354F769828C879CC00EB2383 /* NoteDetailViewModel.swift in Sources */,
