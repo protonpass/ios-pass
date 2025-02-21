@@ -27,7 +27,6 @@ extension HomepageCoordinator {
     func suggestSimpleLoginSyncIfApplicable() async throws {
         do {
             guard !preferencesManager.userPreferences.unwrapped().dismissedAliasesSyncSheet,
-                  getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync),
                   let count = try await getPendingAliasCount() else {
                 return
             }

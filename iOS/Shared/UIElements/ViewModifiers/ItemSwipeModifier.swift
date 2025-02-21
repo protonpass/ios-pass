@@ -30,7 +30,6 @@ struct ItemSwipeModifier: ViewModifier {
     let isTrashed: Bool
     let isEditable: Bool
     let itemContextMenuHandler: ItemContextMenuHandler
-    let aliasSyncEnabled: Bool
 
     @State private var showingTrashAliasAlert = false
 
@@ -70,7 +69,7 @@ struct ItemSwipeModifier: ViewModifier {
                     .tint(PassColor.signalDanger.toColor)
                 } else {
                     Button(action: {
-                        if aliasSyncEnabled, item.type == .alias {
+                        if item.type == .alias {
                             showingTrashAliasAlert.toggle()
                         } else {
                             itemContextMenuHandler.trash(item)
@@ -85,11 +84,9 @@ struct ItemSwipeModifier: ViewModifier {
                     .tint(PassColor.signalDanger.toColor)
                 }
             }
-            .if(aliasSyncEnabled) {
-                $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
-                                                    enabled: item.aliasEnabled,
-                                                    disableAction: { itemContextMenuHandler.disableAlias(item) },
-                                                    trashAction: { itemContextMenuHandler.trash(item) }))
-            }
+            .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $showingTrashAliasAlert,
+                                              enabled: item.aliasEnabled,
+                                              disableAction: { itemContextMenuHandler.disableAlias(item) },
+                                              trashAction: { itemContextMenuHandler.trash(item) }))
     }
 }

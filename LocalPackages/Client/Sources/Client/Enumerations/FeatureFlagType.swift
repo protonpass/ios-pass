@@ -26,8 +26,6 @@ import ProtonCoreFeatureFlags
 /// Example:
 ///    case passSharingV1 = "PassSharingV1"
 public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
-    case passSimpleLoginAliasesSync = "PassSimpleLoginAliasesSync"
-    case passAdvancedAliasManagementV1 = "PassAdvancedAliasManagementV1"
     case passInAppMessagesV1 = "PassInAppMessagesV1"
     case passIOSBetterAuthentication = "PassIOSBetterAuthentication"
     case passFileAttachmentsV1 = "PassFileAttachmentsV1"

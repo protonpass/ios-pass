@@ -78,7 +78,6 @@ struct AliasSyncConfigurationView: View {
                             ForEach(viewModel.mailboxes) { mailbox in
                                 MailboxElementRow(mailBox: mailbox,
                                                   isDefault: mailbox == viewModel.defaultMailbox,
-                                                  showMenu: viewModel.isAdvancedAliasManagementActive,
                                                   changeEmail: { mailboxToChange = $0 },
                                                   setDefault: { mailbox in
                                                       viewModel.setDefaultMailBox(mailbox: mailbox)
@@ -109,7 +108,7 @@ struct AliasSyncConfigurationView: View {
                 HStack {
                     sectionHeader("Mailboxes")
                     Spacer()
-                    if viewModel.isAdvancedAliasManagementActive, !viewModel.loading, viewModel.error == nil {
+                    if !viewModel.loading, viewModel.error == nil {
                         CapsuleLabelButton(icon: IconProvider.plus,
                                            title: #localized("Add"),
                                            titleColor: PassColor.interactionNormMajor2,
@@ -277,7 +276,6 @@ private extension AliasSyncConfigurationView {
 private struct MailboxElementRow: View {
     let mailBox: Mailbox
     let isDefault: Bool
-    let showMenu: Bool
     let changeEmail: (Mailbox) -> Void
     let setDefault: (Mailbox) -> Void
     let delete: (Mailbox) -> Void
@@ -308,35 +306,33 @@ private struct MailboxElementRow: View {
 
             Spacer()
 
-            if showMenu {
-                Menu(content: {
-                    Label(title: { Text("Change mailbox email") },
-                          icon: { Image(uiImage: IconProvider.pencil) })
-                        .buttonEmbeded { changeEmail(mailBox) }
+            Menu(content: {
+                Label(title: { Text("Change mailbox email") },
+                      icon: { Image(uiImage: IconProvider.pencil) })
+                    .buttonEmbeded { changeEmail(mailBox) }
 
-                    if mailBox.verificationNeeded {
-                        Label(title: { Text("Verify") },
-                              icon: { Image(uiImage: IconProvider.checkmarkCircle) })
-                            .buttonEmbeded { verify(mailBox) }
-                    } else if !isDefault {
-                        Label(title: { Text("Make default") },
-                              icon: { Image(uiImage: IconProvider.star) })
-                            .buttonEmbeded { setDefault(mailBox) }
-                    }
+                if mailBox.verificationNeeded {
+                    Label(title: { Text("Verify") },
+                          icon: { Image(uiImage: IconProvider.checkmarkCircle) })
+                        .buttonEmbeded { verify(mailBox) }
+                } else if !isDefault {
+                    Label(title: { Text("Make default") },
+                          icon: { Image(uiImage: IconProvider.star) })
+                        .buttonEmbeded { setDefault(mailBox) }
+                }
 
-                    if !isDefault {
-                        Divider()
-                        Label(title: { Text("Delete") },
-                              icon: { Image(uiImage: IconProvider.trash) })
-                            .buttonEmbeded { delete(mailBox) }
-                    }
-                }, label: {
-                    CircleButton(icon: IconProvider.threeDotsVertical,
-                                 iconColor: PassColor.textWeak,
-                                 backgroundColor: .clear,
-                                 accessibilityLabel: "Mailbox action menu")
-                })
-            }
+                if !isDefault {
+                    Divider()
+                    Label(title: { Text("Delete") },
+                          icon: { Image(uiImage: IconProvider.trash) })
+                        .buttonEmbeded { delete(mailBox) }
+                }
+            }, label: {
+                CircleButton(icon: IconProvider.threeDotsVertical,
+                             iconColor: PassColor.textWeak,
+                             backgroundColor: .clear,
+                             accessibilityLabel: "Mailbox action menu")
+            })
         }
     }
 }
