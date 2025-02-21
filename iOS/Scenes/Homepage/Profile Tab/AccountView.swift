@@ -59,6 +59,19 @@ struct AccountView: View {
                 }
                 .roundedEditableSection()
 
+                if viewModel.canRestorePurchases {
+                    VStack(spacing: 0) {
+                        OptionRow(action: { viewModel.restorePurchases() },
+                                  height: .tall,
+                                  content: {
+                                      Text("Restore purchases")
+                                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                                  })
+                    }
+                    .roundedEditableSection()
+                    .padding(.top)
+                }
+
                 if viewModel.shouldShowSecurityKeys {
                     VStack(spacing: 0) {
                         OptionRow(action: { viewModel.showSecurityKeys() },
