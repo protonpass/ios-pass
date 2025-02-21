@@ -70,6 +70,8 @@ private extension HomepageCoordinator {
     func display(_ notification: InAppNotification,
                  onAppear: @escaping () -> Void,
                  onDisappear: @escaping () -> Void) {
+        // Do not display in-app notification if there's currently another sheet
+        guard rootViewController.presentedViewController == nil else { return }
         addTelemetryEvent(with: .notificationDisplay(key: notification.notificationKey))
 
         switch notification.displayType {
