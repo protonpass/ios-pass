@@ -298,7 +298,7 @@ private struct MailboxElementRow: View {
                             .background(PassColor.interactionNormMajor2.toColor)
                             .clipShape(Capsule())
                     }
-                    Text(mailBox.verified ? "\(mailBox.aliasCount) aliases" : "Unverified mailbox")
+                    Text(description)
                         .font(.footnote)
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
@@ -307,10 +307,6 @@ private struct MailboxElementRow: View {
             Spacer()
 
             Menu(content: {
-                Label(title: { Text("Change mailbox email") },
-                      icon: { Image(uiImage: IconProvider.pencil) })
-                    .buttonEmbeded(action: changeEmail)
-
                 if mailBox.verificationNeeded {
                     Label(title: { Text("Verify") },
                           icon: { Image(uiImage: IconProvider.checkmarkCircle) })
@@ -321,7 +317,11 @@ private struct MailboxElementRow: View {
                         .buttonEmbeded(action: setDefault)
                 }
 
-                if mailBox.pendingEmail != nil {
+                if mailBox.pendingEmail == nil {
+                    Label(title: { Text("Change mailbox email") },
+                          icon: { Image(uiImage: IconProvider.pencil) })
+                        .buttonEmbeded(action: changeEmail)
+                } else {
                     Label("Cancel mailbox change", systemImage: "xmark.circle")
                         .buttonEmbeded(action: cancelChange)
                 }
@@ -338,6 +338,14 @@ private struct MailboxElementRow: View {
                              backgroundColor: .clear,
                              accessibilityLabel: "Mailbox action menu")
             })
+        }
+    }
+
+    private var description: LocalizedStringKey {
+        if mailBox.pendingEmail != nil {
+            "Unverified mailbox change"
+        } else {
+            mailBox.verified ? "\(mailBox.aliasCount) aliases" : "Unverified mailbox"
         }
     }
 }

@@ -136245,6 +136245,16 @@
         }
       }
     },
+    "Unverified mailbox change" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unverified mailbox change"
+          }
+        }
+      }
+    },
     "Update vault" : {
       "comment" : "The title for the save button when editing vault",
       "localizations" : {
