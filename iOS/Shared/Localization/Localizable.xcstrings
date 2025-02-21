@@ -107589,6 +107589,17 @@
         }
       }
     },
+    "Restore purchases" : {
+      "comment" : "Title of the button to retry failed upgrade to paid plan",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore purchases"
+          }
+        }
+      }
+    },
     "Restore this version?" : {
       "localizations" : {
         "be" : {
