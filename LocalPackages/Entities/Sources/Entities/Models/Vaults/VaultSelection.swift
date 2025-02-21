@@ -63,6 +63,15 @@ public enum VaultSelection: Hashable, Sendable {
             "trash"
         }
     }
+
+    public var isShared: Bool {
+        switch self {
+        case .sharedByMe, .sharedWithMe:
+            true
+        default:
+            false
+        }
+    }
 }
 
 extension VaultSelection: Equatable {
