@@ -49,15 +49,17 @@ public struct AliasSyncView: View {
 
                 Spacer()
 
-                Text("Sync your aliases from SimpleLogin")
+                Text("Sync your aliases from SimpleLogin", bundle: .module)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .font(.title.bold())
 
-                Text(#localized("%lld aliases present in SimpleLogin but missing in Proton Pass.", count))
+                Text(#localized("%lld aliases present in SimpleLogin but missing in Proton Pass.", bundle: .module,
+                                count))
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .padding(.vertical, 8)
 
-                Text("Once synced, deleting aliases in Pass will also delete them in SimpleLogin.")
+                Text("Once synced, deleting aliases in Pass will also delete them in SimpleLogin.",
+                     bundle: .module)
                     .padding()
                     .foregroundStyle(PassColor.noteInteractionNormMajor2.toColor)
                     .background(PassColor.noteInteractionNormMinor1.toColor)
@@ -65,7 +67,7 @@ public struct AliasSyncView: View {
 
                 Spacer()
 
-                CapsuleTextButton(title: #localized("Sync aliases"),
+                CapsuleTextButton(title: #localized("Sync aliases", bundle: .module),
                                   titleColor: PassColor.interactionNormMinor1,
                                   backgroundColor: PassColor.interactionNormMajor2,
                                   height: 48,
