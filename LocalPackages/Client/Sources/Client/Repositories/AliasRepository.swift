@@ -39,6 +39,7 @@ public protocol AliasRepositoryProtocol: Sendable {
     func changeMailboxEmail(userId: String,
                             mailboxId: Int,
                             newMailboxEmail: String) async throws -> Mailbox
+    func cancelMailboxChange(userId: String, mailboxId: Int) async throws
 
     // MARK: - Simple login alias Sync
 
@@ -152,6 +153,10 @@ public extension AliasRepository {
         try await remoteDatasource.changeMailboxEmail(userId: userId,
                                                       mailboxId: mailboxId,
                                                       newEmail: newMailboxEmail)
+    }
+
+    func cancelMailboxChange(userId: String, mailboxId: Int) async throws {
+        try await remoteDatasource.cancelMailboxChange(userId: userId, mailboxId: mailboxId)
     }
 }
 
