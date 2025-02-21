@@ -78,11 +78,10 @@ struct AliasSyncConfigurationView: View {
                             ForEach(viewModel.mailboxes) { mailbox in
                                 MailboxElementRow(mailBox: mailbox,
                                                   isDefault: mailbox == viewModel.defaultMailbox,
-                                                  changeEmail: { mailboxToChange = $0 },
-                                                  setDefault: { mailbox in
-                                                      viewModel.setDefaultMailBox(mailbox: mailbox)
-                                                  },
-                                                  delete: { mailbox in
+                                                  changeEmail: { mailboxToChange = mailbox },
+                                                  cancelChange: { viewModel.cancelChange(mailbox: mailbox) },
+                                                  setDefault: { viewModel.setDefaultMailBox(mailbox: mailbox) },
+                                                  delete: {
                                                       if mailbox.verified, mailbox.aliasCount > 0 {
                                                           mailboxToDelete = mailbox
                                                       } else {
@@ -90,7 +89,7 @@ struct AliasSyncConfigurationView: View {
                                                                            transferMailboxId: nil)
                                                       }
                                                   },
-                                                  verify: { router.present(sheet: .addEmail(.mailbox($0))) })
+                                                  verify: { router.present(sheet: .addEmail(.mailbox(mailbox))) })
                             }
                         }
                     }
@@ -276,10 +275,11 @@ private extension AliasSyncConfigurationView {
 private struct MailboxElementRow: View {
     let mailBox: Mailbox
     let isDefault: Bool
-    let changeEmail: (Mailbox) -> Void
-    let setDefault: (Mailbox) -> Void
-    let delete: (Mailbox) -> Void
-    let verify: (Mailbox) -> Void
+    let changeEmail: () -> Void
+    let cancelChange: () -> Void
+    let setDefault: () -> Void
+    let delete: () -> Void
+    let verify: () -> Void
 
     var body: some View {
         HStack {
@@ -309,23 +309,28 @@ private struct MailboxElementRow: View {
             Menu(content: {
                 Label(title: { Text("Change mailbox email") },
                       icon: { Image(uiImage: IconProvider.pencil) })
-                    .buttonEmbeded { changeEmail(mailBox) }
+                    .buttonEmbeded(action: changeEmail)
 
                 if mailBox.verificationNeeded {
                     Label(title: { Text("Verify") },
                           icon: { Image(uiImage: IconProvider.checkmarkCircle) })
-                        .buttonEmbeded { verify(mailBox) }
+                        .buttonEmbeded(action: verify)
                 } else if !isDefault {
                     Label(title: { Text("Make default") },
                           icon: { Image(uiImage: IconProvider.star) })
-                        .buttonEmbeded { setDefault(mailBox) }
+                        .buttonEmbeded(action: setDefault)
+                }
+
+                if mailBox.pendingEmail != nil {
+                    Label("Cancel mailbox change", systemImage: "xmark.circle")
+                        .buttonEmbeded(action: cancelChange)
                 }
 
                 if !isDefault {
                     Divider()
                     Label(title: { Text("Delete") },
                           icon: { Image(uiImage: IconProvider.trash) })
-                        .buttonEmbeded { delete(mailBox) }
+                        .buttonEmbeded(action: delete)
                 }
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,

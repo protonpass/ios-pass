@@ -22,7 +22,7 @@ public struct Mailbox: Decodable, Hashable, Equatable, Sendable, Identifiable {
     public let mailboxID: Int
     public let email: String
     /// In case there is a pending email change, this will show what is the requested email change
-    public let pendingEmail: String?
+    public var pendingEmail: String?
     public let verified: Bool
     public let isDefault: Bool
     public let aliasCount: Int
