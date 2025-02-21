@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "Action extension logs" : {
+      "comment" : "Action extension is Apple's extension and allows Proton Pass to be featured on iOS share sheet as an option",
       "localizations" : {
         "en" : {
           "stringUnit" : {
