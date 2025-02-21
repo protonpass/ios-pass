@@ -282,6 +282,7 @@ private extension ItemsTabView {
     @ViewBuilder
     func itemRow(_ item: ItemUiModel) -> ItemRow {
         let isTrashed = viewModel.appContentManager.vaultSelection == .trash
+        let isSwipeEnabled = !viewModel.appContentManager.vaultSelection.isShared
         let isEditable = viewModel.isEditable(item)
         let isSelected = viewModel.isSelected(item)
         ItemRow(item: item,
@@ -289,6 +290,7 @@ private extension ItemsTabView {
                 isEditable: isEditable,
                 isSelected: isSelected,
                 isTrashed: isTrashed,
+                isSwipeEnabled: isSwipeEnabled,
                 onSelectThumbnail: { viewModel.handleThumbnailSelection(item) },
                 onSelectItem: { viewModel.handleSelection(item) },
                 itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
@@ -304,6 +306,7 @@ private struct ItemRow: View {
     let isEditable: Bool
     let isSelected: Bool
     let isTrashed: Bool
+    let isSwipeEnabled: Bool
     let onSelectThumbnail: () -> Void
     let onSelectItem: () -> Void
     let itemToBePermanentlyDeleted: Binding<(any ItemTypeIdentifiable)?>
@@ -331,6 +334,7 @@ private struct ItemRow: View {
                     view.itemContextMenu(item: item,
                                          isTrashed: isTrashed,
                                          isEditable: isEditable,
+                                         canBeTrashed: isSwipeEnabled,
                                          onPermanentlyDelete: onPermanentlyDelete,
                                          onAliasTrash: onAliasTrash,
                                          handler: itemContextMenuHandler)
@@ -341,12 +345,14 @@ private struct ItemRow: View {
                 .animation(.default, value: isSelected)
         }
         .frame(height: 64)
-        .modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: itemToBePermanentlyDeleted,
-                                    item: item,
-                                    isEditMode: isEditMode,
-                                    isTrashed: isTrashed,
-                                    isEditable: isEditable,
-                                    itemContextMenuHandler: itemContextMenuHandler))
+        .if(isSwipeEnabled) { view in
+            view.modifier(ItemSwipeModifier(itemToBePermanentlyDeleted: itemToBePermanentlyDeleted,
+                                            item: item,
+                                            isEditMode: isEditMode,
+                                            isTrashed: isTrashed,
+                                            isEditable: isEditable,
+                                            itemContextMenuHandler: itemContextMenuHandler))
+        }
         .disabled(!isEditable && isEditMode)
         .listRowSeparator(.hidden)
         .listRowInsets(.init(top: 4, leading: 0, bottom: 4, trailing: 0))
