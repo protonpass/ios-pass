@@ -7007,6 +7007,7 @@
       }
     },
     "Import" : {
+      "comment" : "Title of the button",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -8772,6 +8773,7 @@
       }
     },
     "Please sign in to use Proton Pass Action extension" : {
+      "comment" : "Action extension is Apple's extension and allows Proton Pass to be featured on iOS share sheet as an option",
       "localizations" : {
         "en" : {
           "stringUnit" : {
