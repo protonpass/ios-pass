@@ -72,21 +72,19 @@ struct SearchResultsView: View {
                 tableView
             }
         }
-        .if(viewModel.aliasSyncEnabled) {
-            $0.modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
-                                                enabled: aliasToTrash?.aliasEnabled ?? false,
-                                                disableAction: {
-                                                    if let aliasToTrash {
-                                                        viewModel.itemContextMenuHandler
-                                                            .disableAlias(aliasToTrash)
-                                                    }
-                                                },
-                                                trashAction: {
-                                                    if let aliasToTrash {
-                                                        viewModel.itemContextMenuHandler.trash(aliasToTrash)
-                                                    }
-                                                }))
-        }
+        .modifier(AliasTrashAlertModifier(showingTrashAliasAlert: $aliasToTrash.mappedToBool(),
+                                          enabled: aliasToTrash?.aliasEnabled ?? false,
+                                          disableAction: {
+                                              if let aliasToTrash {
+                                                  viewModel.itemContextMenuHandler
+                                                      .disableAlias(aliasToTrash)
+                                              }
+                                          },
+                                          trashAction: {
+                                              if let aliasToTrash {
+                                                  viewModel.itemContextMenuHandler.trash(aliasToTrash)
+                                              }
+                                          }))
         .modifier(PermenentlyDeleteItemModifier(item: $viewModel.itemToBePermanentlyDeleted,
                                                 onDisableAlias: { viewModel.disableAlias() },
                                                 onDelete: { viewModel.permanentlyDelete() }))
@@ -113,7 +111,6 @@ struct SearchResultsView: View {
         ResultRow(item: item,
                   isEditable: viewModel.isEditable(item),
                   isTrash: viewModel.isTrash,
-                  aliasSyncEnabled: viewModel.aliasSyncEnabled,
                   itemContextMenuHandler: viewModel.itemContextMenuHandler,
                   itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
                   onSelect: { onSelectItem(item) },
@@ -244,7 +241,6 @@ private struct ResultRow: View {
     let item: ItemSearchResult
     let isEditable: Bool
     let isTrash: Bool
-    let aliasSyncEnabled: Bool
     let itemContextMenuHandler: ItemContextMenuHandler
     @Binding var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     let onSelect: () -> Void
@@ -256,7 +252,6 @@ private struct ResultRow: View {
                 .itemContextMenu(item: item,
                                  isTrashed: isTrash,
                                  isEditable: isEditable,
-                                 aliasSyncEnabled: aliasSyncEnabled,
                                  onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
                                  onAliasTrash: onAliasTrash,
                                  handler: itemContextMenuHandler)
@@ -269,7 +264,6 @@ private struct ResultRow: View {
                                     isEditMode: false,
                                     isTrashed: isTrash,
                                     isEditable: isEditable,
-                                    itemContextMenuHandler: itemContextMenuHandler,
-                                    aliasSyncEnabled: aliasSyncEnabled))
+                                    itemContextMenuHandler: itemContextMenuHandler))
     }
 }

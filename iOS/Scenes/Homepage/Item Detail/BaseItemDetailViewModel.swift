@@ -133,10 +133,6 @@ class BaseItemDetailViewModel: ObservableObject {
             (!files.isFetched || files.fetchedObject?.isEmpty == false)
     }
 
-    var aliasSyncEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passSimpleLoginAliasesSync)
-    }
-
     var itemSharingEnabled: Bool {
         getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }

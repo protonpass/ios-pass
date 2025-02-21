@@ -83,10 +83,6 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         logger = .init(manager: logManager)
     }
 
-    var isSimpleLoginAliasSyncActive: Bool {
-        featureFlagsRepository.isEnabled(FeatureFlagType.passSimpleLoginAliasesSync, reloadValue: true)
-    }
-
     /// Return `true` if new events found
     @discardableResult
     public func sync(userId: String) async throws -> Bool {
@@ -97,11 +93,7 @@ public actor EventSynchronizer: EventSynchronizerProtocol {
         logger.trace("Start sync: fetching local and remote shares + alias sync")
         async let fetchLocalShares = shareRepository.getShares(userId: userId)
         async let fetchRemoteShares = shareRepository.getDecryptedRemoteShares(userId: userId)
-        async let fetchAliasSync: Void = if isSimpleLoginAliasSyncActive {
-            aliasSync(userId: userId)
-        } else {
-            ()
-        }
+        async let fetchAliasSync: Void = aliasSync(userId: userId)
 
         if Task.isCancelled {
             return false

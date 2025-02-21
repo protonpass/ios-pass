@@ -48,10 +48,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
     }
 
-    var isAdvancedAliasManagementActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAdvancedAliasManagementV1)
-    }
-
     // One could be an editor of an alias but not the owner
     // Only owner can see and edit mailboxes
     var isAliasOwner: Bool {
@@ -118,9 +114,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     }
 
     func loadContact() async {
-        guard isAdvancedAliasManagementActive, isAllowedToEdit else {
-            return
-        }
+        guard isAllowedToEdit else { return }
         do {
             let userId = try await userManager.getActiveUserId()
             contacts = try await aliasRepository.getContacts(userId: userId,
