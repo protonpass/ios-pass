@@ -52,7 +52,7 @@ enum ValidationEmailType: Hashable {
         case let .customEmail(data):
             data?.email
         case let .mailbox(data):
-            data?.displayedEmail
+            data?.pendingEmail ?? data?.email
         }
     }
 

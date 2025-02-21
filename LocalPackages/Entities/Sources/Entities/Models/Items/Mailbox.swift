@@ -31,10 +31,6 @@ public struct Mailbox: Decodable, Hashable, Equatable, Sendable, Identifiable {
         pendingEmail != nil ? true : !verified
     }
 
-    public var displayedEmail: String {
-        pendingEmail ?? email
-    }
-
     public init(mailboxID: Int,
                 email: String,
                 pendingEmail: String?,
