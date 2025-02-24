@@ -202,7 +202,16 @@ extension AppContentManager {
 
             // 3. Create default vault if no vaults
             if remoteShares.isEmpty {
-                try await createDefaultVault()
+                do {
+                    try await createDefaultVault()
+                } catch {
+                    guard let apiError = error.asPassApiError,
+                          apiError == .notAllowed else {
+                        throw error
+                    }
+                    // Can't create default vault because of B2B policy
+                    // Do nothing and just move on
+                }
             }
 
             try await loadContents(userId: userId, for: remoteShares)
