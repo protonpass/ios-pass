@@ -91,6 +91,17 @@ struct ItemsTabView: View {
         FullSyncProgressView(mode: .logIn)
     }
 
+    private var noVaultsView: some View {
+        VStack {
+            Text("You don't have any vault")
+                .font(.title3.bold())
+                .foregroundStyle(PassColor.textNorm.toColor)
+            Text("Please contact your organization support team.")
+                .foregroundStyle(PassColor.textWeak.toColor)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+    }
+
     @ViewBuilder
     private func vaultContent(_ sections: [SectionedItemUiModel]) -> some View {
         GeometryReader { proxy in
@@ -114,6 +125,7 @@ struct ItemsTabView: View {
                                onPermanentlyDelete: { viewModel.askForBulkPermanentDeleteConfirmation() },
                                onDisableAliases: { viewModel.disableSelectedAliases() },
                                onEnableAliases: { viewModel.enableSelectedAliases() })
+                    .hidden(viewModel.noVaults)
 
                 if viewModel.showingUpgradeAppBanner {
                     Button(action: { viewModel.openAppOnAppStore() },
@@ -141,7 +153,9 @@ struct ItemsTabView: View {
                     Divider()
                 }
 
-                if sections.isEmpty {
+                if viewModel.noVaults {
+                    noVaultsView
+                } else if sections.isEmpty {
                     emptySections
                 } else {
                     itemList(sections)
