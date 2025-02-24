@@ -287,11 +287,15 @@ struct ProfileTabView: View {
                     Spacer()
 
                     Button { viewModel.handleEnableAutoFillAction() } label: {
-                        Label(ProcessInfo.processInfo.isiOSAppOnMac ? "Show me how" : "Open Settings",
-                              systemImage: "arrow.up.right.square")
-                            .font(.callout.weight(.semibold))
-                            .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                        if #available(iOS 18, *) {
+                            Text("Enable")
+                        } else {
+                            Label(ProcessInfo.processInfo.isiOSAppOnMac ? "Show me how" : "Open Settings",
+                                  systemImage: "arrow.up.right.square")
+                        }
                     }
+                    .font(.callout.weight(.semibold))
+                    .foregroundStyle(PassColor.interactionNormMajor2.toColor)
                 }
             }
             .roundedEditableSection()
