@@ -30,6 +30,7 @@ import SwiftUI
 enum ItemContextMenu {
     case login(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
+               canBeTrashed: Bool,
                onCopyEmail: () -> Void,
                onCopyUsername: () -> Void,
                onCopyPassword: () -> Void,
@@ -40,6 +41,7 @@ enum ItemContextMenu {
 
     case alias(item: any PinnableItemTypeIdentifiable,
                isEditable: Bool,
+               canBeTrashed: Bool,
                onCopyAlias: () -> Void,
                onToggleAliasStatus: (Bool) -> Void,
                onEdit: () -> Void,
@@ -49,6 +51,7 @@ enum ItemContextMenu {
 
     case creditCard(item: any PinnableItemTypeIdentifiable,
                     isEditable: Bool,
+                    canBeTrashed: Bool,
                     onCopyCardholderName: () -> Void,
                     onCopyCardNumber: () -> Void,
                     onCopyExpirationDate: () -> Void,
@@ -60,6 +63,7 @@ enum ItemContextMenu {
 
     case note(item: any PinnableItemTypeIdentifiable,
               isEditable: Bool,
+              canBeTrashed: Bool,
               onCopyContent: () -> Void,
               onEdit: () -> Void,
               onPinToggle: () -> Void,
@@ -68,6 +72,7 @@ enum ItemContextMenu {
 
     case identity(item: any PinnableItemTypeIdentifiable,
                   isEditable: Bool,
+                  canBeTrashed: Bool,
                   onCopyEmail: () -> Void,
                   onCopyFullname: () -> Void,
                   onEdit: () -> Void,
@@ -83,6 +88,7 @@ enum ItemContextMenu {
         switch self {
         case let .login(item,
                         isEditable,
+                        canBeTrashed,
                         onCopyEmail,
                         onCopyUsername,
                         onCopyPassword,
@@ -106,6 +112,7 @@ enum ItemContextMenu {
 
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
+                                                canBeTrashed: canBeTrashed,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
                                                 onViewHistory: onViewHistory,
@@ -115,6 +122,7 @@ enum ItemContextMenu {
 
         case let .alias(item,
                         isEditable,
+                        canBeTrashed,
                         onCopyAlias,
                         onToggleAliasStatus,
                         onEdit,
@@ -142,6 +150,7 @@ enum ItemContextMenu {
             sections.append(.init(options: firstOptions))
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
+                                                canBeTrashed: canBeTrashed,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
                                                 onViewHistory: onViewHistory,
@@ -151,6 +160,7 @@ enum ItemContextMenu {
 
         case let .creditCard(item,
                              isEditable,
+                             canBeTrashed,
                              onCopyCardholderName,
                              onCopyCardNumber,
                              onCopyExpirationDate,
@@ -178,6 +188,7 @@ enum ItemContextMenu {
 
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
+                                                canBeTrashed: canBeTrashed,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
                                                 onViewHistory: onViewHistory,
@@ -186,6 +197,7 @@ enum ItemContextMenu {
 
         case let .note(item,
                        isEditable,
+                       canBeTrashed,
                        onCopyContent,
                        onEdit,
                        onPinToggle,
@@ -199,6 +211,7 @@ enum ItemContextMenu {
 
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
+                                                canBeTrashed: canBeTrashed,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
                                                 onViewHistory: onViewHistory,
@@ -225,6 +238,7 @@ enum ItemContextMenu {
 
         case let .identity(item,
                            isEditable,
+                           canBeTrashed,
                            onCopyEmail,
                            onCopyFullname,
                            onEdit,
@@ -244,6 +258,7 @@ enum ItemContextMenu {
 
             sections += Self.commonLastSections(item: item,
                                                 isEditable: isEditable,
+                                                canBeTrashed: canBeTrashed,
                                                 onEdit: onEdit,
                                                 onPinToggle: onPinToggle,
                                                 onViewHistory: onViewHistory,
@@ -257,6 +272,7 @@ enum ItemContextMenu {
 private extension ItemContextMenu {
     static func commonLastSections(item: any PinnableItemTypeIdentifiable,
                                    isEditable: Bool,
+                                   canBeTrashed: Bool,
                                    onEdit: @escaping () -> Void,
                                    onPinToggle: @escaping () -> Void,
                                    onViewHistory: @escaping () -> Void,
@@ -271,7 +287,7 @@ private extension ItemContextMenu {
 
         sections.append(.init(options: [.viewHistoryOption(action: onViewHistory)]))
 
-        if isEditable {
+        if isEditable, canBeTrashed {
             sections.append(.init(options: [.trashOption(action: onTrash)]))
         }
 
@@ -384,6 +400,7 @@ extension View {
     func itemContextMenu(item: any PinnableItemTypeIdentifiable,
                          isTrashed: Bool,
                          isEditable: Bool,
+                         canBeTrashed: Bool,
                          onPermanentlyDelete: @escaping () -> Void,
                          onAliasTrash: @escaping () -> Void,
                          handler: ItemContextMenuHandler) -> some View {
@@ -396,6 +413,7 @@ extension View {
             case .login:
                 itemContextMenu(.login(item: item,
                                        isEditable: isEditable,
+                                       canBeTrashed: canBeTrashed,
                                        onCopyEmail: { handler.copyEmail(item) },
                                        onCopyUsername: { handler.copyItemUsername(item) },
                                        onCopyPassword: { handler.copyPassword(item) },
@@ -407,6 +425,7 @@ extension View {
             case .alias:
                 itemContextMenu(.alias(item: item,
                                        isEditable: isEditable,
+                                       canBeTrashed: canBeTrashed,
                                        onCopyAlias: { handler.copyAlias(item) },
                                        onToggleAliasStatus: { enabled in
                                            handler.toggleAliasStatus(item, enabled: enabled)
@@ -419,6 +438,7 @@ extension View {
             case .creditCard:
                 itemContextMenu(.creditCard(item: item,
                                             isEditable: isEditable,
+                                            canBeTrashed: canBeTrashed,
                                             onCopyCardholderName: { handler.copyCardholderName(item) },
                                             onCopyCardNumber: { handler.copyCardNumber(item) },
                                             onCopyExpirationDate: { handler.copyExpirationDate(item) },
@@ -431,6 +451,7 @@ extension View {
             case .note:
                 itemContextMenu(.note(item: item,
                                       isEditable: isEditable,
+                                      canBeTrashed: canBeTrashed,
                                       onCopyContent: { handler.copyNoteContent(item) },
                                       onEdit: { handler.edit(item) },
                                       onPinToggle: { handler.toggleItemPinning(item) },
@@ -440,6 +461,7 @@ extension View {
             case .identity:
                 itemContextMenu(.identity(item: item,
                                           isEditable: isEditable,
+                                          canBeTrashed: canBeTrashed,
                                           onCopyEmail: { handler.copyEmail(item) },
                                           onCopyFullname: { handler.copyFullname(item) },
                                           onEdit: { handler.edit(item) },
