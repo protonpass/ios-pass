@@ -56,6 +56,7 @@ public protocol RemoteAliasDatasourceProtocol: Sendable {
     func changeMailboxEmail(userId: String,
                             mailboxId: Int,
                             newEmail: String) async throws -> Mailbox
+    func cancelMailboxChange(userId: String, mailboxId: Int) async throws
 
     func getAliasContacts(userId: String,
                           shareId: String,
@@ -206,6 +207,11 @@ public extension RemoteAliasDatasource {
         let endpoint = ChangeMailboxEmailEndpoint(mailboxId: mailboxId, newEmail: newEmail)
         let response = try await exec(userId: userId, endpoint: endpoint)
         return response.mailbox
+    }
+
+    func cancelMailboxChange(userId: String, mailboxId: Int) async throws {
+        let endpoint = CancelMailboxChangeEndpoint(mailboxId: mailboxId)
+        _ = try await exec(userId: userId, endpoint: endpoint)
     }
 }
 

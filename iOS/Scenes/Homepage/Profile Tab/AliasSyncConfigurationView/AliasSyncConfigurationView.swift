@@ -78,11 +78,10 @@ struct AliasSyncConfigurationView: View {
                             ForEach(viewModel.mailboxes) { mailbox in
                                 MailboxElementRow(mailBox: mailbox,
                                                   isDefault: mailbox == viewModel.defaultMailbox,
-                                                  changeEmail: { mailboxToChange = $0 },
-                                                  setDefault: { mailbox in
-                                                      viewModel.setDefaultMailBox(mailbox: mailbox)
-                                                  },
-                                                  delete: { mailbox in
+                                                  changeEmail: { mailboxToChange = mailbox },
+                                                  cancelChange: { viewModel.cancelChange(mailbox: mailbox) },
+                                                  setDefault: { viewModel.setDefaultMailBox(mailbox: mailbox) },
+                                                  delete: {
                                                       if mailbox.verified, mailbox.aliasCount > 0 {
                                                           mailboxToDelete = mailbox
                                                       } else {
@@ -90,7 +89,7 @@ struct AliasSyncConfigurationView: View {
                                                                            transferMailboxId: nil)
                                                       }
                                                   },
-                                                  verify: { router.present(sheet: .addEmail(.mailbox($0))) })
+                                                  verify: { router.present(sheet: .addEmail(.mailbox(mailbox))) })
                             }
                         }
                     }
@@ -276,15 +275,16 @@ private extension AliasSyncConfigurationView {
 private struct MailboxElementRow: View {
     let mailBox: Mailbox
     let isDefault: Bool
-    let changeEmail: (Mailbox) -> Void
-    let setDefault: (Mailbox) -> Void
-    let delete: (Mailbox) -> Void
-    let verify: (Mailbox) -> Void
+    let changeEmail: () -> Void
+    let cancelChange: () -> Void
+    let setDefault: () -> Void
+    let delete: () -> Void
+    let verify: () -> Void
 
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(mailBox.displayedEmail)
+                Text(mailBox.email)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -298,7 +298,7 @@ private struct MailboxElementRow: View {
                             .background(PassColor.interactionNormMajor2.toColor)
                             .clipShape(Capsule())
                     }
-                    Text(mailBox.verified ? "\(mailBox.aliasCount) aliases" : "Unverified mailbox")
+                    Text(description)
                         .font(.footnote)
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
@@ -307,25 +307,32 @@ private struct MailboxElementRow: View {
             Spacer()
 
             Menu(content: {
-                Label(title: { Text("Change mailbox email") },
-                      icon: { Image(uiImage: IconProvider.pencil) })
-                    .buttonEmbeded { changeEmail(mailBox) }
-
                 if mailBox.verificationNeeded {
                     Label(title: { Text("Verify") },
                           icon: { Image(uiImage: IconProvider.checkmarkCircle) })
-                        .buttonEmbeded { verify(mailBox) }
-                } else if !isDefault {
+                        .buttonEmbeded(action: verify)
+                }
+
+                if mailBox.verified, !isDefault {
                     Label(title: { Text("Make default") },
                           icon: { Image(uiImage: IconProvider.star) })
-                        .buttonEmbeded { setDefault(mailBox) }
+                        .buttonEmbeded(action: setDefault)
+                }
+
+                if mailBox.pendingEmail == nil {
+                    Label(title: { Text("Change mailbox email") },
+                          icon: { Image(uiImage: IconProvider.pencil) })
+                        .buttonEmbeded(action: changeEmail)
+                } else {
+                    Label("Cancel mailbox change", systemImage: "xmark.circle")
+                        .buttonEmbeded(action: cancelChange)
                 }
 
                 if !isDefault {
                     Divider()
                     Label(title: { Text("Delete") },
                           icon: { Image(uiImage: IconProvider.trash) })
-                        .buttonEmbeded { delete(mailBox) }
+                        .buttonEmbeded(action: delete)
                 }
             }, label: {
                 CircleButton(icon: IconProvider.threeDotsVertical,
@@ -333,6 +340,14 @@ private struct MailboxElementRow: View {
                              backgroundColor: .clear,
                              accessibilityLabel: "Mailbox action menu")
             })
+        }
+    }
+
+    private var description: LocalizedStringKey {
+        if mailBox.pendingEmail != nil {
+            "Unverified mailbox change"
+        } else {
+            mailBox.verified ? "\(mailBox.aliasCount) aliases" : "Unverified mailbox"
         }
     }
 }
