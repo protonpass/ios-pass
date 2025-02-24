@@ -53,6 +53,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var isEditMode = false
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
+    @Published private var organization: Organization?
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
@@ -77,6 +78,8 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     private let unpinItems = resolve(\SharedUseCasesContainer.unpinItems)
     let itemContextMenuHandler = resolve(\SharedServiceContainer.itemContextMenuHandler)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    private var organizationRepository
 
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let itemTypeSelection = resolve(\DataStreamContainer.itemTypeSelection)
@@ -90,6 +93,14 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     /// `PullToRefreshable` conformance
     var pullToRefreshContinuation: CheckedContinuation<Void, Never>?
     let syncEventLoop = resolve(\SharedServiceContainer.syncEventLoop)
+
+    var noVaults: Bool {
+        if case let .loaded(data) = appContentManager.state,
+           data.isEmpty, organization?.settings?.vaultCreateMode == .adminsOnly {
+            return true
+        }
+        return false
+    }
 
     init() {
         setUp()
@@ -326,6 +337,15 @@ extension ItemsTabViewModel {
         sortTask = Task { [weak self] in
             guard let self else { return }
             await filterAndSortItemsAsync(sortType: sortType)
+
+            do {
+                let userId = try await userManager.getActiveUserId()
+                if accessRepository.access.value?.access.plan.isBusinessUser == true {
+                    organization = try await organizationRepository.getOrganization(userId: userId)
+                }
+            } catch {
+                handle(error: error)
+            }
         }
     }
 
