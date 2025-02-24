@@ -69,25 +69,30 @@ public struct LoginOnboardingView: View {
     ]
 
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            VStack {
+        GeometryReader { proxy in
+            VStack(spacing: 0) {
                 pageIndicators
+                    .padding(.horizontal, 36)
 
-                carrousel
+                carrousel(proxy)
+
+                Group {
+                    bottomActionButton(signUp: true)
+                    bottomActionButton(signUp: false)
+                        .padding(.vertical, 8)
+                    Image(uiImage: IconProvider.footer)
+                        .resizable()
+                        .renderingMode(.template)
+                        .scaledToFit()
+                        .foregroundStyle(.white)
+                        .frame(height: 20)
+                        .padding(.vertical)
+                }
+                .padding(.horizontal, 36)
             }
-            VStack(spacing: 8) {
-                bottomActionButton(signUp: true)
-                bottomActionButton(signUp: false)
-                Image(uiImage: IconProvider.footer)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .foregroundStyle(PassColor.textNorm.toColor)
-                    .frame(height: 25)
-                    .padding(.top, 10)
-            }.padding(.horizontal, 36)
+            .padding(.top, 20)
+            .background(RadialGradientView())
         }
-        .background(RadialGradientView())
     }
 }
 
@@ -97,35 +102,36 @@ private extension LoginOnboardingView {
         HStack(spacing: 8) {
             ForEach(0..<items.count, id: \.self) { index in
                 RoundedRectangle(cornerRadius: 3)
-                    .fill(index == currentPage ? PassColor.textNorm.toColor : PassColor.textWeak.toColor)
+                    .fill(.white)
                     .frame(maxWidth: .infinity, maxHeight: 6)
+                    .opacity(index == currentPage ? 1 : 0.1)
             }
         }
         .animation(.default, value: currentPage)
-        .padding(.top, 20)
-        .padding(.horizontal, 36)
-        .padding(.bottom, 50)
     }
 
-    var carrousel: some View {
+    func carrousel(_ proxy: GeometryProxy) -> some View {
         TabView(selection: $currentPage) {
             ForEach(0..<items.count, id: \.self) { index in
                 VStack(alignment: .center, spacing: 0) {
+                    Spacer(minLength: proxy.size.height > 800 ? proxy.size.height / 10 : 16)
+
                     VStack(spacing: 8) {
                         Text(items[index].title, bundle: .module)
                             .font(.title)
                             .fontWeight(.bold)
-                            .foregroundStyle(PassColor.textNorm.toColor)
+                            .foregroundStyle(.white)
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity, alignment: .center)
                         Text(items[index].subtitle, bundle: .module)
                             .font(.title3)
-                            .foregroundStyle(PassColor.textWeak.toColor)
+                            .foregroundStyle(.white.opacity(0.7))
                             .fixedSize(horizontal: false, vertical: true)
                             .multilineTextAlignment(.center)
                             .frame(maxWidth: .infinity, alignment: .center)
                     }
                     .padding(.horizontal, 36)
+                    Spacer()
                     Image(uiImage: items[index].image)
                         .resizable()
                         .scaledToFit()
@@ -134,6 +140,7 @@ private extension LoginOnboardingView {
                         .overlay {
                             if let secondaryImage = items[currentPage].secondaryImage {
                                 VStack {
+                                    Spacer()
                                     Spacer()
                                     Spacer()
                                     Spacer()
@@ -146,6 +153,7 @@ private extension LoginOnboardingView {
                                 }
                             }
                         }
+                        .padding(.vertical, -proxy.size.height / 14)
                 }
                 .tag(index)
             }
@@ -161,14 +169,12 @@ private extension LoginOnboardingView {
                               titleColor: .white,
                               backgroundColor: signUp ? UIColor(red: 110, green: 74, blue: 255) : .clear,
                               action: { onAction(signUp) })
-                .padding(.horizontal, DesignConstant.sectionPadding)
         } else {
             CapsuleTextBorderedButton(title: #localized("Sign in", bundle: .module),
                                       titleColor: .white,
                                       borderColor: .white,
                                       borderWidth: 1,
                                       action: { onAction(signUp) })
-                .padding(.horizontal, DesignConstant.sectionPadding)
         }
     }
 }
