@@ -426,8 +426,9 @@ extension UseCasesContainer {
         self { GetRustLibraryVersion() }
     }
 
-    var openAutoFillSettings: Factory<any OpenAutoFillSettingsUseCase> {
-        self { OpenAutoFillSettings(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter()) }
+    var enableAutoFill: Factory<any EnableAutoFillUseCase> {
+        self { EnableAutoFill(router: SharedRouterContainer.shared.mainUIKitSwiftUIRouter(),
+                              credentialManager: SharedServiceContainer.shared.credentialManager()) }
     }
 
     var makeAccountSettingsUrl: Factory<any MakeAccountSettingsUrlUseCase> {

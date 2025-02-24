@@ -1,5 +1,5 @@
 //
-// OpenAutoFillSettings.swift
+// EnableAutoFill.swift
 // Proton Pass - Created on 11/12/2023.
 // Copyright (c) 2023 Proton Technologies AG
 //
@@ -18,33 +18,46 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import UIKit
 
-protocol OpenAutoFillSettingsUseCase: Sendable {
+protocol EnableAutoFillUseCase: Sendable {
     @MainActor
-    func execute()
+    @discardableResult
+    func execute() async -> Bool
 }
 
-extension OpenAutoFillSettingsUseCase {
+extension EnableAutoFillUseCase {
     @MainActor
-    func callAsFunction() {
-        execute()
+    @discardableResult
+    func callAsFunction() async -> Bool {
+        await execute()
     }
 }
 
-final class OpenAutoFillSettings: OpenAutoFillSettingsUseCase {
+final class EnableAutoFill: EnableAutoFillUseCase {
     private let router: MainUIKitSwiftUIRouter
+    private let credentialManager: any CredentialManagerProtocol
 
-    init(router: MainUIKitSwiftUIRouter) {
+    init(router: MainUIKitSwiftUIRouter,
+         credentialManager: any CredentialManagerProtocol) {
         self.router = router
+        self.credentialManager = credentialManager
     }
 
     @MainActor
-    func execute() {
+    @discardableResult
+    func execute() async -> Bool {
         if ProcessInfo.processInfo.isiOSAppOnMac {
             router.present(for: .autoFillInstructions)
+            return true
         } else {
-            UIApplication.shared.openPasswordSettings()
+            if #available(iOS 18, *) {
+                return await credentialManager.enableAutoFill()
+            } else {
+                UIApplication.shared.openPasswordSettings()
+                return true
+            }
         }
     }
 }

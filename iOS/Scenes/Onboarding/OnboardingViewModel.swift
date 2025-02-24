@@ -36,7 +36,7 @@ final class OnboardingViewModel: ObservableObject {
     private let preferencesManager = resolve(\SharedToolingContainer.preferencesManager)
     private let checkBiometryType = resolve(\SharedUseCasesContainer.checkBiometryType)
     private let authenticate = resolve(\SharedUseCasesContainer.authenticateBiometrically)
-    private let openAutoFillSettings = resolve(\UseCasesContainer.openAutoFillSettings)
+    private let enableAutoFill = resolve(\UseCasesContainer.enableAutoFill)
     private let updateAppPreferences = resolve(\SharedUseCasesContainer.updateAppPreferences)
     private let getSharedPreferences = resolve(\SharedUseCasesContainer.getSharedPreferences)
     private let updateSharedPreferences = resolve(\SharedUseCasesContainer.updateSharedPreferences)
@@ -82,7 +82,10 @@ extension OnboardingViewModel {
     func primaryAction() {
         switch state {
         case .autoFill:
-            openAutoFillSettings()
+            Task { [weak self] in
+                guard let self else { return }
+                await enableAutoFill()
+            }
 
         case .autoFillEnabled:
             showAppropriateBiometricAuthenticationStep()

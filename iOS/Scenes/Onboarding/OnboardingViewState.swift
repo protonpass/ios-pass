@@ -67,7 +67,11 @@ enum OnboardingViewState {
     var primaryButtonTitle: String {
         switch self {
         case .autoFill:
-            #localized("Go to Settings")
+            if #available(iOS 18, *) {
+                #localized("Turn on AutoFill")
+            } else {
+                #localized("Go to Settings")
+            }
         case .biometricAuthenticationTouchID:
             #localized("Enable Touch ID")
         case .biometricAuthenticationFaceID:
