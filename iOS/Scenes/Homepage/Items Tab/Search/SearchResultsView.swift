@@ -252,6 +252,7 @@ private struct ResultRow: View {
                 .itemContextMenu(item: item,
                                  isTrashed: isTrash,
                                  isEditable: isEditable,
+                                 canBeTrashed: true,
                                  onPermanentlyDelete: { itemToBePermanentlyDeleted = item },
                                  onAliasTrash: onAliasTrash,
                                  handler: itemContextMenuHandler)

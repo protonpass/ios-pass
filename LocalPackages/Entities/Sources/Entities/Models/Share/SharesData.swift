@@ -30,8 +30,33 @@ public struct SharesData: Hashable, Sendable {
     public init(shares: [ShareContent], trashedItems: [ItemUiModel]) {
         self.shares = shares
         self.trashedItems = trashedItems
-        itemsSharedByMe = shares.filter { $0.share.shareRole == .admin }.flatMap(\.items).filter(\.isShared)
-        itemsSharedWithMe = shares.filter { !$0.share.isVaultRepresentation && !$0.share.owner }.flatMap(\.items)
+
+        var sharedByMeShareIds: Set<String> = []
+        var sharedWithMeShareIds: Set<String> = []
+
+        for share in shares {
+            if share.share.shareRole == .admin {
+                sharedByMeShareIds.insert(share.share.shareId)
+            }
+            if !share.share.isVaultRepresentation, !share.share.owner {
+                sharedWithMeShareIds.insert(share.share.shareId)
+            }
+        }
+
+        let trashedSharedByMeItems = trashedItems.filter { sharedByMeShareIds.contains($0.shareId) }
+        let trashedSharedWithMeItems = trashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
+
+        itemsSharedByMe =
+            shares
+                .filter { sharedByMeShareIds.contains($0.share.shareId) }
+                .flatMap(\.items)
+                .filter(\.isShared) +
+                trashedSharedByMeItems
+
+        itemsSharedWithMe = shares
+            .filter { sharedWithMeShareIds.contains($0.share.shareId) }
+            .flatMap(\.items) +
+            trashedSharedWithMeItems
     }
 
     public var filteredOrderedVaults: [Share] {
