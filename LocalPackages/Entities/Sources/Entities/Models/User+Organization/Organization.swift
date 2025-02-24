@@ -63,15 +63,24 @@ public extension Organization {
 
         public let passwordPolicy: PasswordPolicy?
 
+        public let vaultCreateMode: VaultCreateMode?
+
         public init(shareMode: ShareMode,
                     forceLockSeconds: Int,
                     exportMode: ExportMode,
-                    passwordPolicy: PasswordPolicy?) {
+                    passwordPolicy: PasswordPolicy?,
+                    vaultCreateMode: VaultCreateMode?) {
             self.shareMode = shareMode
             self.forceLockSeconds = forceLockSeconds
             self.exportMode = exportMode
             self.passwordPolicy = passwordPolicy
+            self.vaultCreateMode = vaultCreateMode
         }
+    }
+
+    enum VaultCreateMode: Int, Sendable, Decodable, Equatable {
+        case anyUser = 0
+        case adminsOnly = 1
     }
 }
 
