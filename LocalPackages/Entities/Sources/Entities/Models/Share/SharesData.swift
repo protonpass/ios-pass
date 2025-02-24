@@ -31,10 +31,20 @@ public struct SharesData: Hashable, Sendable {
         self.shares = shares
         self.trashedItems = trashedItems
 
-        let sharedByMeShareIds = shares
-            .filter { $0.share.shareRole == .admin }
-            .map(\.share.shareId)
+        var sharedByMeShareIds: Set<String> = []
+        var sharedWithMeShareIds: Set<String> = []
+
+        for share in shares {
+            if share.share.shareRole == .admin {
+                sharedByMeShareIds.insert(share.share.shareId)
+            }
+            if !share.share.isVaultRepresentation, !share.share.owner {
+                sharedWithMeShareIds.insert(share.share.shareId)
+            }
+        }
+
         let trashedSharedByMeItems = trashedItems.filter { sharedByMeShareIds.contains($0.shareId) }
+        let trashedSharedWithMeItems = trashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
 
         itemsSharedByMe =
             shares
@@ -42,11 +52,6 @@ public struct SharesData: Hashable, Sendable {
                 .flatMap(\.items)
                 .filter(\.isShared) +
                 trashedSharedByMeItems
-
-        let sharedWithMeShareIds = shares
-            .filter { !$0.share.isVaultRepresentation && !$0.share.owner }
-            .map(\.share.shareId)
-        let trashedSharedWithMeItems = trashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
 
         itemsSharedWithMe = shares
             .filter { sharedWithMeShareIds.contains($0.share.shareId) }
