@@ -14491,7 +14491,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Clé secrète A2F (TOTP/mot de passe à usage unique basé sur le temps)"
+            "value" : "Clé secrète A2F (TOTP)"
           }
         },
         "id" : {
@@ -15250,6 +15250,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Der oprettes en kontakt for hver e-mailadresse, der sender e-mails til eller modtager e-mails fra %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für jede E-Mail-Adresse, die E-Mails an %@ sendet oder von dieser Adresse empfängt, wird ein Kontakt erstellt"
           }
         },
         "el" : {
@@ -27612,6 +27618,12 @@
             "value" : "Mindst et af de valgte elementer er i øjeblikket delt. Hvis du flytter det til en anden boks, fjerner du adgangen for alle andre brugere."
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mindestens eines der ausgewählten Einträge ist derzeit geteilt. Wenn du es in einen anderen Tresor verschiebst, wird der Zugriff für alle anderen Benutzer entfernt."
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33471,6 +33483,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wijzig mailbox e-mail"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmień skrzynkę pocztową"
           }
         },
         "pt-BR" : {
@@ -40875,7 +40893,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Créer et remplir automatiquement"
+            "value" : "Créer & remplir auto"
           }
         },
         "id" : {
@@ -40959,7 +40977,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oluştur ve otomatik doldur"
+            "value" : "Oluştur ve doldur"
           }
         },
         "uk" : {
@@ -59241,7 +59259,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "개인 정보를 입력해주세요"
+            "value" : "개인 데이터 채우기"
           }
         },
         "nb" : {
@@ -62999,7 +63017,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "새 앱에서 쓸 이메일 별칭 받기"
+            "value" : "새 앱에서 사용할 이메일 별칭 받기"
           }
         },
         "nb" : {
@@ -68485,10 +68503,124 @@
     "Import from Chrome" : {
       "comment" : "Option to trigger the import process from CSV files",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпартаваць з Chrome"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import z Chrome"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importér fra Chrome"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus Chrome importieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εισαγωγή από Chrome"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Import from Chrome"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar desde Chrome"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar desde Chrome"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer depuis Chrome"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa da Chrome"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chromeからインポート"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chrome-იდან შემოტანა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chrome에서 가져오기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer fra Chrome"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importeer uit Chrome"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar do Chrome"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importare din Chrome"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importovať z Chrome"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importera från Chrome"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chrome üzerinden içe aktar"
           }
         }
       }
@@ -68496,20 +68628,248 @@
     "Import from other sources" : {
       "comment" : "The app only supports importing from CSV files. This is the option to open the knowledge-base article on how to import from other file formats.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпартаваць з іншых крыніц"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importovat z jiných zdrojů"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importér fra andre kilder"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von anderen Quellen importieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εισαγωγή από άλλες πηγές"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Import from other sources"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar desde otras fuentes"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar desde otras fuentes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer depuis d'autres sources"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importazione da altre fonti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "他のソースからインポート"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შემოტანა სხვა წყაროებიდან"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "다른 출처로부터 가져오기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer fra andre kilder"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importeer uit andere bronnen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar de outras fontes"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importare din alte surse"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importovať z iných zdrojov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importera från andra källor"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diğer kaynaklardan içe aktar"
           }
         }
       }
     },
     "Import to Proton Pass" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпартаваць у Proton Pass"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importovat do Proton Pass"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importér til Proton Pass"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Proton Pass importieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εισαγωγή στο Proton Pass"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Import to Proton Pass"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar a Proton Pass"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar a Proton Pass"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer dans Proton Pass"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importa in Proton Pass"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass にインポート"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შემოტანა Proton Pass-ში"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass에서 가져오기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importer til Proton Pass"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importeren naar Proton Pass"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importar para o Proton Pass"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importare în Proton Pass"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importovať do Proton Pass"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importera till Proton Pass"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Pass içine aktar"
           }
         }
       }
@@ -68532,6 +68892,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "I Pass er en element-note krypteret med elementets krypteringsnøgle, og kun brugere, der har adgang til elementet, kan se noten."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In Pass wird eine Eintragsnotiz mit einem individuellen Schlüssel verschlüsselt und nur Benutzer, die Zugriff auf den Eintrag haben, können die Notiz einsehen."
           }
         },
         "el" : {
@@ -72329,7 +72695,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elemento anclado con éxito"
+            "value" : "Se ancló el elemento."
           }
         },
         "fi" : {
@@ -72490,7 +72856,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elemento desanclado con éxito"
+            "value" : "Se desancló el elemento."
           }
         },
         "fi" : {
@@ -89722,7 +90088,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Добра"
+            "value" : "OK"
           }
         },
         "cs" : {
@@ -98941,7 +99307,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Παρακαλώ σημειώστε ότι μετά τη διαγραφή, τα ψευδώνυμα δεν είναι δυνατό να επαναφερθούν."
+            "value" : "Παρακαλούμε σημειώστε ότι μετά τη διαγραφή, τα ψευδώνυμα δεν είναι δυνατό να επαναφερθούν."
           }
         },
         "en" : {
@@ -99815,7 +100181,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prefix kan inte innehålla två på varandra följande punkter (..)"
+            "value" : "Prefix kan inte innehålla 2 på varandra följande punkter (..)"
           }
         },
         "tr" : {
@@ -102968,7 +103334,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "조치 권장"
+            "value" : "권장하는 조치"
           }
         },
         "nb" : {
@@ -103878,7 +104244,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выдаліць кэшыраваныя далучэнні кэшу ад папярэдніх спампоўванняў"
+            "value" : "Выдаліць кэшыраваныя далучэнні ад папярэдніх спампоўванняў"
           }
         },
         "cs" : {
@@ -105164,7 +105530,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Renombrar fichero"
+            "value" : "Cambiar el nombre del archivo"
           }
         },
         "es-419" : {
@@ -107592,10 +107958,124 @@
     "Restore purchases" : {
       "comment" : "Title of the button to retry failed upgrade to paid plan",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аднавіць пакупкі"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnovit nákupy"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gendan køb"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käufe wiederherstellen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποκατάσταση αγορών"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restore purchases"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar las compras"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar las compras"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurer les achats"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripristina acquisti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "購入を復元"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შენაძენების აღდგენა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "구매 복구"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gjenopprett kjøp"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aankopen terugzetten"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurar as compras"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restabilire achiziții"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obnoviť nákupy"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Återställ köp"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satın alınanları geri yükle"
           }
         }
       }
@@ -117614,13 +118094,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compartir l'elemento"
+            "value" : "Compartir el elemento"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compartir l'elemento"
+            "value" : "Compartir el elemento"
           }
         },
         "fi" : {
@@ -126237,7 +126717,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Націсніце значок шасцерні, каб наладзіць псеўданім пад свае патрабаванні."
+            "value" : "Націсніце значок шасцярэнькі, каб наладзіць псеўданім пад свае патрабаванні."
           }
         },
         "cs" : {
@@ -127459,7 +127939,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выбраны файл пусты. Праверце файл і паспрабуйце яшчэ раз."
+            "value" : "Выбраны пусты файл. Праверце яго і паспрабуйце яшчэ раз."
           }
         },
         "cs" : {
@@ -128366,7 +128846,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэты элемент у цяпершані час абагулены. Яго перамяшчэнне пазбавіць доступу ўсіх іншых карыстальнікаў."
+            "value" : "Гэты элемент у цяперашні час абагулены. Яго перамяшчэнне пазбавіць доступу ўсіх іншых карыстальнікаў."
           }
         },
         "cs" : {
@@ -137766,7 +138246,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "다음에서 사용됨:"
+            "value" : "다음 항목에서 사용됨:"
           }
         },
         "nb" : {
@@ -147990,7 +148470,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "당신은 영구적으로 %lld개의 별칭을 삭제하려고 합니다"
+                  "value" : "영구적으로 %lld개의 별칭을 삭제하려고 합니다"
                 }
               }
             }
@@ -152956,7 +153436,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "**%@**에서 유출된 데이터에서 내 정보가 발견되었습니다."
+            "value" : "**%@**에 유출된 데이터에서 회원님의 정보가 발견되었습니다."
           }
         },
         "nb" : {
