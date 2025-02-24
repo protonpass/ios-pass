@@ -98364,6 +98364,17 @@
         }
       }
     },
+    "Please contact your organization support team." : {
+      "comment" : "Message shown when B2B users are not able to do an action  because of an organization policy.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please contact your organization support team."
+          }
+        }
+      }
+    },
     "Please describe the problem in as much detail as you can. If there was an error message, let us know what it said." : {
       "localizations" : {
         "be" : {
@@ -150166,6 +150177,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn không có nội dung đăng nhập nào không được theo dõi"
+          }
+        }
+      }
+    },
+    "You don't have any vault" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any vault"
           }
         }
       }
