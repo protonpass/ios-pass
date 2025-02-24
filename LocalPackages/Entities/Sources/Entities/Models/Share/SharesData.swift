@@ -46,4 +46,11 @@ public struct SharesData: Hashable, Sendable {
                 return lhsName < rhsName
             }
     }
+
+    public var isEmpty: Bool {
+        shares.isEmpty &&
+            trashedItems.isEmpty &&
+            itemsSharedByMe.isEmpty &&
+            itemsSharedWithMe.isEmpty
+    }
 }
