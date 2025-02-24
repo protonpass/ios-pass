@@ -29,11 +29,13 @@ public protocol CredentialManagerProtocol: Sendable {
     func remove(credentials: [CredentialIdentity]) async throws
     func insert(credentials: [CredentialIdentity]) async throws
     func removeAllCredentials() async throws
+    @available(iOS 18, *)
+    func enableAutoFill() async -> Bool
 }
 
-public final class CredentialManager {
-    public let store: ASCredentialIdentityStore
-    public let logger: Logger
+public final class CredentialManager: CredentialManagerProtocol {
+    private let store: ASCredentialIdentityStore
+    private let logger: Logger
 
     public init(logManager: any LogManagerProtocol,
                 store: ASCredentialIdentityStore = .shared) {
@@ -42,14 +44,14 @@ public final class CredentialManager {
     }
 }
 
-extension CredentialManager: CredentialManagerProtocol {
-    public var isAutoFillEnabled: Bool {
+public extension CredentialManager {
+    var isAutoFillEnabled: Bool {
         get async {
             await store.state().isEnabled
         }
     }
 
-    public func remove(credentials: [CredentialIdentity]) async throws {
+    func remove(credentials: [CredentialIdentity]) async throws {
         logger.trace("Trying to remove \(credentials.count) credentials.")
         let state = await store.state()
         guard state.isEnabled else {
@@ -65,7 +67,7 @@ extension CredentialManager: CredentialManagerProtocol {
         }
     }
 
-    public func insert(credentials: [CredentialIdentity]) async throws {
+    func insert(credentials: [CredentialIdentity]) async throws {
         logger.trace("Trying to insert \(credentials.count) credentials.")
         let state = await store.state()
         guard state.isEnabled else {
@@ -83,7 +85,7 @@ extension CredentialManager: CredentialManagerProtocol {
         logger.trace("Inserted \(credentials.count) credentials.")
     }
 
-    public func removeAllCredentials() async throws {
+    func removeAllCredentials() async throws {
         logger.trace("Removing all credentials.")
         guard await isAutoFillEnabled else {
             logger.trace("AutoFill is not enabled. Skipped removing all credentials.")
@@ -91,5 +93,10 @@ extension CredentialManager: CredentialManagerProtocol {
         }
         try await store.removeAllCredentialIdentities()
         logger.trace("Removed all credentials.")
+    }
+
+    @available(iOS 18, *)
+    func enableAutoFill() async -> Bool {
+        await ASSettingsHelper.requestToTurnOnCredentialProviderExtension()
     }
 }

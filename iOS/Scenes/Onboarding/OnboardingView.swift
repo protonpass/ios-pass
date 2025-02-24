@@ -34,7 +34,9 @@ struct OnboardingView: View {
                 case .autoFill:
                     VStack {
                         Spacer()
-                        OnboardingAutoFillView()
+                        if #unavailable(iOS 18) {
+                            OnboardingAutoFillView()
+                        }
                     }
                 case .autoFillEnabled:
                     OnboardingAutoFillEnabledView()
