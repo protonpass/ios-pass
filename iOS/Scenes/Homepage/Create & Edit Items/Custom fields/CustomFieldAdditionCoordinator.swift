@@ -105,6 +105,8 @@ private extension CustomFieldType {
             #localized("2FA secret key (TOTP) custom field")
         case .hidden:
             #localized("Hidden custom field")
+        case .timestamp:
+            #localized("Date custom field")
         }
     }
 
@@ -116,6 +118,8 @@ private extension CustomFieldType {
             #localized("2FA secret key (TOTP)")
         case .hidden:
             #localized("E.g., Recovery key, PIN")
+        case .timestamp:
+            #localized("Date")
         }
     }
 }

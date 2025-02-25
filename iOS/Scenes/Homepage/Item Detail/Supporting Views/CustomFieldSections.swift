@@ -70,6 +70,10 @@ struct CustomFieldSections: View {
                                        showIcon: showIcon,
                                        onSelectTotpToken: onSelectTotpToken,
                                        onUpgrade: onUpgrade)
+            case .timestamp:
+                // swiftlint:disable:next todo
+                // TODO: [Custom item] Implement this
+                Text(verbatim: "Timestamp custom field section")
             }
 
             if uiModel != uiModels.last, !isASection {

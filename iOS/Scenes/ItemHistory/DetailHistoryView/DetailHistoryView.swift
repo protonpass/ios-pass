@@ -186,6 +186,18 @@ private extension DetailHistoryView {
                     aliasView
                 case .identity:
                     identityView
+                case .sshKey:
+                    // swiftlint:disable:next todo
+                    // TODO: [Custom item] Implement this
+                    Text(verbatim: "SSH key history")
+                case .wifi:
+                    // swiftlint:disable:next todo
+                    // TODO: [Custom item] Implement this
+                    Text(verbatim: "WiFi history")
+                case .custom:
+                    // swiftlint:disable:next todo
+                    // TODO: [Custom item] Implement this
+                    Text(verbatim: "Custom item history")
                 }
             }
             .animation(.default, value: viewModel.selectedRevision)

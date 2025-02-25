@@ -29,6 +29,7 @@ public struct ItemCount: Hashable, Equatable, Sendable {
     public let creditCard: Int
     public let note: Int
     public let identity: Int
+    public let custom: Int
     public let sharedByMe: Int
     public let sharedWithMe: Int
 
@@ -39,6 +40,7 @@ public struct ItemCount: Hashable, Equatable, Sendable {
                                        creditCard: 0,
                                        note: 0,
                                        identity: 0,
+                                       custom: 0,
                                        sharedByMe: 0,
                                        sharedWithMe: 0)
 }
@@ -52,6 +54,7 @@ public extension ItemCount {
         var creditCard = 0
         var note = 0
         var identity = 0
+        var custom = 0
 
         for item in items {
             switch item.type {
@@ -68,6 +71,8 @@ public extension ItemCount {
                 }
             case .note:
                 note += 1
+            case .custom, .sshKey, .wifi:
+                custom += 1
             }
         }
 
@@ -77,6 +82,7 @@ public extension ItemCount {
         self.creditCard = creditCard
         self.note = note
         self.identity = identity
+        self.custom = custom
         self.sharedByMe = sharedByMe
         self.sharedWithMe = sharedWithMe
     }

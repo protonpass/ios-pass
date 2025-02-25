@@ -80,6 +80,11 @@ struct EditCustomFieldView<Field: Hashable>: View {
                                            focusedField: focusedField,
                                            field: field)
                             .foregroundStyle(PassColor.textNorm.toColor)
+
+                    case .timestamp:
+                        // swiftlint:disable:next todo
+                        // TODO: [Custom item] Implement this
+                        Text(verbatim: "Timestamp custom field")
                     }
                 }
             }

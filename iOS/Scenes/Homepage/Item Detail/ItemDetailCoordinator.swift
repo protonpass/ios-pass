@@ -49,6 +49,12 @@ final class ItemDetailCoordinator: DeinitPrintable {
             makeCreditCardDetailPage(from: itemContent, asSheet: asSheet)
         case .identity:
             makeIdentityDetailPage(from: itemContent, asSheet: asSheet)
+        case .sshKey:
+            makeSshKeyDetailPage(from: itemContent, asSheet: asSheet)
+        case .wifi:
+            makeWifiDetailPage(from: itemContent, asSheet: asSheet)
+        case .custom:
+            makeCustomDetailPage(from: itemContent, asSheet: asSheet)
         }
 
         itemDetailPage.viewModel.delegate = itemDetailViewModelDelegate
@@ -105,5 +111,32 @@ private extension ItemDetailCoordinator {
                                                 itemContent: itemContent,
                                                 upgradeChecker: upgradeChecker)
         return .init(viewModel: viewModel, view: IdentityDetailView(viewModel: viewModel))
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: [Custom item] Implement this
+    func makeSshKeyDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
+        .init(viewModel: .init(isShownAsSheet: asSheet,
+                               itemContent: itemContent,
+                               upgradeChecker: upgradeChecker),
+              view: Text(verbatim: "SSH key detail"))
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: [Custom item] Implement this
+    func makeWifiDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
+        .init(viewModel: .init(isShownAsSheet: asSheet,
+                               itemContent: itemContent,
+                               upgradeChecker: upgradeChecker),
+              view: Text(verbatim: "WiFi detail"))
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: [Custom item] Implement this
+    func makeCustomDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
+        .init(viewModel: .init(isShownAsSheet: asSheet,
+                               itemContent: itemContent,
+                               upgradeChecker: upgradeChecker),
+              view: Text(verbatim: "Custom item detail"))
     }
 }

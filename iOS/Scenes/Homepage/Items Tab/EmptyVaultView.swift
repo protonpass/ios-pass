@@ -87,9 +87,10 @@ private extension EmptyVaultView {
 private extension EmptyVaultView {
     func isSupported(_ type: ItemContentType) -> Bool {
         switch type {
-        case .alias, .creditCard, .identity, .login, .note:
+        case .alias, .creditCard, .custom, .identity, .login, .note:
             true
-        @unknown default:
+
+        case .sshKey, .wifi:
             false
         }
     }

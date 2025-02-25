@@ -36,3 +36,10 @@ public struct CustomSection: Equatable, Hashable, Sendable, Identifiable {
         content = extraSection.sectionFields.map { .init(from: $0) }
     }
 }
+
+public extension CustomSection {
+    init(from extraSection: ProtonPassItemV1_CustomSection) {
+        title = extraSection.sectionName
+        content = extraSection.sectionFields.map { .init(from: $0) }
+    }
+}
