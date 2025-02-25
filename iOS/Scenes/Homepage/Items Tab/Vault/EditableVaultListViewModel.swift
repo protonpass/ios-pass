@@ -227,7 +227,8 @@ extension EditableVaultListViewModel {
     }
 
     func itemCount(for selection: VaultSelection) -> Int {
-        let itemSharedWithMeCount = appContentManager.state.loadedContent?.itemsSharedWithMe.count ?? 0
+        let itemSharedWithMeCount = appContentManager.state.loadedContent?.itemsSharedWithMe
+            .filter { $0.state == .active }.count ?? 0
         let itemSharedByMeCount = appContentManager.state.loadedContent?.itemsSharedByMe.count ?? 0
         return switch selection {
         case .all:
