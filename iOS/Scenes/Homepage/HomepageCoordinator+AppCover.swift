@@ -68,7 +68,7 @@ private extension HomepageCoordinator {
                 case .removeLocalAuth:
                     removeLocalAuth()
                 case .none:
-                    break
+                    refreshInAppNotifications()
                 }
             }
         }
