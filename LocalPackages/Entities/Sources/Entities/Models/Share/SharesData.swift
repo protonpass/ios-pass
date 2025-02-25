@@ -43,8 +43,9 @@ public struct SharesData: Hashable, Sendable {
             }
         }
 
-        let trashedSharedByMeItems = trashedItems.filter { sharedByMeShareIds.contains($0.shareId) }
-        let trashedSharedWithMeItems = trashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
+        let sharedTrashedItems = trashedItems.filter(\.isShared)
+        let trashedSharedByMeItems = sharedTrashedItems.filter { sharedByMeShareIds.contains($0.shareId) }
+        let trashedSharedWithMeItems = sharedTrashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
 
         itemsSharedByMe =
             shares
