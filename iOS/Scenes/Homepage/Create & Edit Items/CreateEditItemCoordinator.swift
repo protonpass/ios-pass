@@ -70,6 +70,12 @@ extension CreateEditItemCoordinator {
             try presentCreateEditAliasView(mode: mode)
         case .identity:
             try presentCreateEditIdentityView(mode: mode)
+        case .sshKey:
+            try presentCreateEditSshKeyView(mode: mode)
+        case .wifi:
+            try presentCreateEditWifiView(mode: mode)
+        case .custom:
+            try presentCreateEditCustomView(mode: mode)
         }
     }
 
@@ -86,6 +92,12 @@ extension CreateEditItemCoordinator {
             try presentCreateEditAliasView(mode: mode)
         case .identity:
             try presentCreateEditIdentityView(mode: mode)
+        case .sshKey:
+            try presentCreateEditSshKeyView(mode: mode)
+        case .wifi:
+            try presentCreateEditWifiView(mode: mode)
+        case .custom:
+            try presentCreateEditCustomView(mode: mode)
         }
     }
 
@@ -107,6 +119,8 @@ extension CreateEditItemCoordinator {
                                         generatePasswordViewModelDelegate: createEditItemDelegates)
         case .identity:
             try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
+        case .custom:
+            presentCustomItemList()
         }
     }
 
@@ -172,6 +186,24 @@ private extension CreateEditItemCoordinator {
         currentViewModel = viewModel
     }
 
+    // swiftlint:disable:next todo
+    // TODO: [Custom item] Implement this
+    func presentCreateEditSshKeyView(mode: ItemMode) throws {
+        present(Text(verbatim: "Create edit SSH key"), dismissable: false)
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: [Custom item] Implement this
+    func presentCreateEditWifiView(mode: ItemMode) throws {
+        present(Text(verbatim: "Create edit wifi"), dismissable: false)
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: [Custom item] Implement this
+    func presentCreateEditCustomView(mode: ItemMode) throws {
+        present(Text(verbatim: "Create edit custom item"), dismissable: false)
+    }
+
     func presentGeneratePasswordView(mode: GeneratePasswordViewMode,
                                      generatePasswordViewModelDelegate: (any GeneratePasswordViewModelDelegate)?) {
         Task { [weak self] in
@@ -183,5 +215,15 @@ private extension CreateEditItemCoordinator {
             coordinator.start()
             generatePasswordCoordinator = coordinator
         }
+    }
+}
+
+// MARK: - Custom item
+
+private extension CreateEditItemCoordinator {
+    // swiftlint:disable:next todo
+    // TODO: [Custom item] Implement this
+    func presentCustomItemList() {
+        present(Text(verbatim: "List of custom item"), dismissable: true)
     }
 }

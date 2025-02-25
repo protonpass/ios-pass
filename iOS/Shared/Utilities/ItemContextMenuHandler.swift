@@ -216,6 +216,20 @@ extension ItemContextMenuHandler {
             await copy(itemContent.identityItem?.fullName, message: #localized("Full name copied"))
         }
     }
+
+    func copySsid(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            await copy(itemContent.wifi?.ssid, message: #localized("SSID copied"))
+        }
+    }
+
+    func copyWifiPassword(_ item: any ItemTypeIdentifiable) {
+        performAction(on: item, showSpinner: false) { [weak self] itemContent in
+            guard let self else { return }
+            await copy(itemContent.wifi?.password, message: #localized("WiFi password copied"))
+        }
+    }
 }
 
 // MARK: - Private APIs

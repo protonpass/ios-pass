@@ -90,6 +90,8 @@ private extension ItemContentType {
             itemCount.creditCard
         case .identity:
             itemCount.identity
+        case .custom, .sshKey, .wifi:
+            itemCount.custom
         }
         return .init(icon: regularIcon, title: filterTitle, count: count)
     }

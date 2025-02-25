@@ -96,6 +96,22 @@ public enum ItemContentProtobufFactory {
             itemContentProtobuf.content.identity.workEmail = data.workEmail
             itemContentProtobuf.content.identity.extraWorkDetails = data.extraWorkDetails.toProtonPassItemV1ExtraFields
             itemContentProtobuf.content.identity.extraSections = data.extraSections.toProtonPassItemV1ExtraIdentitySections
+
+        case let .sshKey(data):
+            itemContentProtobuf.content.sshKey = .init()
+            itemContentProtobuf.content.sshKey.privateKey = data.privateKey
+            itemContentProtobuf.content.sshKey.publicKey = data.publicKey
+            itemContentProtobuf.content.sshKey.sections = data.extraSections.toProtonPassItemV1CustomSections
+
+        case let .wifi(data):
+            itemContentProtobuf.content.wifi = .init()
+            itemContentProtobuf.content.wifi.ssid = data.ssid
+            itemContentProtobuf.content.wifi.password = data.password
+            itemContentProtobuf.content.wifi.sections = data.extraSections.toProtonPassItemV1CustomSections
+
+        case let .custom(data):
+            itemContentProtobuf.content.custom = .init()
+            itemContentProtobuf.content.custom.sections = data.sections.toProtonPassItemV1CustomSections
         }
         
         itemContentProtobuf.extraFields = customFields.toProtonPassItemV1ExtraFields

@@ -60,6 +60,15 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
 
         case let .identity(data):
             .identity(IdentityData(from: data))
+
+        case let .sshKey(data):
+            .sshKey(.init(from: data))
+
+        case let .wifi(data):
+            .wifi(.init(from: data))
+
+        case let .custom(data):
+            .custom(.init(from: data))
         }
     }
 
@@ -112,6 +121,22 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
 
         case let .identity(data):
             content.identity = data.toProtonPassItemV1ItemIdentity
+
+        case let .sshKey(data):
+            content.sshKey = .init()
+            content.sshKey.privateKey = data.privateKey
+            content.sshKey.publicKey = data.publicKey
+            content.sshKey.sections = data.extraSections.toProtonPassItemV1CustomSections
+
+        case let .wifi(data):
+            content.wifi = .init()
+            content.wifi.ssid = data.ssid
+            content.wifi.password = data.password
+            content.wifi.sections = data.extraSections.toProtonPassItemV1CustomSections
+
+        case let .custom(data):
+            content.custom = .init()
+            content.custom.sections = data.sections.toProtonPassItemV1CustomSections
         }
 
         extraFields = customFields.toProtonPassItemV1ExtraFields

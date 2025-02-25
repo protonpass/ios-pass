@@ -34,6 +34,12 @@ extension ItemTypeIdentifiable {
             #localized("Note moved to trash")
         case .identity:
             #localized("Identity moved to trash")
+        case .sshKey:
+            #localized("SSH key moved to trash")
+        case .wifi:
+            #localized("WiFi network moved to trash")
+        case .custom:
+            #localized("Custom item moved to trash")
         }
     }
 }

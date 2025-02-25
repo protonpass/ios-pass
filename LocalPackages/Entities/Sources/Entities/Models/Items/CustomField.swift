@@ -21,7 +21,7 @@
 import Foundation
 
 public enum CustomFieldType: CaseIterable, Equatable, Sendable {
-    case text, totp, hidden
+    case text, totp, hidden, timestamp
 }
 
 public struct CustomField: Equatable, Hashable, Sendable, Identifiable {
