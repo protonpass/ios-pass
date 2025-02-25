@@ -27,6 +27,9 @@ public enum ItemContentType: Int, CaseIterable, Equatable, Sendable, Hashable, C
     case note = 2
     case creditCard = 3
     case identity = 4
+    case sshKey = 5
+    case wifi = 6
+    case custom = 7
 }
 
 extension ItemContentType: CustomDebugStringConvertible {
@@ -42,6 +45,12 @@ extension ItemContentType: CustomDebugStringConvertible {
             "creditCard"
         case .identity:
             "identity"
+        case .sshKey:
+            "sshkey"
+        case .wifi:
+            "wifi"
+        case .custom:
+            "custom"
         }
     }
 }

@@ -28,7 +28,7 @@ import ProtonCoreUIFoundations
 import UIKit
 
 enum ItemType: CaseIterable {
-    case login, alias, note, password, creditCard, identity
+    case login, alias, note, password, creditCard, identity, custom
 }
 
 extension ItemContentType {
@@ -44,6 +44,8 @@ extension ItemContentType {
             .note
         case .identity:
             .identity
+        case .custom, .sshKey, .wifi:
+            .custom
         }
     }
 }
@@ -138,6 +140,8 @@ extension ItemType {
             IconProvider.key
         case .identity:
             IconProvider.cardIdentity
+        case .custom:
+            IconProvider.pencil
         }
     }
 
@@ -155,6 +159,8 @@ extension ItemType {
             PassColor.passwordInteractionNormMajor2
         case .identity:
             PassColor.interactionNormMajor2
+        case .custom:
+            .white
         }
     }
 
@@ -172,6 +178,8 @@ extension ItemType {
             PassColor.passwordInteractionNormMinor1
         case .identity:
             PassColor.interactionNormMinor1
+        case .custom:
+            .darkGray
         }
     }
 
@@ -189,6 +197,8 @@ extension ItemType {
             #localized("Password")
         case .identity:
             #localized("Identity")
+        case .custom:
+            #localized("Custom item")
         }
     }
 
@@ -206,6 +216,8 @@ extension ItemType {
             #localized("Generate a secure password")
         case .identity:
             #localized("Fill in your personal data")
+        case .custom:
+            #localized("Create items with fully customized fields")
         }
     }
 }

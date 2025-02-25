@@ -40202,6 +40202,9 @@
         }
       }
     },
+    "Copy SSID" : {
+
+    },
     "Copy username" : {
       "comment" : "Context menu options for items",
       "localizations" : {
@@ -41164,6 +41167,9 @@
         }
       }
     },
+    "Create a custom item" : {
+
+    },
     "Create a Hide My Email alias" : {
       "localizations" : {
         "be" : {
@@ -41951,6 +41957,9 @@
           }
         }
       }
+    },
+    "Create items with fully customized fields" : {
+
     },
     "Create login" : {
       "comment" : "AutoFill extension",
@@ -44823,6 +44832,27 @@
         }
       }
     },
+    "Custom item" : {
+
+    },
+    "Custom item created" : {
+
+    },
+    "Custom item moved to trash" : {
+
+    },
+    "Custom item permanently deleted" : {
+
+    },
+    "Custom item restored" : {
+
+    },
+    "Custom item updated" : {
+
+    },
+    "Custom items" : {
+
+    },
     "Custom section" : {
       "localizations" : {
         "be" : {
@@ -45462,6 +45492,12 @@
           }
         }
       }
+    },
+    "Date" : {
+
+    },
+    "Date custom field" : {
+
     },
     "Default" : {
       "localizations" : {
@@ -59487,6 +59523,9 @@
           }
         }
       }
+    },
+    "Filtered by custom items. Trashed items aren't shown." : {
+
     },
     "Filtered by identities. Trashed items aren't shown." : {
       "localizations" : {
@@ -91363,6 +91402,9 @@
         }
       }
     },
+    "Open custom item" : {
+
+    },
     "Open identity" : {
       "localizations" : {
         "be" : {
@@ -91967,6 +92009,9 @@
         }
       }
     },
+    "Open SSH key" : {
+
+    },
     "Open System Settings → Passwords → Password Options" : {
       "localizations" : {
         "be" : {
@@ -92126,6 +92171,9 @@
           }
         }
       }
+    },
+    "Open WiFi network" : {
+
     },
     "Opened:" : {
       "localizations" : {
@@ -123243,6 +123291,30 @@
         }
       }
     },
+    "SSH key" : {
+
+    },
+    "SSH key created" : {
+
+    },
+    "SSH key moved to trash" : {
+
+    },
+    "SSH key permanently deleted" : {
+
+    },
+    "SSH key restored" : {
+
+    },
+    "SSH key updated" : {
+
+    },
+    "SSH keys" : {
+
+    },
+    "SSID copied" : {
+
+    },
     "SSO integration (coming soon)" : {
       "localizations" : {
         "be" : {
@@ -146018,6 +146090,30 @@
           }
         }
       }
+    },
+    "WiFi network" : {
+
+    },
+    "WiFi network created" : {
+
+    },
+    "WiFi network moved to trash" : {
+
+    },
+    "WiFi network permanently deleted" : {
+
+    },
+    "WiFi network restored" : {
+
+    },
+    "WiFi network updated" : {
+
+    },
+    "WiFi networks" : {
+
+    },
+    "WiFi password copied" : {
+
     },
     "With other Proton Pass users" : {
       "localizations" : {

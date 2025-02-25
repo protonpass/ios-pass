@@ -81,6 +81,8 @@ extension CustomFieldType {
             #localized("2FA secret key (TOTP)")
         case .hidden:
             #localized("Hidden")
+        case .timestamp:
+            #localized("Date")
         }
     }
 
@@ -92,6 +94,8 @@ extension CustomFieldType {
             IconProvider.lock
         case .hidden:
             IconProvider.eyeSlash
+        case .timestamp:
+            IconProvider.calendarDay
         }
     }
 }
