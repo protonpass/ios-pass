@@ -40203,7 +40203,15 @@
       }
     },
     "Copy SSID" : {
-
+      "comment" : "Message shown after copying the SSID of a WiFi network item",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy SSID"
+          }
+        }
+      }
     },
     "Copy username" : {
       "comment" : "Context menu options for items",
@@ -41168,7 +41176,14 @@
       }
     },
     "Create a custom item" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a custom item"
+          }
+        }
+      }
     },
     "Create a Hide My Email alias" : {
       "localizations" : {
@@ -41959,7 +41974,14 @@
       }
     },
     "Create items with fully customized fields" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create items with fully customized fields"
+          }
+        }
+      }
     },
     "Create login" : {
       "comment" : "AutoFill extension",
@@ -44833,25 +44855,74 @@
       }
     },
     "Custom item" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item"
+          }
+        }
+      }
     },
     "Custom item created" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item created"
+          }
+        }
+      }
     },
     "Custom item moved to trash" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item moved to trash"
+          }
+        }
+      }
     },
     "Custom item permanently deleted" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item permanently deleted"
+          }
+        }
+      }
     },
     "Custom item restored" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item restored"
+          }
+        }
+      }
     },
     "Custom item updated" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item updated"
+          }
+        }
+      }
     },
     "Custom items" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom items"
+          }
+        }
+      }
     },
     "Custom section" : {
       "localizations" : {
@@ -45494,10 +45565,24 @@
       }
     },
     "Date" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        }
+      }
     },
     "Date custom field" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date custom field"
+          }
+        }
+      }
     },
     "Default" : {
       "localizations" : {
@@ -59525,7 +59610,14 @@
       }
     },
     "Filtered by custom items. Trashed items aren't shown." : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtered by custom items. Trashed items aren't shown."
+          }
+        }
+      }
     },
     "Filtered by identities. Trashed items aren't shown." : {
       "localizations" : {
@@ -91403,7 +91495,14 @@
       }
     },
     "Open custom item" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open custom item"
+          }
+        }
+      }
     },
     "Open identity" : {
       "localizations" : {
@@ -92010,7 +92109,14 @@
       }
     },
     "Open SSH key" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open SSH key"
+          }
+        }
+      }
     },
     "Open System Settings → Passwords → Password Options" : {
       "localizations" : {
@@ -92173,7 +92279,14 @@
       }
     },
     "Open WiFi network" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open WiFi network"
+          }
+        }
+      }
     },
     "Opened:" : {
       "localizations" : {
@@ -123292,28 +123405,84 @@
       }
     },
     "SSH key" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key"
+          }
+        }
+      }
     },
     "SSH key created" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key created"
+          }
+        }
+      }
     },
     "SSH key moved to trash" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key moved to trash"
+          }
+        }
+      }
     },
     "SSH key permanently deleted" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key permanently deleted"
+          }
+        }
+      }
     },
     "SSH key restored" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key restored"
+          }
+        }
+      }
     },
     "SSH key updated" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key updated"
+          }
+        }
+      }
     },
     "SSH keys" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH keys"
+          }
+        }
+      }
     },
     "SSID copied" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID copied"
+          }
+        }
+      }
     },
     "SSO integration (coming soon)" : {
       "localizations" : {
@@ -146092,28 +146261,84 @@
       }
     },
     "WiFi network" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network"
+          }
+        }
+      }
     },
     "WiFi network created" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network created"
+          }
+        }
+      }
     },
     "WiFi network moved to trash" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network moved to trash"
+          }
+        }
+      }
     },
     "WiFi network permanently deleted" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network permanently deleted"
+          }
+        }
+      }
     },
     "WiFi network restored" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network restored"
+          }
+        }
+      }
     },
     "WiFi network updated" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network updated"
+          }
+        }
+      }
     },
     "WiFi networks" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi networks"
+          }
+        }
+      }
     },
     "WiFi password copied" : {
-
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi password copied"
+          }
+        }
+      }
     },
     "With other Proton Pass users" : {
       "localizations" : {
