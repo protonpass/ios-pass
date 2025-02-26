@@ -39,8 +39,6 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
     @Published private(set) var vaults: [VaultListUiModel] = []
     @Published var defaultDomain: Domain?
     @Published private(set) var domains: [Domain] = []
-
-    @Published var defaultMailbox: Mailbox?
     @Published private(set) var mailboxes: [Mailbox] = []
     @Published private(set) var userAliasSyncData: UserAliasSyncData?
     @Published private(set) var pendingSyncDisabledAliases = 0
@@ -112,7 +110,6 @@ final class AliasSyncConfigurationViewModel: ObservableObject {
             domains = result.0
             mailboxes = result.1
             defaultDomain = domains.first { $0.id == aliasSettings?.defaultAliasDomain }
-            defaultMailbox = mailboxes.first { $0.id == aliasSettings?.defaultMailboxID } ?? mailboxes.first
         } catch {
             logger.error(error)
             // Record the error so at the UI level, we can let the users retry
@@ -301,7 +298,7 @@ private extension AliasSyncConfigurationViewModel {
             let request = UpdateAliasMailboxRequest(defaultMailboxID: mailbox.mailboxID)
             aliasSettings = try await aliasRepository.updateAliasDefaultMailbox(userId: userId,
                                                                                 request: request)
-            defaultMailbox = mailbox
+            mailboxes = try await aliasRepository.getAllAliasMailboxes(userId: userId)
         } catch {
             handle(error: error)
         }
