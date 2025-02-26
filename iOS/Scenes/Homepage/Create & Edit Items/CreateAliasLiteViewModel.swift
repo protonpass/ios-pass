@@ -42,6 +42,7 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @Published var prefix = ""
     @Published private(set) var canCreateAlias: Bool
     @Published private(set) var prefixError: AliasPrefixError?
+    @Published private(set) var aliasCount: Int?
     @Published var mailboxSelection: AliasLinkedMailboxSelection
     @Published var suffixSelection: SuffixSelection
     let module = resolve(\SharedToolingContainer.module)
@@ -54,6 +55,8 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
 
@@ -76,6 +79,16 @@ final class CreateAliasLiteViewModel: ObservableObject {
                 validatePrefix()
             }
             .store(in: &cancellables)
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                aliasCount = try await localItemDatasource.getAliasCount(userId: userId)
+            } catch {
+                handle(error)
+            }
+        }
     }
 }
 

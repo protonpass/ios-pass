@@ -30,7 +30,6 @@ import SwiftUI
 
 private enum AliasSyncConfigurationSheetState {
     case domain
-    case mailbox
     case vault
 }
 
@@ -58,7 +57,7 @@ struct AliasSyncConfigurationView: View {
             Section {
                 VStack(spacing: DesignConstant.sectionPadding) {
                     LazyVStack(spacing: 10) {
-                        if viewModel.loading || viewModel.mailboxes.isEmpty {
+                        if viewModel.mailboxes.isEmpty {
                             VStack {
                                 HStack {
                                     SkeletonBlock(tintColor: PassColor.textWeak)
@@ -76,8 +75,7 @@ struct AliasSyncConfigurationView: View {
                             .frame(maxWidth: .infinity)
                         } else {
                             ForEach(viewModel.mailboxes) { mailbox in
-                                MailboxElementRow(mailBox: mailbox,
-                                                  isDefault: mailbox == viewModel.defaultMailbox,
+                                MailboxElementRow(mailbox: mailbox,
                                                   changeEmail: { mailboxToChange = mailbox },
                                                   cancelChange: { viewModel.cancelChange(mailbox: mailbox) },
                                                   setDefault: { viewModel.setDefaultMailBox(mailbox: mailbox) },
@@ -107,18 +105,20 @@ struct AliasSyncConfigurationView: View {
                 HStack {
                     sectionHeader("Mailboxes")
                     Spacer()
-                    if !viewModel.loading, viewModel.error == nil {
+                    if viewModel.error == nil {
                         CapsuleLabelButton(icon: IconProvider.plus,
                                            title: #localized("Add"),
                                            titleColor: PassColor.interactionNormMajor2,
                                            backgroundColor: PassColor.interactionNormMinor1,
-                                           maxWidth: nil) {
-                            viewModel.canManageAliases ? router
-                                .present(sheet: .addEmail(.mailbox(nil))) :
-                                viewModel.upsell()
-                        }
+                                           maxWidth: nil,
+                                           isDisabled: viewModel.loading,
+                                           action: {
+                                               viewModel.canManageAliases ?
+                                                   router.present(sheet: .addEmail(.mailbox(nil))) :
+                                                   viewModel.upsell()
+                                           })
 
-                        if !viewModel.canManageAliases, !viewModel.loading, viewModel.error == nil {
+                        if !viewModel.canManageAliases {
                             passPlusBadge
                         }
                     }
@@ -246,12 +246,7 @@ private extension AliasSyncConfigurationView {
                                  selections: viewModel.domains,
                                  optional: true,
                                  shouldUpsell: viewModel.shouldUpsell)
-        case .mailbox:
-            GenericSelectionView(title: "Default mailbox for aliases",
-                                 selected: $viewModel.defaultMailbox,
-                                 selections: viewModel.mailboxes,
-                                 optional: false,
-                                 shouldUpsell: false)
+
         case .vault:
             VaultSelectionView(selectedVault: $viewModel.selectedVault,
                                vaults: viewModel.vaults)
@@ -263,8 +258,6 @@ private extension AliasSyncConfigurationView {
         case .domain:
             // +1 for "Not selected" option
             OptionRowHeight.compact.value * CGFloat(viewModel.domains.count + 1) + 50
-        case .mailbox:
-            OptionRowHeight.compact.value * CGFloat(viewModel.mailboxes.count) + 50
         case .vault:
             OptionRowHeight.medium.value * CGFloat(viewModel.vaults.count) + 50
         }
@@ -273,8 +266,7 @@ private extension AliasSyncConfigurationView {
 }
 
 private struct MailboxElementRow: View {
-    let mailBox: Mailbox
-    let isDefault: Bool
+    let mailbox: Mailbox
     let changeEmail: () -> Void
     let cancelChange: () -> Void
     let setDefault: () -> Void
@@ -284,12 +276,12 @@ private struct MailboxElementRow: View {
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                Text(mailBox.email)
+                Text(mailbox.email)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 HStack(spacing: 8) {
-                    if isDefault {
+                    if mailbox.isDefault {
                         Text("Default")
                             .font(.footnote)
                             .foregroundStyle(PassColor.interactionNormMinor1.toColor)
@@ -307,19 +299,19 @@ private struct MailboxElementRow: View {
             Spacer()
 
             Menu(content: {
-                if mailBox.verificationNeeded {
+                if mailbox.verificationNeeded {
                     Label(title: { Text("Verify") },
                           icon: { Image(uiImage: IconProvider.checkmarkCircle) })
                         .buttonEmbeded(action: verify)
                 }
 
-                if mailBox.verified, !isDefault {
+                if mailbox.verified, !mailbox.isDefault {
                     Label(title: { Text("Make default") },
                           icon: { Image(uiImage: IconProvider.star) })
                         .buttonEmbeded(action: setDefault)
                 }
 
-                if mailBox.pendingEmail == nil {
+                if mailbox.pendingEmail == nil {
                     Label(title: { Text("Change mailbox email") },
                           icon: { Image(uiImage: IconProvider.pencil) })
                         .buttonEmbeded(action: changeEmail)
@@ -328,7 +320,7 @@ private struct MailboxElementRow: View {
                         .buttonEmbeded(action: cancelChange)
                 }
 
-                if !isDefault {
+                if !mailbox.isDefault {
                     Divider()
                     Label(title: { Text("Delete") },
                           icon: { Image(uiImage: IconProvider.trash) })
@@ -344,10 +336,10 @@ private struct MailboxElementRow: View {
     }
 
     private var description: LocalizedStringKey {
-        if mailBox.pendingEmail != nil {
+        if mailbox.pendingEmail != nil {
             "Unverified mailbox change"
         } else {
-            mailBox.verified ? "\(mailBox.aliasCount) aliases" : "Unverified mailbox"
+            mailbox.verified ? "\(mailbox.aliasCount) aliases" : "Unverified mailbox"
         }
     }
 }

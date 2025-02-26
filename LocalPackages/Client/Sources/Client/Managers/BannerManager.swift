@@ -19,8 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Core
+import Entities
 import Macro
 @preconcurrency import ProtonCoreUIFoundations
+import SwiftUICore
 import UIKit
 
 public protocol BannerDisplayProtocol: Sendable {
@@ -109,8 +111,29 @@ public final class BannerManager: @unchecked Sendable, BannerDisplayProtocol {
         }
     }
 
-    public func displayTopErrorMessage(_ error: some Error) {
-        displayTopErrorMessage(error.localizedDebugDescription)
+    public func displayTopErrorMessage(_ error: any Error) {
+        if let customizedMessage = customizedMessage(for: error) {
+            displayTopErrorMessage(customizedMessage)
+        } else {
+            displayTopErrorMessage(error.localizedDebugDescription)
+        }
+    }
+}
+
+private extension BannerManager {
+    func customizedMessage(for error: any Error) -> String? {
+        if let passError = error as? PassError {
+            switch passError {
+            case let .vault(reason):
+                if case .noEditableVault = reason {
+                    // swiftlint:disable:next line_length
+                    return #localized("You don't have any vaults with editor or admin access. Try creating one in the main app, or ask your organization's administrator for support.")
+                }
+            default:
+                return nil
+            }
+        }
+        return nil
     }
 }
 

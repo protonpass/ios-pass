@@ -196,6 +196,7 @@ struct CreateEditAliasView: View {
                                      preferencesManager: viewModel.preferencesManager,
                                      state: state,
                                      aliasDiscoveryActive: viewModel.aliasDiscoveryActive,
+                                     aliasCount: viewModel.aliasCount,
                                      onAddMailbox: viewModel.addMailbox,
                                      onAddDomain: viewModel.addDomain,
                                      onDismiss: { sheetState = nil },

@@ -2958,6 +2958,16 @@
           }
         }
       }
+    },
+    "You don't have any vaults with editor or admin access. Try creating one in the main app, or ask your organization's administrator for support." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You don't have any vaults with editor or admin access. Try creating one in the main app, or ask your organization's administrator for support."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

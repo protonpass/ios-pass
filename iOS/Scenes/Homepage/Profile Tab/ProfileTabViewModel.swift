@@ -163,11 +163,12 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
         automaticallyCopyTotpCode = preferences.automaticallyCopyTotpCode && preferences
             .localAuthenticationMethod != .none
         accesses = accessRepository.accesses.value
-        refresh()
         setUp()
     }
 
     func reload() async {
+        autoFillEnabled = await credentialManager.isAutoFillEnabled
+        refreshLocalAuthenticationMethod()
         await refreshPlan()
         async let authMethod: Void = updateSupportedLocalAuthenticationMethods()
         async let secureLink: Void = fetchSecureLinks()
@@ -220,7 +221,7 @@ extension ProfileTabViewModel {
         Task { [weak self] in
             guard let self else { return }
             if await enableAutoFill() {
-                refresh()
+                autoFillEnabled = await credentialManager.isAutoFillEnabled
             }
         }
     }
@@ -368,14 +369,6 @@ extension ProfileTabViewModel {
 
 private extension ProfileTabViewModel {
     func setUp() {
-        NotificationCenter.default
-            .publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { [weak self] _ in
-                guard let self else { return }
-                refresh()
-            }
-            .store(in: &cancellables)
-
         preferencesManager
             .sharedPreferencesUpdates
             .receive(on: DispatchQueue.main)
@@ -458,14 +451,6 @@ private extension ProfileTabViewModel {
                 plan = userAccess.access.plan
             }
             .store(in: &cancellables)
-    }
-
-    func refresh() {
-        Task { [weak self] in
-            guard let self else { return }
-            autoFillEnabled = await credentialManager.isAutoFillEnabled
-            refreshLocalAuthenticationMethod()
-        }
     }
 
     func refreshLocalAuthenticationMethod() {

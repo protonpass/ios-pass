@@ -40,6 +40,7 @@ public struct AliasOptionsSheetContent: View {
                 preferencesManager: any PreferencesManagerProtocol,
                 state: AliasOptionsSheetState,
                 aliasDiscoveryActive: Bool,
+                aliasCount: Int?,
                 onAddMailbox: @escaping () -> Void,
                 onAddDomain: @escaping () -> Void,
                 onDismiss: @escaping () -> Void,
@@ -47,6 +48,7 @@ public struct AliasOptionsSheetContent: View {
         _viewModel = .init(wrappedValue: .init(module: module,
                                                preferencesManager: preferencesManager,
                                                state: state,
+                                               aliasCount: aliasCount,
                                                onError: onError))
         self.aliasDiscoveryActive = aliasDiscoveryActive
         self.onAddMailbox = onAddMailbox
@@ -84,6 +86,7 @@ public struct AliasOptionsSheetContent: View {
 private final class AliasOptionsSheetContentViewModel: ObservableObject {
     @Published private(set) var showMailboxTip = false
     @Published private(set) var showDomainTip = false
+    private let aliasCount: Int?
     private let preferencesManager: any PreferencesManagerProtocol
     private let onError: (any Error) -> Void
     let state: AliasOptionsSheetState
@@ -107,7 +110,7 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
             showDomainTip
         }
 
-        let tipHeight: CGFloat = showTip ? 120 : 0
+        let tipHeight: CGFloat = showTip ? 140 : 0
 
         return OptionRowHeight.compact.value * CGFloat(elementCount) + tipHeight + 60 // nav bar
     }
@@ -115,12 +118,14 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
     init(module: PassModule,
          preferencesManager: any PreferencesManagerProtocol,
          state: AliasOptionsSheetState,
+         aliasCount: Int?,
          onError: @escaping (any Error) -> Void) {
         self.state = state
         self.preferencesManager = preferencesManager
+        self.aliasCount = aliasCount
         self.onError = onError
 
-        if module == .hostApp {
+        if let aliasCount, aliasCount > 2, module == .hostApp {
             switch state {
             case let .mailbox(selection, _):
                 if selection.wrappedValue.allUserMailboxes.count <= 1 {
