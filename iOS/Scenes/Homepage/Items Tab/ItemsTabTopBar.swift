@@ -134,6 +134,7 @@ private extension ItemsTabTopBar {
                 .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
                 .resetFilters { viewModel.resetFilters() }
             ],
+            customItemEnabled: viewModel.customItemEnabled,
             highlighted: viewModel.highlighted,
             selectable: viewModel.selectable)
         }

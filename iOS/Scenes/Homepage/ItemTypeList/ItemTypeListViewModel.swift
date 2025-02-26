@@ -59,15 +59,21 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
 
     @MainActor
     enum Mode {
         case hostApp, autoFillExtension
 
-        var supportedTypes: [ItemType] {
+        func supportedTypes(customItemEnabled: Bool) -> [ItemType] {
             switch self {
             case .hostApp:
-                ItemType.allCases
+                if customItemEnabled {
+                    ItemType.allCases
+                } else {
+                    ItemType.allCases.filter { $0 != .custom }
+                }
             case .autoFillExtension:
                 [.login, .alias]
             }
@@ -84,6 +90,19 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     }
 
     let mode: Mode
+
+    var supportedTypes: [ItemType] {
+        switch mode {
+        case .hostApp:
+            if getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
+                ItemType.allCases
+            } else {
+                ItemType.allCases.filter { $0 != .custom }
+            }
+        case .autoFillExtension:
+            [.login, .alias]
+        }
+    }
 
     weak var uiSheetPresentationController: UISheetPresentationController?
 
@@ -160,7 +179,7 @@ extension ItemType {
         case .identity:
             PassColor.interactionNormMajor2
         case .custom:
-            .white
+            PassColor.textNorm
         }
     }
 
@@ -179,7 +198,7 @@ extension ItemType {
         case .identity:
             PassColor.interactionNormMinor1
         case .custom:
-            .darkGray
+            PassColor.customItemBackground
         }
     }
 

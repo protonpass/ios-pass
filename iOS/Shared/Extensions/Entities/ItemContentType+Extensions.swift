@@ -66,7 +66,7 @@ extension ItemContentType {
         case .identity:
             PassColor.interactionNorm
         case .custom, .sshKey, .wifi:
-            .label
+            PassColor.textNorm
         }
     }
 
@@ -83,7 +83,7 @@ extension ItemContentType {
         case .identity:
             PassColor.interactionNormMajor1
         case .custom, .sshKey, .wifi:
-            .label
+            PassColor.textNorm
         }
     }
 
@@ -100,7 +100,7 @@ extension ItemContentType {
         case .identity:
             PassColor.interactionNormMajor2
         case .custom, .sshKey, .wifi:
-            .label
+            PassColor.textNorm
         }
     }
 
@@ -117,7 +117,7 @@ extension ItemContentType {
         case .identity:
             PassColor.interactionNormMinor1
         case .custom, .sshKey, .wifi:
-            .darkGray
+            PassColor.customItemBackground
         }
     }
 
@@ -134,7 +134,7 @@ extension ItemContentType {
         case .identity:
             PassColor.interactionNormMinor2
         case .custom, .sshKey, .wifi:
-            .darkGray
+            PassColor.customItemBackground
         }
     }
 }

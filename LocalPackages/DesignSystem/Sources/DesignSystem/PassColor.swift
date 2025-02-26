@@ -84,6 +84,8 @@ public extension PassColor {
     static let passwordInteractionNormMajor2 = Self.color(named: "PasswordInteractionNormMajor2")
     static let passwordInteractionNormMinor1 = Self.color(named: "PasswordInteractionNormMinor1")
     static let passwordInteractionNormMinor2 = Self.color(named: "PasswordInteractionNormMinor2")
+
+    static let customItemBackground = Self.color(named: "CustomItemBackground")
 }
 
 // MARK: - Signals
