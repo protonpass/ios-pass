@@ -11,6 +11,10 @@
 		1F4276222D649B1300DF8EB7 /* ParentAccessibilityBranchKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4276202D649B1300DF8EB7 /* ParentAccessibilityBranchKey.swift */; };
 		1F4276232D649B1300DF8EB7 /* AccessibilityIdentifierLeafModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F42761F2D649B1300DF8EB7 /* AccessibilityIdentifierLeafModifier.swift */; };
 		1F4276242D649B1300DF8EB7 /* AccessibilityIdentifierBranchModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F42761E2D649B1300DF8EB7 /* AccessibilityIdentifierBranchModifier.swift */; };
+		1F8265C42D6E6C19009D565A /* api in Resources */ = {isa = PBXBuildFile; fileRef = 1F8265C32D6E6C19009D565A /* api */; };
+		1F8265C62D6E6C53009D565A /* scenarios in Resources */ = {isa = PBXBuildFile; fileRef = 1F8265C52D6E6C53009D565A /* scenarios */; };
+		1F8265C82D6E6D16009D565A /* MockTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F8265C72D6E6D16009D565A /* MockTests.swift */; };
+		1F8265CA2D6E6D81009D565A /* ProtonCoreTestingToolkitProxy in Frameworks */ = {isa = PBXBuildFile; productRef = 1F8265C92D6E6D81009D565A /* ProtonCoreTestingToolkitProxy */; };
 		350134FD2C9C505B008D803A /* AutoFillCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350134FC2C9C505B008D803A /* AutoFillCredentials.swift */; };
 		350AF86E299683940045B7B6 /* NoteEditSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350AF86D299683940045B7B6 /* NoteEditSection.swift */; };
 		350AF86F299685690045B7B6 /* NoteEditSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 350AF86D299683940045B7B6 /* NoteEditSection.swift */; };
@@ -760,6 +764,9 @@
 		1F42761E2D649B1300DF8EB7 /* AccessibilityIdentifierBranchModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifierBranchModifier.swift; sourceTree = "<group>"; };
 		1F42761F2D649B1300DF8EB7 /* AccessibilityIdentifierLeafModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifierLeafModifier.swift; sourceTree = "<group>"; };
 		1F4276202D649B1300DF8EB7 /* ParentAccessibilityBranchKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentAccessibilityBranchKey.swift; sourceTree = "<group>"; };
+		1F8265C32D6E6C19009D565A /* api */ = {isa = PBXFileReference; lastKnownFileType = folder; path = api; sourceTree = "<group>"; };
+		1F8265C52D6E6C53009D565A /* scenarios */ = {isa = PBXFileReference; lastKnownFileType = folder; path = scenarios; sourceTree = "<group>"; };
+		1F8265C72D6E6D16009D565A /* MockTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTests.swift; sourceTree = "<group>"; };
 		350134FC2C9C505B008D803A /* AutoFillCredentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoFillCredentials.swift; sourceTree = "<group>"; };
 		350AF86D299683940045B7B6 /* NoteEditSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditSection.swift; sourceTree = "<group>"; };
 		350CF79B2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedDataContainer+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1345,6 +1352,7 @@
 				575D3C272AE9154A0012434B /* TrustKit in Frameworks */,
 				5B8D20BE2AA7639E00457CA3 /* fusion in Frameworks */,
 				5733D3FF2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */,
+				1F8265CA2D6E6D81009D565A /* ProtonCoreTestingToolkitProxy in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1359,6 +1367,24 @@
 				1F4276202D649B1300DF8EB7 /* ParentAccessibilityBranchKey.swift */,
 			);
 			path = Accessibility;
+			sourceTree = "<group>";
+		};
+		1F8265C12D6E6C0F009D565A /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+				1F8265C52D6E6C53009D565A /* scenarios */,
+				1F8265C32D6E6C19009D565A /* api */,
+			);
+			path = Mocks;
+			sourceTree = "<group>";
+		};
+		1F8265C22D6E6C0F009D565A /* MockTests */ = {
+			isa = PBXGroup;
+			children = (
+				1F8265C72D6E6D16009D565A /* MockTests.swift */,
+				1F8265C12D6E6C0F009D565A /* Mocks */,
+			);
+			path = MockTests;
 			sourceTree = "<group>";
 		};
 		2E7AE4F339A9234C7A1F51F3 /* Frameworks */ = {
@@ -2738,6 +2764,7 @@
 		75283BD62946E1A9006658A6 /* iOSUITests */ = {
 			isa = PBXGroup;
 			children = (
+				1F8265C22D6E6C0F009D565A /* MockTests */,
 				FA622F772AC1AECD003B439D /* Info.plist */,
 				75283BE22946E21C006658A6 /* AppMainRobot.swift */,
 				35F3A2F72AB0967B00DD30DC /* ObfuscatedConstants.swift */,
@@ -3022,6 +3049,7 @@
 				5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */,
 				5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */,
 				35CACB992B28B9CE00A5D51D /* ProtonCoreTestingToolkitUnitTestsCore */,
+				1F8265C92D6E6D81009D565A /* ProtonCoreTestingToolkitProxy */,
 			);
 			productName = iOSUITests;
 			productReference = 75283BD52946E1A8006658A6 /* iOSUITests.xctest */;
@@ -3199,6 +3227,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F8265C42D6E6C19009D565A /* api in Resources */,
+				1F8265C62D6E6C53009D565A /* scenarios in Resources */,
 				FAD3ABA62A862A880004053E /* Proton Pass - Password Manager.storekit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3908,6 +3938,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F8265C82D6E6D16009D565A /* MockTests.swift in Sources */,
 				1F2769F22D5F8E3900048695 /* LogoutRobot.swift in Sources */,
 				75283BFE2946E21D006658A6 /* LoginWelcomeTests.swift in Sources */,
 				FAEC58C42A85218E0022E223 /* SubscriptionTests.swift in Sources */,
@@ -6016,6 +6047,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1F8265C92D6E6D81009D565A /* ProtonCoreTestingToolkitProxy */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
+			productName = ProtonCoreTestingToolkitProxy;
+		};
 		353518282AE14FB700574991 /* Screens */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Screens;

@@ -1,0 +1,49 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/payments/v5/resources/icons/shield"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": "�PNG\r\n\u001a\n\u0000\u0000\u0000\rIHDR\u0000\u0000\u0000@\u0000\u0000\u0000@\b\u0003\u0000\u0000\u0000����\u0000\u0000\u0000HPLTEGpL\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000I�&�\u0000\u0000\u0000\u0017tRNS\u0000`�@�\u0010� 0o��_ϏpPO�b���\u0000\u0000\u0001�IDATx^�U�n�0\fK�C�s�Z��:�\u0003*\u0014�'5���W�,%�ʠ�\u0003��f�\u0006\u001b\u0005�4��\u0010���\n{�\b\u0015('\u001b;M�A���M��WU#�O�X\n�M|�S2��\u0018�\u0012�]�\u0018����J��~j�{lA\u0012\r�\n[��ט�R\u0000\u0010�!��\u0012�{S��p\u001e��*\u0010\u0000�\u0000��\u0017\u0000�\u000e��[�#�\u0000��\u001f\u0001������&�\u0000��\u0002��\u001aG����\u001a\u001d�l\u0013�\u0000\\��m\u0002��m�l4p{ެ��U�Nq�\u0010�)�\u0016��̰��\u000e�zǏ���\u0011u�Ͷ\u000e�4GK\u0006��|�%\u0003�Ԝ�\u0002�w�B,\u0016t\u0003���\u0016\u0012�\b{\u0016.Z\u0004��u'#�\u0006\u0005����\r��f\b��\u000e��f\u0000�ڵ\t�E\t]�\tr���0u�d89\u000b\u0017�&���싂��_��(�Q\nq\u0006�������Bſ�p�!m�?z�=�bb\t(���5d\u0014�\u0017\u0014�8����\u0000߆\u0003H\u001b\n$��&�\u000f�q%vZ�\u001f|\u00031�2 \u001a�b\u0002\u0000\u0000\u0000\u0000IEND�B`�",
+    "headers": {
+      "server": "nginx",
+      "date": "Wed, 26 Feb 2025 09:39:54 GMT",
+      "content-type": "image/png",
+      "content-length": "580",
+      "connection": "close",
+      "cache-control": "max-age=3600, must-revalidate, public, max-age=604800",
+      "x-pm-route-pattern": "GET /payments/v5/resources/icons/{name}",
+      "access": "application/vnd.protonmail.api+json;apiversion=5",
+      "accept-ranges": "bytes",
+      "x-pm-time-total": "87",
+      "x-pm-time-user": "74",
+      "x-pm-time-system": "1",
+      "x-pm-memory": "8",
+      "x-pm-allocated-memory": "10",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (1511f680)",
+      "x-b3-traceid": "e790b027c265038762ac2a0b2ff09eb5",
+      "x-b3-spanid": "14d48d7560e40474",
+      "x-b3-parentspanid": "",
+      "last-modified": "Mon, 24 Feb 2025 07:16:44 GMT",
+      "expires": "Wed, 05 Mar 2025 09:39:54 GMT",
+      "x-pm-nonce": "Z77hanQDZXOOAjZXoGkEMQAAARA",
+      "set-cookie": [
+        "Session-Id=Z77hanQDZXOOAjZXoGkEMQAAARA; Domain=payments.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=payments.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z77hanQDZXOOAjZXoGkEMQAAARA' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.payments.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.payments.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "name": "Mock_get__api_payments_v5_resources_icons_shield"
+}

@@ -1,0 +1,58 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/pass/v1/alias_sync/status"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "SyncStatus": {
+        "Enabled": false,
+        "PendingAliasCount": 0
+      }
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Wed, 26 Feb 2025 09:40:21 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /pass/v1/alias_sync/status",
+      "x-pm-user-id": "42487",
+      "x-pm-uid": "q3xeinh3o4r22klwvdu733qbrcagey3c",
+      "access": "application/vnd.protonmail.api+json;apiversion=1",
+      "x-pm-time-total": "100",
+      "x-pm-time-user": "76",
+      "x-pm-time-system": "5",
+      "x-pm-memory": "8",
+      "x-pm-allocated-memory": "10",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (1511f680)",
+      "x-b3-traceid": "dc963832d4f1e496b1cdd3a756f77c43",
+      "x-b3-spanid": "c487c0c3523c9167",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "Z77hhdRrzSTpsdNaBAyKDwAAAMQ",
+      "set-cookie": [
+        "Session-Id=Z77hhdRrzSTpsdNaBAyKDwAAAMQ; Domain=payments.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=payments.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z77hhdRrzSTpsdNaBAyKDwAAAMQ' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.payments.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.payments.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "name": "Mock_get__api_pass_v1_alias_sync_status"
+}

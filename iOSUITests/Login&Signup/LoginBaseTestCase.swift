@@ -26,6 +26,7 @@ import ProtonCoreLog
 import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUITestsCore
+import ProtonCoreTestingToolkitProxy
 import XCTest
 
 class LoginBaseTestCase: ProtonCoreBaseTestCase {
@@ -67,6 +68,7 @@ class LoginBaseTestCase: ProtonCoreBaseTestCase {
     let entryRobot = AppMainRobot()
     var appRobot: MainRobot!
     lazy var quarkCommands = Quark().baseUrl(doh)
+    lazy var client = ProxyClient(baseURL: URL(string: doh.getAccountHost())!)
 
     override func setUp() {
         beforeSetUp(bundleIdentifier: "me.proton.pass.iOSUITests")
