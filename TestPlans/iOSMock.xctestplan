@@ -1,0 +1,58 @@
+{
+  "configurations" : [
+    {
+      "id" : "2405B7C6-8629-444E-9BD2-3B0301AF3AD4",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "environmentVariableEntries" : [
+      {
+        "key" : "DYNAMIC_DOMAIN",
+        "value" : "${DYNAMIC_DOMAIN}"
+      }
+    ],
+    "language" : "en",
+    "region" : "US",
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:ProtonPass.xcodeproj",
+      "identifier" : "35E5063A286F819F00A3F6EA",
+      "name" : "iOS"
+    }
+  },
+  "testTargets" : [
+    {
+      "skippedTests" : [
+        "ExternalAccountsTests",
+        "ExternalAccountsTests\/testSignInWithExternalAccountWorks()",
+        "ExternalAccountsTests\/testSignInWithInternalAccountWorks()",
+        "ExternalAccountsTests\/testSignUpWithExternalAccountIsNotAvailable()",
+        "ExternalAccountsTests\/testSignUpWithUsernameAccountIsNotAvailable()",
+        "LoginBaseTestCase",
+        "LoginSignupTests",
+        "LoginWelcomeTests",
+        "LoginWelcomeTests\/testLoginButtonIsPresentedOnWelcomeScreenWhenItShouldBe()",
+        "LoginWelcomeTests\/testLoginButtonLeadsToLoginScreen()",
+        "LoginWelcomeTests\/testLoginButtonLeadsToSignUpLessLoginScreenWhenNeeded()",
+        "LoginWelcomeTests\/testMailWelcomeScreenIsShown()",
+        "LoginWelcomeTests\/testSignUpButtonIsPresentedOnWelcomeScreenWhenItShouldBe()",
+        "LoginWelcomeTests\/testSignUpButtonLeadsToSignUpScreen()",
+        "SettingsTests\/testItemListDisplayed()",
+        "SettingsTests\/testTelemetrySettings()",
+        "SubscriptionTests",
+        "TokenRefreshTests",
+        "TokenRefreshTests\/testSignInWithInternalAccountWorks()"
+      ],
+      "target" : {
+        "containerPath" : "container:ProtonPass.xcodeproj",
+        "identifier" : "75283BD42946E1A8006658A6",
+        "name" : "iOSUITests"
+      }
+    }
+  ],
+  "version" : 1
+}

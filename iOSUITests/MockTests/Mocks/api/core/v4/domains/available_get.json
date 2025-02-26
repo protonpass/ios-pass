@@ -1,0 +1,57 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/core/v4/domains/available"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "Domains": [
+        "payments.proton.black",
+        "protonmail.com.payments.proton.black"
+      ]
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Wed, 26 Feb 2025 09:39:19 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /core/{_version}/domains/available",
+      "x-pm-uid": "q3xeinh3o4r22klwvdu733qbrcagey3c",
+      "access": "application/vnd.protonmail.api+json;apiversion=4",
+      "x-pm-time-total": "87",
+      "x-pm-time-user": "68",
+      "x-pm-time-system": "0",
+      "x-pm-memory": "7",
+      "x-pm-allocated-memory": "8",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (1511f680)",
+      "x-b3-traceid": "291535d05b43c3f00d54d090809149a1",
+      "x-b3-spanid": "cdcd701e3deeb6e6",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "Z77hR3QDZXOOAjZXoGkEBAAAARY",
+      "set-cookie": [
+        "Session-Id=Z77hR3QDZXOOAjZXoGkEBAAAARY; Domain=payments.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=payments.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z77hR3QDZXOOAjZXoGkEBAAAARY' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.payments.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.payments.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "name": "Mock_get__api_core_v4_domains_available"
+}
