@@ -49,6 +49,7 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @Published private(set) var prefixError: AliasPrefixError?
     @Published private(set) var canCreateAlias = true
     @Published private(set) var showAdvancedOptionsTipBanner = false
+    @Published private(set) var aliasCount: Int?
     @Published var mailboxSelection: AliasLinkedMailboxSelection = .defaultEmpty
     @Published var suffixSelection: SuffixSelection = .defaultEmpty
 
@@ -237,6 +238,7 @@ private extension CreateEditAliasViewModel {
                 // familiar with aliases so we can show tips for advanced options
                 // Otherwise if users are new, we don't overwhelm them
                 showAdvancedOptionsTipBanner = aliasCount > 2
+                self.aliasCount = aliasCount
             } catch {
                 handle(error)
             }
