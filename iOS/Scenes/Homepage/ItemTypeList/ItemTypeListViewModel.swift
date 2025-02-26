@@ -66,19 +66,6 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     enum Mode {
         case hostApp, autoFillExtension
 
-        func supportedTypes(customItemEnabled: Bool) -> [ItemType] {
-            switch self {
-            case .hostApp:
-                if customItemEnabled {
-                    ItemType.allCases
-                } else {
-                    ItemType.allCases.filter { $0 != .custom }
-                }
-            case .autoFillExtension:
-                [.login, .alias]
-            }
-        }
-
         var shouldShowMoreButton: Bool {
             switch self {
             case .hostApp:
