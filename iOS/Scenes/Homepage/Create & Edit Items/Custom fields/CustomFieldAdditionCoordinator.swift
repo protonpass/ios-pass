@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Client
 import Core
 import DesignSystem
 import Entities
@@ -38,6 +39,9 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
     weak var delegate: (any CustomFieldAdditionDelegate)?
     private let shouldShowTotp: Bool
 
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
+
     init(rootViewController: UIViewController,
          delegate: any CustomFieldAdditionDelegate,
          shouldShowTotp: Bool) {
@@ -47,7 +51,14 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
     }
 
     func start() {
-        let view = CustomFieldTypesView(shouldShowTotp: shouldShowTotp) { [weak self] type in
+        var supportedTypes = CustomFieldType.allCases
+        if !shouldShowTotp {
+            supportedTypes.removeAll { $0 == .totp }
+        }
+        if !getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
+            supportedTypes.removeAll { $0 == .timestamp }
+        }
+        let view = CustomFieldTypesView(supportedTypes: supportedTypes) { [weak self] type in
             guard let self else { return }
             rootViewController?.topMostViewController.dismiss(animated: true) { [weak self] in
                 guard let self else { return }
@@ -57,7 +68,7 @@ final class CustomFieldAdditionCoordinator: DeinitPrintable, CustomCoordinator {
         }
         let viewController = UIHostingController(rootView: view)
 
-        let customHeight = Int(OptionRowHeight.medium.value) * CustomFieldType.cases(shouldShowTotp).count
+        let customHeight = Int(OptionRowHeight.short.value) * supportedTypes.count
         if let rootViewController {
             viewController.setDetentType(.custom(CGFloat(customHeight)),
                                          parentViewController: rootViewController)
