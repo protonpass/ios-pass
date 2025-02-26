@@ -26,7 +26,7 @@ import SwiftUI
 
 extension HomepageCoordinator {
     func refreshInAppNotifications() {
-        guard inAppNotificationEnabled else {
+        guard inAppNotificationEnabled, authenticated else {
             return
         }
         Task { [weak self] in
@@ -71,8 +71,7 @@ private extension HomepageCoordinator {
                  onAppear: @escaping () -> Void,
                  onDisappear: @escaping () -> Void) {
         // Do not display in-app notification if there's currently another sheet
-        // and user is not locally authenticated
-        guard rootViewController.presentedViewController == nil, authenticated else { return }
+        guard rootViewController.presentedViewController == nil else { return }
         addTelemetryEvent(with: .notificationDisplay(key: notification.notificationKey))
 
         switch notification.displayType {
