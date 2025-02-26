@@ -24,14 +24,8 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
-extension CustomFieldType {
-    static func cases(_ shouldShowTotp: Bool) -> [CustomFieldType] {
-        shouldShowTotp ? CustomFieldType.allCases : [CustomFieldType.text, CustomFieldType.hidden]
-    }
-}
-
 struct CustomFieldTypesView: View {
-    let shouldShowTotp: Bool
+    let supportedTypes: [CustomFieldType]
     let onSelect: (CustomFieldType) -> Void
 
     var body: some View {
@@ -39,9 +33,9 @@ struct CustomFieldTypesView: View {
             PassColor.backgroundWeak.toColor
                 .ignoresSafeArea()
             VStack(spacing: 0) {
-                ForEach(CustomFieldType.cases(shouldShowTotp), id: \.self) { type in
+                ForEach(supportedTypes, id: \.self) { type in
                     row(for: type)
-                    if type != CustomFieldType.cases(shouldShowTotp).last {
+                    if type != supportedTypes.last {
                         PassDivider()
                     }
                 }
