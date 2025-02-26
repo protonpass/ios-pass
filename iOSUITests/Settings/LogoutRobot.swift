@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-<<<<<<< HEAD
 import fusion
 
 class LogoutRobot: ElementsProtocol {
@@ -28,10 +27,6 @@ class LogoutRobot: ElementsProtocol {
             return
         }
 
-=======
-enum LogoutRobot {
-    static func logoutIfNeeded() {
->>>>>>> e067f48e4 (TPE-981 - resurrect ui tests)
         if HomeRobot().verify.isProfileTabExist() {
             GetStartedRobot()
                 .tapClose()

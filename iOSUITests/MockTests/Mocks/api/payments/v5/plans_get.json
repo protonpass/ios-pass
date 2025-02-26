@@ -1,0 +1,272 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/payments/v5/plans"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "DefaultCycle": 12,
+      "Plans": [
+        {
+          "Instances": [
+            {
+              "Cycle": 12,
+              "Description": "Per year",
+              "PeriodEnd": 1772098820,
+              "Price": [
+                {
+                  "ID": "IDAj2rZGOXCdx2HL5h4ggc7SjAubaBiXtf3L4xwFLFBnDHYWqqSqBaKpLIU43OEl-rU16xG608NDMfPRxayV3Q==",
+                  "Currency": "USD",
+                  "Current": 11988,
+                  "Default": 11988
+                },
+                {
+                  "ID": "PBC5x7E9eIdBOdLcvFuyE4Z1gKDKeaYpDv1Ugt6SFDvyZDP5a6w4sKjxKR8fXdQMv8ncDmADnjyIcOYl-cmJxg==",
+                  "Currency": "EUR",
+                  "Current": 11988,
+                  "Default": 11988
+                },
+                {
+                  "ID": "Xf1cxRh1uDa-H1Bdk8y_EI0aSlfQxWnXQ8011hTeDbcpHbfcP5K1B1Wd0_8nWCFl3U93SfMWZcrwUa2kK2JhtQ==",
+                  "Currency": "CHF",
+                  "Current": 11988,
+                  "Default": 11988
+                }
+              ],
+              "Vendors": {
+                "Apple": {
+                  "ProductID": "iospass_bundle2022_12_usd_auto_renewing"
+                }
+              }
+            }
+          ],
+          "ID": "6QeHIh44j9R3b8kckYBHvp84UGeLt3yliLxZWhqVULXfuSNRDRwULijb5e4kpr5wvfluBXmtyCHWe0nYweWRpg==",
+          "ParentMetaPlanID": null,
+          "Type": 1,
+          "Name": "bundle2022",
+          "Title": "Proton Unlimited",
+          "Description": "Comprehensive privacy and security with all Proton services combined.",
+          "Services": 31,
+          "Features": 1,
+          "State": 1,
+          "Offers": [],
+          "Entitlements": [
+            {
+              "Type": "description",
+              "Text": "Unlimited logins and notes",
+              "IconName": "infinite",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Unlimited devices",
+              "IconName": "infinite",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "20 vaults",
+              "IconName": "vault",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Unlimited email aliases",
+              "IconName": "alias",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Integrated 2FA authenticator",
+              "IconName": "lock",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Priority support",
+              "IconName": "shield",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "500 GB storage",
+              "IconName": "storage",
+              "Hint": "Storage space is shared across Proton Mail, Proton Calendar, and Proton Drive"
+            },
+            {
+              "Type": "description",
+              "Text": "15 email addresses",
+              "IconName": "envelope",
+              "Hint": "Create multiple email addresses for your online identities, e.g., JohnShopper@proton.me for shopping accounts, JohnNews@proton.me for news subscription"
+            },
+            {
+              "Type": "description",
+              "Text": "High-speed VPN on 10 devices per user",
+              "IconName": "shield",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "And the Plus features of all other Proton products!",
+              "IconName": "checkmark",
+              "Hint": null
+            }
+          ],
+          "Decorations": [
+            {
+              "Type": "starred",
+              "IconName": "star"
+            }
+          ],
+          "Layout": "default"
+        },
+        {
+          "Instances": [
+            {
+              "Cycle": 12,
+              "Description": "Per year",
+              "PeriodEnd": 1772098820,
+              "Price": [
+                {
+                  "ID": "KmGTMP8jA0m09Wauqs23hsphurHuRRIaxcsx-zINIXj076pw_hwbS9zZjzmk3fj3hBcLOtq1KRHimsVuof44Aw==",
+                  "Currency": "USD",
+                  "Current": 3588,
+                  "Default": 3588
+                },
+                {
+                  "ID": "s6UJhay7Kk4T0VsViHbTVdB800vxk6NXpCExJ0BpRHau_H0WMgekhfH7ci2IZrpiTBsQ0nJ4ombQsGQTSwYsLg==",
+                  "Currency": "EUR",
+                  "Current": 3588,
+                  "Default": 3588
+                },
+                {
+                  "ID": "iISX3wbfmuZmnj5I3_iu4-1CPu5XIDxRctswruKwnMlOg48eEMbz1mM5jS7_EvConwEYziA2M_vjaXgysvOvfQ==",
+                  "Currency": "CHF",
+                  "Current": 3588,
+                  "Default": 3588
+                }
+              ],
+              "Vendors": {
+                "Apple": {
+                  "ProductID": "iospass_pass2023_12_usd_auto_renewing"
+                }
+              }
+            }
+          ],
+          "ID": "39hry1jlHiPzhXRXrWjfS6t3fqA14QbYfrbF30l2PYYWOhVpyJ33nhujM4z4SHtfuQqTx6e7oSQokrqhLMD8LQ==",
+          "ParentMetaPlanID": null,
+          "Type": 1,
+          "Name": "pass2023",
+          "Title": "Pass Plus",
+          "Description": "For next-level password management and identity protection.",
+          "Services": 8,
+          "Features": 0,
+          "State": 1,
+          "Offers": [],
+          "Entitlements": [
+            {
+              "Type": "description",
+              "Text": "Unlimited logins and notes",
+              "IconName": "infinite",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Unlimited devices",
+              "IconName": "infinite",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "20 vaults",
+              "IconName": "vault",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Share each vault with up to 10 people",
+              "IconName": "globe",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Unlimited email aliases",
+              "IconName": "alias",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Integrated 2FA authenticator",
+              "IconName": "lock",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Custom fields",
+              "IconName": "pen-square",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "Priority support",
+              "IconName": "shield",
+              "Hint": null
+            },
+            {
+              "Type": "description",
+              "Text": "And the free features of all other Proton products!",
+              "IconName": "checkmark",
+              "Hint": null
+            }
+          ],
+          "Decorations": [],
+          "Layout": "default"
+        }
+      ]
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Wed, 26 Feb 2025 09:40:20 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /payments/v5/plans",
+      "x-pm-user-id": "42487",
+      "x-pm-uid": "q3xeinh3o4r22klwvdu733qbrcagey3c",
+      "access": "application/vnd.protonmail.api+json;apiversion=5",
+      "x-pm-time-total": "201",
+      "x-pm-time-user": "160",
+      "x-pm-time-system": "5",
+      "x-pm-memory": "9",
+      "x-pm-allocated-memory": "12",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (1511f680)",
+      "x-b3-traceid": "1e8dc482b7040bfa5e13394c9b5966d8",
+      "x-b3-spanid": "34922a145a933246",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "Z77hhHQDZXOOAjZXoGkEUAAAAQk",
+      "set-cookie": [
+        "Session-Id=Z77hhHQDZXOOAjZXoGkEUAAAAQk; Domain=payments.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=payments.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z77hhHQDZXOOAjZXoGkEUAAAAQk' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.payments.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.payments.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "name": "Mock_get__api_payments_v5_plans"
+}

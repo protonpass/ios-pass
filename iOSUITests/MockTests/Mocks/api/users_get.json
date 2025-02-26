@@ -1,0 +1,117 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/users"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "User": {
+        "ID": "dYLo8MFyWwEMmG1WUsUumqhUL7x-b2Uka7I3s4HeibbV2lhButhLWmbMeLAA4b3ClY0Amm-38J-HQYBU7u_w5A==",
+        "Name": "protonROFVVH588533",
+        "Currency": "CHF",
+        "Credit": 0,
+        "Type": 1,
+        "CreateTime": 1739982870,
+        "MaxUpload": 26214400,
+        "MaxSpace": 1073741824,
+        "MaxBaseSpace": 1073741824,
+        "MaxDriveSpace": 5368709120,
+        "UsedSpace": 2239104,
+        "UsedBaseSpace": 2239104,
+        "UsedDriveSpace": 0,
+        "ProductUsedSpace": {
+          "Calendar": 0,
+          "Contact": 0,
+          "Drive": 0,
+          "Mail": 2239104,
+          "Pass": 0,
+          "Lumo": 0
+        },
+        "Subscribed": 0,
+        "Services": 0,
+        "MnemonicStatus": 1,
+        "Role": 0,
+        "Private": 1,
+        "Delinquent": 0,
+        "Billed": 0,
+        "NumAI": 0,
+        "NumLumo": 0,
+        "Keys": [
+          {
+            "ID": "Omkg7a7RoShbeyi8tSV8F_ipkxXvy0OeRvL3YuWA2QwpO3Sk6t7-0OHOiYKRGadMr6LMA_g4CZlG2B4U3T34Qg==",
+            "Version": 3,
+            "Primary": 1,
+            "RecoverySecret": null,
+            "RecoverySecretSignature": null,
+            "PrivateKey": "-----BEGIN PGP PRIVATE KEY BLOCK-----\nVersion: ProtonMail\n\nxYUEZ7YIFhYJKwYBBAHaRw8BAQdAkk6l9gDL1N6YDlyzeIuymKqyx5e6QXCA\nVwLfHXQj1bn+CQEIzRXN+OTpk3iJ+dOgsTGk3O43BgRYXyzvGR5XsEYzp5/V\n+urJtbB3QnQMjSrViGaXCJvfG6xHl7hVsh5ybn8vNI2iTowVi+YYg2esVQGz\nzVNwcm90b25ST0ZWVkg1ODg1MzNAcGF5bWVudHMucHJvdG9uLmJsYWNrIDxw\ncm90b25ST0ZWVkg1ODg1MzNAcGF5bWVudHMucHJvdG9uLmJsYWNrPsK/BBMW\nCABxBYJntggWAwsJBwmQ8CKI/OOBDS01FAAAAAAAHAAQc2FsdEBub3RhdGlv\nbnMub3BlbnBncGpzLm9yZ2hBDvv6JlhBQ2FUVznghfwCFQgDFgACAhkBApsD\nAh4BFiEE8ITevmZgFjuJt1A28CKI/OOBDS0AAPrKAP9fT+aKz21pNdWoacpS\n5W1a2dlUFw1Zg89oDyd4NAbLywD9Eng5CjIKMp0AQ7fxiiDKPqicRK7SCIjC\nXAIUlTbh7AXHigRntggWEgorBgEEAZdVAQUBAQdAhPOD0oj1aPYDbUPz5hXo\n4Su6vASzVG1JL1ZAiGS4sGEDAQoJ/gkBCM0Vzfjk6ZN4WBJVtoRWpR8waXvx\nd3pl9iTZzbd3rwQfLZyaLWIK8EsI69MQOOE89A1ZiJLt4BA9+XanFGK/fjUy\nHicWFlpcf7//pBGzmMKuBBgWCABgBYJntggWCZDwIoj844ENLTUUAAAAAAAc\nABBzYWx0QG5vdGF0aW9ucy5vcGVucGdwanMub3JnfV7OqVi3C5Z8XUlA5Cee\nUwKbDBYhBPCE3r5mYBY7ibdQNvAiiPzjgQ0tAAD3SAD9HkzYqPYEsGDmOB/F\n9GpkAxF/ShQZFw7g+xkjfDDmBnQA/AnOSlhX/4idS/MN7BlYTXw4GXeHCS8d\ny0n6dm5GpOgD\n=QsL4\n-----END PGP PRIVATE KEY BLOCK-----\n",
+            "Fingerprint": "f084debe6660163b89b75036f02288fce3810d2d",
+            "Active": 1
+          }
+        ],
+        "ToMigrate": 0,
+        "Email": "protonROFVVH588533@payments.proton.black",
+        "DisplayName": "protonROFVVH588533",
+        "AccountRecovery": null,
+        "Flags": {
+          "protected": false,
+          "drive-early-access": false,
+          "onboard-checklist-storage-granted": true,
+          "has-temporary-password": false,
+          "test-account": false,
+          "no-login": false,
+          "recovery-attempt": false,
+          "sso": false,
+          "pass-lifetime": false,
+          "pass-from-sl": false,
+          "no-proton-address": false
+        },
+        "ChargebeeUser": 2,
+        "ChargebeeUserExists": 1
+      }
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Wed, 26 Feb 2025 09:39:31 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /users",
+      "x-pm-user-id": "42487",
+      "x-pm-uid": "q3xeinh3o4r22klwvdu733qbrcagey3c",
+      "access": "application/vnd.protonmail.api+json;apiversion=3",
+      "x-pm-time-total": "151",
+      "x-pm-time-user": "98",
+      "x-pm-time-system": "7",
+      "x-pm-memory": "8",
+      "x-pm-allocated-memory": "10",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (1511f680)",
+      "x-b3-traceid": "d3e5dce66bce6a407a8c7381b89a7b6b",
+      "x-b3-spanid": "c08695d7c62d687a",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "Z77hU3QDZXOOAjZXoGkEEAAAAQE",
+      "set-cookie": [
+        "Session-Id=Z77hU3QDZXOOAjZXoGkEEAAAAQE; Domain=payments.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=payments.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z77hU3QDZXOOAjZXoGkEEAAAAQE' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.payments.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.payments.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "name": "Mock_get__api_users"
+}
