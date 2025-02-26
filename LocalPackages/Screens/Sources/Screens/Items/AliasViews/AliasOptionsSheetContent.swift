@@ -125,12 +125,10 @@ private final class AliasOptionsSheetContentViewModel: ObservableObject {
         self.aliasCount = aliasCount
         self.onError = onError
 
-        if module == .hostApp {
+        if let aliasCount, aliasCount > 2, module == .hostApp {
             switch state {
             case let .mailbox(selection, _):
-                if let aliasCount,
-                   aliasCount > 2,
-                   selection.wrappedValue.allUserMailboxes.count <= 1 {
+                if selection.wrappedValue.allUserMailboxes.count <= 1 {
                     showMailboxTip = !aliasDiscovery.contains(.mailboxes)
                 }
 
