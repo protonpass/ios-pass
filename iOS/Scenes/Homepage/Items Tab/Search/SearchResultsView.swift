@@ -64,7 +64,9 @@ struct SearchResultsView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            SearchResultChips(selectedType: $selectedType, itemCount: viewModel.itemCount)
+            SearchResultChips(selectedType: $selectedType,
+                              itemCount: viewModel.itemCount,
+                              customItemEnabled: viewModel.customItemEnabled)
             topBarSearchInformations
             if useSwiftUIList {
                 searchListItems

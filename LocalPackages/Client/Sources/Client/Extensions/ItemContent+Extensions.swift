@@ -50,7 +50,7 @@ public extension ItemContent {
 
         case .sshKey:
             // swiftlint:disable:next todo
-            // TODO: Figure this out later
+            // TODO: [Custom item] Figure this out later
             note = ""
 
         case let .wifi(data):
@@ -58,7 +58,7 @@ public extension ItemContent {
 
         case let .custom(data):
             // swiftlint:disable:next todo
-            // TODO: Figure this out later
+            // TODO: [Custom item] Figure this out later
             note = ""
         }
 

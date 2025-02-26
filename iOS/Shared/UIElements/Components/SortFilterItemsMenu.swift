@@ -38,6 +38,7 @@ enum SortFilterItemsMenuOption: Identifiable {
 
 struct SortFilterItemsMenu: View {
     let options: [SortFilterItemsMenuOption]
+    let customItemEnabled: Bool
     let highlighted: Bool
     let selectable: Bool
 
@@ -91,7 +92,7 @@ private extension SortFilterItemsMenu {
                        itemCount: ItemCount,
                        onSelect: @escaping (ItemTypeFilterOption) -> Void) -> some View {
         Menu(content: {
-            ForEach(ItemTypeFilterOption.allCases, id: \.self) { option in
+            ForEach(filterOptions, id: \.self) { option in
                 let uiModel = option.uiModel(from: itemCount)
                 Button(action: {
                     onSelect(option)
@@ -122,6 +123,35 @@ private extension SortFilterItemsMenu {
                 Image(uiImage: !selectedOption.isDefault ? PassIcon.filterFilled : IconProvider.filter)
             })
         })
+    }
+
+    var filterOptions: [ItemTypeFilterOption] {
+        // We want to control the order of appearance so we construct the array manually
+        // instead of looping through "ItemContentType.allCases"
+        if customItemEnabled {
+            [
+                .all,
+                .precise(.login),
+                .precise(.alias),
+                .precise(.creditCard),
+                .precise(.note),
+                .precise(.identity),
+                .precise(.custom),
+                .itemSharedWithMe,
+                .itemSharedByMe
+            ]
+        } else {
+            [
+                .all,
+                .precise(.login),
+                .precise(.alias),
+                .precise(.creditCard),
+                .precise(.note),
+                .precise(.identity),
+                .itemSharedWithMe,
+                .itemSharedByMe
+            ]
+        }
     }
 
     func text(for uiModel: ItemTypeFilterOptionUiModel) -> some View {

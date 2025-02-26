@@ -28,6 +28,7 @@ import SwiftUI
 struct SearchResultChips: View {
     @Binding var selectedType: ItemContentType?
     let itemCount: ItemCount
+    let customItemEnabled: Bool
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
@@ -43,6 +44,9 @@ struct SearchResultChips: View {
                 chip(for: .creditCard, count: itemCount.creditCard)
                 chip(for: .note, count: itemCount.note)
                 chip(for: .identity, count: itemCount.identity)
+                if customItemEnabled {
+                    chip(for: .custom, count: itemCount.custom)
+                }
             }
             .padding(.horizontal)
         }

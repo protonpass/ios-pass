@@ -39,23 +39,6 @@ enum ItemTypeFilterOption: Equatable, Hashable {
         }
     }
 
-    static var allCases: [ItemTypeFilterOption] {
-        // We want to control the order of appearance so we construct the array manually
-        // instead of looping through "ItemContentType.allCases"
-        let allCases: [ItemTypeFilterOption] = [
-            .all,
-            .precise(.login),
-            .precise(.alias),
-            .precise(.creditCard),
-            .precise(.note),
-            .precise(.identity),
-            .itemSharedWithMe,
-            .itemSharedByMe
-        ]
-        assert(allCases.count == ItemContentType.allCases.count + 3, "Some type is missing")
-        return allCases
-    }
-
     func uiModel(from itemCount: ItemCount) -> ItemTypeFilterOptionUiModel {
         switch self {
         case .all:
