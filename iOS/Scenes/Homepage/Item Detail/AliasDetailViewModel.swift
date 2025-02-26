@@ -41,6 +41,7 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     @Published private(set) var showContactsTip = false
 
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
+    @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
 
     private var task: Task<Void, Never>?
 
@@ -77,7 +78,16 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
             fatalError("Expecting alias type")
         }
 
-        showContactsTip = !aliasDiscovery.contains(.contacts)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let aliasCount = try await localItemDatasource.getAliasCount(userId: userId)
+                showContactsTip = aliasCount > 2 && !aliasDiscovery.contains(.contacts)
+            } catch {
+                handle(error)
+            }
+        }
 
         aliasRepository.contactsUpdated
             .receive(on: DispatchQueue.main)

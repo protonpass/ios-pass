@@ -61,6 +61,7 @@ private extension EditableVaultListViewModel {
 final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     @Published private(set) var loading = false
     @Published private(set) var state = AppContentState.loading
+    @Published private(set) var organization: Organization?
     private let count: Count
 
     let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
@@ -73,6 +74,10 @@ final class EditableVaultListViewModel: ObservableObject, DeinitPrintable {
     private let logger = resolve(\SharedToolingContainer.logger)
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.accessRepository)
+    private var accessRepository
+    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    private var organizationRepository
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -133,6 +138,23 @@ private extension EditableVaultListViewModel {
                 state = newState
             }
             .store(in: &cancellables)
+
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                if accessRepository.access.value?.access.plan.isBusinessUser == true {
+                    organization = try await organizationRepository.getOrganization(userId: userId)
+                }
+            } catch {
+                handle(error)
+            }
+        }
+    }
+
+    func handle(_ error: any Error) {
+        logger.error(error)
+        router.display(element: .displayErrorBanner(error))
     }
 }
 
@@ -151,8 +173,7 @@ extension EditableVaultListViewModel {
                 try await appContentManager.refresh(userId: userId)
                 router.display(element: .infosMessage(#localized("Vault « %@ » deleted", vaultContent.name)))
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -182,8 +203,7 @@ extension EditableVaultListViewModel {
                 try await leaveShare(userId: userId, with: vault.shareId)
                 syncEventLoop.forceSync()
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -201,8 +221,7 @@ extension EditableVaultListViewModel {
                                                         config: .refresh))
                 logger.info("Restored all trashed items")
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
@@ -220,8 +239,7 @@ extension EditableVaultListViewModel {
                                                       config: .refresh))
                 logger.info("Emptied all trashed items")
             } catch {
-                logger.error(error)
-                router.display(element: .displayErrorBanner(error))
+                handle(error)
             }
         }
     }
