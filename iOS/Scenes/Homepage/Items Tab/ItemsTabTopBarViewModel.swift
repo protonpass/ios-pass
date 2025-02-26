@@ -82,6 +82,8 @@ enum ExtraBulkActionOption {
 final class ItemsTabTopBarViewModel: ObservableObject {
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
     private var cancellables = Set<AnyCancellable>()
 
     @Published private(set) var actionsDisabled = true
@@ -89,6 +91,10 @@ final class ItemsTabTopBarViewModel: ObservableObject {
 
     @AppStorage(Constants.sortTypeKey, store: kSharedUserDefaults)
     var selectedSortType = SortType.mostRecent
+
+    var customItemEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
+    }
 
     var selectedItemsCount: Int {
         currentSelectedItems.value.count

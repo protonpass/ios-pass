@@ -63,5 +63,7 @@ struct HighlightText: View {
         Text(texts)
             .lineLimit(lineLimit)
             .truncationMode(hasAdditionalTexts ? .middle : .tail)
+            .multilineTextAlignment(.leading)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

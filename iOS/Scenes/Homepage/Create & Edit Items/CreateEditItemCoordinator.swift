@@ -189,18 +189,22 @@ private extension CreateEditItemCoordinator {
     // swiftlint:disable:next todo
     // TODO: [Custom item] Implement this
     func presentCreateEditSshKeyView(mode: ItemMode) throws {
+        // Make periphery happy
+        print(mode)
         present(Text(verbatim: "Create edit SSH key"), dismissable: false)
     }
 
     // swiftlint:disable:next todo
     // TODO: [Custom item] Implement this
     func presentCreateEditWifiView(mode: ItemMode) throws {
+        print(mode)
         present(Text(verbatim: "Create edit wifi"), dismissable: false)
     }
 
     // swiftlint:disable:next todo
     // TODO: [Custom item] Implement this
     func presentCreateEditCustomView(mode: ItemMode) throws {
+        print(mode)
         present(Text(verbatim: "Create edit custom item"), dismissable: false)
     }
 

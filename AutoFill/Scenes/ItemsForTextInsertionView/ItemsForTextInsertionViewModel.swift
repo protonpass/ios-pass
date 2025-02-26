@@ -70,6 +70,9 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
     @LazyInjected(\AutoFillUseCaseContainer.completeTextAutoFill)
     private var completeTextAutoFill
 
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
+
     // Not using @Published because sinking on a @Published is triggered before the value is set
     private let filterOptionUpdated = PassthroughSubject<Void, Never>()
     var filterOption = ItemTypeFilterOption.all {
@@ -88,6 +91,10 @@ final class ItemsForTextInsertionViewModel: AutoFillViewModel<ItemsForTextInsert
 
     var highlighted: Bool {
         !filterOption.isDefault || !selectedSortType.isDefault
+    }
+
+    var customItemEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
     }
 
     var selectedItemType: ItemType?
