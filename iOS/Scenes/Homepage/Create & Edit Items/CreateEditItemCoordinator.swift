@@ -57,30 +57,8 @@ extension CreateEditItemCoordinator {
         currentViewModel?.refresh()
     }
 
-    func presentEditItemView(for itemContent: ItemContent) throws {
-        let mode = ItemMode.edit(itemContent)
-        switch itemContent.contentData.type {
-        case .login:
-            try presentCreateEditLoginView(mode: mode)
-        case .note:
-            try presentCreateEditNoteView(mode: mode)
-        case .creditCard:
-            try presentCreateEditCreditCardView(mode: mode)
-        case .alias:
-            try presentCreateEditAliasView(mode: mode)
-        case .identity:
-            try presentCreateEditIdentityView(mode: mode)
-        case .sshKey:
-            try presentCreateEditSshKeyView(mode: mode)
-        case .wifi:
-            try presentCreateEditWifiView(mode: mode)
-        case .custom:
-            try presentCreateEditCustomView(mode: mode)
-        }
-    }
-
-    func presentCloneItemView(for itemContent: ItemContent) throws {
-        let mode = ItemMode.clone(itemContent)
+    func presentEditOrCloneItemView(for itemContent: ItemContent, isEdit: Bool) throws {
+        let mode = isEdit ? ItemMode.edit(itemContent) : ItemMode.clone(itemContent)
         switch itemContent.contentData.type {
         case .login:
             try presentCreateEditLoginView(mode: mode)

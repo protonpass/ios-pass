@@ -768,7 +768,7 @@ extension HomepageCoordinator {
     func presentEditItemView(for itemContent: ItemContent) {
         do {
             let coordinator = makeCreateEditItemCoordinator()
-            try coordinator.presentEditItemView(for: itemContent)
+            try coordinator.presentEditOrCloneItemView(for: itemContent, isEdit: true)
         } catch {
             handle(error: error)
         }
@@ -779,7 +779,7 @@ extension HomepageCoordinator {
             guard let self else { return }
             do {
                 let coordinator = makeCreateEditItemCoordinator()
-                try coordinator.presentCloneItemView(for: itemContent)
+                try coordinator.presentEditOrCloneItemView(for: itemContent, isEdit: false)
             } catch {
                 handle(error: error)
             }
