@@ -60118,6 +60118,16 @@
         }
       }
     },
+    "Finance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finance"
+          }
+        }
+      }
+    },
     "Find an alias, login, or note" : {
       "comment" : "Search page",
       "localizations" : {
@@ -127106,6 +127116,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma adınızı istediğiniz şekilde özelleştirmek için dişli simgesine dokunun."
+          }
+        }
+      }
+    },
+    "Technology" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Technology"
           }
         }
       }

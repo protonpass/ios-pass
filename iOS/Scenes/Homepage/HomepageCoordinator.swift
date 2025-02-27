@@ -793,7 +793,10 @@ extension HomepageCoordinator {
             }
             do {
                 let coordinator = makeCreateEditItemCoordinator()
-                try await coordinator.presentCreateItemView(for: itemType)
+                try await coordinator.presentCreateItemView(for: itemType) { [weak self] error in
+                    guard let self else { return }
+                    handle(error: error)
+                }
             } catch {
                 handle(error: error)
             }
