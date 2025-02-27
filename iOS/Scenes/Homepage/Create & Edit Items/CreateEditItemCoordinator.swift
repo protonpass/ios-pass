@@ -80,7 +80,8 @@ extension CreateEditItemCoordinator {
     }
 
     @MainActor
-    func presentCreateItemView(for itemType: ItemType) async throws {
+    func presentCreateItemView(for itemType: ItemType,
+                               onError: @escaping (any Error) -> Void) async throws {
         let shareId = appContentManager.vaultSelection.preciseVault?.shareId
         switch itemType {
         case .login:
@@ -98,7 +99,7 @@ extension CreateEditItemCoordinator {
         case .identity:
             try presentCreateEditIdentityView(mode: .create(shareId: shareId, type: .identity))
         case .custom:
-            presentCustomItemList()
+            try presentCustomItemList(onError)
         }
     }
 
@@ -164,26 +165,34 @@ private extension CreateEditItemCoordinator {
         currentViewModel = viewModel
     }
 
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
     func presentCreateEditSshKeyView(mode: ItemMode) throws {
-        // Make periphery happy
-        print(mode)
-        present(Text(verbatim: "Create edit SSH key"), dismissable: false)
+        let viewModel = try CreateEditSshKeyViewModel(mode: mode,
+                                                      upgradeChecker: upgradeChecker,
+                                                      vaults: appContentManager.getAllShares())
+        viewModel.delegate = createEditItemDelegates
+        let view = CreateEditSshKeyView(viewModel: viewModel)
+        present(view, dismissable: false)
+        currentViewModel = viewModel
     }
 
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
     func presentCreateEditWifiView(mode: ItemMode) throws {
-        print(mode)
-        present(Text(verbatim: "Create edit wifi"), dismissable: false)
+        let viewModel = try CreateEditWifiViewModel(mode: mode,
+                                                    upgradeChecker: upgradeChecker,
+                                                    vaults: appContentManager.getAllShares())
+        viewModel.delegate = createEditItemDelegates
+        let view = CreateEditWifiView(viewModel: viewModel)
+        present(view, dismissable: false)
+        currentViewModel = viewModel
     }
 
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
     func presentCreateEditCustomView(mode: ItemMode) throws {
-        print(mode)
-        present(Text(verbatim: "Create edit custom item"), dismissable: false)
+        let viewModel = try CreateEditCustomItemViewModel(mode: mode,
+                                                          upgradeChecker: upgradeChecker,
+                                                          vaults: appContentManager.getAllShares())
+        viewModel.delegate = createEditItemDelegates
+        let view = CreateEditCustomItemView(viewModel: viewModel)
+        present(view, dismissable: false)
+        currentViewModel = viewModel
     }
 
     func presentGeneratePasswordView(mode: GeneratePasswordViewMode,
@@ -203,9 +212,27 @@ private extension CreateEditItemCoordinator {
 // MARK: - Custom item
 
 private extension CreateEditItemCoordinator {
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
-    func presentCustomItemList() {
-        present(Text(verbatim: "List of custom item"), dismissable: true)
+    func presentCustomItemList(_ onError: @escaping (any Error) -> Void) throws {
+        let view = CustomItemTemplatesList { [weak self] template in
+            guard let self else { return }
+            do {
+                try handle(template: template)
+            } catch {
+                onError(error)
+            }
+        }
+
+        present(view, dismissable: true)
+    }
+
+    func handle(template: CustomItemTemplate) throws {
+        switch template {
+        case .sshKey:
+            try presentCreateEditSshKeyView(mode: .create(shareId: nil, type: .sshKey))
+        case .wifi:
+            try presentCreateEditWifiView(mode: .create(shareId: nil, type: .wifi))
+        default:
+            try presentCreateEditCustomView(mode: .create(shareId: nil, type: .custom(template)))
+        }
     }
 }

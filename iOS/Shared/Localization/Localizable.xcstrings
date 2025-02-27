@@ -26317,6 +26317,17 @@
         }
       }
     },
+    "API Credential" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API Credential"
+          }
+        }
+      }
+    },
     "Application" : {
       "localizations" : {
         "be" : {
@@ -29149,6 +29160,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tự động lưu"
+          }
+        }
+      }
+    },
+    "Bank Account" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bank Account"
           }
         }
       }
@@ -43733,6 +43755,17 @@
         }
       }
     },
+    "Crypto Wallet" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crypto Wallet"
+          }
+        }
+      }
+    },
     "Current" : {
       "localizations" : {
         "be" : {
@@ -45560,6 +45593,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bảo mật dữ liệu"
+          }
+        }
+      }
+    },
+    "Database" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database"
           }
         }
       }
@@ -49137,6 +49181,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Завантажені файли очищено"
+          }
+        }
+      }
+    },
+    "Driver License" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Driver License"
           }
         }
       }
@@ -60059,6 +60114,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Відфільтровано за нотатками. Видалені елементи не показуються."
+          }
+        }
+      }
+    },
+    "Finance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finance"
           }
         }
       }
@@ -81256,6 +81321,17 @@
         }
       }
     },
+    "Medical Record" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medical Record"
+          }
+        }
+      }
+    },
     "Member Limit" : {
       "comment" : "Title of an alert to explain sharing limit",
       "localizations" : {
@@ -81574,6 +81650,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thành viên"
+          }
+        }
+      }
+    },
+    "Membership" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Membership"
           }
         }
       }
@@ -93855,6 +93942,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Khóa truy cập"
+          }
+        }
+      }
+    },
+    "Passport" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passport"
           }
         }
       }
@@ -110448,6 +110546,17 @@
         }
       }
     },
+    "Reward Program" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reward Program"
+          }
+        }
+      }
+    },
     "Save" : {
       "comment" : "Item create/edit page",
       "localizations" : {
@@ -116160,6 +116269,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel là một chương trình bảo vệ tài khoản nâng cao. Hoạt động dựa trên nền tảng các hệ thống trí tuệ nhân tạo phức tạp cùng đội ngũ chuyên gia thường xuyên túc trực để bảo vệ bạn khỏi kẻ xấu và các mối đe dọa đến sự an toàn của tài khoản."
+          }
+        }
+      }
+    },
+    "Server" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server"
           }
         }
       }
@@ -122913,6 +123033,28 @@
         }
       }
     },
+    "Social Security Number" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social Security Number"
+          }
+        }
+      }
+    },
+    "Software License" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Software License"
+          }
+        }
+      }
+    },
     "Sort By" : {
       "comment" : "Items filtering",
       "localizations" : {
@@ -123414,6 +123556,17 @@
         }
       }
     },
+    "SSH Key" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH Key"
+          }
+        }
+      }
+    },
     "SSH key created" : {
       "localizations" : {
         "en" : {
@@ -123640,6 +123793,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tích hợp SSO (Sắp ra mắt)"
+          }
+        }
+      }
+    },
+    "Start from scratch" : {
+      "comment" : "Create a custom item from scratch",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start from scratch"
           }
         }
       }
@@ -126952,6 +127116,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma adınızı istediğiniz şekilde özelleştirmek için dişli simgesine dokunun."
+          }
+        }
+      }
+    },
+    "Technology" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Technology"
           }
         }
       }
@@ -146266,6 +146440,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi network"
+          }
+        }
+      }
+    },
+    "WiFi Network" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi Network"
           }
         }
       }

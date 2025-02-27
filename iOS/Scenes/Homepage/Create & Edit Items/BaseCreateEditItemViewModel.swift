@@ -86,8 +86,10 @@ enum ItemCreationType: Equatable, Hashable {
                autofill: Bool,
                passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
     case creditCard
-
     case identity
+    case sshKey
+    case wifi
+    case custom(CustomItemTemplate)
 
     var itemContentType: ItemContentType {
         switch self {
@@ -101,6 +103,12 @@ enum ItemCreationType: Equatable, Hashable {
             .creditCard
         case .identity:
             .identity
+        case .sshKey:
+            .sshKey
+        case .wifi:
+            .wifi
+        case .custom:
+            .custom
         }
     }
 }

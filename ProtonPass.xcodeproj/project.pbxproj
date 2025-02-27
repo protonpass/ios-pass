@@ -434,6 +434,12 @@
 		53043D9A2D1D8D9E0088D6EE /* UpsellingViewConfiguration+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BAE71062BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift */; };
 		530505AC2D58C1E000CD0E5E /* ItemTypeIdentifiable+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BD4A8FD2B10C37500C44C08 /* ItemTypeIdentifiable+Extensions.swift */; };
 		533EAB952D3F975E00217171 /* AliasDiscoverySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */; };
+		534090592D709856002E42F8 /* CreateEditSshKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534090582D70984A002E42F8 /* CreateEditSshKeyView.swift */; };
+		5340905C2D70988C002E42F8 /* CreateEditWifiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5340905B2D709885002E42F8 /* CreateEditWifiView.swift */; };
+		5340905E2D70991C002E42F8 /* CreateEditCustomItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5340905D2D709917002E42F8 /* CreateEditCustomItemView.swift */; };
+		534090602D70A6E7002E42F8 /* CreateEditWifiViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5340905F2D70A6E5002E42F8 /* CreateEditWifiViewModel.swift */; };
+		534090622D70B062002E42F8 /* CreateEditSshKeyViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534090612D70B060002E42F8 /* CreateEditSshKeyViewModel.swift */; };
+		534090642D70B11B002E42F8 /* CreateEditCustomItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534090632D70B11A002E42F8 /* CreateEditCustomItemViewModel.swift */; };
 		534736542D5A9CAD00BE2EA5 /* LocalAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9B2A443D9700AD2B9A /* LocalAuthenticationView.swift */; };
 		534736552D5A9CC400BE2EA5 /* LocalAuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AAA2A445B1100AD2B9A /* LocalAuthenticationViewModel.swift */; };
 		534736562D5A9CDA00BE2EA5 /* BiometricAuthenticationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9AA42A4458D100AD2B9A /* BiometricAuthenticationView.swift */; };
@@ -474,6 +480,7 @@
 		538548E82D58ACF300AEFB66 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */; };
 		538548F42D58ACF300AEFB66 /* Action.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 538548E62D58ACF300AEFB66 /* Action.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */; };
+		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
 		53B153882D59EFC100D21AF9 /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
 		53C769982D5A3F9F0079C757 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		53C769992D5A42B60079C757 /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
@@ -1035,10 +1042,17 @@
 		35F8CD0B29B631310017DBC6 /* GeneralItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralItemRow.swift; sourceTree = "<group>"; };
 		35FD55A12C9072DC00805584 /* ItemCreationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCreationInfo.swift; sourceTree = "<group>"; };
 		533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDiscoverySection.swift; sourceTree = "<group>"; };
+		534090582D70984A002E42F8 /* CreateEditSshKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditSshKeyView.swift; sourceTree = "<group>"; };
+		5340905B2D709885002E42F8 /* CreateEditWifiView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditWifiView.swift; sourceTree = "<group>"; };
+		5340905D2D709917002E42F8 /* CreateEditCustomItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCustomItemView.swift; sourceTree = "<group>"; };
+		5340905F2D70A6E5002E42F8 /* CreateEditWifiViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditWifiViewModel.swift; sourceTree = "<group>"; };
+		534090612D70B060002E42F8 /* CreateEditSshKeyViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditSshKeyViewModel.swift; sourceTree = "<group>"; };
+		534090632D70B11A002E42F8 /* CreateEditCustomItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCustomItemViewModel.swift; sourceTree = "<group>"; };
 		536CA2C32CF0BDBA00BA3C69 /* FileAttachmentViewerSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileAttachmentViewerSection.swift; sourceTree = "<group>"; };
 		538548E62D58ACF300AEFB66 /* Action.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Action.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+SLSync.swift"; sourceTree = "<group>"; };
+		53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemTemplatesList.swift; sourceTree = "<group>"; };
 		5B0939162C04DD250046F467 /* IdentityDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailView.swift; sourceTree = "<group>"; };
 		5B0939172C04DD250046F467 /* IdentityDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailViewModel.swift; sourceTree = "<group>"; };
 		5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedServices+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1196,7 +1210,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		538548F92D58ACF300AEFB66 /* Exceptions for "Action" folder in "Action" target */ = {
+		538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -1206,18 +1220,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		538548E92D58ACF300AEFB66 /* Action */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				538548F92D58ACF300AEFB66 /* Exceptions for "Action" folder in "Action" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Action;
-			sourceTree = "<group>";
-		};
+		538548E92D58ACF300AEFB66 /* Action */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Action; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1572,6 +1575,7 @@
 		35603A0029B6587C00021BFB /* Create & Edit Items */ = {
 			isa = PBXGroup;
 			children = (
+				53A2EB062D6F537C008A4A0C /* Custom item */,
 				5B3FD1A12BFCE21300434294 /* Identity */,
 				35AC9A552A0BB5D300FBCEEC /* CreateEditItemCoordinator.swift */,
 				35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */,
@@ -2045,6 +2049,36 @@
 				3562BCF129BDBF0B00564508 /* Supporting Views */,
 			);
 			path = Homepage;
+			sourceTree = "<group>";
+		};
+		534090572D709842002E42F8 /* SSH key */ = {
+			isa = PBXGroup;
+			children = (
+				534090582D70984A002E42F8 /* CreateEditSshKeyView.swift */,
+				534090612D70B060002E42F8 /* CreateEditSshKeyViewModel.swift */,
+			);
+			path = "SSH key";
+			sourceTree = "<group>";
+		};
+		5340905A2D709878002E42F8 /* Wifi */ = {
+			isa = PBXGroup;
+			children = (
+				5340905B2D709885002E42F8 /* CreateEditWifiView.swift */,
+				5340905F2D70A6E5002E42F8 /* CreateEditWifiViewModel.swift */,
+			);
+			path = Wifi;
+			sourceTree = "<group>";
+		};
+		53A2EB062D6F537C008A4A0C /* Custom item */ = {
+			isa = PBXGroup;
+			children = (
+				53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */,
+				5340905A2D709878002E42F8 /* Wifi */,
+				534090572D709842002E42F8 /* SSH key */,
+				5340905D2D709917002E42F8 /* CreateEditCustomItemView.swift */,
+				534090632D70B11A002E42F8 /* CreateEditCustomItemViewModel.swift */,
+			);
+			path = "Custom item";
 			sourceTree = "<group>";
 		};
 		5B0939152C04DD0A0046F467 /* Identity */ = {
@@ -3601,6 +3635,7 @@
 				35AF16CB2C108E5800277E79 /* HomepageCoordinator+ExtraPassword.swift in Sources */,
 				352352B62B91DEB400603B91 /* ItemSearchResultView.swift in Sources */,
 				3547ABF0287777FB00EE85E1 /* CreateEditNoteView.swift in Sources */,
+				534090592D709856002E42F8 /* CreateEditSshKeyView.swift in Sources */,
 				5B6639612B4D9A4F0029F8DA /* ItemDetailHistorySection.swift in Sources */,
 				358FB6DD2C2C9CAF00D4EEAF /* AccountSwitcherSection.swift in Sources */,
 				359EB8922A213A44009588A9 /* TrialDetailView.swift in Sources */,
@@ -3612,6 +3647,7 @@
 				354F769228C8678100EB2383 /* LogInDetailView.swift in Sources */,
 				3551BC6129A505940048CE07 /* AdvancedOptionsSection.swift in Sources */,
 				354AD96028CB5934000E645B /* EmptyTrashView.swift in Sources */,
+				53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */,
 				5B7C7FC32C5D25A700E1F646 /* AliasSyncConfigurationView.swift in Sources */,
 				5B7C7FC42C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift in Sources */,
 				5B5DBF132B68009D00F72F6C /* HomepageCoordinator+DeepLinks.swift in Sources */,
@@ -3624,6 +3660,7 @@
 				5B1453952A6832780048B022 /* UserEmailViewModel.swift in Sources */,
 				358152032C57C3EB0054F755 /* CredentialsSection.swift in Sources */,
 				3545731F2BDA9E2E00D85B9F /* MonitorAllAliasesView.swift in Sources */,
+				534090602D70A6E7002E42F8 /* CreateEditWifiViewModel.swift in Sources */,
 				66CA927F29F9719800F2FC59 /* InMemoryTokenStorage.swift in Sources */,
 				354E9AA52A4458D100AD2B9A /* BiometricAuthenticationView.swift in Sources */,
 				5BA09B802CAE94D0000001B7 /* AliasContactsViewModel.swift in Sources */,
@@ -3642,6 +3679,7 @@
 				3524A4692CB6B66E001EC572 /* IdentityDetailData.swift in Sources */,
 				3547ABEC2877753800EE85E1 /* CreateEditLoginView.swift in Sources */,
 				5B159D322D00AB3C00150125 /* ShareContent+Extensions.swift in Sources */,
+				5340905C2D70988C002E42F8 /* CreateEditWifiView.swift in Sources */,
 				5B92AB372C91C69E007365FC /* AliasTrashAlertModifier.swift in Sources */,
 				355895B129D76E9F001E2207 /* LogsViewModel.swift in Sources */,
 				35D708FA2B6B8640001CBB03 /* EditSpotlightVaultsViewModel.swift in Sources */,
@@ -3689,6 +3727,7 @@
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				5BE809302C07358200D3A707 /* IdentityFields.swift in Sources */,
 				3570D20729C20A7E00805445 /* SearchResultsView.swift in Sources */,
+				5340905E2D70991C002E42F8 /* CreateEditCustomItemView.swift in Sources */,
 				5B6293252CDCC7B7006C3C67 /* HomeCoordinator+InAppNotification.swift in Sources */,
 				35C0D1C72B20B567005D48A6 /* TOTPRow.swift in Sources */,
 				3569B2AB29B7D2430070830B /* ProfileTabViewModel.swift in Sources */,
@@ -3762,6 +3801,7 @@
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
 				5BAE71072BC416C600F579E4 /* UpsellingViewConfiguration+Extensions.swift in Sources */,
+				534090622D70B062002E42F8 /* CreateEditSshKeyViewModel.swift in Sources */,
 				5BEE71E22BFDE63300B3C005 /* HomepageCoordinator+ItemCreateEditDetails.swift in Sources */,
 				35116E792A82847300CAD616 /* View+ItemDetailSetUp.swift in Sources */,
 				35992153299F8C3F00FEFA32 /* PrefixSuffixSection.swift in Sources */,
@@ -3777,6 +3817,7 @@
 				3569B29B29B76BF60070830B /* AppContentManager.swift in Sources */,
 				355BFDA229C6FD5200A32AD6 /* ItemContextMenuHandler.swift in Sources */,
 				5BECDE492B90EC900040FCA7 /* PassMonitorView.swift in Sources */,
+				534090642D70B11B002E42F8 /* CreateEditCustomItemViewModel.swift in Sources */,
 				357ABEB42B18BB04003D05C8 /* DataStream+DependencyInjections.swift in Sources */,
 				354E9A9C2A443D9700AD2B9A /* LocalAuthenticationView.swift in Sources */,
 				3556949D29D45FD5005DD2EB /* MoveVaultListView.swift in Sources */,
