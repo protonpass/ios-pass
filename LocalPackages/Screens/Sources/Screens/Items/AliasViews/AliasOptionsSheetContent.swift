@@ -31,7 +31,6 @@ public enum AliasOptionsSheetState {
 
 public struct AliasOptionsSheetContent: View {
     @StateObject private var viewModel: AliasOptionsSheetContentViewModel
-    private let aliasDiscoveryActive: Bool
     private let onAddMailbox: () -> Void
     private let onAddDomain: () -> Void
     private let onDismiss: () -> Void
@@ -39,7 +38,6 @@ public struct AliasOptionsSheetContent: View {
     public init(module: PassModule,
                 preferencesManager: any PreferencesManagerProtocol,
                 state: AliasOptionsSheetState,
-                aliasDiscoveryActive: Bool,
                 aliasCount: Int?,
                 onAddMailbox: @escaping () -> Void,
                 onAddDomain: @escaping () -> Void,
@@ -50,7 +48,6 @@ public struct AliasOptionsSheetContent: View {
                                                state: state,
                                                aliasCount: aliasCount,
                                                onError: onError))
-        self.aliasDiscoveryActive = aliasDiscoveryActive
         self.onAddMailbox = onAddMailbox
         self.onAddDomain = onAddDomain
         self.onDismiss = onDismiss
@@ -62,14 +59,14 @@ public struct AliasOptionsSheetContent: View {
             case let .mailbox(mailboxSelection, title):
                 MailboxSelectionView(mailboxSelection: mailboxSelection,
                                      title: title,
-                                     showTip: aliasDiscoveryActive && viewModel.showMailboxTip,
+                                     showTip: viewModel.showMailboxTip,
                                      onAddMailbox: {
                                          viewModel.dismissMailboxTip(completion: onAddMailbox)
                                      },
                                      onDismissTip: { viewModel.dismissMailboxTip() })
             case let .suffix(suffixSelection):
                 SuffixSelectionView(selection: suffixSelection,
-                                    showTip: aliasDiscoveryActive && viewModel.showDomainTip,
+                                    showTip: viewModel.showDomainTip,
                                     onAddDomain: {
                                         viewModel.dismissDomainTip(completion: onAddDomain)
                                     },
