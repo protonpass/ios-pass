@@ -123033,17 +123033,6 @@
         }
       }
     },
-    "Social Security Number" : {
-      "comment" : "A custom item template",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Social Security Number"
-          }
-        }
-      }
-    },
     "Software License" : {
       "comment" : "A custom item template",
       "localizations" : {
@@ -123552,17 +123541,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SSH key"
-          }
-        }
-      }
-    },
-    "SSH Key" : {
-      "comment" : "A custom item template",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "SSH Key"
           }
         }
       }
@@ -146440,17 +146418,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "WiFi network"
-          }
-        }
-      }
-    },
-    "WiFi Network" : {
-      "comment" : "A custom item template",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "WiFi Network"
           }
         }
       }
