@@ -18,6 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
 import SwiftUI
 
 struct CreateEditCustomItemView: View {
@@ -28,8 +29,16 @@ struct CreateEditCustomItemView: View {
     }
 
     var body: some View {
-        Text(verbatim: "CreateEditCustomItemView")
-            .itemCreateEditSetUp(viewModel)
-            .navigationStackEmbeded()
+        ScrollView {
+            VStack {
+                ForEach(viewModel.fields, id: \.self) { field in
+                    Text(verbatim: field)
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                }
+            }
+        }
+        .fullSheetBackground()
+        .itemCreateEditSetUp(viewModel)
+        .navigationStackEmbeded()
     }
 }
