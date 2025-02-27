@@ -29,17 +29,115 @@ private struct CustomItemTemplateUiModel {
 }
 
 struct CustomItemTemplatesList: View {
+    @Environment(\.dismiss) private var dismiss
     let onSelect: (CustomItemTemplate) -> Void
 
     var body: some View {
-        Text(verbatim: "AAAAA")
+        ScrollView {
+            LazyVStack(spacing: 12) {
+                row(for: .fromScratch,
+                    alignment: .center,
+                    primaryColor: PassColor.interactionNormMajor2,
+                    secondaryColor: PassColor.interactionNormMinor1)
+                    .padding(.top)
+
+                section("Technology",
+                        templates: [
+                            .apiCredential,
+                            .database,
+                            .server,
+                            .softwareLicense,
+                            .sshKey,
+                            .wifi
+                        ],
+                        primaryColor: PassColor.interactionNormMajor2,
+                        secondaryColor: PassColor.interactionNormMinor2)
+
+                section("Finance",
+                        templates: [.bankAccount, .cryptoWallet],
+                        primaryColor: PassColor.noteInteractionNormMajor2,
+                        secondaryColor: PassColor.noteInteractionNormMinor2)
+
+                section("Personal",
+                        templates: [
+                            .driverLicense,
+                            .medicalRecord,
+                            .membership,
+                            .passport,
+                            .rewardProgram,
+                            .socialSecurityNumber
+                        ],
+                        primaryColor: PassColor.aliasInteractionNormMajor2,
+                        secondaryColor: PassColor.aliasInteractionNormMinor2)
+            }
+            .padding(.horizontal)
+        }
+        .fullSheetBackground()
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                CircleButton(icon: IconProvider.cross,
+                             iconColor: PassColor.interactionNormMajor2,
+                             backgroundColor: PassColor.interactionNormMinor1,
+                             accessibilityLabel: "Close",
+                             action: dismiss.callAsFunction)
+            }
+
+            ToolbarItem(placement: .principal) {
+                Text("Custom item")
+                    .navigationTitleText()
+            }
+        }
+        .navigationStackEmbeded()
     }
 }
 
 private extension CustomItemTemplatesList {
-//    func row(for template: CustomItemTemplate) -> some View {
-//
-//    }
+    func section(_ title: LocalizedStringKey,
+                 templates: [CustomItemTemplate],
+                 primaryColor: UIColor,
+                 secondaryColor: UIColor) -> some View {
+        Section(content: {
+            ForEach(templates, id: \.self) { template in
+                row(for: template,
+                    alignment: .leading,
+                    primaryColor: primaryColor,
+                    secondaryColor: secondaryColor)
+            }
+        }, header: {
+            Text(title)
+                .font(.callout)
+                .foregroundStyle(PassColor.textWeak.toColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top)
+        })
+    }
+
+    func row(for template: CustomItemTemplate,
+             alignment: Alignment,
+             primaryColor: UIColor,
+             secondaryColor: UIColor) -> some View {
+        HStack {
+            Image(uiImage: template.uiModel.icon)
+                .renderingMode(.template)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18)
+                .foregroundStyle(primaryColor.toColor)
+            Text(template.uiModel.title)
+                .fontWeight(.medium)
+                .foregroundStyle(PassColor.textNorm.toColor)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: alignment)
+        .frame(height: 56)
+        .padding(.horizontal)
+        .background(secondaryColor.toColor)
+        .clipShape(.capsule)
+        .buttonEmbeded {
+            dismiss()
+            onSelect(template)
+        }
+    }
 }
 
 private extension CustomItemTemplate {
@@ -58,7 +156,8 @@ private extension CustomItemTemplate {
         case .sshKey:
             .init(icon: IconProvider.filingCabinet, title: "SSH Key")
         case .wifi:
-            .init(icon: IconProvider.shield, title: "WiFi Network")
+            .init(icon: UIImage(systemName: "wifi") ?? IconProvider.shield,
+                  title: "WiFi Network")
         case .bankAccount:
             .init(icon: PassIcon.bank, title: "Bank Account")
         case .cryptoWallet:
