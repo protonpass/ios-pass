@@ -1,3 +1,21 @@
+# Version 1.15.1
+In-app AutoFill enabling (iOS 18):
+You can now enable AutoFill directly in the app, offering a quicker and more seamless login experience on iOS 18.
+
+Improvements:
+- Support updating mailbox email addresses
+- Resolve invitation issues after invitee address key updates
+- Prevent hyphens in long passwords before line breaks
+
+Others:
+- Introduce new login screen variant
+- Allow admins to restrict vault creation (B2B policy)
+- Add discovery banners for alias-related features
+- Support restoring purchases
+- Secure link creation with item keys
+- Update core libraries to 29.0.11 from 29.0.6
+- Display trashed items in "Shared with me" and "Shared by me" views
+
 # Version 1.15.0
 Individual item sharing:
 You can now share items individually, giving you greater control and flexibility over what you share.
