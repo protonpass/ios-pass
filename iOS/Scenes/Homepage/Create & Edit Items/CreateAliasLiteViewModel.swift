@@ -60,10 +60,6 @@ final class CreateAliasLiteViewModel: ObservableObject {
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
 
-    var aliasDiscoveryActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
-    }
-
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
         canCreateAlias = options.canCreateAlias
         suffixSelection = .init(suffixes: options.suffixes, selectedSuffix: creationInfo.suffix)

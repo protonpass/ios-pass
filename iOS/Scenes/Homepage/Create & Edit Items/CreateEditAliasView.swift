@@ -125,7 +125,7 @@ struct CreateEditAliasView: View {
                                                 onSelectSuffix: {
                                                     sheetState = .suffix($viewModel.suffixSelection)
                                                 })
-                        } else if viewModel.aliasDiscoveryActive, viewModel.showAdvancedOptionsTipBanner {
+                        } else if viewModel.showAdvancedOptionsTipBanner {
                             advancedOptionsTipBanner
                         }
                     }
@@ -195,7 +195,6 @@ struct CreateEditAliasView: View {
             AliasOptionsSheetContent(module: viewModel.module,
                                      preferencesManager: viewModel.preferencesManager,
                                      state: state,
-                                     aliasDiscoveryActive: viewModel.aliasDiscoveryActive,
                                      aliasCount: viewModel.aliasCount,
                                      onAddMailbox: viewModel.addMailbox,
                                      onAddDomain: viewModel.addDomain,
