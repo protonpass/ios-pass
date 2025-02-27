@@ -94,7 +94,9 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.scanner
         _ = PassIcon.shieldCheck
         _ = PassIcon.shieldLock
-        _ = PassIcon.swirls
+        _ = PassIcon.aliasSlash
+        _ = PassIcon.bank
+        _ = PassIcon.brandBitcoin
 
         _ = PassIcon.tabProfilePaidSelected
         _ = PassIcon.tabProfilePaidUnselected

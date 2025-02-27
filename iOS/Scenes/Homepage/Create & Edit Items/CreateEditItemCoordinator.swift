@@ -203,9 +203,7 @@ private extension CreateEditItemCoordinator {
 // MARK: - Custom item
 
 private extension CreateEditItemCoordinator {
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
     func presentCustomItemList() {
-        present(Text(verbatim: "List of custom item"), dismissable: true)
+        present(CustomItemTemplatesList(onSelect: { _ in }), dismissable: true)
     }
 }
