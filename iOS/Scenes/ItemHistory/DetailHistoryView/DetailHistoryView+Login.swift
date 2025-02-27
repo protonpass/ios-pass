@@ -134,7 +134,7 @@ private extension DetailHistoryView {
                     .sectionTitleText()
 
                 if isShowingPassword {
-                    Text(logItem.password)
+                    Text(AttributedString(logItem.password, attributes: .lineBreakHyphenErasing))
                         .foregroundStyle(textColor(for: \.loginItem?.password).toColor)
                 } else {
                     Text(String(repeating: "•", count: 12))
