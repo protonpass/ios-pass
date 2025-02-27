@@ -226,13 +226,13 @@ private extension CreateEditAliasViewModel {
         Task { [weak self] in
             guard let self else { return }
             do {
-                guard !aliasDiscovery.contains(.advancedOptions) else { return }
                 let userId = try await userManager.getActiveUserId()
                 let aliasCount = try await localItemDatasource.getAliasCount(userId: userId)
                 // We assume that when users have more than 2 aliases, they're more or less
                 // familiar with aliases so we can show tips for advanced options
                 // Otherwise if users are new, we don't overwhelm them
-                showAdvancedOptionsTipBanner = aliasCount > 2
+                showAdvancedOptionsTipBanner = aliasCount > 2 &&
+                    !aliasDiscovery.contains(.advancedOptions)
                 self.aliasCount = aliasCount
             } catch {
                 handle(error)
