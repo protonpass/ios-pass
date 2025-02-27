@@ -63,10 +63,8 @@ extension ItemContentType {
             PassColor.noteInteractionNorm
         case .creditCard:
             PassColor.cardInteractionNorm
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNorm
-        case .custom, .sshKey, .wifi:
-            PassColor.textNorm
         }
     }
 
@@ -80,10 +78,8 @@ extension ItemContentType {
             PassColor.noteInteractionNormMajor1
         case .creditCard:
             PassColor.cardInteractionNormMajor1
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNormMajor1
-        case .custom, .sshKey, .wifi:
-            PassColor.textNorm
         }
     }
 
@@ -97,10 +93,8 @@ extension ItemContentType {
             PassColor.noteInteractionNormMajor2
         case .creditCard:
             PassColor.cardInteractionNormMajor2
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNormMajor2
-        case .custom, .sshKey, .wifi:
-            PassColor.textNorm
         }
     }
 
@@ -114,10 +108,8 @@ extension ItemContentType {
             PassColor.noteInteractionNormMinor1
         case .creditCard:
             PassColor.cardInteractionNormMinor1
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNormMinor1
-        case .custom, .sshKey, .wifi:
-            PassColor.customItemBackground
         }
     }
 
@@ -131,10 +123,8 @@ extension ItemContentType {
             PassColor.noteInteractionNormMinor2
         case .creditCard:
             PassColor.cardInteractionNormMinor2
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNormMinor2
-        case .custom, .sshKey, .wifi:
-            PassColor.customItemBackground
         }
     }
 }
