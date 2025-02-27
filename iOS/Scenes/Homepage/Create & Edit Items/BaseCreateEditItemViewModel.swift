@@ -248,7 +248,11 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
             nil
         }
 
-        let editableVault = vaults.first { $0.shareId == vaultShareId && $0.canEdit }
+        let editableVault = if let vaultShareId {
+            vaults.first { $0.shareId == vaultShareId && $0.canEdit }
+        } else {
+            vaults.first(where: \.canEdit)
+        }
         let oldestOwnedVault = vaults.autofillAllowedVaults.oldestOwned
 
         guard let vault = editableVault ?? lastCreatedItemVault ?? oldestOwnedVault else {
