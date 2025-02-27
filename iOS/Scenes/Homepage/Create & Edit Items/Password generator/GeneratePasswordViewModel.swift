@@ -38,7 +38,7 @@ protocol GeneratePasswordViewModelUiDelegate: AnyObject {
 enum PasswordUtils {
     static func generateColoredPassword(_ password: String) -> AttributedString {
         let attributedChars = password.map { char in
-            var attributedChar = AttributedString("\(char)")
+            var attributedChar = AttributedString("\(char)", attributes: .lineBreakHyphenErasing)
             attributedChar.foregroundColor = if AllowedCharacter.digit.rawValue.contains(char) {
                 PassColor.loginInteractionNormMajor2
             } else if AllowedCharacter.special.rawValue.contains(char) ||
@@ -49,10 +49,7 @@ enum PasswordUtils {
             }
             return attributedChar
         }
-        var attributedString = attributedChars.reduce(into: .init()) { $0 += $1 }
-        // Trick SwiftUI into not adding hyphens for multiline passwords
-        attributedString.languageIdentifier = "vi"
-        return attributedString
+        return attributedChars.reduce(into: .init()) { $0 += $1 }
     }
 }
 

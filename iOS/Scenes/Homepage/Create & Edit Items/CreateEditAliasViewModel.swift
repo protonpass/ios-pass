@@ -79,17 +79,12 @@ final class CreateEditAliasViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) private var aliasRepository
     @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
     @LazyInjected(\SharedUseCasesContainer.validateAliasPrefix) private var validateAliasPrefix
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) var getFeatureFlagStatus
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
 
     let module = resolve(\SharedToolingContainer.module)
 
     var isAliasOwner: Bool {
         alias?.mailboxes.isEmpty == false
-    }
-
-    var aliasDiscoveryActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
     }
 
     private var aliasDiscovery: AliasDiscovery {

@@ -54,15 +54,10 @@ final class CreateAliasLiteViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedToolingContainer.preferencesManager) var preferencesManager
     @LazyInjected(\SharedToolingContainer.logger) private var logger
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedRepositoryContainer.localItemDatasource) private var localItemDatasource
 
     weak var aliasCreationDelegate: (any AliasCreationLiteInfoDelegate)?
-
-    var aliasDiscoveryActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
-    }
 
     init(options: AliasOptions, creationInfo: AliasCreationLiteInfo) {
         canCreateAlias = options.canCreateAlias
