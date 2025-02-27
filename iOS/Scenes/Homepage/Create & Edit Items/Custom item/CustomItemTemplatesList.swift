@@ -154,10 +154,11 @@ private extension CustomItemTemplate {
         case .softwareLicense:
             .init(icon: IconProvider.fileLines, title: "Software License")
         case .sshKey:
-            .init(icon: IconProvider.filingCabinet, title: "SSH Key")
+            .init(icon: IconProvider.filingCabinet,
+                  title: LocalizedStringKey("SSH key".capitalized))
         case .wifi:
             .init(icon: UIImage(systemName: "wifi") ?? IconProvider.shield,
-                  title: "WiFi Network")
+                  title: LocalizedStringKey("WiFi network".capitalized))
         case .bankAccount:
             .init(icon: PassIcon.bank, title: "Bank Account")
         case .cryptoWallet:
@@ -173,7 +174,8 @@ private extension CustomItemTemplate {
         case .rewardProgram:
             .init(icon: IconProvider.bagPercent, title: "Reward Program")
         case .socialSecurityNumber:
-            .init(icon: IconProvider.users, title: "Social Security Number")
+            .init(icon: IconProvider.users,
+                  title: LocalizedStringKey("Social security sumber".capitalized))
         }
     }
 }
