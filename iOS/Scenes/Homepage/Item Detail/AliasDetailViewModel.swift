@@ -45,10 +45,6 @@ final class AliasDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     private var task: Task<Void, Never>?
 
-    var aliasDiscoveryActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passAliasDiscovery)
-    }
-
     // One could be an editor of an alias but not the owner
     // Only owner can see and edit mailboxes
     var isAliasOwner: Bool {
