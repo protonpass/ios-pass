@@ -362,6 +362,12 @@
             "value" : "Proton AG"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton AG"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",

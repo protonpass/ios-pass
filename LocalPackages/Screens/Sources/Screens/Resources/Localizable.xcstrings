@@ -1941,6 +1941,18 @@
             }
           }
         },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld entri masuk diimpor"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -2194,7 +2206,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir cuenta"
+            "value" : "Agregar cuenta"
           }
         },
         "fi" : {
@@ -2354,7 +2366,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un dominio"
+            "value" : "Agregar un dominio"
           }
         },
         "fi" : {
@@ -2496,7 +2508,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un buzón"
+            "value" : "Agregar un buzón"
           }
         },
         "fi" : {
@@ -2644,7 +2656,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un campo de nombre de usuario"
+            "value" : "Agregar un campo de nombre de usuario"
           }
         },
         "fi" : {
@@ -3721,13 +3733,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Al agregar tu dominio, puedes crear alias como hola@mi-dominio.es."
+            "value" : "Al añadir tu dominio, puedes crear alias como hola@mi-dominio.es."
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Al añadir su dominio, puede crear alias como hola@mi-dominio.com."
+            "value" : "Al agregar su dominio, puede crear alias como hola@mi-dominio.com."
           }
         },
         "fr" : {
@@ -7436,6 +7448,12 @@
             "value" : "Allez à **Gestionnaire de mots de passe** et appuyez sur **Paramètres**."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuju **Pengelola kata sandi** dan ketuk **Pengaturan**"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7470,6 +7488,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ga naar **Wachtwoordbeheerder** en tik op **Instellingen**"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vá a **Gerenciador de senhas** e toque em **Configurações**."
           }
         },
         "ro" : {
@@ -7555,6 +7579,12 @@
             "value" : "Importer"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impor"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7589,6 +7619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importeer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importuj"
           }
         },
         "pt-BR" : {
@@ -7677,6 +7713,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importer depuis Chrome"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impor dari Chrome"
           }
         },
         "it" : {
@@ -7804,6 +7846,12 @@
             "value" : "Importation d'identifiants (%1$lld/%2$lld)"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impor entri masuk (%1$lld/%2$lld)"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7927,6 +7975,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'importation est terminée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berhasil diimpor"
           }
         },
         "it" : {
@@ -9435,6 +9489,12 @@
             "value" : "Ouvrez le menu **Chrome**"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buka menu **Chrome**"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9557,6 +9617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir Chrome"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buka Chrome"
           }
         },
         "it" : {
@@ -10005,6 +10071,12 @@
             "value" : "Veuillez vous connecter pour utiliser l'extension d'actions de Proton Pass."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silakan masuk untuk menggunakan ekstensi Proton Pass Action"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10041,6 +10113,12 @@
             "value" : "Log in om de Proton Pass Action extensie te gebruiken"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inicie sessão para usar a extensão de ações do Proton Pass."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10051,6 +10129,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ak chcete používať rozšírenie Proton Pass Action prihláste sa, prosím"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logga in för att använda Proton Pass Action-utökning"
           }
         },
         "tr" : {
@@ -12269,6 +12353,12 @@
             "value" : "Sélectionnez **Importer dans Proton Pass**"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilih **Impor ke Proton Pass**"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12704,7 +12794,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comparta alias con otros añadiendo sus bandejas de entrada como buzón adicional."
+            "value" : "Comparta alias con otros agregando sus bandejas de entrada como buzón adicional."
           }
         },
         "fr" : {
@@ -13889,7 +13979,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Προτάσεις"
+            "value" : "Υποδείξεις"
           }
         },
         "en" : {
@@ -14682,6 +14772,12 @@
             "value" : "Appuyez sur **Exporter les mots de passe**"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ketuk **Ekspor kata sandi**"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14797,7 +14893,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pulse aquí para añadir un campo para el nombre de usuario."
+            "value" : "Pulse aquí para agregar un campo para el nombre de usuario."
           }
         },
         "fi" : {
