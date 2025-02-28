@@ -24,7 +24,7 @@ import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUITestsCore
 import ProtonCoreTestingToolkitUITestsPaymentsUI
 
-fileprivate let manageSubscriptionButton = "Manage subscription"
+fileprivate let upgradeButton = "Upgrade"
 fileprivate let deleteAccountButton = "Delete account"
 fileprivate let deleteAccountText = "Delete account"
 fileprivate let deleteButton = "Delete"
@@ -33,7 +33,7 @@ class AccountRobot: CoreElements {
 
     @discardableResult
     func goToManageSubscription() -> PaymentsUIRobot {
-        button(manageSubscriptionButton).tap()
+        button(upgradeButton).tap()
         return PaymentsUIRobot()
     }
 

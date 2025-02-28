@@ -32,16 +32,13 @@ class SettingsTests: LoginBaseTestCase {
 
     func testItemListDisplayed() throws {
         let user = User(name: randomName, password: randomPassword)
-        let quarkUser = try quarkCommands.userCreate(user: user)
-        try quarkCommands.enableSubscription(id: quarkUser!.decryptedUserId, plan: "pass2023")
+        try quarkCommands.newSeedNewSubscriber(user: user, plan: "pass2023", cycle: 12)
 
         welcomeRobot.logIn()
             .fillUsername(username: user.name)
             .fillpassword(password: user.password)
-            .signIn(robot: AutoFillRobot.self)
-            .notNowTap(robot: FaceIDRobot.self)
-            .noThanks(robot: GetStartedRobot.self)
-            .getStartedTap(robot: HomeRobot.self)
+            .signIn(robot: GetStartedRobot.self)
+            .tapClose()
             .tapProfile()
             .verify.itemListContainsAllElements(login: "0", alias: "0", creditCard: "0", note: "0")
     }

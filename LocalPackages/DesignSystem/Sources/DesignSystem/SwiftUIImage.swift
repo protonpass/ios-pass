@@ -60,5 +60,6 @@ public struct SwiftUIImage: View {
             .aspectRatio(contentMode: contentMode)
             .frame(width: width, height: height)
             .foregroundStyle(tintColor)
+            .accessibilityIdentifier("SwiftUIImage")
     }
 }
