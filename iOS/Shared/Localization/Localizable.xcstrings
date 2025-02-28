@@ -16525,7 +16525,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir"
+            "value" : "Agregar"
           }
         },
         "fi" : {
@@ -16685,7 +16685,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir clave secreta 2FA"
+            "value" : "Agregar clave secreta 2FA"
           }
         },
         "fi" : {
@@ -16845,7 +16845,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añada una sección personalizada"
+            "value" : "Agregue una sección personalizada"
           }
         },
         "fi" : {
@@ -16993,7 +16993,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un prefijo"
+            "value" : "Agregar un prefijo"
           }
         },
         "fi" : {
@@ -17153,7 +17153,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir una dirección de correo personalizada"
+            "value" : "Agregar una dirección de correo personalizada"
           }
         },
         "fi" : {
@@ -17307,13 +17307,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Agregar un nombre a mostrar"
+            "value" : "Añadir un nombre a mostrar"
           }
         },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un nombre a mostrar"
+            "value" : "Agregar un nombre a mostrar"
           }
         },
         "fi" : {
@@ -17461,7 +17461,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir una dirección de correo"
+            "value" : "Agregar una dirección de correo"
           }
         },
         "fi" : {
@@ -17621,7 +17621,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un correo electrónico o un nombre de usuario"
+            "value" : "Agregar un correo electrónico o un nombre de usuario"
           }
         },
         "fi" : {
@@ -17769,7 +17769,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un campo"
+            "value" : "Agregar un campo"
           }
         },
         "fi" : {
@@ -17929,7 +17929,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añada detalles de inicio de sesión para una aplicación o un sitio web"
+            "value" : "Agregue detalles de inicio de sesión para una aplicación o un sitio web"
           }
         },
         "fi" : {
@@ -18089,7 +18089,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un buzón"
+            "value" : "Agregar un buzón"
           }
         },
         "fi" : {
@@ -18237,7 +18237,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir más"
+            "value" : "Agregar más"
           }
         },
         "fi" : {
@@ -18397,7 +18397,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir nota"
+            "value" : "Agregar nota"
           }
         },
         "fi" : {
@@ -18557,7 +18557,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir una contraseña"
+            "value" : "Agregar una contraseña"
           }
         },
         "fi" : {
@@ -18717,7 +18717,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir un nombre de usuario"
+            "value" : "Agregar un nombre de usuario"
           }
         },
         "fi" : {
@@ -26524,7 +26524,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Está seguro de que quiere añadir un 2FA secreto a \"%@\"?"
+            "value" : "¿Está seguro de que quiere agregar un 2FA secreto a \"%@\"?"
           }
         },
         "fi" : {
@@ -32102,10 +32102,130 @@
     },
     "Cancel mailbox change" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скасаваць змяненні паштовай скрыні"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušení změny e-mailové schránky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuller ændring af postkasse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderung des Postfachs abbrechen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ακύρωση αλλαγής γραμματοκιβωτίου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancel mailbox change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar el cambio de buzón"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar el cambio de buzón"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler la modification de la messagerie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batalkan perubahan kotak surat"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulla la modifica della casella di posta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールボックスの変更をキャンセル"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის ცვლილების გაუქმება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일함 변경 취소"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt postboksendring"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuleer mailbox wijziging"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuluj zmianę skrzynki pocztowej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar alteração da caixa de correio"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anulare modificare cont de e-mail"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt ändring av brevlåda"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta kutusu değişikliğini iptal et"
           }
         }
       }
@@ -55380,7 +55500,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Εξαιρείτούνται από την παρακολούθηση"
+            "value" : "Εξαιρούνται από την παρακολούθηση"
           }
         },
         "en" : {
@@ -60620,7 +60740,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Para añadir seguridad, configure la autenticación de dos factores en las siguientes cuentas."
+            "value" : "Para agregar seguridad, configure la autenticación de dos factores en las siguientes cuentas."
           }
         },
         "fi" : {
@@ -68419,6 +68539,12 @@
             "value" : "Importer depuis Chrome"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impor dari Chrome"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68544,6 +68670,12 @@
             "value" : "Importer depuis d'autres sources"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impor dari sumber lain"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68666,6 +68798,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importer dans Proton Pass"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impor ke Proton Pass"
           }
         },
         "it" : {
@@ -86640,7 +86778,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Καμία πρόταση"
+            "value" : "Καμία υπόδειξη"
           }
         },
         "en" : {
@@ -98219,10 +98357,124 @@
     "Please contact your organization support team." : {
       "comment" : "Message shown when B2B users are not able to do an action  because of an organization policy.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Звяжыцеся з камандай падтрымкі ў сваёй арганізацыі."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontaktujte prosím tým podpory své organizace."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakt din organisations supportteam."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte wende dich an das Support-Team deiner Organisation."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παρακαλούμε επικοινωνήστε με την ομάδα υποστήριξης του οργανισμού σας."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Please contact your organization support team."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Póngate en contacto con el equipo de soporte de tu organización."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Póngase en contacto con el equipo de soporte de su organización."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactez l'équipe de support de votre organisation."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Silakan hubungi tim layanan dukungan organisasi Anda."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contatta il team di supporto della tua organizzazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "組織のサポートチームにお問い合わせください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაუკავშირდით თქვენი ორგანიზაციის მხარდაჭერის გუნდს."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "조직 지원 팀에 문의하시기 바랍니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta kontakt med organisasjonens støtteteam."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neem contact op met het ondersteuningsteam van uw organisatie."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entre em contato com a equipe de suporte da sua organização."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Contactați echipa de asistență a organizației proprii."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontakta din organisations supportteam."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lütfen kuruluşunuzun destek ekibiyle görüşün."
           }
         }
       }
@@ -102346,7 +102598,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Επιλέξτε γρήγορα ένα στοιχείο σύνδεσης από προτάσεις πάνω από το πληκτρολόγιο"
+            "value" : "Επιλέξτε γρήγορα ένα στοιχείο σύνδεσης από υποδείξεις πάνω από το πληκτρολόγιο"
           }
         },
         "en" : {
@@ -107883,6 +108135,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restaurer les achats"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pulihkan pembelian"
           }
         },
         "it" : {
@@ -117441,7 +117699,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Thiết lập 2FA để an toàn hơn"
+            "value" : "Thiết lập xác minh 2 bước để an toàn hơn"
           }
         }
       }
@@ -123546,7 +123804,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Pass kullanmaya başlayın"
+            "value" : "Proton Pass ile başla"
           }
         },
         "uk" : {
@@ -129377,7 +129635,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este servicio ofrece 2FA. Actívelo para añadir seguridad a la cuenta."
+            "value" : "Este servicio ofrece 2FA. Actívelo para agregar seguridad a la cuenta."
           }
         },
         "fi" : {
@@ -136110,10 +136368,130 @@
     },
     "Unverified mailbox change" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змена неправеранай паштовай скрыні"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neověřená změna e-mailové schránky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubekræftet ændring af postkasse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungeprüfte Änderung des Postfachs"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μη επιβεβαιωμένη αλλαγή γραμματοκιβωτίου"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Unverified mailbox change"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha verificado el cambio del buzón."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se verificó el cambio del buzón."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modification de la messagerie non vérifiée"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perubahan kotak surat tidak terverifikasi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifica della casella di posta non verificata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未確認メールボックスの変更"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეუმოწმებელი საფოსტო ყუთის ცვლილება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인되지 않은 메일함 변경"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ubekreftet postboksendring"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niet geverifieerde mailbox wijziging"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niezweryfikowana zmiana skrzynki pocztowej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A alteração da caixa de correio não foi verificada."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modificare cont de e-mail neverificată."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ej verifierad ändring av brevlåda"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta kutusu değişikliği doğrulanmamış"
           }
         }
       }
@@ -136807,7 +137185,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mejore para añadir campos personalizados"
+            "value" : "Mejore para agregar campos personalizados"
           }
         },
         "fi" : {
@@ -136967,7 +137345,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mejore para añadir secciones personalizadas"
+            "value" : "Mejore para agregar secciones personalizadas"
           }
         },
         "fi" : {
@@ -150035,10 +150413,130 @@
     },
     "You don't have any vault" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас няма сховішчаў"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemáte žádný trezor"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ikke nogen boks"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es wurde noch kein Tresor angelegt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν έχετε καμία κρύπτη"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You don't have any vault"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tienes ninguna caja fuerte."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tiene ninguna bóveda."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'avez aucun coffre-fort."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda tidak memiliki brankas"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non hai nessuna cassaforte"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保管庫がありません"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავები არ გაქვთ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "금고가 아무 것도 없네요"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ikke noe hvelv"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U hebt geen kluis"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie masz żadnych sejfów"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você não tem nenhum cofre"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu aveți seifuri"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har inga valv"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henüz bir kasanız yok"
           }
         }
       }
