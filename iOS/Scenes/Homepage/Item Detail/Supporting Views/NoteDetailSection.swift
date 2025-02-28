@@ -96,6 +96,7 @@ private struct FullNoteView: View {
                 }
                 .padding()
             }
+            .fullSheetBackground()
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
