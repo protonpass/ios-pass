@@ -18692,6 +18692,26 @@
         }
       }
     },
+    "Add private key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add private key"
+          }
+        }
+      }
+    },
+    "Add public key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add public key"
+          }
+        }
+      }
+    },
     "Add username" : {
       "localizations" : {
         "be" : {
@@ -95381,6 +95401,16 @@
         }
       }
     },
+    "Paste from clipboard" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste from clipboard"
+          }
+        }
+      }
+    },
     "Patient name" : {
       "comment" : "Default custom item field for medical record template",
       "localizations" : {
@@ -102953,6 +102983,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Публічний домен"
+          }
+        }
+      }
+    },
+    "Public key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public key"
           }
         }
       }
