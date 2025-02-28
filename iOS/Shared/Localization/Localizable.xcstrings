@@ -16170,6 +16170,28 @@
         }
       }
     },
+    "Account number" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account number"
+          }
+        }
+      }
+    },
+    "Account type" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account type"
+          }
+        }
+      }
+    },
     "Active" : {
       "localizations" : {
         "be" : {
@@ -18826,6 +18848,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thêm tên người dùng"
+          }
+        }
+      }
+    },
+    "Address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
           }
         }
       }
@@ -26328,6 +26360,16 @@
         }
       }
     },
+    "API key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API key"
+          }
+        }
+      }
+    },
     "Application" : {
       "localizations" : {
         "be" : {
@@ -29171,6 +29213,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bank Account"
+          }
+        }
+      }
+    },
+    "Bank name" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bank name"
           }
         }
       }
@@ -34511,6 +34564,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thành phố"
+          }
+        }
+      }
+    },
+    "Class" : {
+      "comment" : "Default custom item field for driver license template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Class"
           }
         }
       }
@@ -40396,6 +40460,16 @@
         }
       }
     },
+    "Country" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Country"
+          }
+        }
+      }
+    },
     "Country or Region" : {
       "localizations" : {
         "be" : {
@@ -45608,6 +45682,17 @@
         }
       }
     },
+    "Database type" : {
+      "comment" : "Default custom item field for databse template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database type"
+          }
+        }
+      }
+    },
     "Date" : {
       "localizations" : {
         "en" : {
@@ -45624,6 +45709,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Date custom field"
+          }
+        }
+      }
+    },
+    "Date of Birth" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date of Birth"
           }
         }
       }
@@ -48718,6 +48813,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tên hiển thị"
+          }
+        }
+      }
+    },
+    "Doctor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doctor"
           }
         }
       }
@@ -56805,6 +56910,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hết hạn vào:"
+          }
+        }
+      }
+    },
+    "Expiry date" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expiry date"
           }
         }
       }
@@ -66958,6 +67073,49 @@
         }
       }
     },
+    "Holder name" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Holder name"
+          }
+        }
+      }
+    },
+    "Hospital" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hospital"
+          }
+        }
+      }
+    },
+    "Host" : {
+      "comment" : "Default custom item field for database template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host"
+          }
+        }
+      }
+    },
+    "Hostname" : {
+      "comment" : "Default custom item field for server template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hostname"
+          }
+        }
+      }
+    },
     "How to use Proton Pass" : {
       "localizations" : {
         "be" : {
@@ -67274,6 +67432,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dấu gạch ngang"
+          }
+        }
+      }
+    },
+    "IBAN" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBAN"
           }
         }
       }
@@ -71157,6 +71326,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "mời bạn truy cập nội dung trong"
+          }
+        }
+      }
+    },
+    "IP address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP address"
+          }
+        }
+      }
+    },
+    "Issuing authority" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issuing authority"
+          }
+        }
+      }
+    },
+    "Issuing country" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issuing country"
+          }
+        }
+      }
+    },
+    "Issuing State/Country" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issuing State/Country"
           }
         }
       }
@@ -77172,6 +77381,17 @@
         }
       }
     },
+    "License key" : {
+      "comment" : "Default custom item field for software license template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "License key"
+          }
+        }
+      }
+    },
     "License number" : {
       "localizations" : {
         "be" : {
@@ -81321,6 +81541,17 @@
         }
       }
     },
+    "Medical conditions" : {
+      "comment" : "Default custom item field for medical record template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medical conditions"
+          }
+        }
+      }
+    },
     "Medical Record" : {
       "comment" : "A custom item template",
       "localizations" : {
@@ -81328,6 +81559,27 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medical Record"
+          }
+        }
+      }
+    },
+    "Medications" : {
+      "comment" : "Default custom item field for medical record template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medications"
+          }
+        }
+      }
+    },
+    "Member ID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Member ID"
           }
         }
       }
@@ -81489,6 +81741,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Giới hạn thành viên"
+          }
+        }
+      }
+    },
+    "Member name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Member name"
           }
         }
       }
@@ -81661,6 +81923,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Membership"
+          }
+        }
+      }
+    },
+    "Membership ID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Membership ID"
           }
         }
       }
@@ -84797,6 +85069,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tên đầy đủ"
+          }
+        }
+      }
+    },
+    "Network" : {
+      "comment" : "Crypto network (Bitcoin, Ethereum..)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Network"
           }
         }
       }
@@ -92991,6 +93274,27 @@
         }
       }
     },
+    "Organization name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organization name"
+          }
+        }
+      }
+    },
+    "OS" : {
+      "comment" : "Default custom item field for server template. Acronym for operating system.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OS"
+          }
+        }
+      }
+    },
     "Other" : {
       "localizations" : {
         "be" : {
@@ -95077,6 +95381,17 @@
         }
       }
     },
+    "Patient name" : {
+      "comment" : "Default custom item field for medical record template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patient name"
+          }
+        }
+      }
+    },
     "Pause monitoring" : {
       "localizations" : {
         "be" : {
@@ -96240,6 +96555,17 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Permissions" : {
+      "comment" : "Default custom item field for API credential template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permissions"
           }
         }
       }
@@ -99856,6 +100182,28 @@
         }
       }
     },
+    "Points balance" : {
+      "comment" : "Default custom item field for reward program template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Points balance"
+          }
+        }
+      }
+    },
+    "Port" : {
+      "comment" : "Default custom item field for dataset template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        }
+      }
+    },
     "Prefix" : {
       "localizations" : {
         "be" : {
@@ -100964,6 +101312,28 @@
         }
       }
     },
+    "Private key" : {
+      "comment" : "Default custom item field for SSH key template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private key"
+          }
+        }
+      }
+    },
+    "Product" : {
+      "comment" : "Default custom item field for software license template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product"
+          }
+        }
+      }
+    },
     "Profile" : {
       "comment" : "Profile tab",
       "localizations" : {
@@ -101121,6 +101491,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hồ sơ"
+          }
+        }
+      }
+    },
+    "Program name" : {
+      "comment" : "Default custom item field for reward program template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Program name"
           }
         }
       }
@@ -103533,6 +103914,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hành động được đề xuất"
+          }
+        }
+      }
+    },
+    "Record number" : {
+      "comment" : "Default custom item field for medical record template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Record number"
           }
         }
       }
@@ -110557,6 +110949,17 @@
         }
       }
     },
+    "Routing number" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Routing number"
+          }
+        }
+      }
+    },
     "Save" : {
       "comment" : "Item create/edit page",
       "localizations" : {
@@ -112627,6 +113030,17 @@
         }
       }
     },
+    "Secret" : {
+      "comment" : "Default custom item field for API credential template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secret"
+          }
+        }
+      }
+    },
     "Secure link" : {
       "localizations" : {
         "be" : {
@@ -114529,6 +114943,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xem kho lưu trữ được chia sẻ"
+          }
+        }
+      }
+    },
+    "Seed phrase" : {
+      "comment" : "Default custom item field for crypto wallet template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seed phrase"
           }
         }
       }
@@ -123034,7 +123459,7 @@
       }
     },
     "Social Security Number" : {
-      "comment" : "A custom item template",
+      "comment" : "A custom item template. Capitalized on purpose. Please capitalize if it makes sense for other languages.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -123557,7 +123982,7 @@
       }
     },
     "SSH Key" : {
-      "comment" : "A custom item template",
+      "comment" : "A custom item template. Capitalized on purpose. Please capitalize if it makes sense for other languages.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -125406,6 +125831,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gợi ý cho %@"
+          }
+        }
+      }
+    },
+    "SWIFT/BIC" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC"
           }
         }
       }
@@ -130221,6 +130657,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Điều này sẽ xóa vĩnh viễn tài khoản Proton của bạn và tất cả dữ liệu của nó, bao gồm email, lịch và dữ liệu được lưu trong Drive. Bạn sẽ không thể kích hoạt lại tài khoản này."
+          }
+        }
+      }
+    },
+    "Tier/Level" : {
+      "comment" : "Default custom item field for membership template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tier/Level"
+          }
+        }
+      }
+    },
+    "Tier/Status" : {
+      "comment" : "Default custom item field for reward program template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tier/Status"
           }
         }
       }
@@ -144217,6 +144675,17 @@
         }
       }
     },
+    "Wallet name" : {
+      "comment" : "Default custom item field for crypto wallet template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet name"
+          }
+        }
+      }
+    },
     "Watch a short video on how to use Proton Pass" : {
       "localizations" : {
         "be" : {
@@ -146445,7 +146914,7 @@
       }
     },
     "WiFi Network" : {
-      "comment" : "A custom item template",
+      "comment" : "A custom item template. Capitalized on purpose. Please capitalize if it makes sense for other languages.",
       "localizations" : {
         "en" : {
           "stringUnit" : {
