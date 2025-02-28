@@ -89,12 +89,14 @@ private extension AppDelegate {
     func setUserDefaultsIfUITestsRunning() {
         if ProcessInfo.processInfo.arguments.contains("RunningInUITests") {
             UIView.setAnimationsEnabled(false)
-            if ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] != "" {
-                let envDomain = ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"]
-                let envName = String(envDomain?.split(separator: ".")[0] ?? "")
+            if var envDomain = ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] {
+                // handle proxy
+                if envDomain.hasSuffix(".proton.black") {
+                    envDomain = String(envDomain.dropLast(".proton.black".count))
+                }
 
                 kSharedUserDefaults.setValue("scientist", forKey: "pref_environment")
-                kSharedUserDefaults.setValue(envName, forKey: "pref_scientist_env_name")
+                kSharedUserDefaults.setValue(envDomain, forKey: "pref_scientist_env_name")
             }
         }
     }
