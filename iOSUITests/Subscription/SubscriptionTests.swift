@@ -26,6 +26,7 @@ import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUITestsLogin
 import ProtonCoreTestingToolkitUITestsPaymentsUI
 import StoreKitTest
+import Testing
 
 class SubscriptionTests: LoginBaseTestCase {
     private let welcomeRobot = WelcomeRobot()
@@ -46,10 +47,8 @@ class SubscriptionTests: LoginBaseTestCase {
             .signInWithAccount(userName: user.name,
                                password: user.password,
                                loginRobot: welcomeRobot.logIn(),
-                               retRobot: AutoFillRobot.self)
-            .notNowTap(robot: FaceIDRobot.self)
-            .noThanks(robot: GetStartedRobot.self)
-            .getStartedTap(robot: HomeRobot.self)
+                               retRobot: GetStartedRobot.self)
+            .tapClose()
             .tapProfile()
             .tapAccountButton()
             .goToManageSubscription()
@@ -60,7 +59,7 @@ class SubscriptionTests: LoginBaseTestCase {
             .verifyCurrentPlan(plan: plan)
             .verifyExtendButton()
     }
-    
+
     func testUpgradeAccountFromFreeToUnlimited() throws {
         try createUserVerifySubscription(plan: .unlimited)
     }

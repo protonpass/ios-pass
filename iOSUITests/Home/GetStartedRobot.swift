@@ -24,12 +24,14 @@ import fusion
 import ProtonCoreTestingToolkitUITestsCore
 import XCTest
 
-private let title = "Don't give spam a chance"
-private let startUsingTxt = "Start using Proton Pass"
+private let title = "A better way to use Aliases"
+private let exploreNowTxt = "Explore now"
+private let closeBtnTxt = "Close"
+private let notNowTxt = "Not Now"
 
 public final class GetStartedRobot: CoreElements {
     public let verify = Verify()
-
+    
     public final class Verify: CoreElements {
         @discardableResult
         public func isGetStartedShown(timeout: TimeInterval = 10.0) -> GetStartedRobot {
@@ -37,9 +39,15 @@ public final class GetStartedRobot: CoreElements {
             return GetStartedRobot()
         }
     }
-
-    public func getStartedTap<T: CoreElements>(robot _: T.Type) -> T {
-        button(startUsingTxt).waitUntilExists().tap()
-        return T()
+    
+    public func tapExploreNow() -> HomeRobot {
+        button(exploreNowTxt).tapIfExists(time: 10.0)
+        return HomeRobot()
+    }
+    
+    public func tapClose(time: TimeInterval = 15.0) -> HomeRobot {
+        button(notNowTxt).tapIfExists(time: time)
+        button(closeBtnTxt).tapIfExists(time: 5.0)
+        return HomeRobot()
     }
 }
