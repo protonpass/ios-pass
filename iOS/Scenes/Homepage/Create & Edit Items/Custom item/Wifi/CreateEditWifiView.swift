@@ -18,18 +18,101 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
+import Macro
+import Screens
 import SwiftUI
 
 struct CreateEditWifiView: View {
     @StateObject private var viewModel: CreateEditWifiViewModel
+    @FocusState private var focusedField: Field?
+
+    enum Field {
+        case title, ssid, password
+    }
 
     init(viewModel: CreateEditWifiViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
-        Text(verbatim: "CreateEditWifiView")
-            .itemCreateEditSetUp(viewModel)
-            .navigationStackEmbeded()
+        ScrollView {
+            LazyVStack {
+                title
+                ssid
+                password
+            }
+            .padding()
+        }
+        .fullSheetBackground()
+        .navigationStackEmbeded()
+        .onFirstAppear {
+            if case .create = viewModel.mode {
+                focusedField = .title
+            }
+        }
+        .itemCreateEditSetUp(viewModel)
+        .navigationStackEmbeded()
+    }
+}
+
+private extension CreateEditWifiView {
+    var title: some View {
+        CreateEditItemTitleSection(title: $viewModel.title,
+                                   focusedField: $focusedField,
+                                   field: .title,
+                                   itemContentType: viewModel.itemContentType,
+                                   isEditMode: viewModel.mode.isEditMode,
+                                   onSubmit: { focusedField = .ssid })
+            .padding(.bottom, DesignConstant.sectionPadding / 2)
+    }
+
+    var ssid: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Name (SSID)")
+                    .editableSectionTitleText(for: viewModel.ssid)
+
+                TextField("Add name (SSID)", text: $viewModel.ssid)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .focused($focusedField, equals: .ssid)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .onSubmit {
+                        focusedField = .password
+                    }
+            }
+
+            ClearTextButton(text: $viewModel.ssid)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection()
+    }
+
+    var password: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Password")
+                    .editableSectionTitleText(for: viewModel.password)
+
+                SensitiveTextField(text: $viewModel.password,
+                                   placeholder: #localized("Add password"),
+                                   focusedField: $focusedField,
+                                   field: Field.password,
+                                   font: .body.monospacedFont(for: viewModel.password),
+                                   onSubmit: { focusedField = nil })
+                    .keyboardType(.asciiCapable)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .submitLabel(.done)
+            }
+
+            ClearTextButton(text: $viewModel.password)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection()
     }
 }

@@ -18372,6 +18372,17 @@
         }
       }
     },
+    "Add name (SSID)" : {
+      "comment" : "Placeholder for the text input of wifi's name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add name (SSID)"
+          }
+        }
+      }
+    },
     "Add note" : {
       "localizations" : {
         "be" : {
@@ -84928,6 +84939,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ögeler taşınıyor"
+          }
+        }
+      }
+    },
+    "Name (SSID)" : {
+      "comment" : "Wifi's name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name (SSID)"
           }
         }
       }
