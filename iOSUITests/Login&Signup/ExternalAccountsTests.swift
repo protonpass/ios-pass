@@ -45,8 +45,9 @@ final class ExternalAccountsTests: LoginBaseTestCase {
             .signInWithAccount(userName: user.name,
                                password: user.password,
                                loginRobot: welcomeRobot.logIn(),
-                               retRobot: AutoFillRobot.self)
-            .verify.isAutoFillSetupShown(timeout: timeout)
+                               retRobot: GetStartedRobot.self)
+            .tapClose()
+            .verify.emptyVaultViewIsShown()
     }
 
     func testSignInWithExternalAccountWorks() throws {
@@ -57,26 +58,14 @@ final class ExternalAccountsTests: LoginBaseTestCase {
             .signInWithAccount(userName: user.email,
                                password: user.password,
                                loginRobot: welcomeRobot.logIn(),
-                               retRobot: AutoFillRobot.self)
-            .verify.isAutoFillSetupShown(timeout: timeout)
-    }
-
-    func testSignInWithUsernameAccountWorks()  throws {
-        let user = User(name: randomName, password: randomPassword)
-        try quarkCommands.userCreate(user: user, createAddress: .noKey)
-        
-        SigninExternalAccountsCapability()
-            .signInWithAccount(userName: user.name,
-                               password: user.password,
-                               loginRobot: welcomeRobot.logIn(),
-                               retRobot: AutoFillRobot.self)
-            .verify.isAutoFillSetupShown(timeout: timeout)
+                               retRobot: GetStartedRobot.self)
+            .tapClose()
+            .verify.emptyVaultViewIsShown()
     }
 
     // Sign-up with internal account works
     // Sign-up with external account works
     // The UI for sign-up with username account is not available
-
     // FIXME: Enable again when Account team provides a working solution
     func disableTestSignUpWithInternalAccountWorks() throws {
         let randomUsername = StringUtils.randomAlphanumericString(length: 8)
@@ -98,8 +87,9 @@ final class ExternalAccountsTests: LoginBaseTestCase {
                 password: randomPassword,
                 userEmail: randomEmail,
                 verificationCode: "666666",
-                retRobot: AutoFillRobot.self
-            ).verify.isAutoFillSetupShown(timeout: timeout)
+                retRobot: GetStartedRobot.self
+            ).tapClose()
+            .verify.emptyVaultViewIsShown()
     }
 
     // FIXME: Enable again when Account team provides a working solution
@@ -120,9 +110,9 @@ final class ExternalAccountsTests: LoginBaseTestCase {
                 userEmail: randomEmail,
                 password: randomPassword,
                 verificationCode: "666666",
-                retRobot: AutoFillRobot.self
+                retRobot: HomeRobot.self
             )
-            .verify.isAutoFillSetupShown(timeout: timeout)
+            .verify.emptyVaultViewIsShown()
     }
 
     func testSignUpWithExternalAccountIsNotAvailable() {
