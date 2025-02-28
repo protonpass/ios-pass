@@ -24,20 +24,12 @@ import fusion
 import ProtonCoreTestingToolkitUITestsCore
 import XCTest
 
-private let emptyViewText = "Create your first item\n by clicking the button below"
+private let emptyViewText = "Your vault is empty"
 private let burgerMenuButtonIdentifier = "Button.BurgerMenu"
-private let profileTab = "HomepageTabBarController_profileTabView"
+private let profileTab = "Profile tab"
 
 public final class HomeRobot: CoreElements {
     public let verify = Verify()
-
-    public final class Verify: CoreElements {
-        @discardableResult
-        public func emptyVaultViewIsShown(timeout: TimeInterval = 10.0) -> HomeRobot {
-            staticText(emptyViewText).waitUntilExists(time: timeout).checkExists()
-            return HomeRobot()
-        }
-    }
 
     func tapBurgerMenuButton<T: CoreElements>(robot _: T.Type) -> T {
         button(burgerMenuButtonIdentifier).waitUntilExists().tap()
@@ -49,16 +41,20 @@ public final class HomeRobot: CoreElements {
         button(profileTab).waitUntilExists().tap()
         return ProfileRobot()
     }
-}
 
-extension Wait {
-    @MainActor
-    func waitUntilExists(timeInterval: TimeInterval) {
-        let testCase = XCTestCase()
-        let waitExpectation = testCase.expectation(description: "Waiting")
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + timeInterval) {
-            waitExpectation.fulfill()
+    public final class Verify: CoreElements {
+        @discardableResult
+        public func emptyVaultViewIsShown(timeout: TimeInterval = 10.0) -> HomeRobot {
+            staticText(emptyViewText).waitUntilExists(time: timeout).checkExists()
+            return HomeRobot()
         }
-        testCase.waitForExpectations(timeout: timeInterval + 0.5)
+
+        func isProfileTabExist()  -> Bool {
+            return button(profileTab).waitUntilExists(time: 10).exists()
+        }
+
+        func isProfileTabHittable()  -> Bool {
+            return button(profileTab).waitUntilExists(time: 10).hittable()
+        }
     }
 }

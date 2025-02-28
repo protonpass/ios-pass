@@ -332,11 +332,20 @@ private extension AppCoordinator {
                           animations: nil) { _ in completion?() }
     }
 
+    // This is used for UI tests
     func resetAllData() {
         Task {
             // swiftlint:disable:next todo
             // TODO: why did we reset the root view controller and banner manager ?
-            SharedViewContainer.shared.reset()
+            if let userId = userManager.activeUserId {
+                do {
+                    if try await logOutUser(userId: userId) {
+                        SharedViewContainer.shared.reset()
+                    }
+                } catch {
+                    logger.error(error)
+                }
+            }
         }
     }
 
