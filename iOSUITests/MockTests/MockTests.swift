@@ -39,7 +39,7 @@ final class MockTests: LoginBaseTestCase {
             .tapProfile()
     }
 
-    fileprivate func mocking() {
+    private func mocking() {
         let resetStaticMocks = self.expectation(description:"Reset static mocks")
         let expectationsrp = self.expectation(description:"Fetch scenarios")
         let dynamicMock = DynamicMockBody(name: "loginWithSrp", enabled: true)
@@ -85,7 +85,7 @@ final class MockTests: LoginBaseTestCase {
 
     }
 
-    fileprivate func loadScenarioFile(subdirectory: String, filename: String) {
+    private func loadScenarioFile(subdirectory: String, filename: String) {
         let bulkRouteExpectation = expectation(description: "Set bulk routes from scenario file")
 
         let bundle = Bundle(for: Self.self)
