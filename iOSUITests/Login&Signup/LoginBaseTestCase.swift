@@ -32,7 +32,6 @@ import XCTest
 class LoginBaseTestCase: ProtonCoreBaseTestCase {
 
     var doh: DoH {
-
         if let customDomain = dynamicDomain.map({ "\($0)" }) {
             let isMock = customDomain.contains("mock")
 
@@ -68,7 +67,12 @@ class LoginBaseTestCase: ProtonCoreBaseTestCase {
     let entryRobot = AppMainRobot()
     var appRobot: MainRobot!
     lazy var quarkCommands = Quark().baseUrl(doh)
-    lazy var client = ProxyClient(baseURL: URL(string: doh.getAccountHost())!)
+    lazy var client: ProxyClient = {
+        let signUpString = doh.getSignUpString()
+        let url = URL(string: "https://account.mock.\(signUpString)")!
+        PMLog.info("ProxyClient url: https://account.mock.\(signUpString)")
+        return ProxyClient(baseURL: url)
+    }()
 
     override func setUp() {
         beforeSetUp(bundleIdentifier: "me.proton.pass.iOSUITests")

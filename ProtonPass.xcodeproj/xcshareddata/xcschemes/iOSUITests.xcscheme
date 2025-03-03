@@ -28,6 +28,9 @@
          <TestPlanReference
             reference = "container:TestPlans/iOSUIPayments.xctestplan">
          </TestPlanReference>
+         <TestPlanReference
+            reference = "container:TestPlans/iOSUIMock.xctestplan">
+         </TestPlanReference>
       </TestPlans>
       <Testables>
          <TestableReference
