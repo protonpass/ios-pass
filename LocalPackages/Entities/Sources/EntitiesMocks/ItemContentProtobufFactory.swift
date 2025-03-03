@@ -95,7 +95,7 @@ public enum ItemContentProtobufFactory {
             itemContentProtobuf.content.identity.workPhoneNumber = data.workPhoneNumber
             itemContentProtobuf.content.identity.workEmail = data.workEmail
             itemContentProtobuf.content.identity.extraWorkDetails = data.extraWorkDetails.toProtonPassItemV1ExtraFields
-            itemContentProtobuf.content.identity.extraSections = data.extraSections.toProtonPassItemV1ExtraIdentitySections
+            itemContentProtobuf.content.identity.extraSections = data.extraSections.toProtonPassItemV1CustomSections
 
         case let .sshKey(data):
             itemContentProtobuf.content.sshKey = .init()
