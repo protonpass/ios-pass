@@ -3,6 +3,7 @@ In-app AutoFill enabling (iOS 18):
 You can now enable AutoFill directly in the app, offering a quicker and more seamless login experience on iOS 18.
 
 Improvements:
+- Support simplified Chinese
 - Support updating mailbox email addresses
 - Resolve invitation issues after invitee address key updates
 - Prevent hyphens in long passwords before line breaks
@@ -13,7 +14,7 @@ Others:
 - Add discovery banners for alias-related features
 - Support restoring purchases
 - Secure link creation with item keys
-- Update core libraries to 29.0.11 from 29.0.6
+- Update core libraries to 29.0.12 from 29.0.6
 - Display trashed items in "Shared with me" and "Shared by me" views
 
 # Version 1.15.0
