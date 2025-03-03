@@ -43,14 +43,6 @@ private enum SshKeyType: Int, Sendable, Identifiable {
         case .private: "Add private key"
         }
     }
-
-    var isPrivate: Bool {
-        if case .private = self {
-            true
-        } else {
-            false
-        }
-    }
 }
 
 struct CreateEditSshKeyView: View {
