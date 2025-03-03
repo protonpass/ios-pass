@@ -354,7 +354,7 @@ extension IdentityData {
         item.workPhoneNumber = workPhoneNumber
         item.workEmail = workEmail
         item.extraWorkDetails = extraWorkDetails.toProtonPassItemV1ExtraFields
-        item.extraSections = extraSections.toProtonPassItemV1ExtraIdentitySections
+        item.extraSections = extraSections.toProtonPassItemV1CustomSections
         return item
     }
 }
@@ -479,15 +479,6 @@ public extension [CustomField] {
 }
 
 public extension [CustomSection] {
-    var toProtonPassItemV1ExtraIdentitySections: [ProtonPassItemV1_ExtraIdentitySection] {
-        map { section in
-            var extraSection = ProtonPassItemV1_ExtraIdentitySection()
-            extraSection.sectionName = section.title
-            extraSection.sectionFields = section.content.toProtonPassItemV1ExtraFields
-            return extraSection
-        }
-    }
-
     var toProtonPassItemV1CustomSections: [ProtonPassItemV1_CustomSection] {
         map { section in
             var customSection = ProtonPassItemV1_CustomSection()

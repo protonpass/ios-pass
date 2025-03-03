@@ -452,7 +452,7 @@ public struct ProtonPassItemV1_ItemIdentity: @unchecked Sendable {
   }
 
   /// Extra sections
-  public var extraSections: [ProtonPassItemV1_ExtraIdentitySection] {
+  public var extraSections: [ProtonPassItemV1_CustomSection] {
     get {return _storage._extraSections}
     set {_uniqueStorage()._extraSections = newValue}
   }
@@ -462,20 +462,6 @@ public struct ProtonPassItemV1_ItemIdentity: @unchecked Sendable {
   public init() {}
 
   fileprivate var _storage = _StorageClass.defaultInstance
-}
-
-public struct ProtonPassItemV1_ExtraIdentitySection: Sendable {
-  // SwiftProtobuf.Message conformance is added in an extension below. See the
-  // `Message` and `Message+*Additions` files in the SwiftProtobuf library for
-  // methods supported on all messages.
-
-  public var sectionName: String = String()
-
-  public var sectionFields: [ProtonPassItemV1_ExtraField] = []
-
-  public var unknownFields = SwiftProtobuf.UnknownStorage()
-
-  public init() {}
 }
 
 /// Client extras
@@ -1359,7 +1345,7 @@ extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._M
     var _workPhoneNumber: String = String()
     var _workEmail: String = String()
     var _extraWorkDetails: [ProtonPassItemV1_ExtraField] = []
-    var _extraSections: [ProtonPassItemV1_ExtraIdentitySection] = []
+    var _extraSections: [ProtonPassItemV1_CustomSection] = []
 
     #if swift(>=5.10)
       // This property is used as the initial default value for new instances of the type.
@@ -1635,44 +1621,6 @@ extension ProtonPassItemV1_ItemIdentity: SwiftProtobuf.Message, SwiftProtobuf._M
       }
       if !storagesAreEqual {return false}
     }
-    if lhs.unknownFields != rhs.unknownFields {return false}
-    return true
-  }
-}
-
-extension ProtonPassItemV1_ExtraIdentitySection: SwiftProtobuf.Message, SwiftProtobuf._MessageImplementationBase, SwiftProtobuf._ProtoNameProviding {
-  public static let protoMessageName: String = _protobuf_package + ".ExtraIdentitySection"
-  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
-    1: .standard(proto: "section_name"),
-    2: .standard(proto: "section_fields"),
-  ]
-
-  public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
-    while let fieldNumber = try decoder.nextFieldNumber() {
-      // The use of inline closures is to circumvent an issue where the compiler
-      // allocates stack space for every case branch when no optimizations are
-      // enabled. https://github.com/apple/swift-protobuf/issues/1034
-      switch fieldNumber {
-      case 1: try { try decoder.decodeSingularStringField(value: &self.sectionName) }()
-      case 2: try { try decoder.decodeRepeatedMessageField(value: &self.sectionFields) }()
-      default: break
-      }
-    }
-  }
-
-  public func traverse<V: SwiftProtobuf.Visitor>(visitor: inout V) throws {
-    if !self.sectionName.isEmpty {
-      try visitor.visitSingularStringField(value: self.sectionName, fieldNumber: 1)
-    }
-    if !self.sectionFields.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.sectionFields, fieldNumber: 2)
-    }
-    try unknownFields.traverse(visitor: &visitor)
-  }
-
-  public static func ==(lhs: ProtonPassItemV1_ExtraIdentitySection, rhs: ProtonPassItemV1_ExtraIdentitySection) -> Bool {
-    if lhs.sectionName != rhs.sectionName {return false}
-    if lhs.sectionFields != rhs.sectionFields {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true
   }
