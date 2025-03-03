@@ -3096,6 +3096,7 @@
 				nl,
 				id,
 				sl,
+				"zh-Hans",
 			);
 			mainGroup = 35E5062E286F819F00A3F6EA;
 			packageReferences = (
