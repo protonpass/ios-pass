@@ -23,11 +23,40 @@ import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
+private enum SshKeyType: Int, Sendable, Identifiable {
+    case `public`, `private`
+
+    var id: Int {
+        rawValue
+    }
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .public: "Public key"
+        case .private: "Private key"
+        }
+    }
+
+    var placeholder: LocalizedStringKey {
+        switch self {
+        case .public: "Add public key"
+        case .private: "Add private key"
+        }
+    }
+
+    var isPrivate: Bool {
+        if case .private = self {
+            true
+        } else {
+            false
+        }
+    }
+}
+
 struct CreateEditSshKeyView: View {
     @StateObject private var viewModel: CreateEditSshKeyViewModel
     @FocusState private var focusedField: Field?
-    @State private var showPrivateKeyEditor = false
-    @State private var showPublicKeyEditor = false
+    @State private var selectedKeyType: SshKeyType?
 
     enum Field {
         case title
@@ -41,8 +70,8 @@ struct CreateEditSshKeyView: View {
         ScrollView {
             LazyVStack {
                 title
-                privateKey
-                publicKey
+                view(for: .private, value: viewModel.privateKey)
+                view(for: .public, value: viewModel.publicKey)
             }
             .padding()
         }
@@ -54,17 +83,18 @@ struct CreateEditSshKeyView: View {
                 focusedField = .title
             }
         }
-        .sheet(isPresented: $showPrivateKeyEditor) {
-            SshKeyEditor(title: "Private key",
-                         value: viewModel.privateKey,
-                         onSave: { viewModel.privateKey = $0 })
-                .interactiveDismissDisabled()
-        }
-        .sheet(isPresented: $showPublicKeyEditor) {
-            SshKeyEditor(title: "Public key",
-                         value: viewModel.publicKey,
-                         onSave: { viewModel.publicKey = $0 })
-                .interactiveDismissDisabled()
+        .sheet(item: $selectedKeyType) { keyType in
+            SshKeyEditor(title: keyType.title,
+                         value: keyType == .public ? viewModel.publicKey : viewModel.privateKey,
+                         onSave: { newValue in
+                             switch keyType {
+                             case .public:
+                                 viewModel.publicKey = newValue
+                             case .private:
+                                 viewModel.privateKey = newValue
+                             }
+                         })
+                         .interactiveDismissDisabled()
         }
     }
 }
@@ -80,17 +110,19 @@ private extension CreateEditSshKeyView {
             .padding(.bottom, DesignConstant.sectionPadding / 2)
     }
 
-    var privateKey: some View {
+    func view(for keyType: SshKeyType, value: String) -> some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-            Text("Private key")
-                .editableSectionTitleText(for: viewModel.privateKey)
+            Text(keyType.title)
+                .editableSectionTitleText(for: value)
 
-            TextField("Add private key",
-                      text: .constant(String(repeating: "•", count: viewModel.privateKey.count)))
+            TextField(keyType.placeholder,
+                      text: keyType == .public ?
+                          .constant(value) :
+                          .constant(String(repeating: "•", count: value.count)))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundStyle(PassColor.textNorm.toColor)
                 .disabled(true)
-                .if(!viewModel.privateKey.isEmpty) { view in
+                .if(!value.isEmpty) { view in
                     view.monospaced()
                 }
         }
@@ -99,29 +131,7 @@ private extension CreateEditSshKeyView {
         .roundedEditableSection()
         .buttonEmbeded {
             focusedField = nil
-            showPrivateKeyEditor.toggle()
-        }
-    }
-
-    var publicKey: some View {
-        VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-            Text("Public key")
-                .editableSectionTitleText(for: viewModel.publicKey)
-
-            TextField("Add public key", text: .constant(viewModel.publicKey))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .disabled(true)
-                .if(!viewModel.publicKey.isEmpty) { view in
-                    view.monospaced()
-                }
-        }
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
-        .buttonEmbeded {
-            focusedField = nil
-            showPublicKeyEditor.toggle()
+            selectedKeyType = keyType
         }
     }
 }
@@ -144,6 +154,7 @@ private struct SshKeyEditor: View {
 
     var body: some View {
         TextEditor(text: $value)
+            .keyboardType(.asciiCapable)
             .focused($isFocused)
             .textInputAutocapitalization(.never)
             .autocorrectionDisabled()
