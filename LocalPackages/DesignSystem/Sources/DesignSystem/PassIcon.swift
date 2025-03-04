@@ -69,6 +69,7 @@ public extension PassIcon {
     static let fileTypeUnknown = Self.icon(named: "FileTypeUnknown")
 
     static let filterFilled = Self.icon(named: "FilterFilled")
+    static let hamburgerPlus = Self.icon(named: "HamburgerPlus")
     static let infoBannerAliases = Self.icon(named: "InfoBannerAliases")
     static let infoBannerAutoFill = Self.icon(named: "InfoBannerAutoFill")
     static let infoBannerPass = Self.icon(named: "InfoBannerPass")
