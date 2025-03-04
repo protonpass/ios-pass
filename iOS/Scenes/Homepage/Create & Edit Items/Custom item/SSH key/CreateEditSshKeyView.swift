@@ -69,7 +69,7 @@ struct CreateEditSshKeyView: View {
                 fields
                 AddCustomFieldAndSectionView(onAddField: viewModel.addCustomField,
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
-                                                 { print("Add section") } : nil)
+                                                 { addCustomSection() } : nil)
                 if viewModel.fileAttachmentsEnabled {
                     FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                                isFetching: viewModel.isFetchingAttachedFiles,
@@ -155,6 +155,10 @@ private extension CreateEditSshKeyView {
                                     }
                                 })
         }
+    }
+
+    func addCustomSection() {
+        viewModel.showAddCustomSectionAlert.toggle()
     }
 }
 

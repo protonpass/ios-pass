@@ -139,6 +139,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published var customFieldUiModels = [CustomFieldUiModel]()
 
     @Published var customSectionUiModels = [CustomSectionUiModel]()
+    @Published var showAddCustomSectionAlert = false
     @Published var customSectionToRename: CustomSectionUiModel?
 
     @Published var isShowingVaultSelector = false
@@ -601,6 +602,12 @@ extension BaseCreateEditItemViewModel {
                 router.display(element: .displayErrorBanner(error))
             }
         }
+    }
+
+    func addCustomSection(_ title: String) {
+        customSectionUiModels.append(.init(title: title,
+                                           isCollapsed: false,
+                                           fields: []))
     }
 }
 
