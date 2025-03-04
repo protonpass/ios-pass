@@ -137,6 +137,10 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
 
     @Published var customFieldUiModels = [CustomFieldUiModel]()
+
+    @Published var customSectionUiModels = [CustomSectionUiModel]()
+    @Published var customSectionToRename: CustomSectionUiModel?
+
     @Published var isShowingVaultSelector = false
     @Published var isObsolete = false
     @Published var isShowingDiscardAlert = false
@@ -599,6 +603,10 @@ extension BaseCreateEditItemViewModel {
         }
     }
 }
+
+// MARK: - Custom section
+
+extension BaseCreateEditItemViewModel {}
 
 // MARK: - FileAttachmentsEditHandler
 
