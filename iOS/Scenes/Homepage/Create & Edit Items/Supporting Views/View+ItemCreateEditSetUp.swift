@@ -28,6 +28,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: BaseCreateEditItemViewModel
+    @State private var customSectionTitle = ""
 
     func body(content: Content) -> some View {
         content
@@ -88,6 +89,26 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                        }
                    },
                    message: { Text(verbatim: viewModel.fileToDelete?.name ?? "") })
+            .alert("Custom section",
+                   isPresented: $viewModel.showAddCustomSectionAlert,
+                   actions: {
+                       TextField("Title", text: $customSectionTitle)
+                       Button(role: .cancel,
+                              action: {
+                                  customSectionTitle = ""
+                                  viewModel.showAddCustomSectionAlert.toggle()
+                              },
+                              label: { Text("Cancel") })
+
+                       Button(role: nil,
+                              action: {
+                                  viewModel.addCustomSection(customSectionTitle)
+                                  customSectionTitle = ""
+                              },
+                              label: { Text("Add") })
+                           .disabled(customSectionTitle.isEmpty)
+                   },
+                   message: { Text("Enter a section title") })
             .task {
                 await viewModel.fetchAttachedFiles()
             }
