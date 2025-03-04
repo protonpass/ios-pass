@@ -141,6 +141,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published var customSectionUiModels = [CustomSectionUiModel]()
     @Published var showAddCustomSectionAlert = false
     @Published var customSectionToRename: CustomSectionUiModel?
+    @Published var customSectionToRemove: CustomSectionUiModel?
 
     @Published var isShowingVaultSelector = false
     @Published var isObsolete = false
@@ -603,17 +604,27 @@ extension BaseCreateEditItemViewModel {
             }
         }
     }
+}
 
+// MARK: - Custom section
+
+extension BaseCreateEditItemViewModel {
     func addCustomSection(_ title: String) {
         customSectionUiModels.append(.init(title: title,
                                            isCollapsed: false,
                                            fields: []))
     }
+
+    func renameCustomSection(_ section: CustomSectionUiModel, newName: String) {
+        if let index = customSectionUiModels.firstIndex(where: { $0.id == section.id }) {
+            customSectionUiModels[index].title = newName
+        }
+    }
+
+    func removeCustomSection(_ section: CustomSectionUiModel) {
+        customSectionUiModels.removeAll { $0.id == section.id }
+    }
 }
-
-// MARK: - Custom section
-
-extension BaseCreateEditItemViewModel {}
 
 // MARK: - FileAttachmentsEditHandler
 

@@ -206,29 +206,6 @@ private extension CreateEditIdentityView {
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
         .itemCreateEditSetUp(viewModel)
-        .alert("Custom section", isPresented: $showCustomTitleAlert) {
-            TextField("Title", text: $viewModel.customSectionTitle)
-                .autocorrectionDisabled()
-            Button("Add", action: viewModel.addCustomSection)
-            Button("Cancel", role: .cancel) { viewModel.reset() }
-        } message: {
-            Text("Enter a section title")
-        }
-        .alert("Remove custom section", isPresented: $showDeleteCustomSectionAlert) {
-            Button("Delete", role: .destructive, action: viewModel.deleteCustomSection)
-            Button("Cancel", role: .cancel) { viewModel.reset() }
-        } message: {
-            // swiftlint:disable:next line_length
-            Text("Are you sure you want to delete the following section \"\(viewModel.selectedCustomSection?.title ?? "Unknown")\"?")
-        }
-        .alert("Modify the section name", isPresented: $showSectionTitleModification) {
-            TextField("New title", text: $viewModel.customSectionTitle)
-                .autocorrectionDisabled()
-            Button("Modify") { viewModel.modifyCustomSectionName() }
-            Button("Cancel", role: .cancel) { viewModel.reset() }
-        } message: {
-            Text("Enter a new section title")
-        }
     }
 
     func addMoreButton(_ action: @escaping () -> Void) -> some View {
@@ -269,48 +246,13 @@ private extension CreateEditIdentityView {
                     }
                 }
             }, header: {
-                header(for: section)
+                CustomSectionHeader(title: section.title,
+                                    collapsed: section.isCollapsed,
+                                    editable: false,
+                                    onToggle: { viewModel.toggleCollapsingSection(section) },
+                                    onEditTitle: { /* Not applicable */ },
+                                    onRemove: { /* Not applicable */ })
             })
-        }
-    }
-
-    func header(for section: CreateEditIdentitySection) -> some View {
-        HStack(alignment: .center) {
-            Label(title: { Text(section.title) },
-                  icon: {
-                      Image(systemName: section.isCollapsed ? "chevron.down" : "chevron.up")
-                          .resizable()
-                          .scaledToFit()
-                          .frame(width: 12)
-                  })
-                  .foregroundStyle(PassColor.textWeak.toColor)
-                  .frame(maxWidth: .infinity, alignment: .leading)
-                  .padding(.top, DesignConstant.sectionPadding)
-                  .buttonEmbeded {
-                      viewModel.toggleCollapsingSection(section)
-                  }
-            Spacer()
-
-            if section.isCustom {
-                Menu(content: {
-                    Label(title: { Text("Edit section's title") }, icon: { Image(uiImage: IconProvider.pencil) })
-                        .buttonEmbeded {
-                            viewModel.setSelectedSection(section: section)
-                            showSectionTitleModification.toggle()
-                        }
-
-                    Label(title: { Text("Remove section") },
-                          icon: { Image(uiImage: IconProvider.crossCircle) })
-                        .buttonEmbeded {
-                            viewModel.setSelectedSection(section: section)
-                            showDeleteCustomSectionAlert.toggle()
-                        }
-                }, label: {
-                    IconProvider.threeDotsVertical
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .padding(.top, DesignConstant.sectionPadding)
-                })
-            }
         }
     }
 
