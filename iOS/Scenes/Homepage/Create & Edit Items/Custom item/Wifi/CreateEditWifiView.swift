@@ -41,6 +41,13 @@ struct CreateEditWifiView: View {
                 title
                 ssid
                 password
+                if viewModel.fileAttachmentsEnabled {
+                    FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                               isFetching: viewModel.isFetchingAttachedFiles,
+                                               fetchError: viewModel.fetchAttachedFilesError,
+                                               isUploading: viewModel.isUploadingFile,
+                                               handler: viewModel)
+                }
             }
             .padding()
         }
