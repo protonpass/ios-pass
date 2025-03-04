@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Screens
 import SwiftUI
 
 struct CreateEditCustomItemView: View {
@@ -39,6 +40,13 @@ struct CreateEditCustomItemView: View {
             LazyVStack {
                 title
                 fields
+                if viewModel.fileAttachmentsEnabled {
+                    FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                               isFetching: viewModel.isFetchingAttachedFiles,
+                                               fetchError: viewModel.fetchAttachedFilesError,
+                                               isUploading: viewModel.isUploadingFile,
+                                               handler: viewModel)
+                }
             }
             .padding()
         }
