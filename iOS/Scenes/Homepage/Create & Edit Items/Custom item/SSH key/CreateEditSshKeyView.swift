@@ -18,18 +18,192 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
+
+private enum SshKeyType: Int, Sendable, Identifiable {
+    case `public`, `private`
+
+    var id: Int {
+        rawValue
+    }
+
+    var title: LocalizedStringKey {
+        switch self {
+        case .public: "Public key"
+        case .private: "Private key"
+        }
+    }
+
+    var placeholder: LocalizedStringKey {
+        switch self {
+        case .public: "Add public key"
+        case .private: "Add private key"
+        }
+    }
+}
 
 struct CreateEditSshKeyView: View {
     @StateObject private var viewModel: CreateEditSshKeyViewModel
+    @FocusState private var focusedField: Field?
+    @State private var selectedKeyType: SshKeyType?
+
+    enum Field {
+        case title
+    }
 
     init(viewModel: CreateEditSshKeyViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
     var body: some View {
-        Text(verbatim: "CreateEditSshKeyView")
-            .itemCreateEditSetUp(viewModel)
+        ScrollView {
+            LazyVStack {
+                title
+                view(for: .private, value: viewModel.privateKey)
+                view(for: .public, value: viewModel.publicKey)
+            }
+            .padding()
+        }
+        .fullSheetBackground()
+        .itemCreateEditSetUp(viewModel)
+        .navigationStackEmbeded()
+        .onFirstAppear {
+            if case .create = viewModel.mode {
+                focusedField = .title
+            }
+        }
+        .sheet(item: $selectedKeyType) { keyType in
+            SshKeyEditor(title: keyType.title,
+                         value: keyType == .public ? viewModel.publicKey : viewModel.privateKey,
+                         onSave: { newValue in
+                             switch keyType {
+                             case .public:
+                                 viewModel.publicKey = newValue
+                             case .private:
+                                 viewModel.privateKey = newValue
+                             }
+                         })
+                         .interactiveDismissDisabled()
+        }
+    }
+}
+
+private extension CreateEditSshKeyView {
+    var title: some View {
+        CreateEditItemTitleSection(title: $viewModel.title,
+                                   focusedField: $focusedField,
+                                   field: .title,
+                                   itemContentType: viewModel.itemContentType,
+                                   isEditMode: viewModel.mode.isEditMode,
+                                   onSubmit: nil)
+            .padding(.bottom, DesignConstant.sectionPadding / 2)
+    }
+
+    func view(for keyType: SshKeyType, value: String) -> some View {
+        VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+            Text(keyType.title)
+                .editableSectionTitleText(for: value)
+
+            TextField(keyType.placeholder,
+                      text: keyType == .public ?
+                          .constant(value) :
+                          .constant(String(repeating: "•", count: value.count)))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .disabled(true)
+                .if(!value.isEmpty) { view in
+                    view.monospaced()
+                }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection()
+        .buttonEmbeded {
+            focusedField = nil
+            selectedKeyType = keyType
+        }
+    }
+}
+
+private struct SshKeyEditor: View {
+    @Environment(\.dismiss) private var dismiss
+    @FocusState private var isFocused
+    @State private var showDiscardAlert = false
+    @State private var value = ""
+    private let title: LocalizedStringKey
+    private let onSave: (String) -> Void
+
+    init(title: LocalizedStringKey,
+         value: String,
+         onSave: @escaping (String) -> Void) {
+        self.title = title
+        _value = .init(initialValue: value)
+        self.onSave = onSave
+    }
+
+    var body: some View {
+        TextEditor(text: $value)
+            .keyboardType(.asciiCapable)
+            .focused($isFocused)
+            .textInputAutocapitalization(.never)
+            .autocorrectionDisabled()
+            .monospaced()
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .scrollContentBackground(.hidden)
+            .padding([.horizontal, .bottom])
+            .fullSheetBackground()
+            .discardChangesAlert(isPresented: $showDiscardAlert,
+                                 onDiscard: dismiss.callAsFunction)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    CircleButton(icon: IconProvider.cross,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: PassColor.interactionNormMinor1,
+                                 accessibilityLabel: "Close",
+                                 action: { showDiscardAlert.toggle() })
+                }
+
+                ToolbarItem(placement: .principal) {
+                    Text(title)
+                        .navigationTitleText()
+                }
+
+                ToolbarItem(placement: .topBarTrailing) {
+                    CapsuleTextButton(title: #localized("Save"),
+                                      titleColor: PassColor.textInvert,
+                                      backgroundColor: PassColor.interactionNormMajor1,
+                                      height: 44,
+                                      action: { dismiss(); onSave(value) })
+                        .accessibilityLabel("Save")
+                }
+
+                ToolbarItemGroup(placement: .keyboard) {
+                    Button(action: {
+                        if let string = UIPasteboard.general.string {
+                            value = string
+                        }
+                    }, label: {
+                        // Use HStack instead of Label because Label's text is not rendered in toolbar
+                        HStack {
+                            Image(systemName: "list.clipboard")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 18)
+                            Text("Paste from clipboard")
+                        }
+                    })
+                    .frame(maxWidth: .infinity, alignment: .center)
+                }
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .tint(PassColor.interactionNormMajor2.toColor)
             .navigationStackEmbeded()
+            .onAppear {
+                isFocused = true
+            }
     }
 }
