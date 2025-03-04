@@ -23,6 +23,12 @@ import SwiftUI
 
 struct CreateEditCustomItemView: View {
     @StateObject private var viewModel: CreateEditCustomItemViewModel
+    @FocusState private var focusedField: Field?
+
+    enum Field: CustomFieldTypes {
+        case title
+        case custom(CustomFieldUiModel?)
+    }
 
     init(viewModel: CreateEditCustomItemViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -30,15 +36,49 @@ struct CreateEditCustomItemView: View {
 
     var body: some View {
         ScrollView {
-            VStack {
-                ForEach(viewModel.fields, id: \.self) { field in
-                    Text(verbatim: field)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                }
+            LazyVStack {
+                title
+                fields
             }
+            .padding()
         }
+        .animation(.default, value: viewModel.customFieldUiModels)
         .fullSheetBackground()
         .itemCreateEditSetUp(viewModel)
+        .onFirstAppear {
+            if case .create = viewModel.mode {
+                focusedField = .title
+            }
+        }
         .navigationStackEmbeded()
+    }
+}
+
+private extension CreateEditCustomItemView {
+    var title: some View {
+        CreateEditItemTitleSection(title: $viewModel.title,
+                                   focusedField: $focusedField,
+                                   field: .title,
+                                   itemContentType: viewModel.itemContentType,
+                                   isEditMode: viewModel.mode.isEditMode,
+                                   onSubmit: nil)
+            .padding(.bottom, DesignConstant.sectionPadding / 2)
+    }
+
+    var fields: some View {
+        ForEach(viewModel.customFieldUiModels, id: \.self) { field in
+            EditCustomFieldView(focusedField: $focusedField,
+                                field: .custom(field),
+                                contentType: viewModel.itemContentType,
+                                uiModel: .constant(field),
+                                showIcon: false,
+                                onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                onRemove: {
+                                    // Work around a crash in later versions of iOS 17
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                        viewModel.customFieldUiModels.removeAll(where: { $0.id == field.id })
+                                    }
+                                })
+        }
     }
 }
