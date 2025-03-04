@@ -21,6 +21,7 @@
 import DesignSystem
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 private enum SshKeyType: Int, Sendable, Identifiable {
@@ -64,6 +65,13 @@ struct CreateEditSshKeyView: View {
                 title
                 view(for: .private, value: viewModel.privateKey)
                 view(for: .public, value: viewModel.publicKey)
+                if viewModel.fileAttachmentsEnabled {
+                    FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                               isFetching: viewModel.isFetchingAttachedFiles,
+                                               fetchError: viewModel.fetchAttachedFilesError,
+                                               isUploading: viewModel.isUploadingFile,
+                                               handler: viewModel)
+                }
             }
             .padding()
         }

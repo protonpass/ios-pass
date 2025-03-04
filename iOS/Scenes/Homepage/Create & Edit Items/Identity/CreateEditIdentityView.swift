@@ -159,14 +159,6 @@ private extension CreateEditIdentityView {
             sections()
             PassSectionDivider()
 
-            if viewModel.fileAttachmentsEnabled {
-                FileAttachmentsEditSection(files: viewModel.fileUiModels,
-                                           isFetching: viewModel.isFetchingAttachedFiles,
-                                           fetchError: viewModel.fetchAttachedFilesError,
-                                           isUploading: viewModel.isUploadingFile,
-                                           handler: viewModel)
-            }
-
             if viewModel.canAddMoreCustomFields {
                 CapsuleLabelButton(icon: IconProvider.plus,
                                    title: #localized("Add a custom section"),
@@ -191,6 +183,14 @@ private extension CreateEditIdentityView {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
+            }
+
+            if viewModel.fileAttachmentsEnabled {
+                FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                           isFetching: viewModel.isFetchingAttachedFiles,
+                                           fetchError: viewModel.fetchAttachedFilesError,
+                                           isUploading: viewModel.isUploadingFile,
+                                           handler: viewModel)
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
