@@ -31,14 +31,12 @@ enum BaseIdentitySection: String, CaseIterable {
     case address = "Address details"
     case contact = "Contact details"
     case workDetail = "Work details"
-    case custom
 
     var createEditIdentitySection: CreateEditIdentitySection {
         CreateEditIdentitySection(id: rawValue,
                                   title: title,
                                   type: self,
                                   isCollapsed: self == .contact || self == .workDetail,
-                                  isCustom: false,
                                   content: [])
     }
 
@@ -52,19 +50,7 @@ enum BaseIdentitySection: String, CaseIterable {
             #localized("Contact details")
         case .workDetail:
             #localized("Work details")
-        case .custom:
-            ""
         }
-    }
-}
-
-extension CustomSection {
-    var createEditIdentitySection: CreateEditIdentitySection {
-        CreateEditIdentitySection(title: title,
-                                  type: .custom,
-                                  isCollapsed: true,
-                                  isCustom: true,
-                                  content: content.map { CustomFieldUiModel(customField: $0) })
     }
 }
 
@@ -74,16 +60,7 @@ struct CreateEditIdentitySection: Hashable, Identifiable {
     let title: String
     let type: BaseIdentitySection
     let isCollapsed: Bool
-    let isCustom: Bool
     var content: [CustomFieldUiModel]
-
-    static func baseCustomSection(title: String) -> CreateEditIdentitySection {
-        CreateEditIdentitySection(title: title,
-                                  type: .custom,
-                                  isCollapsed: false,
-                                  isCustom: true,
-                                  content: [])
-    }
 }
 
 struct HiddenStringValue: Sendable {
@@ -163,13 +140,10 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var sections = [CreateEditIdentitySection]()
 
     private var customFieldSection: CreateEditIdentitySection?
-    @Published var customSectionTitle = ""
 
     override var isSaveable: Bool {
         super.isSaveable && !title.isEmpty
     }
-
-    private(set) var selectedCustomSection: CreateEditIdentitySection?
 
     override var itemContentType: ItemContentType { .identity }
 
@@ -196,11 +170,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             case .contact:
                 extraContactDetails[index] = uiModel.update(title: newTitle)
                 return section
-
-            case .custom:
-                var newCustoms = section.content
-                newCustoms[index] = uiModel.update(title: newTitle)
-                return section.copy(content: newCustoms)
             }
         }
     }
@@ -224,10 +193,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             case .contact:
                 extraContactDetails[index] = uiModel.update(content: content)
                 return section
-            case .custom:
-                var newCustoms = section.content
-                newCustoms[index] = uiModel.update(content: content)
-                return section.copy(content: newCustoms)
             }
         }
     }
@@ -259,9 +224,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             case .contact:
                 extraContactDetails.append(uiModel)
                 return section
-
-            case .custom:
-                newCustoms.append(uiModel)
             }
 
             return section.copy(content: newCustoms)
@@ -273,7 +235,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
         case let .clone(itemContent), let .edit(itemContent):
             guard case let .identity(data) = itemContent.contentData else { return }
 
-            for item in BaseIdentitySection.allCases where item != .custom {
+            for item in BaseIdentitySection.allCases {
                 let shouldBeExpanded = data.sectionShouldBeExpanded(for: item)
                 let section = item.createEditIdentitySection.copy(isCollapsed: !shouldBeExpanded)
                 sections.append(section)
@@ -316,7 +278,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             workPhoneNumber = .init(value: data.workPhoneNumber)
             workEmail = .init(value: data.workEmail)
             extraWorkDetails = data.extraWorkDetails.map { CustomFieldUiModel(customField: $0) }
-            sections.append(contentsOf: data.extraSections.toCreateEditIdentitySections)
         case .create:
             addBaseSections()
         }
@@ -359,7 +320,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                                 workPhoneNumber: workPhoneNumber.value,
                                 workEmail: workEmail.value,
                                 extraWorkDetails: extraWorkDetails.map(\.customField),
-                                extraSections: sections.filterToCustomSections)
+                                extraSections: [])
         return .init(name: title,
                      note: "",
                      itemUuid: UUID().uuidString,
@@ -371,46 +332,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
 // MARK: - Utils
 
 extension CreateEditIdentityViewModel {
-    func setSelectedSection(section: CreateEditIdentitySection) {
-        selectedCustomSection = section
-    }
-
-    func deleteCustomSection() {
-        guard let sectionToDelete = selectedCustomSection else {
-            return
-        }
-
-        sections = sections.removing(sectionToDelete)
-        selectedCustomSection = nil
-    }
-
-    func reset() {
-        customSectionTitle = ""
-        selectedCustomSection = nil
-    }
-
-    func addCustomSection() {
-        guard !customSectionTitle.isEmpty else {
-            return
-        }
-        let newSection = CreateEditIdentitySection.baseCustomSection(title: customSectionTitle)
-        sections.append(newSection)
-        customSectionTitle = ""
-    }
-
-    func modifyCustomSectionName() {
-        guard !customSectionTitle.isEmpty, let sectionToModify = selectedCustomSection else {
-            return
-        }
-        sections = sections.map { section in
-            guard sectionToModify.id == section.id else {
-                return section
-            }
-            return section.copy(title: customSectionTitle)
-        }
-        customSectionTitle = ""
-    }
-
     func getIndex(_ section: CreateEditIdentitySection, _ uiModel: CustomFieldUiModel) -> Int? {
         switch section.type {
         case .address:
@@ -424,9 +345,6 @@ extension CreateEditIdentityViewModel {
 
         case .contact:
             extraContactDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .custom:
-            section.content.firstIndex(where: { $0.id == uiModel.id })
         }
     }
 
@@ -447,7 +365,7 @@ extension CreateEditIdentityViewModel {
 
 private extension CreateEditIdentityViewModel {
     func addBaseSections() {
-        for item in BaseIdentitySection.allCases where item != .custom {
+        for item in BaseIdentitySection.allCases {
             sections.append(item.createEditIdentitySection)
         }
     }
@@ -494,23 +412,6 @@ private extension IdentityData {
             contactSection.contains { !$0.isEmpty }
         default:
             false
-        }
-    }
-}
-
-private extension [CustomSection] {
-    var toCreateEditIdentitySections: [CreateEditIdentitySection] {
-        self.map(\.createEditIdentitySection)
-    }
-}
-
-private extension [CreateEditIdentitySection] {
-    var filterToCustomSections: [CustomSection] {
-        self.compactMap { section in
-            guard section.isCustom else {
-                return nil
-            }
-            return CustomSection(title: section.title, content: section.content.map(\.customField))
         }
     }
 }
