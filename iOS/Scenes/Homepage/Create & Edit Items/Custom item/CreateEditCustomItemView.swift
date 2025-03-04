@@ -43,7 +43,7 @@ struct CreateEditCustomItemView: View {
 
                 AddCustomFieldAndSectionView(onAddField: viewModel.addCustomField,
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
-                                                 { print("Add section") } : nil)
+                                                 { addCustomSection() } : nil)
 
                 if viewModel.fileAttachmentsEnabled {
                     FileAttachmentsEditSection(files: viewModel.fileUiModels,
@@ -92,5 +92,9 @@ private extension CreateEditCustomItemView {
                                     }
                                 })
         }
+    }
+
+    func addCustomSection() {
+        viewModel.showAddCustomSectionAlert.toggle()
     }
 }
