@@ -18372,6 +18372,17 @@
         }
       }
     },
+    "Add name (SSID)" : {
+      "comment" : "Placeholder for the text input of wifi's name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add name (SSID)"
+          }
+        }
+      }
+    },
     "Add note" : {
       "localizations" : {
         "be" : {
@@ -18688,6 +18699,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Thêm mật khẩu"
+          }
+        }
+      }
+    },
+    "Add private key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add private key"
+          }
+        }
+      }
+    },
+    "Add public key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add public key"
           }
         }
       }
@@ -84912,6 +84943,17 @@
         }
       }
     },
+    "Name (SSID)" : {
+      "comment" : "Wifi's name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name (SSID)"
+          }
+        }
+      }
+    },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
       "localizations" : {
@@ -95381,6 +95423,16 @@
         }
       }
     },
+    "Paste from clipboard" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste from clipboard"
+          }
+        }
+      }
+    },
     "Patient name" : {
       "comment" : "Default custom item field for medical record template",
       "localizations" : {
@@ -102953,6 +103005,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Публічний домен"
+          }
+        }
+      }
+    },
+    "Public key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public key"
           }
         }
       }
