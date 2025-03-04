@@ -93,6 +93,8 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                    isPresented: $viewModel.showAddCustomSectionAlert,
                    actions: {
                        TextField("Title", text: $customSectionTitle)
+                           .autocorrectionDisabled()
+
                        Button(role: .cancel,
                               action: {
                                   customSectionTitle = ""
@@ -100,15 +102,44 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                               },
                               label: { Text("Cancel") })
 
-                       Button(role: nil,
-                              action: {
-                                  viewModel.addCustomSection(customSectionTitle)
-                                  customSectionTitle = ""
-                              },
-                              label: { Text("Add") })
-                           .disabled(customSectionTitle.isEmpty)
+                       Button("Add") {
+                           viewModel.addCustomSection(customSectionTitle)
+                           customSectionTitle = ""
+                       }
                    },
                    message: { Text("Enter a section title") })
+            .alert("Modify the section name",
+                   isPresented: $viewModel.customSectionToRename.mappedToBool(),
+                   actions: {
+                       TextField("New title", text: $customSectionTitle)
+                           .autocorrectionDisabled()
+                       Button("Modify") {
+                           if let section = viewModel.customSectionToRename {
+                               viewModel.renameCustomSection(section, newName: customSectionTitle)
+                           }
+                           customSectionTitle = ""
+                       }
+                       Button("Cancel", role: .cancel) { customSectionTitle = "" }
+                   },
+                   message: { Text("Enter a new section title") })
+            .alert("Remove custom section",
+                   isPresented: $viewModel.customSectionToRemove.mappedToBool(),
+                   actions: {
+                       Button(role: .destructive,
+                              action: {
+                                  if let section = viewModel.customSectionToRemove {
+                                      viewModel.removeCustomSection(section)
+                                  }
+                              },
+                              label: { Text("Delete") })
+
+                       Button(role: .cancel, action: {}, label: { Text("Cancel") })
+                   },
+                   message: {
+                       if let section = viewModel.customSectionToRemove {
+                           Text("Are you sure you want to delete the following section \"\(section.title)\"?")
+                       }
+                   })
             .task {
                 await viewModel.fetchAttachedFiles()
             }
