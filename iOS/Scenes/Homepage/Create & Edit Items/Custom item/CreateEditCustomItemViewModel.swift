@@ -33,8 +33,16 @@ private struct DefaultField {
         case text, hiddenText, date
     }
 
+    var customFieldType: CustomFieldType {
+        switch type {
+        case .text: .text
+        case .hiddenText: .hidden
+        case .date: .timestamp
+        }
+    }
+
     init(title: String, type: Type = .text) {
-        self.title = title.capitalized
+        self.title = title
         self.type = type
     }
 }
@@ -43,7 +51,6 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
     deinit { print(deinitMessage) }
 
     @Published var title = ""
-    @Published var fields: [String] = []
 
     override var isSaveable: Bool {
         super.isSaveable && !title.isEmpty
@@ -55,7 +62,11 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
             if case let .custom(template) = type {
                 assert(template != .sshKey && template != .wifi,
                        "SSH key and Wifi are not supported as custom item")
-                fields = template.defaultFields.map(\.title)
+                customFieldUiModels = template.defaultFields.map {
+                    .init(customField: .init(title: $0.title,
+                                             type: $0.customFieldType,
+                                             content: ""))
+                }
             }
 
         case let .clone(itemContent), let .edit(itemContent):
