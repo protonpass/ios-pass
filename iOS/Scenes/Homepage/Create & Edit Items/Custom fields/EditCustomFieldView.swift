@@ -55,7 +55,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .opacity(0)
                 } else {
-                    let placeholder = uiModel.customField.type.title
+                    let placeholder = uiModel.customField.title
                     switch uiModel.customField.type {
                     case .text:
                         TextEditorWithPlaceholder(text: $uiModel.customField.content,
@@ -82,9 +82,8 @@ struct EditCustomFieldView<Field: Hashable>: View {
                             .foregroundStyle(PassColor.textNorm.toColor)
 
                     case .timestamp:
-                        // swiftlint:disable:next todo
-                        // TODO: [Custom item] Implement this
-                        Text(verbatim: "Timestamp custom field")
+                        TimestampPicker(value: $uiModel.customField.content)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
             }
