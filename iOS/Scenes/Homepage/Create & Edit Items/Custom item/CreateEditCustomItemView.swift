@@ -40,6 +40,11 @@ struct CreateEditCustomItemView: View {
             LazyVStack {
                 title
                 fields
+
+                AddCustomFieldAndSectionView(onAddField: { print("Add field") },
+                                             onAddSection: viewModel.customSectionUiModels.isEmpty ?
+                                                 { print("Add section") } : nil)
+
                 if viewModel.fileAttachmentsEnabled {
                     FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                                isFetching: viewModel.isFetchingAttachedFiles,

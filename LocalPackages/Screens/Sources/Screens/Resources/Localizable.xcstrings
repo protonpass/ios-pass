@@ -2449,6 +2449,17 @@
         }
       }
     },
+    "Add field" : {
+      "comment" : "Title of the button to add a new custom field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add field"
+          }
+        }
+      }
+    },
     "Add mailbox" : {
       "localizations" : {
         "be" : {
@@ -2593,6 +2604,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Додати поштову скриньку"
+          }
+        }
+      }
+    },
+    "Add section" : {
+      "comment" : "Title of the button to add a new custom section",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add section"
           }
         }
       }

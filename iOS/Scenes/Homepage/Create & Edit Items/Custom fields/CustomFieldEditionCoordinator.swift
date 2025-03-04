@@ -37,6 +37,17 @@ extension CustomFieldUiModel {
     }
 }
 
+struct CustomSectionUiModel: Identifiable, Equatable, Hashable, Sendable {
+    var id = UUID().uuidString
+    var title: String
+    let isCollapsed: Bool
+    let fields: [CustomFieldUiModel]
+
+    mutating func rename(_ newTitle: String) {
+        title = newTitle
+    }
+}
+
 @MainActor
 protocol CustomFieldEditionDelegate: AnyObject {
     func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String)
