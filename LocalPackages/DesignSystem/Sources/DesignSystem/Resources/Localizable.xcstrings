@@ -141,6 +141,12 @@
             "state" : "translated",
             "value" : "Камера Недоступна"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法使用相机"
+          }
         }
       }
     },
@@ -300,6 +306,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hủy"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
           }
         }
       }
@@ -461,6 +473,12 @@
             "state" : "translated",
             "value" : "Bỏ"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "舍弃"
+          }
         }
       }
     },
@@ -620,6 +638,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hủy thay đổi?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定要放弃更改吗？"
           }
         }
       }
@@ -781,6 +805,12 @@
             "state" : "translated",
             "value" : "Đã có lỗi xảy ra"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "出现错误"
+          }
         }
       }
     },
@@ -940,6 +970,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tiếp tục chỉnh sửa"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "继续编辑"
           }
         }
       }
@@ -1101,6 +1137,12 @@
             "state" : "translated",
             "value" : "Đồng ý"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定"
+          }
         }
       }
     },
@@ -1243,6 +1285,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Приватність або Обмеження вимкнули використання камери. Це можна змінити в налаштуваннях."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隐私或限制设置禁用了相机的使用。您可以在设置中进行更改。"
           }
         }
       }
@@ -1404,6 +1452,12 @@
             "state" : "translated",
             "value" : "Thử lại"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重试"
+          }
         }
       }
     },
@@ -1563,6 +1617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Các cài đặt"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置"
           }
         }
       }
@@ -1724,6 +1784,12 @@
             "state" : "translated",
             "value" : "Đã có các thay đổi cho nội dung này, quay trở lại trang trước đó."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此项目发生了一些更改，回到上一页。"
+          }
         }
       }
     },
@@ -1884,6 +1950,12 @@
             "state" : "translated",
             "value" : "Nội dung này chưa được đồng bộ"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这个项目已经过时了"
+          }
         }
       }
     },
@@ -2043,6 +2115,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bạn có các thay đổi chưa được lưu, bạn có muốn loại bỏ chúng không?"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您有未保存的更改，确定要放弃它们吗？"
           }
         }
       }
