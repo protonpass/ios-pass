@@ -248,6 +248,12 @@
             "state" : "translated",
             "value" : "Quét mã 2FA, thẻ tín dụng hoặc chữ viết tay"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "扫描 2FA 代码、信用卡和手写笔记"
+          }
         }
       }
     },
@@ -408,6 +414,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ngăn chặn truy cập trái phép vào tài khoản Proton Pass trên thiết bị này"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在此设备上限制不受欢迎的人访问您的 Proton Pass 账户"
           }
         }
       }
