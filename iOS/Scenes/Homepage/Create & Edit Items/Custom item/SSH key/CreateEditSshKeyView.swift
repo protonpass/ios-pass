@@ -51,8 +51,9 @@ struct CreateEditSshKeyView: View {
     @FocusState private var focusedField: Field?
     @State private var selectedKeyType: SshKeyType?
 
-    enum Field {
+    enum Field: CustomFieldTypes {
         case title
+        case custom(CustomFieldUiModel?)
     }
 
     init(viewModel: CreateEditSshKeyViewModel) {
@@ -65,6 +66,10 @@ struct CreateEditSshKeyView: View {
                 title
                 view(for: .private, value: viewModel.privateKey)
                 view(for: .public, value: viewModel.publicKey)
+                fields
+                AddCustomFieldAndSectionView(onAddField: viewModel.addCustomField,
+                                             onAddSection: viewModel.customSectionUiModels.isEmpty ?
+                                                 { print("Add section") } : nil)
                 if viewModel.fileAttachmentsEnabled {
                     FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                                isFetching: viewModel.isFetchingAttachedFiles,
@@ -132,6 +137,23 @@ private extension CreateEditSshKeyView {
         .buttonEmbeded {
             focusedField = nil
             selectedKeyType = keyType
+        }
+    }
+
+    var fields: some View {
+        ForEach(viewModel.customFieldUiModels, id: \.self) { field in
+            EditCustomFieldView(focusedField: $focusedField,
+                                field: .custom(field),
+                                contentType: viewModel.itemContentType,
+                                uiModel: .constant(field),
+                                showIcon: false,
+                                onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                onRemove: {
+                                    // Work around a crash in later versions of iOS 17
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                        viewModel.customFieldUiModels.removeAll(where: { $0.id == field.id })
+                                    }
+                                })
         }
     }
 }

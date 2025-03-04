@@ -27,8 +27,9 @@ struct CreateEditWifiView: View {
     @StateObject private var viewModel: CreateEditWifiViewModel
     @FocusState private var focusedField: Field?
 
-    enum Field {
+    enum Field: CustomFieldTypes {
         case title, ssid, password
+        case custom(CustomFieldUiModel?)
     }
 
     init(viewModel: CreateEditWifiViewModel) {
@@ -41,6 +42,10 @@ struct CreateEditWifiView: View {
                 title
                 ssid
                 password
+                fields
+                AddCustomFieldAndSectionView(onAddField: viewModel.addCustomField,
+                                             onAddSection: viewModel.customSectionUiModels.isEmpty ?
+                                                 { print("Add section") } : nil)
                 if viewModel.fileAttachmentsEnabled {
                     FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                                isFetching: viewModel.isFetchingAttachedFiles,
@@ -121,5 +126,22 @@ private extension CreateEditWifiView {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(DesignConstant.sectionPadding)
         .roundedEditableSection()
+    }
+
+    var fields: some View {
+        ForEach(viewModel.customFieldUiModels, id: \.self) { field in
+            EditCustomFieldView(focusedField: $focusedField,
+                                field: .custom(field),
+                                contentType: viewModel.itemContentType,
+                                uiModel: .constant(field),
+                                showIcon: false,
+                                onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                onRemove: {
+                                    // Work around a crash in later versions of iOS 17
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                        viewModel.customFieldUiModels.removeAll(where: { $0.id == field.id })
+                                    }
+                                })
+        }
     }
 }
