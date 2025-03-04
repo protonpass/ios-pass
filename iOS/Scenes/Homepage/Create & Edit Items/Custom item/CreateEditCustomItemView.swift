@@ -41,7 +41,7 @@ struct CreateEditCustomItemView: View {
                 title
                 fields
 
-                AddCustomFieldAndSectionView(onAddField: { print("Add field") },
+                AddCustomFieldAndSectionView(onAddField: viewModel.addCustomField,
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
                                                  { print("Add section") } : nil)
 
@@ -55,7 +55,6 @@ struct CreateEditCustomItemView: View {
             }
             .padding()
         }
-        .animation(.default, value: viewModel.customFieldUiModels)
         .fullSheetBackground()
         .itemCreateEditSetUp(viewModel)
         .onFirstAppear {

@@ -35,6 +35,8 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
             .navigationBarTitleDisplayMode(.inline)
             .tint(viewModel.itemContentType.normMajor1Color.toColor)
             .disabled(viewModel.isSaving)
+            .animation(.default, value: viewModel.customFieldUiModels)
+            .animation(.default, value: viewModel.customSectionUiModels)
             .obsoleteItemAlert(isPresented: $viewModel.isObsolete,
                                onAction: dismiss.callAsFunction)
             .discardChangesAlert(isPresented: $viewModel.isShowingDiscardAlert,
