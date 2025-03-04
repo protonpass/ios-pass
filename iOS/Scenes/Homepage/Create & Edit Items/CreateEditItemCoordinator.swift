@@ -118,6 +118,10 @@ extension CreateEditItemCoordinator {
 // MARK: - Private APIs
 
 private extension CreateEditItemCoordinator {
+    var vaults: [Share] {
+        appContentManager.getAllSharesLinkToVault()
+    }
+
     func present(_ view: any View, dismissable: Bool) {
         router.navigate(to: .presentView(view: view, dismissible: dismissable))
     }
@@ -125,7 +129,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditLoginView(mode: ItemMode) throws {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
-                                                     vaults: appContentManager.getAllShares())
+                                                     vaults: vaults)
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditLoginView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -135,7 +139,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditAliasView(mode: ItemMode) throws {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
-                                                     vaults: appContentManager.getAllShares())
+                                                     vaults: vaults)
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditAliasView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -145,7 +149,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditCreditCardView(mode: ItemMode) throws {
         let viewModel = try CreateEditCreditCardViewModel(mode: mode,
                                                           upgradeChecker: upgradeChecker,
-                                                          vaults: appContentManager.getAllShares())
+                                                          vaults: vaults)
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditCreditCardView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -155,7 +159,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditNoteView(mode: ItemMode) throws {
         let viewModel = try CreateEditNoteViewModel(mode: mode,
                                                     upgradeChecker: upgradeChecker,
-                                                    vaults: appContentManager.getAllShares())
+                                                    vaults: vaults)
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissable: false)
@@ -165,7 +169,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditIdentityView(mode: ItemMode) throws {
         let viewModel = try CreateEditIdentityViewModel(mode: mode,
                                                         upgradeChecker: upgradeChecker,
-                                                        vaults: appContentManager.getAllShares())
+                                                        vaults: vaults)
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditIdentityView(viewModel: viewModel)
         present(view, dismissable: false)
