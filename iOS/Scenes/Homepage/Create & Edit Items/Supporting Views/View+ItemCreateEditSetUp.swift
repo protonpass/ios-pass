@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Screens
 import SwiftUI
 
@@ -42,6 +43,16 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                onAction: dismiss.callAsFunction)
             .discardChangesAlert(isPresented: $viewModel.isShowingDiscardAlert,
                                  onDiscard: dismiss.callAsFunction)
+            .deleteFileAlert(fileToDelete: $viewModel.fileToDelete,
+                             onDeleteFile: viewModel.delete(attachment:))
+            .addCustomSectionAlert(isPresented: $viewModel.showAddCustomSectionAlert,
+                                   title: $customSectionTitle,
+                                   onAdd: viewModel.addCustomSection(_:))
+            .editSectionTitleAlert(section: $viewModel.customSectionToRename,
+                                   title: $customSectionTitle,
+                                   onRename: viewModel.renameCustomSection(_:newName:))
+            .deleteSectionAlert(section: $viewModel.customSectionToRemove,
+                                onRemove: viewModel.removeCustomSection(_:))
             .sheet(isPresented: $viewModel.isShowingVaultSelector) {
                 // Add more height when free users to make room for upsell banner
                 let height = viewModel.vaults.filter(\.canEdit).count * 74 + (viewModel.isFreeUser ? 180 : 50)
@@ -78,71 +89,91 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       onScan: { viewModel.openScanner() },
                                       onSave: { viewModel.save() })
             }
-            .alert("Delete file?",
-                   isPresented: $viewModel.fileToDelete.mappedToBool(),
-                   actions: {
-                       if let file = viewModel.fileToDelete {
-                           Button("Delete",
-                                  role: .destructive,
-                                  action: { viewModel.delete(attachment: file) })
-                           Button("Cancel", role: .cancel, action: {})
-                       }
-                   },
-                   message: { Text(verbatim: viewModel.fileToDelete?.name ?? "") })
-            .alert("Custom section",
-                   isPresented: $viewModel.showAddCustomSectionAlert,
-                   actions: {
-                       TextField("Title", text: $customSectionTitle)
-                           .autocorrectionDisabled()
-
-                       Button(role: .cancel,
-                              action: {
-                                  customSectionTitle = ""
-                                  viewModel.showAddCustomSectionAlert.toggle()
-                              },
-                              label: { Text("Cancel") })
-
-                       Button("Add") {
-                           viewModel.addCustomSection(customSectionTitle)
-                           customSectionTitle = ""
-                       }
-                   },
-                   message: { Text("Enter a section title") })
-            .alert("Modify the section name",
-                   isPresented: $viewModel.customSectionToRename.mappedToBool(),
-                   actions: {
-                       TextField("New title", text: $customSectionTitle)
-                           .autocorrectionDisabled()
-                       Button("Modify") {
-                           if let section = viewModel.customSectionToRename {
-                               viewModel.renameCustomSection(section, newName: customSectionTitle)
-                           }
-                           customSectionTitle = ""
-                       }
-                       Button("Cancel", role: .cancel) { customSectionTitle = "" }
-                   },
-                   message: { Text("Enter a new section title") })
-            .alert("Remove custom section",
-                   isPresented: $viewModel.customSectionToRemove.mappedToBool(),
-                   actions: {
-                       Button(role: .destructive,
-                              action: {
-                                  if let section = viewModel.customSectionToRemove {
-                                      viewModel.removeCustomSection(section)
-                                  }
-                              },
-                              label: { Text("Delete") })
-
-                       Button(role: .cancel, action: {}, label: { Text("Cancel") })
-                   },
-                   message: {
-                       if let section = viewModel.customSectionToRemove {
-                           Text("Are you sure you want to delete the following section \"\(section.title)\"?")
-                       }
-                   })
             .task {
                 await viewModel.fetchAttachedFiles()
             }
+    }
+}
+
+private extension View {
+    func deleteFileAlert(fileToDelete: Binding<FileAttachmentUiModel?>,
+                         onDeleteFile: @escaping (FileAttachmentUiModel) -> Void) -> some View {
+        alert("Delete file?",
+              isPresented: fileToDelete.mappedToBool(),
+              actions: {
+                  if let file = fileToDelete.wrappedValue {
+                      Button("Delete",
+                             role: .destructive,
+                             action: { onDeleteFile(file) })
+                      Button("Cancel", role: .cancel, action: {})
+                  }
+              },
+              message: { Text(verbatim: fileToDelete.wrappedValue?.name ?? "") })
+    }
+
+    func addCustomSectionAlert(isPresented: Binding<Bool>,
+                               title: Binding<String>,
+                               onAdd: @escaping (String) -> Void) -> some View {
+        alert("Custom section",
+              isPresented: isPresented,
+              actions: {
+                  TextField("Title", text: title)
+                      .autocorrectionDisabled()
+
+                  Button(role: .cancel,
+                         action: {
+                             title.wrappedValue = ""
+                             isPresented.wrappedValue.toggle()
+                         },
+                         label: { Text("Cancel") })
+
+                  Button("Add") {
+                      onAdd(title.wrappedValue)
+                      title.wrappedValue = ""
+                  }
+              },
+              message: { Text("Enter a section title") })
+    }
+
+    func editSectionTitleAlert(section: Binding<CustomSectionUiModel?>,
+                               title: Binding<String>,
+                               onRename: @escaping (CustomSectionUiModel, String) -> Void) -> some View {
+        alert("Modify the section name",
+              isPresented: section.mappedToBool(),
+              actions: {
+                  TextField("New title", text: title)
+                      .autocorrectionDisabled()
+                  Button("Modify") {
+                      if let section = section.wrappedValue {
+                          onRename(section, title.wrappedValue)
+                      }
+                      title.wrappedValue = ""
+                  }
+                  Button("Cancel", role: .cancel) { title.wrappedValue = "" }
+              },
+              message: { Text("Enter a new section title") })
+    }
+
+    func deleteSectionAlert(section: Binding<CustomSectionUiModel?>,
+                            onRemove: @escaping (CustomSectionUiModel) -> Void) -> some View {
+        alert("Remove custom section",
+              isPresented: section.mappedToBool(),
+              actions: {
+                  Button(role: .destructive,
+                         action: {
+                             if let section = section.wrappedValue {
+                                 onRemove(section)
+                             }
+                         },
+                         label: { Text("Delete") })
+
+                  Button(role: .cancel, action: {}, label: { Text("Cancel") })
+              },
+              message: {
+                  if let section = section.wrappedValue {
+                      Text("Are you sure you want to delete the following section \"\(section.title)\"?")
+                  }
+              })
     }
 }
 
