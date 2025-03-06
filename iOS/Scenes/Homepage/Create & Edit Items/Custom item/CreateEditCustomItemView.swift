@@ -41,7 +41,7 @@ struct CreateEditCustomItemView: View {
                 title
                 fields
 
-                AddCustomFieldAndSectionView(onAddField: viewModel.addCustomField,
+                AddCustomFieldAndSectionView(onAddField: { viewModel.addCustomField(to: nil) },
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
                                                  { addCustomSection() } : nil)
 

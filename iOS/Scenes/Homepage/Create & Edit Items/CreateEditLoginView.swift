@@ -114,7 +114,7 @@ struct CreateEditLoginView: View {
                                                 contentType: .login,
                                                 uiModels: $viewModel.customFieldUiModels,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
-                                                onAddMore: { viewModel.addCustomField() },
+                                                onAddMore: { viewModel.addCustomField(to: nil) },
                                                 onEditTitle: { model in viewModel.editCustomFieldTitle(model) },
                                                 onUpgrade: { viewModel.upgrade() })
 
