@@ -10,18 +10,18 @@
       "Code": 1000,
       "UserSettings": {
         "Email": {
-          "Value": "protonROFVVH588533@example.lt",
+          "Value": "",
           "Status": 0,
           "Notify": 1,
           "Reset": 1,
           "UpdateTime": 0
         },
         "Phone": {
-          "Value": "+41585930337",
+          "Value": null,
           "Status": 0,
           "Notify": 1,
           "Reset": 1,
-          "UpdateTime": 1739982870
+          "UpdateTime": 0
         },
         "Password": {
           "Mode": 1,
@@ -40,8 +40,8 @@
           "RegisteredKeys": []
         },
         "TOTP": 0,
-        "News": 55791,
-        "Locale": "en_US",
+        "News": 53743,
+        "Locale": "en_US@rg=huzzzz",
         "LogAuth": 1,
         "InvoiceText": "",
         "Density": 0,
@@ -52,27 +52,28 @@
         "TimeFormat": 0,
         "Flags": {
           "Welcomed": 0,
-          "SupportPgpV6Keys": 0
+          "SupportPgpV6Keys": 0,
+          "EdmOptOut": 0
         },
         "DeviceRecovery": 1,
         "Telemetry": 1,
         "CrashReports": 1,
         "HighSecurity": {
-          "Eligible": 0,
+          "Eligible": 1,
           "Value": 0
         },
         "SessionAccountRecovery": 1,
         "BreachAlerts": {
-          "Eligible": 0,
+          "Eligible": 1,
           "Value": 0,
           "EmailNotifications": 1
         },
         "AIAssistantFlags": 0,
         "Referral": {
-          "Link": "https://pr.tn/ref/XHPFJG21GFQG",
+          "Link": "https://pr.tn/ref/8H29HV4NQASG",
           "Eligible": false
         },
-        "UsedClientFlags": 576460889742377000,
+        "UsedClientFlags": 137438953472,
         "HideSidePanel": 0,
         "TwoFactor": 0,
         "Welcome": 0,
@@ -89,7 +90,6 @@
           "Wallet": 0
         },
         "UsedClients": [
-          "AndroidDrive",
           "iOSPass",
           "iOSPassAutofillExtension",
           "iOSPassActionExtension",
@@ -100,7 +100,7 @@
     },
     "headers": {
       "server": "nginx",
-      "date": "Wed, 26 Feb 2025 09:40:21 GMT",
+      "date": "Thu, 06 Mar 2025 13:25:28 GMT",
       "content-type": "application/json",
       "transfer-encoding": "chunked",
       "connection": "close",
@@ -108,28 +108,28 @@
       "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
       "expires": "Fri, 04 May 1984 22:15:00 GMT",
       "x-pm-route-pattern": "GET /core/{_version}/settings",
-      "x-pm-user-id": "42487",
-      "x-pm-uid": "q3xeinh3o4r22klwvdu733qbrcagey3c",
+      "x-pm-user-id": "955",
+      "x-pm-uid": "nndg3jfqcl4jxswpcgdnp4khxiqj7sok",
       "access": "application/vnd.protonmail.api+json;apiversion=4",
-      "x-pm-time-total": "128",
-      "x-pm-time-user": "97",
-      "x-pm-time-system": "4",
+      "x-pm-time-total": "156",
+      "x-pm-time-user": "105",
+      "x-pm-time-system": "6",
       "x-pm-memory": "8",
       "x-pm-allocated-memory": "10",
       "x-pm-urgency": "1",
-      "x-pm-apiversion": "develop (1511f680)",
-      "x-b3-traceid": "8a1891fe4377bcf71da89f7dd200902b",
-      "x-b3-spanid": "6771e4f3447973d3",
+      "x-pm-apiversion": "develop (4e79a969)",
+      "x-b3-traceid": "d7ba262b28c0171dccfa8bfa5008a413",
+      "x-b3-spanid": "cbcd12c53446b3bd",
       "x-b3-parentspanid": "",
       "vary": "Accept-Encoding",
       "content-encoding": "gzip",
-      "x-pm-nonce": "Z77hhHQDZXOOAjZXoGkEUwAAARI",
+      "x-pm-nonce": "Z8miSB26+KRaAaB1uTBPWgAAAEM",
       "set-cookie": [
-        "Session-Id=Z77hhHQDZXOOAjZXoGkEUwAAARI; Domain=payments.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
-        "Version=; Domain=payments.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+        "Session-Id=Z8miSB26@KRaAaB1uTBPWgAAAEM; Domain=boas.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=boas.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
       ],
       "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
-      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z77hhHQDZXOOAjZXoGkEUwAAARI' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.payments.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.payments.proton.black;",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z8miSB26+KRaAaB1uTBPWgAAAEM' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.boas.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.boas.proton.black;",
       "expect-ct": "max-age=2592000, enforce",
       "x-content-type-options": "nosniff",
       "x-xss-protection": "1; mode=block",

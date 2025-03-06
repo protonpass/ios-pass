@@ -208,19 +208,6 @@
           }
         },
         {
-          "name": "VPNDashboard",
-          "enabled": true,
-          "impressionData": false,
-          "variant": {
-            "name": "B",
-            "enabled": true,
-            "payload": {
-              "type": "string",
-              "value": "B"
-            }
-          }
-        },
-        {
           "name": "PassPinningV1",
           "enabled": true,
           "impressionData": false,
@@ -490,15 +477,6 @@
           }
         },
         {
-          "name": "SplitStorage",
-          "enabled": true,
-          "impressionData": false,
-          "variant": {
-            "name": "disabled",
-            "enabled": false
-          }
-        },
-        {
           "name": "ABTestInboxUpsellStep",
           "enabled": true,
           "impressionData": false,
@@ -523,6 +501,19 @@
           "variant": {
             "name": "disabled",
             "enabled": false
+          }
+        },
+        {
+          "name": "FirstTestFeatureFlag",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "testVariant",
+            "enabled": true,
+            "payload": {
+              "type": "json",
+              "value": "{ \"test\" : 19 }"
+            }
           }
         },
         {
@@ -661,15 +652,6 @@
           }
         },
         {
-          "name": "PassAliasDiscovery",
-          "enabled": true,
-          "impressionData": false,
-          "variant": {
-            "name": "disabled",
-            "enabled": false
-          }
-        },
-        {
           "name": "PassAccessKeyV1",
           "enabled": true,
           "impressionData": false,
@@ -680,15 +662,6 @@
         },
         {
           "name": "ProtonSubdomains",
-          "enabled": true,
-          "impressionData": false,
-          "variant": {
-            "name": "disabled",
-            "enabled": false
-          }
-        },
-        {
-          "name": "DynamicPlan",
           "enabled": true,
           "impressionData": false,
           "variant": {
@@ -761,15 +734,6 @@
         },
         {
           "name": "BillingAddressModal",
-          "enabled": true,
-          "impressionData": false,
-          "variant": {
-            "name": "disabled",
-            "enabled": false
-          }
-        },
-        {
-          "name": "ChargebeeMobileAndroid",
           "enabled": true,
           "impressionData": false,
           "variant": {
@@ -886,6 +850,15 @@
           }
         },
         {
+          "name": "DeleteAccountMergeReason",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
           "name": "ScheduledDowncycling",
           "enabled": true,
           "impressionData": false,
@@ -932,15 +905,6 @@
         },
         {
           "name": "ScribeAdminSetting",
-          "enabled": true,
-          "impressionData": false,
-          "variant": {
-            "name": "disabled",
-            "enabled": false
-          }
-        },
-        {
-          "name": "KeyInfoAllowV6",
           "enabled": true,
           "impressionData": false,
           "variant": {
@@ -1322,6 +1286,15 @@
           }
         },
         {
+          "name": "LumoEarlyAccess",
+          "enabled": true,
+          "impressionData": false,
+          "variant": {
+            "name": "disabled",
+            "enabled": false
+          }
+        },
+        {
           "name": "PassCustomTypeV1",
           "enabled": true,
           "impressionData": false,
@@ -1334,7 +1307,7 @@
     },
     "headers": {
       "server": "nginx",
-      "date": "Wed, 26 Feb 2025 09:40:20 GMT",
+      "date": "Thu, 06 Mar 2025 13:25:27 GMT",
       "content-type": "application/json",
       "transfer-encoding": "chunked",
       "connection": "close",
@@ -1342,28 +1315,28 @@
       "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
       "expires": "Fri, 04 May 1984 22:15:00 GMT",
       "x-pm-route-pattern": "GET /{_version}/frontend",
-      "x-pm-user-id": "42487",
-      "x-pm-uid": "q3xeinh3o4r22klwvdu733qbrcagey3c",
+      "x-pm-user-id": "955",
+      "x-pm-uid": "nndg3jfqcl4jxswpcgdnp4khxiqj7sok",
       "access": "application/vnd.protonmail.api+json;apiversion=2",
-      "x-pm-time-total": "122",
-      "x-pm-time-user": "104",
-      "x-pm-time-system": "0",
+      "x-pm-time-total": "131",
+      "x-pm-time-user": "108",
+      "x-pm-time-system": "1",
       "x-pm-memory": "7",
-      "x-pm-allocated-memory": "12",
+      "x-pm-allocated-memory": "10",
       "x-pm-urgency": "1",
-      "x-pm-apiversion": "develop (1511f680)",
-      "x-b3-traceid": "1cf71a8176145358a02c89154f918ecb",
-      "x-b3-spanid": "641c210dc6909478",
+      "x-pm-apiversion": "develop (4e79a969)",
+      "x-b3-traceid": "6f2090faa97c243b479ec7cc2bf26da2",
+      "x-b3-spanid": "a05477c90fe83055",
       "x-b3-parentspanid": "",
       "vary": "Accept-Encoding",
       "content-encoding": "gzip",
-      "x-pm-nonce": "Z77hhHQDZXOOAjZXoGkETgAAARU",
+      "x-pm-nonce": "Z8miRx26+KRaAaB1uTBPWAAAAEA",
       "set-cookie": [
-        "Session-Id=Z77hhHQDZXOOAjZXoGkETgAAARU; Domain=payments.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
-        "Version=; Domain=payments.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+        "Session-Id=Z8miRx26@KRaAaB1uTBPWAAAAEA; Domain=boas.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=boas.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
       ],
       "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
-      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z77hhHQDZXOOAjZXoGkETgAAARU' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.payments.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.payments.proton.black;",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z8miRx26+KRaAaB1uTBPWAAAAEA' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.boas.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.boas.proton.black;",
       "expect-ct": "max-age=2592000, enforce",
       "x-content-type-options": "nosniff",
       "x-xss-protection": "1; mode=block",
