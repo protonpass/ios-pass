@@ -67,7 +67,7 @@ struct CreateEditSshKeyView: View {
                 view(for: .private, value: viewModel.privateKey)
                 view(for: .public, value: viewModel.publicKey)
                 fields
-                AddCustomFieldAndSectionView(onAddField: { viewModel.addCustomField(to: nil) },
+                AddCustomFieldAndSectionView(onAddField: { viewModel.requestAddCustomField(to: nil) },
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
                                                  { addCustomSection() } : nil)
                 if viewModel.fileAttachmentsEnabled {
@@ -147,7 +147,7 @@ private extension CreateEditSshKeyView {
                                 contentType: viewModel.itemContentType,
                                 uiModel: .constant(field),
                                 showIcon: false,
-                                onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
                                 onRemove: {
                                     // Work around a crash in later versions of iOS 17
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
