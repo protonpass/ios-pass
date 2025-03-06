@@ -70,9 +70,6 @@ private enum SectionsSheetState {
 struct CreateEditIdentityView: View {
     @StateObject private var viewModel: CreateEditIdentityViewModel
     @State private var sheetState: SectionsSheetState?
-    @State private var showCustomTitleAlert = false
-    @State private var showSectionTitleModification = false
-    @State private var showDeleteCustomSectionAlert = false
     @FocusState private var focusedField: Field?
 
     init(viewModel: CreateEditIdentityViewModel) {
@@ -165,9 +162,8 @@ private extension CreateEditIdentityView {
                                    title: #localized("Add a custom section"),
                                    titleColor: viewModel.itemContentType.normMajor2Color,
                                    backgroundColor: viewModel.itemContentType.normMinor1Color,
-                                   height: 55) {
-                    showCustomTitleAlert.toggle()
-                }
+                                   height: 55,
+                                   action: { viewModel.showAddCustomSectionAlert.toggle() })
             } else {
                 Button { viewModel.upgrade() } label: {
                     Label(title: {
@@ -746,8 +742,6 @@ private extension CreateEditIdentityView {
     }
 }
 
-// swiftlint:enable file_length
-
 private extension BaseIdentitySection {
     var title: LocalizedStringKey {
         switch self {
@@ -762,3 +756,5 @@ private extension BaseIdentitySection {
         }
     }
 }
+
+// swiftlint:enable file_length
