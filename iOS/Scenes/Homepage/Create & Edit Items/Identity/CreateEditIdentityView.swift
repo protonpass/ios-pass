@@ -156,7 +156,8 @@ private extension CreateEditIdentityView {
                                        onSubmit: {})
                 .padding(.vertical, DesignConstant.sectionPadding / 2)
 
-            sections()
+            staticSections
+            customSections
             PassSectionDivider()
 
             if viewModel.canAddMoreCustomFields {
@@ -220,8 +221,8 @@ private extension CreateEditIdentityView {
 }
 
 private extension CreateEditIdentityView {
-    func sections() -> some View {
-        ForEach(Array(viewModel.sections.enumerated()), id: \.element.id) { index, section in
+    var staticSections: some View {
+        ForEach(viewModel.sections) { section in
             Section(content: {
                 switch section.id {
                 case BaseIdentitySection.personalDetails.rawValue:
@@ -241,9 +242,7 @@ private extension CreateEditIdentityView {
                         workDetailSection(section)
                     }
                 default:
-                    if !section.isCollapsed {
-                        customDetailSection(section, index: index)
-                    }
+                    EmptyView()
                 }
             }, header: {
                 CustomSectionHeader(title: section.title,
@@ -256,41 +255,15 @@ private extension CreateEditIdentityView {
         }
     }
 
-    func customDetailSection(_ section: CreateEditIdentitySection, index: Int) -> some View {
-        VStack(alignment: .leading) {
-            VStack(spacing: DesignConstant.sectionPadding) {
-                ForEach(Array(section.content.enumerated()), id: \.element.id) { elementIndex, field in
-                    VStack {
-                        if elementIndex > 0 {
-                            PassSectionDivider()
-                        }
-                        EditCustomFieldView(focusedField: $focusedField,
-                                            field: .custom(field),
-                                            contentType: .identity,
-                                            uiModel: $viewModel.sections[index].content[elementIndex],
-                                            // field,
-                                            showIcon: false,
-                                            roundedSection: false,
-                                            onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                            onRemove: {
-                                                // Work around a crash in later versions of iOS 17
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    viewModel.sections[index].content
-                                                        .removeAll(where: { $0.id == field.id })
-                                                }
-                                            })
-                    }
-                }
-            }
-            .if(!section.content.isEmpty) { view in
-                view.padding(.vertical, DesignConstant.sectionPadding)
-            }
-            .roundedEditableSection()
-            addMoreButton {
-                viewModel.addCustomField(to: section)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+    var customSections: some View {
+        CreateEditCustomSections(addFieldButtonTitle: #localized("Add more"),
+                                 contentType: viewModel.itemContentType,
+                                 focusedField: $focusedField,
+                                 field: { .custom($0) },
+                                 sections: $viewModel.customSectionUiModels,
+                                 onEditSectionTitle: { viewModel.customSectionToRename = $0 },
+                                 onEditFieldTitle: viewModel.editCustomFieldTitle,
+                                 onAddMoreField: { viewModel.addCustomField(to: $0.id) })
     }
 }
 
@@ -717,7 +690,9 @@ private extension CreateEditIdentityView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, DesignConstant.sectionPadding)
                     .buttonEmbeded {
-                        viewModel.addCustomField(to: state.section)
+                        dismissSectionSheet {
+                            viewModel.addCustomField(to: state.section.id)
+                        }
                     }
             } else {
                 Button { viewModel.upgrade() } label: {
@@ -749,8 +724,27 @@ private extension CreateEditIdentityView {
             .foregroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, DesignConstant.sectionPadding)
-            .buttonEmbeded { value.wrappedValue.shouldShow.toggle() }
+            .buttonEmbeded {
+                dismissSectionSheet {
+                    value.wrappedValue.shouldShow.toggle()
+                }
+            }
             .disabled(value.wrappedValue.shouldShow)
+    }
+
+    func dismissSectionSheet(completion: @escaping () -> Void) {
+        if #available(iOS 17.0, *) {
+            withAnimation {
+                sheetState = nil
+            } completion: {
+                completion()
+            }
+        } else {
+            sheetState = nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                completion()
+            }
+        }
     }
 }
 

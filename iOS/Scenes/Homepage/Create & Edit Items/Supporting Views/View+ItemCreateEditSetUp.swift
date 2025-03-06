@@ -23,12 +23,19 @@ import Entities
 import Screens
 import SwiftUI
 
+private struct AddCustomFieldTypePayload {
+    let type: CustomFieldType
+    let payload: AddCustomFieldPayload
+}
+
 /// Set up common UI appearance for item create/edit pages
 /// e.g. navigation bar, background color, toolbar, discard changes alert...
 struct ItemCreateEditSetUpModifier: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.dismiss) private var dismiss
     @ObservedObject var viewModel: BaseCreateEditItemViewModel
+    @State private var addCustomFieldTypePayload: AddCustomFieldTypePayload?
+    @State private var customFieldTitle = ""
     @State private var customSectionTitle = ""
 
     func body(content: Content) -> some View {
@@ -53,6 +60,22 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                    onRename: viewModel.renameCustomSection(_:newName:))
             .deleteSectionAlert(section: $viewModel.customSectionToRemove,
                                 onRemove: viewModel.removeCustomSection(_:))
+            .pickCustomFieldTypeSheet(payload: $viewModel.addCustomFieldPayload,
+                                      suppportedTypes: viewModel.supportedCustomFieldTypes,
+                                      onAdd: { type in
+                                          if let payload = viewModel.addCustomFieldPayload {
+                                              addCustomFieldTypePayload = .init(type: type, payload: payload)
+                                          }
+                                      })
+            .addCustomFieldAlert(payload: $addCustomFieldTypePayload,
+                                 title: $customFieldTitle,
+                                 onAdd: { payload in
+                                     viewModel.customFieldAdded(.init(title: customFieldTitle,
+                                                                      type: payload.type,
+                                                                      content: ""),
+                                                                to: payload.payload.sectionId)
+                                     customFieldTitle = ""
+                                 })
             .sheet(isPresented: $viewModel.isShowingVaultSelector) {
                 // Add more height when free users to make room for upsell banner
                 let height = viewModel.vaults.filter(\.canEdit).count * 74 + (viewModel.isFreeUser ? 180 : 50)
@@ -94,6 +117,8 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
             }
     }
 }
+
+// MARK: - Alerts
 
 private extension View {
     func deleteFileAlert(fileToDelete: Binding<FileAttachmentUiModel?>,
@@ -177,9 +202,72 @@ private extension View {
     }
 }
 
+// MARK: - Custom fields
+
+private extension View {
+    func pickCustomFieldTypeSheet(payload: Binding<AddCustomFieldPayload?>,
+                                  suppportedTypes: [CustomFieldType],
+                                  onAdd: @escaping (CustomFieldType) -> Void) -> some View {
+        sheet(isPresented: payload.mappedToBool()) {
+            CustomFieldTypesView(supportedTypes: suppportedTypes,
+                                 onSelect: onAdd)
+                .presentationDetents([.height(OptionRowHeight.short.value * CGFloat(suppportedTypes.count))])
+        }
+    }
+
+    func addCustomFieldAlert(payload: Binding<AddCustomFieldTypePayload?>,
+                             title: Binding<String>,
+                             onAdd: @escaping (AddCustomFieldTypePayload) -> Void) -> some View {
+        alert("Enter a field name",
+              isPresented: payload.mappedToBool(),
+              actions: {
+                  if let payload = payload.wrappedValue {
+                      TextField(payload.type.placeholder, text: title)
+                      Button("Add", role: nil, action: { onAdd(payload) })
+                          .disabled(title.wrappedValue.isEmpty)
+                  }
+
+                  Button("Cancel", role: .cancel, action: { title.wrappedValue = "" })
+              },
+              message: {
+                  if let type = payload.wrappedValue?.type {
+                      Text(type.alertMessage)
+                  }
+              })
+    }
+}
+
 @MainActor
 extension View {
     func itemCreateEditSetUp(_ viewModel: BaseCreateEditItemViewModel) -> some View {
         modifier(ItemCreateEditSetUpModifier(viewModel: viewModel))
+    }
+}
+
+private extension CustomFieldType {
+    var alertMessage: LocalizedStringKey {
+        switch self {
+        case .text:
+            "Text custom field"
+        case .totp:
+            "2FA secret key (TOTP) custom field"
+        case .hidden:
+            "Hidden custom field"
+        case .timestamp:
+            "Date custom field"
+        }
+    }
+
+    var placeholder: LocalizedStringKey {
+        switch self {
+        case .text:
+            "E.g., User ID, Acct number"
+        case .totp:
+            "2FA secret key (TOTP)"
+        case .hidden:
+            "E.g., Recovery key, PIN"
+        case .timestamp:
+            "Date"
+        }
     }
 }

@@ -147,6 +147,12 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
 
     override var itemContentType: ItemContentType { .identity }
 
+    override var supportedCustomFieldTypes: [CustomFieldType] {
+        var types = super.supportedCustomFieldTypes
+        types.removeAll { $0 == .totp }
+        return types
+    }
+
     override func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
         sections = sections.map { section in
             guard let index = getIndex(section, uiModel) else {
@@ -197,14 +203,12 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
         }
     }
 
-    override func customFieldAdded(_ customField: CustomField) {
+    override func customFieldAdded(_ customField: CustomField, to sectionId: String?) {
         sections = sections.map { section in
             guard let customFieldSection,
                   customFieldSection.id == section.id else {
                 return section
             }
-
-            var newCustoms = section.content
             let uiModel = CustomFieldUiModel(customField: customField)
             recentlyAddedOrEditedField = uiModel
 
@@ -225,8 +229,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                 extraContactDetails.append(uiModel)
                 return section
             }
-
-            return section.copy(content: newCustoms)
         }
     }
 
@@ -278,6 +280,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             workPhoneNumber = .init(value: data.workPhoneNumber)
             workEmail = .init(value: data.workEmail)
             extraWorkDetails = data.extraWorkDetails.map { CustomFieldUiModel(customField: $0) }
+            customSectionUiModels = data.extraSections.map { .init($0) }
         case .create:
             addBaseSections()
         }
@@ -355,11 +358,6 @@ extension CreateEditIdentityViewModel {
             }
             return section.copy(isCollapsed: !section.isCollapsed)
         }
-    }
-
-    func addCustomField(to section: CreateEditIdentitySection) {
-        customFieldSection = section
-        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self, shouldDisplayTotp: false)
     }
 }
 

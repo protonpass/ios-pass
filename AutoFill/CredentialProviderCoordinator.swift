@@ -32,7 +32,7 @@ import SwiftUI
 typealias UserForNewItemSubject = PassthroughSubject<UserUiModel, Never>
 
 extension ASCredentialProviderExtensionContext: @unchecked @retroactive Sendable {}
-// swiftlint:disable file_length
+
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
@@ -556,17 +556,6 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
 // MARK: - CreateEditItemViewModelDelegate
 
 extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
-                                                      shouldDisplayTotp: Bool) {
-        guard let rootViewController else {
-            return
-        }
-        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           delegate: delegate,
-                                                           shouldShowTotp: shouldDisplayTotp)
-        customCoordinator?.start()
-    }
-
     func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
                                                             delegate: any CustomFieldEditionDelegate) {
         guard let rootViewController else {
@@ -699,5 +688,3 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
         logOut(userId: userId)
     }
 }
-
-// swiftlint:enable file_length

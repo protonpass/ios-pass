@@ -67,7 +67,7 @@ struct CreateEditSshKeyView: View {
                 view(for: .private, value: viewModel.privateKey)
                 view(for: .public, value: viewModel.publicKey)
                 fields
-                AddCustomFieldAndSectionView(onAddField: viewModel.addCustomField,
+                AddCustomFieldAndSectionView(onAddField: { viewModel.addCustomField(to: nil) },
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
                                                  { addCustomSection() } : nil)
                 if viewModel.fileAttachmentsEnabled {
