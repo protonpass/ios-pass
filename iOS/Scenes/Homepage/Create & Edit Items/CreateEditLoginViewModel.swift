@@ -91,9 +91,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         super.isSaveable && !title.isEmpty && !hasEmptyCustomField
     }
 
-    private var loginDelegate: (any CreateEditLoginViewModelDelegate)? {
-        delegate as? (any CreateEditLoginViewModelDelegate)
-    }
+    weak var delegate: (any CreateEditLoginViewModelDelegate)?
 
     override init(mode: ItemMode,
                   upgradeChecker: any UpgradeCheckerProtocol,
@@ -288,10 +286,9 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                     let info = AliasCreationLiteInfo(prefix: prefix,
                                                      suffix: firstSuffix,
                                                      mailboxes: [firstMailbox])
-                    loginDelegate?
-                        .createEditLoginViewModelWantsToGenerateAlias(options: aliasOptions,
-                                                                      creationInfo: info,
-                                                                      delegate: self)
+                    delegate?.createEditLoginViewModelWantsToGenerateAlias(options: aliasOptions,
+                                                                           creationInfo: info,
+                                                                           delegate: self)
                 }
             } catch {
                 router.display(element: .displayErrorBanner(error))
@@ -320,7 +317,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
     }
 
     func generatePassword() {
-        loginDelegate?.createEditLoginViewModelWantsToGeneratePassword(self)
+        delegate?.createEditLoginViewModelWantsToGeneratePassword(self)
     }
 
     func pasteTotpUriFromClipboard() {
@@ -352,7 +349,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         switch result {
         case let .success(scanResult):
             if let customField {
-                customFieldEdited(customField, content: scanResult)
+                editCustomField(customField, update: .content(scanResult))
             } else {
                 totpUri = scanResult
             }

@@ -27,40 +27,22 @@ import Foundation
 import Macro
 
 enum BaseIdentitySection: String, CaseIterable {
-    case personalDetails = "Personal details"
-    case address = "Address details"
-    case contact = "Contact details"
-    case workDetail = "Work details"
+    case personalDetails
+    case address
+    case contact
+    case workDetail
 
     var createEditIdentitySection: CreateEditIdentitySection {
-        CreateEditIdentitySection(id: rawValue,
-                                  title: title,
-                                  type: self,
-                                  isCollapsed: self == .contact || self == .workDetail,
-                                  content: [])
-    }
-
-    private var title: String {
-        switch self {
-        case .personalDetails:
-            #localized("Personal details")
-        case .address:
-            #localized("Address details")
-        case .contact:
-            #localized("Contact details")
-        case .workDetail:
-            #localized("Work details")
-        }
+        CreateEditIdentitySection(type: self,
+                                  isCollapsed: self == .contact || self == .workDetail)
     }
 }
 
 @Copyable
 struct CreateEditIdentitySection: Hashable, Identifiable {
     var id: String = UUID().uuidString
-    let title: String
     let type: BaseIdentitySection
     let isCollapsed: Bool
-    var content: [CustomFieldUiModel]
 }
 
 struct HiddenStringValue: Sendable {
@@ -139,7 +121,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
 
     @Published var sections = [CreateEditIdentitySection]()
 
-    private var customFieldSection: CreateEditIdentitySection?
+    private var sectionIdToAddCustomField: String?
 
     override var isSaveable: Bool {
         super.isSaveable && !title.isEmpty
@@ -153,82 +135,72 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
         return types
     }
 
-    override func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
-        sections = sections.map { section in
-            guard let index = getIndex(section, uiModel) else {
-                return section
-            }
-
-            recentlyAddedOrEditedField = uiModel
-            switch section.type {
-            case .address:
-                extraAddressDetails[index] = uiModel.update(title: newTitle)
-                return section
-
-            case .personalDetails:
-                extraPersonalDetails[index] = uiModel.update(title: newTitle)
-                return section
-
-            case .workDetail:
-                extraWorkDetails[index] = uiModel.update(title: newTitle)
-                return section
-
-            case .contact:
-                extraContactDetails[index] = uiModel.update(title: newTitle)
-                return section
-            }
-        }
+    override func requestAddCustomField(to sectionId: String?) {
+        sectionIdToAddCustomField = sectionId
+        super.requestAddCustomField(to: sectionId)
     }
 
-    override func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
-        sections = sections.map { section in
-            guard let index = getIndex(section, uiModel) else {
-                return section
-            }
-            recentlyAddedOrEditedField = uiModel
-            switch section.type {
-            case .address:
-                extraAddressDetails[index] = uiModel.update(content: content)
-                return section
-            case .personalDetails:
-                extraPersonalDetails[index] = uiModel.update(content: content)
-                return section
-            case .workDetail:
-                extraWorkDetails[index] = uiModel.update(content: content)
-                return section
-            case .contact:
-                extraContactDetails[index] = uiModel.update(content: content)
-                return section
-            }
+    override func addCustomField(_ field: CustomField, to sectionId: String?) {
+        guard let sectionId,
+              sectionId == sectionIdToAddCustomField,
+              sections.map(\.id).contains(sectionId) else {
+            super.addCustomField(field, to: sectionId)
+            return
         }
-    }
-
-    override func customFieldAdded(_ customField: CustomField, to sectionId: String?) {
+        sectionIdToAddCustomField = nil
         sections = sections.map { section in
-            guard let customFieldSection,
-                  customFieldSection.id == section.id else {
+            guard section.id == sectionId else {
                 return section
             }
-            let uiModel = CustomFieldUiModel(customField: customField)
+            let uiModel = CustomFieldUiModel(customField: field)
             recentlyAddedOrEditedField = uiModel
 
             switch section.type {
             case .address:
                 extraAddressDetails.append(uiModel)
-                return section
 
             case .personalDetails:
                 extraPersonalDetails.append(uiModel)
-                return section
 
             case .workDetail:
                 extraWorkDetails.append(uiModel)
-                return section
 
             case .contact:
                 extraContactDetails.append(uiModel)
-                return section
             }
+
+            return section
+        }
+    }
+
+    override func editCustomField(_ field: CustomFieldUiModel, update: CustomFieldUpdate) {
+        var edited = false
+
+        let updatedField = field.update(from: update)
+        if let index = extraPersonalDetails.firstIndex(where: { $0.id == field.id }) {
+            edited = true
+            extraPersonalDetails[index] = updatedField
+        }
+
+        if !edited, let index = extraAddressDetails.firstIndex(where: { $0.id == field.id }) {
+            edited = true
+            extraAddressDetails[index] = updatedField
+        }
+
+        if !edited, let index = extraContactDetails.firstIndex(where: { $0.id == field.id }) {
+            edited = true
+            extraContactDetails[index] = updatedField
+        }
+
+        if !edited, let index = extraWorkDetails.firstIndex(where: { $0.id == field.id }) {
+            edited = true
+            extraWorkDetails[index] = updatedField
+        }
+
+        if edited {
+            recentlyAddedOrEditedField = updatedField
+        } else {
+            super.editCustomField(field, update: update)
         }
     }
 
@@ -323,7 +295,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                                 workPhoneNumber: workPhoneNumber.value,
                                 workEmail: workEmail.value,
                                 extraWorkDetails: extraWorkDetails.map(\.customField),
-                                extraSections: [])
+                                extraSections: customSectionUiModels.map(\.toCustomSection))
         return .init(name: title,
                      note: "",
                      itemUuid: UUID().uuidString,

@@ -23,14 +23,14 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct CustomSectionHeader: View {
-    let title: String
+    let title: TextContent
     let collapsed: Bool
     let editable: Bool
     let onToggle: () -> Void
     let onEditTitle: () -> Void
     let onRemove: () -> Void
 
-    public init(title: String,
+    public init(title: TextContent,
                 collapsed: Bool,
                 editable: Bool,
                 onToggle: @escaping () -> Void,

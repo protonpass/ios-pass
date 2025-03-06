@@ -485,7 +485,6 @@ private extension CredentialProviderCoordinator {
                                                                        type: .alias),
                                                          upgradeChecker: upgradeChecker,
                                                          vaults: vaults)
-            viewModel.delegate = self
             present(CreateEditAliasView(viewModel: viewModel), dismissBeforePresenting: true)
             currentCreateEditItemViewModel = viewModel
         } catch {
@@ -553,20 +552,7 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
     }
 }
 
-// MARK: - CreateEditItemViewModelDelegate
-
-extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: any CustomFieldEditionDelegate) {
-        guard let rootViewController else {
-            return
-        }
-        customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
-                                                          delegate: delegate,
-                                                          uiModel: uiModel)
-        customCoordinator?.start()
-    }
-
+extension CredentialProviderCoordinator {
     func handleItemCreation(_ item: SymmetricallyEncryptedItem,
                             type: ItemContentType,
                             response: CreatePasskeyResponse?) {

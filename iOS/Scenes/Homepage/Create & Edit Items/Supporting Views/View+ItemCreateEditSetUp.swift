@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import Screens
 import SwiftUI
 
@@ -64,18 +65,26 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
                                       suppportedTypes: viewModel.supportedCustomFieldTypes,
                                       onAdd: { type in
                                           if let payload = viewModel.addCustomFieldPayload {
-                                              addCustomFieldTypePayload = .init(type: type, payload: payload)
+                                              addCustomFieldTypePayload = .init(type: type,
+                                                                                payload: payload)
                                           }
                                       })
             .addCustomFieldAlert(payload: $addCustomFieldTypePayload,
                                  title: $customFieldTitle,
                                  onAdd: { payload in
-                                     viewModel.customFieldAdded(.init(title: customFieldTitle,
-                                                                      type: payload.type,
-                                                                      content: ""),
-                                                                to: payload.payload.sectionId)
+                                     viewModel.addCustomField(.init(title: customFieldTitle,
+                                                                    type: payload.type,
+                                                                    content: ""),
+                                                              to: payload.payload.sectionId)
                                      customFieldTitle = ""
                                  })
+            .editCustomFieldTitleAlert(field: $viewModel.customFieldToEditTitle,
+                                       title: $customFieldTitle,
+                                       onEdit: { field in
+                                           viewModel.editCustomField(field,
+                                                                     update: .title(customFieldTitle))
+                                           customFieldTitle = ""
+                                       })
             .sheet(isPresented: $viewModel.isShowingVaultSelector) {
                 // Add more height when free users to make room for upsell banner
                 let height = viewModel.vaults.filter(\.canEdit).count * 74 + (viewModel.isFreeUser ? 180 : 50)
@@ -232,6 +241,26 @@ private extension View {
               message: {
                   if let type = payload.wrappedValue?.type {
                       Text(type.alertMessage)
+                  }
+              })
+    }
+
+    func editCustomFieldTitleAlert(field: Binding<CustomFieldUiModel?>,
+                                   title: Binding<String>,
+                                   onEdit: @escaping (CustomFieldUiModel) -> Void) -> some View {
+        alert("Edit field name",
+              isPresented: field.mappedToBool(),
+              actions: {
+                  if let field = field.wrappedValue {
+                      TextField(field.customField.type.placeholder, text: title)
+                      Button("Save", role: nil, action: { onEdit(field) })
+                  }
+
+                  Button("Cancel", role: .cancel, action: { title.wrappedValue = "" })
+              },
+              message: {
+                  if let field = field.wrappedValue {
+                      Text(#localized("Enter new name for « %@ »", field.customField.title))
                   }
               })
     }
