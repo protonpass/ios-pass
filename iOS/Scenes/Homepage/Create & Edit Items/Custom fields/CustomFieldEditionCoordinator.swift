@@ -40,11 +40,19 @@ extension CustomFieldUiModel {
 struct CustomSectionUiModel: Identifiable, Equatable, Hashable, Sendable {
     var id = UUID().uuidString
     var title: String
-    let isCollapsed: Bool
-    let fields: [CustomFieldUiModel]
+    var isCollapsed: Bool
+    var fields: [CustomFieldUiModel]
 
     mutating func rename(_ newTitle: String) {
         title = newTitle
+    }
+}
+
+extension CustomSectionUiModel {
+    init(_ section: CustomSection) {
+        title = section.title
+        isCollapsed = false
+        fields = section.content.map { .init(customField: $0) }
     }
 }
 

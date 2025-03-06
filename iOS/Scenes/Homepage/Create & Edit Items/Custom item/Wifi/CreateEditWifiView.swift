@@ -43,7 +43,7 @@ struct CreateEditWifiView: View {
                 ssid
                 password
                 fields
-                AddCustomFieldAndSectionView(onAddField: viewModel.addCustomField,
+                AddCustomFieldAndSectionView(onAddField: { viewModel.addCustomField(to: nil) },
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
                                                  { addCustomSection() } : nil)
                 if viewModel.fileAttachmentsEnabled {
