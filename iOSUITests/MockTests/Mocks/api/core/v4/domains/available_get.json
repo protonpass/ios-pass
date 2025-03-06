@@ -9,13 +9,13 @@
     "body": {
       "Code": 1000,
       "Domains": [
-        "payments.proton.black",
-        "protonmail.com.payments.proton.black"
+        "boas.proton.black",
+        "protonmail.com.boas.proton.black"
       ]
     },
     "headers": {
       "server": "nginx",
-      "date": "Wed, 26 Feb 2025 09:39:19 GMT",
+      "date": "Thu, 06 Mar 2025 13:25:15 GMT",
       "content-type": "application/json",
       "transfer-encoding": "chunked",
       "connection": "close",
@@ -23,27 +23,27 @@
       "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
       "expires": "Fri, 04 May 1984 22:15:00 GMT",
       "x-pm-route-pattern": "GET /core/{_version}/domains/available",
-      "x-pm-uid": "q3xeinh3o4r22klwvdu733qbrcagey3c",
+      "x-pm-uid": "nndg3jfqcl4jxswpcgdnp4khxiqj7sok",
       "access": "application/vnd.protonmail.api+json;apiversion=4",
-      "x-pm-time-total": "87",
-      "x-pm-time-user": "68",
-      "x-pm-time-system": "0",
+      "x-pm-time-total": "91",
+      "x-pm-time-user": "69",
+      "x-pm-time-system": "3",
       "x-pm-memory": "7",
-      "x-pm-allocated-memory": "8",
+      "x-pm-allocated-memory": "10",
       "x-pm-urgency": "1",
-      "x-pm-apiversion": "develop (1511f680)",
-      "x-b3-traceid": "291535d05b43c3f00d54d090809149a1",
-      "x-b3-spanid": "cdcd701e3deeb6e6",
+      "x-pm-apiversion": "develop (4e79a969)",
+      "x-b3-traceid": "8497eeb18278bd831ba06a165246d09d",
+      "x-b3-spanid": "05c9bf839aac0ef9",
       "x-b3-parentspanid": "",
       "vary": "Accept-Encoding",
       "content-encoding": "gzip",
-      "x-pm-nonce": "Z77hR3QDZXOOAjZXoGkEBAAAARY",
+      "x-pm-nonce": "Z8miOx26+KRaAaB1uTBPUwAAAFE",
       "set-cookie": [
-        "Session-Id=Z77hR3QDZXOOAjZXoGkEBAAAARY; Domain=payments.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
-        "Version=; Domain=payments.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+        "Session-Id=Z8miOx26@KRaAaB1uTBPUwAAAFE; Domain=boas.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=boas.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
       ],
       "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
-      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z77hR3QDZXOOAjZXoGkEBAAAARY' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.payments.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.payments.proton.black;",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z8miOx26+KRaAaB1uTBPUwAAAFE' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.boas.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.boas.proton.black;",
       "expect-ct": "max-age=2592000, enforce",
       "x-content-type-options": "nosniff",
       "x-xss-protection": "1; mode=block",

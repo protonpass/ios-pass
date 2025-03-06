@@ -69,7 +69,9 @@ class LoginBaseTestCase: ProtonCoreBaseTestCase {
     lazy var quarkCommands = Quark().baseUrl(doh)
     lazy var client: ProxyClient = {
         let signUpString = doh.getSignUpString()
-        let url = URL(string: "https://account.mock.\(signUpString)")!
+        let isMock = signUpString.contains("mock")
+        let urlString = isMock ? doh.getAccountHost() : "https://account.mock.\(signUpString)"
+        let url = URL(string: urlString)!
         PMLog.info("ProxyClient url: https://account.mock.\(signUpString)")
         return ProxyClient(baseURL: url)
     }()
