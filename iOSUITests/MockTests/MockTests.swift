@@ -26,8 +26,8 @@ final class MockTests: LoginBaseTestCase {
 
     private let defaultTimeout: TimeInterval = 25.0
 
+    // when you record a user the password should be password
     func testMockLoginEmptyUser() throws {
-
         mocking()
 
         SigninExternalAccountsCapability()
@@ -42,7 +42,10 @@ final class MockTests: LoginBaseTestCase {
     private func mocking() {
         let resetStaticMocks = self.expectation(description:"Reset static mocks")
         let expectationsrp = self.expectation(description:"Fetch scenarios")
-        let dynamicMock = DynamicMockBody(name: "loginWithSrp", enabled: true)
+        let parameters: [String: Any] = [
+            "UserID": "kmehyJpxDjGQdmwx87J4BQrxqjlPwgYZ_A2lWOWjWOaaut1aTvso_Dg_KS1Z13SVp-dNzvKz1cMEbUyOULkW5g=="
+        ] // should match with the mock
+        let dynamicMock = DynamicMockBody(name: "loginWithSrp", enabled: true, parameters: AnyCodable(value: parameters))
 
         client.resetStaticMocks { result in
             switch result {
