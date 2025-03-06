@@ -1518,17 +1518,7 @@ extension HomepageCoordinator {
     }
 }
 
-// MARK: - CreateEditItemViewModelDelegate
-
-extension HomepageCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: any CustomFieldEditionDelegate) {
-        customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
-                                                          delegate: delegate,
-                                                          uiModel: uiModel)
-        customCoordinator?.start()
-    }
-
+extension HomepageCoordinator {
     func handleItemCreation(item: SymmetricallyEncryptedItem, type: ItemContentType) {
         Task { [weak self] in
             guard let self else {

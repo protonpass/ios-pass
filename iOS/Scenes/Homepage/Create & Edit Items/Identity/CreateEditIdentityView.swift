@@ -224,28 +224,26 @@ private extension CreateEditIdentityView {
     var staticSections: some View {
         ForEach(viewModel.sections) { section in
             Section(content: {
-                switch section.id {
-                case BaseIdentitySection.personalDetails.rawValue:
+                switch section.type {
+                case BaseIdentitySection.personalDetails:
                     if !section.isCollapsed {
                         personalDetailSection(section)
                     }
-                case BaseIdentitySection.address.rawValue:
+                case BaseIdentitySection.address:
                     if !section.isCollapsed {
                         addressDetailSection(section)
                     }
-                case BaseIdentitySection.contact.rawValue:
+                case BaseIdentitySection.contact:
                     if !section.isCollapsed {
                         contactDetailSection(section)
                     }
-                case BaseIdentitySection.workDetail.rawValue:
+                case BaseIdentitySection.workDetail:
                     if !section.isCollapsed {
                         workDetailSection(section)
                     }
-                default:
-                    EmptyView()
                 }
             }, header: {
-                CustomSectionHeader(title: section.title,
+                CustomSectionHeader(title: .localized(section.type.title),
                                     collapsed: section.isCollapsed,
                                     editable: false,
                                     onToggle: { viewModel.toggleCollapsingSection(section) },
@@ -262,8 +260,8 @@ private extension CreateEditIdentityView {
                                  field: { .custom($0) },
                                  sections: $viewModel.customSectionUiModels,
                                  onEditSectionTitle: { viewModel.customSectionToRename = $0 },
-                                 onEditFieldTitle: viewModel.editCustomFieldTitle,
-                                 onAddMoreField: { viewModel.addCustomField(to: $0.id) })
+                                 onEditFieldTitle: viewModel.requestEditCustomFieldTitle,
+                                 onAddMoreField: { viewModel.requestAddCustomField(to: $0.id) })
     }
 }
 
@@ -330,7 +328,7 @@ private extension CreateEditIdentityView {
                                         uiModel: $field,
                                         showIcon: false,
                                         roundedSection: false,
-                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                        onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
                                         onRemove: {
                                             // Work around a crash in later versions of iOS 17
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -405,7 +403,7 @@ private extension CreateEditIdentityView {
                                         uiModel: $field,
                                         showIcon: false,
                                         roundedSection: false,
-                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                        onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
                                         onRemove: {
                                             // Work around a crash in later versions of iOS 17
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -496,7 +494,7 @@ private extension CreateEditIdentityView {
                                         uiModel: $field,
                                         showIcon: false,
                                         roundedSection: false,
-                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                        onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
                                         onRemove: {
                                             // Work around a crash in later versions of iOS 17
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -557,7 +555,7 @@ private extension CreateEditIdentityView {
                                         uiModel: $field,
                                         showIcon: false,
                                         roundedSection: false,
-                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
+                                        onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
                                         onRemove: {
                                             // Work around a crash in later versions of iOS 17
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -691,7 +689,7 @@ private extension CreateEditIdentityView {
                     .padding(.vertical, DesignConstant.sectionPadding)
                     .buttonEmbeded {
                         dismissSectionSheet {
-                            viewModel.addCustomField(to: state.section.id)
+                            viewModel.requestAddCustomField(to: state.section.id)
                         }
                     }
             } else {
@@ -749,3 +747,18 @@ private extension CreateEditIdentityView {
 }
 
 // swiftlint:enable file_length
+
+private extension BaseIdentitySection {
+    var title: LocalizedStringKey {
+        switch self {
+        case .personalDetails:
+            "Personal details"
+        case .address:
+            "Address details"
+        case .contact:
+            "Contact details"
+        case .workDetail:
+            "Work details"
+        }
+    }
+}

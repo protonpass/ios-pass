@@ -28,12 +28,26 @@ struct CustomFieldUiModel: Identifiable, Equatable, Hashable, Sendable {
     var customField: CustomField
 }
 
+enum CustomFieldUpdate: Sendable {
+    case title(String)
+    case content(String)
+}
+
 extension CustomFieldUiModel {
-    func update(title: String? = nil, content: String? = nil) -> CustomFieldUiModel {
-        CustomFieldUiModel(id: id,
-                           customField: CustomField(title: title ?? customField.title,
-                                                    type: customField.type,
-                                                    content: content ?? customField.content))
+    func update(from update: CustomFieldUpdate) -> CustomFieldUiModel {
+        let title: String
+        let content: String
+        switch update {
+        case let .title(newTitle):
+            title = newTitle
+            content = customField.content
+        case let .content(newContent):
+            title = customField.title
+            content = newContent
+        }
+        return .init(id: id, customField: CustomField(title: title,
+                                                      type: customField.type,
+                                                      content: content))
     }
 }
 
@@ -54,48 +68,8 @@ extension CustomSectionUiModel {
         isCollapsed = false
         fields = section.content.map { .init(customField: $0) }
     }
-}
 
-@MainActor
-protocol CustomFieldEditionDelegate: AnyObject {
-    func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String)
-}
-
-@MainActor
-final class CustomFieldEditionCoordinator: DeinitPrintable, CustomCoordinator {
-    deinit { print(deinitMessage) }
-
-    weak var rootViewController: UIViewController!
-    let delegate: any CustomFieldEditionDelegate
-    let uiModel: CustomFieldUiModel
-
-    init(rootViewController: UIViewController,
-         delegate: any CustomFieldEditionDelegate,
-         uiModel: CustomFieldUiModel) {
-        self.rootViewController = rootViewController
-        self.delegate = delegate
-        self.uiModel = uiModel
-    }
-
-    func start() {
-        let alert = UIAlertController(title: #localized("Edit field name"),
-                                      message: #localized("Enter new name for « %@ »", uiModel.customField.title),
-                                      preferredStyle: .alert)
-        alert.addTextField { textField in
-            let action = UIAction { _ in
-                alert.actions.first?.isEnabled = textField.text?.isEmpty == false
-            }
-            textField.addAction(action, for: .editingChanged)
-        }
-
-        let saveAction = UIAlertAction(title: #localized("Save"), style: .default) { [uiModel, delegate] _ in
-            delegate.customFieldEdited(uiModel, newTitle: alert.textFields?.first?.text ?? "")
-        }
-        saveAction.isEnabled = false
-        alert.addAction(saveAction)
-
-        let cancelAction = UIAlertAction(title: #localized("Cancel"), style: .cancel)
-        alert.addAction(cancelAction)
-        rootViewController.topMostViewController.present(alert, animated: true)
+    var toCustomSection: CustomSection {
+        .init(title: title, content: fields.map(\.customField))
     }
 }

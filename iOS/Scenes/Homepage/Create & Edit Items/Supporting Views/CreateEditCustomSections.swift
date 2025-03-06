@@ -41,7 +41,7 @@ struct CreateEditCustomSections<Field: Hashable>: View {
                     content(for: section)
                 }
             }, header: {
-                CustomSectionHeader(title: section.wrappedValue.title,
+                CustomSectionHeader(title: .verbatim(section.wrappedValue.title),
                                     collapsed: section.wrappedValue.isCollapsed,
                                     editable: true,
                                     onToggle: { section.wrappedValue.isCollapsed.toggle() },
