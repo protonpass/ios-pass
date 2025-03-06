@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import Screens
 import SwiftUI
 
@@ -44,6 +45,14 @@ struct CreateEditCustomItemView: View {
                 AddCustomFieldAndSectionView(onAddField: { viewModel.requestAddCustomField(to: nil) },
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
                                                  { addCustomSection() } : nil)
+
+                sections
+
+                if !viewModel.customSectionUiModels.isEmpty {
+                    PassSectionDivider()
+                    AddCustomFieldAndSectionView(onAddField: nil,
+                                                 onAddSection: addCustomSection)
+                }
 
                 if viewModel.fileAttachmentsEnabled {
                     FileAttachmentsEditSection(files: viewModel.fileUiModels,
@@ -92,6 +101,17 @@ private extension CreateEditCustomItemView {
                                     }
                                 })
         }
+    }
+
+    var sections: some View {
+        CreateEditCustomSections(addFieldButtonTitle: #localized("Add field"),
+                                 contentType: viewModel.itemContentType,
+                                 focusedField: $focusedField,
+                                 field: { .custom($0) },
+                                 sections: $viewModel.customSectionUiModels,
+                                 onEditSectionTitle: { viewModel.customSectionToRename = $0 },
+                                 onEditFieldTitle: viewModel.requestEditCustomFieldTitle,
+                                 onAddMoreField: { viewModel.requestAddCustomField(to: $0.id) })
     }
 
     func addCustomSection() {

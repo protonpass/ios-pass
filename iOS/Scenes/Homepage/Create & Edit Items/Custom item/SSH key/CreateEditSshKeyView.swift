@@ -67,9 +67,19 @@ struct CreateEditSshKeyView: View {
                 view(for: .private, value: viewModel.privateKey)
                 view(for: .public, value: viewModel.publicKey)
                 fields
+
                 AddCustomFieldAndSectionView(onAddField: { viewModel.requestAddCustomField(to: nil) },
                                              onAddSection: viewModel.customSectionUiModels.isEmpty ?
                                                  { addCustomSection() } : nil)
+
+                sections
+
+                if !viewModel.customSectionUiModels.isEmpty {
+                    PassSectionDivider()
+                    AddCustomFieldAndSectionView(onAddField: nil,
+                                                 onAddSection: addCustomSection)
+                }
+
                 if viewModel.fileAttachmentsEnabled {
                     FileAttachmentsEditSection(files: viewModel.fileUiModels,
                                                isFetching: viewModel.isFetchingAttachedFiles,
@@ -155,6 +165,17 @@ private extension CreateEditSshKeyView {
                                     }
                                 })
         }
+    }
+
+    var sections: some View {
+        CreateEditCustomSections(addFieldButtonTitle: #localized("Add field"),
+                                 contentType: viewModel.itemContentType,
+                                 focusedField: $focusedField,
+                                 field: { .custom($0) },
+                                 sections: $viewModel.customSectionUiModels,
+                                 onEditSectionTitle: { viewModel.customSectionToRename = $0 },
+                                 onEditFieldTitle: viewModel.requestEditCustomFieldTitle,
+                                 onAddMoreField: { viewModel.requestAddCustomField(to: $0.id) })
     }
 
     func addCustomSection() {
