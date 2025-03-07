@@ -55,27 +55,28 @@ struct CreateEditCustomSections<Field: Hashable>: View {
 private extension CreateEditCustomSections {
     func content(for section: Binding<CustomSection>) -> some View {
         VStack(alignment: .leading) {
-            VStack(spacing: DesignConstant.sectionPadding) {
-                ForEach(Array(section.wrappedValue.content.enumerated()), id: \.element.id) { index, customField in
-                    VStack {
-                        if index > 0 {
-                            PassSectionDivider()
+            if !section.wrappedValue.content.isEmpty {
+                VStack(spacing: DesignConstant.sectionPadding) {
+                    ForEach(Array(section.wrappedValue.content.enumerated()),
+                            id: \.element.id) { index, customField in
+                        VStack {
+                            if index > 0 {
+                                PassSectionDivider()
+                            }
+                            EditCustomFieldView(focusedField: focusedField,
+                                                field: field(customField),
+                                                contentType: contentType,
+                                                value: section.content[index],
+                                                showIcon: false,
+                                                roundedSection: false,
+                                                onEditTitle: { onEditFieldTitle(customField) },
+                                                onRemove: { section.wrappedValue.content.remove(customField) })
                         }
-                        EditCustomFieldView(focusedField: focusedField,
-                                            field: field(customField),
-                                            contentType: contentType,
-                                            value: section.content[index],
-                                            showIcon: false,
-                                            roundedSection: false,
-                                            onEditTitle: { onEditFieldTitle(customField) },
-                                            onRemove: { section.wrappedValue.content.remove(customField) })
                     }
                 }
+                .padding(.vertical, DesignConstant.sectionPadding)
+                .roundedEditableSection()
             }
-            .if(!section.wrappedValue.content.isEmpty) { view in
-                view.padding(.vertical, DesignConstant.sectionPadding)
-            }
-            .roundedEditableSection()
 
             CapsuleLabelButton(icon: IconProvider.plus,
                                title: addFieldButtonTitle,
