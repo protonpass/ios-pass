@@ -31,38 +31,20 @@ struct ItemTypeListView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .bottom) {
-                ScrollView {
-                    VStack(spacing: 0) {
-                        ForEach(viewModel.supportedTypes, id: \.self) { type in
-                            if type != ItemType.allCases.first {
-                                PassDivider()
-                                    .padding(.horizontal)
-                            }
-                            itemRow(for: type)
+            ScrollView {
+                VStack(spacing: 0) {
+                    ForEach(viewModel.supportedTypes, id: \.self) { type in
+                        if type != ItemType.allCases.first {
+                            PassDivider()
                                 .padding(.horizontal)
                         }
+                        itemRow(for: type)
+                            .padding(.horizontal)
                     }
-                }
-                if viewModel.mode.shouldShowMoreButton, viewModel.showMoreButton {
-                    Button { viewModel.showMore() } label: {
-                        HStack {
-                            Image(uiImage: IconProvider.chevronDown)
-                                .resizable()
-                                .frame(width: 16, height: 16)
-                            Text("Scroll for more")
-                                .font(.callout)
-                        }
-                        .padding(10)
-                        .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                    }
-                    .background(PassColor.interactionNormMinor1.toColor)
-                    .clipShape(Capsule())
                 }
             }
-            .background(PassColor.backgroundWeak.toColor)
+            .fullSheetBackground(PassColor.backgroundWeak.toColor)
             .navigationBarTitleDisplayMode(.inline)
-            .animation(.default, value: viewModel.showMoreButton)
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("Create")

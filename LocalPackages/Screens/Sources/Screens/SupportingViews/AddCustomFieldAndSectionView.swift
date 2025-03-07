@@ -51,7 +51,9 @@ public struct AddCustomFieldAndSectionView: View {
                                    action: onAddField)
             }
 
-            Spacer()
+            if supportAddField, supportAddSection {
+                Spacer()
+            }
 
             if supportAddSection, let onAddSection {
                 CapsuleLabelButton(icon: PassIcon.hamburgerPlus,
