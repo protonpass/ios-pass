@@ -466,7 +466,9 @@ public extension [CustomField] {
 
             case .timestamp:
                 extraField.timestamp = .init()
-                if let intValue = Int64(customField.content) {
+                if customField.content.isEmpty {
+                    extraField.timestamp.timestamp.seconds = Int64(Date.now.timeIntervalSince1970)
+                } else if let intValue = Int64(customField.content) {
                     extraField.timestamp.timestamp.seconds = intValue
                 } else {
                     assertionFailure("Invalid timestamp value \(customField.content), expect int value.")

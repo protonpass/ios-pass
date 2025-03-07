@@ -52,7 +52,11 @@ public struct CustomField: Equatable, Hashable, Sendable, Identifiable {
             type = .hidden
             content = extraHidden.content
 
-        default:
+        case let .timestamp(extraTimestamp):
+            type = .timestamp
+            content = String(extraTimestamp.timestamp.seconds)
+
+        case .none:
             type = .text
             content = ""
         }
