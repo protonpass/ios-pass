@@ -165,6 +165,7 @@ private extension View {
                       onAdd(title.wrappedValue)
                       title.wrappedValue = ""
                   }
+                  .disabled(title.wrappedValue.isEmpty)
               },
               message: { Text("Enter a section title") })
     }
@@ -183,6 +184,7 @@ private extension View {
                       }
                       title.wrappedValue = ""
                   }
+                  .disabled(title.wrappedValue.isEmpty)
                   Button("Cancel", role: .cancel) { title.wrappedValue = "" }
               },
               message: { Text("Enter a new section title") })
@@ -254,6 +256,7 @@ private extension View {
                   if let field = field.wrappedValue {
                       TextField(field.type.placeholder, text: title)
                       Button("Save", role: nil, action: { onEdit(field) })
+                          .disabled(title.wrappedValue.isEmpty)
                   }
 
                   Button("Cancel", role: .cancel, action: { title.wrappedValue = "" })
