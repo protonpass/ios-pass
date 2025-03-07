@@ -159,12 +159,7 @@ private extension CreateEditSshKeyView {
                                 uiModel: .constant(field),
                                 showIcon: false,
                                 onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
-                                onRemove: {
-                                    // Work around a crash in later versions of iOS 17
-                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                        viewModel.customFieldUiModels.removeAll(where: { $0.id == field.id })
-                                    }
-                                })
+                                onRemove: { viewModel.customFieldUiModels.remove(field) })
         }
     }
 

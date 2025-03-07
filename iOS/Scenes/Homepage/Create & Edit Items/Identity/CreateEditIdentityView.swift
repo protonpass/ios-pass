@@ -325,13 +325,7 @@ private extension CreateEditIdentityView {
                                         showIcon: false,
                                         roundedSection: false,
                                         onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
-                                        onRemove: {
-                                            // Work around a crash in later versions of iOS 17
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraPersonalDetails
-                                                    .removeAll(where: { $0.id == field.id })
-                                            }
-                                        })
+                                        onRemove: { viewModel.extraPersonalDetails.remove(field) })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -400,13 +394,7 @@ private extension CreateEditIdentityView {
                                         showIcon: false,
                                         roundedSection: false,
                                         onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
-                                        onRemove: {
-                                            // Work around a crash in later versions of iOS 17
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraAddressDetails
-                                                    .removeAll(where: { $0.id == field.id })
-                                            }
-                                        })
+                                        onRemove: { viewModel.extraAddressDetails.remove(field) })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -491,13 +479,7 @@ private extension CreateEditIdentityView {
                                         showIcon: false,
                                         roundedSection: false,
                                         onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
-                                        onRemove: {
-                                            // Work around a crash in later versions of iOS 17
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraContactDetails
-                                                    .removeAll(where: { $0.id == field.id })
-                                            }
-                                        })
+                                        onRemove: { viewModel.extraContactDetails.remove(field) })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -552,13 +534,7 @@ private extension CreateEditIdentityView {
                                         showIcon: false,
                                         roundedSection: false,
                                         onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
-                                        onRemove: {
-                                            // Work around a crash in later versions of iOS 17
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraWorkDetails
-                                                    .removeAll(where: { $0.id == field.id })
-                                            }
-                                        })
+                                        onRemove: { viewModel.extraWorkDetails.remove(field) })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)

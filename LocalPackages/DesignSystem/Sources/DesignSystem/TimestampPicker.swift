@@ -42,7 +42,7 @@ public struct TimestampPicker: View {
         }
         .labelsHidden()
         .onChange(of: date) { newValue in
-            value = String(newValue.timeIntervalSince1970)
+            value = String(Int(newValue.timeIntervalSince1970))
         }
     }
 }
