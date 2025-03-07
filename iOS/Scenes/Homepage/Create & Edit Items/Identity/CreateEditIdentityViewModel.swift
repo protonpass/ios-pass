@@ -75,7 +75,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var lastName: HiddenStringValue = .default
     @Published var birthdate: HiddenStringValue = .default
     @Published var gender: HiddenStringValue = .default
-    @Published var extraPersonalDetails: [CustomFieldUiModel] = []
+    @Published var extraPersonalDetails: [CustomField] = []
 
     /// Address details
     /// Shown
@@ -89,7 +89,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     /// Additional
     @Published var floor: HiddenStringValue = .default
     @Published var county: HiddenStringValue = .default
-    @Published var extraAddressDetails: [CustomFieldUiModel] = []
+    @Published var extraAddressDetails: [CustomField] = []
 
     /// Contact details
     /// Shown
@@ -106,7 +106,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var facebook: HiddenStringValue = .default
     @Published var yahoo: HiddenStringValue = .default
     @Published var instagram: HiddenStringValue = .default
-    @Published var extraContactDetails: [CustomFieldUiModel] = []
+    @Published var extraContactDetails: [CustomField] = []
 
     /// Work details
     /// Shown
@@ -117,7 +117,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var personalWebsite: HiddenStringValue = .default
     @Published var workPhoneNumber: HiddenStringValue = .default
     @Published var workEmail: HiddenStringValue = .default
-    @Published var extraWorkDetails: [CustomFieldUiModel] = []
+    @Published var extraWorkDetails: [CustomField] = []
 
     @Published var sections = [CreateEditIdentitySection]()
 
@@ -152,28 +152,27 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             guard section.id == sectionId else {
                 return section
             }
-            let uiModel = CustomFieldUiModel(customField: field)
-            recentlyAddedOrEditedField = uiModel
+            recentlyAddedOrEditedField = field
 
             switch section.type {
             case .address:
-                extraAddressDetails.append(uiModel)
+                extraAddressDetails.append(field)
 
             case .personalDetails:
-                extraPersonalDetails.append(uiModel)
+                extraPersonalDetails.append(field)
 
             case .workDetail:
-                extraWorkDetails.append(uiModel)
+                extraWorkDetails.append(field)
 
             case .contact:
-                extraContactDetails.append(uiModel)
+                extraContactDetails.append(field)
             }
 
             return section
         }
     }
 
-    override func editCustomField(_ field: CustomFieldUiModel, update: CustomFieldUpdate) {
+    override func editCustomField(_ field: CustomField, update: CustomFieldUpdate) {
         var edited = false
 
         let updatedField = field.update(from: update)
@@ -224,7 +223,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             lastName = .init(value: data.lastName)
             birthdate = .init(value: data.birthdate)
             gender = .init(value: data.gender)
-            extraPersonalDetails = data.extraPersonalDetails.map { CustomFieldUiModel(customField: $0) }
+            extraPersonalDetails = data.extraPersonalDetails
             organization = data.organization
             streetAddress = data.streetAddress
             zipOrPostalCode = data.zipOrPostalCode
@@ -233,7 +232,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             countryOrRegion = data.countryOrRegion
             floor = .init(value: data.floor)
             county = .init(value: data.county)
-            extraAddressDetails = data.extraAddressDetails.map { CustomFieldUiModel(customField: $0) }
+            extraAddressDetails = data.extraAddressDetails
             socialSecurityNumber = data.socialSecurityNumber
             passportNumber = data.passportNumber
             licenseNumber = data.licenseNumber
@@ -245,14 +244,14 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             facebook = .init(value: data.facebook)
             yahoo = .init(value: data.yahoo)
             instagram = .init(value: data.instagram)
-            extraContactDetails = data.extraContactDetails.map { CustomFieldUiModel(customField: $0) }
+            extraContactDetails = data.extraContactDetails
             company = data.company
             jobTitle = data.jobTitle
             personalWebsite = .init(value: data.personalWebsite)
             workPhoneNumber = .init(value: data.workPhoneNumber)
             workEmail = .init(value: data.workEmail)
-            extraWorkDetails = data.extraWorkDetails.map { CustomFieldUiModel(customField: $0) }
-            customSectionUiModels = data.extraSections.map { .init($0) }
+            extraWorkDetails = data.extraWorkDetails
+            customSections = data.extraSections
         case .create:
             addBaseSections()
         }
@@ -267,7 +266,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                                 lastName: lastName.value,
                                 birthdate: birthdate.value,
                                 gender: gender.value,
-                                extraPersonalDetails: extraPersonalDetails.map(\.customField),
+                                extraPersonalDetails: extraPersonalDetails,
                                 organization: organization,
                                 streetAddress: streetAddress,
                                 zipOrPostalCode: zipOrPostalCode,
@@ -276,7 +275,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                                 countryOrRegion: countryOrRegion,
                                 floor: floor.value,
                                 county: county.value,
-                                extraAddressDetails: extraAddressDetails.map(\.customField),
+                                extraAddressDetails: extraAddressDetails,
                                 socialSecurityNumber: socialSecurityNumber,
                                 passportNumber: passportNumber,
                                 licenseNumber: licenseNumber,
@@ -288,14 +287,14 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                                 facebook: facebook.value,
                                 yahoo: yahoo.value,
                                 instagram: instagram.value,
-                                extraContactDetails: extraContactDetails.map(\.customField),
+                                extraContactDetails: extraContactDetails,
                                 company: company,
                                 jobTitle: jobTitle,
                                 personalWebsite: personalWebsite.value,
                                 workPhoneNumber: workPhoneNumber.value,
                                 workEmail: workEmail.value,
-                                extraWorkDetails: extraWorkDetails.map(\.customField),
-                                extraSections: customSectionUiModels.map(\.toCustomSection))
+                                extraWorkDetails: extraWorkDetails,
+                                extraSections: customSections)
         return .init(name: title,
                      note: "",
                      itemUuid: UUID().uuidString,

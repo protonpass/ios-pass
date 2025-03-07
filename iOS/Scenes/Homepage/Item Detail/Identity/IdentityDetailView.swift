@@ -138,7 +138,7 @@ private extension IdentityDetailView {
                 }
 
                 CustomFieldSections(itemContentType: viewModel.itemContent.type,
-                                    uiModels: section.customFields,
+                                    fields: section.customFields,
                                     isFreeUser: viewModel.isFreeUser,
                                     isASection: false,
                                     showIcon: false,
@@ -165,7 +165,7 @@ private extension IdentityDetailView {
                     .frame(maxWidth: .infinity, alignment: .leading)
             } else {
                 CustomFieldSections(itemContentType: viewModel.itemContent.type,
-                                    uiModels: section.content.map(\.toCustomFieldUiModel),
+                                    fields: section.content,
                                     isFreeUser: viewModel.isFreeUser,
                                     showIcon: false,
                                     onSelectHiddenText: { viewModel.copyHiddenText($0) },

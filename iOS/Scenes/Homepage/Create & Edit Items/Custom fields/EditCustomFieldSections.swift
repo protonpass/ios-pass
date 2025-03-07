@@ -26,22 +26,22 @@ import SwiftUI
 
 struct EditCustomFieldSections<Field: CustomFieldTypes>: View {
     let focusedField: FocusState<Field?>.Binding
-    let focusedCustomField: CustomFieldUiModel?
+    let focusedCustomField: CustomField?
     let contentType: ItemContentType
-    @Binding var uiModels: [CustomFieldUiModel]
+    @Binding var fields: [CustomField]
     let canAddMore: Bool
     let onAddMore: () -> Void
-    let onEditTitle: (CustomFieldUiModel) -> Void
+    let onEditTitle: (CustomField) -> Void
     let onUpgrade: () -> Void
 
     var body: some View {
-        ForEach($uiModels) { $uiModel in
+        ForEach($fields) { $field in
             EditCustomFieldView(focusedField: focusedField,
-                                field: .custom(uiModel),
+                                field: .custom(field),
                                 contentType: contentType,
-                                uiModel: $uiModel,
-                                onEditTitle: { onEditTitle(uiModel) },
-                                onRemove: { uiModels.remove(uiModel) })
+                                value: $field,
+                                onEditTitle: { onEditTitle(field) },
+                                onRemove: { fields.remove(field) })
         }
         .onChange(of: focusedCustomField) { newValue in
             focusedField.wrappedValue = .custom(newValue)
