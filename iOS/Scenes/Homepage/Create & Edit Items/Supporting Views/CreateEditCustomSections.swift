@@ -65,16 +65,10 @@ private extension CreateEditCustomSections {
                                             field: field(uiModel),
                                             contentType: contentType,
                                             uiModel: section.fields[index],
-                                            // field,
                                             showIcon: false,
                                             roundedSection: false,
                                             onEditTitle: { onEditFieldTitle(uiModel) },
-                                            onRemove: {
-                                                // Work around a crash in later versions of iOS 17
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    section.wrappedValue.fields.removeAll { $0.id == uiModel.id }
-                                                }
-                                            })
+                                            onRemove: { section.wrappedValue.fields.remove(uiModel) })
                     }
                 }
             }
