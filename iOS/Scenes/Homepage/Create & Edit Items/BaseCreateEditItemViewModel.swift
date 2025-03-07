@@ -131,16 +131,16 @@ class BaseCreateEditItemViewModel: ObservableObject {
     @Published private(set) var dismissedFileAttachmentsBanner = false
     @Published var filePreviewMode: FileAttachmentPreviewMode?
     @Published var fileToDelete: FileAttachmentUiModel?
-    @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
+    @Published var recentlyAddedOrEditedField: CustomField?
 
     @Published var addCustomFieldPayload: AddCustomFieldPayload?
-    @Published var customFieldUiModels = [CustomFieldUiModel]()
-    @Published var customFieldToEditTitle: CustomFieldUiModel?
+    @Published var customFields = [CustomField]()
+    @Published var customFieldToEditTitle: CustomField?
 
-    @Published var customSectionUiModels = [CustomSectionUiModel]()
+    @Published var customSections = [CustomSection]()
     @Published var showAddCustomSectionAlert = false
-    @Published var customSectionToRename: CustomSectionUiModel?
-    @Published var customSectionToRemove: CustomSectionUiModel?
+    @Published var customSectionToRename: CustomSection?
+    @Published var customSectionToRemove: CustomSection?
 
     @Published var isShowingVaultSelector = false
     @Published var isObsolete = false
@@ -233,7 +233,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
     }
 
     var hasEmptyCustomField: Bool {
-        customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
+        customFields.filter { $0.type != .text }.contains(where: \.content.isEmpty)
     }
 
     var isSaveable: Bool {
@@ -259,7 +259,7 @@ class BaseCreateEditItemViewModel: ObservableObject {
             vaultShareId = shareId
         case let .clone(itemContent), let .edit(itemContent):
             vaultShareId = itemContent.shareId
-            customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+            customFields = itemContent.customFields
         }
 
         let lastCreatedItemVault: Share? = if let shareId = getUserPreferences().lastCreatedItemShareId {
@@ -341,27 +341,26 @@ class BaseCreateEditItemViewModel: ObservableObject {
     }
 
     func addCustomField(_ field: CustomField, to sectionId: String?) {
-        let uiModel = CustomFieldUiModel(customField: field)
-        if let index = customSectionUiModels.firstIndex(where: { $0.id == sectionId }) {
-            customSectionUiModels[index].fields.append(uiModel)
+        if let index = customSections.firstIndex(where: { $0.id == sectionId }) {
+            customSections[index].content.append(field)
         } else {
-            customFieldUiModels.append(uiModel)
+            customFields.append(field)
         }
-        recentlyAddedOrEditedField = uiModel
+        recentlyAddedOrEditedField = field
     }
 
-    func requestEditCustomFieldTitle(_ field: CustomFieldUiModel) {
+    func requestEditCustomFieldTitle(_ field: CustomField) {
         customFieldToEditTitle = field
     }
 
-    func editCustomField(_ field: CustomFieldUiModel, update: CustomFieldUpdate) {
+    func editCustomField(_ field: CustomField, update: CustomFieldUpdate) {
         let updatedField = field.update(from: update)
-        if let index = customFieldUiModels.firstIndex(where: { $0.id == field.id }) {
-            customFieldUiModels[index] = updatedField
+        if let index = customFields.firstIndex(where: { $0.id == field.id }) {
+            customFields[index] = updatedField
         } else {
-            for (sectionIndex, section) in customSectionUiModels.enumerated() {
-                if let fieldIndex = section.fields.firstIndex(where: { $0.id == field.id }) {
-                    customSectionUiModels[sectionIndex].fields[fieldIndex] = updatedField
+            for (sectionIndex, section) in customSections.enumerated() {
+                if let fieldIndex = section.content.firstIndex(where: { $0.id == field.id }) {
+                    customSections[sectionIndex].content[fieldIndex] = updatedField
                     break
                 }
             }
@@ -370,19 +369,19 @@ class BaseCreateEditItemViewModel: ObservableObject {
     }
 
     func addCustomSection(_ title: String) {
-        customSectionUiModels.append(.init(title: title,
-                                           isCollapsed: false,
-                                           fields: []))
+        customSections.append(.init(title: title,
+                                    isCollapsed: false,
+                                    content: []))
     }
 
-    func renameCustomSection(_ section: CustomSectionUiModel, newName: String) {
-        if let index = customSectionUiModels.firstIndex(where: { $0.id == section.id }) {
-            customSectionUiModels[index].title = newName
+    func renameCustomSection(_ section: CustomSection, newName: String) {
+        if let index = customSections.firstIndex(where: { $0.id == section.id }) {
+            customSections[index].title = newName
         }
     }
 
-    func removeCustomSection(_ section: CustomSectionUiModel) {
-        customSectionUiModels.removeAll { $0.id == section.id }
+    func removeCustomSection(_ section: CustomSection) {
+        customSections.removeAll { $0.id == section.id }
     }
 }
 

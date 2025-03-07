@@ -204,7 +204,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
                                        note: note,
                                        itemUuid: UUID().uuidString,
                                        data: logInData,
-                                       customFields: customFieldUiModels.map(\.customField))
+                                       customFields: customFields)
         } catch {
             totpUriErrorMessage = #localized("Invalid TOTP URI")
             return nil
@@ -345,7 +345,7 @@ final class CreateEditLoginViewModel: BaseCreateEditItemViewModel, DeinitPrintab
         emailOrUsername = ""
     }
 
-    func handleScanResult(_ result: Result<String, any Error>, customField: CustomFieldUiModel? = nil) {
+    func handleScanResult(_ result: Result<String, any Error>, customField: CustomField? = nil) {
         switch result {
         case let .success(scanResult):
             if let customField {

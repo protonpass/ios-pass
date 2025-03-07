@@ -28,11 +28,11 @@ struct CreateEditCustomSections<Field: Hashable>: View {
     let addFieldButtonTitle: String
     let contentType: ItemContentType
     let focusedField: FocusState<Field?>.Binding
-    let field: (CustomFieldUiModel) -> Field
-    @Binding var sections: [CustomSectionUiModel]
-    let onEditSectionTitle: (CustomSectionUiModel) -> Void
-    let onEditFieldTitle: (CustomFieldUiModel) -> Void
-    let onAddMoreField: (CustomSectionUiModel) -> Void
+    let field: (CustomField) -> Field
+    @Binding var sections: [CustomSection]
+    let onEditSectionTitle: (CustomSection) -> Void
+    let onEditFieldTitle: (CustomField) -> Void
+    let onAddMoreField: (CustomSection) -> Void
 
     var body: some View {
         ForEach($sections) { section in
@@ -53,26 +53,26 @@ struct CreateEditCustomSections<Field: Hashable>: View {
 }
 
 private extension CreateEditCustomSections {
-    func content(for section: Binding<CustomSectionUiModel>) -> some View {
+    func content(for section: Binding<CustomSection>) -> some View {
         VStack(alignment: .leading) {
             VStack(spacing: DesignConstant.sectionPadding) {
-                ForEach(Array(section.wrappedValue.fields.enumerated()), id: \.element.id) { index, uiModel in
+                ForEach(Array(section.wrappedValue.content.enumerated()), id: \.element.id) { index, customField in
                     VStack {
                         if index > 0 {
                             PassSectionDivider()
                         }
                         EditCustomFieldView(focusedField: focusedField,
-                                            field: field(uiModel),
+                                            field: field(customField),
                                             contentType: contentType,
-                                            uiModel: section.fields[index],
+                                            value: section.content[index],
                                             showIcon: false,
                                             roundedSection: false,
-                                            onEditTitle: { onEditFieldTitle(uiModel) },
-                                            onRemove: { section.wrappedValue.fields.remove(uiModel) })
+                                            onEditTitle: { onEditFieldTitle(customField) },
+                                            onRemove: { section.wrappedValue.content.remove(customField) })
                     }
                 }
             }
-            .if(!section.wrappedValue.fields.isEmpty) { view in
+            .if(!section.wrappedValue.content.isEmpty) { view in
                 view.padding(.vertical, DesignConstant.sectionPadding)
             }
             .roundedEditableSection()

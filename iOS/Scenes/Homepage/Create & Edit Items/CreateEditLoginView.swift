@@ -49,7 +49,7 @@ struct CreateEditLoginView: View {
 
     enum Field: CustomFieldTypes {
         case title, emailOrUsername, email, username, password, totp, websites, note
-        case custom(CustomFieldUiModel?)
+        case custom(CustomField?)
 
         static func == (lhs: Field, rhs: Field) -> Bool {
             if case let .custom(lhsfield) = lhs,
@@ -103,7 +103,7 @@ struct CreateEditLoginView: View {
                         EditCustomFieldSections(focusedField: $focusedField,
                                                 focusedCustomField: viewModel.recentlyAddedOrEditedField,
                                                 contentType: .login,
-                                                uiModels: $viewModel.customFieldUiModels,
+                                                fields: $viewModel.customFields,
                                                 canAddMore: viewModel.canAddMoreCustomFields,
                                                 onAddMore: { viewModel.requestAddCustomField(to: nil) },
                                                 onEditTitle: viewModel.requestEditCustomFieldTitle,
@@ -122,7 +122,7 @@ struct CreateEditLoginView: View {
                             .id(bottomID)
                     }
                     .padding()
-                    .animation(.default, value: viewModel.customFieldUiModels.count)
+                    .animation(.default, value: viewModel.customFields)
                     .animation(.default, value: viewModel.canAddOrEdit2FAURI)
                     .animation(.default, value: viewModel.emailUsernameExpanded)
                     .animation(.default, value: viewModel.passkeys.count)
@@ -186,7 +186,7 @@ private extension CreateEditLoginView {
                 emailTextFieldToolbar
             case .totp:
                 totpTextFieldToolbar
-            case let .custom(model) where model?.customField.type == .totp:
+            case let .custom(value) where value?.type == .totp:
                 totpTextFieldToolbar
             case .password:
                 passwordTextFieldToolbar
@@ -607,8 +607,8 @@ private extension CreateEditLoginView {
                 switch lastFocusedField {
                 case .totp:
                     viewModel.handleScanResult(result)
-                case let .custom(model) where model?.customField.type == .totp:
-                    viewModel.handleScanResult(result, customField: model)
+                case let .custom(value) where value?.type == .totp:
+                    viewModel.handleScanResult(result, customField: value)
                 default:
                     return
                 }

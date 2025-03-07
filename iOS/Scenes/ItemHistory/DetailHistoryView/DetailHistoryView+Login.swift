@@ -182,22 +182,16 @@ private extension DetailHistoryView {
 
     func customFields(item: ItemContent) -> some View {
         VStack {
-            let uiModels = item.customFields.map(\.toCustomFieldUiModel)
-
-            ForEach(uiModels) { uiModel in
-                let customField = uiModel.customField
-                let title = customField.title
-                let content = customField.content
-
+            ForEach(item.customFields) { field in
                 HStack(spacing: DesignConstant.sectionPadding) {
                     ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
                                           color: viewModel.currentRevision.type.normColor)
 
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                        Text(title)
+                        Text(field.title)
                             .sectionTitleText()
 
-                        Text(content)
+                        Text(field.content)
                             .foregroundStyle(PassColor.textNorm.toColor)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)

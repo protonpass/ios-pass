@@ -21,18 +21,25 @@
 import Foundation
 
 public struct CustomSection: Equatable, Hashable, Sendable, Identifiable {
-    public let title: String
+    public let id: String
+    public var title: String
+    public var isCollapsed: Bool
     public var content: [CustomField]
 
-    public var id: Int { hashValue }
-
-    public init(title: String, content: [CustomField]) {
+    public init(id: String = UUID().uuidString,
+                title: String,
+                isCollapsed: Bool = false,
+                content: [CustomField]) {
+        self.id = id
         self.title = title
+        self.isCollapsed = isCollapsed
         self.content = content
     }
 
     init(from extraSection: ProtonPassItemV1_CustomSection) {
+        id = UUID().uuidString
         title = extraSection.sectionName
+        isCollapsed = false
         content = extraSection.sectionFields.map { .init(from: $0) }
     }
 }

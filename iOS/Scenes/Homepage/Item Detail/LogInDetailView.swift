@@ -80,7 +80,7 @@ private extension LogInDetailView {
                         }
 
                         CustomFieldSections(itemContentType: viewModel.itemContent.type,
-                                            uiModels: viewModel.customFieldUiModels,
+                                            fields: viewModel.customFields,
                                             isFreeUser: viewModel.isFreeUser,
                                             onSelectHiddenText: { copyHiddenText($0) },
                                             onSelectTotpToken: { copyTOTPToken($0) },

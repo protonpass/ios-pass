@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -53,7 +54,7 @@ struct CreateEditSshKeyView: View {
 
     enum Field: CustomFieldTypes {
         case title
-        case custom(CustomFieldUiModel?)
+        case custom(CustomField?)
     }
 
     init(viewModel: CreateEditSshKeyViewModel) {
@@ -70,12 +71,12 @@ struct CreateEditSshKeyView: View {
 
                 AddCustomFieldAndSectionView(supportAddField: true,
                                              onAddField: { viewModel.requestAddCustomField(to: nil) },
-                                             supportAddSection: viewModel.customSectionUiModels.isEmpty,
+                                             supportAddSection: viewModel.customSections.isEmpty,
                                              onAddSection: addCustomSection)
 
                 sections
 
-                if !viewModel.customSectionUiModels.isEmpty {
+                if !viewModel.customSections.isEmpty {
                     PassSectionDivider()
                     AddCustomFieldAndSectionView(supportAddSection: true,
                                                  onAddSection: addCustomSection)
@@ -152,14 +153,14 @@ private extension CreateEditSshKeyView {
     }
 
     var fields: some View {
-        ForEach(viewModel.customFieldUiModels, id: \.self) { field in
+        ForEach(viewModel.customFields, id: \.self) { field in
             EditCustomFieldView(focusedField: $focusedField,
                                 field: .custom(field),
                                 contentType: viewModel.itemContentType,
-                                uiModel: .constant(field),
+                                value: .constant(field),
                                 showIcon: false,
                                 onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
-                                onRemove: { viewModel.customFieldUiModels.remove(field) })
+                                onRemove: { viewModel.customFields.remove(field) })
         }
     }
 
@@ -168,7 +169,7 @@ private extension CreateEditSshKeyView {
                                  contentType: viewModel.itemContentType,
                                  focusedField: $focusedField,
                                  field: { .custom($0) },
-                                 sections: $viewModel.customSectionUiModels,
+                                 sections: $viewModel.customSections,
                                  onEditSectionTitle: { viewModel.customSectionToRename = $0 },
                                  onEditFieldTitle: viewModel.requestEditCustomFieldTitle,
                                  onAddMoreField: { viewModel.requestAddCustomField(to: $0.id) })
