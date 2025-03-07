@@ -53,7 +53,6 @@ extension ItemContentType {
 @MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
-    @Published private(set) var showMoreButton = true
     let onSelect: (ItemType) -> Void
 
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
@@ -62,18 +61,8 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
     private var getFeatureFlagStatus
 
-    @MainActor
     enum Mode {
         case hostApp, autoFillExtension
-
-        var shouldShowMoreButton: Bool {
-            switch self {
-            case .hostApp:
-                !UIDevice.current.isIpad
-            case .autoFillExtension:
-                false
-            }
-        }
     }
 
     let mode: Mode
@@ -90,8 +79,6 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
             [.login, .alias]
         }
     }
-
-    weak var sheetPresentation: UISheetPresentationController?
 
     init(mode: Mode,
          onSelect: @escaping (ItemType) -> Void) {
@@ -111,24 +98,6 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 
     func select(type: ItemType) {
         onSelect(type)
-    }
-
-    func showMore() {
-        guard showMoreButton else {
-            return
-        }
-        sheetPresentation?.animateChanges {
-            sheetPresentation?.selectedDetentIdentifier = sheetPresentation?.detents.last?.identifier
-            showMoreButton = false
-        }
-    }
-}
-
-extension ItemTypeListViewModel: UISheetPresentationControllerDelegate {
-    // swiftlint:disable:next line_length
-    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
-        showMoreButton =
-            sheetPresentation?.selectedDetentIdentifier == sheetPresentation?.detents.first?.identifier
     }
 }
 
