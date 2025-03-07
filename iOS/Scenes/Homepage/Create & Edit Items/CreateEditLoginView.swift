@@ -100,15 +100,6 @@ struct CreateEditLoginView: View {
                                         field: .note)
                             .id(noteID)
 
-                        if viewModel.fileAttachmentsEnabled {
-                            FileAttachmentsEditSection(files: viewModel.fileUiModels,
-                                                       isFetching: viewModel.isFetchingAttachedFiles,
-                                                       fetchError: viewModel.fetchAttachedFilesError,
-                                                       isUploading: viewModel.isUploadingFile,
-                                                       handler: viewModel)
-                                .id(fileAttachmentsID)
-                        }
-
                         EditCustomFieldSections(focusedField: $focusedField,
                                                 focusedCustomField: viewModel.recentlyAddedOrEditedField,
                                                 contentType: .login,
@@ -117,6 +108,15 @@ struct CreateEditLoginView: View {
                                                 onAddMore: { viewModel.requestAddCustomField(to: nil) },
                                                 onEditTitle: viewModel.requestEditCustomFieldTitle,
                                                 onUpgrade: { viewModel.upgrade() })
+
+                        if viewModel.fileAttachmentsEnabled {
+                            FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                                       isFetching: viewModel.isFetchingAttachedFiles,
+                                                       fetchError: viewModel.fetchAttachedFilesError,
+                                                       isUploading: viewModel.isUploadingFile,
+                                                       handler: viewModel)
+                                .id(fileAttachmentsID)
+                        }
 
                         Spacer()
                             .id(bottomID)

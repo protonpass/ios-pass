@@ -21,6 +21,7 @@
 // MARK: - HomepageTabBarControllerDelegate
 
 import SwiftUI
+import UIKit
 
 extension HomepageCoordinator: HomepageTabBarControllerDelegate {
     func selected(tab: HomepageTab) {
@@ -70,10 +71,27 @@ private extension HomepageCoordinator {
         }
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
-        viewController.sheetPresentationController?.detents = [.medium(), .large()]
+
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            let minVisibleOptions = 5
+            let navBarHeight: CGFloat = 44
+            let rowHeight: CGFloat = 64
+            let minDetent = UISheetPresentationController.Detent.custom { _ in
+                CGFloat(minVisibleOptions) * rowHeight + navBarHeight
+            }
+
+            let maxDetent = UISheetPresentationController.Detent.custom { _ in
+                let bottom = viewController.view.safeAreaInsets.bottom
+                return CGFloat(viewModel.supportedTypes.count) * rowHeight + navBarHeight + bottom
+            }
+            viewController.sheetPresentationController?.detents = [minDetent, maxDetent]
+        } else if isCollapsed() {
+            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+        }
+
         viewController.sheetPresentationController?.prefersGrabberVisible = true
         viewController.sheetPresentationController?.delegate = viewModel
-        viewModel.uiSheetPresentationController = viewController.sheetPresentationController
+        viewModel.sheetPresentation = viewController.sheetPresentationController
         present(viewController)
     }
 
