@@ -112,7 +112,7 @@ struct CreateEditIdentityView: View {
 //        case personalWebsite
 //        case workPhoneNumber
 //        case workEmail
-        case custom(CustomFieldUiModel?)
+        case custom(CustomField?)
 
         static func == (lhs: Field, rhs: Field) -> Bool {
             if case let .custom(lhsfield) = lhs,
@@ -254,7 +254,7 @@ private extension CreateEditIdentityView {
                                  contentType: viewModel.itemContentType,
                                  focusedField: $focusedField,
                                  field: { .custom($0) },
-                                 sections: $viewModel.customSectionUiModels,
+                                 sections: $viewModel.customSections,
                                  onEditSectionTitle: { viewModel.customSectionToRename = $0 },
                                  onEditFieldTitle: viewModel.requestEditCustomFieldTitle,
                                  onAddMoreField: { viewModel.requestAddCustomField(to: $0.id) })
@@ -321,7 +321,7 @@ private extension CreateEditIdentityView {
                     EditCustomFieldView(focusedField: $focusedField,
                                         field: .custom(field),
                                         contentType: .identity,
-                                        uiModel: $field,
+                                        value: $field,
                                         showIcon: false,
                                         roundedSection: false,
                                         onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
@@ -390,7 +390,7 @@ private extension CreateEditIdentityView {
                     EditCustomFieldView(focusedField: $focusedField,
                                         field: .custom(field),
                                         contentType: .identity,
-                                        uiModel: $field,
+                                        value: $field,
                                         showIcon: false,
                                         roundedSection: false,
                                         onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
@@ -475,7 +475,7 @@ private extension CreateEditIdentityView {
                     EditCustomFieldView(focusedField: $focusedField,
                                         field: .custom(field),
                                         contentType: .identity,
-                                        uiModel: $field,
+                                        value: $field,
                                         showIcon: false,
                                         roundedSection: false,
                                         onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
@@ -530,7 +530,7 @@ private extension CreateEditIdentityView {
                     EditCustomFieldView(focusedField: $focusedField,
                                         field: .custom(field),
                                         contentType: .identity,
-                                        uiModel: $field,
+                                        value: $field,
                                         showIcon: false,
                                         roundedSection: false,
                                         onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },

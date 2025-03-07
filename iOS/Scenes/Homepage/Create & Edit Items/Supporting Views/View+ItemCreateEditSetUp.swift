@@ -45,8 +45,8 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
             .navigationBarTitleDisplayMode(.inline)
             .tint(viewModel.itemContentType.normMajor1Color.toColor)
             .disabled(viewModel.isSaving)
-            .animation(.default, value: viewModel.customFieldUiModels)
-            .animation(.default, value: viewModel.customSectionUiModels)
+            .animation(.default, value: viewModel.customFields)
+            .animation(.default, value: viewModel.customSections)
             .obsoleteItemAlert(isPresented: $viewModel.isObsolete,
                                onAction: dismiss.callAsFunction)
             .discardChangesAlert(isPresented: $viewModel.isShowingDiscardAlert,
@@ -169,9 +169,9 @@ private extension View {
               message: { Text("Enter a section title") })
     }
 
-    func editSectionTitleAlert(section: Binding<CustomSectionUiModel?>,
+    func editSectionTitleAlert(section: Binding<CustomSection?>,
                                title: Binding<String>,
-                               onRename: @escaping (CustomSectionUiModel, String) -> Void) -> some View {
+                               onRename: @escaping (CustomSection, String) -> Void) -> some View {
         alert("Modify the section name",
               isPresented: section.mappedToBool(),
               actions: {
@@ -188,8 +188,8 @@ private extension View {
               message: { Text("Enter a new section title") })
     }
 
-    func deleteSectionAlert(section: Binding<CustomSectionUiModel?>,
-                            onRemove: @escaping (CustomSectionUiModel) -> Void) -> some View {
+    func deleteSectionAlert(section: Binding<CustomSection?>,
+                            onRemove: @escaping (CustomSection) -> Void) -> some View {
         alert("Remove custom section",
               isPresented: section.mappedToBool(),
               actions: {
@@ -245,14 +245,14 @@ private extension View {
               })
     }
 
-    func editCustomFieldTitleAlert(field: Binding<CustomFieldUiModel?>,
+    func editCustomFieldTitleAlert(field: Binding<CustomField?>,
                                    title: Binding<String>,
-                                   onEdit: @escaping (CustomFieldUiModel) -> Void) -> some View {
+                                   onEdit: @escaping (CustomField) -> Void) -> some View {
         alert("Edit field name",
               isPresented: field.mappedToBool(),
               actions: {
                   if let field = field.wrappedValue {
-                      TextField(field.customField.type.placeholder, text: title)
+                      TextField(field.type.placeholder, text: title)
                       Button("Save", role: nil, action: { onEdit(field) })
                   }
 
@@ -260,7 +260,7 @@ private extension View {
               },
               message: {
                   if let field = field.wrappedValue {
-                      Text(#localized("Enter new name for « %@ »", field.customField.title))
+                      Text(#localized("Enter new name for « %@ »", field.title))
                   }
               })
     }

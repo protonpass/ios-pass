@@ -32,20 +32,20 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
     @Published private(set) var title = ""
     @Published private var identity: IdentityData?
 
-    var extraPersonalDetails: [CustomFieldUiModel] {
-        identity?.extraPersonalDetails.map(\.toCustomFieldUiModel) ?? []
+    var extraPersonalDetails: [CustomField] {
+        identity?.extraPersonalDetails ?? []
     }
 
-    var extraAddressDetails: [CustomFieldUiModel] {
-        identity?.extraAddressDetails.map(\.toCustomFieldUiModel) ?? []
+    var extraAddressDetails: [CustomField] {
+        identity?.extraAddressDetails ?? []
     }
 
-    var extraContactDetails: [CustomFieldUiModel] {
-        identity?.extraContactDetails.map(\.toCustomFieldUiModel) ?? []
+    var extraContactDetails: [CustomField] {
+        identity?.extraContactDetails ?? []
     }
 
-    var extraWorkDetails: [CustomFieldUiModel] {
-        identity?.extraWorkDetails.map(\.toCustomFieldUiModel) ?? []
+    var extraWorkDetails: [CustomField] {
+        identity?.extraWorkDetails ?? []
     }
 
     var extraSections: [CustomSection] {

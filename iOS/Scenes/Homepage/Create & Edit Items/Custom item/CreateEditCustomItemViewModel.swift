@@ -62,10 +62,8 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
             if case let .custom(template) = type {
                 assert(template != .sshKey && template != .wifi,
                        "SSH key and Wifi are not supported as custom item")
-                customFieldUiModels = template.defaultFields.map {
-                    .init(customField: .init(title: $0.title,
-                                             type: $0.customFieldType,
-                                             content: ""))
+                customFields = template.defaultFields.map {
+                    .init(title: $0.title, type: $0.customFieldType, content: "")
                 }
             }
 
