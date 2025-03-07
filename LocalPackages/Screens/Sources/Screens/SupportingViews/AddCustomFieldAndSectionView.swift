@@ -24,18 +24,24 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct AddCustomFieldAndSectionView: View {
+    let supportAddField: Bool
     let onAddField: (() -> Void)?
+    let supportAddSection: Bool
     let onAddSection: (() -> Void)?
 
-    public init(onAddField: (() -> Void)?,
-                onAddSection: (() -> Void)?) {
+    public init(supportAddField: Bool = false,
+                onAddField: (() -> Void)? = nil,
+                supportAddSection: Bool = false,
+                onAddSection: (() -> Void)? = nil) {
+        self.supportAddField = supportAddField
         self.onAddField = onAddField
+        self.supportAddSection = supportAddSection
         self.onAddSection = onAddSection
     }
 
     public var body: some View {
         HStack {
-            if let onAddField {
+            if supportAddField, let onAddField {
                 CapsuleLabelButton(icon: IconProvider.plus,
                                    title: #localized("Add field"),
                                    titleColor: PassColor.interactionNormMajor2,
@@ -47,7 +53,7 @@ public struct AddCustomFieldAndSectionView: View {
 
             Spacer()
 
-            if let onAddSection {
+            if supportAddSection, let onAddSection {
                 CapsuleLabelButton(icon: PassIcon.hamburgerPlus,
                                    title: #localized("Add section"),
                                    titleColor: PassColor.interactionNormMajor2,

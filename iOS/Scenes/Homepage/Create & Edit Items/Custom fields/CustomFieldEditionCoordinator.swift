@@ -18,9 +18,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Core
 import Entities
-import Macro
 import SwiftUI
 
 struct CustomFieldUiModel: Identifiable, Equatable, Hashable, Sendable {
@@ -56,10 +54,6 @@ struct CustomSectionUiModel: Identifiable, Equatable, Hashable, Sendable {
     var title: String
     var isCollapsed: Bool
     var fields: [CustomFieldUiModel]
-
-    mutating func rename(_ newTitle: String) {
-        title = newTitle
-    }
 }
 
 extension CustomSectionUiModel {

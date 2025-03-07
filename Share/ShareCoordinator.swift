@@ -90,7 +90,6 @@ final class ShareCoordinator {
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
     private var createEditItemViewModel: BaseCreateEditItemViewModel?
-    private var customCoordinator: (any CustomCoordinator)?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     private var cancellables = Set<AnyCancellable>()
