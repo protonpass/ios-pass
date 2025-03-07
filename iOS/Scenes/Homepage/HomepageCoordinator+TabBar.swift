@@ -72,26 +72,15 @@ private extension HomepageCoordinator {
         let view = ItemTypeListView(viewModel: viewModel)
         let viewController = UIHostingController(rootView: view)
 
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            let minVisibleOptions = 5
+        let detent = UISheetPresentationController.Detent.custom { _ in
             let navBarHeight: CGFloat = 44
-            let rowHeight: CGFloat = 64
-            let minDetent = UISheetPresentationController.Detent.custom { _ in
-                CGFloat(minVisibleOptions) * rowHeight + navBarHeight
-            }
-
-            let maxDetent = UISheetPresentationController.Detent.custom { _ in
-                let bottom = viewController.view.safeAreaInsets.bottom
-                return CGFloat(viewModel.supportedTypes.count) * rowHeight + navBarHeight + bottom
-            }
-            viewController.sheetPresentationController?.detents = [minDetent, maxDetent]
-        } else if isCollapsed() {
-            viewController.sheetPresentationController?.detents = [.medium(), .large()]
+            let rowHeight: CGFloat = 72
+            let bottom = viewController.view.safeAreaInsets.bottom
+            return CGFloat(viewModel.supportedTypes.count) * rowHeight + navBarHeight + bottom
         }
 
+        viewController.sheetPresentationController?.detents = [detent]
         viewController.sheetPresentationController?.prefersGrabberVisible = true
-        viewController.sheetPresentationController?.delegate = viewModel
-        viewModel.sheetPresentation = viewController.sheetPresentationController
         present(viewController)
     }
 
