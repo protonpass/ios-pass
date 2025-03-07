@@ -91,7 +91,7 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
         }
     }
 
-    weak var uiSheetPresentationController: UISheetPresentationController?
+    weak var sheetPresentation: UISheetPresentationController?
 
     init(mode: Mode,
          onSelect: @escaping (ItemType) -> Void) {
@@ -117,8 +117,8 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
         guard showMoreButton else {
             return
         }
-        uiSheetPresentationController?.animateChanges {
-            uiSheetPresentationController?.selectedDetentIdentifier = .large
+        sheetPresentation?.animateChanges {
+            sheetPresentation?.selectedDetentIdentifier = sheetPresentation?.detents.last?.identifier
             showMoreButton = false
         }
     }
@@ -127,7 +127,8 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
 extension ItemTypeListViewModel: UISheetPresentationControllerDelegate {
     // swiftlint:disable:next line_length
     func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
-        showMoreButton = sheetPresentationController.selectedDetentIdentifier == .medium
+        showMoreButton =
+            sheetPresentation?.selectedDetentIdentifier == sheetPresentation?.detents.first?.identifier
     }
 }
 
