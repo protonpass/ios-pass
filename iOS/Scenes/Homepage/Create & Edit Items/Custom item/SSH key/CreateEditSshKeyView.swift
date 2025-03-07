@@ -68,15 +68,16 @@ struct CreateEditSshKeyView: View {
                 view(for: .public, value: viewModel.publicKey)
                 fields
 
-                AddCustomFieldAndSectionView(onAddField: { viewModel.requestAddCustomField(to: nil) },
-                                             onAddSection: viewModel.customSectionUiModels.isEmpty ?
-                                                 { addCustomSection() } : nil)
+                AddCustomFieldAndSectionView(supportAddField: true,
+                                             onAddField: { viewModel.requestAddCustomField(to: nil) },
+                                             supportAddSection: viewModel.customSectionUiModels.isEmpty,
+                                             onAddSection: addCustomSection)
 
                 sections
 
                 if !viewModel.customSectionUiModels.isEmpty {
                     PassSectionDivider()
-                    AddCustomFieldAndSectionView(onAddField: nil,
+                    AddCustomFieldAndSectionView(supportAddSection: true,
                                                  onAddSection: addCustomSection)
                 }
 

@@ -110,7 +110,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
-    private var customCoordinator: (any CustomCoordinator)?
     private var cancellables = Set<AnyCancellable>()
 
     lazy var logInAndSignUp = makeLoginAndSignUp()

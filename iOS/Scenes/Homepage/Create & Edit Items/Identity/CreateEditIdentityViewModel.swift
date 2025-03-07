@@ -307,22 +307,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
 // MARK: - Utils
 
 extension CreateEditIdentityViewModel {
-    func getIndex(_ section: CreateEditIdentitySection, _ uiModel: CustomFieldUiModel) -> Int? {
-        switch section.type {
-        case .address:
-            extraAddressDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .personalDetails:
-            extraPersonalDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .workDetail:
-            extraWorkDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .contact:
-            extraContactDetails.firstIndex(where: { $0.id == uiModel.id })
-        }
-    }
-
     func toggleCollapsingSection(_ sectionToToggle: CreateEditIdentitySection) {
         sections = sections.map { section in
             guard sectionToToggle.id == section.id else {

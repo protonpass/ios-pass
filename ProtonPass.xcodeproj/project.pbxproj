@@ -276,7 +276,6 @@
 		357C71AA2B5FB02300AA0BF1 /* CustomFieldTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */; };
 		357C71AB2B5FB03400AA0BF1 /* MainRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B14538C2A681B400048B022 /* MainRouter.swift */; };
 		357C71AC2B5FB04100AA0BF1 /* CreateEditItemTitleSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3564DE9B299A4EBD0002DDFA /* CreateEditItemTitleSection.swift */; };
-		357C71AD2B5FB04C00AA0BF1 /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		357C71AE2B5FB05300AA0BF1 /* PrefixSuffixSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35992152299F8C3F00FEFA32 /* PrefixSuffixSection.swift */; };
 		357C71AF2B5FB06200AA0BF1 /* GeneratePasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3545DA85288D8C7A006D0D3D /* GeneratePasswordViewModel.swift */; };
 		357C71B02B5FB06800AA0BF1 /* SharedServices+DependencyInjections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */; };
@@ -490,7 +489,6 @@
 		53E07DC32D58BD50009D6EE5 /* ItemTypeFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354B24802A7814C20060EDF7 /* ItemTypeFilter.swift */; };
 		53E07DC42D58BD6C009D6EE5 /* BaseCreateEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AABE1A28AFB63900CEDDE6 /* BaseCreateEditItemViewModel.swift */; };
 		53E7E7EC2D58C01F00587153 /* CustomFieldEditionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35AC9A6C2A0C31A700FBCEEC /* CustomFieldEditionCoordinator.swift */; };
-		53E7E7ED2D58C02A00587153 /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		53F33A3C2D5A9BF0005EA4FD /* View+LocalAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E9A9D2A44430D00AD2B9A /* View+LocalAuthentication.swift */; };
 		5733D3FF2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D3FE2AE927FB001F9B31 /* ProtonCoreTestingToolkitUITestsPaymentsUI */; };
 		5733D4012AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 5733D4002AE928AF001F9B31 /* ProtonCoreTestingToolkitUITestsCore */; };
@@ -585,8 +583,6 @@
 		5B748B1E2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */; };
 		5B7C7FC32C5D25A700E1F646 /* AliasSyncConfigurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C7FC12C5D25A700E1F646 /* AliasSyncConfigurationView.swift */; };
 		5B7C7FC42C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7C7FC22C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift */; };
-		5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
-		5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */; };
 		5B87CC8F2BA4AF5600258D70 /* AuthenticatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87CC8D2BA4AF5600258D70 /* AuthenticatorView.swift */; };
 		5B87CC902BA4AF5600258D70 /* AuthenticatorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */; };
 		5B888A252B440E270011D6E0 /* AliasPrefixError+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */; };
@@ -1119,7 +1115,6 @@
 		5B748B1D2BA335CD00A4CAD6 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5B7C7FC12C5D25A700E1F646 /* AliasSyncConfigurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSyncConfigurationView.swift; sourceTree = "<group>"; };
 		5B7C7FC22C5D25A700E1F646 /* AliasSyncConfigurationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasSyncConfigurationViewModel.swift; sourceTree = "<group>"; };
-		5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCoordinator.swift; sourceTree = "<group>"; };
 		5B87CC8D2BA4AF5600258D70 /* AuthenticatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorView.swift; sourceTree = "<group>"; };
 		5B87CC8E2BA4AF5600258D70 /* AuthenticatorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticatorViewModel.swift; sourceTree = "<group>"; };
 		5B888A242B440E270011D6E0 /* AliasPrefixError+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AliasPrefixError+Extensions.swift"; sourceTree = "<group>"; };
@@ -2406,7 +2401,6 @@
 		5B8256D12A4B25B300BCEE6D /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				5B8256D22A4B25C200BCEE6D /* CustomCoordinator.swift */,
 				5B1F5CEA2A5ED6D000A6C3ED /* CustomFieldTypes.swift */,
 			);
 			path = Protocols;
@@ -3334,7 +3328,6 @@
 				5BD4A8FC2B10C1B900C44C08 /* ResetFactory.swift in Sources */,
 				3571B59D29BF6587008D4350 /* GeneralItemRow.swift in Sources */,
 				358FB1302CBFF45A00ECE39F /* ItemTypeListView.swift in Sources */,
-				5B8256D42A4B2CC100BCEE6D /* CustomCoordinator.swift in Sources */,
 				5BE64E6C2AB4665500777366 /* SharedViewContainer+DependencyInjection.swift in Sources */,
 				3567E46729B0ED8400511D62 /* NoCameraPermissionView.swift in Sources */,
 				5BD6138A2C20293B00968E0F /* SecureLinkListUIModel.swift in Sources */,
@@ -3527,7 +3520,6 @@
 				357C71CA2B5FB35300AA0BF1 /* PasswordStrengthIcon.swift in Sources */,
 				357C71AA2B5FB02300AA0BF1 /* CustomFieldTypes.swift in Sources */,
 				351B420F2B641A00003FA3E3 /* BiometricAuthenticationView.swift in Sources */,
-				357C71AD2B5FB04C00AA0BF1 /* CustomCoordinator.swift in Sources */,
 				35796CF22B5EE6EE00BF4E9E /* SharedDataContainer+DependencyInjections.swift in Sources */,
 				357C71CF2B5FB41400AA0BF1 /* EditCustomFieldView.swift in Sources */,
 				351B420E2B6419FA003FA3E3 /* LocalAuthenticationViewModel.swift in Sources */,
@@ -3826,7 +3818,6 @@
 				35B6FD342AB1C9ED00E21FA4 /* VaultSyncProgressView.swift in Sources */,
 				5B1092D72B56D5B4002621A4 /* CustomField+Extensions.swift in Sources */,
 				5B5DBF1B2B6961EE00F72F6C /* ItemContent+Extensions.swift in Sources */,
-				5B8256D32A4B25C200BCEE6D /* CustomCoordinator.swift in Sources */,
 				35533BBB29D5C3CA00EC58DE /* ItemCountView.swift in Sources */,
 				5B66395F2B4D88290029F8DA /* ItemHistoryViewModel.swift in Sources */,
 				5B229A692A863FBC0009103E /* SharedRouter+DependencyInjections.swift in Sources */,
@@ -3910,7 +3901,6 @@
 				5347B57B2D58BA3C0014013F /* SharedUseCase+DependencyInjections.swift in Sources */,
 				53E7E7EC2D58C01F00587153 /* CustomFieldEditionCoordinator.swift in Sources */,
 				5347B57C2D58BA3C0014013F /* SharedServices+DependencyInjections.swift in Sources */,
-				53E7E7ED2D58C02A00587153 /* CustomCoordinator.swift in Sources */,
 				53C769982D5A3F9F0079C757 /* AppearanceSettings.swift in Sources */,
 				534736562D5A9CDA00BE2EA5 /* BiometricAuthenticationView.swift in Sources */,
 				537FC0782D59ECA500011AEA /* CustomFieldTypesView.swift in Sources */,

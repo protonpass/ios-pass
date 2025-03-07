@@ -77,7 +77,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
-    private var customCoordinator: (any CustomCoordinator)?
     private var startTask: Task<Void, Never>?
 
     private var topMostViewController: UIViewController? {
