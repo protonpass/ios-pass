@@ -141,11 +141,11 @@ private extension CreateEditWifiView {
     }
 
     var fields: some View {
-        ForEach(viewModel.customFields, id: \.self) { field in
+        ForEach($viewModel.customFields) { $field in
             EditCustomFieldView(focusedField: $focusedField,
                                 field: .custom(field),
                                 contentType: viewModel.itemContentType,
-                                value: .constant(field),
+                                value: $field,
                                 showIcon: false,
                                 onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
                                 onRemove: { viewModel.customFields.remove(field) })

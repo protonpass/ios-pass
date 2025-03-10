@@ -41,6 +41,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 title = itemContent.name
                 ssid = data.ssid
                 password = data.password
+                customSections = data.extraSections
             }
 
         default:
@@ -56,7 +57,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.wifi(.init(ssid: ssid,
                                                              password: password,
-                                                             extraSections: [])),
-                            customFields: [])
+                                                             extraSections: customSections)),
+                            customFields: customFields)
     }
 }
