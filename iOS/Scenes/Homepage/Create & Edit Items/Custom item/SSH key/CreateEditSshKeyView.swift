@@ -65,8 +65,7 @@ struct CreateEditSshKeyView: View {
         ScrollView {
             LazyVStack {
                 title
-                view(for: .private, value: viewModel.privateKey)
-                view(for: .public, value: viewModel.publicKey)
+                keys
                 fields
 
                 AddCustomFieldAndSectionView(supportAddField: true,
@@ -127,6 +126,16 @@ private extension CreateEditSshKeyView {
             .padding(.bottom, DesignConstant.sectionPadding / 2)
     }
 
+    var keys: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            view(for: .private, value: viewModel.privateKey)
+            PassSectionDivider()
+            view(for: .public, value: viewModel.publicKey)
+        }
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedEditableSection()
+    }
+
     func view(for keyType: SshKeyType, value: String) -> some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
             Text(keyType.title)
@@ -144,8 +153,7 @@ private extension CreateEditSshKeyView {
                 }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .buttonEmbeded {
             focusedField = nil
             selectedKeyType = keyType
