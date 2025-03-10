@@ -38,3 +38,19 @@ public extension Text {
         }
     }
 }
+
+public enum TextContent {
+    case verbatim(String)
+    case localized(LocalizedStringKey)
+}
+
+public extension Text {
+    init(_ content: TextContent) {
+        switch content {
+        case let .verbatim(value):
+            self.init(verbatim: value)
+        case let .localized(value):
+            self.init(value)
+        }
+    }
+}

@@ -32,7 +32,7 @@ import SwiftUI
 typealias UserForNewItemSubject = PassthroughSubject<UserUiModel, Never>
 
 extension ASCredentialProviderExtensionContext: @unchecked @retroactive Sendable {}
-// swiftlint:disable file_length
+
 @MainActor
 final class CredentialProviderCoordinator: DeinitPrintable {
     /// Self-initialized properties
@@ -77,7 +77,6 @@ final class CredentialProviderCoordinator: DeinitPrintable {
     private var currentCreateEditItemViewModel: BaseCreateEditItemViewModel?
     private var credentialsViewModel: CredentialsViewModel?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
-    private var customCoordinator: (any CustomCoordinator)?
     private var startTask: Task<Void, Never>?
 
     private var topMostViewController: UIViewController? {
@@ -485,7 +484,6 @@ private extension CredentialProviderCoordinator {
                                                                        type: .alias),
                                                          upgradeChecker: upgradeChecker,
                                                          vaults: vaults)
-            viewModel.delegate = self
             present(CreateEditAliasView(viewModel: viewModel), dismissBeforePresenting: true)
             currentCreateEditItemViewModel = viewModel
         } catch {
@@ -553,31 +551,7 @@ extension CredentialProviderCoordinator: GeneratePasswordCoordinatorDelegate {
     }
 }
 
-// MARK: - CreateEditItemViewModelDelegate
-
-extension CredentialProviderCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
-                                                      shouldDisplayTotp: Bool) {
-        guard let rootViewController else {
-            return
-        }
-        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           delegate: delegate,
-                                                           shouldShowTotp: shouldDisplayTotp)
-        customCoordinator?.start()
-    }
-
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: any CustomFieldEditionDelegate) {
-        guard let rootViewController else {
-            return
-        }
-        customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
-                                                          delegate: delegate,
-                                                          uiModel: uiModel)
-        customCoordinator?.start()
-    }
-
+extension CredentialProviderCoordinator {
     func handleItemCreation(_ item: SymmetricallyEncryptedItem,
                             type: ItemContentType,
                             response: CreatePasskeyResponse?) {
@@ -699,5 +673,3 @@ extension CredentialProviderCoordinator: AutoFillViewModelDelegate {
         logOut(userId: userId)
     }
 }
-
-// swiftlint:enable file_length

@@ -28,7 +28,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
     let item: SelectedItem
     let selectedTextStream: SelectedTextStream
-    let customFieldUiModels: [CustomFieldUiModel]
+    let customFields: [CustomField]
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedToolingContainer.logger) private var logger
@@ -41,7 +41,7 @@ class BaseItemDetailViewModel: ObservableObject {
     init(item: SelectedItem, selectedTextStream: SelectedTextStream) {
         self.item = item
         self.selectedTextStream = selectedTextStream
-        customFieldUiModels = item.content.customFields.map { .init(customField: $0) }
+        customFields = item.content.customFields
         bindValues()
         checkIfFreeUser()
     }

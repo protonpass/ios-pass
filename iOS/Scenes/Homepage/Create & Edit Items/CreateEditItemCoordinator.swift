@@ -26,7 +26,6 @@ import SwiftUI
 import UIKit
 
 typealias CreateEditItemDelegates =
-    CreateEditItemViewModelDelegate &
     CreateEditLoginViewModelDelegate &
     GeneratePasswordCoordinatorDelegate &
     GeneratePasswordViewModelDelegate
@@ -129,7 +128,6 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditAliasViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
                                                      vaults: appContentManager.getAllShares())
-        viewModel.delegate = createEditItemDelegates
         let view = CreateEditAliasView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -139,7 +137,6 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditCreditCardViewModel(mode: mode,
                                                           upgradeChecker: upgradeChecker,
                                                           vaults: appContentManager.getAllShares())
-        viewModel.delegate = createEditItemDelegates
         let view = CreateEditCreditCardView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -149,7 +146,6 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditNoteViewModel(mode: mode,
                                                     upgradeChecker: upgradeChecker,
                                                     vaults: appContentManager.getAllShares())
-        viewModel.delegate = createEditItemDelegates
         let view = CreateEditNoteView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -159,7 +155,6 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditIdentityViewModel(mode: mode,
                                                         upgradeChecker: upgradeChecker,
                                                         vaults: appContentManager.getAllShares())
-        viewModel.delegate = createEditItemDelegates
         let view = CreateEditIdentityView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -169,7 +164,6 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditSshKeyViewModel(mode: mode,
                                                       upgradeChecker: upgradeChecker,
                                                       vaults: appContentManager.getAllShares())
-        viewModel.delegate = createEditItemDelegates
         let view = CreateEditSshKeyView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -179,7 +173,6 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditWifiViewModel(mode: mode,
                                                     upgradeChecker: upgradeChecker,
                                                     vaults: appContentManager.getAllShares())
-        viewModel.delegate = createEditItemDelegates
         let view = CreateEditWifiView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
@@ -189,7 +182,6 @@ private extension CreateEditItemCoordinator {
         let viewModel = try CreateEditCustomItemViewModel(mode: mode,
                                                           upgradeChecker: upgradeChecker,
                                                           vaults: appContentManager.getAllShares())
-        viewModel.delegate = createEditItemDelegates
         let view = CreateEditCustomItemView(viewModel: viewModel)
         present(view, dismissable: false)
         currentViewModel = viewModel
