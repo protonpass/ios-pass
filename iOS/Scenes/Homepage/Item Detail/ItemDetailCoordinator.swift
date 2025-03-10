@@ -122,13 +122,11 @@ private extension ItemDetailCoordinator {
               view: Text(verbatim: "SSH key detail"))
     }
 
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
     func makeWifiDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
-        .init(viewModel: .init(isShownAsSheet: asSheet,
-                               itemContent: itemContent,
-                               upgradeChecker: upgradeChecker),
-              view: Text(verbatim: "WiFi detail"))
+        let viewModel = WifiDetailViewModel(isShownAsSheet: asSheet,
+                                            itemContent: itemContent,
+                                            upgradeChecker: upgradeChecker)
+        return .init(viewModel: viewModel, view: WifiDetailView(viewModel: viewModel))
     }
 
     // swiftlint:disable:next todo

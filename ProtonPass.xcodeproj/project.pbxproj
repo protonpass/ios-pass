@@ -479,7 +479,11 @@
 		538548F42D58ACF300AEFB66 /* Action.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 538548E62D58ACF300AEFB66 /* Action.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */; };
 		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
+		53AEE46A2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
+		53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
 		53B153882D59EFC100D21AF9 /* ItemUiModel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B3AD42A2ACDB7F200E1A07D /* ItemUiModel+Extensions.swift */; };
+		53B981792D7ED25D003BD70E /* WifiDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B981782D7ED258003BD70E /* WifiDetailView.swift */; };
+		53B9817B2D7ED28B003BD70E /* WifiDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */; };
 		53C769982D5A3F9F0079C757 /* AppearanceSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3560843929DD4909001F7487 /* AppearanceSettings.swift */; };
 		53C769992D5A42B60079C757 /* Pass-Constant-Black.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EA2A44540D005E831C /* Pass-Constant-Black.plist */; };
 		53C7699A2D5A42B90079C757 /* Pass-Constant-Prod.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5BB2B6EC2A445422005E831C /* Pass-Constant-Prod.plist */; };
@@ -1047,6 +1051,9 @@
 		538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+SLSync.swift"; sourceTree = "<group>"; };
 		53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemTemplatesList.swift; sourceTree = "<group>"; };
+		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
+		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
+		53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
 		5B0939162C04DD250046F467 /* IdentityDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailView.swift; sourceTree = "<group>"; };
 		5B0939172C04DD250046F467 /* IdentityDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdentityDetailViewModel.swift; sourceTree = "<group>"; };
 		5B0C74FB2A2F5F3400272CE8 /* SharedServices+DependencyInjections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SharedServices+DependencyInjections.swift"; sourceTree = "<group>"; };
@@ -1615,6 +1622,7 @@
 			isa = PBXGroup;
 			children = (
 				5B0939152C04DD0A0046F467 /* Identity */,
+				53B981772D7ED251003BD70E /* Wifi */,
 				356A1F012B88AEA200561950 /* Passkey */,
 				3572E5262994043C00775FAC /* Supporting Views */,
 				35AC9A532A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift */,
@@ -1765,6 +1773,7 @@
 			isa = PBXGroup;
 			children = (
 				35703F272A279B950088C287 /* CustomFieldSections.swift */,
+				53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */,
 				35283E4F2927B55D002F5B84 /* FullScreenView.swift */,
 				355D61712991564D00192873 /* ItemDetailMoreInfoSection.swift */,
 				356B697A2949E55600868771 /* ItemDetailPlaceholderView.swift */,
@@ -2078,6 +2087,15 @@
 				534090632D70B11A002E42F8 /* CreateEditCustomItemViewModel.swift */,
 			);
 			path = "Custom item";
+			sourceTree = "<group>";
+		};
+		53B981772D7ED251003BD70E /* Wifi */ = {
+			isa = PBXGroup;
+			children = (
+				53B981782D7ED258003BD70E /* WifiDetailView.swift */,
+				53B9817A2D7ED289003BD70E /* WifiDetailViewModel.swift */,
+			);
+			path = Wifi;
 			sourceTree = "<group>";
 		};
 		5B0939152C04DD0A0046F467 /* Identity */ = {
@@ -3345,6 +3363,7 @@
 				3552A28E29EC8B5600ABDB6E /* URL+Extensions.swift in Sources */,
 				354B24822A781E370060EDF7 /* ItemTypeFilter.swift in Sources */,
 				35702C982A1E81250089B539 /* LimitedVaultOperationsBanner.swift in Sources */,
+				53AEE46A2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */,
 				3559BAA52A5B32600020E172 /* Preferences.swift in Sources */,
 				355E92792A59D70800C22703 /* Factory+Extensions.swift in Sources */,
 				53043D972D1D8D580088D6EE /* UpsellEntry+Extensions.swift in Sources */,
@@ -3568,6 +3587,7 @@
 				35AC9A682A0C16FE00FBCEEC /* EditCustomFieldView.swift in Sources */,
 				5B41C99C2AF51FED00A8E9F0 /* LABiometryType+Extensions.swift in Sources */,
 				3541C0792B68C337006B35D9 /* Spotlight+Extensions.swift in Sources */,
+				53B981792D7ED25D003BD70E /* WifiDetailView.swift in Sources */,
 				355792D929E7FB85001198DA /* VaultLabel.swift in Sources */,
 				5335C6DE2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */,
 				5BD4A90F2B15FC0B00C44C08 /* PasswordStrengthIcon.swift in Sources */,
@@ -3792,6 +3812,7 @@
 				354B24812A7814C20060EDF7 /* ItemTypeFilter.swift in Sources */,
 				5BE464D22CC2568C009EDF18 /* MostRecentType+Extensions.swift in Sources */,
 				3559BAA12A5B32550020E172 /* AppLockTime+Extensions.swift in Sources */,
+				53B9817B2D7ED28B003BD70E /* WifiDetailViewModel.swift in Sources */,
 				354E9A9E2A44430D00AD2B9A /* View+LocalAuthentication.swift in Sources */,
 				353739E329EAE9D900A3255E /* QAFeaturesView.swift in Sources */,
 				35733B7329CC481400052229 /* CreateEditVaultView.swift in Sources */,
@@ -3861,6 +3882,7 @@
 				350CF79C2A6FC44D004E932F /* SharedDataContainer+DependencyInjections.swift in Sources */,
 				3572E5252993D7BF00775FAC /* ItemDetailToolbar.swift in Sources */,
 				5BFFB5122A5D42C300C2D1F9 /* SharedUseCase+DependencyInjections.swift in Sources */,
+				53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */,
 				5B87CC902BA4AF5600258D70 /* AuthenticatorViewModel.swift in Sources */,
 				35703F282A279B950088C287 /* CustomFieldSections.swift in Sources */,
 				5B1453942A6832780048B022 /* UserEmailView.swift in Sources */,
