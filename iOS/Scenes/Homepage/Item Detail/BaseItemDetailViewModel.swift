@@ -83,7 +83,7 @@ class BaseItemDetailViewModel: ObservableObject {
     let upgradeChecker: any UpgradeCheckerProtocol
     private(set) var itemContent: ItemContent {
         didSet {
-            customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+            customFields = itemContent.customFields
         }
     }
 
@@ -91,7 +91,7 @@ class BaseItemDetailViewModel: ObservableObject {
     /// we need to pass it as `Binding` to `PermenentlyDeleteItemModifier`
     @Published var itemToBeDeleted: (any ItemTypeIdentifiable)?
 
-    private(set) var customFieldUiModels: [CustomFieldUiModel]
+    private(set) var customFields: [CustomField]
     let vault: VaultListUiModel?
     let logger = resolve(\SharedToolingContainer.logger)
 
@@ -163,7 +163,7 @@ class BaseItemDetailViewModel: ObservableObject {
          upgradeChecker: any UpgradeCheckerProtocol) {
         self.isShownAsSheet = isShownAsSheet
         self.itemContent = itemContent
-        customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+        customFields = itemContent.customFields
         self.upgradeChecker = upgradeChecker
 
         vault = appContentManager.getShareContent(for: itemContent.shareId)?.toVaultListUiModel

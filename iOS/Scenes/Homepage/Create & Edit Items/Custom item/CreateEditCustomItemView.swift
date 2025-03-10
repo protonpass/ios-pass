@@ -19,10 +19,19 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
+import Macro
+import Screens
 import SwiftUI
 
 struct CreateEditCustomItemView: View {
     @StateObject private var viewModel: CreateEditCustomItemViewModel
+    @FocusState private var focusedField: Field?
+
+    enum Field: CustomFieldTypes {
+        case title
+        case custom(CustomField?)
+    }
 
     init(viewModel: CreateEditCustomItemViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
@@ -30,15 +39,79 @@ struct CreateEditCustomItemView: View {
 
     var body: some View {
         ScrollView {
-            VStack {
-                ForEach(viewModel.fields, id: \.self) { field in
-                    Text(verbatim: field)
-                        .foregroundStyle(PassColor.textNorm.toColor)
+            LazyVStack {
+                title
+                fields
+
+                AddCustomFieldAndSectionView(supportAddField: true,
+                                             onAddField: { viewModel.requestAddCustomField(to: nil) },
+                                             supportAddSection: viewModel.customSections.isEmpty,
+                                             onAddSection: addCustomSection)
+
+                sections
+
+                if !viewModel.customSections.isEmpty {
+                    PassSectionDivider()
+                    AddCustomFieldAndSectionView(supportAddSection: true,
+                                                 onAddSection: addCustomSection)
+                }
+
+                if viewModel.fileAttachmentsEnabled {
+                    FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                               isFetching: viewModel.isFetchingAttachedFiles,
+                                               fetchError: viewModel.fetchAttachedFilesError,
+                                               isUploading: viewModel.isUploadingFile,
+                                               handler: viewModel)
                 }
             }
+            .padding()
         }
         .fullSheetBackground()
         .itemCreateEditSetUp(viewModel)
+        .onFirstAppear {
+            if case .create = viewModel.mode {
+                focusedField = .title
+            }
+        }
         .navigationStackEmbeded()
+    }
+}
+
+private extension CreateEditCustomItemView {
+    var title: some View {
+        CreateEditItemTitleSection(title: $viewModel.title,
+                                   focusedField: $focusedField,
+                                   field: .title,
+                                   itemContentType: viewModel.itemContentType,
+                                   isEditMode: viewModel.mode.isEditMode,
+                                   onSubmit: nil)
+            .padding(.bottom, DesignConstant.sectionPadding / 2)
+    }
+
+    var fields: some View {
+        ForEach(viewModel.customFields, id: \.self) { field in
+            EditCustomFieldView(focusedField: $focusedField,
+                                field: .custom(field),
+                                contentType: viewModel.itemContentType,
+                                value: .constant(field),
+                                showIcon: false,
+                                onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
+                                onRemove: { viewModel.customFields.remove(field) })
+        }
+    }
+
+    var sections: some View {
+        CreateEditCustomSections(addFieldButtonTitle: #localized("Add field"),
+                                 contentType: viewModel.itemContentType,
+                                 focusedField: $focusedField,
+                                 field: { .custom($0) },
+                                 sections: $viewModel.customSections,
+                                 onEditSectionTitle: { viewModel.customSectionToRename = $0 },
+                                 onEditFieldTitle: viewModel.requestEditCustomFieldTitle,
+                                 onAddMoreField: { viewModel.requestAddCustomField(to: $0.id) })
+    }
+
+    func addCustomSection() {
+        viewModel.showAddCustomSectionAlert.toggle()
     }
 }

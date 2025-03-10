@@ -29,7 +29,7 @@ struct EditCustomFieldView<Field: Hashable>: View {
     let field: Field
     @State private var isRemoved = false
     let contentType: ItemContentType
-    @Binding var uiModel: CustomFieldUiModel
+    @Binding var value: CustomField
 
     var showIcon = true
     var roundedSection = true
@@ -39,12 +39,12 @@ struct EditCustomFieldView<Field: Hashable>: View {
     var body: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             if showIcon {
-                ItemDetailSectionIcon(icon: uiModel.customField.type.icon)
+                ItemDetailSectionIcon(icon: value.type.icon)
             }
 
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text(uiModel.customField.title)
-                    .editableSectionTitleText(for: uiModel.customField.content)
+                Text(value.title)
+                    .editableSectionTitleText(for: value.content)
 
                 // Remove TextField from view's hierachy before removing the custom field
                 // otherwise app crashes because of index of range error.
@@ -55,36 +55,35 @@ struct EditCustomFieldView<Field: Hashable>: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .opacity(0)
                 } else {
-                    let placeholder = uiModel.customField.type.title
-                    switch uiModel.customField.type {
+                    let placeholder = value.title
+                    switch value.type {
                     case .text:
-                        TextEditorWithPlaceholder(text: $uiModel.customField.content,
+                        TextEditorWithPlaceholder(text: $value.content,
                                                   focusedField: focusedField,
                                                   field: field,
                                                   placeholder: placeholder)
 
                     case .totp:
-                        SensitiveTextField(text: $uiModel.customField.content,
+                        SensitiveTextField(text: $value.content,
                                            placeholder: placeholder,
                                            focusedField: focusedField,
                                            field: field,
-                                           font: .body.monospacedFont(for: uiModel.customField.content))
+                                           font: .body.monospacedFont(for: value.content))
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .keyboardType(.URL)
                             .textInputAutocapitalization(.never)
                             .autocorrectionDisabled()
 
                     case .hidden:
-                        SensitiveTextField(text: $uiModel.customField.content,
+                        SensitiveTextField(text: $value.content,
                                            placeholder: placeholder,
                                            focusedField: focusedField,
                                            field: field)
                             .foregroundStyle(PassColor.textNorm.toColor)
 
                     case .timestamp:
-                        // swiftlint:disable:next todo
-                        // TODO: [Custom item] Implement this
-                        Text(verbatim: "Timestamp custom field")
+                        TimestampPicker(value: $value.content)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
             }

@@ -19,8 +19,10 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 private enum SshKeyType: Int, Sendable, Identifiable {
@@ -50,8 +52,9 @@ struct CreateEditSshKeyView: View {
     @FocusState private var focusedField: Field?
     @State private var selectedKeyType: SshKeyType?
 
-    enum Field {
+    enum Field: CustomFieldTypes {
         case title
+        case custom(CustomField?)
     }
 
     init(viewModel: CreateEditSshKeyViewModel) {
@@ -64,6 +67,28 @@ struct CreateEditSshKeyView: View {
                 title
                 view(for: .private, value: viewModel.privateKey)
                 view(for: .public, value: viewModel.publicKey)
+                fields
+
+                AddCustomFieldAndSectionView(supportAddField: true,
+                                             onAddField: { viewModel.requestAddCustomField(to: nil) },
+                                             supportAddSection: viewModel.customSections.isEmpty,
+                                             onAddSection: addCustomSection)
+
+                sections
+
+                if !viewModel.customSections.isEmpty {
+                    PassSectionDivider()
+                    AddCustomFieldAndSectionView(supportAddSection: true,
+                                                 onAddSection: addCustomSection)
+                }
+
+                if viewModel.fileAttachmentsEnabled {
+                    FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                               isFetching: viewModel.isFetchingAttachedFiles,
+                                               fetchError: viewModel.fetchAttachedFilesError,
+                                               isUploading: viewModel.isUploadingFile,
+                                               handler: viewModel)
+                }
             }
             .padding()
         }
@@ -125,6 +150,33 @@ private extension CreateEditSshKeyView {
             focusedField = nil
             selectedKeyType = keyType
         }
+    }
+
+    var fields: some View {
+        ForEach(viewModel.customFields, id: \.self) { field in
+            EditCustomFieldView(focusedField: $focusedField,
+                                field: .custom(field),
+                                contentType: viewModel.itemContentType,
+                                value: .constant(field),
+                                showIcon: false,
+                                onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
+                                onRemove: { viewModel.customFields.remove(field) })
+        }
+    }
+
+    var sections: some View {
+        CreateEditCustomSections(addFieldButtonTitle: #localized("Add field"),
+                                 contentType: viewModel.itemContentType,
+                                 focusedField: $focusedField,
+                                 field: { .custom($0) },
+                                 sections: $viewModel.customSections,
+                                 onEditSectionTitle: { viewModel.customSectionToRename = $0 },
+                                 onEditFieldTitle: viewModel.requestEditCustomFieldTitle,
+                                 onAddMoreField: { viewModel.requestAddCustomField(to: $0.id) })
+    }
+
+    func addCustomSection() {
+        viewModel.showAddCustomSectionAlert.toggle()
     }
 }
 

@@ -26,6 +26,7 @@ public struct CapsuleLabelButton: View {
     let title: String
     let titleColor: UIColor
     let backgroundColor: UIColor
+    let border: Border?
     let fontWeight: Font.Weight
     let height: CGFloat
     let maxWidth: CGFloat?
@@ -33,10 +34,21 @@ public struct CapsuleLabelButton: View {
     let isDisabled: Bool
     let leadingIcon: Bool
 
+    public struct Border {
+        public let width: CGFloat
+        public let color: UIColor
+
+        public init(width: CGFloat, color: UIColor) {
+            self.width = width
+            self.color = color
+        }
+    }
+
     public init(icon: UIImage,
                 title: String,
                 titleColor: UIColor,
                 backgroundColor: UIColor,
+                border: Border? = nil,
                 fontWeight: Font.Weight = .regular,
                 height: CGFloat = 40,
                 maxWidth: CGFloat? = .infinity,
@@ -47,6 +59,7 @@ public struct CapsuleLabelButton: View {
         self.title = title
         self.titleColor = titleColor
         self.backgroundColor = backgroundColor
+        self.border = border
         self.height = height
         self.maxWidth = maxWidth
         self.action = action
@@ -82,6 +95,13 @@ public struct CapsuleLabelButton: View {
             .background(backgroundColor.toColor.opacity(isDisabled ? 0.4 : 1.0))
             .clipShape(Capsule())
             .contentShape(.rect)
+            .if(border) { view, border in
+                view
+                    .overlay {
+                        Capsule()
+                            .stroke(border.color.toColor, lineWidth: border.width)
+                    }
+            }
         }
         .disabled(isDisabled)
     }
