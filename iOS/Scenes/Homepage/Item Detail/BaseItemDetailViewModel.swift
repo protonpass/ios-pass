@@ -190,6 +190,14 @@ class BaseItemDetailViewModel: ObservableObject {
         router.action(.copyToClipboard(text: text, message: message))
     }
 
+    func copyTOTPToken(_ token: String) {
+        copyToClipboard(text: token, message: #localized("TOTP copied"))
+    }
+
+    func copyHiddenText(_ text: String) {
+        copyToClipboard(text: text, message: #localized("Hidden text copied"))
+    }
+
     func goBack() {
         delegate?.itemDetailViewModelWantsToGoBack(isShownAsSheet: isShownAsSheet)
     }
