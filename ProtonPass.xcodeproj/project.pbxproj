@@ -478,6 +478,8 @@
 		538548E82D58ACF300AEFB66 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */; };
 		538548F42D58ACF300AEFB66 /* Action.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 538548E62D58ACF300AEFB66 /* Action.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */; };
+		539182CA2D7F2C5C00815D7F /* SshDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182C92D7F2C5800815D7F /* SshDetailView.swift */; };
+		539182CC2D7F2C9100815D7F /* SshDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */; };
 		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
 		53AEE46A2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
 		53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
@@ -1050,6 +1052,8 @@
 		538548E62D58ACF300AEFB66 /* Action.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Action.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		538548E72D58ACF300AEFB66 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
 		5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+SLSync.swift"; sourceTree = "<group>"; };
+		539182C92D7F2C5800815D7F /* SshDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailView.swift; sourceTree = "<group>"; };
+		539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailViewModel.swift; sourceTree = "<group>"; };
 		53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemTemplatesList.swift; sourceTree = "<group>"; };
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
@@ -1622,6 +1626,7 @@
 			isa = PBXGroup;
 			children = (
 				5B0939152C04DD0A0046F467 /* Identity */,
+				539182C82D7F2C4B00815D7F /* SSH */,
 				53B981772D7ED251003BD70E /* Wifi */,
 				356A1F012B88AEA200561950 /* Passkey */,
 				3572E5262994043C00775FAC /* Supporting Views */,
@@ -2075,6 +2080,15 @@
 				5340905F2D70A6E5002E42F8 /* CreateEditWifiViewModel.swift */,
 			);
 			path = Wifi;
+			sourceTree = "<group>";
+		};
+		539182C82D7F2C4B00815D7F /* SSH */ = {
+			isa = PBXGroup;
+			children = (
+				539182C92D7F2C5800815D7F /* SshDetailView.swift */,
+				539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */,
+			);
+			path = SSH;
 			sourceTree = "<group>";
 		};
 		53A2EB062D6F537C008A4A0C /* Custom item */ = {
@@ -3705,6 +3719,7 @@
 				3570584529C65F0A0032D52F /* View+ItemContextMenus.swift in Sources */,
 				66CA928129F971CF00F2FC59 /* PaymentsConstants.swift in Sources */,
 				35476970289D6BCB00581E2E /* CreateEditLoginViewModel.swift in Sources */,
+				539182CA2D7F2C5C00815D7F /* SshDetailView.swift in Sources */,
 				35F8CD0C29B631310017DBC6 /* GeneralItemRow.swift in Sources */,
 				35AC9A542A0BAEDD00FBCEEC /* ItemDetailCoordinator.swift in Sources */,
 				3543615C2941E1A8000CAE12 /* UIApplication+Extensions.swift in Sources */,
@@ -3787,6 +3802,7 @@
 				3562BCF329BDBF2500564508 /* SectionIndexTitles.swift in Sources */,
 				351A96012BAC7E8700D599BB /* TipKitSection.swift in Sources */,
 				3575EB5929FABC92000FFD53 /* EditAppLockTimeView.swift in Sources */,
+				539182CC2D7F2C9100815D7F /* SshDetailViewModel.swift in Sources */,
 				5B0939182C04DD250046F467 /* IdentityDetailView.swift in Sources */,
 				5B0939192C04DD250046F467 /* IdentityDetailViewModel.swift in Sources */,
 				5BD870D82BB46C7800A9F1A8 /* PasswordReusedView.swift in Sources */,
