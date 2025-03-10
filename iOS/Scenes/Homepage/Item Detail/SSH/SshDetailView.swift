@@ -1,5 +1,5 @@
 //
-// WifiDetailView.swift
+// SshDetailView.swift
 // Proton Pass - Created on 10/03/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -23,13 +23,12 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-struct WifiDetailView: View {
-    @StateObject private var viewModel: WifiDetailViewModel
-    @State private var showPassword = false
-    @State private var showQrCode = false
+struct SshDetailView: View {
+    @StateObject private var viewModel: SshDetailViewModel
+    @State private var selectedKeyType: SshKeyType?
     @Namespace private var bottomID
 
-    init(viewModel: WifiDetailViewModel) {
+    init(viewModel: SshDetailViewModel) {
         _viewModel = .init(wrappedValue: viewModel)
     }
 
@@ -40,8 +39,7 @@ struct WifiDetailView: View {
                                     vault: viewModel.vault?.vault)
                     .padding(.bottom, 40)
 
-                ssidAndPasswordSection
-                showQrCodeButton
+                keysSection
 
                 CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                     fields: viewModel.customFields,
@@ -87,141 +85,105 @@ struct WifiDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .navigationStackEmbeded()
-        .sheet(isPresented: $showQrCode) {
-            WifiQrCodeView(ssid: viewModel.ssid, password: viewModel.password)
+        .sheet(item: $selectedKeyType) { keyType in
+            let value = switch keyType {
+            case .private: viewModel.privateKey
+            case .public: viewModel.publicKey
+            }
+            SshKeyDetailView(value: value, title: keyType.title)
         }
     }
 }
 
-private extension WifiDetailView {
-    var ssidAndPasswordSection: some View {
+private extension SshDetailView {
+    var keysSection: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            ssidRow
+            publicKeyRow
             PassSectionDivider()
-            passwordRow
+            privateKeyRow
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
     }
 
-    var ssidRow: some View {
+    var publicKeyRow: some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-            Text("Name (SSID)")
+            Text("Public key")
                 .sectionTitleText()
 
-            if viewModel.ssid.isEmpty {
+            if viewModel.publicKey.isEmpty {
                 Text("Empty")
                     .placeholderText()
             } else {
-                Text(viewModel.ssid)
+                Text(viewModel.publicKey)
+                    .sectionContentText()
+                    .monospaced()
+                    .lineLimit(3)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(.rect)
+        .onTapGesture {
+            if !viewModel.publicKey.isEmpty {
+                selectedKeyType = .public
+            }
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .if(!viewModel.publicKey.isEmpty) { view in
+            view.contextMenu {
+                Button(action: viewModel.copyPublicKey) {
+                    Text("Copy")
+                }
+            }
+        }
+    }
+
+    var privateKeyRow: some View {
+        VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+            Text("Private key")
+                .sectionTitleText()
+
+            if viewModel.privateKey.isEmpty {
+                Text("Empty")
+                    .placeholderText()
+            } else {
+                Text(String(repeating: "•", count: 12))
                     .sectionContentText()
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
-        .onTapGesture(perform: viewModel.copySsid)
-        .padding(.horizontal, DesignConstant.sectionPadding)
-        .contextMenu {
-            Button { viewModel.copySsid() } label: {
-                Text("Copy")
-            }
-        }
-    }
-
-    var passwordRow: some View {
-        HStack(spacing: DesignConstant.sectionPadding) {
-            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
-                Text("Password")
-                    .sectionTitleText()
-
-                if viewModel.password.isEmpty {
-                    Text("Empty")
-                        .placeholderText()
-                } else {
-                    if showPassword {
-                        Text(viewModel.password)
-                            .font(.body.monospaced())
-                    } else {
-                        Text(String(repeating: "•", count: 12))
-                            .sectionContentText()
-                    }
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(.rect)
-            .onTapGesture(perform: viewModel.copyPassword)
-
-            Spacer()
-
-            if !viewModel.password.isEmpty {
-                CircleButton(icon: showPassword ? IconProvider.eyeSlash : IconProvider.eye,
-                             iconColor: viewModel.itemContent.type.normMajor2Color,
-                             backgroundColor: viewModel.itemContent.type.normMinor2Color,
-                             accessibilityLabel: showPassword ? "Hide password" : "Show password",
-                             action: { showPassword.toggle() })
-                    .fixedSize(horizontal: true, vertical: true)
-                    .animationsDisabled()
+        .onTapGesture {
+            if !viewModel.privateKey.isEmpty {
+                selectedKeyType = .private
             }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
-        .contextMenu {
-            Button(action: {
-                withAnimation {
-                    showPassword.toggle()
+        .if(!viewModel.privateKey.isEmpty) { view in
+            view.contextMenu {
+                Button(action: viewModel.copyPrivateKey) {
+                    Text("Copy")
                 }
-            }, label: {
-                Text(showPassword ? "Conceal" : "Reveal")
-            })
-
-            Button(action: viewModel.copyPassword) {
-                Text("Copy")
-            }
-
-            Button(action: viewModel.showLargePassword) {
-                Text("Show large")
             }
         }
-    }
-
-    var showQrCodeButton: some View {
-        OptionRow(action: { showQrCode.toggle() },
-                  height: .medium,
-                  content: {
-                      Text("Show Network QR Code")
-                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
-                  })
-                  .roundedDetailSection()
-                  .padding(.top, DesignConstant.sectionPadding / 2)
     }
 }
 
-private struct WifiQrCodeView: View {
+private struct SshKeyDetailView: View {
     @Environment(\.dismiss) private var dismiss
-    let ssid: String
-    let uri: String
-
-    init(ssid: String, password: String) {
-        self.ssid = ssid
-        uri = "WIFI:T:WPA;S:\(ssid);P:\(password);;"
-    }
+    let value: String
+    let title: LocalizedStringKey
 
     var body: some View {
-        ZStack {
-            PassColor.backgroundNorm.toColor
-                .ignoresSafeArea()
-            VStack {
-                Text("Scan the QR code to join")
-                Text(verbatim: "\"\(ssid)\"")
-                Spacer()
-            }
-            .font(.title2)
-            .fontWeight(.bold)
-            .foregroundStyle(PassColor.textNorm.toColor)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.top, 40)
-
-            QrCodeView(text: uri)
+        ScrollView {
+            Text(value)
+                .textSelection(.enabled)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                .monospaced()
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .padding()
         }
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 CircleButton(icon: IconProvider.cross,
@@ -230,7 +192,13 @@ private struct WifiQrCodeView: View {
                              accessibilityLabel: "Close",
                              action: dismiss.callAsFunction)
             }
+
+            ToolbarItem(placement: .principal) {
+                Text(title)
+                    .navigationTitleText()
+            }
         }
+        .fullSheetBackground()
         .navigationStackEmbeded()
     }
 }

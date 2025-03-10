@@ -25,7 +25,7 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-private enum SshKeyType: Int, Sendable, Identifiable {
+enum SshKeyType: Int, Sendable, Identifiable {
     case `public`, `private`
 
     var id: Int {
