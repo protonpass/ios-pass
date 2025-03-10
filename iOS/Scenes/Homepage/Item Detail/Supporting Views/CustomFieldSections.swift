@@ -70,9 +70,13 @@ struct CustomFieldSections: View {
                                        onSelectTotpToken: onSelectTotpToken,
                                        onUpgrade: onUpgrade)
             case .timestamp:
-                // swiftlint:disable:next todo
-                // TODO: [Custom item] Implement this
-                Text(verbatim: "Timestamp custom field section")
+                TimestampCustomFieldSection(title: title,
+                                            content: content,
+                                            itemContentType: itemContentType,
+                                            isFreeUser: isFreeUser,
+                                            isASection: isASection,
+                                            showIcon: showIcon,
+                                            onUpgrade: onUpgrade)
             }
 
             if field != fields.last, !isASection {
@@ -82,7 +86,7 @@ struct CustomFieldSections: View {
     }
 }
 
-struct TextCustomFieldSection: View {
+private struct TextCustomFieldSection: View {
     let title: String
     let content: String
     let itemContentType: ItemContentType
@@ -128,7 +132,7 @@ struct TextCustomFieldSection: View {
     }
 }
 
-struct HiddenCustomFieldSection: View {
+private struct HiddenCustomFieldSection: View {
     @State private var isShowingText = false
     let title: String
     let content: String
@@ -197,7 +201,7 @@ struct HiddenCustomFieldSection: View {
 }
 
 @MainActor
-final class TotpCustomFieldSectionViewModel: ObservableObject {
+private final class TotpCustomFieldSectionViewModel: ObservableObject {
     @Published private(set) var state = TOTPState.empty
 
     private let totpManager = resolve(\SharedServiceContainer.totpManager)
@@ -223,7 +227,7 @@ final class TotpCustomFieldSectionViewModel: ObservableObject {
     }
 }
 
-struct TotpCustomFieldSection: View {
+private struct TotpCustomFieldSection: View {
     @StateObject private var viewModel = TotpCustomFieldSectionViewModel()
     let title: String
     let content: String
@@ -293,5 +297,56 @@ struct TotpCustomFieldSection: View {
                 viewModel.bind(uri: content)
             }
         }
+    }
+}
+
+private struct TimestampCustomFieldSection: View {
+    let title: String
+    let content: String
+    let itemContentType: ItemContentType
+    let isFreeUser: Bool
+    let isASection: Bool
+    let showIcon: Bool
+    let onUpgrade: () -> Void
+
+    let formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        formatter.timeStyle = .none
+        return formatter
+    }()
+
+    var body: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            if showIcon {
+                ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
+                                      color: itemContentType.normColor)
+            }
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text(title)
+                    .sectionTitleText()
+
+                if isFreeUser {
+                    UpgradeButtonLite(action: onUpgrade)
+                } else if let timeInterval = TimeInterval(content) {
+                    Text(verbatim: formatter.string(from: Date(timeIntervalSince1970: timeInterval)))
+                        .foregroundStyle(PassColor.textNorm.toColor)
+                } else {
+                    Text("Error occurred")
+                        .font(.caption)
+                        .foregroundStyle(PassColor.signalDanger.toColor)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .padding(.vertical, isASection ? DesignConstant.sectionPadding : 0)
+        .tint(itemContentType.normColor.toColor)
+        .if(isASection) { view in
+            view.roundedDetailSection()
+        }
+        .padding(.top, isASection ? 8 : 0)
     }
 }
