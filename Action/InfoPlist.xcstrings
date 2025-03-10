@@ -100,6 +100,12 @@
             "value" : "Importeren naar Proton Pass"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importuj do Proton Pass"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -235,6 +241,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importeren naar Proton Pass"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importuj do Proton Pass"
           }
         },
         "pt-BR" : {
