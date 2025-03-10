@@ -73,6 +73,8 @@ final class PassColorTests: XCTestCase {
         _ = PassColor.passwordInteractionNormMinor1
         _ = PassColor.passwordInteractionNormMinor2
 
+        _ = PassColor.customItemBackground
+
         // Signals
         _ = PassColor.signalDanger
         _ = PassColor.signalInfo

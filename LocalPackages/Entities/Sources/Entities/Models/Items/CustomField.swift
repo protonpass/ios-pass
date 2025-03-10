@@ -20,24 +20,33 @@
 
 import Foundation
 
-public enum CustomFieldType: CaseIterable, Equatable, Sendable {
-    case text, totp, hidden
+public enum CustomFieldType: CaseIterable, Equatable, Hashable, Sendable {
+    case text, totp, hidden, timestamp
+}
+
+public enum CustomFieldUpdate: Sendable {
+    case title(String)
+    case content(String)
 }
 
 public struct CustomField: Equatable, Hashable, Sendable, Identifiable {
+    public let id: String
     public let title: String
     public let type: CustomFieldType
     public var content: String
 
-    public var id: Int { hashValue }
-
-    public init(title: String, type: CustomFieldType, content: String) {
+    public init(id: String = UUID().uuidString,
+                title: String,
+                type: CustomFieldType,
+                content: String) {
+        self.id = id
         self.title = title
         self.type = type
         self.content = content
     }
 
     init(from extraField: ProtonPassItemV1_ExtraField) {
+        id = UUID().uuidString
         title = extraField.fieldName
         switch extraField.content {
         case let .text(extraText):
@@ -52,9 +61,27 @@ public struct CustomField: Equatable, Hashable, Sendable, Identifiable {
             type = .hidden
             content = extraHidden.content
 
-        default:
+        case let .timestamp(extraTimestamp):
+            type = .timestamp
+            content = String(extraTimestamp.timestamp.seconds)
+
+        case .none:
             type = .text
             content = ""
         }
+    }
+
+    public func update(from update: CustomFieldUpdate) -> CustomField {
+        let updatedTitle: String
+        let updatedContent: String
+        switch update {
+        case let .title(newTitle):
+            updatedTitle = newTitle
+            updatedContent = content
+        case let .content(newContent):
+            updatedTitle = title
+            updatedContent = newContent
+        }
+        return .init(id: id, title: updatedTitle, type: type, content: updatedContent)
     }
 }

@@ -26,6 +26,9 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
     case note
     case creditCard(CreditCardData)
     case identity(IdentityData)
+    case sshKey(SshKeyData)
+    case wifi(WifiData)
+    case custom(CustomItemData)
 
     public var type: ItemContentType {
         switch self {
@@ -39,6 +42,12 @@ public enum ItemContentData: Sendable, Equatable, Hashable {
             .creditCard
         case .identity:
             .identity
+        case .sshKey:
+            .sshKey
+        case .wifi:
+            .wifi
+        case .custom:
+            .custom
         }
     }
 }
@@ -345,7 +354,93 @@ extension IdentityData {
         item.workPhoneNumber = workPhoneNumber
         item.workEmail = workEmail
         item.extraWorkDetails = extraWorkDetails.toProtonPassItemV1ExtraFields
-        item.extraSections = extraSections.toProtonPassItemV1ExtraIdentitySections
+        item.extraSections = extraSections.toProtonPassItemV1CustomSections
+        return item
+    }
+}
+
+// MARK: - SSH key
+
+public struct SshKeyData: Sendable, Equatable, Hashable {
+    public let privateKey: String
+    public let publicKey: String
+    public let extraSections: [CustomSection]
+
+    public init(from data: ProtonPassItemV1_ItemSSHKey) {
+        privateKey = data.privateKey
+        publicKey = data.publicKey
+        extraSections = data.sections.map { CustomSection(from: $0) }
+    }
+
+    public init(privateKey: String,
+                publicKey: String,
+                extraSections: [CustomSection]) {
+        self.privateKey = privateKey
+        self.publicKey = publicKey
+        self.extraSections = extraSections
+    }
+}
+
+public extension SshKeyData {
+    var toProtonPassItemV1ItemSshKey: ProtonPassItemV1_ItemSSHKey {
+        var item = ProtonPassItemV1_ItemSSHKey()
+        item.privateKey = privateKey
+        item.publicKey = publicKey
+        item.sections = extraSections.toProtonPassItemV1CustomSections
+        return item
+    }
+}
+
+// MARK: - Wifi
+
+public struct WifiData: Sendable, Equatable, Hashable {
+    public let ssid: String
+    public let password: String
+    public let extraSections: [CustomSection]
+
+    public init(from data: ProtonPassItemV1_ItemWifi) {
+        ssid = data.ssid
+        password = data.password
+        extraSections = data.sections.map { CustomSection(from: $0) }
+    }
+
+    public init(ssid: String,
+                password: String,
+                extraSections: [CustomSection]) {
+        self.ssid = ssid
+        self.password = password
+        self.extraSections = extraSections
+    }
+}
+
+public extension WifiData {
+    var toProtonPassItemV1ItemWifi: ProtonPassItemV1_ItemWifi {
+        var item = ProtonPassItemV1_ItemWifi()
+        item.ssid = ssid
+        item.password = password
+        item.sections = extraSections.toProtonPassItemV1CustomSections
+        return item
+    }
+}
+
+// MARK: - Custom
+
+public struct CustomItemData: Sendable, Equatable, Hashable {
+    public let sections: [CustomSection]
+
+    public init(from data: ProtonPassItemV1_ItemCustom) {
+        sections = data.sections.map { CustomSection(from: $0) }
+    }
+
+    public init(sections: [CustomSection]) {
+        self.sections = sections
+    }
+}
+
+public extension CustomItemData {
+    var toProtonPassItemV1ItemCustom: ProtonPassItemV1_ItemCustom {
+        var item = ProtonPassItemV1_ItemCustom()
+        item.sections = sections.toProtonPassItemV1CustomSections
         return item
     }
 }
@@ -368,6 +463,16 @@ public extension [CustomField] {
             case .hidden:
                 extraField.hidden = .init()
                 extraField.hidden.content = customField.content
+
+            case .timestamp:
+                extraField.timestamp = .init()
+                if customField.content.isEmpty {
+                    extraField.timestamp.timestamp.seconds = Int64(Date.now.timeIntervalSince1970)
+                } else if let intValue = Int64(customField.content) {
+                    extraField.timestamp.timestamp.seconds = intValue
+                } else {
+                    assertionFailure("Invalid timestamp value \(customField.content), expect int value.")
+                }
             }
 
             return extraField
@@ -376,12 +481,12 @@ public extension [CustomField] {
 }
 
 public extension [CustomSection] {
-    var toProtonPassItemV1ExtraIdentitySections: [ProtonPassItemV1_ExtraIdentitySection] {
+    var toProtonPassItemV1CustomSections: [ProtonPassItemV1_CustomSection] {
         map { section in
-            var extraSection = ProtonPassItemV1_ExtraIdentitySection()
-            extraSection.sectionName = section.title
-            extraSection.sectionFields = section.content.toProtonPassItemV1ExtraFields
-            return extraSection
+            var customSection = ProtonPassItemV1_CustomSection()
+            customSection.sectionName = section.title
+            customSection.sectionFields = section.content.toProtonPassItemV1ExtraFields
+            return customSection
         }
     }
 }

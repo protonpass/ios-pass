@@ -80,6 +80,32 @@ enum ItemContextMenu {
                   onViewHistory: () -> Void,
                   onTrash: () -> Void)
 
+    case sshKey(item: any PinnableItemTypeIdentifiable,
+                isEditable: Bool,
+                canBeTrashed: Bool,
+                onEdit: () -> Void,
+                onPinToggle: () -> Void,
+                onViewHistory: () -> Void,
+                onTrash: () -> Void)
+
+    case wifi(item: any PinnableItemTypeIdentifiable,
+              isEditable: Bool,
+              canBeTrashed: Bool,
+              onCopySsid: () -> Void,
+              onCopyPassword: () -> Void,
+              onEdit: () -> Void,
+              onPinToggle: () -> Void,
+              onViewHistory: () -> Void,
+              onTrash: () -> Void)
+
+    case custom(item: any PinnableItemTypeIdentifiable,
+                isEditable: Bool,
+                canBeTrashed: Bool,
+                onEdit: () -> Void,
+                onPinToggle: () -> Void,
+                onViewHistory: () -> Void,
+                onTrash: () -> Void)
+
     case trashedItem(isEditable: Bool,
                      onRestore: () -> Void,
                      onPermanentlyDelete: () -> Void)
@@ -265,6 +291,66 @@ enum ItemContextMenu {
                                                 onTrash: onTrash)
 
             return sections
+
+        case let .sshKey(item,
+                         isEditable,
+                         canBeTrashed,
+                         onEdit,
+                         onPinToggle,
+                         onViewHistory,
+                         onTrash):
+            return Self.commonLastSections(item: item,
+                                           isEditable: isEditable,
+                                           canBeTrashed: canBeTrashed,
+                                           onEdit: onEdit,
+                                           onPinToggle: onPinToggle,
+                                           onViewHistory: onViewHistory,
+                                           onTrash: onTrash)
+
+        case let .wifi(item,
+                       isEditable,
+                       canBeTrashed,
+                       onCopySsid,
+                       onCopyPassword,
+                       onEdit,
+                       onPinToggle,
+                       onViewHistory,
+                       onTrash):
+            var sections: [ItemContextMenuOptionSection] = []
+
+            sections.append(.init(options: [
+                .init(title: "Copy SSID",
+                      icon: Image(systemName: "wifi"),
+                      action: onCopySsid),
+                .init(title: "Copy password",
+                      icon: IconProvider.key,
+                      action: onCopyPassword)
+            ]))
+
+            sections += Self.commonLastSections(item: item,
+                                                isEditable: isEditable,
+                                                canBeTrashed: canBeTrashed,
+                                                onEdit: onEdit,
+                                                onPinToggle: onPinToggle,
+                                                onViewHistory: onViewHistory,
+                                                onTrash: onTrash)
+
+            return sections
+
+        case let .custom(item,
+                         isEditable,
+                         canBeTrashed,
+                         onEdit,
+                         onPinToggle,
+                         onViewHistory,
+                         onTrash):
+            return Self.commonLastSections(item: item,
+                                           isEditable: isEditable,
+                                           canBeTrashed: canBeTrashed,
+                                           onEdit: onEdit,
+                                           onPinToggle: onPinToggle,
+                                           onViewHistory: onViewHistory,
+                                           onTrash: onTrash)
         }
     }
 }
@@ -468,6 +554,35 @@ extension View {
                                           onPinToggle: { handler.toggleItemPinning(item) },
                                           onViewHistory: { handler.viewHistory(item) },
                                           onTrash: { handler.trash(item) }))
+
+            case .sshKey:
+                itemContextMenu(.sshKey(item: item,
+                                        isEditable: isEditable,
+                                        canBeTrashed: canBeTrashed,
+                                        onEdit: { handler.edit(item) },
+                                        onPinToggle: { handler.toggleItemPinning(item) },
+                                        onViewHistory: { handler.viewHistory(item) },
+                                        onTrash: { handler.trash(item) }))
+
+            case .wifi:
+                itemContextMenu(.wifi(item: item,
+                                      isEditable: isEditable,
+                                      canBeTrashed: canBeTrashed,
+                                      onCopySsid: { handler.copySsid(item) },
+                                      onCopyPassword: { handler.copyWifiPassword(item) },
+                                      onEdit: { handler.edit(item) },
+                                      onPinToggle: { handler.toggleItemPinning(item) },
+                                      onViewHistory: { handler.viewHistory(item) },
+                                      onTrash: { handler.trash(item) }))
+
+            case .custom:
+                itemContextMenu(.custom(item: item,
+                                        isEditable: isEditable,
+                                        canBeTrashed: canBeTrashed,
+                                        onEdit: { handler.edit(item) },
+                                        onPinToggle: { handler.toggleItemPinning(item) },
+                                        onViewHistory: { handler.viewHistory(item) },
+                                        onTrash: { handler.trash(item) }))
             }
         }
     }

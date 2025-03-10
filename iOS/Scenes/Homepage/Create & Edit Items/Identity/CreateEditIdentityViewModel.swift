@@ -27,63 +27,22 @@ import Foundation
 import Macro
 
 enum BaseIdentitySection: String, CaseIterable {
-    case personalDetails = "Personal details"
-    case address = "Address details"
-    case contact = "Contact details"
-    case workDetail = "Work details"
-    case custom
+    case personalDetails
+    case address
+    case contact
+    case workDetail
 
     var createEditIdentitySection: CreateEditIdentitySection {
-        CreateEditIdentitySection(id: rawValue,
-                                  title: title,
-                                  type: self,
-                                  isCollapsed: self == .contact || self == .workDetail,
-                                  isCustom: false,
-                                  content: [])
-    }
-
-    private var title: String {
-        switch self {
-        case .personalDetails:
-            #localized("Personal details")
-        case .address:
-            #localized("Address details")
-        case .contact:
-            #localized("Contact details")
-        case .workDetail:
-            #localized("Work details")
-        case .custom:
-            ""
-        }
-    }
-}
-
-extension CustomSection {
-    var createEditIdentitySection: CreateEditIdentitySection {
-        CreateEditIdentitySection(title: title,
-                                  type: .custom,
-                                  isCollapsed: true,
-                                  isCustom: true,
-                                  content: content.map { CustomFieldUiModel(customField: $0) })
+        CreateEditIdentitySection(type: self,
+                                  isCollapsed: self == .contact || self == .workDetail)
     }
 }
 
 @Copyable
 struct CreateEditIdentitySection: Hashable, Identifiable {
     var id: String = UUID().uuidString
-    let title: String
     let type: BaseIdentitySection
     let isCollapsed: Bool
-    let isCustom: Bool
-    var content: [CustomFieldUiModel]
-
-    static func baseCustomSection(title: String) -> CreateEditIdentitySection {
-        CreateEditIdentitySection(title: title,
-                                  type: .custom,
-                                  isCollapsed: false,
-                                  isCustom: true,
-                                  content: [])
-    }
 }
 
 struct HiddenStringValue: Sendable {
@@ -116,7 +75,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var lastName: HiddenStringValue = .default
     @Published var birthdate: HiddenStringValue = .default
     @Published var gender: HiddenStringValue = .default
-    @Published var extraPersonalDetails: [CustomFieldUiModel] = []
+    @Published var extraPersonalDetails: [CustomField] = []
 
     /// Address details
     /// Shown
@@ -130,7 +89,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     /// Additional
     @Published var floor: HiddenStringValue = .default
     @Published var county: HiddenStringValue = .default
-    @Published var extraAddressDetails: [CustomFieldUiModel] = []
+    @Published var extraAddressDetails: [CustomField] = []
 
     /// Contact details
     /// Shown
@@ -147,7 +106,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var facebook: HiddenStringValue = .default
     @Published var yahoo: HiddenStringValue = .default
     @Published var instagram: HiddenStringValue = .default
-    @Published var extraContactDetails: [CustomFieldUiModel] = []
+    @Published var extraContactDetails: [CustomField] = []
 
     /// Work details
     /// Shown
@@ -158,113 +117,89 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
     @Published var personalWebsite: HiddenStringValue = .default
     @Published var workPhoneNumber: HiddenStringValue = .default
     @Published var workEmail: HiddenStringValue = .default
-    @Published var extraWorkDetails: [CustomFieldUiModel] = []
+    @Published var extraWorkDetails: [CustomField] = []
 
     @Published var sections = [CreateEditIdentitySection]()
 
-    private var customFieldSection: CreateEditIdentitySection?
-    @Published var customSectionTitle = ""
+    private var sectionIdToAddCustomField: String?
 
     override var isSaveable: Bool {
         super.isSaveable && !title.isEmpty
     }
 
-    private(set) var selectedCustomSection: CreateEditIdentitySection?
-
     override var itemContentType: ItemContentType { .identity }
 
-    override func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
+    override var supportedCustomFieldTypes: [CustomFieldType] {
+        var types = super.supportedCustomFieldTypes
+        types.removeAll { $0 == .totp }
+        return types
+    }
+
+    override func requestAddCustomField(to sectionId: String?) {
+        sectionIdToAddCustomField = sectionId
+        super.requestAddCustomField(to: sectionId)
+    }
+
+    override func addCustomField(_ field: CustomField, to sectionId: String?) {
+        guard let sectionId,
+              sectionId == sectionIdToAddCustomField,
+              sections.map(\.id).contains(sectionId) else {
+            super.addCustomField(field, to: sectionId)
+            return
+        }
+        sectionIdToAddCustomField = nil
         sections = sections.map { section in
-            guard let index = getIndex(section, uiModel) else {
+            guard section.id == sectionId else {
                 return section
             }
+            recentlyAddedOrEditedField = field
 
-            recentlyAddedOrEditedField = uiModel
             switch section.type {
             case .address:
-                extraAddressDetails[index] = uiModel.update(title: newTitle)
-                return section
+                extraAddressDetails.append(field)
 
             case .personalDetails:
-                extraPersonalDetails[index] = uiModel.update(title: newTitle)
-                return section
+                extraPersonalDetails.append(field)
 
             case .workDetail:
-                extraWorkDetails[index] = uiModel.update(title: newTitle)
-                return section
+                extraWorkDetails.append(field)
 
             case .contact:
-                extraContactDetails[index] = uiModel.update(title: newTitle)
-                return section
-
-            case .custom:
-                var newCustoms = section.content
-                newCustoms[index] = uiModel.update(title: newTitle)
-                return section.copy(content: newCustoms)
+                extraContactDetails.append(field)
             }
+
+            return section
         }
     }
 
-    override func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
-        sections = sections.map { section in
-            guard let index = getIndex(section, uiModel) else {
-                return section
-            }
-            recentlyAddedOrEditedField = uiModel
-            switch section.type {
-            case .address:
-                extraAddressDetails[index] = uiModel.update(content: content)
-                return section
-            case .personalDetails:
-                extraPersonalDetails[index] = uiModel.update(content: content)
-                return section
-            case .workDetail:
-                extraWorkDetails[index] = uiModel.update(content: content)
-                return section
-            case .contact:
-                extraContactDetails[index] = uiModel.update(content: content)
-                return section
-            case .custom:
-                var newCustoms = section.content
-                newCustoms[index] = uiModel.update(content: content)
-                return section.copy(content: newCustoms)
-            }
+    override func editCustomField(_ field: CustomField, update: CustomFieldUpdate) {
+        var edited = false
+
+        let updatedField = field.update(from: update)
+        if let index = extraPersonalDetails.firstIndex(where: { $0.id == field.id }) {
+            edited = true
+            extraPersonalDetails[index] = updatedField
         }
-    }
 
-    override func customFieldAdded(_ customField: CustomField) {
-        sections = sections.map { section in
-            guard let customFieldSection,
-                  customFieldSection.id == section.id else {
-                return section
-            }
+        if !edited, let index = extraAddressDetails.firstIndex(where: { $0.id == field.id }) {
+            edited = true
+            extraAddressDetails[index] = updatedField
+        }
 
-            var newCustoms = section.content
-            let uiModel = CustomFieldUiModel(customField: customField)
-            recentlyAddedOrEditedField = uiModel
+        if !edited, let index = extraContactDetails.firstIndex(where: { $0.id == field.id }) {
+            edited = true
+            extraContactDetails[index] = updatedField
+        }
 
-            switch section.type {
-            case .address:
-                extraAddressDetails.append(uiModel)
-                return section
+        if !edited, let index = extraWorkDetails.firstIndex(where: { $0.id == field.id }) {
+            edited = true
+            extraWorkDetails[index] = updatedField
+        }
 
-            case .personalDetails:
-                extraPersonalDetails.append(uiModel)
-                return section
-
-            case .workDetail:
-                extraWorkDetails.append(uiModel)
-                return section
-
-            case .contact:
-                extraContactDetails.append(uiModel)
-                return section
-
-            case .custom:
-                newCustoms.append(uiModel)
-            }
-
-            return section.copy(content: newCustoms)
+        if edited {
+            recentlyAddedOrEditedField = updatedField
+        } else {
+            super.editCustomField(field, update: update)
         }
     }
 
@@ -273,7 +208,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
         case let .clone(itemContent), let .edit(itemContent):
             guard case let .identity(data) = itemContent.contentData else { return }
 
-            for item in BaseIdentitySection.allCases where item != .custom {
+            for item in BaseIdentitySection.allCases {
                 let shouldBeExpanded = data.sectionShouldBeExpanded(for: item)
                 let section = item.createEditIdentitySection.copy(isCollapsed: !shouldBeExpanded)
                 sections.append(section)
@@ -288,7 +223,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             lastName = .init(value: data.lastName)
             birthdate = .init(value: data.birthdate)
             gender = .init(value: data.gender)
-            extraPersonalDetails = data.extraPersonalDetails.map { CustomFieldUiModel(customField: $0) }
+            extraPersonalDetails = data.extraPersonalDetails
             organization = data.organization
             streetAddress = data.streetAddress
             zipOrPostalCode = data.zipOrPostalCode
@@ -297,7 +232,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             countryOrRegion = data.countryOrRegion
             floor = .init(value: data.floor)
             county = .init(value: data.county)
-            extraAddressDetails = data.extraAddressDetails.map { CustomFieldUiModel(customField: $0) }
+            extraAddressDetails = data.extraAddressDetails
             socialSecurityNumber = data.socialSecurityNumber
             passportNumber = data.passportNumber
             licenseNumber = data.licenseNumber
@@ -309,14 +244,14 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
             facebook = .init(value: data.facebook)
             yahoo = .init(value: data.yahoo)
             instagram = .init(value: data.instagram)
-            extraContactDetails = data.extraContactDetails.map { CustomFieldUiModel(customField: $0) }
+            extraContactDetails = data.extraContactDetails
             company = data.company
             jobTitle = data.jobTitle
             personalWebsite = .init(value: data.personalWebsite)
             workPhoneNumber = .init(value: data.workPhoneNumber)
             workEmail = .init(value: data.workEmail)
-            extraWorkDetails = data.extraWorkDetails.map { CustomFieldUiModel(customField: $0) }
-            sections.append(contentsOf: data.extraSections.toCreateEditIdentitySections)
+            extraWorkDetails = data.extraWorkDetails
+            customSections = data.extraSections
         case .create:
             addBaseSections()
         }
@@ -331,7 +266,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                                 lastName: lastName.value,
                                 birthdate: birthdate.value,
                                 gender: gender.value,
-                                extraPersonalDetails: extraPersonalDetails.map(\.customField),
+                                extraPersonalDetails: extraPersonalDetails,
                                 organization: organization,
                                 streetAddress: streetAddress,
                                 zipOrPostalCode: zipOrPostalCode,
@@ -340,7 +275,7 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                                 countryOrRegion: countryOrRegion,
                                 floor: floor.value,
                                 county: county.value,
-                                extraAddressDetails: extraAddressDetails.map(\.customField),
+                                extraAddressDetails: extraAddressDetails,
                                 socialSecurityNumber: socialSecurityNumber,
                                 passportNumber: passportNumber,
                                 licenseNumber: licenseNumber,
@@ -352,14 +287,14 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
                                 facebook: facebook.value,
                                 yahoo: yahoo.value,
                                 instagram: instagram.value,
-                                extraContactDetails: extraContactDetails.map(\.customField),
+                                extraContactDetails: extraContactDetails,
                                 company: company,
                                 jobTitle: jobTitle,
                                 personalWebsite: personalWebsite.value,
                                 workPhoneNumber: workPhoneNumber.value,
                                 workEmail: workEmail.value,
-                                extraWorkDetails: extraWorkDetails.map(\.customField),
-                                extraSections: sections.filterToCustomSections)
+                                extraWorkDetails: extraWorkDetails,
+                                extraSections: customSections)
         return .init(name: title,
                      note: "",
                      itemUuid: UUID().uuidString,
@@ -371,65 +306,6 @@ final class CreateEditIdentityViewModel: BaseCreateEditItemViewModel {
 // MARK: - Utils
 
 extension CreateEditIdentityViewModel {
-    func setSelectedSection(section: CreateEditIdentitySection) {
-        selectedCustomSection = section
-    }
-
-    func deleteCustomSection() {
-        guard let sectionToDelete = selectedCustomSection else {
-            return
-        }
-
-        sections = sections.removing(sectionToDelete)
-        selectedCustomSection = nil
-    }
-
-    func reset() {
-        customSectionTitle = ""
-        selectedCustomSection = nil
-    }
-
-    func addCustomSection() {
-        guard !customSectionTitle.isEmpty else {
-            return
-        }
-        let newSection = CreateEditIdentitySection.baseCustomSection(title: customSectionTitle)
-        sections.append(newSection)
-        customSectionTitle = ""
-    }
-
-    func modifyCustomSectionName() {
-        guard !customSectionTitle.isEmpty, let sectionToModify = selectedCustomSection else {
-            return
-        }
-        sections = sections.map { section in
-            guard sectionToModify.id == section.id else {
-                return section
-            }
-            return section.copy(title: customSectionTitle)
-        }
-        customSectionTitle = ""
-    }
-
-    func getIndex(_ section: CreateEditIdentitySection, _ uiModel: CustomFieldUiModel) -> Int? {
-        switch section.type {
-        case .address:
-            extraAddressDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .personalDetails:
-            extraPersonalDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .workDetail:
-            extraWorkDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .contact:
-            extraContactDetails.firstIndex(where: { $0.id == uiModel.id })
-
-        case .custom:
-            section.content.firstIndex(where: { $0.id == uiModel.id })
-        }
-    }
-
     func toggleCollapsingSection(_ sectionToToggle: CreateEditIdentitySection) {
         sections = sections.map { section in
             guard sectionToToggle.id == section.id else {
@@ -438,16 +314,11 @@ extension CreateEditIdentityViewModel {
             return section.copy(isCollapsed: !section.isCollapsed)
         }
     }
-
-    func addCustomField(to section: CreateEditIdentitySection) {
-        customFieldSection = section
-        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self, shouldDisplayTotp: false)
-    }
 }
 
 private extension CreateEditIdentityViewModel {
     func addBaseSections() {
-        for item in BaseIdentitySection.allCases where item != .custom {
+        for item in BaseIdentitySection.allCases {
             sections.append(item.createEditIdentitySection)
         }
     }
@@ -494,23 +365,6 @@ private extension IdentityData {
             contactSection.contains { !$0.isEmpty }
         default:
             false
-        }
-    }
-}
-
-private extension [CustomSection] {
-    var toCreateEditIdentitySections: [CreateEditIdentitySection] {
-        self.map(\.createEditIdentitySection)
-    }
-}
-
-private extension [CreateEditIdentitySection] {
-    var filterToCustomSections: [CustomSection] {
-        self.compactMap { section in
-            guard section.isCustom else {
-                return nil
-            }
-            return CustomSection(title: section.title, content: section.content.map(\.customField))
         }
     }
 }

@@ -39,6 +39,8 @@ extension ItemContentType {
             PassIcon.passCreditCardOneStripe
         case .identity:
             IconProvider.cardIdentity
+        case .custom, .sshKey, .wifi:
+            IconProvider.pencil
         }
     }
 
@@ -61,7 +63,7 @@ extension ItemContentType {
             PassColor.noteInteractionNorm
         case .creditCard:
             PassColor.cardInteractionNorm
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNorm
         }
     }
@@ -76,7 +78,7 @@ extension ItemContentType {
             PassColor.noteInteractionNormMajor1
         case .creditCard:
             PassColor.cardInteractionNormMajor1
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNormMajor1
         }
     }
@@ -91,7 +93,7 @@ extension ItemContentType {
             PassColor.noteInteractionNormMajor2
         case .creditCard:
             PassColor.cardInteractionNormMajor2
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNormMajor2
         }
     }
@@ -106,7 +108,7 @@ extension ItemContentType {
             PassColor.noteInteractionNormMinor1
         case .creditCard:
             PassColor.cardInteractionNormMinor1
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNormMinor1
         }
     }
@@ -121,7 +123,7 @@ extension ItemContentType {
             PassColor.noteInteractionNormMinor2
         case .creditCard:
             PassColor.cardInteractionNormMinor2
-        case .identity:
+        case .custom, .identity, .sshKey, .wifi:
             PassColor.interactionNormMinor2
         }
     }
@@ -142,6 +144,12 @@ extension ItemContentType {
             #localized("Card")
         case .identity:
             #localized("Identity")
+        case .sshKey:
+            #localized("SSH key")
+        case .wifi:
+            #localized("WiFi network")
+        case .custom:
+            #localized("Custom item")
         }
     }
 
@@ -157,6 +165,12 @@ extension ItemContentType {
             #localized("Credit cards")
         case .identity:
             #localized("Identities")
+        case .sshKey:
+            #localized("SSH keys")
+        case .wifi:
+            #localized("WiFi networks")
+        case .custom:
+            #localized("Custom items")
         }
     }
 
@@ -172,6 +186,8 @@ extension ItemContentType {
             #localized("Filtered by credit cards. Trashed items aren't shown.")
         case .identity:
             #localized("Filtered by identities. Trashed items aren't shown.")
+        case .custom, .sshKey, .wifi:
+            #localized("Filtered by custom items. Trashed items aren't shown.")
         }
     }
 
@@ -187,6 +203,8 @@ extension ItemContentType {
             #localized("Create a note")
         case .identity:
             #localized("Create an identity")
+        case .custom, .sshKey, .wifi:
+            #localized("Create a custom item")
         }
     }
 
@@ -202,6 +220,12 @@ extension ItemContentType {
             #localized("Note created")
         case .identity:
             #localized("Identity created")
+        case .sshKey:
+            #localized("SSH key created")
+        case .wifi:
+            #localized("WiFi network created")
+        case .custom:
+            #localized("Custom item created")
         }
     }
 
@@ -217,6 +241,12 @@ extension ItemContentType {
             #localized("Open note")
         case .identity:
             #localized("Open identity")
+        case .sshKey:
+            #localized("Open SSH key")
+        case .wifi:
+            #localized("Open WiFi network")
+        case .custom:
+            #localized("Open custom item")
         }
     }
 
@@ -232,6 +262,12 @@ extension ItemContentType {
             #localized("Note restored")
         case .identity:
             #localized("Identity restored")
+        case .sshKey:
+            #localized("SSH key restored")
+        case .wifi:
+            #localized("WiFi network restored")
+        case .custom:
+            #localized("Custom item restored")
         }
     }
 
@@ -247,6 +283,12 @@ extension ItemContentType {
             #localized("Note permanently deleted")
         case .identity:
             #localized("Identity permanently deleted")
+        case .sshKey:
+            #localized("SSH key permanently deleted")
+        case .wifi:
+            #localized("WiFi network permanently deleted")
+        case .custom:
+            #localized("Custom item permanently deleted")
         }
     }
 
@@ -262,6 +304,12 @@ extension ItemContentType {
             #localized("Note updated")
         case .identity:
             #localized("Identity updated")
+        case .sshKey:
+            #localized("SSH key updated")
+        case .wifi:
+            #localized("WiFi network updated")
+        case .custom:
+            #localized("Custom item updated")
         }
     }
 }
