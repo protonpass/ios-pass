@@ -22,9 +22,12 @@
 // swiftlint:disable prefixed_toplevel_constant
 import fusion
 
-private let itemsLabelText = "Items"
-private let settingsLabelText = "Settings"
+private let storageLabelText = "Storage"
+private let expandProfile = "ProfileTabView.AccountSection.AccountCell"
+private let popupButton = "SwiftUIImage"
+private let signOutButton = "Sign out"
 private let accountLabelText = "Account"
+private let addAccountButtonText = "Add account"
 
 final class ProfileRobot: CoreElements {
     let verify = Verify()
@@ -32,7 +35,7 @@ final class ProfileRobot: CoreElements {
     public final class Verify: CoreElements {
         @discardableResult
         public func itemListContainsAllElements(login: String, alias: String, creditCard: String, note: String) -> ProfileRobot {
-            staticText(itemsLabelText).waitUntilExists().checkExists()
+            staticText(storageLabelText).waitUntilExists().checkExists()
             staticText(login).waitUntilExists().checkExists()
             staticText(alias).waitUntilExists().checkExists()
             staticText(creditCard).waitUntilExists().checkExists()
@@ -41,9 +44,21 @@ final class ProfileRobot: CoreElements {
         }
     }
 
-    func tapSettingsButton() -> SettingsRobot {
-        button(settingsLabelText).waitUntilExists().tap()
-        return SettingsRobot()
+    func tapExpandProfile() -> ProfileRobot {
+        staticText(accountLabelText).waitUntilExists().checkExists()
+        scrollView().onDescendant(image().byIndex(0)).tap()
+        return self
+    }
+
+    func tapExpandMenu() -> ProfileRobot {
+        staticText(addAccountButtonText).waitUntilExists().checkExists()
+        image("SwiftUIImage").byIndex(2).tap()
+        return self
+    }
+
+    func signOut() {
+        button(signOutButton).tap()
+        button(signOutButton).tap()
     }
 
     func tapAccountButton() -> AccountRobot {

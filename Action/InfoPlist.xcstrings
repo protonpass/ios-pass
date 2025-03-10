@@ -129,6 +129,12 @@
             "state" : "translated",
             "value" : "Proton Pass içine aktar"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入到 Proton Pass"
+          }
         }
       }
     },
@@ -260,6 +266,12 @@
             "state" : "translated",
             "value" : "Proton Pass içine aktar"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "导入到 Proton Pass"
+          }
         }
       }
     },
@@ -362,6 +374,12 @@
             "value" : "Proton AG"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton AG"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -387,6 +405,12 @@
           }
         },
         "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton AG"
+          }
+        },
+        "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton AG"
