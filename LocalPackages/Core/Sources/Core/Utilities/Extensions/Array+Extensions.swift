@@ -131,3 +131,9 @@ public extension Array {
         return tempSet
     }
 }
+
+public extension Array where Element: Identifiable {
+    mutating func remove(_ element: Element) {
+        removeAll { $0.id == element.id }
+    }
+}

@@ -92,6 +92,7 @@ private extension ItemsForTextInsertionView {
                             .sort(viewModel.selectedSortType) { viewModel.selectedSortType = $0 },
                             .resetFilters { viewModel.resetFilters() }
                         ],
+                        customItemEnabled: viewModel.customItemEnabled,
                         highlighted: viewModel.highlighted,
                         selectable: false)
                     }

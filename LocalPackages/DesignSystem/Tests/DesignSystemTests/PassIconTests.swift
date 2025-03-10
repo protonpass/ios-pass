@@ -63,6 +63,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.fileTypeUnknown
 
         _ = PassIcon.filterFilled
+        _ = PassIcon.hamburgerPlus
 
         _ = PassIcon.infoBannerAliases
         _ = PassIcon.infoBannerAutoFill
@@ -94,7 +95,9 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.scanner
         _ = PassIcon.shieldCheck
         _ = PassIcon.shieldLock
-        _ = PassIcon.swirls
+        _ = PassIcon.aliasSlash
+        _ = PassIcon.bank
+        _ = PassIcon.brandBitcoin
 
         _ = PassIcon.tabProfilePaidSelected
         _ = PassIcon.tabProfilePaidUnselected

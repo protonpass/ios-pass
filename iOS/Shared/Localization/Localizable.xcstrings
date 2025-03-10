@@ -16596,6 +16596,28 @@
         }
       }
     },
+    "Account number" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account number"
+          }
+        }
+      }
+    },
+    "Account type" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account type"
+          }
+        }
+      }
+    },
     "Active" : {
       "localizations" : {
         "be" : {
@@ -18860,6 +18882,17 @@
         }
       }
     },
+    "Add name (SSID)" : {
+      "comment" : "Placeholder for the text input of wifi's name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add name (SSID)"
+          }
+        }
+      }
+    },
     "Add note" : {
       "localizations" : {
         "be" : {
@@ -19192,6 +19225,26 @@
         }
       }
     },
+    "Add private key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add private key"
+          }
+        }
+      }
+    },
+    "Add public key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add public key"
+          }
+        }
+      }
+    },
     "Add username" : {
       "localizations" : {
         "be" : {
@@ -19354,6 +19407,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "添加用户名"
+          }
+        }
+      }
+    },
+    "Address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
           }
         }
       }
@@ -27115,6 +27178,27 @@
         }
       }
     },
+    "API Credential" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API Credential"
+          }
+        }
+      }
+    },
+    "API key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API key"
+          }
+        }
+      }
+    },
     "Application" : {
       "localizations" : {
         "be" : {
@@ -30055,6 +30139,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自动保存"
+          }
+        }
+      }
+    },
+    "Bank Account" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bank Account"
+          }
+        }
+      }
+    },
+    "Bank name" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bank name"
           }
         }
       }
@@ -35731,6 +35837,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "城市"
+          }
+        }
+      }
+    },
+    "Class" : {
+      "comment" : "Default custom item field for driver license template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Class"
           }
         }
       }
@@ -41660,6 +41777,17 @@
         }
       }
     },
+    "Copy SSID" : {
+      "comment" : "Message shown after copying the SSID of a WiFi network item",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy SSID"
+          }
+        }
+      }
+    },
     "Copy username" : {
       "comment" : "Context menu options for items",
       "localizations" : {
@@ -41823,6 +41951,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "复制用户名"
+          }
+        }
+      }
+    },
+    "Country" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Country"
           }
         }
       }
@@ -42658,6 +42796,16 @@
         }
       }
     },
+    "Create a custom item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a custom item"
+          }
+        }
+      }
+    },
     "Create a Hide My Email alias" : {
       "localizations" : {
         "be" : {
@@ -43472,6 +43620,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建联系人"
+          }
+        }
+      }
+    },
+    "Create items with fully customized fields" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create items with fully customized fields"
           }
         }
       }
@@ -45292,6 +45450,17 @@
         }
       }
     },
+    "Crypto Wallet" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crypto Wallet"
+          }
+        }
+      }
+    },
     "Current" : {
       "localizations" : {
         "be" : {
@@ -46455,6 +46624,76 @@
         }
       }
     },
+    "Custom item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item"
+          }
+        }
+      }
+    },
+    "Custom item created" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item created"
+          }
+        }
+      }
+    },
+    "Custom item moved to trash" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item moved to trash"
+          }
+        }
+      }
+    },
+    "Custom item permanently deleted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item permanently deleted"
+          }
+        }
+      }
+    },
+    "Custom item restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item restored"
+          }
+        }
+      }
+    },
+    "Custom item updated" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom item updated"
+          }
+        }
+      }
+    },
+    "Custom items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Custom items"
+          }
+        }
+      }
+    },
     "Custom section" : {
       "localizations" : {
         "be" : {
@@ -47115,6 +47354,58 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "数据安全"
+          }
+        }
+      }
+    },
+    "Database" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database"
+          }
+        }
+      }
+    },
+    "Database type" : {
+      "comment" : "Default custom item field for databse template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database type"
+          }
+        }
+      }
+    },
+    "Date" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date"
+          }
+        }
+      }
+    },
+    "Date custom field" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date custom field"
+          }
+        }
+      }
+    },
+    "Date of Birth" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date of Birth"
           }
         }
       }
@@ -50333,6 +50624,16 @@
         }
       }
     },
+    "Doctor" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doctor"
+          }
+        }
+      }
+    },
     "Domain" : {
       "comment" : "Passkey's domain",
       "localizations" : {
@@ -50810,6 +51111,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下载文件已清除"
+          }
+        }
+      }
+    },
+    "Driver License" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Driver License"
           }
         }
       }
@@ -51810,172 +52122,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "编辑名称"
-          }
-        }
-      }
-    },
-    "Edit section's title" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Рэдагаваць загаловак раздзела"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upravit název sekce"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rediger sektionens titel"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abschnittsnamen bearbeiten"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Επεξεργασία τίτλου ενότητας"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit section's title"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar el título de la sección"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar el título de la sección"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Muokkaa osion otsikkoa"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifier le titre de la section"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ubah judul sesi"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifica il titolo della sezione"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "セクションタイトルを編集"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "განყოფილები სათაურის ჩასწორება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "섹션 제목 수정"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rediger seksjonens tittel"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sectie titel bewerken"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edytuj tytuł sekcji"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar título da seção"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editare titlu secțiune"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upraviť názov sekcie"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Urejanje naslova odseka"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Redigera sektionens rubrik"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bölüm başlığını düzenle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Змінити назву розділу"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chỉnh sửa tiêu đề của mục"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "编辑分组标题"
           }
         }
       }
@@ -58715,6 +58861,16 @@
         }
       }
     },
+    "Expiry date" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expiry date"
+          }
+        }
+      }
+    },
     "Extra password" : {
       "localizations" : {
         "be" : {
@@ -61672,6 +61828,16 @@
         }
       }
     },
+    "Filtered by custom items. Trashed items aren't shown." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtered by custom items. Trashed items aren't shown."
+          }
+        }
+      }
+    },
     "Filtered by identities. Trashed items aren't shown." : {
       "localizations" : {
         "be" : {
@@ -62130,6 +62296,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "按备注筛选。不显示回收站中的项目。"
+          }
+        }
+      }
+    },
+    "Finance" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finance"
           }
         }
       }
@@ -69222,6 +69398,49 @@
         }
       }
     },
+    "Holder name" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Holder name"
+          }
+        }
+      }
+    },
+    "Hospital" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hospital"
+          }
+        }
+      }
+    },
+    "Host" : {
+      "comment" : "Default custom item field for database template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host"
+          }
+        }
+      }
+    },
+    "Hostname" : {
+      "comment" : "Default custom item field for server template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hostname"
+          }
+        }
+      }
+    },
     "How to use Proton Pass" : {
       "localizations" : {
         "be" : {
@@ -69550,6 +69769,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "连字符"
+          }
+        }
+      }
+    },
+    "IBAN" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBAN"
           }
         }
       }
@@ -73601,6 +73831,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "邀请您访问其中的项目"
+          }
+        }
+      }
+    },
+    "IP address" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP address"
+          }
+        }
+      }
+    },
+    "Issuing authority" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issuing authority"
+          }
+        }
+      }
+    },
+    "Issuing country" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issuing country"
+          }
+        }
+      }
+    },
+    "Issuing State/Country" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issuing State/Country"
           }
         }
       }
@@ -79838,6 +80108,17 @@
         }
       }
     },
+    "License key" : {
+      "comment" : "Default custom item field for software license template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "License key"
+          }
+        }
+      }
+    },
     "License number" : {
       "localizations" : {
         "be" : {
@@ -84143,6 +84424,49 @@
         }
       }
     },
+    "Medical conditions" : {
+      "comment" : "Default custom item field for medical record template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medical conditions"
+          }
+        }
+      }
+    },
+    "Medical Record" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medical Record"
+          }
+        }
+      }
+    },
+    "Medications" : {
+      "comment" : "Default custom item field for medical record template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medications"
+          }
+        }
+      }
+    },
+    "Member ID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Member ID"
+          }
+        }
+      }
+    },
     "Member Limit" : {
       "comment" : "Title of an alert to explain sharing limit",
       "localizations" : {
@@ -84310,6 +84634,16 @@
         }
       }
     },
+    "Member name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Member name"
+          }
+        }
+      }
+    },
     "Members" : {
       "comment" : "Title of the section which shows the list of members",
       "localizations" : {
@@ -84473,6 +84807,27 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "成员"
+          }
+        }
+      }
+    },
+    "Membership" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Membership"
+          }
+        }
+      }
+    },
+    "Membership ID" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Membership ID"
           }
         }
       }
@@ -87566,6 +87921,17 @@
         }
       }
     },
+    "Name (SSID)" : {
+      "comment" : "Wifi's name",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name (SSID)"
+          }
+        }
+      }
+    },
     "Name on card" : {
       "comment" : "Credit card item create/edit page",
       "localizations" : {
@@ -87729,6 +88095,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "持卡人姓名"
+          }
+        }
+      }
+    },
+    "Network" : {
+      "comment" : "Crypto network (Bitcoin, Ethereum..)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Network"
           }
         }
       }
@@ -94771,6 +95148,16 @@
         }
       }
     },
+    "Open custom item" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open custom item"
+          }
+        }
+      }
+    },
     "Open identity" : {
       "localizations" : {
         "be" : {
@@ -95399,6 +95786,16 @@
         }
       }
     },
+    "Open SSH key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open SSH key"
+          }
+        }
+      }
+    },
     "Open System Settings → Passwords → Password Options" : {
       "localizations" : {
         "be" : {
@@ -95561,6 +95958,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "打开系统设置 → 密码 → 密码选项"
+          }
+        }
+      }
+    },
+    "Open WiFi network" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open WiFi network"
           }
         }
       }
@@ -96195,6 +96602,27 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "单位"
+          }
+        }
+      }
+    },
+    "Organization name" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organization name"
+          }
+        }
+      }
+    },
+    "OS" : {
+      "comment" : "Default custom item field for server template. Acronym for operating system.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OS"
           }
         }
       }
@@ -97180,6 +97608,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "通行密钥"
+          }
+        }
+      }
+    },
+    "Passport" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passport"
           }
         }
       }
@@ -98342,6 +98781,27 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "粘贴"
+          }
+        }
+      }
+    },
+    "Paste from clipboard" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste from clipboard"
+          }
+        }
+      }
+    },
+    "Patient name" : {
+      "comment" : "Default custom item field for medical record template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Patient name"
           }
         }
       }
@@ -99545,6 +100005,17 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Permissions" : {
+      "comment" : "Default custom item field for API credential template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Permissions"
           }
         }
       }
@@ -103425,6 +103896,28 @@
         }
       }
     },
+    "Points balance" : {
+      "comment" : "Default custom item field for reward program template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Points balance"
+          }
+        }
+      }
+    },
+    "Port" : {
+      "comment" : "Default custom item field for dataset template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        }
+      }
+    },
     "Prefix" : {
       "localizations" : {
         "be" : {
@@ -104575,6 +105068,28 @@
         }
       }
     },
+    "Private key" : {
+      "comment" : "Default custom item field for SSH key template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Private key"
+          }
+        }
+      }
+    },
+    "Product" : {
+      "comment" : "Default custom item field for software license template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Product"
+          }
+        }
+      }
+    },
     "Profile" : {
       "comment" : "Profile tab",
       "localizations" : {
@@ -104738,6 +105253,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "收藏"
+          }
+        }
+      }
+    },
+    "Program name" : {
+      "comment" : "Default custom item field for reward program template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Program name"
           }
         }
       }
@@ -106247,6 +106773,16 @@
         }
       }
     },
+    "Public key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public key"
+          }
+        }
+      }
+    },
     "Quickly pick a login item from suggestions above the keyboard" : {
       "localizations" : {
         "be" : {
@@ -107240,6 +107776,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "建议采取的行动"
+          }
+        }
+      }
+    },
+    "Record number" : {
+      "comment" : "Default custom item field for medical record template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Record number"
           }
         }
       }
@@ -109076,172 +109623,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "移除链接"
-          }
-        }
-      }
-    },
-    "Remove section" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Выдаліць раздзел"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odebrat sekci"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fjern sektion"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Abschnitt entfernen"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Αφαίρεση τμήματος"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remove section"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar la sección"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminar la sección"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poista osio"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Retirer la section"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hapus sesi"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rimuovi sezione"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "セクションを削除"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "განყოფილების მოცილება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "섹션 제거"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fjern seksjon"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sectie verwijderen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usuń sekcję"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Remover seção"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Eliminare secțiune"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odstrániť sekciu"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odstrani odsek"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ta bort sektion"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bölümü kaldır"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Видалити розділ"
-          }
-        },
-        "vi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Xóa mục"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "移除分组"
           }
         }
       }
@@ -114511,6 +114892,28 @@
         }
       }
     },
+    "Reward Program" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reward Program"
+          }
+        }
+      }
+    },
+    "Routing number" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Routing number"
+          }
+        }
+      }
+    },
     "Save" : {
       "comment" : "Item create/edit page",
       "localizations" : {
@@ -115001,160 +115404,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "截图"
-          }
-        }
-      }
-    },
-    "Scroll for more" : {
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Прагарніце, каб убачыць больш"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Přejděte dolů pro více informací"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rul for at se mere"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scrollen für mehr"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Κάντε κύλιση για περισσότερα"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scroll for more"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desplazar para más"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desplazar para más"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jatka vierittämällä"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Faites défiler pour plus"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gulir untuk yang lainnya"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scorri per saperne di più"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "もっとスクロール"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ჩასწიეთ მეტის სანახავად"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "스크롤하여 더 알아보기"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bla for mer"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Scroll voor meer"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przewiń, aby zobaczyć więcej"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deslize para ler mais"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Derulați pentru mai mult"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prejdite nižšie pre viac informácií"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rulla för mer"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Daha fazlası için aşağı kaydırın"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Прокрутіть, щоби побачити більше"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "滚动查看更多"
           }
         }
       }
@@ -116649,6 +116898,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "辅助电话号码"
+          }
+        }
+      }
+    },
+    "Secret" : {
+      "comment" : "Default custom item field for API credential template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secret"
           }
         }
       }
@@ -118631,6 +118891,17 @@
         }
       }
     },
+    "Seed phrase" : {
+      "comment" : "Default custom item field for crypto wallet template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seed phrase"
+          }
+        }
+      }
+    },
     "Select **Proton Pass**" : {
       "localizations" : {
         "be" : {
@@ -120433,6 +120704,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Sentinel 是一项高级的账户保护程序，由先进的人工智能系统和专家提供支持，全天候保护您免受不良分子和安全威胁的侵害。"
+          }
+        }
+      }
+    },
+    "Server" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server"
           }
         }
       }
@@ -127444,6 +127726,28 @@
         }
       }
     },
+    "Social Security Number" : {
+      "comment" : "A custom item template. Capitalized on purpose. Please capitalize if it makes sense for other languages.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Social Security Number"
+          }
+        }
+      }
+    },
+    "Software License" : {
+      "comment" : "A custom item template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Software License"
+          }
+        }
+      }
+    },
     "Sort By" : {
       "comment" : "Items filtering",
       "localizations" : {
@@ -127953,6 +128257,97 @@
         }
       }
     },
+    "SSH key" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key"
+          }
+        }
+      }
+    },
+    "SSH Key" : {
+      "comment" : "A custom item template. Capitalized on purpose. Please capitalize if it makes sense for other languages.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH Key"
+          }
+        }
+      }
+    },
+    "SSH key created" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key created"
+          }
+        }
+      }
+    },
+    "SSH key moved to trash" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key moved to trash"
+          }
+        }
+      }
+    },
+    "SSH key permanently deleted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key permanently deleted"
+          }
+        }
+      }
+    },
+    "SSH key restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key restored"
+          }
+        }
+      }
+    },
+    "SSH key updated" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH key updated"
+          }
+        }
+      }
+    },
+    "SSH keys" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH keys"
+          }
+        }
+      }
+    },
+    "SSID copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID copied"
+          }
+        }
+      }
+    },
     "SSO integration (coming soon)" : {
       "localizations" : {
         "be" : {
@@ -128115,6 +128510,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "集成单点登录（即将推出）"
+          }
+        }
+      }
+    },
+    "Start from scratch" : {
+      "comment" : "Create a custom item from scratch",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start from scratch"
           }
         }
       }
@@ -129777,6 +130183,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 的补全建议"
+          }
+        }
+      }
+    },
+    "SWIFT/BIC" : {
+      "comment" : "Default custom item field for bank template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC"
           }
         }
       }
@@ -131553,6 +131970,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "点击齿轮图标，按你想要的方式自定义别名。"
+          }
+        }
+      }
+    },
+    "Technology" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Technology"
           }
         }
       }
@@ -134768,6 +135195,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "这将永久删除您的 Proton 账户及其所有数据，包括电子邮件、日历和存储在 Drive 中的数据。您将无法重新激活该账户。"
+          }
+        }
+      }
+    },
+    "Tier/Level" : {
+      "comment" : "Default custom item field for membership template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tier/Level"
+          }
+        }
+      }
+    },
+    "Tier/Status" : {
+      "comment" : "Default custom item field for reward program template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tier/Status"
           }
         }
       }
@@ -149412,6 +149861,17 @@
         }
       }
     },
+    "Wallet name" : {
+      "comment" : "Default custom item field for crypto wallet template",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wallet name"
+          }
+        }
+      }
+    },
     "Watch a short video on how to use Proton Pass" : {
       "localizations" : {
         "be" : {
@@ -151709,6 +152169,97 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "在保险库之间移动项目时，我们将最多保留对每个项目进行 50 此修改。"
+          }
+        }
+      }
+    },
+    "WiFi network" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network"
+          }
+        }
+      }
+    },
+    "WiFi Network" : {
+      "comment" : "A custom item template. Capitalized on purpose. Please capitalize if it makes sense for other languages.",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi Network"
+          }
+        }
+      }
+    },
+    "WiFi network created" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network created"
+          }
+        }
+      }
+    },
+    "WiFi network moved to trash" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network moved to trash"
+          }
+        }
+      }
+    },
+    "WiFi network permanently deleted" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network permanently deleted"
+          }
+        }
+      }
+    },
+    "WiFi network restored" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network restored"
+          }
+        }
+      }
+    },
+    "WiFi network updated" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi network updated"
+          }
+        }
+      }
+    },
+    "WiFi networks" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi networks"
+          }
+        }
+      }
+    },
+    "WiFi password copied" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi password copied"
           }
         }
       }

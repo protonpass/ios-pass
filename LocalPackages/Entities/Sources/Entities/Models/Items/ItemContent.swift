@@ -37,7 +37,7 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     public let note: String
     public let contentData: ItemContentData
 
-    /// Should only be used for login items
+    /// Applicable to logins, ssh keys, wifis and custom items
     public let customFields: [CustomField]
 
     public var id: String {
@@ -123,22 +123,43 @@ extension ItemContent: ItemThumbnailable {
 
 public extension ItemContent {
     var loginItem: LogInItemData? {
-        if case let .login(item) = contentData {
-            return item
+        if case let .login(data) = contentData {
+            return data
         }
         return nil
     }
 
     var creditCardItem: CreditCardData? {
-        if case let .creditCard(item) = contentData {
-            return item
+        if case let .creditCard(data) = contentData {
+            return data
         }
         return nil
     }
 
     var identityItem: IdentityData? {
-        if case let .identity(item) = contentData {
-            return item
+        if case let .identity(data) = contentData {
+            return data
+        }
+        return nil
+    }
+
+    var sshKey: SshKeyData? {
+        if case let .sshKey(data) = contentData {
+            return data
+        }
+        return nil
+    }
+
+    var wifi: WifiData? {
+        if case let .wifi(data) = contentData {
+            return data
+        }
+        return nil
+    }
+
+    var custom: CustomItemData? {
+        if case let .custom(data) = contentData {
+            return data
         }
         return nil
     }
@@ -199,6 +220,11 @@ public extension ItemContent {
                 break
             case let .identity(data):
                 contents.append(contentsOf: [data.fullName, data.email])
+            case let .wifi(data):
+                contents.append(contentsOf: [data.ssid])
+            case .custom, .sshKey:
+                // Explicit opt-out
+                break
             }
 
             let customFieldValues = customFields
