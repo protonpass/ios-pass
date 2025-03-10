@@ -480,6 +480,8 @@
 		5386ACFF2D4276EC00DEEB8B /* HomepageCoordinator+SLSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */; };
 		539182CA2D7F2C5C00815D7F /* SshDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182C92D7F2C5800815D7F /* SshDetailView.swift */; };
 		539182CC2D7F2C9100815D7F /* SshDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */; };
+		539182CF2D7F3EB500815D7F /* CustomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */; };
+		539182D12D7F3ED100815D7F /* CustomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */; };
 		53A2EB092D6F538A008A4A0C /* CustomItemTemplatesList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */; };
 		53AEE46A2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
 		53AEE46B2D7F0E1800CE0CA7 /* CustomSectionsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */; };
@@ -1054,6 +1056,8 @@
 		5386ACFE2D4276E500DEEB8B /* HomepageCoordinator+SLSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomepageCoordinator+SLSync.swift"; sourceTree = "<group>"; };
 		539182C92D7F2C5800815D7F /* SshDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailView.swift; sourceTree = "<group>"; };
 		539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SshDetailViewModel.swift; sourceTree = "<group>"; };
+		539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailView.swift; sourceTree = "<group>"; };
+		539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailViewModel.swift; sourceTree = "<group>"; };
 		53A2EB072D6F5381008A4A0C /* CustomItemTemplatesList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomItemTemplatesList.swift; sourceTree = "<group>"; };
 		53AEE4692D7F0E1200CE0CA7 /* CustomSectionsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSectionsSection.swift; sourceTree = "<group>"; };
 		53B981782D7ED258003BD70E /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
@@ -1625,6 +1629,7 @@
 		3565622529BA760800C43F72 /* Item Detail */ = {
 			isa = PBXGroup;
 			children = (
+				539182CD2D7F3EA900815D7F /* Custom */,
 				5B0939152C04DD0A0046F467 /* Identity */,
 				539182C82D7F2C4B00815D7F /* SSH */,
 				53B981772D7ED251003BD70E /* Wifi */,
@@ -2089,6 +2094,15 @@
 				539182CB2D7F2C8F00815D7F /* SshDetailViewModel.swift */,
 			);
 			path = SSH;
+			sourceTree = "<group>";
+		};
+		539182CD2D7F3EA900815D7F /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				539182CE2D7F3EAF00815D7F /* CustomDetailView.swift */,
+				539182D02D7F3ECF00815D7F /* CustomDetailViewModel.swift */,
+			);
+			path = Custom;
 			sourceTree = "<group>";
 		};
 		53A2EB062D6F537C008A4A0C /* Custom item */ = {
@@ -3627,6 +3641,7 @@
 				356750D529D31E9200247648 /* ItemSwipeModifier.swift in Sources */,
 				357C1D292CD8F18400703891 /* FeatureFlagsSection.swift in Sources */,
 				3569B2A129B788600070830B /* ItemsTabView.swift in Sources */,
+				539182D12D7F3ED100815D7F /* CustomDetailViewModel.swift in Sources */,
 				35F8CD0029B617670017DBC6 /* HomepageCoordinator.swift in Sources */,
 				5B5DBF182B68048600F72F6C /* TotpLoginsView.swift in Sources */,
 				66CA927D29F9716E00F2FC59 /* UserDefaultsServicePlanDataStorage.swift in Sources */,
@@ -3753,6 +3768,7 @@
 				356BC35B29D70C5000F03497 /* EditThemeView.swift in Sources */,
 				5B4E53DE2BD7B8B600E8D54A /* DetailMonitoredItemView.swift in Sources */,
 				3552A28A29EC29BF00ABDB6E /* CachedFavIconsSection.swift in Sources */,
+				539182CF2D7F3EB500815D7F /* CustomDetailView.swift in Sources */,
 				533EAB952D3F975E00217171 /* AliasDiscoverySection.swift in Sources */,
 				355E33AE29C4AE8600402CAE /* SearchRecentResultsView.swift in Sources */,
 				5BE809302C07358200D3A707 /* IdentityFields.swift in Sources */,

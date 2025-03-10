@@ -104,6 +104,9 @@ struct TextCustomFieldSection: View {
 
                 if isFreeUser {
                     UpgradeButtonLite(action: onUpgrade)
+                } else if content.isEmpty {
+                    Text("Empty")
+                        .placeholderText()
                 } else {
                     TextView(.constant(content))
                         // swiftlint:disable:next deprecated_foregroundcolor_modifier
@@ -155,6 +158,9 @@ struct HiddenCustomFieldSection: View {
                             // swiftlint:disable:next deprecated_foregroundcolor_modifier
                             .foregroundColor(PassColor.textNorm)
                             .isEditable(false)
+                    } else if content.isEmpty {
+                        Text("Empty")
+                            .placeholderText()
                     } else {
                         Text(String(repeating: "•", count: min(20, content.count)))
                             .foregroundStyle(PassColor.textNorm.toColor)
@@ -244,7 +250,8 @@ struct TotpCustomFieldSection: View {
                 } else {
                     switch viewModel.state {
                     case .empty:
-                        EmptyView()
+                        Text("Empty")
+                            .placeholderText()
                     case .loading:
                         ProgressView()
                     case let .valid(data):
