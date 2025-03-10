@@ -110,6 +110,10 @@ extension CreateEditItemCoordinator {
 // MARK: - Private APIs
 
 private extension CreateEditItemCoordinator {
+    var vaults: [Share] {
+        appContentManager.getAllSharesLinkToVault()
+    }
+
     func present(_ view: any View, dismissable: Bool) {
         router.navigate(to: .presentView(view: view, dismissible: dismissable))
     }
@@ -117,7 +121,7 @@ private extension CreateEditItemCoordinator {
     func presentCreateEditLoginView(mode: ItemMode) throws {
         let viewModel = try CreateEditLoginViewModel(mode: mode,
                                                      upgradeChecker: upgradeChecker,
-                                                     vaults: appContentManager.getAllShares())
+                                                     vaults: vaults)
         viewModel.delegate = createEditItemDelegates
         let view = CreateEditLoginView(viewModel: viewModel)
         present(view, dismissable: false)

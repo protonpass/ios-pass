@@ -35,17 +35,15 @@ final class TokenRefreshTests: LoginBaseTestCase {
         try quarkCommands.userCreate(user: user)
         try quarkCommands.jailUnban()
         
-        _ = welcomeRobot.logIn()
+        let homeRobot = welcomeRobot.logIn()
             .fillUsername(username: user.name)
             .fillpassword(password: user.password)
-            .signIn(robot: AutoFillRobot.self)
-            .notNowTap(robot: FaceIDRobot.self)
-            .noThanks(robot: GetStartedRobot.self)
-            .getStartedTap(robot: HomeRobot.self)
+            .signIn(robot: GetStartedRobot.self)
+            .tapClose()
         
         _ = try quarkCommands.userExpireSession(username: user.name, expireRefreshToken: true)
         
-        HomeRobot()
+        homeRobot
             .tapProfile()
         
         WelcomeRobot()
