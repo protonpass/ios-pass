@@ -47,7 +47,7 @@ struct LoginDetailView: View {
                 urlsSection
             }
             CustomFieldSections(itemContentType: viewModel.type,
-                                uiModels: viewModel.customFieldUiModels,
+                                fields: viewModel.customFields,
                                 isFreeUser: viewModel.isFreeUser,
                                 onSelectHiddenText: { viewModel.autofill($0) },
                                 onSelectTotpToken: { viewModel.autofill($0) },

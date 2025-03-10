@@ -60,6 +60,18 @@ struct ItemDetailView: View {
                 LoginDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .note:
                 NoteDetailView(note: item.content.note)
+            case .sshKey:
+                // swiftlint:disable:next todo
+                // TODO: [Custom item] Implement this
+                Text(verbatim: "SSH key detail")
+            case .wifi:
+                // swiftlint:disable:next todo
+                // TODO: [Custom item] Implement this
+                Text(verbatim: "WiFi detail")
+            case .custom:
+                // swiftlint:disable:next todo
+                // TODO: [Custom item] Implement this
+                Text(verbatim: "Custom item detail")
             }
 
             ItemDetailHistorySection(itemContent: item.content, action: nil)

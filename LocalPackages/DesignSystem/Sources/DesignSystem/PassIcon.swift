@@ -69,6 +69,7 @@ public extension PassIcon {
     static let fileTypeUnknown = Self.icon(named: "FileTypeUnknown")
 
     static let filterFilled = Self.icon(named: "FilterFilled")
+    static let hamburgerPlus = Self.icon(named: "HamburgerPlus")
     static let infoBannerAliases = Self.icon(named: "InfoBannerAliases")
     static let infoBannerAutoFill = Self.icon(named: "InfoBannerAutoFill")
     static let infoBannerPass = Self.icon(named: "InfoBannerPass")
@@ -120,8 +121,9 @@ public extension PassIcon {
     static let scanner = Self.icon(named: "Scanner")
     static let shieldCheck = Self.icon(named: "ShieldCheck")
     static let shieldLock = Self.icon(named: "ShieldLock")
-    static let swirls = Self.icon(named: "Swirls")
     static let aliasSlash = Self.icon(named: "AliasSlash")
+    static let bank = Self.icon(named: "Bank")
+    static let brandBitcoin = Self.icon(named: "BrandBitcoin")
 
     static let tabProfilePaidSelected = Self.icon(named: "TabProfilePaidSelected")
     static let tabProfilePaidUnselected = Self.icon(named: "TabProfilePaidUnselected")

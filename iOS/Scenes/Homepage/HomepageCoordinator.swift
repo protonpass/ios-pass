@@ -110,7 +110,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
-    private var customCoordinator: (any CustomCoordinator)?
     private var cancellables = Set<AnyCancellable>()
 
     lazy var logInAndSignUp = makeLoginAndSignUp()
@@ -768,7 +767,7 @@ extension HomepageCoordinator {
     func presentEditItemView(for itemContent: ItemContent) {
         do {
             let coordinator = makeCreateEditItemCoordinator()
-            try coordinator.presentEditItemView(for: itemContent)
+            try coordinator.presentEditOrCloneItemView(for: itemContent, isEdit: true)
         } catch {
             handle(error: error)
         }
@@ -779,7 +778,7 @@ extension HomepageCoordinator {
             guard let self else { return }
             do {
                 let coordinator = makeCreateEditItemCoordinator()
-                try coordinator.presentCloneItemView(for: itemContent)
+                try coordinator.presentEditOrCloneItemView(for: itemContent, isEdit: false)
             } catch {
                 handle(error: error)
             }
@@ -793,7 +792,10 @@ extension HomepageCoordinator {
             }
             do {
                 let coordinator = makeCreateEditItemCoordinator()
-                try await coordinator.presentCreateItemView(for: itemType)
+                try await coordinator.presentCreateItemView(for: itemType) { [weak self] error in
+                    guard let self else { return }
+                    handle(error: error)
+                }
             } catch {
                 handle(error: error)
             }
@@ -1515,25 +1517,7 @@ extension HomepageCoordinator {
     }
 }
 
-// MARK: - CreateEditItemViewModelDelegate
-
-extension HomepageCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
-                                                      shouldDisplayTotp: Bool) {
-        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           delegate: delegate,
-                                                           shouldShowTotp: shouldDisplayTotp)
-        customCoordinator?.start()
-    }
-
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: any CustomFieldEditionDelegate) {
-        customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
-                                                          delegate: delegate,
-                                                          uiModel: uiModel)
-        customCoordinator?.start()
-    }
-
+extension HomepageCoordinator {
     func handleItemCreation(item: SymmetricallyEncryptedItem, type: ItemContentType) {
         Task { [weak self] in
             guard let self else {

@@ -204,6 +204,12 @@ private extension ItemContentType {
             "credit_card"
         case .identity:
             "identity"
+        case .sshKey:
+            "ssh_key"
+        case .wifi:
+            "wifi"
+        case .custom:
+            "custom"
         }
     }
 }

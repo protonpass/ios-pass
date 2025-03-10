@@ -28,11 +28,17 @@ final class SearchResultsViewModel: ObservableObject {
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
     private let canEditItem = resolve(\SharedUseCasesContainer.canEditItem)
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
 
     let itemContextMenuHandler: ItemContextMenuHandler
     let itemCount: ItemCount
     let results: any SearchResults
     let isTrash: Bool
+
+    var customItemEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
+    }
 
     init(itemContextMenuHandler: ItemContextMenuHandler,
          itemCount: ItemCount,

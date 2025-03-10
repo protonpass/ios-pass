@@ -70,9 +70,6 @@ private enum SectionsSheetState {
 struct CreateEditIdentityView: View {
     @StateObject private var viewModel: CreateEditIdentityViewModel
     @State private var sheetState: SectionsSheetState?
-    @State private var showCustomTitleAlert = false
-    @State private var showSectionTitleModification = false
-    @State private var showDeleteCustomSectionAlert = false
     @FocusState private var focusedField: Field?
 
     init(viewModel: CreateEditIdentityViewModel) {
@@ -115,7 +112,7 @@ struct CreateEditIdentityView: View {
 //        case personalWebsite
 //        case workPhoneNumber
 //        case workEmail
-        case custom(CustomFieldUiModel?)
+        case custom(CustomField?)
 
         static func == (lhs: Field, rhs: Field) -> Bool {
             if case let .custom(lhsfield) = lhs,
@@ -156,25 +153,17 @@ private extension CreateEditIdentityView {
                                        onSubmit: {})
                 .padding(.vertical, DesignConstant.sectionPadding / 2)
 
-            sections()
+            staticSections
+            customSections
             PassSectionDivider()
-
-            if viewModel.fileAttachmentsEnabled {
-                FileAttachmentsEditSection(files: viewModel.fileUiModels,
-                                           isFetching: viewModel.isFetchingAttachedFiles,
-                                           fetchError: viewModel.fetchAttachedFilesError,
-                                           isUploading: viewModel.isUploadingFile,
-                                           handler: viewModel)
-            }
 
             if viewModel.canAddMoreCustomFields {
                 CapsuleLabelButton(icon: IconProvider.plus,
                                    title: #localized("Add a custom section"),
                                    titleColor: viewModel.itemContentType.normMajor2Color,
                                    backgroundColor: viewModel.itemContentType.normMinor1Color,
-                                   height: 55) {
-                    showCustomTitleAlert.toggle()
-                }
+                                   height: 55,
+                                   action: { viewModel.showAddCustomSectionAlert.toggle() })
             } else {
                 Button { viewModel.upgrade() } label: {
                     Label(title: {
@@ -192,6 +181,14 @@ private extension CreateEditIdentityView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
             }
+
+            if viewModel.fileAttachmentsEnabled {
+                FileAttachmentsEditSection(files: viewModel.fileUiModels,
+                                           isFetching: viewModel.isFetchingAttachedFiles,
+                                           fetchError: viewModel.fetchAttachedFilesError,
+                                           isUploading: viewModel.isUploadingFile,
+                                           handler: viewModel)
+            }
         }
         .padding(.horizontal, DesignConstant.sectionPadding)
         .padding(.bottom, DesignConstant.sectionPadding)
@@ -206,29 +203,6 @@ private extension CreateEditIdentityView {
         .navigationBarBackButtonHidden(true)
         .toolbarBackground(PassColor.backgroundNorm.toColor, for: .navigationBar)
         .itemCreateEditSetUp(viewModel)
-        .alert("Custom section", isPresented: $showCustomTitleAlert) {
-            TextField("Title", text: $viewModel.customSectionTitle)
-                .autocorrectionDisabled()
-            Button("Add", action: viewModel.addCustomSection)
-            Button("Cancel", role: .cancel) { viewModel.reset() }
-        } message: {
-            Text("Enter a section title")
-        }
-        .alert("Remove custom section", isPresented: $showDeleteCustomSectionAlert) {
-            Button("Delete", role: .destructive, action: viewModel.deleteCustomSection)
-            Button("Cancel", role: .cancel) { viewModel.reset() }
-        } message: {
-            // swiftlint:disable:next line_length
-            Text("Are you sure you want to delete the following section \"\(viewModel.selectedCustomSection?.title ?? "Unknown")\"?")
-        }
-        .alert("Modify the section name", isPresented: $showSectionTitleModification) {
-            TextField("New title", text: $viewModel.customSectionTitle)
-                .autocorrectionDisabled()
-            Button("Modify") { viewModel.modifyCustomSectionName() }
-            Button("Cancel", role: .cancel) { viewModel.reset() }
-        } message: {
-            Text("Enter a new section title")
-        }
     }
 
     func addMoreButton(_ action: @escaping () -> Void) -> some View {
@@ -243,112 +217,47 @@ private extension CreateEditIdentityView {
 }
 
 private extension CreateEditIdentityView {
-    func sections() -> some View {
-        ForEach(Array(viewModel.sections.enumerated()), id: \.element.id) { index, section in
+    var staticSections: some View {
+        ForEach(viewModel.sections) { section in
             Section(content: {
-                switch section.id {
-                case BaseIdentitySection.personalDetails.rawValue:
+                switch section.type {
+                case BaseIdentitySection.personalDetails:
                     if !section.isCollapsed {
                         personalDetailSection(section)
                     }
-                case BaseIdentitySection.address.rawValue:
+                case BaseIdentitySection.address:
                     if !section.isCollapsed {
                         addressDetailSection(section)
                     }
-                case BaseIdentitySection.contact.rawValue:
+                case BaseIdentitySection.contact:
                     if !section.isCollapsed {
                         contactDetailSection(section)
                     }
-                case BaseIdentitySection.workDetail.rawValue:
+                case BaseIdentitySection.workDetail:
                     if !section.isCollapsed {
                         workDetailSection(section)
                     }
-                default:
-                    if !section.isCollapsed {
-                        customDetailSection(section, index: index)
-                    }
                 }
             }, header: {
-                header(for: section)
+                CustomSectionHeader(title: .localized(section.type.title),
+                                    collapsed: section.isCollapsed,
+                                    editable: false,
+                                    onToggle: { viewModel.toggleCollapsingSection(section) },
+                                    onEditTitle: { /* Not applicable */ },
+                                    onRemove: { /* Not applicable */ })
             })
         }
     }
 
-    func header(for section: CreateEditIdentitySection) -> some View {
-        HStack(alignment: .center) {
-            Label(title: { Text(section.title) },
-                  icon: {
-                      Image(systemName: section.isCollapsed ? "chevron.down" : "chevron.up")
-                          .resizable()
-                          .scaledToFit()
-                          .frame(width: 12)
-                  })
-                  .foregroundStyle(PassColor.textWeak.toColor)
-                  .frame(maxWidth: .infinity, alignment: .leading)
-                  .padding(.top, DesignConstant.sectionPadding)
-                  .buttonEmbeded {
-                      viewModel.toggleCollapsingSection(section)
-                  }
-            Spacer()
-
-            if section.isCustom {
-                Menu(content: {
-                    Label(title: { Text("Edit section's title") }, icon: { Image(uiImage: IconProvider.pencil) })
-                        .buttonEmbeded {
-                            viewModel.setSelectedSection(section: section)
-                            showSectionTitleModification.toggle()
-                        }
-
-                    Label(title: { Text("Remove section") },
-                          icon: { Image(uiImage: IconProvider.crossCircle) })
-                        .buttonEmbeded {
-                            viewModel.setSelectedSection(section: section)
-                            showDeleteCustomSectionAlert.toggle()
-                        }
-                }, label: {
-                    IconProvider.threeDotsVertical
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .padding(.top, DesignConstant.sectionPadding)
-                })
-            }
-        }
-    }
-
-    func customDetailSection(_ section: CreateEditIdentitySection, index: Int) -> some View {
-        VStack(alignment: .leading) {
-            VStack(spacing: DesignConstant.sectionPadding) {
-                ForEach(Array(section.content.enumerated()), id: \.element.id) { elementIndex, field in
-                    VStack {
-                        if elementIndex > 0 {
-                            PassSectionDivider()
-                        }
-                        EditCustomFieldView(focusedField: $focusedField,
-                                            field: .custom(field),
-                                            contentType: .identity,
-                                            uiModel: $viewModel.sections[index].content[elementIndex],
-                                            // field,
-                                            showIcon: false,
-                                            roundedSection: false,
-                                            onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                            onRemove: {
-                                                // Work around a crash in later versions of iOS 17
-                                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                    viewModel.sections[index].content
-                                                        .removeAll(where: { $0.id == field.id })
-                                                }
-                                            })
-                    }
-                }
-            }
-            .if(!section.content.isEmpty) { view in
-                view.padding(.vertical, DesignConstant.sectionPadding)
-            }
-            .roundedEditableSection()
-            addMoreButton {
-                viewModel.addCustomField(to: section)
-            }
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
+    var customSections: some View {
+        CreateEditCustomSections(addFieldButtonTitle: #localized("Add more"),
+                                 contentType: viewModel.itemContentType,
+                                 focusedField: $focusedField,
+                                 field: { .custom($0) },
+                                 sections: $viewModel.customSections,
+                                 onEditSectionTitle: { viewModel.customSectionToRename = $0 },
+                                 onEditFieldTitle: viewModel.requestEditCustomFieldTitle,
+                                 onAddMoreField: { viewModel.requestAddCustomField(to: $0.id) })
     }
 }
 
@@ -412,17 +321,11 @@ private extension CreateEditIdentityView {
                     EditCustomFieldView(focusedField: $focusedField,
                                         field: .custom(field),
                                         contentType: .identity,
-                                        uiModel: $field,
+                                        value: $field,
                                         showIcon: false,
                                         roundedSection: false,
-                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                        onRemove: {
-                                            // Work around a crash in later versions of iOS 17
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraPersonalDetails
-                                                    .removeAll(where: { $0.id == field.id })
-                                            }
-                                        })
+                                        onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
+                                        onRemove: { viewModel.extraPersonalDetails.remove(field) })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -487,17 +390,11 @@ private extension CreateEditIdentityView {
                     EditCustomFieldView(focusedField: $focusedField,
                                         field: .custom(field),
                                         contentType: .identity,
-                                        uiModel: $field,
+                                        value: $field,
                                         showIcon: false,
                                         roundedSection: false,
-                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                        onRemove: {
-                                            // Work around a crash in later versions of iOS 17
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraAddressDetails
-                                                    .removeAll(where: { $0.id == field.id })
-                                            }
-                                        })
+                                        onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
+                                        onRemove: { viewModel.extraAddressDetails.remove(field) })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -578,17 +475,11 @@ private extension CreateEditIdentityView {
                     EditCustomFieldView(focusedField: $focusedField,
                                         field: .custom(field),
                                         contentType: .identity,
-                                        uiModel: $field,
+                                        value: $field,
                                         showIcon: false,
                                         roundedSection: false,
-                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                        onRemove: {
-                                            // Work around a crash in later versions of iOS 17
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraContactDetails
-                                                    .removeAll(where: { $0.id == field.id })
-                                            }
-                                        })
+                                        onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
+                                        onRemove: { viewModel.extraContactDetails.remove(field) })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -639,17 +530,11 @@ private extension CreateEditIdentityView {
                     EditCustomFieldView(focusedField: $focusedField,
                                         field: .custom(field),
                                         contentType: .identity,
-                                        uiModel: $field,
+                                        value: $field,
                                         showIcon: false,
                                         roundedSection: false,
-                                        onEditTitle: { viewModel.editCustomFieldTitle(field) },
-                                        onRemove: {
-                                            // Work around a crash in later versions of iOS 17
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                viewModel.extraWorkDetails
-                                                    .removeAll(where: { $0.id == field.id })
-                                            }
-                                        })
+                                        onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
+                                        onRemove: { viewModel.extraWorkDetails.remove(field) })
                 }
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -775,7 +660,9 @@ private extension CreateEditIdentityView {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.vertical, DesignConstant.sectionPadding)
                     .buttonEmbeded {
-                        viewModel.addCustomField(to: state.section)
+                        dismissSectionSheet {
+                            viewModel.requestAddCustomField(to: state.section.id)
+                        }
                     }
             } else {
                 Button { viewModel.upgrade() } label: {
@@ -807,8 +694,42 @@ private extension CreateEditIdentityView {
             .foregroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, DesignConstant.sectionPadding)
-            .buttonEmbeded { value.wrappedValue.shouldShow.toggle() }
+            .buttonEmbeded {
+                dismissSectionSheet {
+                    value.wrappedValue.shouldShow.toggle()
+                }
+            }
             .disabled(value.wrappedValue.shouldShow)
+    }
+
+    func dismissSectionSheet(completion: @escaping () -> Void) {
+        if #available(iOS 17.0, *) {
+            withAnimation {
+                sheetState = nil
+            } completion: {
+                completion()
+            }
+        } else {
+            sheetState = nil
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                completion()
+            }
+        }
+    }
+}
+
+private extension BaseIdentitySection {
+    var title: LocalizedStringKey {
+        switch self {
+        case .personalDetails:
+            "Personal details"
+        case .address:
+            "Address details"
+        case .contact:
+            "Contact details"
+        case .workDetail:
+            "Work details"
+        }
     }
 }
 

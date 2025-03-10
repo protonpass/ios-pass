@@ -34,14 +34,6 @@ import UseCases
 
 typealias ScanResponsePublisher = PassthroughSubject<(any ScanResult)?, any Error>
 
-@MainActor
-protocol CreateEditItemViewModelDelegate: AnyObject {
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
-                                                      shouldDisplayTotp: Bool)
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: any CustomFieldEditionDelegate)
-}
-
 enum ItemMode: Equatable, Hashable {
     case create(shareId: String?, type: ItemCreationType)
     case clone(ItemContent)
@@ -86,8 +78,10 @@ enum ItemCreationType: Equatable, Hashable {
                autofill: Bool,
                passkeyCredentialRequest: PasskeyCredentialRequest? = nil)
     case creditCard
-
     case identity
+    case sshKey
+    case wifi
+    case custom(CustomItemTemplate)
 
     var itemContentType: ItemContentType {
         switch self {
@@ -101,6 +95,12 @@ enum ItemCreationType: Equatable, Hashable {
             .creditCard
         case .identity:
             .identity
+        case .sshKey:
+            .sshKey
+        case .wifi:
+            .wifi
+        case .custom:
+            .custom
         }
     }
 }
@@ -110,8 +110,13 @@ private struct PendingFileNameUpdate: Sendable {
     let newName: String
 }
 
+struct AddCustomFieldPayload: Sendable {
+    /// `id` of the section that the field belongs to. `nil` when the field is stand alone.
+    let sectionId: String?
+}
+
 @MainActor
-class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate, CustomFieldEditionDelegate {
+class BaseCreateEditItemViewModel: ObservableObject {
     @Published var selectedVault: Share
     @Published private(set) var isFreeUser = false
     @Published private(set) var isSaving = false
@@ -126,9 +131,17 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     @Published private(set) var dismissedFileAttachmentsBanner = false
     @Published var filePreviewMode: FileAttachmentPreviewMode?
     @Published var fileToDelete: FileAttachmentUiModel?
-    @Published var recentlyAddedOrEditedField: CustomFieldUiModel?
+    @Published var recentlyAddedOrEditedField: CustomField?
 
-    @Published var customFieldUiModels = [CustomFieldUiModel]()
+    @Published var addCustomFieldPayload: AddCustomFieldPayload?
+    @Published var customFields = [CustomField]()
+    @Published var customFieldToEditTitle: CustomField?
+
+    @Published var customSections = [CustomSection]()
+    @Published var showAddCustomSectionAlert = false
+    @Published var customSectionToRename: CustomSection?
+    @Published var customSectionToRemove: CustomSection?
+
     @Published var isShowingVaultSelector = false
     @Published var isObsolete = false
     @Published var isShowingDiscardAlert = false
@@ -179,6 +192,14 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         attachedFiles?.error
     }
 
+    var supportedCustomFieldTypes: [CustomFieldType] {
+        var allCases = CustomFieldType.allCases
+        if !getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
+            allCases.removeAll { $0 == .timestamp }
+        }
+        return allCases
+    }
+
     var fileUiModels: [FileAttachmentUiModel] {
         var uiModels = [FileAttachmentUiModel]()
         for file in files {
@@ -212,7 +233,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
     }
 
     var hasEmptyCustomField: Bool {
-        customFieldUiModels.filter { $0.customField.type != .text }.contains(where: \.customField.content.isEmpty)
+        customFields.filter { $0.type != .text }.contains(where: \.content.isEmpty)
     }
 
     var isSaveable: Bool {
@@ -225,7 +246,6 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         UIDevice.current.userInterfaceIdiom == .phone
     }
 
-    weak var delegate: (any CreateEditItemViewModelDelegate)?
     var cancellables = Set<AnyCancellable>()
 
     private var uploadFileTask: Task<Void, Never>?
@@ -239,7 +259,7 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
             vaultShareId = shareId
         case let .clone(itemContent), let .edit(itemContent):
             vaultShareId = itemContent.shareId
-            customFieldUiModels = itemContent.customFields.map { .init(customField: $0) }
+            customFields = itemContent.customFields
         }
 
         let lastCreatedItemVault: Share? = if let shareId = getUserPreferences().lastCreatedItemShareId {
@@ -296,34 +316,6 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
 
     func telemetryEventTypes() -> [TelemetryEventType] { [] }
 
-    func customFieldEdited(_ uiModel: CustomFieldUiModel, newTitle: String) {
-        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
-            let message = "Custom field with id \(uiModel.id) not found"
-            logger.error(message)
-            assertionFailure(message)
-            return
-        }
-        recentlyAddedOrEditedField = uiModel
-        customFieldUiModels[index] = uiModel.update(title: newTitle)
-    }
-
-    func customFieldEdited(_ uiModel: CustomFieldUiModel, content: String) {
-        guard let index = customFieldUiModels.firstIndex(where: { $0.id == uiModel.id }) else {
-            let message = "Custom field with id \(uiModel.id) not found"
-            logger.error(message)
-            assertionFailure(message)
-            return
-        }
-        recentlyAddedOrEditedField = uiModel
-        customFieldUiModels[index] = uiModel.update(content: content)
-    }
-
-    func customFieldAdded(_ customField: CustomField) {
-        let uiModel = CustomFieldUiModel(customField: customField)
-        customFieldUiModels.append(uiModel)
-        recentlyAddedOrEditedField = uiModel
-    }
-
     func fetchAttachedFiles() async {
         guard fileAttachmentsEnabled,
               mode.isEditMode, // Do not fetch attachments when cloning items
@@ -345,6 +337,54 @@ class BaseCreateEditItemViewModel: ObservableObject, CustomFieldAdditionDelegate
         } catch {
             attachedFiles = .error(error)
         }
+    }
+
+    func requestAddCustomField(to sectionId: String?) {
+        addCustomFieldPayload = .init(sectionId: sectionId)
+    }
+
+    func addCustomField(_ field: CustomField, to sectionId: String?) {
+        if let index = customSections.firstIndex(where: { $0.id == sectionId }) {
+            customSections[index].content.append(field)
+        } else {
+            customFields.append(field)
+        }
+        recentlyAddedOrEditedField = field
+    }
+
+    func requestEditCustomFieldTitle(_ field: CustomField) {
+        customFieldToEditTitle = field
+    }
+
+    func editCustomField(_ field: CustomField, update: CustomFieldUpdate) {
+        let updatedField = field.update(from: update)
+        if let index = customFields.firstIndex(where: { $0.id == field.id }) {
+            customFields[index] = updatedField
+        } else {
+            for (sectionIndex, section) in customSections.enumerated() {
+                if let fieldIndex = section.content.firstIndex(where: { $0.id == field.id }) {
+                    customSections[sectionIndex].content[fieldIndex] = updatedField
+                    break
+                }
+            }
+        }
+        recentlyAddedOrEditedField = updatedField
+    }
+
+    func addCustomSection(_ title: String) {
+        customSections.append(.init(title: title,
+                                    isCollapsed: false,
+                                    content: []))
+    }
+
+    func renameCustomSection(_ section: CustomSection, newName: String) {
+        if let index = customSections.firstIndex(where: { $0.id == section.id }) {
+            customSections[index].title = newName
+        }
+    }
+
+    func removeCustomSection(_ section: CustomSection) {
+        customSections.removeAll { $0.id == section.id }
     }
 }
 
@@ -510,14 +550,6 @@ extension BaseCreateEditItemViewModel {
                 handle(error)
             }
         }
-    }
-
-    func addCustomField() {
-        delegate?.createEditItemViewModelWantsToAddCustomField(delegate: self, shouldDisplayTotp: true)
-    }
-
-    func editCustomFieldTitle(_ uiModel: CustomFieldUiModel) {
-        delegate?.createEditItemViewModelWantsToEditCustomFieldTitle(uiModel, delegate: self)
     }
 
     func upgrade() {

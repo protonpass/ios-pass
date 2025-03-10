@@ -57,6 +57,11 @@ struct ItemCountView: View {
                     CounterChip(configuration: ItemContentType.identity.toConfiguration,
                                 value: itemCount.identity,
                                 onSelect: { onSelectItemType(.identity) })
+                    if viewModel.customItemEnabled {
+                        CounterChip(configuration: ItemContentType.custom.toConfiguration,
+                                    value: itemCount.custom,
+                                    onSelect: { onSelectItemType(.custom) })
+                    }
                     CounterChip(configuration: .init(icon: IconProvider.lock,
                                                      iconTint: PassColor.passwordInteractionNorm,
                                                      iconBackground: PassColor.passwordInteractionNormMinor1),
@@ -147,9 +152,15 @@ private extension ItemContentType {
 private final class ItemCountViewModel: ObservableObject {
     @Published private(set) var object: FetchableObject<ItemCount> = .fetching
     private let appContentManager = resolve(\SharedServiceContainer.appContentManager)
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
     private var cancellables = Set<AnyCancellable>()
 
     private var task: Task<Void, Never>?
+
+    var customItemEnabled: Bool {
+        getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1)
+    }
 
     init() {
         appContentManager.$state

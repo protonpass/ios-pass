@@ -28,7 +28,7 @@ import ProtonCoreUIFoundations
 import UIKit
 
 enum ItemType: CaseIterable {
-    case login, alias, note, password, creditCard, identity
+    case login, alias, note, password, creditCard, identity, custom
 }
 
 extension ItemContentType {
@@ -44,6 +44,8 @@ extension ItemContentType {
             .note
         case .identity:
             .identity
+        case .custom, .sshKey, .wifi:
+            .custom
         }
     }
 }
@@ -51,39 +53,32 @@ extension ItemContentType {
 @MainActor
 final class ItemTypeListViewModel: NSObject, ObservableObject {
     @Published private(set) var limitation: AliasLimitation?
-    @Published private(set) var showMoreButton = true
     let onSelect: (ItemType) -> Void
 
     @LazyInjected(\SharedServiceContainer.upgradeChecker) private var upgradeChecker
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus)
+    private var getFeatureFlagStatus
 
-    @MainActor
     enum Mode {
         case hostApp, autoFillExtension
-
-        var supportedTypes: [ItemType] {
-            switch self {
-            case .hostApp:
-                ItemType.allCases
-            case .autoFillExtension:
-                [.login, .alias]
-            }
-        }
-
-        var shouldShowMoreButton: Bool {
-            switch self {
-            case .hostApp:
-                !UIDevice.current.isIpad
-            case .autoFillExtension:
-                false
-            }
-        }
     }
 
     let mode: Mode
 
-    weak var uiSheetPresentationController: UISheetPresentationController?
+    var supportedTypes: [ItemType] {
+        switch mode {
+        case .hostApp:
+            if getFeatureFlagStatus(for: FeatureFlagType.passCustomTypeV1) {
+                ItemType.allCases
+            } else {
+                ItemType.allCases.filter { $0 != .custom }
+            }
+        case .autoFillExtension:
+            [.login, .alias]
+        }
+    }
 
     init(mode: Mode,
          onSelect: @escaping (ItemType) -> Void) {
@@ -104,23 +99,6 @@ final class ItemTypeListViewModel: NSObject, ObservableObject {
     func select(type: ItemType) {
         onSelect(type)
     }
-
-    func showMore() {
-        guard showMoreButton else {
-            return
-        }
-        uiSheetPresentationController?.animateChanges {
-            uiSheetPresentationController?.selectedDetentIdentifier = .large
-            showMoreButton = false
-        }
-    }
-}
-
-extension ItemTypeListViewModel: UISheetPresentationControllerDelegate {
-    // swiftlint:disable:next line_length
-    func sheetPresentationControllerDidChangeSelectedDetentIdentifier(_ sheetPresentationController: UISheetPresentationController) {
-        showMoreButton = sheetPresentationController.selectedDetentIdentifier == .medium
-    }
 }
 
 extension ItemType {
@@ -138,6 +116,8 @@ extension ItemType {
             IconProvider.key
         case .identity:
             IconProvider.cardIdentity
+        case .custom:
+            IconProvider.pencil
         }
     }
 
@@ -155,6 +135,8 @@ extension ItemType {
             PassColor.passwordInteractionNormMajor2
         case .identity:
             PassColor.interactionNormMajor2
+        case .custom:
+            PassColor.textNorm
         }
     }
 
@@ -172,6 +154,8 @@ extension ItemType {
             PassColor.passwordInteractionNormMinor1
         case .identity:
             PassColor.interactionNormMinor1
+        case .custom:
+            PassColor.customItemBackground
         }
     }
 
@@ -189,6 +173,8 @@ extension ItemType {
             #localized("Password")
         case .identity:
             #localized("Identity")
+        case .custom:
+            #localized("Custom item")
         }
     }
 
@@ -206,6 +192,8 @@ extension ItemType {
             #localized("Generate a secure password")
         case .identity:
             #localized("Fill in your personal data")
+        case .custom:
+            #localized("Create items with fully customized fields")
         }
     }
 }

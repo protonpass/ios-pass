@@ -1,7 +1,7 @@
 //
-// CustomField+Extensions.swift
-// Proton Pass - Created on 16/01/2024.
-// Copyright (c) 2024 Proton Technologies AG
+// CustomItemTemplate.swift
+// Proton Pass - Created on 26/02/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -18,10 +18,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import Entities
+import Foundation
 
-extension CustomField {
-    var toCustomFieldUiModel: CustomFieldUiModel {
-        CustomFieldUiModel(customField: self)
-    }
+public enum CustomItemTemplate: Sendable {
+    case fromScratch
+    case apiCredential
+    case database
+    case server
+    case softwareLicense
+    case sshKey
+    case wifi
+    case bankAccount
+    case cryptoWallet
+    case driverLicense
+    case medicalRecord
+    case membership
+    case passport
+    case rewardProgram
+    case socialSecurityNumber
 }

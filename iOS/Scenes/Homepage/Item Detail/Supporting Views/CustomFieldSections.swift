@@ -29,7 +29,7 @@ import SwiftUI
 
 struct CustomFieldSections: View {
     let itemContentType: ItemContentType
-    let uiModels: [CustomFieldUiModel]
+    let fields: [CustomField]
     let isFreeUser: Bool
     var isASection = true
     var showIcon = true
@@ -38,12 +38,11 @@ struct CustomFieldSections: View {
     let onUpgrade: () -> Void
 
     var body: some View {
-        ForEach(uiModels) { uiModel in
-            let customField = uiModel.customField
-            let title = customField.title
-            let content = customField.content
+        ForEach(fields) { field in
+            let title = field.title
+            let content = field.content
 
-            switch customField.type {
+            switch field.type {
             case .text:
                 TextCustomFieldSection(title: title,
                                        content: content,
@@ -70,9 +69,13 @@ struct CustomFieldSections: View {
                                        showIcon: showIcon,
                                        onSelectTotpToken: onSelectTotpToken,
                                        onUpgrade: onUpgrade)
+            case .timestamp:
+                // swiftlint:disable:next todo
+                // TODO: [Custom item] Implement this
+                Text(verbatim: "Timestamp custom field section")
             }
 
-            if uiModel != uiModels.last, !isASection {
+            if field != fields.last, !isASection {
                 PassSectionDivider()
             }
         }
