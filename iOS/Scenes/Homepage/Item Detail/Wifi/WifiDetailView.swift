@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Macro
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -26,6 +27,7 @@ import SwiftUI
 struct WifiDetailView: View {
     @StateObject private var viewModel: WifiDetailViewModel
     @State private var showPassword = false
+    @State private var showQrCode = false
     @Namespace private var bottomID
 
     init(viewModel: WifiDetailViewModel) {
@@ -40,6 +42,7 @@ struct WifiDetailView: View {
                     .padding(.bottom, 40)
 
                 ssidAndPasswordSection
+                showQrCodeButton
 
                 CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                     fields: viewModel.customFields,
@@ -85,6 +88,9 @@ struct WifiDetailView: View {
         }
         .itemDetailSetUp(viewModel)
         .navigationStackEmbeded()
+        .sheet(isPresented: $showQrCode) {
+            WifiQrCodeView(ssid: viewModel.ssid, password: viewModel.password)
+        }
     }
 }
 
@@ -176,5 +182,56 @@ private extension WifiDetailView {
                 Text("Show large")
             }
         }
+    }
+
+    var showQrCodeButton: some View {
+        OptionRow(action: { showQrCode.toggle() },
+                  height: .medium,
+                  content: {
+                      Text("Show Network QR Code")
+                          .foregroundStyle(PassColor.interactionNormMajor2.toColor)
+                  })
+                  .roundedDetailSection()
+                  .padding(.top, DesignConstant.sectionPadding / 2)
+    }
+}
+
+private struct WifiQrCodeView: View {
+    @Environment(\.dismiss) private var dismiss
+    let ssid: String
+    let uri: String
+
+    init(ssid: String, password: String) {
+        self.ssid = ssid
+        uri = "WIFI:T:WPA;S:\(ssid);P:\(password);;"
+    }
+
+    var body: some View {
+        ZStack {
+            PassColor.backgroundNorm.toColor
+                .ignoresSafeArea()
+            VStack {
+                Text("Scan the QR code to join")
+                Text(verbatim: "\"\(ssid)\"")
+                Spacer()
+            }
+            .font(.title2)
+            .fontWeight(.bold)
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.top, 40)
+
+            QrCodeView(text: uri)
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                CircleButton(icon: IconProvider.cross,
+                             iconColor: PassColor.interactionNormMajor2,
+                             backgroundColor: PassColor.interactionNormMinor1,
+                             accessibilityLabel: "Close",
+                             action: dismiss.callAsFunction)
+            }
+        }
+        .navigationStackEmbeded()
     }
 }
