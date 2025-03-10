@@ -18,16 +18,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
+
 struct IdentityDetailSection: Identifiable {
     let title: String
     let rows: [IdentityDetailRow]
-    let customFields: [CustomFieldUiModel]
+    let customFields: [CustomField]
 
     var id: String {
         title
     }
 
-    init(title: String, rows: [IdentityDetailRow], customFields: [CustomFieldUiModel]) {
+    init(title: String, rows: [IdentityDetailRow], customFields: [CustomField]) {
         self.title = title
         self.rows = rows.filter { $0.value?.isEmpty == false }
         self.customFields = customFields

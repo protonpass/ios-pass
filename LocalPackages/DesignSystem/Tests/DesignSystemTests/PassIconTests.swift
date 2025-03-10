@@ -63,6 +63,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.fileTypeUnknown
 
         _ = PassIcon.filterFilled
+        _ = PassIcon.hamburgerPlus
 
         _ = PassIcon.infoBannerAliases
         _ = PassIcon.infoBannerAutoFill

@@ -110,7 +110,6 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     private weak var itemsTabViewModel: ItemsTabViewModel?
     private var itemDetailCoordinator: ItemDetailCoordinator?
     private var createEditItemCoordinator: CreateEditItemCoordinator?
-    private var customCoordinator: (any CustomCoordinator)?
     private var cancellables = Set<AnyCancellable>()
 
     lazy var logInAndSignUp = makeLoginAndSignUp()
@@ -1518,25 +1517,7 @@ extension HomepageCoordinator {
     }
 }
 
-// MARK: - CreateEditItemViewModelDelegate
-
-extension HomepageCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
-                                                      shouldDisplayTotp: Bool) {
-        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: rootViewController,
-                                                           delegate: delegate,
-                                                           shouldShowTotp: shouldDisplayTotp)
-        customCoordinator?.start()
-    }
-
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: any CustomFieldEditionDelegate) {
-        customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
-                                                          delegate: delegate,
-                                                          uiModel: uiModel)
-        customCoordinator?.start()
-    }
-
+extension HomepageCoordinator {
     func handleItemCreation(item: SymmetricallyEncryptedItem, type: ItemContentType) {
         Task { [weak self] in
             guard let self else {

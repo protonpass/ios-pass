@@ -90,7 +90,6 @@ final class ShareCoordinator {
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
     private var createEditItemViewModel: BaseCreateEditItemViewModel?
-    private var customCoordinator: (any CustomCoordinator)?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
     private var cancellables = Set<AnyCancellable>()
@@ -257,7 +256,6 @@ private extension ShareCoordinator {
                                                                               type: creationType),
                                                                 upgradeChecker: upgradeChecker,
                                                                 vaults: vaults)
-                    viewModel.delegate = self
                     createEditItemViewModel = viewModel
                     let view = CreateEditNoteView(viewModel: viewModel)
                     viewController = UIHostingController(rootView: view)
@@ -339,26 +337,7 @@ extension ShareCoordinator: ExtensionCoordinator {
     }
 }
 
-// MARK: CreateEditItemViewModelDelegate
-
-extension ShareCoordinator: CreateEditItemViewModelDelegate {
-    func createEditItemViewModelWantsToAddCustomField(delegate: any CustomFieldAdditionDelegate,
-                                                      shouldDisplayTotp: Bool) {
-        guard let topMostViewController else { return }
-        customCoordinator = CustomFieldAdditionCoordinator(rootViewController: topMostViewController,
-                                                           delegate: delegate, shouldShowTotp: shouldDisplayTotp)
-        customCoordinator?.start()
-    }
-
-    func createEditItemViewModelWantsToEditCustomFieldTitle(_ uiModel: CustomFieldUiModel,
-                                                            delegate: any CustomFieldEditionDelegate) {
-        guard let rootViewController else { return }
-        customCoordinator = CustomFieldEditionCoordinator(rootViewController: rootViewController,
-                                                          delegate: delegate,
-                                                          uiModel: uiModel)
-        customCoordinator?.start()
-    }
-
+extension ShareCoordinator {
     func handleItemCreation(type: ItemContentType) {
         let alert = UIAlertController(title: type.creationMessage, message: nil, preferredStyle: .alert)
         let closeAction = UIAlertAction(title: #localized("Close"), style: .default) { [weak self] _ in
