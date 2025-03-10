@@ -70,6 +70,7 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
         case let .clone(itemContent), let .edit(itemContent):
             if case let .custom(data) = itemContent.contentData {
                 title = itemContent.name
+                customSections = data.sections
             }
         }
     }
