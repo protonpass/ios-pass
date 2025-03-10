@@ -100,6 +100,12 @@
             "value" : "Action extensie logs"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępnij logi rozszerzenia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3163,6 +3169,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "U hebt geen kluizen met editor of admin toegang. Probeer er een aan te maken in de hoofdapplicatie, of vraag de beheerder van uw organisatie om ondersteuning."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie masz żadnych sejfów z dostępem edytora lub administratora. Spróbuj utworzyć jeden w głównej aplikacji lub poproś administratora swojej organizacji o wsparcie."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você não tem nenhum cofre com acesso de editor ou administrador. Tente criar um, no aplicativo principal ou peça suporte ao administrador da sua organização."
           }
         },
         "ro" : {
