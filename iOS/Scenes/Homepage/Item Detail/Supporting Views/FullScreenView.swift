@@ -18,7 +18,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
-import CoreImage.CIFilterBuiltins
 import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
@@ -147,29 +146,5 @@ private struct FullScreenTextView: View {
             }
         }
         .foregroundStyle(PassColor.textNorm.toColor)
-    }
-}
-
-private struct QrCodeView: View {
-    let context = CIContext()
-    let filter = CIFilter.qrCodeGenerator()
-    var text: String
-
-    var body: some View {
-        Image(uiImage: qrCodeImage())
-            .interpolation(.none)
-            .resizable()
-            .scaledToFit()
-    }
-
-    private func qrCodeImage() -> UIImage {
-        let data = Data(text.utf8)
-        filter.setValue(data, forKey: "inputMessage")
-
-        if let qrCodeImage = filter.outputImage,
-           let qrCodeCGImage = context.createCGImage(qrCodeImage, from: qrCodeImage.extent) {
-            return .init(cgImage: qrCodeCGImage)
-        }
-        return .init()
     }
 }
