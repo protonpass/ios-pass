@@ -13,7 +13,7 @@
     "environmentVariableEntries" : [
       {
         "key" : "DYNAMIC_DOMAIN",
-        "value" : "${DYNAMIC_DOMAIN}"
+        "value" : "account.mock.${DYNAMIC_DOMAIN}"
       }
     ],
     "language" : "en",
