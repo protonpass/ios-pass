@@ -7,7 +7,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Журнал пашырэння дзеяння"
+            "value" : "Журнал дзеянняў пашырэння"
           }
         },
         "cs" : {
@@ -122,6 +122,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İşlem eklentisi günlükleri"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Action 扩展日志"
           }
         }
       }
@@ -283,6 +289,12 @@
             "state" : "translated",
             "value" : "Nhật ký ứng dụng"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用程序日志"
+          }
         }
       }
     },
@@ -442,6 +454,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nhật ký phần mở rộng Tự động Điền"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动填充扩展日志"
           }
         }
       }
@@ -603,6 +621,12 @@
             "state" : "translated",
             "value" : "Tối"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暗色主题"
+          }
         }
       }
     },
@@ -762,6 +786,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sáng"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "浅色主题"
           }
         }
       }
@@ -923,6 +953,12 @@
             "state" : "translated",
             "value" : "Theo hệ thống"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跟随系统"
+          }
         }
       }
     },
@@ -1082,6 +1118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gần đây nhất"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近"
           }
         }
       }
@@ -1243,6 +1285,12 @@
             "state" : "translated",
             "value" : "Mới nhất đến cũ nhất"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从新到旧"
+          }
         }
       }
     },
@@ -1402,6 +1450,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Đồng ý"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定"
           }
         }
       }
@@ -1563,6 +1617,12 @@
             "state" : "translated",
             "value" : "Cũ nhất đến mới nhất"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从旧到新"
+          }
         }
       }
     },
@@ -1723,6 +1783,12 @@
             "state" : "translated",
             "value" : "Tìm trong %@..."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 %@ 中搜索..."
+          }
         }
       }
     },
@@ -1864,6 +1930,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tüm ögelerde ara..."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在所有项目中搜索..."
           }
         }
       }
@@ -2013,6 +2085,12 @@
             "state" : "translated",
             "value" : "Пошук в Поширено мною..."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在我的共享中搜索项目"
+          }
         }
       }
     },
@@ -2154,6 +2232,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пошук в Поширено мені..."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在与我共享中搜索项目"
           }
         }
       }
@@ -2314,6 +2398,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tìm trong thùng rác..."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在回收站中搜索..."
           }
         }
       }
@@ -2476,6 +2566,12 @@
             "state" : "translated",
             "value" : "Tìm kiếm các nội dụng được ghim"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索固定项目"
+          }
         }
       }
     },
@@ -2635,6 +2731,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nhật kí của Share extension"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共享扩展日志"
           }
         }
       }
@@ -2796,6 +2898,12 @@
             "state" : "translated",
             "value" : "Tiêu đề (A-Z)"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标题 (A-Z)"
+          }
         }
       }
     },
@@ -2956,15 +3064,135 @@
             "state" : "translated",
             "value" : "Tiêu đề (Z-A)"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标题 (Z-A)"
+          }
         }
       }
     },
     "You don't have any vaults with editor or admin access. Try creating one in the main app, or ask your organization's administrator for support." : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас адсутнічаюць сховішчы з магчымасцю рэдагавання або доступам адміністратара. Паспрабуйце стварыць яго ў галоўнай праграме або папрасіце дапамагчы з гэтым адміністратара вашай арганізацыі."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemáte žádné trezory s přístupem editora nebo správce. Zkuste vytvořit trezor v hlavní aplikaci nebo požádejte správce organizace o podporu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ikke nogen bokse med redaktør- eller administratoradgang. Prøv at oprette en i hovedappen, eller spørg din organisations administrator om hjælp."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast keine Tresore mit Bearbeitungs- oder Admin-Zugang. Versuche, einen in der Hauptanwendung zu erstellen, oder bitte den Administrator deiner Organisation um Unterstützung."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν έχετε κρύπτες με πρόσβαση συντάκτη ή διαχειριστή. Δοκιμάστε να δημιουργήσετε μία στην κύρια εφαρμογή ή ζητήστε υποστήριξη από τον διαχειριστή του οργανισμού σας."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "You don't have any vaults with editor or admin access. Try creating one in the main app, or ask your organization's administrator for support."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tienes ninguna caja fuerte con permiso de editor o de administrador. Intenta crear una en la aplicación principal o solicita ayuda al administrador de tu organización."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No tiene bóvedas con acceso a editor o administrador. Cree una en la aplicación principal o pida ayuda al administrador de su organización."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous n'avez pas de coffre-fort avec un accès éditeur ou administrateur. Essayez d'en créer un dans l'application principale ou demandez de l'aide à l'administrateur de votre organisation."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda tidak memiliki brankas dengan akses editor atau admin. Cobalah untuk membuat brankas baru pada aplikasi utama, atau mintalah dukungan kepada administrator organisasi Anda."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non hai alcuna cassaforte con accesso da editor o amministratore. Prova a crearne una nell'app principale o chiedi supporto all'amministratore della tua organizzazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集者または管理者権限を持つ保管庫がありません。メインアプリで作成するか、組織の管理者にサポートを依頼してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집자 또는 관리자 접근 권한이 있는 금고가 없습니다. 기본 앱에서 생성하거나 조직의 관리자에게 지원을 요청하십시오."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har ingen hvelv med redigerings- eller administratortilgang. Prøv å opprette en i hovedappen, eller be organisasjonens administrator om støtte."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U hebt geen kluizen met editor of admin toegang. Probeer er een aan te maken in de hoofdapplicatie, of vraag de beheerder van uw organisatie om ondersteuning."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu aveți seifuri cu acces de editor sau de administrator. Încercați să creați unul în aplicația principală sau cereți asistență administratorului organizației proprii."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemáte žiadne trezory s prístupom editora alebo administrátora. Skúste si ich vytvoriť v hlavnej aplikácii alebo požiadajte o podporu správcu vašej organizácie."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har inga valv med redigerings- eller administratörsåtkomst. Prova skapa ett i huvudappen eller be din organisations administratör om support."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Düzenleyicisi veya yöneticisi olduğunuz herhangi bir kasa yok. Ana uygulamadan bir kasa oluşturmayı deneyin veya kuruluşunuzun yöneticisinden destek isteyin."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您没有任何具有编辑或管理员权限的保险库。请尝试在主应用程序中创建一个，或向您组织的管理员寻求支持。"
           }
         }
       }

@@ -83,9 +83,9 @@ struct ProfileTabView: View {
     var mainContainer: some View {
         ScrollView {
             VStack {
-                accountSection
+                accountSection.accessibilityIdentifierBranch("AccountSection")
 
-                itemCountSection
+                itemCountSection.accessibilityIdentifierBranch("ItemSection")
 
                 securitySection
                     .padding(.vertical)
@@ -127,7 +127,7 @@ struct ProfileTabView: View {
             .animation(.default, value: viewModel.showAutomaticCopyTotpCodeExplanation)
             .animation(.default, value: viewModel.localAuthenticationMethod)
             .animation(.default, value: viewModel.accountDetails)
-        }
+        }.accessibilityIdentifierBranch("ProfileTabView")
     }
 
     @ToolbarContentBuilder
@@ -151,6 +151,7 @@ struct ProfileTabView: View {
             VStack {
                 Text("Account")
                     .profileSectionTitle()
+                    .accessibilityIdentifierLeaf("Text")
 
                 Group {
                     if showSwitcher {
@@ -169,6 +170,7 @@ struct ProfileTabView: View {
                 }
                 .padding()
                 .roundedEditableSection()
+                .accessibilityIdentifierLeaf("AccountCell")
             }.padding()
         }
     }
