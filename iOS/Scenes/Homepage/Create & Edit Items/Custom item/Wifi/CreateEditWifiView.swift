@@ -41,8 +41,7 @@ struct CreateEditWifiView: View {
         ScrollView {
             LazyVStack {
                 title
-                ssid
-                password
+                ssidAndPasswordSection
                 fields
 
                 AddCustomFieldAndSectionView(supportAddField: true,
@@ -91,7 +90,17 @@ private extension CreateEditWifiView {
             .padding(.bottom, DesignConstant.sectionPadding / 2)
     }
 
-    var ssid: some View {
+    var ssidAndPasswordSection: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            ssidRow
+            PassSectionDivider()
+            passwordRow
+        }
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedEditableSection()
+    }
+
+    var ssidRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Name (SSID)")
@@ -110,11 +119,10 @@ private extension CreateEditWifiView {
             ClearTextButton(text: $viewModel.ssid)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    var password: some View {
+    var passwordRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Password")
@@ -136,8 +144,7 @@ private extension CreateEditWifiView {
             ClearTextButton(text: $viewModel.password)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
     var fields: some View {
