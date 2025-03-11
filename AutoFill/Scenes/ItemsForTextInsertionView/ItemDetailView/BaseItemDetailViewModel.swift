@@ -25,6 +25,7 @@ import Foundation
 @MainActor
 class BaseItemDetailViewModel: ObservableObject {
     @Published private(set) var isFreeUser = false
+    @Published var customSections: [CustomSection] = []
 
     let item: SelectedItem
     let selectedTextStream: SelectedTextStream

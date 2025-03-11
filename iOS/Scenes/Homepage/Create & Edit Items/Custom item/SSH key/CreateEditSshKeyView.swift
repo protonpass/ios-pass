@@ -25,28 +25,6 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-enum SshKeyType: Int, Sendable, Identifiable {
-    case `public`, `private`
-
-    var id: Int {
-        rawValue
-    }
-
-    var title: LocalizedStringKey {
-        switch self {
-        case .public: "Public key"
-        case .private: "Private key"
-        }
-    }
-
-    var placeholder: LocalizedStringKey {
-        switch self {
-        case .public: "Add public key"
-        case .private: "Add private key"
-        }
-    }
-}
-
 struct CreateEditSshKeyView: View {
     @StateObject private var viewModel: CreateEditSshKeyViewModel
     @FocusState private var focusedField: Field?
