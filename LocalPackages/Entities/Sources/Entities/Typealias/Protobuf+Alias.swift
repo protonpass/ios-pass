@@ -123,20 +123,13 @@ extension ItemContentProtobuf: ProtobufableItemContentProtocol {
             content.identity = data.toProtonPassItemV1ItemIdentity
 
         case let .sshKey(data):
-            content.sshKey = .init()
-            content.sshKey.privateKey = data.privateKey
-            content.sshKey.publicKey = data.publicKey
-            content.sshKey.sections = data.extraSections.toProtonPassItemV1CustomSections
+            content.sshKey = data.toProtonPassItemV1ItemSshKey
 
         case let .wifi(data):
-            content.wifi = .init()
-            content.wifi.ssid = data.ssid
-            content.wifi.password = data.password
-            content.wifi.sections = data.extraSections.toProtonPassItemV1CustomSections
+            content.wifi = data.toProtonPassItemV1ItemWifi
 
         case let .custom(data):
-            content.custom = .init()
-            content.custom.sections = data.sections.toProtonPassItemV1CustomSections
+            content.custom = data.toProtonPassItemV1ItemCustom
         }
 
         extraFields = customFields.toProtonPassItemV1ExtraFields

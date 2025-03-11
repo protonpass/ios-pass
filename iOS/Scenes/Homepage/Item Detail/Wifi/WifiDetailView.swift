@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -41,7 +42,10 @@ struct WifiDetailView: View {
                     .padding(.bottom, 40)
 
                 ssidAndPasswordSection
-                showQrCodeButton
+
+                if !viewModel.ssid.isEmpty, !viewModel.password.isEmpty {
+                    showQrCodeButton
+                }
 
                 CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                     fields: viewModel.customFields,
@@ -88,7 +92,9 @@ struct WifiDetailView: View {
         .itemDetailSetUp(viewModel)
         .navigationStackEmbeded()
         .sheet(isPresented: $showQrCode) {
-            WifiQrCodeView(ssid: viewModel.ssid, password: viewModel.password)
+            WifiQrCodeView(ssid: viewModel.ssid,
+                           password: viewModel.password,
+                           security: viewModel.security)
         }
     }
 }
@@ -191,7 +197,7 @@ private extension WifiDetailView {
             Text("Security type")
                 .sectionTitleText()
 
-            Text(verbatim: viewModel.security.name)
+            Text(verbatim: viewModel.security.displayName)
                 .sectionContentText()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -215,9 +221,11 @@ private struct WifiQrCodeView: View {
     let ssid: String
     let uri: String
 
-    init(ssid: String, password: String) {
+    init(ssid: String,
+         password: String,
+         security: WifiData.Security) {
         self.ssid = ssid
-        uri = "WIFI:T:WPA;S:\(ssid);P:\(password);;"
+        uri = "WIFI:T:\(security.protocolName);S:\(ssid);P:\(password);;"
     }
 
     var body: some View {

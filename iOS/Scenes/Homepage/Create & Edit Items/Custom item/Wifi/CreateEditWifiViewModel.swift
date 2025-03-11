@@ -30,7 +30,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     @Published var title = ""
     @Published var ssid = ""
     @Published var password = ""
-    @Published var security: WifiData.Security = .wpa2
+    @Published var security: WifiData.Security = .unspecified
 
     override var isSaveable: Bool {
         super.isSaveable && !title.isEmpty
@@ -43,6 +43,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 title = itemContent.name
                 ssid = data.ssid
                 password = data.password
+                security = data.security
                 customSections = data.extraSections
             }
 
@@ -66,13 +67,12 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
 }
 
 extension WifiData.Security {
-    var name: String {
+    var displayName: String {
         switch self {
-        case .unspecified: #localized("Unspecified")
-        case .wpa: "WPA"
-        case .wpa2: "WPA2"
-        case .wpa3: "WPA3"
-        case .wep: "WEP"
+        case .unspecified:
+            #localized("Unspecified")
+        default:
+            protocolName
         }
     }
 }
