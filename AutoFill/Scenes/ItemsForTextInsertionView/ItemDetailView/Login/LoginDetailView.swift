@@ -49,9 +49,9 @@ struct LoginDetailView: View {
             CustomFieldSections(itemContentType: viewModel.type,
                                 fields: viewModel.customFields,
                                 isFreeUser: viewModel.isFreeUser,
-                                onSelectHiddenText: { viewModel.autofill($0) },
-                                onSelectTotpToken: { viewModel.autofill($0) },
-                                onUpgrade: { viewModel.upgrade() })
+                                onSelectHiddenText: viewModel.autofill,
+                                onSelectTotpToken: viewModel.autofill,
+                                onUpgrade: viewModel.upgrade)
         }
         .optionalSheet(binding: $selectedPasskey) { passkey in
             PasskeyDetailView(passkey: passkey,

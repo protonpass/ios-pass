@@ -436,6 +436,8 @@
 		531A48182D808BC100DDC7FB /* WifiDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48172D808BBF00DDC7FB /* WifiDetailViewModel.swift */; };
 		531A481A2D808D0C00DDC7FB /* WifiData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48192D808D0C00DDC7FB /* WifiData+Extensions.swift */; };
 		531A481B2D808D1700DDC7FB /* WifiData+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A48192D808D0C00DDC7FB /* WifiData+Extensions.swift */; };
+		531A481E2D808F0E00DDC7FB /* CustomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A481D2D808F0B00DDC7FB /* CustomDetailView.swift */; };
+		531A48202D808F1500DDC7FB /* CustomDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 531A481F2D808F1300DDC7FB /* CustomDetailViewModel.swift */; };
 		5335C6DC2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */; };
 		5335C6DD2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */; };
 		5335C6DE2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */; };
@@ -1056,6 +1058,8 @@
 		531A48152D808B9200DDC7FB /* WifiDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailView.swift; sourceTree = "<group>"; };
 		531A48172D808BBF00DDC7FB /* WifiDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WifiDetailViewModel.swift; sourceTree = "<group>"; };
 		531A48192D808D0C00DDC7FB /* WifiData+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WifiData+Extensions.swift"; sourceTree = "<group>"; };
+		531A481D2D808F0B00DDC7FB /* CustomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailView.swift; sourceTree = "<group>"; };
+		531A481F2D808F1300DDC7FB /* CustomDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailViewModel.swift; sourceTree = "<group>"; };
 		5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditCustomSections.swift; sourceTree = "<group>"; };
 		533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AliasDiscoverySection.swift; sourceTree = "<group>"; };
 		534090582D70984A002E42F8 /* CreateEditSshKeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditSshKeyView.swift; sourceTree = "<group>"; };
@@ -1780,6 +1784,7 @@
 				3524A4602CB6A1A0001EC572 /* Note */,
 				531A480C2D80831000DDC7FB /* SSH */,
 				531A48142D808B8900DDC7FB /* Wifi */,
+				531A481C2D808EFD00DDC7FB /* Custom */,
 			);
 			path = ItemDetailView;
 			sourceTree = "<group>";
@@ -2101,6 +2106,15 @@
 				531A48172D808BBF00DDC7FB /* WifiDetailViewModel.swift */,
 			);
 			path = Wifi;
+			sourceTree = "<group>";
+		};
+		531A481C2D808EFD00DDC7FB /* Custom */ = {
+			isa = PBXGroup;
+			children = (
+				531A481D2D808F0B00DDC7FB /* CustomDetailView.swift */,
+				531A481F2D808F1300DDC7FB /* CustomDetailViewModel.swift */,
+			);
+			path = Custom;
 			sourceTree = "<group>";
 		};
 		534090572D709842002E42F8 /* SSH key */ = {
@@ -3407,6 +3421,7 @@
 			files = (
 				531A48102D80833D00DDC7FB /* SshDetailViewModel.swift in Sources */,
 				3552A28B29EC89EF00ABDB6E /* ItemSquircleThumbnail.swift in Sources */,
+				531A48202D808F1500DDC7FB /* CustomDetailViewModel.swift in Sources */,
 				3560843B29DD4909001F7487 /* AppearanceSettings.swift in Sources */,
 				3524A4672CB6B240001EC572 /* IdentityDetailViewModel.swift in Sources */,
 				531A48132D80853600DDC7FB /* SshKeyType+Extensions.swift in Sources */,
@@ -3537,6 +3552,7 @@
 				3570E05C2B8E29EB005B8186 /* GetItemsForPasskeyCreation.swift in Sources */,
 				354B24782A77DFFD0060EDF7 /* CopyTotpTokenAndNotify.swift in Sources */,
 				354FBF622A02988900A0B27D /* UpgradeButton.swift in Sources */,
+				531A481E2D808F0E00DDC7FB /* CustomDetailView.swift in Sources */,
 				3524A4652CB6AD48001EC572 /* UpsellableDetailText.swift in Sources */,
 				531A481B2D808D1700DDC7FB /* WifiData+Extensions.swift in Sources */,
 				359A90302B90C58300A50138 /* AutoFillPasskey.swift in Sources */,

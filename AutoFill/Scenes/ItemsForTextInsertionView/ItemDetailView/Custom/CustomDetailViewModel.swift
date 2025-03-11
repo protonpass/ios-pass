@@ -1,5 +1,5 @@
 //
-// SshDetailViewModel.swift
+// CustomDetailViewModel.swift
 // Proton Pass - Created on 11/03/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
@@ -21,17 +21,12 @@
 import Foundation
 
 @MainActor
-final class SshDetailViewModel: BaseItemDetailViewModel {
-    @Published private(set) var publicKey = ""
-    @Published private(set) var privateKey = ""
-
+final class CustomDetailViewModel: BaseItemDetailViewModel {
     override func bindValues() {
-        if case let .sshKey(data) = item.content.contentData {
-            publicKey = data.publicKey
-            privateKey = data.privateKey
-            customSections = data.extraSections
+        if case let .custom(data) = item.content.contentData {
+            customSections = data.sections
         } else {
-            fatalError("Expecting SSH key type")
+            fatalError("Expecting custom item type")
         }
     }
 }
