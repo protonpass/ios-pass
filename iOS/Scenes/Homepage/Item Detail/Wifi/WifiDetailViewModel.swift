@@ -27,6 +27,7 @@ final class WifiDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     @Published private(set) var ssid = ""
     @Published private(set) var password = ""
+    @Published private(set) var security: WifiData.Security = .unspecified
 
     var extraSections: [CustomSection] {
         itemContent.wifi?.extraSections ?? []
@@ -37,6 +38,7 @@ final class WifiDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
         if case let .wifi(data) = itemContent.contentData {
             ssid = data.ssid
             password = data.password
+            security = data.security
         } else {
             fatalError("Expecting wifi type")
         }

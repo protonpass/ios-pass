@@ -123112,6 +123112,17 @@
         }
       }
     },
+    "Security type" : {
+      "comment" : "Title of Wifi security protocol section (WPA, WPA2, WPA3...)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security type"
+          }
+        }
+      }
+    },
     "See all" : {
       "comment" : "Last button on the home page for pinned items. This will redirect the user to a search screen for pinned items",
       "localizations" : {
@@ -147047,6 +147058,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "取消固定"
+          }
+        }
+      }
+    },
+    "Unspecified" : {
+      "comment" : "Placeholder for missing value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unspecified"
           }
         }
       }
