@@ -39,7 +39,7 @@ final class TokenRefreshTests: LoginBaseTestCase {
             .fillUsername(username: user.name)
             .fillpassword(password: user.password)
             .signIn(robot: GetStartedRobot.self)
-            .tapClose()
+            .dismissWelcomeScreen()
         
         _ = try quarkCommands.userExpireSession(username: user.name, expireRefreshToken: true)
         

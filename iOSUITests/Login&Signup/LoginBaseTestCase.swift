@@ -26,55 +26,37 @@ import ProtonCoreLog
 import ProtonCoreQuarkCommands
 import ProtonCoreTestingToolkitUnitTestsCore
 import ProtonCoreTestingToolkitUITestsCore
-import ProtonCoreTestingToolkitProxy
 import XCTest
 
 class LoginBaseTestCase: ProtonCoreBaseTestCase {
 
     var doh: DoH {
         if let customDomain = dynamicDomain.map({ "\($0)" }) {
-            let isMock = customDomain.contains("mock")
-
-            let captchaHost = isMock ? "https://\(customDomain)" : "https://api.\(customDomain)"
-            let humanVerificationV3Host = isMock ? "https://\(customDomain)" : "https://verify.\(customDomain)"
-            let accountHost = isMock ? "https://\(customDomain)" : "https://account.\(customDomain)"
-            let defaultHost = "https://\(customDomain)"
-
             return CustomServerConfigDoH(
                 signupDomain: customDomain,
-                captchaHost: captchaHost,
-                humanVerificationV3Host: humanVerificationV3Host,
-                accountHost: accountHost,
-                defaultHost: defaultHost,
+                captchaHost: "https://api.\(customDomain)",
+                humanVerificationV3Host: "https://verify.\(customDomain)",
+                accountHost: "https://account.\(customDomain)",
+                defaultHost: "https://\(customDomain)",
+                apiHost: ObfuscatedConstants.blackApiHost,
+                defaultPath: ObfuscatedConstants.blackDefaultPath,
+                apnEnvironment: .development
+            )
+        } else {
+            return CustomServerConfigDoH(
+                signupDomain: ObfuscatedConstants.blackSignupDomain,
+                captchaHost: ObfuscatedConstants.blackCaptchaHost,
+                humanVerificationV3Host: ObfuscatedConstants.blackHumanVerificationV3Host,
+                accountHost: ObfuscatedConstants.blackAccountHost,
+                defaultHost: ObfuscatedConstants.blackDefaultHost,
                 apiHost: ObfuscatedConstants.blackApiHost,
                 defaultPath: ObfuscatedConstants.blackDefaultPath,
                 apnEnvironment: .development
             )
         }
-
-        return CustomServerConfigDoH(
-            signupDomain: ObfuscatedConstants.blackSignupDomain,
-            captchaHost: ObfuscatedConstants.blackCaptchaHost,
-            humanVerificationV3Host: ObfuscatedConstants.blackHumanVerificationV3Host,
-            accountHost: ObfuscatedConstants.blackAccountHost,
-            defaultHost: ObfuscatedConstants.blackDefaultHost,
-            apiHost: ObfuscatedConstants.blackApiHost,
-            defaultPath: ObfuscatedConstants.blackDefaultPath,
-            apnEnvironment: .development
-        )
     }
 
-    let entryRobot = AppMainRobot()
-    var appRobot: MainRobot!
     lazy var quarkCommands = Quark().baseUrl(doh)
-    lazy var client: ProxyClient = {
-        let signUpString = doh.getSignUpString()
-        let isMock = signUpString.contains("mock")
-        let urlString = isMock ? doh.getAccountHost() : "https://account.mock.\(signUpString)"
-        let url = URL(string: urlString)!
-        PMLog.info("ProxyClient url: https://account.mock.\(signUpString)")
-        return ProxyClient(baseURL: url)
-    }()
 
     override func setUp() {
         beforeSetUp(bundleIdentifier: "me.proton.pass.iOSUITests")

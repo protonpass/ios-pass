@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1F2769F22D5F8E3900048695 /* LogoutRobot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2769F12D5F8E3900048695 /* LogoutRobot.swift */; };
+		1F2809932D80629300927728 /* MockBaseTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2809922D80629300927728 /* MockBaseTestCase.swift */; };
 		1F4276222D649B1300DF8EB7 /* ParentAccessibilityBranchKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F4276202D649B1300DF8EB7 /* ParentAccessibilityBranchKey.swift */; };
 		1F4276232D649B1300DF8EB7 /* AccessibilityIdentifierLeafModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F42761F2D649B1300DF8EB7 /* AccessibilityIdentifierLeafModifier.swift */; };
 		1F4276242D649B1300DF8EB7 /* AccessibilityIdentifierBranchModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F42761E2D649B1300DF8EB7 /* AccessibilityIdentifierBranchModifier.swift */; };
@@ -761,6 +762,7 @@
 
 /* Begin PBXFileReference section */
 		1F2769F12D5F8E3900048695 /* LogoutRobot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutRobot.swift; sourceTree = "<group>"; };
+		1F2809922D80629300927728 /* MockBaseTestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockBaseTestCase.swift; sourceTree = "<group>"; };
 		1F42761E2D649B1300DF8EB7 /* AccessibilityIdentifierBranchModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifierBranchModifier.swift; sourceTree = "<group>"; };
 		1F42761F2D649B1300DF8EB7 /* AccessibilityIdentifierLeafModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityIdentifierLeafModifier.swift; sourceTree = "<group>"; };
 		1F4276202D649B1300DF8EB7 /* ParentAccessibilityBranchKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentAccessibilityBranchKey.swift; sourceTree = "<group>"; };
@@ -1370,6 +1372,7 @@
 		1F8265C22D6E6C0F009D565A /* MockTests */ = {
 			isa = PBXGroup;
 			children = (
+				1F2809922D80629300927728 /* MockBaseTestCase.swift */,
 				1F8265C72D6E6D16009D565A /* MockTests.swift */,
 				1F8265C12D6E6C0F009D565A /* Mocks */,
 			);
@@ -3933,6 +3936,7 @@
 				75283BF52946E21D006658A6 /* MainRobot.swift in Sources */,
 				FAA719012A8E21E3002B951E /* AccountRobot.swift in Sources */,
 				75283BF82946E21D006658A6 /* LoginSignupTests.swift in Sources */,
+				1F2809932D80629300927728 /* MockBaseTestCase.swift in Sources */,
 				FAA718FF2A8E1F7C002B951E /* ProfileRobot.swift in Sources */,
 				75283BFA2946E21D006658A6 /* LoginBaseTestCase.swift in Sources */,
 				752A68E72954945900DCC65E /* OnboardingRobot.swift in Sources */,
