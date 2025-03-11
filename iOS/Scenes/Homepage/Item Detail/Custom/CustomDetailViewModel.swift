@@ -22,6 +22,7 @@ import Core
 import Entities
 import Foundation
 
+@MainActor
 final class CustomDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
 

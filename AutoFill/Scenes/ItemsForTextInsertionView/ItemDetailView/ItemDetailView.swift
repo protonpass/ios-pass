@@ -65,9 +65,7 @@ struct ItemDetailView: View {
             case .wifi:
                 WifiDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .custom:
-                // swiftlint:disable:next todo
-                // TODO: [Custom item] Implement this
-                Text(verbatim: "Custom item detail")
+                CustomDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             }
 
             ItemDetailHistorySection(itemContent: item.content, action: nil)
