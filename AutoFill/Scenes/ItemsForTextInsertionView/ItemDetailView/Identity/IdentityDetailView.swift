@@ -39,9 +39,13 @@ struct IdentityDetailView: View {
                 }
             }
 
-            ForEach(viewModel.extraSections) {
-                view(for: $0)
-            }
+            CustomSectionsSection(sections: viewModel.customSections,
+                                  contentType: viewModel.type,
+                                  isFreeUser: viewModel.isFreeUser,
+                                  showIcon: false,
+                                  onCopyHiddenText: { viewModel.autofill($0) },
+                                  onCopyTotpToken: { viewModel.autofill($0) },
+                                  onUpgrade: viewModel.upgrade)
         }
     }
 }
@@ -101,35 +105,6 @@ private extension IdentityDetailView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
         }
-    }
-
-    func view(for section: CustomSection) -> some View {
-        Section {
-            if section.content.isEmpty {
-                Text("Empty section")
-                    .font(.callout.italic())
-                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            } else {
-                CustomFieldSections(itemContentType: viewModel.item.content.type,
-                                    fields: section.content,
-                                    isFreeUser: viewModel.isFreeUser,
-                                    showIcon: false,
-                                    onSelectHiddenText: { viewModel.autofill($0) },
-                                    onSelectTotpToken: { viewModel.autofill($0) },
-                                    onUpgrade: { viewModel.upgrade() })
-            }
-        } header: {
-            sectionHeader(title: section.title)
-        }
-    }
-
-    func sectionHeader(title: String) -> some View {
-        Text(title)
-            .foregroundStyle(PassColor.textWeak.toColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, DesignConstant.sectionPadding)
-            .padding(.vertical, DesignConstant.sectionPadding)
     }
 
     var toggleSSNVisibilityButton: some View {
