@@ -63,9 +63,7 @@ struct ItemDetailView: View {
             case .sshKey:
                 SshDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .wifi:
-                // swiftlint:disable:next todo
-                // TODO: [Custom item] Implement this
-                Text(verbatim: "WiFi detail")
+                WifiDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .custom:
                 // swiftlint:disable:next todo
                 // TODO: [Custom item] Implement this

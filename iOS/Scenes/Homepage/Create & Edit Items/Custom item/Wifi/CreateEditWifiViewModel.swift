@@ -65,14 +65,3 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                             customFields: customFields)
     }
 }
-
-extension WifiData.Security {
-    var displayName: String {
-        switch self {
-        case .unspecified:
-            #localized("Unspecified")
-        default:
-            protocolName
-        }
-    }
-}
