@@ -23,7 +23,6 @@ import ProtonCoreUIFoundations
 import SwiftUI
 
 struct WifiDetailView: View {
-    @Environment(\.colorScheme) private var colorScheme
     @StateObject private var viewModel: WifiDetailViewModel
     @State private var showPassword = false
 
@@ -37,15 +36,15 @@ struct WifiDetailView: View {
                             fields: viewModel.customFields,
                             isFreeUser: viewModel.isFreeUser,
                             showIcon: false,
-                            onSelectHiddenText: { viewModel.autofill($0) },
-                            onSelectTotpToken: { viewModel.autofill($0) },
+                            onSelectHiddenText: viewModel.autofill,
+                            onSelectTotpToken: viewModel.autofill,
                             onUpgrade: viewModel.upgrade)
         CustomSectionsSection(sections: viewModel.customSections,
                               contentType: viewModel.type,
                               isFreeUser: viewModel.isFreeUser,
                               showIcon: false,
-                              onCopyHiddenText: { viewModel.autofill($0) },
-                              onCopyTotpToken: { viewModel.autofill($0) },
+                              onCopyHiddenText: viewModel.autofill,
+                              onCopyTotpToken: viewModel.autofill,
                               onUpgrade: viewModel.upgrade)
     }
 }
