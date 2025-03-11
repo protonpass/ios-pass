@@ -22,7 +22,7 @@ import XCTest
 import ProtonCoreTestingToolkitProxy
 import ProtonCoreTestingToolkitUITestsLogin
 
-final class MockTests: LoginBaseTestCase {
+final class MockTests: MockBaseTestCase {
 
     private let defaultTimeout: TimeInterval = 25.0
 
@@ -35,7 +35,7 @@ final class MockTests: LoginBaseTestCase {
                                password: "password",
                                loginRobot: WelcomeRobot().logIn(),
                                retRobot: GetStartedRobot.self)
-            .tapClose()
+            .dismissWelcomeScreen()
             .tapProfile()
     }
 
