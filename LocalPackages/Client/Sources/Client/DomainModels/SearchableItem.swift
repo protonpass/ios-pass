@@ -73,6 +73,8 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
 
         var optionalExtras: [String] = []
         var hasTotpUri = false
+        var extraCustomFields: [CustomField] = []
+        var customSections: [CustomSection] = []
 
         switch itemContent.contentData {
         case let .login(data):
@@ -117,23 +119,27 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
                 data.zipOrPostalCode
             ]
 
-            for customField in data.extraAddressDetails where customField.type == .text {
-                optionalExtras.append("\(customField.title): \(customField.content)")
-            }
-            for customField in data.extraPersonalDetails where customField.type == .text {
-                optionalExtras.append("\(customField.title): \(customField.content)")
-            }
-            for customField in data.extraContactDetails where customField.type == .text {
-                optionalExtras.append("\(customField.title): \(customField.content)")
-            }
-            for customField in data.extraWorkDetails where customField.type == .text {
-                optionalExtras.append("\(customField.title): \(customField.content)")
-            }
-            for section in data.extraSections {
-                for customField in section.content where customField.type == .text {
-                    optionalExtras.append("\(customField.title): \(customField.content)")
-                }
-            }
+            extraCustomFields += data.extraAddressDetails
+            extraCustomFields += data.extraPersonalDetails
+            extraCustomFields += data.extraContactDetails
+            extraCustomFields += data.extraWorkDetails
+
+            customSections = data.extraSections
+
+        case let .sshKey(data):
+            url = nil
+            requiredExtras = []
+            customSections = data.extraSections
+
+        case let .wifi(data):
+            url = nil
+            requiredExtras = []
+            customSections = data.extraSections
+
+        case let .custom(data):
+            url = nil
+            requiredExtras = []
+            customSections = data.sections
 
         default:
             url = nil
@@ -141,8 +147,16 @@ public struct SearchableItem: ItemTypeIdentifiable, Equatable, Hashable {
             optionalExtras = []
         }
 
-        for customField in itemContent.customFields where customField.type == .text {
-            optionalExtras.append("\(customField.title): \(customField.content)")
+        let customFields = itemContent.customFields + extraCustomFields
+        for field in customFields where field.type == .text {
+            optionalExtras.append("\(field.title): \(field.content)")
+        }
+
+        for section in customSections {
+            optionalExtras.append(section.title)
+            for field in section.content where field.type == .text {
+                optionalExtras.append("\(field.title): \(field.content)")
+            }
         }
 
         lastUseTime = itemContent.item.lastUseTime ?? 0
