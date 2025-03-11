@@ -95,6 +95,8 @@ private extension CreateEditWifiView {
             ssidRow
             PassSectionDivider()
             passwordRow
+            PassSectionDivider()
+            securityRow
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedEditableSection()
@@ -142,6 +144,25 @@ private extension CreateEditWifiView {
             }
 
             ClearTextButton(text: $viewModel.password)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+
+    var securityRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Security type")
+                    .editableSectionTitleText(for: viewModel.password)
+
+                Picker("Security type", selection: $viewModel.security) {
+                    ForEach(WifiData.Security.allCases, id: \.self) { security in
+                        Text(verbatim: security.displayName)
+                            .id(security)
+                    }
+                }
+                .labelsHidden()
+            }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(.horizontal, DesignConstant.sectionPadding)

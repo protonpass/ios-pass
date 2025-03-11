@@ -399,8 +399,18 @@ public struct WifiData: Sendable, Equatable, Hashable {
     public let security: Security
     public let extraSections: [CustomSection]
 
-    public enum Security: Sendable {
+    public enum Security: Sendable, CaseIterable {
         case unspecified, wpa, wpa2, wpa3, wep
+
+        public var protocolName: String {
+            switch self {
+            case .unspecified: "WPA2" // Default to WPA2
+            case .wpa: "WPA"
+            case .wpa2: "WPA2"
+            case .wpa3: "WPA3"
+            case .wep: "WEP"
+            }
+        }
     }
 
     public init(from data: ProtonPassItemV1_ItemWifi) {
