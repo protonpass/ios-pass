@@ -19,6 +19,7 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -166,39 +167,5 @@ private extension SshDetailView {
                 }
             }
         }
-    }
-}
-
-private struct SshKeyDetailView: View {
-    @Environment(\.dismiss) private var dismiss
-    let value: String
-    let title: LocalizedStringKey
-
-    var body: some View {
-        ScrollView {
-            Text(value)
-                .textSelection(.enabled)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-                .monospaced()
-                .foregroundStyle(PassColor.textNorm.toColor)
-                .padding()
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                CircleButton(icon: IconProvider.cross,
-                             iconColor: PassColor.interactionNormMajor2,
-                             backgroundColor: PassColor.interactionNormMinor1,
-                             accessibilityLabel: "Close",
-                             action: dismiss.callAsFunction)
-            }
-
-            ToolbarItem(placement: .principal) {
-                Text(title)
-                    .navigationTitleText()
-            }
-        }
-        .fullSheetBackground()
-        .navigationStackEmbeded()
     }
 }

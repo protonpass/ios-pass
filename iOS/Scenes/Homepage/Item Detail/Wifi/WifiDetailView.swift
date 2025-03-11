@@ -232,7 +232,7 @@ private struct WifiQrCodeView: View {
         ZStack {
             PassColor.backgroundNorm.toColor
                 .ignoresSafeArea()
-            VStack {
+            VStack(alignment: .center) {
                 Text("Scan the QR code to join")
                 Text(verbatim: "\"\(ssid)\"")
                 Spacer()
@@ -241,9 +241,10 @@ private struct WifiQrCodeView: View {
             .fontWeight(.bold)
             .foregroundStyle(PassColor.textNorm.toColor)
             .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.top, 40)
+            .padding(.top)
 
             QrCodeView(text: uri)
+                .frame(maxWidth: 400)
         }
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
