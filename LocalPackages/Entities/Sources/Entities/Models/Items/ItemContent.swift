@@ -84,6 +84,20 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
               customFields: customFields)
     }
 
+    /// Used as item's secondary title (description). Only applicable to SSH key & custom item types.
+    public var firstTextCustomFieldValue: String? {
+        let sections: [CustomSection] = switch contentData {
+        case let .sshKey(data):
+            data.extraSections
+        case let .custom(data):
+            data.sections
+        default:
+            []
+        }
+        let applicableFields = (customFields + sections.flatMap(\.content)).filter { $0.type == .text }
+        return applicableFields.first?.content
+    }
+
     // Must be careful because this does not always represent a shared item that was accepted by user as it also
     // show in send. To know if an item was share with me we need to check this one and check that item.itemkey is
     // nil

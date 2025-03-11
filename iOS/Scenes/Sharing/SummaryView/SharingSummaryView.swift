@@ -230,16 +230,10 @@ private extension ItemContent {
             String(note.prefix(50))
         case let .identity(data):
             data.fullName.concatenateWith(data.email, separator: " / ")
-        case .sshKey:
-            // swiftlint:disable:next todo
-            // TODO: [Custom item] Figure this out
-            ""
         case let .wifi(data):
             data.ssid
-        case .custom:
-            // swiftlint:disable:next todo
-            // TODO: [Custom item] Figure this out
-            ""
+        case .custom, .sshKey:
+            firstTextCustomFieldValue ?? ""
         }
     }
 }
