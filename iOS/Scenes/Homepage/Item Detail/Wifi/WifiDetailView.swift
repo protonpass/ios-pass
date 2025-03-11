@@ -99,6 +99,8 @@ private extension WifiDetailView {
             ssidRow
             PassSectionDivider()
             passwordRow
+            PassSectionDivider()
+            securityTypeRow
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedDetailSection()
@@ -141,6 +143,7 @@ private extension WifiDetailView {
                     if showPassword {
                         Text(viewModel.password)
                             .font(.body.monospaced())
+                            .sectionContentText()
                     } else {
                         Text(String(repeating: "•", count: 12))
                             .sectionContentText()
@@ -181,6 +184,18 @@ private extension WifiDetailView {
                 Text("Show large")
             }
         }
+    }
+
+    var securityTypeRow: some View {
+        VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+            Text("Security type")
+                .sectionTitleText()
+
+            Text(verbatim: viewModel.security.name)
+                .sectionContentText()
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
     var showQrCodeButton: some View {

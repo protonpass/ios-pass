@@ -22,6 +22,7 @@ import Client
 import Core
 import Entities
 import Foundation
+import Macro
 
 final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }
@@ -29,6 +30,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     @Published var title = ""
     @Published var ssid = ""
     @Published var password = ""
+    @Published var security: WifiData.Security = .wpa2
 
     override var isSaveable: Bool {
         super.isSaveable && !title.isEmpty
@@ -57,7 +59,20 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.wifi(.init(ssid: ssid,
                                                              password: password,
+                                                             security: security,
                                                              extraSections: customSections)),
                             customFields: customFields)
+    }
+}
+
+extension WifiData.Security {
+    var name: String {
+        switch self {
+        case .unspecified: #localized("Unspecified")
+        case .wpa: "WPA"
+        case .wpa2: "WPA2"
+        case .wpa3: "WPA3"
+        case .wep: "WEP"
+        }
     }
 }
