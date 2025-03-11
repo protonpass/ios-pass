@@ -40,7 +40,14 @@ struct SshDetailView: View {
                             showIcon: false,
                             onSelectHiddenText: { viewModel.autofill($0) },
                             onSelectTotpToken: { viewModel.autofill($0) },
-                            onUpgrade: { viewModel.upgrade() })
+                            onUpgrade: viewModel.upgrade)
+        CustomSectionsSection(sections: viewModel.customSections,
+                              contentType: viewModel.type,
+                              isFreeUser: viewModel.isFreeUser,
+                              showIcon: false,
+                              onCopyHiddenText: { viewModel.autofill($0) },
+                              onCopyTotpToken: { viewModel.autofill($0) },
+                              onUpgrade: viewModel.upgrade)
     }
 }
 
