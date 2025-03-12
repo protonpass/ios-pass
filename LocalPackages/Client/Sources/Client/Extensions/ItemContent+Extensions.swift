@@ -48,18 +48,11 @@ public extension ItemContent {
         case let .identity(data):
             note = data.fullName.concatenateWith(data.email, separator: " / ")
 
-        case .sshKey:
-            // swiftlint:disable:next todo
-            // TODO: [Custom item] Figure this out later
-            note = ""
-
         case let .wifi(data):
             note = data.ssid
 
-        case let .custom(data):
-            // swiftlint:disable:next todo
-            // TODO: [Custom item] Figure this out later
-            note = ""
+        case .custom, .sshKey:
+            note = firstTextCustomFieldValue ?? ""
         }
 
         return .init(itemId: item.itemID,

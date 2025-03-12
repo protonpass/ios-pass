@@ -49,13 +49,13 @@ struct LoginDetailView: View {
             CustomFieldSections(itemContentType: viewModel.type,
                                 fields: viewModel.customFields,
                                 isFreeUser: viewModel.isFreeUser,
-                                onSelectHiddenText: { viewModel.autofill($0) },
-                                onSelectTotpToken: { viewModel.autofill($0) },
-                                onUpgrade: { viewModel.upgrade() })
+                                onSelectHiddenText: viewModel.autofill,
+                                onSelectTotpToken: viewModel.autofill,
+                                onUpgrade: viewModel.upgrade)
         }
         .optionalSheet(binding: $selectedPasskey) { passkey in
             PasskeyDetailView(passkey: passkey,
-                              onTapUsername: { viewModel.autofill($0) })
+                              onTapUsername: viewModel.autofill)
                 .presentationDetents([.height(380)])
                 .environment(\.colorScheme, colorScheme)
         }
@@ -73,7 +73,7 @@ private extension LoginDetailView {
         if !viewModel.passkeys.isEmpty {
             ForEach(viewModel.passkeys, id: \.keyID) { passkey in
                 PasskeyDetailRow(passkey: passkey,
-                                 onTapUsername: { viewModel.autofill($0) },
+                                 onTapUsername: viewModel.autofill,
                                  onTap: { selectedPasskey = passkey })
             }
         }
@@ -114,7 +114,7 @@ private extension LoginDetailView {
                     PassSectionDivider()
                     TOTPRow(uri: viewModel.totpUri,
                             tintColor: tintColor,
-                            onCopyTotpToken: { viewModel.autofill($0) })
+                            onCopyTotpToken: viewModel.autofill)
                 }
             }
         }

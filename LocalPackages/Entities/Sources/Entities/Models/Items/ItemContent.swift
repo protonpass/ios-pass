@@ -40,6 +40,22 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     /// Applicable to logins, ssh keys, wifis and custom items
     public let customFields: [CustomField]
 
+    /// Applicable to identities, ssh keys, wifis and custom items
+    public var customSections: [CustomSection] {
+        switch contentData {
+        case let .identity(data):
+            data.extraSections
+        case let .sshKey(data):
+            data.extraSections
+        case let .wifi(data):
+            data.extraSections
+        case let .custom(data):
+            data.sections
+        default:
+            []
+        }
+    }
+
     public var id: String {
         "\(item.itemID + shareId)"
     }
@@ -82,6 +98,20 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
               itemUuid: itemUuid,
               data: contentData,
               customFields: customFields)
+    }
+
+    /// Used as item's secondary title (description). Only applicable to SSH key & custom item types.
+    public var firstTextCustomFieldValue: String? {
+        let sections: [CustomSection] = switch contentData {
+        case let .sshKey(data):
+            data.extraSections
+        case let .custom(data):
+            data.sections
+        default:
+            []
+        }
+        let applicableFields = (customFields + sections.flatMap(\.content)).filter { $0.type == .text }
+        return applicableFields.first?.content
     }
 
     // Must be careful because this does not always represent a shared item that was accepted by user as it also

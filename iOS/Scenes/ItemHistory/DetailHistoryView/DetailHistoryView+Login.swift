@@ -20,7 +20,6 @@
 
 import DesignSystem
 import Entities
-import Factory
 import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
@@ -179,13 +178,17 @@ private extension DetailHistoryView {
         .padding(DesignConstant.sectionPadding)
         .roundedDetailSection(borderColor: borderColor(for: \.loginItem?.urls))
     }
+}
 
-    func customFields(item: ItemContent) -> some View {
+extension DetailHistoryView {
+    func customFields(item: ItemContent, showIcon: Bool = true) -> some View {
         VStack {
             ForEach(item.customFields) { field in
                 HStack(spacing: DesignConstant.sectionPadding) {
-                    ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
-                                          color: viewModel.currentRevision.type.normColor)
+                    if showIcon {
+                        ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
+                                              color: viewModel.currentRevision.type.normColor)
+                    }
 
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                         Text(field.title)

@@ -56,7 +56,7 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.sshKey(.init(privateKey: privateKey,
                                                                publicKey: publicKey,
-                                                               extraSections: [])),
-                            customFields: [])
+                                                               extraSections: customSections)),
+                            customFields: customFields)
     }
 }

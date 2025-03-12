@@ -396,19 +396,44 @@ public extension SshKeyData {
 public struct WifiData: Sendable, Equatable, Hashable {
     public let ssid: String
     public let password: String
+    public let security: Security
     public let extraSections: [CustomSection]
+
+    public enum Security: Sendable, CaseIterable {
+        case unspecified, wpa, wpa2, wpa3, wep
+
+        public var protocolName: String {
+            switch self {
+            case .unspecified: "WPA2" // Default to WPA2
+            case .wpa: "WPA"
+            case .wpa2: "WPA2"
+            case .wpa3: "WPA3"
+            case .wep: "WEP"
+            }
+        }
+    }
 
     public init(from data: ProtonPassItemV1_ItemWifi) {
         ssid = data.ssid
         password = data.password
+        security = switch data.security {
+        case .unspecifiedWifiSecurity: .unspecified
+        case .wpa: .wpa
+        case .wpa2: .wpa2
+        case .wpa3: .wpa3
+        case .wep: .wep
+        default: .unspecified
+        }
         extraSections = data.sections.map { CustomSection(from: $0) }
     }
 
     public init(ssid: String,
                 password: String,
+                security: Security,
                 extraSections: [CustomSection]) {
         self.ssid = ssid
         self.password = password
+        self.security = security
         self.extraSections = extraSections
     }
 }
@@ -418,6 +443,13 @@ public extension WifiData {
         var item = ProtonPassItemV1_ItemWifi()
         item.ssid = ssid
         item.password = password
+        item.security = switch security {
+        case .unspecified: .unspecifiedWifiSecurity
+        case .wpa: .wpa
+        case .wpa2: .wpa2
+        case .wpa3: .wpa3
+        case .wep: .wep
+        }
         item.sections = extraSections.toProtonPassItemV1CustomSections
         return item
     }
