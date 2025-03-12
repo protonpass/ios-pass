@@ -35,7 +35,7 @@ extension DetailHistoryView {
                     .padding(.top, 8)
             }
 
-            customFields(item: itemContent)
+            customFields(item: itemContent, showIcon: false)
                 .padding(.top, 8)
 
             customSections(itemContent.customSections)

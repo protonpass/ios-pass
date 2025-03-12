@@ -199,9 +199,7 @@ private extension DetailHistoryView {
                 case .sshKey:
                     sshView
                 case .wifi:
-                    // swiftlint:disable:next todo
-                    // TODO: [Custom item] Implement this
-                    Text(verbatim: "WiFi history")
+                    wifiView
                 case .custom:
                     // swiftlint:disable:next todo
                     // TODO: [Custom item] Implement this
