@@ -122,7 +122,7 @@ private extension AliasContactsView {
             Section {
                 ForEach(viewModel.contactsInfos.activeContacts) { contact in
                     ContactRow(contact: contact,
-                               onSend: { viewModel.openMail(emailTo: contact.reverseAlias) },
+                               onSend: { viewModel.sendEmail(to: contact) },
                                onCopyAddress: { viewModel.copyContact(contact) },
                                onToggleState: { viewModel.toggleContactState(contact) },
                                onDelete: { viewModel.delete(contact: contact) })
@@ -152,7 +152,7 @@ private extension AliasContactsView {
                                    if viewModel.isFreeUser {
                                        viewModel.upsell()
                                    } else {
-                                       viewModel.openMail(emailTo: contact.reverseAlias)
+                                       viewModel.sendEmail(to: contact)
                                    }
                                },
                                onCopyAddress: { viewModel.copyContact(contact) },
