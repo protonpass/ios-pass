@@ -46,7 +46,7 @@ final class ExternalAccountsTests: LoginBaseTestCase {
                                password: user.password,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: GetStartedRobot.self)
-            .tapClose()
+            .dismissWelcomeScreen()
             .verify.emptyVaultViewIsShown()
     }
 
@@ -59,7 +59,7 @@ final class ExternalAccountsTests: LoginBaseTestCase {
                                password: user.password,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: GetStartedRobot.self)
-            .tapClose()
+            .dismissWelcomeScreen()
             .verify.emptyVaultViewIsShown()
     }
 
@@ -88,7 +88,7 @@ final class ExternalAccountsTests: LoginBaseTestCase {
                 userEmail: randomEmail,
                 verificationCode: "666666",
                 retRobot: GetStartedRobot.self
-            ).tapClose()
+            ).dismissWelcomeScreen()
             .verify.emptyVaultViewIsShown()
     }
 

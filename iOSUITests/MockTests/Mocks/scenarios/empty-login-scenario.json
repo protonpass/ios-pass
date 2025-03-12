@@ -1,0 +1,5 @@
+{
+  "description": "scenario description",
+  "updateFile": false,
+  "mockFiles": ["api"]
+}

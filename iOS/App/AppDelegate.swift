@@ -91,8 +91,10 @@ private extension AppDelegate {
             UIView.setAnimationsEnabled(false)
             if var envDomain = ProcessInfo.processInfo.environment["DYNAMIC_DOMAIN"] {
                 // handle proxy
-                if envDomain.hasSuffix(".proton.black") {
-                    envDomain = String(envDomain.dropLast(".proton.black".count))
+                if ProcessInfo.processInfo.arguments.contains("--isMockedTest") {
+                    if envDomain.hasSuffix(".proton.black") {
+                        envDomain = "account.mock.\(envDomain.dropLast(".proton.black".count))"
+                    }
                 }
 
                 kSharedUserDefaults.setValue("scientist", forKey: "pref_environment")
