@@ -181,12 +181,14 @@ private extension DetailHistoryView {
 }
 
 extension DetailHistoryView {
-    func customFields(item: ItemContent) -> some View {
+    func customFields(item: ItemContent, showIcon: Bool = true) -> some View {
         VStack {
             ForEach(item.customFields) { field in
                 HStack(spacing: DesignConstant.sectionPadding) {
-                    ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
-                                          color: viewModel.currentRevision.type.normColor)
+                    if showIcon {
+                        ItemDetailSectionIcon(icon: CustomFieldType.text.icon,
+                                              color: viewModel.currentRevision.type.normColor)
+                    }
 
                     VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                         Text(field.title)
