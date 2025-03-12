@@ -82,8 +82,8 @@ private extension LogInDetailView {
                         CustomFieldSections(itemContentType: viewModel.itemContent.type,
                                             fields: viewModel.customFields,
                                             isFreeUser: viewModel.isFreeUser,
-                                            onSelectHiddenText: { copyHiddenText($0) },
-                                            onSelectTotpToken: { copyTOTPToken($0) },
+                                            onSelectHiddenText: viewModel.copyHiddenText,
+                                            onSelectTotpToken: viewModel.copyTOTPToken,
                                             onUpgrade: { viewModel.upgrade() })
 
                         if viewModel.showFileAttachmentsSection {
@@ -398,16 +398,6 @@ private extension LogInDetailView {
         .background(PassColor.backgroundMedium.toColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .onTapGesture(perform: viewModel.showAliasDetail)
-    }
-}
-
-private extension LogInDetailView {
-    func copyTOTPToken(_ token: String) {
-        viewModel.copyToClipboard(text: token, message: #localized("TOTP copied"))
-    }
-
-    func copyHiddenText(_ text: String) {
-        viewModel.copyToClipboard(text: text, message: #localized("Hidden text copied"))
     }
 }
 

@@ -25,28 +25,6 @@ import ProtonCoreUIFoundations
 import Screens
 import SwiftUI
 
-private enum SshKeyType: Int, Sendable, Identifiable {
-    case `public`, `private`
-
-    var id: Int {
-        rawValue
-    }
-
-    var title: LocalizedStringKey {
-        switch self {
-        case .public: "Public key"
-        case .private: "Private key"
-        }
-    }
-
-    var placeholder: LocalizedStringKey {
-        switch self {
-        case .public: "Add public key"
-        case .private: "Add private key"
-        }
-    }
-}
-
 struct CreateEditSshKeyView: View {
     @StateObject private var viewModel: CreateEditSshKeyViewModel
     @FocusState private var focusedField: Field?
@@ -65,8 +43,7 @@ struct CreateEditSshKeyView: View {
         ScrollView {
             LazyVStack {
                 title
-                view(for: .private, value: viewModel.privateKey)
-                view(for: .public, value: viewModel.publicKey)
+                keys
                 fields
 
                 AddCustomFieldAndSectionView(supportAddField: true,
@@ -127,6 +104,16 @@ private extension CreateEditSshKeyView {
             .padding(.bottom, DesignConstant.sectionPadding / 2)
     }
 
+    var keys: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            view(for: .public, value: viewModel.publicKey)
+            PassSectionDivider()
+            view(for: .private, value: viewModel.privateKey)
+        }
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedEditableSection()
+    }
+
     func view(for keyType: SshKeyType, value: String) -> some View {
         VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
             Text(keyType.title)
@@ -144,8 +131,7 @@ private extension CreateEditSshKeyView {
                 }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
+        .padding(.horizontal, DesignConstant.sectionPadding)
         .buttonEmbeded {
             focusedField = nil
             selectedKeyType = keyType
@@ -153,11 +139,11 @@ private extension CreateEditSshKeyView {
     }
 
     var fields: some View {
-        ForEach(viewModel.customFields, id: \.self) { field in
+        ForEach($viewModel.customFields) { $field in
             EditCustomFieldView(focusedField: $focusedField,
                                 field: .custom(field),
                                 contentType: viewModel.itemContentType,
-                                value: .constant(field),
+                                value: $field,
                                 showIcon: false,
                                 onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
                                 onRemove: { viewModel.customFields.remove(field) })

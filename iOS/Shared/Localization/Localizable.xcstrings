@@ -119873,6 +119873,17 @@
         }
       }
     },
+    "Scan the QR code to join" : {
+      "comment" : "Title of the page that shows the QR code to join a wifi network",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scan the QR code to join"
+          }
+        }
+      }
+    },
     "Screenshot" : {
       "comment" : "Option to attach photos to a bug report",
       "localizations" : {
@@ -123097,6 +123108,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "安全密钥"
+          }
+        }
+      }
+    },
+    "Security type" : {
+      "comment" : "Title of Wifi security protocol section (WPA, WPA2, WPA3...)",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Security type"
           }
         }
       }
@@ -130383,6 +130405,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "告诉我怎么做"
+          }
+        }
+      }
+    },
+    "Show Network QR Code" : {
+      "comment" : "Title of the button that show a QR code in order to share Wifi password",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show Network QR Code"
           }
         }
       }
@@ -147025,6 +147058,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "取消固定"
+          }
+        }
+      }
+    },
+    "Unspecified" : {
+      "comment" : "Placeholder for missing value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unspecified"
           }
         }
       }

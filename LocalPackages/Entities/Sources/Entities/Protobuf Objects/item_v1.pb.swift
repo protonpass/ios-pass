@@ -21,6 +21,52 @@ fileprivate struct _GeneratedWithProtocGenSwiftVersion: SwiftProtobuf.ProtobufAP
   typealias Version = _2
 }
 
+public enum ProtonPassItemV1_WifiSecurity: SwiftProtobuf.Enum, Swift.CaseIterable {
+  public typealias RawValue = Int
+  case unspecifiedWifiSecurity // = 0
+  case wpa // = 1
+  case wpa2 // = 2
+  case wpa3 // = 3
+  case wep // = 4
+  case UNRECOGNIZED(Int)
+
+  public init() {
+    self = .unspecifiedWifiSecurity
+  }
+
+  public init?(rawValue: Int) {
+    switch rawValue {
+    case 0: self = .unspecifiedWifiSecurity
+    case 1: self = .wpa
+    case 2: self = .wpa2
+    case 3: self = .wpa3
+    case 4: self = .wep
+    default: self = .UNRECOGNIZED(rawValue)
+    }
+  }
+
+  public var rawValue: Int {
+    switch self {
+    case .unspecifiedWifiSecurity: return 0
+    case .wpa: return 1
+    case .wpa2: return 2
+    case .wpa3: return 3
+    case .wep: return 4
+    case .UNRECOGNIZED(let i): return i
+    }
+  }
+
+  // The compiler won't synthesize support with the UNRECOGNIZED case.
+  public static let allCases: [ProtonPassItemV1_WifiSecurity] = [
+    .unspecifiedWifiSecurity,
+    .wpa,
+    .wpa2,
+    .wpa3,
+    .wep,
+  ]
+
+}
+
 /// Credit cards
 public enum ProtonPassItemV1_CardType: SwiftProtobuf.Enum, Swift.CaseIterable {
   public typealias RawValue = Int
@@ -223,6 +269,8 @@ public struct ProtonPassItemV1_ItemWifi: Sendable {
   public var ssid: String = String()
 
   public var password: String = String()
+
+  public var security: ProtonPassItemV1_WifiSecurity = .unspecifiedWifiSecurity
 
   public var sections: [ProtonPassItemV1_CustomSection] = []
 
@@ -778,6 +826,16 @@ public struct ProtonPassItemV1_Item: Sendable {
 
 fileprivate let _protobuf_package = "proton_pass_item_v1"
 
+extension ProtonPassItemV1_WifiSecurity: SwiftProtobuf._ProtoNameProviding {
+  public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
+    0: .same(proto: "UnspecifiedWifiSecurity"),
+    1: .same(proto: "WPA"),
+    2: .same(proto: "WPA2"),
+    3: .same(proto: "WPA3"),
+    4: .same(proto: "WEP"),
+  ]
+}
+
 extension ProtonPassItemV1_CardType: SwiftProtobuf._ProtoNameProviding {
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     0: .same(proto: "Unspecified"),
@@ -1165,7 +1223,8 @@ extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._Messa
   public static let _protobuf_nameMap: SwiftProtobuf._NameMap = [
     1: .same(proto: "ssid"),
     2: .same(proto: "password"),
-    3: .same(proto: "sections"),
+    3: .same(proto: "security"),
+    4: .same(proto: "sections"),
   ]
 
   public mutating func decodeMessage<D: SwiftProtobuf.Decoder>(decoder: inout D) throws {
@@ -1176,7 +1235,8 @@ extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._Messa
       switch fieldNumber {
       case 1: try { try decoder.decodeSingularStringField(value: &self.ssid) }()
       case 2: try { try decoder.decodeSingularStringField(value: &self.password) }()
-      case 3: try { try decoder.decodeRepeatedMessageField(value: &self.sections) }()
+      case 3: try { try decoder.decodeSingularEnumField(value: &self.security) }()
+      case 4: try { try decoder.decodeRepeatedMessageField(value: &self.sections) }()
       default: break
       }
     }
@@ -1189,8 +1249,11 @@ extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._Messa
     if !self.password.isEmpty {
       try visitor.visitSingularStringField(value: self.password, fieldNumber: 2)
     }
+    if self.security != .unspecifiedWifiSecurity {
+      try visitor.visitSingularEnumField(value: self.security, fieldNumber: 3)
+    }
     if !self.sections.isEmpty {
-      try visitor.visitRepeatedMessageField(value: self.sections, fieldNumber: 3)
+      try visitor.visitRepeatedMessageField(value: self.sections, fieldNumber: 4)
     }
     try unknownFields.traverse(visitor: &visitor)
   }
@@ -1198,6 +1261,7 @@ extension ProtonPassItemV1_ItemWifi: SwiftProtobuf.Message, SwiftProtobuf._Messa
   public static func ==(lhs: ProtonPassItemV1_ItemWifi, rhs: ProtonPassItemV1_ItemWifi) -> Bool {
     if lhs.ssid != rhs.ssid {return false}
     if lhs.password != rhs.password {return false}
+    if lhs.security != rhs.security {return false}
     if lhs.sections != rhs.sections {return false}
     if lhs.unknownFields != rhs.unknownFields {return false}
     return true

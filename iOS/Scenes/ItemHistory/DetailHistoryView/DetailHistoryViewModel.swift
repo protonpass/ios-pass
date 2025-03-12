@@ -200,6 +200,14 @@ extension DetailHistoryViewModel {
     func copySecurityCode() {
         copy(\.creditCardItem?.verificationNumber, message: #localized("Security code copied"))
     }
+
+    func copyWifiSsid() {
+        copy(\.wifi?.ssid, message: #localized("SSID copied"))
+    }
+
+    func copyWifiPassword() {
+        copy(\.wifi?.password, message: #localized("WiFi password copied"))
+    }
 }
 
 // MARK: Private APIs

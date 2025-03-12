@@ -29,6 +29,7 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
     @Published var title = ""
     @Published var ssid = ""
     @Published var password = ""
+    @Published var security: WifiData.Security = .unspecified
 
     override var isSaveable: Bool {
         super.isSaveable && !title.isEmpty
@@ -41,6 +42,8 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                 title = itemContent.name
                 ssid = data.ssid
                 password = data.password
+                security = data.security
+                customSections = data.extraSections
             }
 
         default:
@@ -56,7 +59,8 @@ final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintabl
                             itemUuid: UUID().uuidString,
                             data: ItemContentData.wifi(.init(ssid: ssid,
                                                              password: password,
-                                                             extraSections: [])),
-                            customFields: [])
+                                                             security: security,
+                                                             extraSections: customSections)),
+                            customFields: customFields)
     }
 }

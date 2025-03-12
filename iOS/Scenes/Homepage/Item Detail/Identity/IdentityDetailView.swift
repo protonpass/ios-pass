@@ -58,9 +58,13 @@ private extension IdentityDetailView {
                         }
                     }
 
-                    ForEach(viewModel.extraSections) {
-                        view(for: $0)
-                    }
+                    CustomSectionsSection(sections: viewModel.extraSections,
+                                          contentType: viewModel.itemContentType,
+                                          isFreeUser: viewModel.isFreeUser,
+                                          showIcon: false,
+                                          onCopyHiddenText: viewModel.copyHiddenText,
+                                          onCopyTotpToken: viewModel.copyTOTPToken,
+                                          onUpgrade: viewModel.upgrade)
 
                     if viewModel.showFileAttachmentsSection {
                         FileAttachmentsViewSection(files: viewModel.fileUiModels,
@@ -142,8 +146,8 @@ private extension IdentityDetailView {
                                     isFreeUser: viewModel.isFreeUser,
                                     isASection: false,
                                     showIcon: false,
-                                    onSelectHiddenText: { viewModel.copyHiddenText($0) },
-                                    onSelectTotpToken: { viewModel.copyTotpToken($0) },
+                                    onSelectHiddenText: viewModel.copyHiddenText,
+                                    onSelectTotpToken: viewModel.copyTOTPToken,
                                     onUpgrade: { viewModel.upgrade() })
             }
             .padding(.vertical, DesignConstant.sectionPadding)
@@ -154,35 +158,6 @@ private extension IdentityDetailView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.vertical, DesignConstant.sectionPadding)
         }
-    }
-
-    func view(for section: CustomSection) -> some View {
-        Section {
-            if section.content.isEmpty {
-                Text("Empty section")
-                    .font(.callout.italic())
-                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-            } else {
-                CustomFieldSections(itemContentType: viewModel.itemContent.type,
-                                    fields: section.content,
-                                    isFreeUser: viewModel.isFreeUser,
-                                    showIcon: false,
-                                    onSelectHiddenText: { viewModel.copyHiddenText($0) },
-                                    onSelectTotpToken: { viewModel.copyTotpToken($0) },
-                                    onUpgrade: { viewModel.upgrade() })
-            }
-        } header: {
-            sectionHeader(title: section.title)
-        }
-    }
-
-    func sectionHeader(title: String) -> some View {
-        Text(title)
-            .foregroundStyle(PassColor.textWeak.toColor)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, DesignConstant.sectionPadding)
-            .padding(.vertical, DesignConstant.sectionPadding)
     }
 
     var toggleSSNVisibilityButton: some View {

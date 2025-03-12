@@ -113,30 +113,24 @@ private extension ItemDetailCoordinator {
         return .init(viewModel: viewModel, view: IdentityDetailView(viewModel: viewModel))
     }
 
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
     func makeSshKeyDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
-        .init(viewModel: .init(isShownAsSheet: asSheet,
-                               itemContent: itemContent,
-                               upgradeChecker: upgradeChecker),
-              view: Text(verbatim: "SSH key detail"))
+        let viewModel = SshDetailViewModel(isShownAsSheet: asSheet,
+                                           itemContent: itemContent,
+                                           upgradeChecker: upgradeChecker)
+        return .init(viewModel: viewModel, view: SshDetailView(viewModel: viewModel))
     }
 
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
     func makeWifiDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
-        .init(viewModel: .init(isShownAsSheet: asSheet,
-                               itemContent: itemContent,
-                               upgradeChecker: upgradeChecker),
-              view: Text(verbatim: "WiFi detail"))
+        let viewModel = WifiDetailViewModel(isShownAsSheet: asSheet,
+                                            itemContent: itemContent,
+                                            upgradeChecker: upgradeChecker)
+        return .init(viewModel: viewModel, view: WifiDetailView(viewModel: viewModel))
     }
 
-    // swiftlint:disable:next todo
-    // TODO: [Custom item] Implement this
     func makeCustomDetailPage(from itemContent: ItemContent, asSheet: Bool) -> ItemDetailPage {
-        .init(viewModel: .init(isShownAsSheet: asSheet,
-                               itemContent: itemContent,
-                               upgradeChecker: upgradeChecker),
-              view: Text(verbatim: "Custom item detail"))
+        let viewModel = CustomDetailViewModel(isShownAsSheet: asSheet,
+                                              itemContent: itemContent,
+                                              upgradeChecker: upgradeChecker)
+        return .init(viewModel: viewModel, view: CustomDetailView(viewModel: viewModel))
     }
 }

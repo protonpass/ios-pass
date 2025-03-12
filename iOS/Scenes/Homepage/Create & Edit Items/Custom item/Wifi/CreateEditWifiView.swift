@@ -41,8 +41,7 @@ struct CreateEditWifiView: View {
         ScrollView {
             LazyVStack {
                 title
-                ssid
-                password
+                ssidAndPasswordSection
                 fields
 
                 AddCustomFieldAndSectionView(supportAddField: true,
@@ -91,7 +90,19 @@ private extension CreateEditWifiView {
             .padding(.bottom, DesignConstant.sectionPadding / 2)
     }
 
-    var ssid: some View {
+    var ssidAndPasswordSection: some View {
+        VStack(spacing: DesignConstant.sectionPadding) {
+            ssidRow
+            PassSectionDivider()
+            passwordRow
+            PassSectionDivider()
+            securityRow
+        }
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedEditableSection()
+    }
+
+    var ssidRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Name (SSID)")
@@ -110,11 +121,10 @@ private extension CreateEditWifiView {
             ClearTextButton(text: $viewModel.ssid)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
-    var password: some View {
+    var passwordRow: some View {
         HStack(spacing: DesignConstant.sectionPadding) {
             VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
                 Text("Password")
@@ -136,16 +146,34 @@ private extension CreateEditWifiView {
             ClearTextButton(text: $viewModel.password)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
-        .padding(DesignConstant.sectionPadding)
-        .roundedEditableSection()
+        .padding(.horizontal, DesignConstant.sectionPadding)
+    }
+
+    var securityRow: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Security type")
+                    .editableSectionTitleText(for: viewModel.password)
+
+                Picker("Security type", selection: $viewModel.security) {
+                    ForEach(WifiData.Security.allCases, id: \.self) { security in
+                        Text(verbatim: security.displayName)
+                            .id(security)
+                    }
+                }
+                .labelsHidden()
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        .padding(.horizontal, DesignConstant.sectionPadding)
     }
 
     var fields: some View {
-        ForEach(viewModel.customFields, id: \.self) { field in
+        ForEach($viewModel.customFields) { $field in
             EditCustomFieldView(focusedField: $focusedField,
                                 field: .custom(field),
                                 contentType: viewModel.itemContentType,
-                                value: .constant(field),
+                                value: $field,
                                 showIcon: false,
                                 onEditTitle: { viewModel.requestEditCustomFieldTitle(field) },
                                 onRemove: { viewModel.customFields.remove(field) })

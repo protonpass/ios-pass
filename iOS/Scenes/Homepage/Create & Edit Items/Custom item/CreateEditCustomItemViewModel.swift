@@ -70,6 +70,7 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
         case let .clone(itemContent), let .edit(itemContent):
             if case let .custom(data) = itemContent.contentData {
                 title = itemContent.name
+                customSections = data.sections
             }
         }
     }
@@ -80,8 +81,8 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
         ItemContentProtobuf(name: title,
                             note: "",
                             itemUuid: UUID().uuidString,
-                            data: ItemContentData.custom(.init(sections: [])),
-                            customFields: [])
+                            data: ItemContentData.custom(.init(sections: customSections)),
+                            customFields: customFields)
     }
 }
 
