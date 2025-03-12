@@ -360,8 +360,25 @@ private extension DetailHistoryView {
     }
 
     var customSectionsColor: UIColor {
-        viewModel.currentRevision.identityItem?.extraSections != viewModel.pastRevision.identityItem?
-            .extraSections ? PassColor.signalWarning : PassColor.inputBorderNorm
+        var currentSections: [CustomSection] = []
+        var pastSections: [CustomSection] = []
+        switch viewModel.itemContentType {
+        case .identity:
+            currentSections = viewModel.currentRevision.identityItem?.extraSections ?? []
+            pastSections = viewModel.pastRevision.identityItem?.extraSections ?? []
+        case .sshKey:
+            currentSections = viewModel.currentRevision.sshKey?.extraSections ?? []
+            pastSections = viewModel.pastRevision.sshKey?.extraSections ?? []
+        case .wifi:
+            currentSections = viewModel.currentRevision.wifi?.extraSections ?? []
+            pastSections = viewModel.pastRevision.wifi?.extraSections ?? []
+        case .custom:
+            currentSections = viewModel.currentRevision.custom?.sections ?? []
+            pastSections = viewModel.pastRevision.custom?.sections ?? []
+        default:
+            return PassColor.inputBorderNorm
+        }
+        return currentSections != pastSections ? PassColor.signalWarning : PassColor.inputBorderNorm
     }
 
     func sectionTitle(title: LocalizedStringKey) -> some View {
