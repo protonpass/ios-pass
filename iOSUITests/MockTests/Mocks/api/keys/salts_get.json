@@ -1,0 +1,64 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/keys/salts"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "KeySalts": [
+        {
+          "ID": "JLkYSmAZiCQ5d5qtvklvSJFVIuZN6yNJWPT8yKcHGFGWqONVVaVQ5rpjavUaNthmPVDZcNnvWDCwz1UOVGFHXw==",
+          "KeySalt": "X9Klrhah1H87Mq+Ack7W7g=="
+        },
+        {
+          "ID": "HB_29cAPkhaWhZsCRwCGuGP5nRajOpeP8wZK3QisI6IGODOgIuRf4-hAMEypQoorfzWw3aby3eYjeUhE2Ou6cw==",
+          "KeySalt": null
+        }
+      ]
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Thu, 06 Mar 2025 13:25:27 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /keys/salts",
+      "x-pm-user-id": "955",
+      "x-pm-uid": "nndg3jfqcl4jxswpcgdnp4khxiqj7sok",
+      "access": "application/vnd.protonmail.api+json;apiversion=3",
+      "x-pm-time-total": "120",
+      "x-pm-time-user": "84",
+      "x-pm-time-system": "4",
+      "x-pm-memory": "8",
+      "x-pm-allocated-memory": "10",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (4e79a969)",
+      "x-b3-traceid": "338bb0c6dc9342335cf69caac36e6fa9",
+      "x-b3-spanid": "ebe813b73b369166",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "Z8miRx26+KRaAaB1uTBPVgAAAFg",
+      "set-cookie": [
+        "Session-Id=Z8miRx26@KRaAaB1uTBPVgAAAFg; Domain=boas.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=boas.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z8miRx26+KRaAaB1uTBPVgAAAFg' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.boas.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.boas.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "name": "Mock_get__api_keys_salts"
+}

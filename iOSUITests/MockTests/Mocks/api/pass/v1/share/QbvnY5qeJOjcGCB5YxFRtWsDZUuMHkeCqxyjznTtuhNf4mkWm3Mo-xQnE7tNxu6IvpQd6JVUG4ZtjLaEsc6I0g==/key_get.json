@@ -1,0 +1,65 @@
+{
+  "request": {
+    "exactUrl": [
+      "/api/pass/v1/share/QbvnY5qeJOjcGCB5YxFRtWsDZUuMHkeCqxyjznTtuhNf4mkWm3Mo-xQnE7tNxu6IvpQd6JVUG4ZtjLaEsc6I0g==/key"
+    ],
+    "method": "get"
+  },
+  "response": {
+    "body": {
+      "Code": 1000,
+      "ShareKeys": {
+        "Keys": [
+          {
+            "KeyRotation": 1,
+            "Key": "wV4DCtHpTqaB48USAQdAzJefVLtCbDgDhjoTcKZAUGcIJX7FJax95p0rV6TMyVcwj85SHv7TgcS8nFLV4GGMm/n/GGl2boB76ALcyYLh//yO1J/7jQZwP0qomQwVed2N0sBNAdZbmhtoxRZFDWbq2/CfYQC4KDJu2JdVj/OqdKwiwwCoIMUJpSjHmFrGsRqFrcHSxEMYlnY1ZbJWPWDLE5RWfboQCKtm4rdq16pgiVNrGvjLIGaDloD9iyKfJBGpCv+V3rsMKPfSeq9ZC+SzKp5GpO1j9wfNmyHLgv3tyeIY8+zE3mE+mO0MZtb63Qktwyq7RxBE6CtHOEs/wbIZug8fQ33MK/JY/AtWeBjAGVNOfSbWMqqTzdp9ncvezBsd1ta8WxPULC3sDRVUliTy1wNy6FcaWHfkl0Wi04FHzNd12pcpiGbnd9FwdfhAiOkKirhCMPpTvO7sRokabBeOyuo5BvgSzX6/PmSAeetGeKQ=",
+            "UserKeyID": "JLkYSmAZiCQ5d5qtvklvSJFVIuZN6yNJWPT8yKcHGFGWqONVVaVQ5rpjavUaNthmPVDZcNnvWDCwz1UOVGFHXw==",
+            "CreateTime": 1741267289
+          }
+        ],
+        "Total": 1
+      }
+    },
+    "headers": {
+      "server": "nginx",
+      "date": "Thu, 06 Mar 2025 13:25:29 GMT",
+      "content-type": "application/json",
+      "transfer-encoding": "chunked",
+      "connection": "close",
+      "x-pm-code": "1000",
+      "cache-control": "max-age=0, must-revalidate, no-cache, no-store, private",
+      "expires": "Fri, 04 May 1984 22:15:00 GMT",
+      "x-pm-route-pattern": "GET /pass/v1/share/{enc_shareID}/key",
+      "x-pm-user-id": "955",
+      "x-pm-uid": "nndg3jfqcl4jxswpcgdnp4khxiqj7sok",
+      "access": "application/vnd.protonmail.api+json;apiversion=1",
+      "x-pm-time-total": "129",
+      "x-pm-time-user": "93",
+      "x-pm-time-system": "3",
+      "x-pm-memory": "7",
+      "x-pm-allocated-memory": "10",
+      "x-pm-urgency": "1",
+      "x-pm-apiversion": "develop (4e79a969)",
+      "x-b3-traceid": "2a21825b806f0848e60062c7f3eaa0ae",
+      "x-b3-spanid": "3f9e0a5c7389ea27",
+      "x-b3-parentspanid": "",
+      "vary": "Accept-Encoding",
+      "content-encoding": "gzip",
+      "x-pm-nonce": "Z8miSUalcWrXrFNW7QG2pAAAAIQ",
+      "set-cookie": [
+        "Session-Id=Z8miSUalcWrXrFNW7QG2pAAAAIQ; Domain=boas.proton.black; Path=/; HttpOnly; Secure; Max-Age=7776000",
+        "Version=; Domain=boas.proton.black; Path=/; Secure; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
+      ],
+      "strict-transport-security": "max-age=15724800; includeSubDomains, max-age=31536000; includeSubDomains; preload, max-age=63072000",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'nonce-Z8miSUalcWrXrFNW7QG2pAAAAIQ' 'strict-dynamic' https:; style-src 'self' 'unsafe-inline'; img-src http: https: data: blob: cid:; font-src 'self' https://*.boas.proton.black; frame-src https:; connect-src https: wss:; media-src https:; frame-ancestors https://*.mock.proton.black/ https://*.boas.proton.black;",
+      "expect-ct": "max-age=2592000, enforce",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-permitted-cross-domain-policies": "none"
+    },
+    "statusCode": 200
+  },
+  "enabled": true,
+  "name": "Mock_get__api_pass_v1_share_QbvnY5qeJOjcGCB5YxFRtWsDZUuMHkeCqxyjznTtuhNf4mkWm3Mo_xQnE7tNxu6IvpQd6JVUG4ZtjLaEsc6I0g___key"
+}

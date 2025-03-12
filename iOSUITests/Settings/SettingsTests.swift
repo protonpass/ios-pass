@@ -38,7 +38,7 @@ class SettingsTests: LoginBaseTestCase {
             .fillUsername(username: user.name)
             .fillpassword(password: user.password)
             .signIn(robot: GetStartedRobot.self)
-            .tapClose()
+            .dismissWelcomeScreen()
             .tapProfile()
             .verify.itemListContainsAllElements(login: "0", alias: "0", creditCard: "0", note: "0")
     }
