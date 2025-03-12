@@ -20,7 +20,6 @@
 
 import DesignSystem
 import Entities
-import Screens
 import SwiftUI
 
 extension DetailHistoryView {
