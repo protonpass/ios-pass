@@ -20,8 +20,6 @@
 
 import DesignSystem
 import Entities
-import Factory
-import ProtonCoreUIFoundations
 import SwiftUI
 
 extension DetailHistoryView {
@@ -36,9 +34,7 @@ extension DetailHistoryView {
                 addressDetailSection(item: item)
                 contactDetailSection(item: item)
                 workDetailSection(item: item)
-                ForEach(item.extraSections) { customSection in
-                    customDetailSection(customSection: customSection)
-                }
+                customSections(item.extraSections)
             }
 
             attachmentsSection(item: itemContent)
@@ -292,6 +288,14 @@ private extension DetailHistoryView {
             }
         } header: {
             sectionTitle(title: "Work details")
+        }
+    }
+}
+
+extension DetailHistoryView {
+    func customSections(_ sections: [CustomSection]) -> some View {
+        ForEach(sections) { customSection in
+            customDetailSection(customSection: customSection)
         }
     }
 }
