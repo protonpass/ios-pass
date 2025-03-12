@@ -138,12 +138,4 @@ extension IdentityDetailViewModel {
             copyToClipboard(text: value, message: #localized("%@ copied", row.title))
         }
     }
-
-    func copyTotpToken(_ token: String) {
-        copyToClipboard(text: token, message: #localized("TOTP copied"))
-    }
-
-    func copyHiddenText(_ text: String) {
-        copyToClipboard(text: text, message: #localized("Hidden text copied"))
-    }
 }

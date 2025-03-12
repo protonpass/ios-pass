@@ -61,17 +61,11 @@ struct ItemDetailView: View {
             case .note:
                 NoteDetailView(note: item.content.note)
             case .sshKey:
-                // swiftlint:disable:next todo
-                // TODO: [Custom item] Implement this
-                Text(verbatim: "SSH key detail")
+                SshDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .wifi:
-                // swiftlint:disable:next todo
-                // TODO: [Custom item] Implement this
-                Text(verbatim: "WiFi detail")
+                WifiDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             case .custom:
-                // swiftlint:disable:next todo
-                // TODO: [Custom item] Implement this
-                Text(verbatim: "Custom item detail")
+                CustomDetailView(.init(item: item, selectedTextStream: selectedTextStream))
             }
 
             ItemDetailHistorySection(itemContent: item.content, action: nil)

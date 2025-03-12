@@ -42,10 +42,6 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
         identity?.extraWorkDetails ?? []
     }
 
-    var extraSections: [CustomSection] {
-        identity?.extraSections ?? []
-    }
-
     var sections: [IdentityDetailSection] {
         [
             personalDetailsSection,
@@ -56,7 +52,10 @@ final class IdentityDetailViewModel: BaseItemDetailViewModel {
     }
 
     override func bindValues() {
-        identity = item.content.identityItem
+        if let data = item.content.identityItem {
+            identity = data
+            customSections = data.extraSections
+        }
     }
 }
 
