@@ -129,15 +129,18 @@ final class AliasContactsViewModel: ObservableObject {
         router.action(.copyToClipboard(text: contact.reverseAlias, message: #localized("Contact copied")))
     }
 
-    // https://stackoverflow.com/questions/71260260/what-method-do-i-call-to-open-the-ios-mail-app-with-swiftui
-    func openMail(emailTo: String) {
-        let url = if let name = infos.alias.name {
-            "\(name)<\(emailTo)>"
+    func sendEmail(to contact: AliasContact) {
+        let url: URL? = if let namedUrl = contact.mailToNamedAddressUrl,
+                           UIApplication.shared.canOpenURL(namedUrl) {
+            namedUrl
+        } else if let url = contact.mailToAddressUrl,
+                  UIApplication.shared.canOpenURL(url) {
+            url
         } else {
-            emailTo
+            nil
         }
-        if let url = URL(string: "mailto:\(url)"),
-           UIApplication.shared.canOpenURL(url) {
+
+        if let url {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }

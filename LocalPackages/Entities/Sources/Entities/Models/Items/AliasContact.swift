@@ -18,6 +18,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+
 public struct AliasContactLite: Decodable, Sendable, Equatable, Hashable, Identifiable {
     // Should not rename to "id" otherwise decode process breaks
     public let ID: Int
@@ -86,5 +88,17 @@ public struct AliasContact: Decodable, Sendable, Equatable, Hashable, Identifiab
 
     public var noActivity: Bool {
         repliedEmails + forwardedEmails + blockedEmails == 0
+    }
+
+    public var mailToNamedAddressUrl: URL? {
+        if let name {
+            URL(string: "mailto:\(name)<\(reverseAlias)>")
+        } else {
+            nil
+        }
+    }
+
+    public var mailToAddressUrl: URL? {
+        URL(string: "mailto:\(reverseAlias)")
     }
 }
