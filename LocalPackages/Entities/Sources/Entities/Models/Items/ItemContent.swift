@@ -40,6 +40,22 @@ public struct ItemContent: ItemContentProtocol, Sendable, Equatable, Hashable, I
     /// Applicable to logins, ssh keys, wifis and custom items
     public let customFields: [CustomField]
 
+    /// Applicable to identities, ssh keys, wifis and custom items
+    public var customSections: [CustomSection] {
+        switch contentData {
+        case let .identity(data):
+            data.extraSections
+        case let .sshKey(data):
+            data.extraSections
+        case let .wifi(data):
+            data.extraSections
+        case let .custom(data):
+            data.sections
+        default:
+            []
+        }
+    }
+
     public var id: String {
         "\(item.itemID + shareId)"
     }

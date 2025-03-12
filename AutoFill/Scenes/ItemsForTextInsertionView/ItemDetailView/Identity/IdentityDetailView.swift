@@ -43,8 +43,8 @@ struct IdentityDetailView: View {
                                   contentType: viewModel.type,
                                   isFreeUser: viewModel.isFreeUser,
                                   showIcon: false,
-                                  onCopyHiddenText: { viewModel.autofill($0) },
-                                  onCopyTotpToken: { viewModel.autofill($0) },
+                                  onCopyHiddenText: viewModel.autofill,
+                                  onCopyTotpToken: viewModel.autofill,
                                   onUpgrade: viewModel.upgrade)
         }
     }
@@ -93,9 +93,9 @@ private extension IdentityDetailView {
                                     isFreeUser: viewModel.isFreeUser,
                                     isASection: false,
                                     showIcon: false,
-                                    onSelectHiddenText: { viewModel.autofill($0) },
-                                    onSelectTotpToken: { viewModel.autofill($0) },
-                                    onUpgrade: { viewModel.upgrade() })
+                                    onSelectHiddenText: viewModel.autofill,
+                                    onSelectTotpToken: viewModel.autofill,
+                                    onUpgrade: viewModel.upgrade)
             }
             .padding(.vertical, DesignConstant.sectionPadding)
             .roundedDetailSection()

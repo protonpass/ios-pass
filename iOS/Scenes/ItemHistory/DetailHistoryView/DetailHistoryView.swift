@@ -22,7 +22,6 @@
 
 import DesignSystem
 import Entities
-import Factory
 import Macro
 import ProtonCoreUIFoundations
 import Screens
@@ -36,6 +35,7 @@ struct DetailHistoryView: View {
     @State var isShowingCardNumber = false
     @State var isShowingVerificationNumber = false
     @State var isShowingPIN = false
+    @State var selectedKeyType: SshKeyType?
 
     var body: some View {
         mainContainer
@@ -68,6 +68,16 @@ struct DetailHistoryView: View {
             .sheet(isPresented: $viewModel.urlToShare.mappedToBool()) {
                 if let url = viewModel.urlToShare {
                     ActivityView(items: [url])
+                }
+            }
+            .sheet(item: $selectedKeyType) { keyType in
+                let value = switch keyType {
+                case .private: viewModel.currentRevision.sshKey?.privateKey
+                case .public: viewModel.currentRevision.sshKey?.publicKey
+                }
+
+                if let value {
+                    SshKeyDetailView(value: value, title: keyType.title)
                 }
             }
     }
@@ -187,9 +197,7 @@ private extension DetailHistoryView {
                 case .identity:
                     identityView
                 case .sshKey:
-                    // swiftlint:disable:next todo
-                    // TODO: [Custom item] Implement this
-                    Text(verbatim: "SSH key history")
+                    sshView
                 case .wifi:
                     // swiftlint:disable:next todo
                     // TODO: [Custom item] Implement this
