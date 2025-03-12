@@ -48,7 +48,7 @@ class SubscriptionTests: LoginBaseTestCase {
                                password: user.password,
                                loginRobot: welcomeRobot.logIn(),
                                retRobot: GetStartedRobot.self)
-            .tapClose()
+            .dismissWelcomeScreen()
             .tapProfile()
             .tapAccountButton()
             .goToManageSubscription()

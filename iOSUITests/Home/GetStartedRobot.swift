@@ -24,30 +24,25 @@ import fusion
 import ProtonCoreTestingToolkitUITestsCore
 import XCTest
 
-private let title = "A better way to use Aliases"
-private let exploreNowTxt = "Explore now"
+private let messageTxt = "The app is now ready to use"
+private let startUsingProtonPassTxt = "Start using Proton Pass"
 private let closeBtnTxt = "Close"
-private let notNowTxt = "Not Now"
+private let notNowTxt = "Not now"
 
 public final class GetStartedRobot: CoreElements {
-    public let verify = Verify()
     
-    public final class Verify: CoreElements {
-        @discardableResult
-        public func isGetStartedShown(timeout: TimeInterval = 10.0) -> GetStartedRobot {
-            staticText(title).waitUntilExists(time: timeout).checkExists()
-            return GetStartedRobot()
-        }
-    }
-    
-    public func tapExploreNow() -> HomeRobot {
-        button(exploreNowTxt).tapIfExists(time: 10.0)
+    public func tapStartUsingProtonPass() -> HomeRobot {
+        button(startUsingProtonPassTxt).tapIfExists(time: 10.0)
         return HomeRobot()
     }
     
-    public func tapClose(time: TimeInterval = 15.0) -> HomeRobot {
-        button(notNowTxt).tapIfExists(time: time)
-        button(closeBtnTxt).tapIfExists(time: 5.0)
+    public func dismissWelcomeScreen(time: TimeInterval = 20.0) -> HomeRobot {
+        for _ in 0..<2 {
+            staticText(messageTxt).waitUntilGone(time: time).checkDoesNotExist()
+            button(notNowTxt).tapIfExists(time: 5)
+        }
+        button(startUsingProtonPassTxt).tapIfExists(time: time)
+        button(closeBtnTxt).firstMatch().tapIfExists(time: 5.0)
         return HomeRobot()
     }
 }

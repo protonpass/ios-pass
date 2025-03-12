@@ -29,7 +29,7 @@ class LogoutRobot: ElementsProtocol {
 
         if HomeRobot().verify.isProfileTabExist() {
             GetStartedRobot()
-                .tapClose()
+                .dismissWelcomeScreen()
                 .tapProfile()
                 .tapExpandProfile()
                 .tapExpandMenu()
