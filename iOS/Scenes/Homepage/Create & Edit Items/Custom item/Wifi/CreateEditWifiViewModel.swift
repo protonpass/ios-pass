@@ -22,7 +22,6 @@ import Client
 import Core
 import Entities
 import Foundation
-import Macro
 
 final class CreateEditWifiViewModel: BaseCreateEditItemViewModel, DeinitPrintable {
     deinit { print(deinitMessage) }

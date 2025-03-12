@@ -106,9 +106,9 @@ private extension CreateEditSshKeyView {
 
     var keys: some View {
         VStack(spacing: DesignConstant.sectionPadding) {
-            view(for: .private, value: viewModel.privateKey)
-            PassSectionDivider()
             view(for: .public, value: viewModel.publicKey)
+            PassSectionDivider()
+            view(for: .private, value: viewModel.privateKey)
         }
         .padding(.vertical, DesignConstant.sectionPadding)
         .roundedEditableSection()

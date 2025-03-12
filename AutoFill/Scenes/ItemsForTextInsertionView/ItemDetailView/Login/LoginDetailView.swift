@@ -55,7 +55,7 @@ struct LoginDetailView: View {
         }
         .optionalSheet(binding: $selectedPasskey) { passkey in
             PasskeyDetailView(passkey: passkey,
-                              onTapUsername: { viewModel.autofill($0) })
+                              onTapUsername: viewModel.autofill)
                 .presentationDetents([.height(380)])
                 .environment(\.colorScheme, colorScheme)
         }
@@ -73,7 +73,7 @@ private extension LoginDetailView {
         if !viewModel.passkeys.isEmpty {
             ForEach(viewModel.passkeys, id: \.keyID) { passkey in
                 PasskeyDetailRow(passkey: passkey,
-                                 onTapUsername: { viewModel.autofill($0) },
+                                 onTapUsername: viewModel.autofill,
                                  onTap: { selectedPasskey = passkey })
             }
         }
@@ -114,7 +114,7 @@ private extension LoginDetailView {
                     PassSectionDivider()
                     TOTPRow(uri: viewModel.totpUri,
                             tintColor: tintColor,
-                            onCopyTotpToken: { viewModel.autofill($0) })
+                            onCopyTotpToken: viewModel.autofill)
                 }
             }
         }
