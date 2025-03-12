@@ -201,9 +201,7 @@ private extension DetailHistoryView {
                 case .wifi:
                     wifiView
                 case .custom:
-                    // swiftlint:disable:next todo
-                    // TODO: [Custom item] Implement this
-                    Text(verbatim: "Custom item history")
+                    customView
                 }
             }
             .animation(.default, value: viewModel.selectedRevision)
