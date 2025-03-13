@@ -44,6 +44,8 @@ extension LocalOrganizationDatasourceTests {
         let userId = String.random()
         let org1 = Organization(canUpdate: true,
                                 settings: .init(shareMode: .restricted,
+                                                itemShareMode: .enabled,
+                                                publicLinkMode: .enabled,
                                                 forceLockSeconds: 100,
                                                 exportMode: .admins,
                                                 passwordPolicy: PasswordPolicy.default,
@@ -60,6 +62,8 @@ extension LocalOrganizationDatasourceTests {
         // Override the organization
         let org2 = Organization(canUpdate: false,
                                 settings: .init(shareMode: .unrestricted,
+                                                itemShareMode: .disabled,
+                                                publicLinkMode: .enabled,
                                                 forceLockSeconds: 300,
                                                 exportMode: .anyone,
                                                 passwordPolicy:  PasswordPolicy.default,
@@ -78,6 +82,8 @@ extension LocalOrganizationDatasourceTests {
         let userId = String.random()
         let org1 = Organization(canUpdate: true,
                                 settings: .init(shareMode: .restricted,
+                                                itemShareMode: .disabled,
+                                                publicLinkMode: .enabled,
                                                 forceLockSeconds: 100,
                                                 exportMode: .admins,
                                                 passwordPolicy: PasswordPolicy.default,
