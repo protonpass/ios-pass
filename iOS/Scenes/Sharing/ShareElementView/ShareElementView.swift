@@ -35,6 +35,7 @@ struct ShareElementView: View {
                 .foregroundStyle(PassColor.textNorm.toColor)
 
             if viewModel.itemSharingEnabled,
+               viewModel.itemSharingAllowed,
                viewModel.share.canShareWithMorePeople,
                !viewModel.itemContent.isAlias {
                 itemSharing
