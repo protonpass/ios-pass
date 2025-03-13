@@ -53,6 +53,8 @@ public extension Organization {
     enum PublicLinkMode: Int, Sendable, Decodable, Equatable {
         case disabled = 0
         case enabled = 1
+
+        public static var `default`: Self { .enabled }
     }
 
     enum ExportMode: Int, Sendable, Decodable, Equatable {
@@ -75,6 +77,8 @@ public extension Organization {
 
         public let itemShareMode: ItemShareMode
 
+        public let publicLinkMode: PublicLinkMode
+
         /// 0 means lock time is not enforced
         public let forceLockSeconds: Int
 
@@ -86,12 +90,14 @@ public extension Organization {
 
         public init(shareMode: ShareMode,
                     itemShareMode: ItemShareMode,
+                    publicLinkMode: PublicLinkMode,
                     forceLockSeconds: Int,
                     exportMode: ExportMode,
                     passwordPolicy: PasswordPolicy?,
                     vaultCreateMode: VaultCreateMode?) {
             self.shareMode = shareMode
             self.itemShareMode = itemShareMode
+            self.publicLinkMode = publicLinkMode
             self.forceLockSeconds = forceLockSeconds
             self.exportMode = exportMode
             self.passwordPolicy = passwordPolicy
