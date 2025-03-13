@@ -38,6 +38,7 @@ extension OrganizationEntity {
     @NSManaged var exportMode: Int64
     @NSManaged var forceLockSeconds: Int64
     @NSManaged var shareMode: Int64
+    @NSManaged var itemShareMode: Int64
     @NSManaged var passwordPolicyData: Data?
     @NSManaged var vaultCreateMode: Int64
 }
@@ -49,6 +50,7 @@ extension OrganizationEntity {
             settings = nil
         } else {
             let shareMode = Organization.ShareMode(rawValue: Int(shareMode)) ?? .default
+            let itemShareMode = Organization.ItemShareMode(rawValue: Int(itemShareMode)) ?? .default
             let exportMode = Organization.ExportMode(rawValue: Int(exportMode)) ?? .default
 
             var passwordPolicy: PasswordPolicy?
@@ -61,6 +63,7 @@ extension OrganizationEntity {
                 vaultCreateMode == -1 ? nil : .init(rawValue: Int(vaultCreateMode))
 
             settings = .init(shareMode: shareMode,
+                             itemShareMode: itemShareMode,
                              forceLockSeconds: Int(forceLockSeconds),
                              exportMode: exportMode,
                              passwordPolicy: passwordPolicy,
@@ -75,6 +78,7 @@ extension OrganizationEntity {
         exportMode = Int64(org.settings?.exportMode.rawValue ?? -1)
         forceLockSeconds = Int64(org.settings?.forceLockSeconds ?? -1)
         shareMode = Int64(org.settings?.shareMode.rawValue ?? -1)
+        itemShareMode = Int64(org.settings?.itemShareMode.rawValue ?? -1)
 
         if let passwordPolicy = org.settings?.passwordPolicy {
             passwordPolicyData = try? JSONEncoder().encode(passwordPolicy)
