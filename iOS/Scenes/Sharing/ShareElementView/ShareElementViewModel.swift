@@ -29,6 +29,7 @@ import UIKit
 final class ShareElementViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
     @Published private(set) var itemSharingAllowed = true
+    @Published private(set) var publicLinkAllowed = true
     @Published private(set) var canDisplayFeatureDiscovery = false
 
     let share: Share
@@ -130,7 +131,9 @@ private extension ShareElementViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let organization = try await organizationRepository.getOrganization(userId: userId)
-                itemSharingAllowed = organization?.settings?.itemShareMode == .enabled
+                guard let settings = organization?.settings else { return }
+                itemSharingAllowed = settings.itemShareMode == .enabled
+                publicLinkAllowed = settings.publicLinkMode == .enabled
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
