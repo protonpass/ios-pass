@@ -112,13 +112,7 @@ struct ItemDetailToolbar: ToolbarContent {
 
                         Divider()
 
-                        if !viewModel.itemIsLinkToVault,
-                           viewModel.itemSharingEnabled {
-                            Label("Leave", image: IconProvider.arrowOutFromRectangle)
-                                .buttonEmbeded {
-                                    viewModel.showingLeaveShareAlert.toggle()
-                                }
-                        }
+                        leaveButton
 
                         Label("Move to Trash", image: IconProvider.trash)
                             .buttonEmbeded(action: {
@@ -141,6 +135,7 @@ struct ItemDetailToolbar: ToolbarContent {
                 Menu(content: {
                     Label("Restore", image: IconProvider.clockRotateLeft)
                         .buttonEmbeded { viewModel.restore() }
+                        .hidden(!viewModel.isAllowedToEdit)
 
                     Divider()
 
@@ -153,13 +148,27 @@ struct ItemDetailToolbar: ToolbarContent {
                                                viewModel.itemToBeDeleted = viewModel.itemContent
                                            }
                                        })
+                        .hidden(!viewModel.isAllowedToEdit)
+
+                    leaveButton
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: itemContentType.normMajor2Color,
                                  backgroundColor: itemContentType.normMinor1Color)
                 })
-                .disabled(!viewModel.isAllowedToEdit)
             }
+        }
+    }
+}
+
+private extension ItemDetailToolbar {
+    @ViewBuilder
+    var leaveButton: some View {
+        if !viewModel.itemIsLinkToVault, viewModel.itemSharingEnabled {
+            Label("Leave", image: IconProvider.arrowOutFromRectangle)
+                .buttonEmbeded {
+                    viewModel.showingLeaveShareAlert.toggle()
+                }
         }
     }
 }
