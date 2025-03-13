@@ -41,7 +41,7 @@ struct ShareElementView: View {
                 itemSharing
             }
 
-            if viewModel.showSecureLinkCreation {
+            if viewModel.showSecureLinkCreation, viewModel.publicLinkAllowed {
                 secureLink
             }
 
