@@ -43,6 +43,20 @@ public extension Organization {
         public static var `default`: Self { .restricted }
     }
 
+    enum ItemShareMode: Int, Sendable, Decodable, Equatable {
+        case disabled = 0
+        case enabled = 1
+
+        public static var `default`: Self { .enabled }
+    }
+
+    enum PublicLinkMode: Int, Sendable, Decodable, Equatable {
+        case disabled = 0
+        case enabled = 1
+
+        public static var `default`: Self { .enabled }
+    }
+
     enum ExportMode: Int, Sendable, Decodable, Equatable {
         /// Anyone can export data
         case anyone = 0
@@ -53,8 +67,17 @@ public extension Organization {
         public static var `default`: Self { .admins }
     }
 
+    enum VaultCreateMode: Int, Sendable, Decodable, Equatable {
+        case anyUser = 0
+        case adminsOnly = 1
+    }
+
     struct Settings: Sendable, Decodable, Equatable {
         public let shareMode: ShareMode
+
+        public let itemShareMode: ItemShareMode
+
+        public let publicLinkMode: PublicLinkMode
 
         /// 0 means lock time is not enforced
         public let forceLockSeconds: Int
@@ -66,21 +89,20 @@ public extension Organization {
         public let vaultCreateMode: VaultCreateMode?
 
         public init(shareMode: ShareMode,
+                    itemShareMode: ItemShareMode,
+                    publicLinkMode: PublicLinkMode,
                     forceLockSeconds: Int,
                     exportMode: ExportMode,
                     passwordPolicy: PasswordPolicy?,
                     vaultCreateMode: VaultCreateMode?) {
             self.shareMode = shareMode
+            self.itemShareMode = itemShareMode
+            self.publicLinkMode = publicLinkMode
             self.forceLockSeconds = forceLockSeconds
             self.exportMode = exportMode
             self.passwordPolicy = passwordPolicy
             self.vaultCreateMode = vaultCreateMode
         }
-    }
-
-    enum VaultCreateMode: Int, Sendable, Decodable, Equatable {
-        case anyUser = 0
-        case adminsOnly = 1
     }
 }
 
