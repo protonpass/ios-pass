@@ -116,7 +116,9 @@
         <attribute name="canUpdate" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
         <attribute name="exportMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="forceLockSeconds" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="itemShareMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="passwordPolicyData" optional="YES" attributeType="Binary"/>
+        <attribute name="publicLinkMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="shareMode" attributeType="Integer 64" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="userID" attributeType="String"/>
         <attribute name="vaultCreateMode" optional="YES" attributeType="Integer 64" defaultValueString="-1" usesScalarValueType="YES"/>
