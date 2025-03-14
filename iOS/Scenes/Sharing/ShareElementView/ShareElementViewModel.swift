@@ -28,6 +28,8 @@ import UIKit
 @MainActor
 final class ShareElementViewModel: ObservableObject {
     @Published private(set) var isFreeUser = true
+    @Published private(set) var itemSharingAllowed = true
+    @Published private(set) var publicLinkAllowed = true
     @Published private(set) var canDisplayFeatureDiscovery = false
 
     let share: Share
@@ -41,6 +43,8 @@ final class ShareElementViewModel: ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
+    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    private var organizationRepository
 
     weak var sheetPresentation: UISheetPresentationController?
 
@@ -63,6 +67,7 @@ final class ShareElementViewModel: ObservableObject {
         self.share = share
         self.itemContent = itemContent
         self.itemCount = itemCount
+        applyOrganizationSettings()
         checkIfFreeUser()
         getPassUserInfos()
     }
@@ -119,6 +124,22 @@ final class ShareElementViewModel: ObservableObject {
 }
 
 private extension ShareElementViewModel {
+    func applyOrganizationSettings() {
+        guard accessRepository.access.value?.access.plan.isBusinessUser == true else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let organization = try await organizationRepository.getOrganization(userId: userId)
+                guard let settings = organization?.settings else { return }
+                itemSharingAllowed = settings.itemShareMode == .enabled
+                publicLinkAllowed = settings.publicLinkMode == .enabled
+            } catch {
+                router.display(element: .displayErrorBanner(error))
+            }
+        }
+    }
+
     func getPassUserInfos() {
         Task { [weak self] in
             guard let self else { return }
