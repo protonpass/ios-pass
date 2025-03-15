@@ -29,11 +29,16 @@ public struct PendingFileAttachment: Sendable, Equatable, Identifiable {
     public let key: Data
     public var uploadState: FileAttachmentUploadState = .uploading(0.0)
     public var metadata: Metadata
+    public let chunkCount: Int
 
-    public init(id: String, key: Data, metadata: Metadata) {
+    public init(id: String,
+                key: Data,
+                metadata: Metadata,
+                chunkCount: Int) {
         self.id = id
         self.key = key
         self.metadata = metadata
+        self.chunkCount = chunkCount
     }
 }
 
