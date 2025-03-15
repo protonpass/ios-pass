@@ -21,7 +21,13 @@
 import Entities
 import ProtonCoreNetworking
 
-typealias UpdateFileMetadataRequest = CreatePendingFileRequest
+struct UpdateFileMetadataRequest: Encodable, Sendable {
+    let metadata: String
+
+    enum CodingKeys: String, CodingKey {
+        case metadata = "Metadata"
+    }
+}
 
 struct UpdateFileMetadataResponse: Decodable, Sendable {
     let file: ItemFile

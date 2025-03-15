@@ -703,13 +703,15 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                 let mimeType = try getMimeType(of: url)
                 let fileGroup = getFileGroup(mimeType: mimeType)
                 let formattedFileSize = formatFileAttachmentSize(fileSize)
+                let chunkCount = ceil(Float(fileSize) / Float(Constants.Attachment.maxChunkSizeInBytes))
                 let file = try PendingFileAttachment(id: fileId,
                                                      key: .random(),
                                                      metadata: .init(url: url,
                                                                      mimeType: mimeType,
                                                                      fileGroup: fileGroup,
                                                                      size: fileSize,
-                                                                     formattedSize: formattedFileSize))
+                                                                     formattedSize: formattedFileSize),
+                                                     chunkCount: Int(chunkCount))
                 try await createEncryptAndUpload(file)
             } catch {
                 if let file = files.first(where: { $0.id == fileId }),
