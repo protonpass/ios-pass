@@ -90,7 +90,7 @@ final class AliasContactsViewModel: ObservableObject {
     private var previousName = ""
     private(set) var alias: Alias
     private let infos: ContactsInfos
-    private var canFetchMoreContact = true
+    private var canFetchMoreContact: Bool
 
     @Published private(set) var plan: Plan?
 
@@ -117,6 +117,7 @@ final class AliasContactsViewModel: ObservableObject {
 
     init(infos: ContactsInfos) {
         contactsInfos = .init(contacts: infos.contacts.contacts)
+        canFetchMoreContact = infos.contacts.contacts.count < infos.contacts.total
         self.infos = infos
         alias = infos.alias
         aliasName = alias.name ?? ""
