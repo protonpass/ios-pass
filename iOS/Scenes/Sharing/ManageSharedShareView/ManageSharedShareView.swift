@@ -143,7 +143,9 @@ private extension ManageSharedShareView {
                 }
                 if canExecuteActions {
                     HStack {
-                        inviteMore(isVaultSharing: isVaultSection)
+                        if isVaultSection || (!isVaultSection && viewModel.itemSharingAllowed) {
+                            inviteMore(isVaultSharing: isVaultSection)
+                        }
                         if isVaultSection, viewModel.showInvitesLeft {
                             Button { showFreeSharingLimit.toggle() } label: {
                                 Label {
