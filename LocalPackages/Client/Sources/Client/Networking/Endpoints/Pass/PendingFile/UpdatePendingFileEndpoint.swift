@@ -20,7 +20,7 @@
 
 import ProtonCoreNetworking
 
-typealias UpdatePendingFileRequest = CreatePendingFileRequest
+typealias UpdatePendingFileRequest = UpdateFileMetadataRequest
 
 struct UpdatePendingFileEndpoint: Endpoint {
     typealias Body = UpdatePendingFileRequest
