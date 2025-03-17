@@ -167,7 +167,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annullér"
+            "value" : "Annuller"
           }
         },
         "de" : {
@@ -305,7 +305,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hủy"
+            "value" : "Huỷ"
           }
         },
         "zh-Hans" : {
@@ -471,13 +471,13 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bỏ"
+            "value" : "Bỏ qua"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "舍弃"
+            "value" : "清空"
           }
         }
       }
@@ -559,7 +559,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "変更を破棄しますか？"
+            "value" : "変更を破棄しますか?"
           }
         },
         "ka" : {
@@ -1045,7 +1045,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OK"
+            "value" : "Oke"
           }
         },
         "it" : {
@@ -1135,13 +1135,13 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đồng ý"
+            "value" : "OK"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "确定"
+            "value" : "好的"
           }
         }
       }
@@ -1272,7 +1272,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Integritets- eller restriktionsinställningar har inaktiverat kameraanvändning. Du kan ändra detta i Inställningar."
+            "value" : "Integritets- eller begränsningsinställningar har inaktiverat användningen av kameran. Du kan ändra detta i inställningarna."
           }
         },
         "tr" : {
@@ -1616,7 +1616,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Các cài đặt"
+            "value" : "Cài đặt"
           }
         },
         "zh-Hans" : {
@@ -1764,7 +1764,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vissa ändringar hände med detta objekt, går tillbaka till föregående sida."
+            "value" : "Några ändringar hände med detta objekt, går tillbaka till föregående sida."
           }
         },
         "tr" : {
@@ -1988,7 +1988,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Έχετε μη αποθηκευμένες αλλαγές, είστε σίγουροι πως θέλετε να τις απορρίψετε;"
+            "value" : "Έχετε μην αποθηκευμένες αλλαγές, είστε σίγουροι πως θέλετε να τις απορρίψετε;"
           }
         },
         "en" : {
@@ -2120,7 +2120,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "您有未保存的更改，确定要放弃它们吗？"
+            "value" : "您有未保存的更改，您确定要放弃它们吗？"
           }
         }
       }

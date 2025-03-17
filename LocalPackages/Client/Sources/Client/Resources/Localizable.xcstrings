@@ -130,6 +130,12 @@
             "value" : "İşlem eklentisi günlükleri"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Журнали дій розширення"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -167,7 +173,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Αρχεία καταγραφών εφαρμογής"
+            "value" : "Αρχεία καταγραφής εφαρμογής"
           }
         },
         "en" : {
@@ -293,7 +299,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nhật ký ứng dụng"
+            "value" : "Nhật kí ứng dụng"
           }
         },
         "zh-Hans" : {
@@ -607,7 +613,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mörkt"
+            "value" : "Mörk"
           }
         },
         "tr" : {
@@ -631,7 +637,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "暗色主题"
+            "value" : "深色"
           }
         }
       }
@@ -773,7 +779,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ljust"
+            "value" : "Ljus"
           }
         },
         "tr" : {
@@ -797,7 +803,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "浅色主题"
+            "value" : "浅色"
           }
         }
       }
@@ -1365,7 +1371,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OK"
+            "value" : "Oke"
           }
         },
         "it" : {
@@ -1455,13 +1461,13 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đồng ý"
+            "value" : "OK"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "确定"
+            "value" : "好的"
           }
         }
       }
@@ -1936,6 +1942,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tüm ögelerde ara..."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шукати у всіх елементах…..."
           }
         },
         "zh-Hans" : {
@@ -3205,6 +3217,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Düzenleyicisi veya yöneticisi olduğunuz herhangi bir kasa yok. Ana uygulamadan bir kasa oluşturmayı deneyin veya kuruluşunuzun yöneticisinden destek isteyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "У вас немає жодного сховища з правами редактора або адміністратора. Спробуйте створити його в головному застосунку або зверніться за підтримкою до адміністратора вашої організації."
           }
         },
         "zh-Hans" : {
