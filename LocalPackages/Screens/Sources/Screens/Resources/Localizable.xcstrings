@@ -148,6 +148,18 @@
             "value" : "%1$@ / %2$@"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ з %2$@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ trong tổng %2$@"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -326,6 +338,24 @@
             }
           }
         },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld SimpleLoginissa oleva alias puuttuu Proton Passista."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld SimpleLoginissa olevaa aliasta puuttuu Proton Passista."
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -464,7 +494,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "​​​​%lld aliases estão presentes no SimpleLogin, mas ausentes no Proton Pass."
+                  "value" : "​​​​%lld endereços alternativos estão presentes no SimpleLogin, mas ausentes no Proton Pass."
                 }
               }
             }
@@ -555,6 +585,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld takma ad SimpleLogin üzerinde var ancak Proton Pass üzerinde bulunmuyor"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдоніми, присутні у SimpleLogin, але відсутні у Proton Pass."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонімів, присутні у SimpleLogin, але відсутні у Proton Pass."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонім, присутній у SimpleLogin, але відсутній у Proton Pass."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld псевдонімів, присутні у SimpleLogin, але відсутні у Proton Pass."
                 }
               }
             }
@@ -1068,7 +1128,7 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld файлів"
+                  "value" : "%lld файли"
                 }
               },
               "one" : {
@@ -1081,6 +1141,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld файли"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tệp"
                 }
               }
             }
@@ -1126,7 +1198,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld элементаў"
+                  "value" : "%lld элементы"
                 }
               },
               "zero" : {
@@ -1426,30 +1498,6 @@
             }
           }
         },
-        "ka" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld ელემენტი"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld ელემენტი"
-                }
-              },
-              "zero" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld ელემენტი"
-                }
-              }
-            }
-          }
-        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -1463,30 +1511,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld개 항목"
-                }
-              }
-            }
-          }
-        },
-        "nb" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld element"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld elementer"
-                }
-              },
-              "zero" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld element"
                 }
               }
             }
@@ -1511,42 +1535,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld item"
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld elementy"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld elementów"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld element"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld elementów"
-                }
-              },
-              "zero" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld element"
                 }
               }
             }
@@ -1637,42 +1625,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld položka"
-                }
-              }
-            }
-          }
-        },
-        "sl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld predmeti"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld predmet"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld predmetov"
-                }
-              },
-              "two" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld predmeta"
-                }
-              },
-              "zero" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld predmet"
                 }
               }
             }
@@ -1792,7 +1744,7 @@
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 项"
+                  "value" : "%lld项"
                 }
               }
             }
@@ -1971,6 +1923,24 @@
             }
           }
         },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kirjautumistieto tuotiin"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kirjautumistietoa tuotiin"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -2103,7 +2073,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld danych logowania zaimportowanych"
+                  "value" : "%lld danych logowania zaimportowane"
                 }
               },
               "many" : {
@@ -2230,6 +2200,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld oturum açma kaydı içe aktarıldı"
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записи входу імпортовано"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записів входу імпортовано"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld запис входу імпортовано"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld записів входу імпортовано"
                 }
               }
             }
@@ -2543,6 +2543,12 @@
             "value" : "Pridať doménu"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj domeno"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2553,6 +2559,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etki alanı ekle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додати домен"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm tên miền"
           }
         },
         "zh-Hans" : {
@@ -2876,6 +2894,12 @@
             "value" : "Додати поштову скриньку"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm hộp thư"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2972,7 +2996,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilføj brugernavn-felt"
+            "value" : "Tilføj felt til brugernavn"
           }
         },
         "de" : {
@@ -3526,7 +3550,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Všetky účty (%lld)fa\n"
+                  "value" : "Všetky účty (%lld)"
                 }
               },
               "other" : {
@@ -3604,13 +3628,25 @@
             }
           }
         },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tất cả tài khoản (%lld)"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "所有帐户%lld"
+                  "value" : "所有帐户(%lld)"
                 }
               }
             }
@@ -3666,6 +3702,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todas sus contraseñas."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaikki salasanasi."
           }
         },
         "fr" : {
@@ -3750,6 +3792,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tüm parolalarınız."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Усі ваші паролі."
           }
         },
         "zh-Hans" : {
@@ -3888,6 +3936,12 @@
             "value" : "Priložiť súbor"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pripni datoteko"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3904,6 +3958,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вкласти файл"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đính kèm một tệp"
           }
         },
         "zh-Hans" : {
@@ -3931,7 +3991,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vedhæftede filer"
+            "value" : "Vedhæftninger"
           }
         },
         "de" : {
@@ -4066,6 +4126,12 @@
             "value" : "Вкладення"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tệp đính kèm"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4175,7 +4241,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adicionando o seu domínio, você pode criar aliases como olá@meu-domínio.br."
+            "value" : "Adicionando o seu domínio, você pode criar endereços alternativos como ola@meu-dominio.com."
           }
         },
         "ro" : {
@@ -4193,13 +4259,19 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Genom att lägga till en domän så kan du skapa alias som hej@min-domän.se."
+            "value" : "Genom att lägga till din domän kan du skapa alias som hej@min-domän.se."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Etki alanınızı ekleyerek merhaba@etki-alanim.com gibi takma adlar oluşturabilirsiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додаючи ваш домен, ви можете створити псевдоніми на кшталт hi@my-domain.com."
           }
         },
         "zh-Hans" : {
@@ -4228,7 +4300,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annullér"
+            "value" : "Annuller"
           }
         },
         "de" : {
@@ -4366,7 +4438,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hủy"
+            "value" : "Huỷ"
           }
         },
         "zh-Hans" : {
@@ -4523,6 +4595,12 @@
             "value" : "Вибрати файл"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chọn một tệp"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4675,6 +4753,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вибрати фото або відео"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chọn một bức ảnh hoặc video"
           }
         },
         "zh-Hans" : {
@@ -5046,7 +5130,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Δεν ήταν δυνατή η εύρεση του \"%@\" στα Διαγραμμένα"
+            "value" : "Δεν ήταν δυνατή η εύρεση του \"%@\" στον Κάδο Απορριμμάτων"
           }
         },
         "en" : {
@@ -5510,7 +5594,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "创建账户"
+            "value" : "创建账号"
           }
         }
       }
@@ -6162,7 +6246,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "删除"
+            "value" : "刪除"
           }
         }
       }
@@ -6244,7 +6328,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "全て削除"
+            "value" : "すべて削除"
           }
         },
         "ka" : {
@@ -6317,6 +6401,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Видалити все"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa tất"
           }
         },
         "zh-Hans" : {
@@ -6404,7 +6494,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "全ての添付ファイルを削除しますか？"
+            "value" : "すべての添付ファイルを削除しますか？"
           }
         },
         "ka" : {
@@ -6505,7 +6595,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wusstest du?"
+            "value" : "Schon gewusst?"
           }
         },
         "el" : {
@@ -6586,6 +6676,12 @@
             "value" : "Wist u dat?"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czy wiesz?"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6614,6 +6710,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Biliyor muydunuz?"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чи знали ви?"
           }
         },
         "zh-Hans" : {
@@ -6988,6 +7090,12 @@
             "value" : "Zapnúť SimpleLogin synchronizáciu"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omogočanje sinhronizacije SimpleLogin"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7004,6 +7112,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Увімкнути синхронізацію SimpleLogin"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bật đồng bộ Simple Login"
           }
         },
         "zh-Hans" : {
@@ -7496,7 +7610,7 @@
         "uk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "З міркувань безпеки ваш доступ потребує підтвердження."
+            "value" : "З міркувань безпеки ваш доступ потребує підтвердження"
           }
         },
         "vi" : {
@@ -7816,7 +7930,7 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vidarebefordrad till"
+            "value" : "Vidarebefordrar till"
           }
         },
         "tr" : {
@@ -7893,6 +8007,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Obtenga alertas cuando su correo electrónico se encuentre en la Dark Web"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saat hälytyksiä, jos sähköpostiosoitteesi löytyy pimeästä verkosta."
           }
         },
         "fr" : {
@@ -7977,6 +8097,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta adresiniz karanlık ağa düşerse uyarı alın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отримуйте сповіщення, коли ваша пошта буде знайдена в темній мережі."
           }
         },
         "zh-Hans" : {
@@ -8122,6 +8248,12 @@
             "value" : "**Parola yöneticisi** bölümüne gidin ve **Ayarlar** üzerine dokunun"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перейдіть до **Менеджера паролів** і натисніть **Налаштування**."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8179,6 +8311,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuonti"
           }
         },
         "fr" : {
@@ -8253,6 +8391,12 @@
             "value" : "Importovať"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uvoz"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8263,6 +8407,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İçe aktar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпортувати"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhập"
           }
         },
         "zh-Hans" : {
@@ -8405,6 +8561,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chrome üzerinden içe aktar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпортувати з Chrome"
           }
         },
         "zh-Hans" : {
@@ -8550,6 +8712,12 @@
             "value" : "Oturum açma kayıtlarını içe aktar (%1$lld/%2$lld)"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Імпортування записів входу (%1$lld/%2$lld)"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8691,6 +8859,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İçe aktarıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Успішно імпортовано"
           }
         },
         "zh-Hans" : {
@@ -9733,7 +9907,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "OK"
+            "value" : "Oke"
           }
         },
         "it" : {
@@ -9823,13 +9997,13 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đồng ý"
+            "value" : "OK"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "确定"
+            "value" : "好的"
           }
         }
       }
@@ -9884,6 +10058,12 @@
             "value" : "Una vez sincronizado, al eliminar los alias en Pass también se eliminarán en SimpleLogin."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synkronoinnin jälkeen aliasten poistaminen Passista poistaa ne myös SimpleLoginista."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9932,6 +10112,12 @@
             "value" : "Eenmaal gesynchroniseerd, zal het verwijderen van aliassen in Pass ze ook verwijderen in SimpleLogin."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po synchronizacji usunięte aliasy w Proton Pass zostaną również usunięte w SimpleLogin."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9960,6 +10146,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eşitlendikten sonra Pass içinden silinen takma adlar SimpleLogin üzerinden de silinir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Після синхронізації, видалення псевдонімів у Pass також видалить їх у SimpleLogin."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Khi đã đồng bộ, việc xóa bí danh trong Pass cũng sẽ xóa chúng trong SimpleLogin."
           }
         },
         "zh-Hans" : {
@@ -10131,7 +10329,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "打开"
+            "value" : "检查"
           }
         }
       }
@@ -10269,6 +10467,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "**Chrome** menüsünü aç"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрити меню **Chrome**"
           }
         },
         "zh-Hans" : {
@@ -10411,6 +10615,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chrome uygulamasını aç"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Відкрити Chrome"
           }
         },
         "zh-Hans" : {
@@ -10887,6 +11097,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass işlem eklentisini kullanabilmek için oturum açın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Авторизуйтесь, щоб використовувати розширення Proton Pass Action"
           }
         },
         "zh-Hans" : {
@@ -11445,6 +11661,12 @@
             "value" : "Proteja su bandeja de entrada."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suojaa postilaatikkosi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11527,6 +11749,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gelen kutunuzu koruyun."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Захистити свою поштову скриньку."
           }
         },
         "zh-Hans" : {
@@ -11865,7 +12093,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最近连接"
+            "value" : "最近"
           }
         }
       }
@@ -12017,7 +12245,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "リネーム"
+            "value" : "名前を変更"
           }
         },
         "ka" : {
@@ -12090,6 +12318,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Перейменувати"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đổi tên"
           }
         },
         "zh-Hans" : {
@@ -12295,7 +12529,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Αποθήκευση"
+            "value" : "Εξοικονομήστε"
           }
         },
         "en" : {
@@ -12968,6 +13202,12 @@
             "value" : "Intercambios seguros."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suojattu jakaminen."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13040,6 +13280,12 @@
             "value" : "Bezpečné zdieľanie."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varna skupna raba."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13050,6 +13296,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Güvenli paylaşım."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Захищений спільний доступ."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chia sẻ bảo mật."
           }
         },
         "zh-Hans" : {
@@ -13194,6 +13452,12 @@
             "value" : "Her şeyi tek bir yerde ve güvende tutarak en güvenilir gizlilik hizmetiyle korunun."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надійно в одному місці та під захистом найнадійнішої компанії у сфері приватності."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13335,6 +13599,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "**Proton Pass içine aktar** seçeneğini seçin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виберіть **Імпортувати до Proton Pass**"
           }
         },
         "zh-Hans" : {
@@ -13666,7 +13936,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chia sẻ"
+            "value" : "Chia sẽ"
           }
         },
         "zh-Hans" : {
@@ -13778,7 +14048,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Compartilhe aliases com outros adicionando sua caixa de entrada como uma caixa de correio adicional."
+            "value" : "Compartilhe endereços alternativos com outros adicionando sua caixa de entrada como uma caixa de correio adicional."
           }
         },
         "ro" : {
@@ -13803,6 +14073,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Başka birinin gelen kutusunu ek e-posta kutusu olarak ekleyerek takma adları onlarla paylaşabilirsiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Діліться псевдонімами з іншими, додаючи їхню пошту як додаткову."
           }
         },
         "zh-Hans" : {
@@ -13947,6 +14223,12 @@
             "value" : "Parolaları ve önemli bilgileri güvenle ve kolayca paylaşın."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Діліться паролями та конфіденційною інформацією безпечно і без зайвих зусиль."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13984,7 +14266,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Είσοδος"
+            "value" : "Σύνδεση"
           }
         },
         "en" : {
@@ -14110,7 +14392,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đăng nhập"
+            "value" : "Dăng nhập"
           }
         },
         "zh-Hans" : {
@@ -14150,7 +14432,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Αποσύνδεση"
+            "value" : "Έξοδος"
           }
         },
         "en" : {
@@ -14276,7 +14558,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đăng xuất"
+            "value" : "Đăng xuất"
           }
         },
         "zh-Hans" : {
@@ -14669,6 +14951,12 @@
             "value" : "Manténgase informado."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pysy ajan tasalla."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14751,6 +15039,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bilgi alın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Будьте в курсі."
           }
         },
         "zh-Hans" : {
@@ -15172,7 +15466,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "に切り替える"
+            "value" : "切り替え:"
           }
         },
         "ka" : {
@@ -15326,7 +15620,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sinkronisasikan alias"
+            "value" : "Sinkronkan alias"
           }
         },
         "it" : {
@@ -15411,6 +15705,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Синхронізувати псевдоніми"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đồng bộ bí danh"
           }
         },
         "zh-Hans" : {
@@ -15510,7 +15810,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SimpleLogin에서 별칭 연동"
+            "value" : "SimpleLogin에서 별칭 동기화"
           }
         },
         "nb" : {
@@ -15523,6 +15823,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Synchroniseer uw aliassen van SimpleLogin"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronizuj aliasy z SimpleLogin"
           }
         },
         "pt-BR" : {
@@ -15553,6 +15859,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Takma adlarınızı SimpleLogin ile eşitleyin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Синхронізуйте свої псевдоніми з SimpleLogin"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đồng bộ bí danh của bạn từ SimpleLogin"
           }
         },
         "zh-Hans" : {
@@ -15715,6 +16033,12 @@
             "value" : "Зробити фото"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chụp ảnh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15856,6 +16180,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "**Parolaları dışa aktar** üzerine dokunun"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Натисніть **Експортувати паролі**"
           }
         },
         "zh-Hans" : {
@@ -16160,6 +16490,12 @@
             "value" : "Túto akciu nie je možné vrátiť späť"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tega dejanja ni mogoče preklicati"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16176,6 +16512,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Цю дію не можна скасувати"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hành động không thể hoàn tác"
           }
         },
         "zh-Hans" : {
@@ -16507,7 +16849,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nâng cấp"
+            "value" : "Nâng cấp"
           }
         },
         "zh-Hans" : {
@@ -16652,6 +16994,12 @@
             "value" : "Depolama alanınızı artırmak için tarifenizi yükseltin."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Покращте, щоби збільшити обсяг сховища."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16683,7 +17031,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upload fehlgeschlagen"
+            "value" : "Hochladen fehlgeschlagen"
           }
         },
         "el" : {
@@ -16831,7 +17179,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Overfør filer fra din enhed"
+            "value" : "Upload filer fra din enhed"
           }
         },
         "de" : {
@@ -16960,6 +17308,12 @@
             "value" : "Вивантажити файли з вашого пристрою"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tải lên tệp từ thiết bị của bạn"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17039,7 +17393,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "フィッシングの脅威に対して、メールを非表示エイリアスを使用します。"
+            "value" : "フィッシングの脅威に対して、メール非表示エイリアスを使用します。"
           }
         },
         "ka" : {
@@ -17075,7 +17429,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Use aliases hide-my-email contra ameaças de phishing."
+            "value" : "Use endereços alternativos Hide-My-Email contra ameaças de phishing."
           }
         },
         "ro" : {
@@ -17094,6 +17448,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kimlik avı tehditlerine karşı Hide-My-Email takma adlarını kullanın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Використовуйте псевдоніми Hide-My-Email проти шахрайства."
           }
         },
         "zh-Hans" : {
@@ -17280,13 +17640,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Havaitsimme, että sinulla on SimpleLoginissa %lld alias, joka puuttuu Proton Passista. Haluaisitko tuoda sen?"
+                  "value" : "Sinulla havaittiin olevan SimpleLoginissa %lld Proton Passista puuttuva alias. Haluaisitko tuoda sen?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Havaitsimme, että sinulla on SimpleLoginissa %lld aliasta, jotka puuttuvat Proton Passista. Haluaisitko tuoda ne?"
+                  "value" : "Sinulla havaittiin olevan SimpleLoginissa %lld Proton Passista puuttuvaa aliasta. Haluaisitko tuoda ne?"
                 }
               }
             }
@@ -17442,7 +17802,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Masz %lld aliasów SimpleLogin, które nie są widoczne w Proton Pass. Czy chcesz je zaimportować?"
+                  "value" : "Masz %lld aliasy SimpleLogin, które nie są widoczne w Proton Pass. Czy chcesz je zaimportować?"
                 }
               }
             }
@@ -17460,7 +17820,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Detectamos que você tem %lld aliases que estão presentes no SimpleLogin, mas ausentes no Proton Pass. Gostaria de importá-los?"
+                  "value" : "Detectamos que você tem %lld endereços alternativos que estão presentes no SimpleLogin, mas ausentes no Proton Pass. Gostaria de importá-los?"
                 }
               }
             }
@@ -17502,7 +17862,7 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sa nachádzajú v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
+                  "value" : "Zistili sme, že máte %lld aliasov, ktoré sú prítomné v SimpleLogin, ale chýbajú v Proton Pass. Chcete ich naimportovať?"
                 }
               },
               "one" : {
@@ -17580,7 +17940,19 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ми виявили, що у вас є %lld псевдоніми, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                  "value" : "Ми виявили, що у вас є %lld псевдонімів, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Chúng tôi nhận thấy bạn có %lld bí danh trong SimpleLogin nhưng chưa có trong Proton Pass. Bạn muốn nhập chúng vào không?"
                 }
               }
             }
@@ -17746,6 +18118,12 @@
             "value" : "Ви можете прикріплювати файли до елементів для кращої організації"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn có thể đính kèm tệp vào các mục để tổ chức tốt hơn"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17898,6 +18276,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Depolama alanınız dolmuş."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваше сховище заповнене."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dung lượng của bạn đã đầy."
           }
         },
         "zh-Hans" : {

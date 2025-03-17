@@ -16,12 +16,6 @@
             "value" : "Proton Pass"
           }
         },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass"
-          }
-        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34,55 +28,13 @@
             "value" : "Proton Pass"
           }
         },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass"
-          }
-        },
         "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Proton Pass"
-          }
-        },
-        "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Pass"
@@ -252,7 +204,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "扫描 2FA 代码、信用卡和手写笔记"
+            "value" : "扫描双因素认证代码、信用卡和手写笔记"
           }
         }
       }
