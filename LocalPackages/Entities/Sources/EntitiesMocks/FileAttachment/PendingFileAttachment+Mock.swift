@@ -24,8 +24,9 @@ import Foundation
 public extension PendingFileAttachment {
     static func random(id: String? = nil,
                        key: Data = .init(),
-                       metadata: PendingFileAttachment.Metadata = .random()) -> Self {
-        .init(id: id ?? .random(), key: key, metadata: metadata)
+                       metadata: PendingFileAttachment.Metadata = .random(),
+                       chunkCount: Int = .random(in: 1...1_000)) -> Self {
+        .init(id: id ?? .random(), key: key, metadata: metadata, chunkCount: chunkCount)
     }
 }
 

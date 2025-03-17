@@ -88,7 +88,8 @@ public extension FileAttachmentRepository {
                                                      mimeType: file.metadata.mimeType,
                                                      key: file.key)
         return try await remoteFileDatasource.createPendingFile(userId: userId,
-                                                                metadata: metadata)
+                                                                metadata: metadata,
+                                                                chunkCount: file.chunkCount)
     }
 
     func uploadFile(userId: String,
