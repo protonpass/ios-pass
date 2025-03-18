@@ -49,7 +49,7 @@ class BaseItemDetailViewModel: ObservableObject {
     @Published var deleteShareItemAlert = false
     @Published var showingVaultMoveAlert = false
 
-    @Published private(set) var canDisplayFeatureDiscovery = false
+    @Published private(set) var displayItemSharingDiscovery = false
 
     private var superBindValuesCalled = false
 
@@ -109,6 +109,8 @@ class BaseItemDetailViewModel: ObservableObject {
     @LazyInjected(\UseCasesContainer.leaveShare) var leaveShareUsecase
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedRepositoryContainer.fileAttachmentRepository) private var fileRepository
+    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    private var organizationRepository
     @LazyInjected(\SharedUseCasesContainer.formatFileAttachmentSize) private var formatFileAttachmentSize
     @LazyInjected(\SharedUseCasesContainer.getFileGroup) private var getFileGroup
     @LazyInjected(\SharedUseCasesContainer.generateFileTempUrl) private var generateFileTempUrl
@@ -170,7 +172,7 @@ class BaseItemDetailViewModel: ObservableObject {
 
         bindValues()
         checkIfFreeUser()
-        getPassUserInfos()
+        checkItemSharingDiscoveryEligibility()
         addItemReadEvent(itemContent)
         assert(superBindValuesCalled, "bindValues must be overridden with call to super")
     }
@@ -395,15 +397,26 @@ private extension BaseItemDetailViewModel {
         }
     }
 
-    func getPassUserInfos() {
+    func checkItemSharingDiscoveryEligibility() {
+        guard itemSharingEnabled else { return }
         Task { [weak self] in
             guard let self else { return }
             do {
                 let userId = try await userManager.getActiveUserId()
+
+                // Respect display threshold
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                guard let vault else { return }
-                canDisplayFeatureDiscovery = passUserInfos
-                    .canDisplayFeatureDiscovery && itemSharingEnabled && vault.vault.shareRole == .admin
+                guard passUserInfos.canDisplayFeatureDiscovery else { return }
+
+                guard vault?.vault.shareRole == .admin else { return }
+
+                // If user is B2B, make sure the policy allows item sharing
+                if let org = try await organizationRepository.getOrganization(userId: userId),
+                   org.settings?.itemShareMode == .disabled {
+                    return
+                }
+
+                displayItemSharingDiscovery = true
             } catch {
                 handle(error)
             }
