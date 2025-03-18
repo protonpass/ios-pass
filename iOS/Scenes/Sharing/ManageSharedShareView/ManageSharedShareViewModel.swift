@@ -39,6 +39,7 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     @Published private(set) var loading = false
     @Published private(set) var isFreeUser = true
     @Published private(set) var isBusinessUser = false
+    @Published private(set) var itemSharingAllowed = false
     @Published var newOwner: NewOwner?
 
     private let getVaultItemCount = resolve(\UseCasesContainer.getVaultItemCount)
@@ -61,6 +62,8 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
     @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
+    @LazyInjected(\SharedRepositoryContainer.organizationRepository)
+    private var organizationRepository
 
     var reachedLimit: Bool {
         numberOfInvitesLeft <= 0
@@ -290,12 +293,21 @@ private extension ManageSharedShareViewModel {
 private extension ManageSharedShareViewModel {
     func setUp() {
         Task { [weak self] in
-            guard let self else {
-                return
-            }
-            if let plan = try? await accessRepository.getPlan(userId: nil) {
+            guard let self else { return }
+            do {
+                let userId = try await userManager.getActiveUserId()
+                let plan = try await accessRepository.getPlan(userId: userId)
                 isFreeUser = plan.isFreeUser
                 isBusinessUser = plan.isBusinessUser
+                if isBusinessUser,
+                   let org = try await organizationRepository.getOrganization(userId: userId),
+                   org.settings?.itemShareMode == .disabled {
+                    return
+                }
+                itemSharingAllowed = true
+            } catch {
+                logger.error(error)
+                display(error: error)
             }
         }
     }
