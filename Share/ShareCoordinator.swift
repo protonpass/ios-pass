@@ -35,6 +35,7 @@ enum SharedContent: Sendable {
     case url(URL)
     case text(String)
     case textWithUrl(String, URL)
+    case csv(Data)
     case unknown
 
     var url: URL? {
@@ -50,7 +51,7 @@ enum SharedContent: Sendable {
         case let .url(url): url.absoluteString
         case let .text(text): text
         case let .textWithUrl(text, _): text
-        case .unknown: ""
+        default: ""
         }
     }
 
@@ -86,12 +87,19 @@ final class ShareCoordinator {
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
     @LazyInjected(\SharedToolingContainer.authManager) private var authManager
     @LazyInjected(\SharedToolingContainer.preferencesManager) private var preferencesManager
+    @LazyInjected(\SharedToolingContainer.logManager) private var logManager
+    @LazyInjected(\SharedUseCasesContainer.getUserUiModels) private var getUserUiModels
+    @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
+    @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
+    private var createVaultAndImportLogins
+    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
     private var createEditItemViewModel: BaseCreateEditItemViewModel?
     private var generatePasswordCoordinator: GeneratePasswordCoordinator?
 
+    private var parsedContent: SharedContent?
     private var cancellables = Set<AnyCancellable>()
 
     private var context: NSExtensionContext? { rootViewController?.extensionContext }
@@ -186,13 +194,22 @@ private extension ShareCoordinator {
             return .unknown
         }
 
+        let parseUrl: (URL, SharedContent) -> SharedContent = { [weak self] url, fallback in
+            guard let self,
+                  getFeatureFlagStatus(for: FeatureFlagType.passIOSImportCsv),
+                  url.absoluteString.hasPrefix("file://"),
+                  url.absoluteString.hasSuffix(".csv"),
+                  let data = try? Data(contentsOf: url) else { return fallback }
+            return .csv(data)
+        }
+
         for item in extensionItems {
             guard let attachments = item.attachments else { continue }
             for attachment in attachments {
                 if let url = await Task(operation: { @Sendable in
                     try? await attachment.loadItem(forTypeIdentifier: UTType.url.identifier) as? URL
                 }).value {
-                    return .url(url)
+                    return parseUrl(url, .url(url))
                 }
 
                 if let text = await Task(operation: { @Sendable in
@@ -200,7 +217,7 @@ private extension ShareCoordinator {
                         .loadItem(forTypeIdentifier: UTType.plainText.identifier) as? String
                 }).value {
                     if let url = text.firstUrl() {
-                        return .textWithUrl(text, url)
+                        return parseUrl(url, .textWithUrl(text, url))
                     } else {
                         return .text(text)
                     }
@@ -214,7 +231,26 @@ private extension ShareCoordinator {
     func parseSharedContentAndBeginShareFlow(userId: String) async {
         do {
             let content = try await parseSharedContent()
-            let view = SharedContentView(content: content,
+            parsedContent = content
+
+            let view: any View
+            if case .csv = content,
+               let activeUserId = userManager.activeUserId {
+                let prefs = preferencesManager.sharedPreferences.unwrapped()
+                view = ImporterView(logManager: logManager,
+                                    datasource: self,
+                                    onClose: { [weak self] in
+                                        guard let self else { return }
+                                        dismissExtension()
+                                    })
+                                    .if(prefs.localAuthenticationMethod == .pin) { view in
+                                        view.localAuthentication(onFailure: { [weak self] _ in
+                                            guard let self else { return }
+                                            logOut(userId: activeUserId)
+                                        })
+                                    }
+            } else {
+                view = SharedContentView(content: content,
                                          onCreate: { [weak self] type in
                                              guard let self else { return }
                                              presentCreateItemView(for: type, content: content)
@@ -227,6 +263,8 @@ private extension ShareCoordinator {
                                              guard let self else { return }
                                              logOut(userId: userId)
                                          })
+            }
+
             showView(view)
         } catch {
             alert(error: error) { [weak self] in
@@ -378,5 +416,31 @@ extension ShareCoordinator: CreateEditLoginViewModelDelegate {
 extension ShareCoordinator: GeneratePasswordCoordinatorDelegate {
     func generatePasswordCoordinatorWantsToPresent(viewController: UIViewController) {
         present(viewController)
+    }
+}
+
+// MARK: ImporterDatasource
+
+extension ShareCoordinator: ImporterDatasource {
+    func getUsers() async throws -> [UserUiModel] {
+        try await getUserUiModels()
+    }
+
+    func parseLogins() async throws -> [CsvLogin] {
+        guard case let .csv(data) = parsedContent,
+              let csvString = String(data: data, encoding: .utf8) else {
+            throw PassError.importer(.noCsvContent)
+        }
+
+        return try await parseCsvLogins(csvString)
+    }
+
+    func proceedImportation(user: UserUiModel?, logins: [CsvLogin]) async throws {
+        let userId: String = if let user {
+            user.id
+        } else {
+            try await userManager.getActiveUserId()
+        }
+        try await createVaultAndImportLogins(userId: userId, logins: logins)
     }
 }
