@@ -10371,7 +10371,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld other login use this password"
+                  "value" : "%lld other login uses this password"
                 }
               },
               "other" : {
