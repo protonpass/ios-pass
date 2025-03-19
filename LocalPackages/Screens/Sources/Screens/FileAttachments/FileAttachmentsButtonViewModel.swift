@@ -132,6 +132,7 @@ private extension FileAttachmentsButtonViewModel {
                 guard let url = try await photo.loadTransferable(type: TempDirectoryTransferableUrl.self) else {
                     throw PassError.fileAttachment(.failedToProcessPickedPhotos)
                 }
+                selectedPhotos = []
                 handler.handleAttachment(url.value)
             } catch {
                 handler.handleAttachmentError(error)
