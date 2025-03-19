@@ -81,7 +81,7 @@ private extension SharedContent {
             text
         case let .textWithUrl(text, _):
             text
-        case .unknown:
+        default:
             ""
         }
     }
