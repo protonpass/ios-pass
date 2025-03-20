@@ -183,6 +183,10 @@ extension ProfileTabViewModel {
         router.present(for: .upgradeFlow)
     }
 
+    func webUpgrade() {
+        router.navigate(to: .urlPage(urlString: "https://account.proton.me/pass/dashboard"))
+    }
+
     func refreshPlan() async {
         do {
             let access = try await accessRepository.refreshAccess(userId: nil).access
