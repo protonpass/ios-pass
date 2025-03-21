@@ -37,7 +37,7 @@ public final class SetCoreLoggerEnvironment: SetCoreLoggerEnvironmentUseCase {
     public init() {}
 
     public func execute(bundle: Bundle) {
-        let environment = ProtonPassDoH(bundle: bundle).environment.name
-        PMLog.setEnvironment(environment: environment)
+        let doh = ProtonPassDoH(bundle: bundle)
+        PMLog.setExternalLoggerHost(doh.defaultHost)
     }
 }
