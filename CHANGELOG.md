@@ -1,3 +1,11 @@
+# Version 1.16.0
+Chrome importer:
+You can now import passwords directly from Chrome. Navigate to the Profile tab > Import to Proton Pass.
+
+Improvements:
+- Fixed an issue where the "send email" button was unresponsive for alias contacts
+- Core libraries upgraded from 29.0.12 to 29.0.14
+
 # Version 1.15.1
 In-app AutoFill enabling (iOS 18):
 You can now enable AutoFill directly in the app, offering a quicker and more seamless login experience on iOS 18.
