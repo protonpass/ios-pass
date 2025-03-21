@@ -54,6 +54,8 @@ public enum Constants {
         public static var formatter: ByteCountFormatter {
             let formatter = ByteCountFormatter()
             formatter.countStyle = .binary
+            // For when byte count is 0, it will be formatted as "0 bytes" instead of "Zero KB"
+            formatter.allowsNonnumericFormatting = false
             return formatter
         }
     }

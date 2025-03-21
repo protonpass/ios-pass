@@ -296,7 +296,6 @@ private extension ItemsTabView {
                 onSelectThumbnail: { viewModel.handleThumbnailSelection(item) },
                 onSelectItem: { viewModel.handleSelection(item) },
                 itemToBePermanentlyDeleted: $viewModel.itemToBePermanentlyDeleted,
-                onPermanentlyDelete: { viewModel.permanentlyDelete() },
                 onAliasTrash: { aliasToTrash = item },
                 itemContextMenuHandler: viewModel.itemContextMenuHandler)
     }
@@ -312,7 +311,6 @@ private struct ItemRow: View {
     let onSelectThumbnail: () -> Void
     let onSelectItem: () -> Void
     let itemToBePermanentlyDeleted: Binding<(any ItemTypeIdentifiable)?>
-    let onPermanentlyDelete: () -> Void
     let onAliasTrash: () -> Void
     let itemContextMenuHandler: ItemContextMenuHandler
 
@@ -337,7 +335,9 @@ private struct ItemRow: View {
                                          isTrashed: isTrashed,
                                          isEditable: isEditable,
                                          canBeTrashed: isSwipeEnabled,
-                                         onPermanentlyDelete: onPermanentlyDelete,
+                                         onPermanentlyDelete: {
+                                             itemToBePermanentlyDeleted.wrappedValue = item
+                                         },
                                          onAliasTrash: onAliasTrash,
                                          handler: itemContextMenuHandler)
                 }
