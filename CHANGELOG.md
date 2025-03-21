@@ -4,7 +4,7 @@ You can now import passwords directly from Chrome. Navigate to the Profile tab >
 
 Improvements:
 - Fixed an issue where the "send email" button was unresponsive for alias contacts
-- Core libraries upgraded from 29.0.12 to 29.0.14
+- Core libraries upgraded from 29.0.12 to 30.0.2
 
 # Version 1.15.1
 In-app AutoFill enabling (iOS 18):
