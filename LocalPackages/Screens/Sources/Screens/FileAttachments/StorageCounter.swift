@@ -73,11 +73,12 @@ public struct StorageCounter: View {
                 shouldUpsell: Bool,
                 formatter: ByteCountFormatter = Constants.Attachment.formatter,
                 onUpgrade: @escaping () -> Void) {
-        let percentage = Int(Float(used) / Float(total) * 100)
+        let floatPercentage = Float(used) / Float(total) * 100
+
         let formattedUsed = formatter.string(fromByteCount: Int64(used))
         let formattedTotal = formatter.string(fromByteCount: Int64(total))
 
-        self.percentage = percentage
+        percentage = floatPercentage > 99.9 ? 100 : Int(floatPercentage)
         detail = #localized("%1$@ of %2$@", formattedUsed, formattedTotal)
         level = switch percentage {
         case 0...74:
