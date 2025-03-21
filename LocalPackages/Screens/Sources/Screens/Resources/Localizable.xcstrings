@@ -1062,7 +1062,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Datoteka %lld"
+                  "value" : "%lld datoteka"
                 }
               },
               "other" : {
@@ -1122,13 +1122,13 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld файлів"
+                  "value" : "%lld файли"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld файли"
+                  "value" : "%lld файлів"
                 }
               },
               "one" : {
@@ -1140,7 +1140,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld файли"
+                  "value" : "%lld файлів"
                 }
               }
             }
@@ -1744,7 +1744,7 @@
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld项"
+                  "value" : "%lld 项"
                 }
               }
             }
@@ -3550,7 +3550,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Všetky účty (%lld)"
+                  "value" : "Všetky účty (%lld)fa\n"
                 }
               },
               "other" : {
@@ -17472,25 +17472,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімы, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Магчыма, што вы хочаце імпартаваць іх?"
+                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімы, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Хочаце імпартаваць іх?"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімаў, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Магчыма, што вы хочаце імпартаваць іх?"
+                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімаў, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Хочаце імпартаваць іх?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданім, які прысутнічае ў SimpleLogin, але адсутнічае ў Proton Pass. Магчыма, што вы хочаце імпартаваць яго?"
+                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданім, які прысутнічае ў SimpleLogin, але адсутнічае ў Proton Pass. Хочаце імпартаваць яго?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімаў, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Магчыма, што вы хочаце імпартаваць іх?"
+                  "value" : "Мы выявілі, што ў вас ёсць %lld псеўданімаў, якія прысутнічаюць у SimpleLogin, але адсутнічаюць у Proton Pass. Хочаце імпартаваць іх?"
                 }
               }
             }
@@ -17802,7 +17802,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Masz %lld aliasy SimpleLogin, które nie są widoczne w Proton Pass. Czy chcesz je zaimportować?"
+                  "value" : "Masz %lld aliasów SimpleLogin, które nie są widoczne w Proton Pass. Czy chcesz je zaimportować?"
                 }
               }
             }
@@ -17922,13 +17922,13 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ми виявили, що у вас є %lld псевдоніми, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                  "value" : "Ми виявили, що у вас є %lld псевдоніми, які присутні у SimpleLogin, але відсутні у Proton Pass. Бажаєте імпортувати їх?"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ми виявили, що у вас є %lld псевдонімів, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                  "value" : "Ми виявили, що у вас є %lld псевдонімів, які присутні у SimpleLogin, але відсутні у Proton Pass. Бажаєте імпортувати їх?"
                 }
               },
               "one" : {
@@ -17940,7 +17940,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Ми виявили, що у вас є %lld псевдонімів, які присутні у SimpleLogin, але відсутній у Proton Pass. Бажаєте імпортувати його?"
+                  "value" : "Ми виявили, що у вас є %lld псевдонімів, які присутні у SimpleLogin, але відсутні у Proton Pass. Бажаєте імпортувати їх?"
                 }
               }
             }
