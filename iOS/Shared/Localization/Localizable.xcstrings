@@ -27,25 +27,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунды."
+                  "value" : "\"%1$@\" скапіраваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунды."
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
+                  "value" : "\"%1$@\" скапіраваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунду."
+                  "value" : "\"%1$@\" скапіраваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунду."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
+                  "value" : "\"%1$@\" скапіраваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
                 }
               }
             }
@@ -411,25 +411,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekundy."
+                  "value" : "„%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
+                  "value" : "„%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekundu."
+                  "value" : "„%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekundu."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
+                  "value" : "„%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
                 }
               }
             }
@@ -519,7 +519,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "“%1$@”已复制到剪贴板。将在%2$lld秒后过期。"
+                  "value" : "“%1$@”已复制到剪贴板。将在 %2$lld 秒后过期。"
                 }
               }
             }
@@ -688,7 +688,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已复制%@"
+            "value" : "已复制 %@"
           }
         }
       }
@@ -848,7 +848,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@想和您分享一个保险库。"
+            "value" : "%@ 想和您分享一个保险库。"
           }
         }
       }
@@ -1014,7 +1014,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@%%已解密..."
+            "value" : "%@%% 已解密..."
           }
         }
       }
@@ -1180,7 +1180,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@%%已下载..."
+            "value" : "%@%% 已下载..."
           }
         }
       }
@@ -1341,7 +1341,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "过去14天内有%1$@, %2$@, %3$@。"
+            "value" : "过去 14 天内有 %1$@、%2$@、%3$@。"
           }
         }
       }
@@ -1876,7 +1876,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个别名"
+                  "value" : "%lld 个别名"
                 }
               }
             }
@@ -2384,7 +2384,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个别名已禁用"
+                  "value" : "%lld 个别名已禁用"
                 }
               }
             }
@@ -2892,7 +2892,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个别名已启用"
+                  "value" : "%lld 个别名已启用"
                 }
               }
             }
@@ -2909,25 +2909,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld заблакіравана"
+                  "value" : "%lld заблакіраваныя"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld заблакіравана"
+                  "value" : "%lld заблакіраваных"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld заблакіраваны"
+                  "value" : "%lld заблакіраваны"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld заблакіравана"
+                  "value" : "%lld заблакіраваных"
                 }
               }
             }
@@ -3269,19 +3269,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Blocate: %lld"
+                  "value" : "Blocate: %lld"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Blocate: %lld"
+                  "value" : "Blocate: %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Blocate: %lld"
+                  "value" : "Blocate: %lld"
                 }
               }
             }
@@ -3389,7 +3389,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld已屏蔽"
+                  "value" : "%lld 已屏蔽"
                 }
               }
             }
@@ -3772,7 +3772,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Blocate: %lld"
+                  "value" : "Blocate: %lld"
                 }
               },
               "other" : {
@@ -3898,7 +3898,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld屏蔽"
+                  "value" : "%lld 屏蔽"
                 }
               }
             }
@@ -4436,7 +4436,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个字符"
+                  "value" : "%lld 个字符"
                 }
               }
             }
@@ -4770,7 +4770,7 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld dnia"
+                  "value" : "%lld dni"
                 }
               },
               "one" : {
@@ -4884,7 +4884,7 @@
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld dni"
+                  "value" : "%lld dneva"
                 }
               }
             }
@@ -4974,7 +4974,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld天"
+                  "value" : "%lld 天"
                 }
               }
             }
@@ -4991,25 +4991,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасылкі"
+                  "value" : "%lld перасылкі"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасылак"
+                  "value" : "%lld перасылак"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасылка"
+                  "value" : "%lld перасылка"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld перасылак"
+                  "value" : "%lld перасылак"
                 }
               }
             }
@@ -5471,7 +5471,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 已转发"
+                  "value" : "%lld 已转发"
                 }
               }
             }
@@ -5979,7 +5979,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld转发"
+                  "value" : "%lld 转发"
                 }
               }
             }
@@ -6517,7 +6517,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld小时"
+                  "value" : "%lld 小时"
                 }
               }
             }
@@ -6533,25 +6533,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld запрашэнні засталося"
+                  "value" : "Засталося %lld запрашэнні"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld запрашэнняў засталося"
+                  "value" : "Засталося %lld запрашэнняў"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld запрашэнне засталося"
+                  "value" : "Засталося %lld запрашэнне"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld запрашэнняў засталося"
+                  "value" : "Засталося %lld запрашэнняў"
                 }
               }
             }
@@ -6893,19 +6893,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Invitații rămase: %lld"
+                  "value" : "Au mai rămas %lld invitații"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Invitații rămase: %lld"
+                  "value" : "A mai rămas %lld invitație"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Invitații rămase: %lld"
+                  "value" : "Au mai rămas %lld de invitații"
                 }
               }
             }
@@ -7055,7 +7055,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "剩余%lld个邀请"
+                  "value" : "剩余 %lld 个邀请"
                 }
               }
             }
@@ -7635,7 +7635,7 @@
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld项"
+                  "value" : "%lld 项"
                 }
               }
             }
@@ -8173,7 +8173,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个项目已移至回收站"
+                  "value" : "%lld 个项目已移至回收站"
                 }
               }
             }
@@ -8189,25 +8189,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld элементы перамешчаны ў сховішча « %2$@ »"
+                  "value" : "%1$lld элементы перамешчаны ў сховішча «%2$@»"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld элементаў перамешчаны ў сховішча « %2$@ »"
+                  "value" : "%1$lld элементаў перамешчаны ў сховішча «%2$@»"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld элемент перамешчаны ў сховішча « %2$@ »"
+                  "value" : "%1$lld элемент перамешчаны ў сховішча «%2$@»"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld элементаў перамешчаны ў сховішча « %2$@ »"
+                  "value" : "%1$lld элементаў перамешчаны ў сховішча «%2$@»"
                 }
               }
             }
@@ -8711,7 +8711,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld件物品移至保险库« %2$@ »"
+                  "value" : "%1$lld 个项目已移至保险库 « %2$@ »"
                 }
               }
             }
@@ -9087,19 +9087,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Articole fixate: %lld"
+                  "value" : "S-au fixat %lld articole."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Articole fixate: %lld"
+                  "value" : "S-a fixat %lld articol."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Articole fixate: %lld"
+                  "value" : "S-au fixat %lld de articole."
                 }
               }
             }
@@ -9207,7 +9207,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个项目已成功置顶"
+                  "value" : "%lld 个项目已成功置顶"
                 }
               }
             }
@@ -9583,19 +9583,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Articole fixate anulate: %lld"
+                  "value" : "S-au anulat %lld articole fixate."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Articole fixate anulate: %lld"
+                  "value" : "S-a anulat %lld articol fixat."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Articole fixate anulate: %lld"
+                  "value" : "S-au anulat %lld de articole fixate."
                 }
               }
             }
@@ -9703,7 +9703,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个项目已成功取消置顶"
+                  "value" : "%lld 个项目已成功取消置顶"
                 }
               }
             }
@@ -10241,7 +10241,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个成员"
+                  "value" : "%lld 位成员"
                 }
               }
             }
@@ -10257,25 +10257,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Яшчэ %lld запісы ўваходу выкарыстоўваюць гэты пароль"
+                  "value" : "%lld іншыя запісы ўваходу выкарыстоўваюць гэты пароль"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Яшчэ %lld запісаў уваходу выкарыстоўваюць гэты пароль"
+                  "value" : "%lld іншых запісаў уваходу выкарыстоўваюць гэты пароль"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Яшчэ %lld запіс уваходу выкарыстоўвае гэты пароль"
+                  "value" : "%lld іншы запіс уваходу выкарыстоўвае гэты пароль"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Яшчэ %lld запісаў уваходу выкарыстоўваюць гэты пароль"
+                  "value" : "%lld іншых запісаў уваходу выкарыстоўваюць гэты пароль"
                 }
               }
             }
@@ -10311,37 +10311,19 @@
             }
           }
         },
-        "da" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld andet login bruger denne adgangskode"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld andre logins bruger denne adgangskode"
-                }
-              }
-            }
-          }
-        },
         "de" : {
           "variations" : {
             "plural" : {
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld anderer Login verwendet dieses Passwort"
+                  "value" : "%lld andere Anmeldung verwendet dieses Passwort"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld andere Logins verwenden dieses Passwort"
+                  "value" : "%lld andere Anmeldungen verwenden dieses Passwort"
                 }
               }
             }
@@ -10389,13 +10371,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld otro inicio de sesión usa esta contraseña"
+                  "value" : "%lld otro inicio de sesión usa esta contraseña."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld otros inicios de sesión usan esta contraseña"
+                  "value" : "%lld otros inicios de sesión usan esta contraseña."
                 }
               }
             }
@@ -10407,31 +10389,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld otro inicio de sesión usa esta contraseña"
+                  "value" : "otro (%lld) inicio de sesión usa esta contraseña."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld otros inicios de sesión usan esta contraseña"
-                }
-              }
-            }
-          }
-        },
-        "fi" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld toinen kirjautumistieto käyttää tätä salasanaa"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld muuta kirjautumistietoa käyttää tätä salasanaa"
+                  "value" : "otros %lld inicios de sesión usan esta contraseña."
                 }
               }
             }
@@ -10461,7 +10425,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld entri masuk lainnya menggunakan kata sandi ini"
+                  "value" : "%lld entri masuk lainnya menggunakan kata sandi yang sama"
                 }
               }
             }
@@ -10485,109 +10449,19 @@
             }
           }
         },
-        "ja" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 個の他のログインがこのパスワードを使用しています"
-                }
-              }
-            }
-          }
-        },
-        "ka" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld სხვა მომხმარებელი იყენებს ამ პაროლს"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld სხვა მომხმარებელი იყენებს ამ პაროლს"
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld개의 다른 로그인에 이 비밀번호가 쓰이고 있습니다"
-                }
-              }
-            }
-          }
-        },
-        "nb" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld annen pålogging bruker dette passordet"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld andre pålogginger bruker dette passordet"
-                }
-              }
-            }
-          }
-        },
         "nl" : {
           "variations" : {
             "plural" : {
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld andere login gebruiken dit wachtwoord"
+                  "value" : "%lld andere login gebruikt dit wachtwoord"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld andere logins gebruiken dit wachtwoord"
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Tego hasła używają %lld dane logowania"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Tego hasła używa %lld danych logowania"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Tego hasła używa %lld dane logowania"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Tego hasła używają %lld danych logowania"
                 }
               }
             }
@@ -10617,79 +10491,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld autentificări folosesc această parolă"
+                  "value" : "%lld alte autentificări folosesc această parolă"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld autentificare folosește această parolă"
+                  "value" : "%lld altă autentificare folosește această parolă"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld de autentificări folosesc această parolă"
-                }
-              }
-            }
-          }
-        },
-        "sk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld iné prihlásenia už používajú toto heslo"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld iných prihlásení už používa toto heslo"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld iné prihlásenie už používa toto heslo"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld iných prihlásení už používa toto heslo"
-                }
-              }
-            }
-          }
-        },
-        "sl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld druge prijave uporabljajo to geslo."
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld druga prijava uporablja to geslo."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld drugih prijav uporablja to geslo."
-                }
-              },
-              "two" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld drugi prijavi uporabljata to geslo."
+                  "value" : "%lld de alte autentificări folosesc această parolă"
                 }
               }
             }
@@ -10719,55 +10533,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Bu parolayı kullanan %lld oturum açma kaydı daha var"
+                  "value" : "%lld diğer oturum açma kaydında bu parola kullanılıyor"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Bu parolayı kullanan %lld oturum açma kaydı daha var"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld записи входу використовують цей пароль"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld записів входу використовують цей пароль"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld запис входу використовує цей пароль"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld записів входу використовують цей пароль"
-                }
-              }
-            }
-          }
-        },
-        "vi" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld đăng nhập khác sử dụng mật khẩu này"
+                  "value" : "%lld diğer oturum açma kaydında bu parola kullanılıyor"
                 }
               }
             }
@@ -10779,7 +10551,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld其他登录使用此密码"
+                  "value" : "%lld 个其他登录项正在使用此密码"
                 }
               }
             }
@@ -11167,7 +10939,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Mai aveți %lld de încercări"
+                  "value" : "Încercări rămase: %lld"
                 }
               }
             }
@@ -11317,7 +11089,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "剩余%lld次尝试"
+                  "value" : "剩余 %lld 次尝试"
                 }
               }
             }
@@ -11790,7 +11562,7 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld відповіді"
+                  "value" : "%lld відповідей"
                 }
               },
               "one" : {
@@ -11826,7 +11598,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个回复"
+                  "value" : "%lld 个回复"
                 }
               }
             }
@@ -11860,7 +11632,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld вынікі"
+                  "value" : "%lld вынікаў"
                 }
               }
             }
@@ -12172,7 +11944,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld wyniki"
+                  "value" : "%lld wyników"
                 }
               }
             }
@@ -12202,19 +11974,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld rezultate"
+                  "value" : "Rezultate: %lld"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld rezultat"
+                  "value" : "Rezultate: %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld de rezultate"
+                  "value" : "Rezultate: %lld"
                 }
               }
             }
@@ -12340,7 +12112,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld результати"
+                  "value" : "%lld результатів"
                 }
               }
             }
@@ -12364,7 +12136,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld条结果"
+                  "value" : "%lld 条结果"
                 }
               }
             }
@@ -12794,7 +12566,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld krat"
+                  "value" : "%lld-krat"
                 }
               },
               "one" : {
@@ -12806,13 +12578,13 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld krat"
+                  "value" : "%lld-krat"
                 }
               },
               "two" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld krat"
+                  "value" : "%lld-krat"
                 }
               }
             }
@@ -12902,7 +12674,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld次"
+                  "value" : "%lld 次"
                 }
               }
             }
@@ -13236,7 +13008,7 @@
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Pozostało %lld dni wersji próbnej"
+                  "value" : "Masz %lld dni, aby wypróbować funkcje premium"
                 }
               },
               "one" : {
@@ -13248,7 +13020,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Masz %lld dnia, aby wypróbować funkcje premium"
+                  "value" : "Masz %lld dni, aby wypróbować funkcje premium"
                 }
               }
             }
@@ -13440,7 +13212,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "还剩%lld天高级功能试用期"
+                  "value" : "还剩 %lld 天高级功能试用期"
                 }
               }
             }
@@ -13816,19 +13588,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld vizualizări"
+                  "value" : "Vizualizări: %lld"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld vizualizare"
+                  "value" : "Vizualizări: %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld de vizualizări"
+                  "value" : "Vizualizări: %lld"
                 }
               }
             }
@@ -13948,7 +13720,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld次查看"
+                  "value" : "%lld 次查看"
                 }
               }
             }
@@ -14324,19 +14096,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld cuvinte"
+                  "value" : "Cuvinte: %lld"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld cuvânt"
+                  "value" : "Cuvinte: %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld de cuvinte"
+                  "value" : "Cuvinte: %lld"
                 }
               }
             }
@@ -14486,7 +14258,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld个单词"
+                  "value" : "%lld 个单词"
                 }
               }
             }
@@ -15485,7 +15257,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "20个保险库"
+            "value" : "20 个保险库"
           }
         }
       }
@@ -16471,7 +16243,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "账号"
+            "value" : "账户"
           }
         }
       }
@@ -16482,7 +16254,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Нумар уліковага запісу"
+            "value" : "Нумар рахунка"
           }
         },
         "cs" : {
@@ -16531,6 +16303,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Numéro de compte"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nomor rekening"
           }
         },
         "it" : {
@@ -16596,7 +16374,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "账号"
+            "value" : "账户号码"
           }
         }
       }
@@ -16607,7 +16385,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тып уліковага запісу"
+            "value" : "Тып рахунка"
           }
         },
         "cs" : {
@@ -16656,6 +16434,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Type de compte"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jenis rekening"
           }
         },
         "it" : {
@@ -16715,7 +16499,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "订阅类型"
+            "value" : "帐户类型"
           }
         }
       }
@@ -19059,6 +18843,12 @@
             "value" : "Ajouter un nom (SSID)"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambah nama (SSID)"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19509,6 +19299,12 @@
             "value" : "Ajouter une clé privée"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambah kunci privat"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19625,6 +19421,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ajouter une clé publique"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambah kunci publik"
           }
         },
         "it" : {
@@ -19909,6 +19711,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adresse"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alamat"
           }
         },
         "it" : {
@@ -21978,7 +21786,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "За %lld хвилин"
+                  "value" : "За %lld хвилини"
                 }
               },
               "many" : {
@@ -27829,6 +27637,12 @@
             "value" : "Identifiant API"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kredensial API"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27945,6 +27759,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clé API"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci API"
           }
         },
         "it" : {
@@ -44017,7 +43837,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creare și autocompletare"
+            "value" : "Creare și completare"
           }
         },
         "sk" : {
@@ -48617,7 +48437,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Карыстальніцкі элемент перамешчаны ў Сметніцу"
+            "value" : "Карыстальніцкі элемент перамешчаны ў сметніцу"
           }
         },
         "cs" : {
@@ -57196,7 +57016,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "清空废件箱"
+            "value" : "清空回收站"
           }
         }
       }
@@ -62767,7 +62587,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Дадатковы пароль павінен мець прынамсі %lld сімвалы"
+                  "value" : "Дадатковы пароль павінен мець прынамсі %lld сімвалаў"
                 }
               }
             }
@@ -63217,7 +63037,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Додатковий пароль має містити принаймні %lld символи"
+                  "value" : "Додатковий пароль має містити принаймні %lld символів"
                 }
               }
             }
@@ -106403,7 +106223,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Trajno izbrisani %lld elementi"
+                  "value" : "Trajno izbrisani %lld predmeti"
                 }
               },
               "one" : {
@@ -120136,13 +119956,13 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Адноўлены %lld элементы"
+                  "value" : "Адноўлена %lld элементы"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Адноўлены %lld элементаў"
+                  "value" : "Адноўлена %lld элементаў"
                 }
               },
               "one" : {
@@ -120154,7 +119974,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Адноўлены %lld элементаў"
+                  "value" : "Адноўлена %lld элементаў"
                 }
               }
             }
@@ -121172,13 +120992,13 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Паўторна выкарыстана раз: %lld"
+                  "value" : "Паўторна выкарыстана %lld разы"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Паўторна выкарыстана раз: %lld"
+                  "value" : "Паўторна выкарыстана %lld разоў"
                 }
               },
               "one" : {
@@ -121190,7 +121010,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Паўторна выкарыстана раз: %lld"
+                  "value" : "Паўторна выкарыстана %lld разоў"
                 }
               }
             }
@@ -121532,19 +121352,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Refolosită de %lld (de) ori"
+                  "value" : "Refolosiri: %lld"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Refolosită %lld dată"
+                  "value" : "Refolosiri: %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Refolosită de %lld (de) ori"
+                  "value" : "Refolosiri: %lld"
                 }
               }
             }
@@ -122933,7 +122753,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адсканіруйце QR-код каб далучыцца"
+            "value" : "Адсканіруйце QR-код, каб далучыцца"
           }
         },
         "cs" : {
@@ -123736,19 +123556,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Căutare în %lld conturi"
+                  "value" : "Căutare în: %lld conturi"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Căutare în %lld cont"
+                  "value" : "Căutare în: %lld cont"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Căutare în %lld de conturi"
+                  "value" : "Căutare în: %lld de conturi"
                 }
               }
             }
@@ -137314,7 +137134,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ключ SSH перамешчаны ў Сметніцу"
+            "value" : "Ключ SSH перамешчаны ў сметніцу"
           }
         },
         "cs" : {
@@ -151340,7 +151160,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Невызначаны"
+            "value" : "Не вызначана"
           }
         },
         "cs" : {
@@ -154781,19 +154601,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Folosit la %lld conectări"
+                  "value" : "Folosită la %lld conectări"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Folosit la %lld conectare"
+                  "value" : "Folosită la %lld conectare"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Folosit la %lld de conectări"
+                  "value" : "Folosită la %lld de conectări"
                 }
               }
             }
@@ -163610,6 +163430,12 @@
             "value" : "Le mot de passe du wifi a été copié."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kata sandi WiFi disalin"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -170799,19 +170625,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Adresa de e-mail a fost compromisă în %lld divulgări."
+                  "value" : "Nr. divulgări în care a fost compromisă adresa de e-mail: %lld"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Adresa de e-mail a fost compromisă în %lld divulgare."
+                  "value" : "Nr. divulgări în care a fost compromisă adresa de e-mail: %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Adresa de e-mail a fost compromisă în %lld de divulgări."
+                  "value" : "Nr. divulgări în care a fost compromisă adresa de e-mail: %lld"
                 }
               }
             }
@@ -170853,7 +170679,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah"
+                  "value" : "Vaš e-poštni naslov je pricurljal v %lld kršitvah."
                 }
               },
               "one" : {
