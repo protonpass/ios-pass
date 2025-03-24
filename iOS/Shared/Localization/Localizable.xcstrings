@@ -27,25 +27,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" скапіраваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунды."
+                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунды."
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" скапіраваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
+                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" скапіраваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунду."
+                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунду."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" скапіраваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
+                  "value" : "\"%1$@\" скапіяваны ў буфер абмену. Тэрмін дзеяння міне праз %2$lld секунд."
                 }
               }
             }
@@ -430,6 +430,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "„%1$@\" je skopírovaný do schránky. Platnosť vyprší o %2$lld sekúnd."
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekunde."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekundo."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekund."
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "»%1$@« je kopiran v odložišče. Poteče čez %2$lld sekundi."
                 }
               }
             }
@@ -10401,6 +10431,24 @@
             }
           }
         },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld toinen kirjautuminen käyttää tätä salasanaa"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld toiset kirjautumiset käyttävät tätä salasanaa"
+                }
+              }
+            }
+          }
+        },
         "fr" : {
           "variations" : {
             "plural" : {
@@ -14427,7 +14475,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "双因素认证已达上限"
+            "value" : "已达 2FA 数量上限"
           }
         }
       }
@@ -14593,7 +14641,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "双因素认证密钥（TOTP）"
+            "value" : "2FA 密钥 (TOTP)"
           }
         }
       }
@@ -14759,7 +14807,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "双因素认证密钥 (TOTP) 自定义字段"
+            "value" : "2FA 密钥 (TOTP) 自定义字段"
           }
         }
       }
@@ -14925,7 +14973,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "双因素认证密钥 (TOTP)"
+            "value" : "2FA 令牌 (TOTP)"
           }
         }
       }
@@ -16299,6 +16347,12 @@
             "value" : "Número de cuenta"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilinumero"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16428,6 +16482,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tipo de cuenta"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilin tyyppi"
           }
         },
         "fr" : {
@@ -17151,7 +17211,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加双因素认证密钥"
+            "value" : "添加 2FA 密钥"
           }
         }
       }
@@ -18837,6 +18897,12 @@
             "value" : "Agregar un nombre (SSID)"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää nimi (SSID)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19293,6 +19359,12 @@
             "value" : "Agregar una clave privada"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää yksityinen avain"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19415,6 +19487,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Agregar una clave pública"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää julkinen avain"
           }
         },
         "fr" : {
@@ -19705,6 +19783,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dirección"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Osoite"
           }
         },
         "fr" : {
@@ -27248,7 +27332,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "您所有的登录项均已启用双重身份验证"
+            "value" : "您所有的登录项均已启用双因素身份验证"
           }
         }
       }
@@ -27631,6 +27715,12 @@
             "value" : "Credencial API"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API- tunnistetiedot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27753,6 +27843,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clave API"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "API-avain"
           }
         },
         "fr" : {
@@ -28156,7 +28252,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "您确定要为“%@”添加双重验证密钥吗？"
+            "value" : "您确定要为“%@”添加 2FA 密钥吗？"
           }
         }
       }
@@ -28655,7 +28751,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "关联双重验证？"
+            "value" : "关联 2FA？"
           }
         }
       }
@@ -29206,6 +29302,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Al menos uno de los elementos seleccionados está compartido actualmente. Si lo mueve a otra bóveda, se eliminará el acceso para todos los demás usuarios."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ainakin yksi valituista kohteista on jaettu tällä hetkellä. Sen siirtäminen toiseen holviin poistaa pääsyn kaikilta toisilta käyttäjiltä."
           }
         },
         "fr" : {
@@ -30448,7 +30550,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自动复制双重验证代码需要设置生物识别锁或 PIN 码"
+            "value" : "自动复制 2FA 验证码需要设置生物识别锁或 PIN 码"
           }
         }
       }
@@ -30836,6 +30938,12 @@
             "value" : "Cuenta bancaria"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pankkitili"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30953,6 +31061,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre del banco"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pankin nimi"
           }
         },
         "fr" : {
@@ -33057,7 +33171,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voi muokata ja poistaa tämän kohteen."
+            "value" : "Voi muokata kohdetta ja poistaa sen."
           }
         },
         "fr" : {
@@ -34180,6 +34294,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cancelar el cambio de buzón"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peruuta postilaatikon muutos"
           }
         },
         "fr" : {
@@ -36808,6 +36928,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clase"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luokka"
           }
         },
         "fr" : {
@@ -40830,7 +40956,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "复制双因素认证代码"
+            "value" : "复制 2FA 验证码"
           }
         }
       }
@@ -42866,6 +42992,12 @@
             "value" : "Copiar SSID"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi SSID"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43149,6 +43281,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "País"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maa"
           }
         },
         "fr" : {
@@ -44100,6 +44238,12 @@
             "value" : "Crear un elemento personalizado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luo mukautettu kohde"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45046,6 +45190,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crear elementos con campos completamente personalizados"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luo kohteita täysin mukautetuilla kentillä"
           }
         },
         "fr" : {
@@ -46977,6 +47127,12 @@
             "value" : "Cartera de criptomonedas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crypto"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48252,6 +48408,12 @@
             "value" : "Elemento personalizado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mukautettu kohde"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48362,6 +48524,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se creó el elemento personalizado."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mukautettu kohde luotiin"
           }
         },
         "fr" : {
@@ -48476,6 +48644,12 @@
             "value" : "Se movió el elemento personalizado a la papelera."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mukautettu kohde siirretty roskakoriin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48586,6 +48760,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se eliminó permanentemente el elemento personalizado."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mukautettu kohde poistettu pysyvästi"
           }
         },
         "fr" : {
@@ -48700,6 +48880,12 @@
             "value" : "Se restauró el elemento personalizado."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mukautettu kohde palautettu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48812,6 +48998,12 @@
             "value" : "Se actualizó el elemento personalizado."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mukautettu kohde päivitetty"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48922,6 +49114,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elementos personalizados"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mukautetut kohteet"
           }
         },
         "fr" : {
@@ -49701,6 +49899,12 @@
             "value" : "Base de datos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietokanta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49812,6 +50016,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tipo de base de datos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietokannan tyyppi"
           }
         },
         "fr" : {
@@ -49926,6 +50136,12 @@
             "value" : "Fecha"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päivämäärä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50038,6 +50254,12 @@
             "value" : "Campo personalizado de fecha"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päivämäärä mukautettu kenttä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50148,6 +50370,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fecha de nacimiento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syntymäpäivä"
           }
         },
         "fr" : {
@@ -53530,6 +53758,12 @@
             "value" : "Doctor"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lääkäri"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54128,6 +54362,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Licencia de conducir"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajokortti"
           }
         },
         "fr" : {
@@ -60363,6 +60603,12 @@
             "value" : "Cada vez que su alias reciba un correo de alguien, se creará automáticamente un contacto."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joka kerta kun aliaksesi saa sähköpostin joltain, niin uusi kontakti luodaan automaattisesti."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -61993,6 +62239,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fecha de expiración"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voimassaolopäivämäärä"
           }
         },
         "fr" : {
@@ -65076,6 +65328,12 @@
             "value" : "Se filtró la lista por elementos personalizados. No se muestran los elementos en la papelera."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suodatettu mukautetuilla kohteilla. Poistettuja kohteita ei näytetä."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -65666,6 +65924,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Finanzas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rahoitus"
           }
         },
         "fr" : {
@@ -72887,6 +73151,12 @@
             "value" : "Nombre del titular"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haltijan nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -72997,6 +73267,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hospital"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sairaala"
           }
         },
         "fr" : {
@@ -73118,6 +73394,12 @@
             "value" : "Anfitrión"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isäntä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -73223,6 +73505,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre del anfitrión"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isäntänimi"
           }
         },
         "fr" : {
@@ -73659,6 +73947,12 @@
           }
         },
         "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBAN"
+          }
+        },
+        "fi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "IBAN"
@@ -75111,6 +75405,12 @@
             "value" : "Importar desde Chrome"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -75260,6 +75560,12 @@
             "value" : "Importar desde otras fuentes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuo muista lähteistä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -75406,6 +75712,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importar a Proton Pass"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuo"
           }
         },
         "fr" : {
@@ -75559,7 +75871,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pass-kohteiden muistiinpanot salataan kohdekohtaisilla salausavaimilla ja vain kohteidn käyttöoikeuden omaavat käyttäjät voivat tarkastella niitä."
+            "value" : "Pass-kohteiden muistiinpanot salataan kohdekohtaisilla salausavaimilla ja vain kohteiden käyttöoikeuden omaavat käyttäjät voivat tarkastella niitä."
           }
         },
         "fr" : {
@@ -75827,7 +76139,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "未启用双因素认证"
+            "value" : "未启用 2FA"
           }
         }
       }
@@ -76673,7 +76985,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "内置双因素认证验证器"
+            "value" : "集成 2FA 验证器"
           }
         }
       }
@@ -77851,6 +78163,12 @@
             "value" : "Dirección IP"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IP-osoite"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -77961,6 +78279,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autoridad emisora"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Myöntäjäviranomainen"
           }
         },
         "fr" : {
@@ -78075,6 +78399,12 @@
             "value" : "País emisor"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Myöntänyt maa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78185,6 +78515,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Estado o país emisor"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Myöntänyt osavaltio/maa"
           }
         },
         "fr" : {
@@ -84551,6 +84887,12 @@
             "value" : "Clave de licencia"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisenssikoodi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -86956,7 +87298,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "使用验证器登录"
+            "value" : "使用 2FA 登录"
           }
         }
       }
@@ -88969,6 +89311,12 @@
             "value" : "Condiciones médicas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoitotarpeet"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89080,6 +89428,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Registro médico"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terveystiedot"
           }
         },
         "fr" : {
@@ -89195,6 +89549,12 @@
             "value" : "Medicamentos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lääkkeet"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89305,6 +89665,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID de miembro"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jäsentunniste"
           }
         },
         "fr" : {
@@ -89584,6 +89950,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre de miembro"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jäsenen nimi"
           }
         },
         "fr" : {
@@ -89866,6 +90238,12 @@
             "value" : "Membresía"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jäsenyys"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -89976,6 +90354,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID de membresía"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jäsentunniste"
           }
         },
         "fr" : {
@@ -93234,6 +93618,12 @@
             "value" : "Nombre (SSID)"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nimi (SSID)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -93512,6 +93902,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Red"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verkko"
           }
         },
         "fr" : {
@@ -100694,6 +101090,12 @@
             "value" : "Abrir el elemento personalizado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa mukautettu kohde"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101434,6 +101836,12 @@
             "value" : "Abrir la clave SSH"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa SSH-avain"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -101710,6 +102118,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abrir la red wifi"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa Wi-Fi-verkko"
           }
         },
         "fr" : {
@@ -102458,6 +102872,12 @@
             "value" : "Nombre de la organización"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organisaation nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -102569,6 +102989,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SO"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käyttöjärjestelmä"
           }
         },
         "fr" : {
@@ -103679,6 +104105,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pasaporte"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passi"
           }
         },
         "fr" : {
@@ -104955,6 +105387,12 @@
             "value" : "Pegar desde el portapapeles"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liitä leikepöydältä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -105066,6 +105504,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre del paciente"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potilaan nimi"
           }
         },
         "fr" : {
@@ -106382,6 +106826,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Permisos"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käyttöoikeudet"
           }
         },
         "fr" : {
@@ -108818,6 +109268,12 @@
             "value" : "Póngase en contacto con el equipo de soporte de su organización."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ole yhteydessä organisaatiosi tukee."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -110397,6 +110853,12 @@
             "value" : "Balance de puntos"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pistesaldo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -110508,6 +110970,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Puerto"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Portti"
           }
         },
         "fr" : {
@@ -111779,6 +112247,12 @@
             "value" : "Clave privada"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yksityinen avain"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -111890,6 +112364,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Producto"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuote"
           }
         },
         "fr" : {
@@ -112170,6 +112650,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nombre del programa"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ohjelman nimi"
           }
         },
         "fr" : {
@@ -113385,7 +113871,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton Pass 将生成一个转发地址 ( 也称为反向别名 )。"
+            "value" : "Proton Pass 将生成一个转发地址（也称为反向别名）。"
           }
         }
       }
@@ -113871,6 +114357,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clave pública"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Julkinen avain"
           }
         },
         "fr" : {
@@ -114981,6 +115473,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Número de registro"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tietueen numero"
           }
         },
         "fr" : {
@@ -118009,7 +118507,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "可要求机构全员开启双重验证"
+            "value" : "要求组织启用 2FA"
           }
         }
       }
@@ -119682,6 +120180,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restaurar las compras"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palauta ostot"
           }
         },
         "fr" : {
@@ -122233,6 +122737,12 @@
             "value" : "Programa de recompensas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palkitsemisohjelma"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -122344,6 +122854,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Número de enrutamiento"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FW-numero"
           }
         },
         "fr" : {
@@ -122790,6 +123306,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Escanear el código QR para unirse"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liity lukemalla QR-koodi"
           }
         },
         "fr" : {
@@ -124560,6 +125082,12 @@
             "value" : "Secreto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salaisuus"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -126169,6 +126697,12 @@
             "value" : "Tipo de seguridad"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suojaustyyppi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -126762,6 +127296,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Frase de recuperación"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Siemenlause"
           }
         },
         "fr" : {
@@ -128695,6 +129235,12 @@
             "value" : "Servidor"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Palvelin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -130089,7 +130635,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "设置双因素认证"
+            "value" : "设置 2FA"
           }
         }
       }
@@ -130255,7 +130801,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "设置双因素认证以获取更多安全保障"
+            "value" : "设置 2FA 以获取更多安全保障"
           }
         }
       }
@@ -133610,6 +134156,12 @@
             "value" : "Mostrar el código QR de la red"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä verkon QR-koodi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -135994,6 +136546,12 @@
             "value" : "Número de seguridad social"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Henkilötunnus"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -136105,6 +136663,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Licencia de software"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ohjelmistolisenssi"
           }
         },
         "fr" : {
@@ -136836,6 +137400,12 @@
             "value" : "Clave SSH"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-avain"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -136947,6 +137517,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clave SSH"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-avain"
           }
         },
         "fr" : {
@@ -137061,6 +137637,12 @@
             "value" : "Se creó la clave SSH."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-avain luotiin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137171,6 +137753,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se movió la clave SSH a la papelera."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-avain siirrettiin roskakoriin"
           }
         },
         "fr" : {
@@ -137285,6 +137873,12 @@
             "value" : "Se eliminó la clave SSH permanentemente."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-avain poistettiin pysyvästi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137395,6 +137989,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se restauró la clave SSH."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-avain palautettiin"
           }
         },
         "fr" : {
@@ -137509,6 +138109,12 @@
             "value" : "Se actualizó la clave SSH."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-avain päivitettiin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137621,6 +138227,12 @@
             "value" : "Claves SSH"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSH-avaimet"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137731,6 +138343,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se copió el SSID."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID kopioitiin"
           }
         },
         "fr" : {
@@ -137962,7 +138580,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "集成单点登录(即将推出)"
+            "value" : "集成单点登录（即将推出）"
           }
         }
       }
@@ -138010,6 +138628,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Empezar desde cero"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aloita alusta"
           }
         },
         "fr" : {
@@ -139787,6 +140411,12 @@
             "value" : "SWIFT/BIC"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141551,6 +142181,12 @@
             "value" : "Pulse el ícono de engranaje para personalizar el alias como desee."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paina rattaan kuvaketta mukauttaaksesi aliasta haluamaksesi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -141685,6 +142321,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tecnología"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teknologia"
           }
         },
         "fr" : {
@@ -143758,6 +144400,12 @@
             "value" : "Este elemento está compartido actualmente. Si lo elimina, se eliminará el acceso para todos los demás usuarios."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä kohde on tällä hetkellä jaettuna. Sen poistaminen poistaa pääsyn kaikilta muilta käyttäjiltä."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -144325,7 +144973,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "这个登录项目已经包含双因素认证密钥"
+            "value" : "这个登录项目已经包含 2FA 密钥"
           }
         }
       }
@@ -144657,7 +145305,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "该服务提供双因素认证。启用它可提高账户安全性。"
+            "value" : "该服务提供 2FA。启用它可提高账户安全性。"
           }
         }
       }
@@ -145039,6 +145687,12 @@
             "value" : "Nivel"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taso"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -145150,6 +145804,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nivel/Estado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tila"
           }
         },
         "fr" : {
@@ -151199,6 +151859,12 @@
             "value" : "Sin especificar"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Määrittelemätön"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -151973,6 +152639,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se verificó el cambio del buzón."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vahvistamaton postilaatikon muutos"
           }
         },
         "fr" : {
@@ -156760,7 +157432,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保险库共享 ( 最多10人 )"
+            "value" : "保险库共享（最多 10 人）"
           }
         }
       }
@@ -160096,6 +160768,12 @@
             "value" : "Nombre de la cartera"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lompakon nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162515,6 +163193,12 @@
             "value" : "Red Wi-Fi"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-verkko"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162626,6 +163310,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Red Wi-Fi"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi-verkko"
           }
         },
         "fr" : {
@@ -162740,6 +163430,12 @@
             "value" : "Se creó la red Wi-Fi."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-verkko luotu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -162850,6 +163546,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se movió la red Wi-Fi a la papelera."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-verkko siirretty roskakoriin"
           }
         },
         "fr" : {
@@ -162964,6 +163666,12 @@
             "value" : "Se eliminó la red Wi-Fi permanentemente."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-verkko poistettu pysyvästi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163076,6 +163784,12 @@
             "value" : "Se restauró la red Wi-Fi."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-verkko palautettu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163186,6 +163900,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se actualizó la red Wi-Fi."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-verkko päivitetty"
           }
         },
         "fr" : {
@@ -163306,6 +164026,12 @@
             "value" : "Redes Wi-Fi"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-verkot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163422,6 +164148,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se copió la contraseña del Wi-Fi."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wi-Fi-salasana kopioitu"
           }
         },
         "fr" : {
@@ -167491,7 +168223,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "您目前没有使用双因素认证密钥的登录项目 ( TOTP )"
+            "value" : "您目前没有带有 2FA 密钥的登录项目 (TOTP)"
           }
         }
       }
@@ -167710,6 +168442,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No tiene ninguna bóveda."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sinulla ei ole yhtään holvia"
           }
         },
         "fr" : {
