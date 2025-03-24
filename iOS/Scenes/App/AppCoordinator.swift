@@ -66,7 +66,6 @@ final class AppCoordinator {
 
     private var cancellables = Set<AnyCancellable>()
 
-    private var preferences = resolve(\SharedToolingContainer.preferences)
     private let appData = resolve(\SharedDataContainer.appData)
     private let userManager = resolve(\SharedServiceContainer.userManager)
     private let logger = resolve(\SharedToolingContainer.logger)
@@ -90,6 +89,7 @@ final class AppCoordinator {
     @LazyInjected(\SharedUseCasesContainer.clearCacheForLoggedOutUsers)
     private var clearCacheForLoggedOutUsers
     @LazyInjected(\SharedServiceContainer.telemetryService) private var telemetryService
+    @LazyInjected(\UseCasesContainer.firstRunDetector) private var firstRunDetector
 
     private var authDeviceManagerUI: AuthDeviceManagerUI?
 
@@ -118,8 +118,8 @@ final class AppCoordinator {
     // swiftlint:disable:next todo
     // TODO: Remove preferences and this function once session migration is done
     private func clearUserDataInKeychainIfFirstRun() {
-        guard preferences.isFirstRun else { return }
-        preferences.isFirstRun = false
+        guard firstRunDetector.isFirstRun() else { return }
+        firstRunDetector.completeFirstRun()
         appData.resetData()
         try? keychain.removeOrError(forKey: AuthManager.storageKey)
     }
