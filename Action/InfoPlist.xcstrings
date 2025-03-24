@@ -52,6 +52,12 @@
             "value" : "Importar a Proton Pass"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -201,6 +207,12 @@
             "value" : "Importar a Proton Pass"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -348,6 +360,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton AG"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton"
           }
         },
         "fr" : {
