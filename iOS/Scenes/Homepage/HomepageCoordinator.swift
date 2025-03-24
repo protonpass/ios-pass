@@ -385,17 +385,12 @@ private extension HomepageCoordinator {
             guard let self else {
                 return
             }
-            do {
-                let userId = try await userManager.getActiveUserId()
-                try await appContentManager.refresh(userId: userId)
-                if exitEditMode {
-                    itemsTabViewModel?.isEditMode = false
-                }
-                itemDetailCoordinator?.refresh()
-                createEditItemCoordinator?.refresh()
-            } catch {
-                bannerManager.displayTopErrorMessage(error)
+            if exitEditMode {
+                itemsTabViewModel?.isEditMode = false
             }
+            itemsTabViewModel?.refresh()
+            itemDetailCoordinator?.refresh()
+            createEditItemCoordinator?.refresh()
         }
     }
 
