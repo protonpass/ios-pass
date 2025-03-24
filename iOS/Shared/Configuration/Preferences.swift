@@ -73,9 +73,6 @@ final class Preferences: ObservableObject, DeinitPrintable {
     @AppStorage(Key.displayFavIcons.rawValue, store: kSharedUserDefaults)
     var displayFavIcons = true
 
-    @AppStorage(Key.isFirstRun.rawValue, store: kSharedUserDefaults)
-    var isFirstRun = true
-
     @AppStorage(Key.createdItemsCount.rawValue, store: kSharedUserDefaults)
     var createdItemsCount = 0
 
@@ -136,7 +133,6 @@ private extension Preferences {
         case telemetryThreshold
         case displayFavIcons
         case dismissedBannerIds
-        case isFirstRun
         case createdItemsCount
 
         // Temporary keys
