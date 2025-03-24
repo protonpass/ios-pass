@@ -3646,7 +3646,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "所有帐户(%lld)"
+                  "value" : "所有帐户 (%lld)"
                 }
               }
             }
@@ -8164,6 +8164,12 @@
             "value" : "Vaya a**Gestor de contraseñas** y pulse en **Ajustes**"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mene **Salasanan hallinta** ja paina **Asetukset**"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8479,6 +8485,12 @@
             "value" : "Importar desde Chrome"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8628,6 +8640,12 @@
             "value" : "Importar inicios de sesión (%1$lld/%2$lld)"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuo kirjautumiset (%1$lld/%2$lld)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8775,6 +8793,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se terminó la importación."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tuotu onnistuneesti"
           }
         },
         "fr" : {
@@ -10385,6 +10409,12 @@
             "value" : "Abra el menú de **Chrome**"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa **Chrome** valikko"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10531,6 +10561,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abrir Chrome"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avaa Chrome"
           }
         },
         "fr" : {

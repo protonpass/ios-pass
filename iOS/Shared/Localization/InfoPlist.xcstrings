@@ -204,7 +204,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "扫描双因素认证代码、信用卡和手写笔记"
+            "value" : "扫描 2FA 代码、信用卡和手写笔记"
           }
         }
       }
