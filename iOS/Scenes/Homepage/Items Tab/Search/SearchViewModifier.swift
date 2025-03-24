@@ -31,18 +31,25 @@ enum SearchEffectID: String {
 }
 
 extension View {
-    func searchScreen(searchMode: Binding<SearchMode?>, animationNamespace: Namespace.ID) -> some View {
-        modifier(SearchViewModifier(searchMode: searchMode, animationNamespace: animationNamespace))
+    func searchScreen(searchMode: Binding<SearchMode?>,
+                      refreshResults: Bool,
+                      animationNamespace: Namespace.ID) -> some View {
+        modifier(SearchViewModifier(searchMode: searchMode,
+                                    refreshResults: refreshResults,
+                                    animationNamespace: animationNamespace))
     }
 }
 
 struct SearchViewModifier: ViewModifier {
     @Binding private var searchMode: SearchMode?
+    private let refreshResults: Bool
     private let animationNamespace: Namespace.ID
 
     init(searchMode: Binding<SearchMode?>,
+         refreshResults: Bool,
          animationNamespace: Namespace.ID) {
         _searchMode = searchMode
+        self.refreshResults = refreshResults
         self.animationNamespace = animationNamespace
     }
 
@@ -59,7 +66,8 @@ struct SearchViewModifier: ViewModifier {
         if let searchMode {
             SearchView(searchMode: $searchMode,
                        animationNamespace: animationNamespace,
-                       viewModel: SearchViewModel(searchMode: searchMode))
+                       viewModel: SearchViewModel(searchMode: searchMode),
+                       refreshResults: refreshResults)
         }
     }
 }
