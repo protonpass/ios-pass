@@ -42,6 +42,10 @@ struct CreateEditSshKeyView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
+                UpsellOrAttachmentsBanner(showUpgrade: viewModel.shouldUpgrade,
+                                          showAttachments: viewModel.showFileAttachmentsBanner,
+                                          onDismissAttachments: viewModel.dismissFileAttachmentsBanner)
+
                 title
                 keys
                 fields
