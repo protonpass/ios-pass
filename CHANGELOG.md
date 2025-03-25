@@ -1,3 +1,6 @@
+# Version 1.16.1
+Fixed an issue where search results failed to refresh after moving items to other vaults
+
 # Version 1.16.0
 Chrome importer:
 You can now import passwords directly from Chrome. Navigate to the Profile tab > Import to Proton Pass.
