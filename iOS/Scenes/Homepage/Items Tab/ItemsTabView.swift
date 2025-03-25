@@ -194,7 +194,9 @@ struct ItemsTabView: View {
                                                     onDisableAlias: { viewModel.disableAlias() },
                                                     onDelete: { viewModel.permanentlyDelete() }))
         }
-        .searchScreen(searchMode: $searchMode, animationNamespace: animationNamespace)
+        .searchScreen(searchMode: $searchMode,
+                      refreshResults: viewModel.refreshSearchResult,
+                      animationNamespace: animationNamespace)
     }
 }
 
