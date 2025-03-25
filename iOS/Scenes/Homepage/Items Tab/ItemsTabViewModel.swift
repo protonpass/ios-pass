@@ -54,6 +54,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
     @Published var itemToBePermanentlyDeleted: (any ItemTypeIdentifiable)?
     @Published private(set) var sectionedItems: FetchableObject<[SectionedItemUiModel]> = .fetching
     @Published private var organization: Organization?
+    @Published private(set) var refreshSearchResult = false
 
     let currentSelectedItems = resolve(\DataStreamContainer.currentSelectedItems)
     @LazyInjected(\SharedServiceContainer.appContentManager) var appContentManager
@@ -132,6 +133,7 @@ final class ItemsTabViewModel: ObservableObject, PullToRefreshable, DeinitPrinta
             do {
                 let userId = try await userManager.getActiveUserId()
                 try await appContentManager.refresh(userId: userId)
+                refreshSearchResult.toggle()
             } catch {
                 handle(error: error)
             }
