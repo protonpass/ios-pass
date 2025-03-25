@@ -31,6 +31,7 @@ struct SearchView: View {
     @FocusState private var isFocusedOnSearchBar
     @StateObject var viewModel: SearchViewModel
     @State private var safeAreaInsets = EdgeInsets.zero
+    let refreshResults: Bool
 
     var body: some View {
         GeometryReader { proxy in
@@ -45,6 +46,9 @@ struct SearchView: View {
                 }
             }
             .animation(.default, value: viewModel.state)
+            .onChange(of: refreshResults) { _ in
+                viewModel.refreshResults()
+            }
             .onFirstAppear {
                 safeAreaInsets = proxy.safeAreaInsets
                 isFocusedOnSearchBar = true
