@@ -40,6 +40,10 @@ struct CreateEditCustomItemView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
+                UpsellOrAttachmentsBanner(showUpgrade: viewModel.shouldUpgrade,
+                                          showAttachments: viewModel.showFileAttachmentsBanner,
+                                          onDismissAttachments: viewModel.dismissFileAttachmentsBanner)
+
                 title
                 fields
 
@@ -113,5 +117,26 @@ private extension CreateEditCustomItemView {
 
     func addCustomSection() {
         viewModel.showAddCustomSectionAlert.toggle()
+    }
+}
+
+struct UpsellOrAttachmentsBanner: View {
+    let showUpgrade: Bool
+    let showAttachments: Bool
+    let onDismissAttachments: () -> Void
+
+    var body: some View {
+        if showUpgrade {
+            Text("Upgrade to create custom items")
+                .padding()
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(PassColor.interactionNormMinor1.toColor)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+        } else {
+            FileAttachmentsBanner(isShown: showAttachments,
+                                  onTap: onDismissAttachments,
+                                  onClose: onDismissAttachments)
+        }
     }
 }
