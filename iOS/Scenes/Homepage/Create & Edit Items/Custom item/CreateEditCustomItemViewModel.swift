@@ -56,6 +56,13 @@ final class CreateEditCustomItemViewModel: BaseCreateEditItemViewModel, DeinitPr
         super.isSaveable && !title.isEmpty
     }
 
+    override var shouldUpgrade: Bool {
+        if case .create = mode, isFreeUser {
+            return true
+        }
+        return false
+    }
+
     override func bindValues() {
         switch mode {
         case let .create(_, type):

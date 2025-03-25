@@ -153909,6 +153909,16 @@
         }
       }
     },
+    "Upgrade to create custom items" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to create custom items"
+          }
+        }
+      }
+    },
     "Use %@" : {
       "localizations" : {
         "be" : {
