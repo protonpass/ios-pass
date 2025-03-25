@@ -444,6 +444,10 @@ extension UseCasesContainer {
                                              bundle: .main,
                                              userDefaults: .standard) }
     }
+
+    var firstRunDetector: Factory<any FirstRunDetectorProtocol> {
+        self { FirstRunDetector(userDefaults: kSharedUserDefaults, bundle: .main) }
+    }
 }
 
 // MARK: - Security
