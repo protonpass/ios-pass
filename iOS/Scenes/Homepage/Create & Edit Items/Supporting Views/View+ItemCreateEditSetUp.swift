@@ -47,6 +47,7 @@ struct ItemCreateEditSetUpModifier: ViewModifier {
             .disabled(viewModel.isSaving)
             .animation(.default, value: viewModel.customFields)
             .animation(.default, value: viewModel.customSections)
+            .animation(.default, value: viewModel.showFileAttachmentsBanner)
             .obsoleteItemAlert(isPresented: $viewModel.isObsolete,
                                onAction: dismiss.callAsFunction)
             .discardChangesAlert(isPresented: $viewModel.isShowingDiscardAlert,
