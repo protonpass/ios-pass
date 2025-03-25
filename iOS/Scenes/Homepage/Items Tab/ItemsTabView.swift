@@ -205,7 +205,7 @@ private extension ItemsTabView {
     var emptySections: some View {
         switch viewModel.appContentManager.vaultSelection {
         case .all:
-            EmptyVaultView(canCreateItems: true,
+            EmptyVaultView(canCreateItems: !viewModel.appContentManager.getAllEditableVaultContents().isEmpty,
                            customItemEnabled: viewModel.customItemEnabled,
                            onCreate: { viewModel.createNewItem(type: $0) })
                 .padding(.bottom, safeAreaInsets.bottom)
