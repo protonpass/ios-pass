@@ -40,6 +40,10 @@ struct CreateEditWifiView: View {
     var body: some View {
         ScrollView {
             LazyVStack {
+                UpsellOrAttachmentsBanner(showUpgrade: viewModel.shouldUpgrade,
+                                          showAttachments: viewModel.showFileAttachmentsBanner,
+                                          onDismissAttachments: viewModel.dismissFileAttachmentsBanner)
+
                 title
                 ssidAndPasswordSection
                 fields

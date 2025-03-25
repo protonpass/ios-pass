@@ -32,7 +32,7 @@ public struct SensitiveTextField<Field: Hashable>: View {
     let onSubmit: (() -> Void)?
 
     private var isFocused: Bool { focusedField.wrappedValue == field }
-    private var shouldShowTextEditor: Bool { isFocused || text.isEmpty }
+    private var showClearText: Bool { isFocused || text.isEmpty }
 
     public init(text: Binding<String>,
                 placeholder: String,
@@ -51,29 +51,19 @@ public struct SensitiveTextField<Field: Hashable>: View {
     }
 
     public var body: some View {
-        ZStack {
-            TextEditorWithPlaceholder(text: $text,
-                                      focusedField: focusedField,
-                                      field: field,
-                                      placeholder: placeholder,
-                                      font: font,
-                                      fontWeight: fontWeight,
-                                      onSubmit: onSubmit)
-                .frame(maxHeight: shouldShowTextEditor ? .infinity : 0)
-                .opacity(shouldShowTextEditor ? 1 : 0)
+        TextEditorWithPlaceholder(text: textBinding,
+                                  focusedField: focusedField,
+                                  field: field,
+                                  placeholder: placeholder,
+                                  font: font,
+                                  fontWeight: fontWeight,
+                                  onSubmit: onSubmit)
+    }
+}
 
-            if !text.isEmpty {
-                Button(action: {
-                    focusedField.wrappedValue = field
-                }, label: {
-                    Text(String(repeating: "•", count: min(20, text.count)))
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .contentShape(.rect)
-                })
-                .opacity(isFocused ? 0 : 1)
-                .buttonStyle(.plain)
-            }
-        }
-        .animation(.default, value: shouldShowTextEditor)
+private extension SensitiveTextField {
+    var textBinding: Binding<String> {
+        showClearText ?
+            $text : .constant(String(repeating: "•", count: min(20, text.count)))
     }
 }
