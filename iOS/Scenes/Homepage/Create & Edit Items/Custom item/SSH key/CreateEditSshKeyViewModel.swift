@@ -34,6 +34,13 @@ final class CreateEditSshKeyViewModel: BaseCreateEditItemViewModel, DeinitPrinta
         super.isSaveable && !title.isEmpty
     }
 
+    override var shouldUpgrade: Bool {
+        if case .create = mode, isFreeUser {
+            return true
+        }
+        return false
+    }
+
     override func bindValues() {
         switch mode {
         case let .clone(itemContent), let .edit(itemContent):

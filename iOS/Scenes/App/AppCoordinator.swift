@@ -122,6 +122,10 @@ final class AppCoordinator {
         firstRunDetector.completeFirstRun()
         appData.resetData()
         try? keychain.removeOrError(forKey: AuthManager.storageKey)
+        Task { [weak self] in
+            guard let self else { return }
+            try? await localUserDataDatasource.removeAll()
+        }
     }
 
     private func bindAppState() {
