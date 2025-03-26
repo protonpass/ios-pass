@@ -4094,7 +4094,7 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld caracter"
+                  "value" : "%lld carácter"
                 }
               },
               "other" : {
@@ -7461,6 +7461,42 @@
             }
           }
         },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementów"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementów"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -10515,6 +10551,36 @@
             }
           }
         },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tego hasła używają jeszcze %lld inne dane logowania"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tego hasła używa jeszcze %lld innych danych logowania"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tego hasła używa jeszcze %lld inne dane logowania"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Tego hasła używa jeszcze %lld innych danych logowania"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -10552,6 +10618,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld de alte autentificări folosesc această parolă"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld iné prihlásenia už používajú toto heslo"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld iných prihlasovaní už používa toto heslo"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld iné prihlásenie používa toto heslo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld iných prihlasovaní už používa toto heslo"
                 }
               }
             }
@@ -16389,6 +16485,12 @@
             "value" : "Account nummer"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numer konta"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16518,6 +16620,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Accounttype"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Typ konta"
           }
         },
         "pt-BR" : {
@@ -18933,6 +19041,12 @@
             "value" : "Naam toevoegen (SSID)"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj nazwę (SSID)"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19395,6 +19509,12 @@
             "value" : "Voeg privé-sleutel toe"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj klucz prywatny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19523,6 +19643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voeg publieke sleutel toe"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj klucz publiczny"
           }
         },
         "pt-BR" : {
@@ -19816,6 +19942,12 @@
           }
         },
         "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres"
+          }
+        },
+        "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adres"
@@ -31093,6 +31225,12 @@
             "value" : "Naam van de bank"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa banku"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -36958,6 +37096,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Klasse"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klasa"
           }
         },
         "pt-BR" : {
@@ -43022,6 +43166,12 @@
             "value" : "SSID kopiëren"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj SSID"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43311,6 +43461,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Land"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kraj"
           }
         },
         "pt-BR" : {
@@ -47118,7 +47274,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Billetera de criptomonedas"
+            "value" : "Cartera de criptomonedas"
           }
         },
         "es-419" : {
@@ -48635,7 +48791,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ítem personalizado enviado a la papelera"
+            "value" : "Se ha movido el elemento personalizado a la papelera."
           }
         },
         "es-419" : {
@@ -49929,6 +50085,12 @@
             "value" : "Database"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baza danych"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50166,6 +50328,12 @@
             "value" : "Datum"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50400,6 +50568,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geboortedatum"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Data urodzenia"
           }
         },
         "pt-BR" : {
@@ -52357,7 +52531,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usunąć element"
+            "value" : "Usuń element"
           }
         },
         "pt-BR" : {
@@ -69139,7 +69313,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "获取在新应用程序上使用的电子邮件别名"
+            "value" : "获取在新应用程序上使用的邮箱别名"
           }
         }
       }
@@ -73385,7 +73559,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Servidor"
+            "value" : "Anfitrión"
           }
         },
         "es-419" : {
@@ -73498,7 +73672,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nombre del servidor"
+            "value" : "Nombre del anfitrión"
           }
         },
         "es-419" : {
@@ -78191,6 +78365,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "IP-adres"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres IP"
           }
         },
         "pt-BR" : {
@@ -89658,7 +89838,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ID del suscriptor"
+            "value" : "ID del miembro"
           }
         },
         "es-419" : {
@@ -93028,7 +93208,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Przenieś ten element"
+            "value" : "Przenieś element"
           }
         },
         "pt-BR" : {
@@ -109325,7 +109505,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prosimy o kontakt z zespołem wsparcia organizacji."
+            "value" : "Skontaktuj się z zespołem wsparcia organizacji."
           }
         },
         "pt-BR" : {
@@ -132071,7 +132251,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udostępnij"
+            "value" : "Udostępnij użytkownikowi"
           }
         },
         "pt-BR" : {
@@ -150812,7 +150992,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "无限制的电子邮件别名"
+            "value" : "不限量的邮箱别名"
           }
         }
       }
@@ -153352,7 +153532,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ulepsz konto, aby udostępnić elementy użytkownikom"
+            "value" : "Ulepsz konto, aby udostępniać elementy użytkownikom"
           }
         },
         "pt-BR" : {
@@ -153911,10 +154091,82 @@
     },
     "Upgrade to create custom items" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Палепшыць да стварэння карыстацкіх элементаў"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgraden, um benutzerdefinierte Einträge zu erstellen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αναβάθμιση για δημιουργία προσαρμοσμένων στοιχείων"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgrade to create custom items"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualiza para crear elementos personalizados"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejore para crear elementos personalizados"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer d'abonnement pour créer des éléments personnalisés"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade om aangepaste items te maken"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faça upgrade para ´criar itens personalizados"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modificați-vă abonamentul pentru a crea articole personalizate"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uppgradera för att skapa anpassade objekt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özel ögeler oluşturabilmek için tarifenizi yükseltin"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升级以创建自定义项目"
           }
         }
       }
@@ -154246,7 +154498,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "使用电子邮件别名保护您的收件箱和身份"
+            "value" : "使用邮箱别名保护您的收件箱和身份"
           }
         }
       }
@@ -160808,6 +161060,12 @@
             "value" : "Wallet Naam"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa portfela"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163233,6 +163491,12 @@
             "value" : "Wifi-netwerk"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieć Wi-Fi"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -163350,6 +163614,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wifi-Netwerk"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieć Wi-Fi"
           }
         },
         "pt-BR" : {
@@ -164070,6 +164340,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wifi-netwerken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieci Wi-Fi"
           }
         },
         "pt-BR" : {
