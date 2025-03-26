@@ -54,10 +54,10 @@ private extension FileAttachmentsBanner {
     func content(_ size: CGSize) -> some View {
         HStack {
             VStack(alignment: .leading) {
-                Text("Attachments")
+                Text("Attachments", bundle: .module)
                     .fontWeight(.bold)
                     .minimumScaleFactor(0.75)
-                Text("You can attach files to items for a better organization")
+                Text("You can attach files to items for a better organization", bundle: .module)
                     .font(.callout)
                     .minimumScaleFactor(0.75)
             }
