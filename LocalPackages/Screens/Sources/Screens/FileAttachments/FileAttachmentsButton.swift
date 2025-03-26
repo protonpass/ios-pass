@@ -65,7 +65,7 @@ public struct FileAttachmentsButton: View {
         Menu(content: {
             ForEach(FileAttachmentMethod.allCases, id: \.self) { method in
                 Label(title: {
-                    Text(method.title)
+                    Text(method.title, bundle: .module)
                 }, icon: {
                     Image(uiImage: method.icon)
                         .resizable()
@@ -138,7 +138,7 @@ public struct FileAttachmentsButton: View {
                          action: action)
 
         case .capsule:
-            CapsuleTextButton(title: #localized("Attach a file"),
+            CapsuleTextButton(title: #localized("Attach a file", bundle: .module),
                               titleColor: handler.fileAttachmentsSectionPrimaryColor,
                               backgroundColor: handler.fileAttachmentsSectionSecondaryColor,
                               height: 48,

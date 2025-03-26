@@ -26,4 +26,5 @@ public protocol ItemTypeIdentifiable: ItemIdentifiable {
     var totpUri: String? { get }
     var aliasEmail: String? { get }
     var aliasEnabled: Bool { get }
+    var shared: Bool { get }
 }

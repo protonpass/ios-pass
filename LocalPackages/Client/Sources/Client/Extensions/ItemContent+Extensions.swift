@@ -70,7 +70,7 @@ public extension ItemContent {
                      state: item.itemState,
                      pinned: item.pinned,
                      isAliasEnabled: item.isAliasEnabled,
-                     isShared: shared)
+                     shared: shared)
     }
 
     func toAuthenticatorItem(totpData: TOTPData) -> AuthenticatorItem? {

@@ -94,7 +94,7 @@ public struct FileAttachmentsEditSection: View {
                             .font(.callout)
                             .foregroundStyle(PassColor.textWeak.toColor)
                     } else if !isUploading, fetchError == nil {
-                        Text("Upload files from your device")
+                        Text("Upload files from your device", bundle: .module)
                             .foregroundStyle(PassColor.textWeak.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .if(isFetching) { view in
