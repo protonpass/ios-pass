@@ -470,7 +470,9 @@ private extension PermenentlyDeleteItemModifier {
     }
 
     var message: LocalizedStringKey {
-        if item?.aliasEmail == nil {
+        if item?.shared == true {
+            "This item is currently shared. Deleting it will remove access for all other users."
+        } else if item?.aliasEmail == nil {
             "You are going to delete the item irreversibly, are you sure?"
         } else {
             item?.aliasEnabled == true ?
