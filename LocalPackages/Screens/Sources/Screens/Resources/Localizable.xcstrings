@@ -1540,6 +1540,42 @@
             }
           }
         },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementy"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementów"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld elementów"
+                }
+              },
+              "zero" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld element"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -8221,7 +8257,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Przejdź do **Menedżera haseł** i wybierz **Ustawienia**."
+            "value" : "Przejdź do **menedżera haseł** i kliknij **ustawienia**."
           }
         },
         "pt-BR" : {
@@ -8697,7 +8733,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Importuj dane logowania (%1$lld%2$lld)"
+            "value" : "Importuj dane logowania (%1$lld / %2$lld)"
           }
         },
         "pt-BR" : {
@@ -10466,7 +10502,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otwórz menu przeglądarki **Chrome**"
+            "value" : "Otwórz menu **Chrome**"
           }
         },
         "pt-BR" : {
@@ -10620,7 +10656,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otwórz przeglądarkę Chrome"
+            "value" : "Otwórz Chrome"
           }
         },
         "pt-BR" : {
@@ -17459,7 +17495,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Używaj aliasów Hide-My-Email przeciwko zagrożeniom phishingowym."
+            "value" : "Używaj aliasów hide-my-email przeciwko próbom wyłudzenia informacji."
           }
         },
         "pt-BR" : {
