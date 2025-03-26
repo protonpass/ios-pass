@@ -399,7 +399,7 @@ extension ItemsTabViewModel {
     }
 
     func hasSharedItems() -> Bool {
-        currentSelectedItems.value.contains { $0.isShared }
+        currentSelectedItems.value.contains { $0.shared }
     }
 
     func presentVaultListToMoveSelectedItems() {
