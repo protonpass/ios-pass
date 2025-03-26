@@ -160,13 +160,15 @@ private struct StorageUpsell: View {
 
                 Spacer()
 
-                Text("Your storage is full.")
+                Text("Your storage is full.", bundle: .module)
                     .font(.title)
                     .fontWeight(.bold)
+                    .multilineTextAlignment(.center)
                     .foregroundStyle(PassColor.textNorm.toColor)
 
-                Text("Upgrade to increase your storage capacity.")
+                Text("Upgrade to increase your storage capacity.", bundle: .module)
                     .foregroundStyle(PassColor.textWeak.toColor)
+                    .multilineTextAlignment(.center)
                 Spacer()
 
                 CapsuleTextButton(title: #localized("Upgrade"),
