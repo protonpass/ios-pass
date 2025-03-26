@@ -44,7 +44,7 @@ struct GenericCredentialItemRow: View {
                                secondaryTitle: secondaryTitle,
                                secondaryTitleColor: PassColor.textWeak,
                                hasTotp: uiModel.hasTotpUri,
-                               isShared: uiModel.isShared)
+                               isShared: uiModel.shared)
                     .frame(maxWidth: .infinity, alignment: .leading)
             case let .searchResult(result):
                 HStack {

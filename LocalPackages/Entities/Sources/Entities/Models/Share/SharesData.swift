@@ -43,7 +43,7 @@ public struct SharesData: Hashable, Sendable {
             }
         }
 
-        let sharedTrashedItems = trashedItems.filter(\.isShared)
+        let sharedTrashedItems = trashedItems.filter(\.shared)
         let trashedSharedByMeItems = sharedTrashedItems.filter { sharedByMeShareIds.contains($0.shareId) }
         let trashedSharedWithMeItems = sharedTrashedItems.filter { sharedWithMeShareIds.contains($0.shareId) }
 
@@ -51,7 +51,7 @@ public struct SharesData: Hashable, Sendable {
             shares
                 .filter { sharedByMeShareIds.contains($0.share.shareId) }
                 .flatMap(\.items)
-                .filter(\.isShared) +
+                .filter(\.shared) +
                 trashedSharedByMeItems
 
         itemsSharedWithMe = shares

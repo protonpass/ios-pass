@@ -67,7 +67,7 @@ struct ItemDetailSetUpModifier: ViewModifier {
             }
             .alert("Delete this item", isPresented: $viewModel.deleteShareItemAlert) {
                 Button("Cancel", role: .cancel) {}
-                Button("Delete") {
+                Button("Delete", role: .destructive) {
                     viewModel.itemToBeDeleted = viewModel.itemContent
                 }
             } message: {
