@@ -64,7 +64,7 @@ public struct ImportFromChromeInstructions: View {
                 row(for: step)
             }
 
-            CapsuleTextButton(title: #localized("Open Chrome"),
+            CapsuleTextButton(title: #localized("Open Chrome", bundle: .module),
                               titleColor: PassColor.textInvert,
                               backgroundColor: PassColor.interactionNormMajor1,
                               action: openChrome)
@@ -84,7 +84,7 @@ public struct ImportFromChromeInstructions: View {
             }
 
             ToolbarItem(placement: .principal) {
-                Text("Import from Chrome")
+                Text("Import from Chrome", bundle: .module)
                     .navigationTitleText()
             }
         }
@@ -100,7 +100,7 @@ public struct ImportFromChromeInstructions: View {
                 .padding(10)
                 .background(Circle().stroke(PassColor.interactionNormMinor1.toColor,
                                             lineWidth: 1))
-            Text(step.description)
+            Text(step.description, bundle: .module)
                 .foregroundStyle(PassColor.textNorm.toColor)
         }
         .frame(maxWidth: .infinity, alignment: .leading)

@@ -39,9 +39,9 @@ public struct MailboxSection: View {
         public var title: String {
             switch self {
             case .create:
-                #localized("Forward to")
+                #localized("Forward to", bundle: .module)
             case .edit:
-                #localized("Forwarding to")
+                #localized("Forwarding to", bundle: .module)
             }
         }
     }

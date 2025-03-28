@@ -42,7 +42,7 @@ struct AccountList: View {
                     row(for: detail, isActive: isActive)
 
                     if isActive, details.count > 1 {
-                        Text("Switch to")
+                        Text("Switch to", bundle: .module)
                             .font(.callout.bold())
                             .foregroundStyle(PassColor.textNorm.toColor)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -90,13 +90,13 @@ private extension AccountList {
 
             Menu(content: {
                 Button(action: { onManage(detail) },
-                       label: { Label(title: { Text("Manage account") },
+                       label: { Label(title: { Text("Manage account", bundle: .module) },
                                       icon: { Image(uiImage: IconProvider.cogWheel) }) })
 
                 Divider()
 
                 Button(action: { onSignOut(detail) },
-                       label: { Label(title: { Text("Sign out") },
+                       label: { Label(title: { Text("Sign out", bundle: .module) },
                                       icon: { Image(uiImage: IconProvider.arrowOutFromRectangle) }) })
             }, label: {
                 icon(with: IconProvider.threeDotsVertical,
@@ -109,7 +109,7 @@ private extension AccountList {
         HStack {
             icon(with: IconProvider.userPlus,
                  foregroundColor: PassColor.textNorm)
-            Text("Add account")
+            Text("Add account", bundle: .module)
                 .foregroundStyle(PassColor.textNorm.toColor)
             Spacer()
         }

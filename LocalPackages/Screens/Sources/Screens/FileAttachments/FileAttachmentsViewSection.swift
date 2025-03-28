@@ -63,7 +63,7 @@ public struct FileAttachmentsViewSection: View {
                 ItemDetailSectionIcon(icon: IconProvider.paperClip)
 
                 VStack(alignment: .leading) {
-                    Text("Attachments")
+                    Text("Attachments", bundle: .module)
                         .foregroundStyle(PassColor.textNorm.toColor)
 
                     if isFetching {
@@ -79,7 +79,7 @@ public struct FileAttachmentsViewSection: View {
                     }
 
                     if !files.isEmpty {
-                        Text("\(files.count) files")
+                        Text("\(files.count) files", bundle: .module)
                             .font(.callout)
                             .foregroundStyle(PassColor.textWeak.toColor)
                     }

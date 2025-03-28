@@ -39,7 +39,7 @@ public enum PassTipAction: String {
     public var title: String {
         switch self {
         case .openSettings:
-            #localized("Open Settings")
+            #localized("Open Settings", bundle: .module)
         }
     }
 

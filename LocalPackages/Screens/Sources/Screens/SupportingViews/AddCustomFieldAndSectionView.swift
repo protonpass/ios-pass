@@ -43,7 +43,7 @@ public struct AddCustomFieldAndSectionView: View {
         HStack {
             if supportAddField, let onAddField {
                 CapsuleLabelButton(icon: IconProvider.plus,
-                                   title: #localized("Add field"),
+                                   title: #localized("Add field", bundle: .module),
                                    titleColor: PassColor.interactionNormMajor2,
                                    backgroundColor: PassColor.interactionNormMinor1,
                                    fontWeight: .medium,
@@ -57,7 +57,7 @@ public struct AddCustomFieldAndSectionView: View {
 
             if supportAddSection, let onAddSection {
                 CapsuleLabelButton(icon: PassIcon.hamburgerPlus,
-                                   title: #localized("Add section"),
+                                   title: #localized("Add section", bundle: .module),
                                    titleColor: PassColor.interactionNormMajor2,
                                    backgroundColor: .clear,
                                    border: .init(width: 1,
