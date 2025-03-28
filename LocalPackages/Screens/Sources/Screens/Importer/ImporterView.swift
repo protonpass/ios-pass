@@ -62,7 +62,7 @@ public struct ImporterView: View {
         .showSpinner(viewModel.loading)
         .navigationStackEmbeded()
         .task { await viewModel.fetchData() }
-        .alert("Imported successfully",
+        .alert(Text("Imported successfully", bundle: .module),
                isPresented: $viewModel.importSuccessMessage.mappedToBool(),
                actions: { Button("OK", action: onClose) },
                message: {
@@ -70,9 +70,10 @@ public struct ImporterView: View {
                        Text(message)
                    }
                })
-        .alert("Error occurred",
+        .alert(Text("Error occurred", bundle: .module),
                isPresented: $viewModel.error.mappedToBool(),
-               actions: { Button("OK", action: onClose) },
+               actions: { Button(action: onClose,
+                                 label: { Text("OK", bundle: .module) }) },
                message: {
                    if let error = viewModel.error {
                        Text(error.localizedDebugDescription)
@@ -95,6 +96,7 @@ private extension ImporterView {
         if !viewModel.logins.isEmpty {
             ToolbarItem(placement: .principal) {
                 Text(#localized("Import logins (%1$lld/%2$lld)",
+                                bundle: .module,
                                 viewModel.selectedCount,
                                 viewModel.logins.count))
                     .navigationTitleText()
@@ -102,7 +104,7 @@ private extension ImporterView {
             }
 
             ToolbarItem(placement: .topBarTrailing) {
-                DisablableCapsuleTextButton(title: #localized("Import"),
+                DisablableCapsuleTextButton(title: #localized("Import", bundle: .module),
                                             titleColor: PassColor.textInvert,
                                             disableTitleColor: PassColor.textHint,
                                             backgroundColor: PassColor.loginInteractionNormMajor1,

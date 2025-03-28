@@ -151,16 +151,16 @@ public struct FileAttachmentsEditSection: View {
         .padding(DesignConstant.sectionPadding)
         .tint(handler.fileAttachmentsSectionPrimaryColor.toColor)
         .roundedEditableSection()
-        .alert("Delete all attachments?",
+        .alert(Text("Delete all attachments?", bundle: .module),
                isPresented: $showDeleteAllAlert,
                actions: {
-                   Button("Delete all",
-                          role: .destructive,
-                          action: { handler.deleteAllAttachments() })
+                   Button(role: .destructive,
+                          action: { handler.deleteAllAttachments() },
+                          label: { Text("Delete all", bundle: .module) })
                    Button("Cancel", role: .cancel, action: {})
                },
                message: {
-                   Text("This action cannot be undone")
+                   Text("This action cannot be undone", bundle: .module)
                })
     }
 }

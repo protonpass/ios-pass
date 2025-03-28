@@ -171,7 +171,7 @@ private struct StorageUpsell: View {
                     .multilineTextAlignment(.center)
                 Spacer()
 
-                CapsuleTextButton(title: #localized("Upgrade"),
+                CapsuleTextButton(title: #localized("Upgrade", bundle: .module),
                                   titleColor: PassColor.textInvert,
                                   backgroundColor: PassColor.interactionNormMajor1,
                                   action: onUpgrade)

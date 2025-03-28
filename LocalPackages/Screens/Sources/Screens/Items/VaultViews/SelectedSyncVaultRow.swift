@@ -20,6 +20,7 @@
 
 import DesignSystem
 import Entities
+import Macro
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -50,11 +51,11 @@ public struct SelectedSyncVaultRow: View {
             }
 
             VStack(alignment: .leading) {
-                Text("Default SimpleLogin vault")
+                Text("Default SimpleLogin vault", bundle: .module)
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
 
-                Text(vault?.vaultContent?.name ?? "None")
+                Text(vault?.vaultContent?.name ?? #localized("None", bundle: .module))
                     .if(vault?.vaultContent?.name == nil) { view in
                         view
                             .italic()
