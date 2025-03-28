@@ -104,12 +104,12 @@ private extension FileAttachmentRow {
                     .foregroundStyle(PassColor.textNorm.toColor)
                 if uiModel.state.isError {
                     HStack(spacing: 4) {
-                        Text("Upload failed")
+                        Text("Upload failed", bundle: .module)
                             .foregroundStyle(ColorProvider.NotificationError.toColor)
                         if case let .edit(_, _, _, onRetryUpload) = mode {
                             Text(verbatim: "•")
                                 .foregroundStyle(PassColor.textWeak.toColor)
-                            Text("Retry")
+                            Text("Retry", bundle: .module)
                                 .foregroundStyle(primaryTintColor.toColor)
                                 .buttonEmbeded(action: onRetryUpload)
                         }

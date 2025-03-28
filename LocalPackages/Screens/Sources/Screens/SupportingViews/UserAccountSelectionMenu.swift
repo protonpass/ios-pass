@@ -38,7 +38,7 @@ public struct UserAccountSelectionMenu: View {
     }
 
     public var body: some View {
-        let allAccountsMessage = #localized("All accounts (%lld)", users.count)
+        let allAccountsMessage = #localized("All accounts (%lld)", bundle: .module, users.count)
         Menu(content: {
             if allowNoSelection {
                 Button(action: {

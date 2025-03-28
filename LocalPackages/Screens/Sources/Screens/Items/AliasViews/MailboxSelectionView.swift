@@ -90,7 +90,7 @@ private extension MailboxSelectionView {
     var tip: some View {
         TipBanner(configuration: .init(arrowMode: .none,
                                        description: tipDescription,
-                                       cta: .init(title: #localized("Add mailbox"),
+                                       cta: .init(title: #localized("Add mailbox", bundle: .module),
                                                   action: onAddMailbox)),
                   onDismiss: onDismissTip)
     }
