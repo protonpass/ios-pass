@@ -98,7 +98,9 @@ extension ImporterViewModel {
                 let loginsToImport = logins.filter { !excludedIds.contains($0.id) }
                 try await datasource.proceedImportation(user: selectedUser,
                                                         logins: loginsToImport)
-                importSuccessMessage = #localized("%lld logins imported", selectedCount)
+                importSuccessMessage = #localized("%lld logins imported",
+                                                  bundle: .module,
+                                                  selectedCount)
             } catch {
                 handle(error)
             }

@@ -117,7 +117,8 @@ public struct FileAttachmentsButton: View {
                actions: { Button(action: {}, label: { Text("OK") }) },
                message: {
                    // swiftlint:disable:next line_length
-                   Text("No text could be detected in the image. Please try again, ensuring the text is clear, well-lit, and within the camera's focus.")
+                   Text("No text could be detected in the image. Please try again, ensuring the text is clear, well-lit, and within the camera's focus.",
+                        bundle: .module)
                })
         .sheet(isPresented: $viewModel.showTextConfirmation) {
             ScannedTextEditor(text: $viewModel.scannedTextToBeConfirmed,

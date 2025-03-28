@@ -39,17 +39,18 @@ public struct AliasSyncExplanationView: View {
     public var body: some View {
         ZStack(alignment: .topTrailing) {
             VStack {
-                Text("Enable SimpleLogin sync")
+                Text("Enable SimpleLogin sync", bundle: .module)
                     .fontWeight(.bold)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .padding(.bottom, 8)
                 // swiftlint:disable:next line_length
-                Text("We detected that you have \(missingAliases) aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?")
+                Text("We detected that you have \(missingAliases) aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?",
+                     bundle: .module)
                     .font(.callout)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(PassColor.textNorm.toColor)
                     .padding(.bottom, 8)
-                CapsuleTextButton(title: #localized("Sync aliases"),
+                CapsuleTextButton(title: #localized("Sync aliases", bundle: .module),
                                   titleColor: PassColor.interactionNormMinor1,
                                   backgroundColor: PassColor.interactionNormMajor2,
                                   action: enableAliasSyncAction)

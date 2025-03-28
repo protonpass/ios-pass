@@ -74,10 +74,10 @@ public struct VaultRow<Thumbnail: View>: View {
                     .foregroundStyle(PassColor.textNorm.toColor)
 
                 if itemCount == 0 {
-                    Text("Empty")
+                    Text("Empty", bundle: .module)
                         .placeholderText()
                 } else {
-                    Text("\(itemCount) item(s)")
+                    Text("\(itemCount) item(s)", bundle: .module)
                         .font(.callout)
                         .foregroundStyle(PassColor.textWeak.toColor)
                 }
