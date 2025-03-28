@@ -33,12 +33,12 @@ public struct UsernameTip: Tip {
     }
 
     public var title: Text {
-        Text("Add username field")
+        Text("Add username field", bundle: .module)
             .foregroundStyle(PassColor.textNorm.toColor)
     }
 
     public var message: Text? {
-        Text("Tap here to add a field for a username.")
+        Text("Tap here to add a field for a username.", bundle: .module)
             .foregroundStyle(PassColor.textWeak.toColor)
     }
 

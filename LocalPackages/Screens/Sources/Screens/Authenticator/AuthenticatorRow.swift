@@ -97,7 +97,7 @@ public struct AuthenticatorRow<ThumbnailView: View>: View {
                     TOTPText(code: data.code, textColor: PassColor.textNorm, font: .title)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 case .invalid:
-                    Text("Invalid TOTP URI")
+                    Text("Invalid TOTP URI", bundle: .module)
                         .font(.caption)
                         .foregroundStyle(PassColor.signalDanger.toColor)
                 }
