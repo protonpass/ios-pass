@@ -18,11 +18,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Screens
 import SwiftUI
 
 struct OnboardSection: View {
     @State private var isShowingFullScreen = false
     @State private var isShowingSheet = false
+    @State private var isShowingFullScreenV2 = false
+    @State private var isShowingSheetV2 = false
 
     var body: some View {
         Section(content: {
@@ -35,15 +38,32 @@ struct OnboardSection: View {
             }, label: {
                 Text(verbatim: "Onboard")
             })
+
+            Button(action: {
+                if UIDevice.current.isIpad {
+                    isShowingSheetV2.toggle()
+                } else {
+                    isShowingFullScreenV2.toggle()
+                }
+            }, label: {
+                Text(verbatim: "Onboard V2")
+            })
         }, header: {
             Text(verbatim: "👋")
         })
         .fullScreenCover(isPresented: $isShowingFullScreen) { onboardingView }
         .sheet(isPresented: $isShowingSheet) { onboardingView }
+        .fullScreenCover(isPresented: $isShowingFullScreenV2) { onboardingV2 }
+        .sheet(isPresented: $isShowingSheetV2) { onboardingV2 }
+    }
+}
+
+private extension OnboardSection {
+    var onboardingView: some View {
+        OnboardingView(onWatchTutorial: {})
     }
 
-    @MainActor
-    private var onboardingView: some View {
-        OnboardingView(onWatchTutorial: {})
+    var onboardingV2: some View {
+        OnboardingV2View()
     }
 }
