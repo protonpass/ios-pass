@@ -95,7 +95,7 @@ private extension SuffixSelectionView {
     var tip: some View {
         TipBanner(configuration: .init(arrowMode: .none,
                                        description: tipDescription,
-                                       cta: .init(title: #localized("Add domain"),
+                                       cta: .init(title: #localized("Add domain", bundle: .module),
                                                   action: onAddDomain)),
                   onDismiss: onDismissTip)
     }
