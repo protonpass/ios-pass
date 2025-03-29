@@ -64,6 +64,7 @@ private extension OnboardSection {
     }
 
     var onboardingV2: some View {
-        OnboardingV2View()
+        OnboardingV2View(isFreeUser: true,
+                         availableBiometricType: .faceID)
     }
 }
