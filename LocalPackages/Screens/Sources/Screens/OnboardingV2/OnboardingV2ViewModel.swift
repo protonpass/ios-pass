@@ -21,13 +21,25 @@
 
 import Entities
 import Foundation
+import LocalAuthentication
 
 public protocol OnboardingV2Datasource: Sendable, AnyObject {
     func getAvailablePlans() async throws -> [PlanUiModel]
+    func getBiometryType() async throws -> LABiometryType?
+    func isAutoFillEnabled() async -> Bool
+}
+
+public protocol OnboardingV2Delegate: Sendable, AnyObject {
+    func purchase(_ plan: PlanUiModel) async throws
+    func enableBiometric() async throws
+    func enableAutoFill() async -> Bool
+
+    @MainActor
+    func handle(_ error: any Error)
 }
 
 enum OnboardV2Step: Sendable, Equatable {
-    case payment([PlanUiModel]), biometric(BiometricType), autofill
+    case payment([PlanUiModel]), biometric(LABiometryType), autofill
 }
 
 @MainActor
@@ -36,28 +48,32 @@ final class OnboardingV2ViewModel: ObservableObject {
     @Published private(set) var finished = false
     @Published var selectedPlan: PlanUiModel?
     private let isFreeUser: Bool
-    private let availableBiometricType: BiometricType?
+    private var availableBiometryType: LABiometryType?
 
     private weak var datasource: (any OnboardingV2Datasource)?
+    private weak var delegate: (any OnboardingV2Delegate)?
 
     init(isFreeUser: Bool,
-         availableBiometricType: BiometricType?,
-         datasource: (any OnboardingV2Datasource)?) {
+         datasource: (any OnboardingV2Datasource)?,
+         delegate: (any OnboardingV2Delegate)?) {
         self.isFreeUser = isFreeUser
-        self.availableBiometricType = availableBiometricType
         self.datasource = datasource
+        self.delegate = delegate
     }
 }
 
 extension OnboardingV2ViewModel {
     func setUp() async {
         do {
+            guard let datasource else {
+                assertionFailure("Datasource not set")
+                currentStep = .fetched(.autofill)
+                return
+            }
+
+            availableBiometryType = try await datasource.getBiometryType()
+
             if isFreeUser {
-                guard let datasource else {
-                    assertionFailure("Datasource not set")
-                    currentStep = .fetched(.autofill)
-                    return
-                }
                 var plans = try await datasource.getAvailablePlans()
                 plans = plans.sorted { $0.recurrence > $1.recurrence }
                 assert(plans.count == 2, "Must have exactly 2 plans")
@@ -65,8 +81,8 @@ extension OnboardingV2ViewModel {
                 assert(plans.last?.recurrence == .monthly, "Montly plan must be the second")
                 selectedPlan = plans.first
                 currentStep = .fetched(.payment(plans))
-            } else if let availableBiometricType {
-                currentStep = .fetched(.biometric(availableBiometricType))
+            } else if let availableBiometryType, availableBiometryType != .none {
+                currentStep = .fetched(.biometric(availableBiometryType))
             } else {
                 currentStep = .fetched(.autofill)
             }
@@ -77,18 +93,27 @@ extension OnboardingV2ViewModel {
 
     /// Returns `true` if other steps are available,
     /// `false` if no more steps so the onboarding process could be ended
-    func goNext() -> Bool {
+    func goNext() async -> Bool {
+        guard let datasource else {
+            assertionFailure("Datasource not set")
+            return false
+        }
+
         switch currentStep.fetchedObject {
         case .payment:
-            if let availableBiometricType {
-                currentStep = .fetched(.biometric(availableBiometricType))
+            if let availableBiometryType, availableBiometryType != .none {
+                currentStep = .fetched(.biometric(availableBiometryType))
             } else {
                 currentStep = .fetched(.autofill)
             }
             return true
 
         case .biometric:
-            currentStep = .fetched(.autofill)
+            if await datasource.isAutoFillEnabled() {
+                return false
+            } else {
+                currentStep = .fetched(.autofill)
+            }
             return true
 
         case .autofill:
@@ -99,8 +124,36 @@ extension OnboardingV2ViewModel {
         }
     }
 
-    func performCta() {
-        if !goNext() {
+    func performCta() async {
+        guard let delegate else {
+            assertionFailure("Delegate not set")
+            return
+        }
+
+        var shouldGoToNextStep = true
+        do {
+            switch currentStep.fetchedObject {
+            case .payment:
+                guard let selectedPlan else {
+                    assertionFailure("No selected plan")
+                    return
+                }
+                try await delegate.purchase(selectedPlan)
+
+            case .biometric:
+                try await delegate.enableBiometric()
+
+            case .autofill:
+                shouldGoToNextStep = await delegate.enableAutoFill()
+
+            default:
+                break
+            }
+        } catch {
+            delegate.handle(error)
+        }
+
+        if shouldGoToNextStep, await !goNext() {
             finished = true
         }
     }

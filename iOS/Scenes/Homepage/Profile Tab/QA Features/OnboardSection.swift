@@ -19,6 +19,8 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
 import Entities
+import Factory
+import LocalAuthentication
 import Screens
 import SwiftUI
 
@@ -67,13 +69,28 @@ private extension OnboardSection {
 
     var onboardingV2: some View {
         OnboardingV2View(isFreeUser: true,
-                         availableBiometricType: .faceID,
-                         datasource: viewModel)
+                         datasource: viewModel,
+                         delegate: viewModel)
     }
 }
 
 @MainActor
-private final class OnboardSectionViewModel: ObservableObject {}
+private final class OnboardSectionViewModel: ObservableObject {
+    @LazyInjected(\SharedServiceContainer.credentialManager)
+    private var credentialManager
+
+    @LazyInjected(\UseCasesContainer.enableAutoFill)
+    private var enableAutoFillUseCase
+
+    @LazyInjected(\SharedUseCasesContainer.checkBiometryType)
+    private var checkBiometryType
+
+    @LazyInjected(\SharedToolingContainer.localAuthenticationEnablingPolicy)
+    private var policy
+
+    @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
+    private var router
+}
 
 extension OnboardSectionViewModel: OnboardingV2Datasource {
     func getAvailablePlans() async throws -> [PlanUiModel] {
@@ -81,5 +98,32 @@ extension OnboardSectionViewModel: OnboardingV2Datasource {
             .init(recurrence: .yearly, price: 85.0, currency: "CHF"),
             .init(recurrence: .monthly, price: 11, currency: "CHF")
         ]
+    }
+
+    func getBiometryType() async throws -> LABiometryType? {
+        try checkBiometryType(policy: policy)
+    }
+
+    func isAutoFillEnabled() async -> Bool {
+        await credentialManager.isAutoFillEnabled
+    }
+}
+
+extension OnboardSectionViewModel: OnboardingV2Delegate {
+    func purchase(_ plan: PlanUiModel) async throws {
+        print(#function)
+    }
+
+    func enableBiometric() async throws {
+        print(#function)
+    }
+
+    func enableAutoFill() async -> Bool {
+        await enableAutoFillUseCase()
+    }
+
+    @MainActor
+    func handle(_ error: any Error) {
+        router.display(element: .displayErrorBanner(error))
     }
 }

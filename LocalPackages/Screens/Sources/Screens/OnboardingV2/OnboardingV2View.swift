@@ -29,11 +29,11 @@ public struct OnboardingV2View: View {
     @StateObject private var viewModel: OnboardingV2ViewModel
 
     public init(isFreeUser: Bool,
-                availableBiometricType: BiometricType?,
-                datasource: OnboardingV2Datasource?) {
+                datasource: OnboardingV2Datasource?,
+                delegate: OnboardingV2Delegate?) {
         _viewModel = .init(wrappedValue: .init(isFreeUser: isFreeUser,
-                                               availableBiometricType: availableBiometricType,
-                                               datasource: datasource))
+                                               datasource: datasource,
+                                               delegate: delegate))
     }
 
     public var body: some View {
@@ -82,15 +82,21 @@ private extension OnboardingV2View {
         case let .payment(plans):
             OnboardingPaymentStep(plans: plans,
                                   selectedPlan: $viewModel.selectedPlan)
-        default:
-            EmptyView()
+
+        case .biometric:
+            Text(verbatim: "Biometric")
+
+        case .autofill:
+            Text(verbatim: "AutoFill")
         }
     }
 
     var skipButton: some View {
         Button(action: {
-            if !viewModel.goNext() {
-                dismiss()
+            Task {
+                if await !viewModel.goNext() {
+                    dismiss()
+                }
             }
         }, label: {
             Text("Skip", bundle: .main)
@@ -103,7 +109,7 @@ private extension OnboardingV2View {
                           titleColor: PassColor.interactionNormMajor2,
                           backgroundColor: PassColor.interactionNormMinor1,
                           height: 52,
-                          action: viewModel.performCta)
+                          action: { Task { await viewModel.performCta() } })
     }
 }
 
@@ -115,12 +121,16 @@ private extension OnboardV2Step {
 
         case let .biometric(type):
             switch type {
+            case .none:
+                #localized("None", bundle: .module)
             case .faceID:
                 #localized("Enable Face ID", bundle: .module)
             case .touchID:
                 #localized("Enable Touch ID", bundle: .module)
             case .opticID:
                 #localized("Enable Optic ID", bundle: .module)
+            @unknown default:
+                #localized("None", bundle: .module)
             }
 
         case .autofill:
