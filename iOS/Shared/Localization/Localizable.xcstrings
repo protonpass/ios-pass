@@ -2910,7 +2910,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld bí danh đã được kích hoạt"
+                  "value" : "%lld bí danh đã được bật"
                 }
               }
             }
@@ -3408,6 +3408,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld блокованих"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld đã bị chặn"
                 }
               }
             }
@@ -5490,6 +5502,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld переслано"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld đã chuyển tiếp"
                 }
               }
             }
@@ -9267,6 +9291,18 @@
             }
           }
         },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld mục đã ghim thành công"
+                }
+              }
+            }
+          }
+        },
         "zh-Hans" : {
           "variations" : {
             "plural" : {
@@ -9758,6 +9794,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld елементів успішно відкріплено"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld mục đã bỏ ghim thành công"
                 }
               }
             }
@@ -10377,6 +10425,24 @@
             }
           }
         },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld andet login bruger denne adgangskode"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld andre logins bruger denne adgangskode"
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "variations" : {
             "plural" : {
@@ -10533,6 +10599,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個の他のログインがこのパスワードを使用しています"
+                }
+              }
+            }
+          }
+        },
         "nl" : {
           "variations" : {
             "plural" : {
@@ -10684,6 +10762,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld diğer oturum açma kaydında bu parola kullanılıyor"
+                }
+              }
+            }
+          }
+        },
+        "vi" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld thông tin đăng nhập khác đang dùng mật khẩu này"
                 }
               }
             }
@@ -15235,7 +15325,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "7 天内免费试用高级功能。仅限 Proton Pass 的第一周。"
+            "value" : "7 天免费试用高级功能。仅在使用 Proton Pass 的第一周。"
           }
         }
       }
@@ -16527,6 +16617,12 @@
             "value" : "Номер облікового запису"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Số tài khoản"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16662,6 +16758,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Тип облікового запису"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loại tài khoản"
           }
         },
         "zh-Hans" : {
@@ -16982,6 +17084,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Активність за останні 14 днів"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hoạt động trong 14 ngày qua"
           }
         },
         "zh-Hans" : {
@@ -17968,6 +18076,12 @@
             "value" : "Додати показуване ім'я"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm tên hiển thị"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18286,6 +18400,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Додати пошту або ім'я користувача"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm email hoặc tên người dùng"
           }
         },
         "zh-Hans" : {
@@ -19083,6 +19203,12 @@
             "value" : "Додати назву (SSID)"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm tên mạng (SSID)"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19551,6 +19677,12 @@
             "value" : "Додати приватний ключ"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm khoá riêng"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19685,6 +19817,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Додати відкритий ключ"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thêm khoá công khai"
           }
         },
         "zh-Hans" : {
@@ -19987,6 +20125,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адреса"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Địa chỉ"
           }
         },
         "zh-Hans" : {
@@ -20800,6 +20944,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Розширене керування псевдонімами доступне з Pass Plus. Оновіть для негайного доступу."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quản lý bí danh nâng cao chỉ có trong Pass Plus. Nâng cấp ngay để sử dụng."
           }
         },
         "zh-Hans" : {
@@ -24341,6 +24491,12 @@
             "value" : "Псевдонім ввімкнено"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã bật bí danh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25978,6 +26134,12 @@
             "value" : "Всі псевдоніми, що використовують поштову скриньку **%@**, також будуть видалені. Щоб продовжувати отримувати листи, перенесіть ці псевдоніми на іншу поштову скриньку:"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tất cả bí danh đang sử dụng hộp thư **%@** cũng sẽ bị xóa. Chuyển chúng sang hộp thư khác để tiếp tục nhận email:"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26462,6 +26624,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Всі елементи"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tất cả mục"
           }
         },
         "zh-Hans" : {
@@ -27458,7 +27626,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tất cả nội dung đăng nhập của bạn đều có xác minh 2FA"
+            "value" : "Mọi thông tin đăng nhập của bạn đều được bảo vệ bằng xác thực hai yếu tố."
           }
         },
         "zh-Hans" : {
@@ -27919,6 +28087,12 @@
             "value" : "Облікові дані API"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chứng chỉ API"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28047,6 +28221,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ключ API"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Khoá API"
           }
         },
         "zh-Hans" : {
@@ -29526,6 +29706,12 @@
             "value" : "Принаймні один з вибраних елементів наразі знаходиться у спільному доступі. Переміщення його до іншого сховища вилучить доступ для всіх інших користувачів."
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ít nhất một trong các mục đã chọn đang được chia sẻ. Nếu di chuyển sang kho khác, tất cả người dùng hiện có sẽ mất quyền truy cập vào mục này."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29679,6 +29865,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Прикріпити"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đính kèm"
           }
         },
         "zh-Hans" : {
@@ -30017,7 +30209,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "验证器"
+            "value" : "身份验证器"
           }
         }
       }
@@ -31082,6 +31274,12 @@
             "value" : "Compte bancaire"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekening Bank"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31134,6 +31332,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Банківський рахунок"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tài khoản Ngân hàng"
           }
         },
         "zh-Hans" : {
@@ -31265,6 +31469,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Назва банку"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tên ngân hàng"
           }
         },
         "zh-Hans" : {
@@ -33396,6 +33606,12 @@
             "value" : "Може редагувати й видаляти цей елемент."
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Có thể sửa và xoá mục này."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33542,6 +33758,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Може надавати та відкликати доступ до цього елемента."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Có thể cấp và thu hồi quyền truy cập vào mục."
           }
         },
         "zh-Hans" : {
@@ -34528,6 +34750,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скасувати зміну поштової скриньки"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hủy thay đổi hộp thư"
           }
         },
         "zh-Hans" : {
@@ -36013,6 +36241,12 @@
             "value" : "Змінити адресу поштової скриньки"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thay đổi email hộp thư"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37140,6 +37374,12 @@
             "value" : "Клас"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loại"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37790,6 +38030,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Очистити завантажені файли"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xoá các tệp đã tải xuống"
           }
         },
         "zh-Hans" : {
@@ -40099,6 +40345,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Контакт скопійовано"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã sao chép liên hệ"
           }
         },
         "zh-Hans" : {
@@ -43208,6 +43460,12 @@
             "value" : "Копіювати SSID"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sao chép SSID"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43503,6 +43761,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Країна"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quốc gia"
           }
         },
         "zh-Hans" : {
@@ -44460,6 +44724,12 @@
             "value" : "Створити власний елемент"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tạo một mục tùy chỉnh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45414,6 +45684,12 @@
             "value" : "Створити елементи з повністю налаштовуваними полями"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tạo mục với các trường tùy chỉnh theo ý bạn"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46232,6 +46508,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Створено %@"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã tạo %@"
           }
         },
         "zh-Hans" : {
@@ -47253,6 +47535,12 @@
             "value" : "Peněženka kryptoměny"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krypto Wallet"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47347,6 +47635,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Криптогаманець"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ví điện tử"
           }
         },
         "zh-Hans" : {
@@ -48534,6 +48828,12 @@
             "value" : "Vlastní položka"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdefineret element"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48630,6 +48930,12 @@
             "value" : "Власний елемент"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mục tùy chỉnh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48650,6 +48956,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastní položka vytvořena"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdefineret element oprettet"
           }
         },
         "de" : {
@@ -48748,6 +49060,12 @@
             "value" : "Власний елемент створено"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã tạo mục tùy chỉnh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48768,6 +49086,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastní položka přesunuta do koše"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdefineret element flyttet til papirkurven"
           }
         },
         "de" : {
@@ -48866,6 +49190,12 @@
             "value" : "Власний елемент переміщено до смітника"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã chuyển mục tùy chỉnh vào thùng rác"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48886,6 +49216,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastní položka trvale smazána"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdefineret element slettet permanent"
           }
         },
         "de" : {
@@ -48984,6 +49320,12 @@
             "value" : "Власний елемент остаточно видалено"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xoá vĩnh viễn mục tùy chỉnh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49004,6 +49346,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastní položka obnovena"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdefineret element gendannet"
           }
         },
         "de" : {
@@ -49102,6 +49450,12 @@
             "value" : "Власний елемент відновлено"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã khôi phục mục tùy chỉnh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49122,6 +49476,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastní položka aktualizována"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdefineret element opdateret"
           }
         },
         "de" : {
@@ -49220,6 +49580,12 @@
             "value" : "Власний елемент оновлено"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã cập nhật mục tùy chỉnh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49240,6 +49606,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vlastní položky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brugerdefinerede elementer"
           }
         },
         "de" : {
@@ -49336,6 +49708,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Власні елементи"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mục tùy chỉnh"
           }
         },
         "zh-Hans" : {
@@ -50025,6 +50403,12 @@
             "value" : "Databáze"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Database"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50127,6 +50511,12 @@
             "value" : "База даних"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cơ sở dữ liệu"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50148,6 +50538,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Typ databáze"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Databasetype"
           }
         },
         "de" : {
@@ -50246,6 +50642,12 @@
             "value" : "Тип бази даних"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loại cơ sở dữ liệu"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50266,6 +50668,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Datum"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dato"
           }
         },
         "de" : {
@@ -50368,6 +50776,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Дата"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngày"
           }
         },
         "zh-Hans" : {
@@ -50488,6 +50902,12 @@
             "value" : "Власне поле дати"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trường tùy chỉnh ngày"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50508,6 +50928,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Datum narození"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fødselsdato"
           }
         },
         "de" : {
@@ -50610,6 +51036,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Дата народження"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ngày sinh"
           }
         },
         "zh-Hans" : {
@@ -51764,6 +52196,12 @@
             "value" : "Видалити файл?"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa tệp?"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52568,6 +53006,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Видалити цей елемент"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xóa mục này"
           }
         },
         "zh-Hans" : {
@@ -53388,6 +53832,12 @@
             "value" : "Вимкнути псевдоніми"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tắt bí danh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53902,6 +54352,12 @@
             "value" : "Lékař"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Læge"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54002,6 +54458,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Лікар"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bác sĩ"
           }
         },
         "zh-Hans" : {
@@ -54485,6 +54947,12 @@
             "value" : "Завантажені файли очищено"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đã xoá tệp tải xuống"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54506,6 +54974,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Řidičský průkaz"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kørekort"
           }
         },
         "de" : {
@@ -54608,6 +55082,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Водійське посвідчення"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giấy phép Lái xe"
           }
         },
         "zh-Hans" : {
@@ -56762,6 +57242,12 @@
             "value" : "Надішліть листа на цю адресу, і він буде відправлений з %@."
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gửi email đến địa chỉ này, thư sẽ hiển thị như được gửi từ %@."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57590,7 +58076,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kích hoạt"
+            "value" : "Bật"
           }
         },
         "zh-Hans" : {
@@ -57907,6 +58393,12 @@
             "value" : "Ввімкнути псевдоніми"
           }
         },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bật các bí danh"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -58065,6 +58557,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Увімкніть автозаповнення"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bật tính năng Tự động điền"
           }
         },
         "zh-Hans" : {
@@ -58230,7 +58728,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kích hoạt Face ID"
+            "value" : "Bật Face ID"
           }
         },
         "zh-Hans" : {
@@ -58396,7 +58894,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bật theo dõi để nhận được thông báo khi các bí danh của bạn bị rò rỉ"
+            "value" : "Bật theo dõi để nhận được thông báo khi các bí danh của bạn bị lộ."
           }
         },
         "zh-Hans" : {
@@ -58562,7 +59060,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bật theo dõi để nhận được thông báo khi các địa chỉ Proton của bạn bị rò rỉ"
+            "value" : "Bật theo dõi để nhận được thông báo khi các địa chỉ Proton của bạn bị lộ."
           }
         },
         "zh-Hans" : {
@@ -58894,7 +59392,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kích hoạt Touch ID"
+            "value" : "Bật Touch ID"
           }
         },
         "zh-Hans" : {
@@ -62385,6 +62883,12 @@
             "value" : "Datum vypršení platnosti"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udløbsdato"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -63971,7 +64475,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đã kích hoạt Face ID"
+            "value" : "Đã bật Face ID"
           }
         },
         "zh-Hans" : {
@@ -105186,7 +105690,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "密码不匹配"
+            "value" : "密码不一致"
           }
         }
       }
@@ -117044,7 +117548,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "删除额外密码"
+            "value" : "移除额外密码"
           }
         }
       }
@@ -128201,7 +128705,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Chọn các nội dung"
+            "value" : "Chọn các mục"
           }
         },
         "zh-Hans" : {
@@ -141992,7 +142496,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "点击**密码选项**"
+            "value" : "点击 **密码选项**"
           }
         }
       }
@@ -145479,7 +145983,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dịch vụ này hỗ trợ mã bí mật 2FA. Hãy khởi tạo nó để tăng cường bảo mật cho tài khoản của bạn."
+            "value" : "Dịch vụ này hỗ trợ xác thực 2 yếu tố. Bật ngay để bảo vệ tài khoản tốt hơn."
           }
         },
         "zh-Hans" : {
@@ -147852,7 +148356,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Đã kích hoạt Touch ID"
+            "value" : "Đã bật Touch ID"
           }
         },
         "zh-Hans" : {
@@ -149177,7 +149681,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "开启**自动填充密码**"
+            "value" : "开启 **自动填充密码**"
           }
         }
       }
@@ -154094,7 +154598,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Палепшыць да стварэння карыстацкіх элементаў"
+            "value" : "Палепшыць, каб ствараць карыстальніцкія элементы"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navyšte tarif pro vytváření vlastních položek"
           }
         },
         "de" : {
@@ -154133,6 +154643,18 @@
             "value" : "Changer d'abonnement pour créer des éléments personnalisés"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effettua l'upgrade per creare elementi personalizzati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップグレードしてカスタムアイテムを作成"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -154149,6 +154671,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Modificați-vă abonamentul pentru a crea articole personalizate"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navýšte predplatné pre vytváranie vlastných položiek"
           }
         },
         "sv" : {
@@ -164086,6 +164614,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "W-iFiネットワークが復元されました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "WiFi 네트워크 복구됨"
           }
         },
         "nl" : {
