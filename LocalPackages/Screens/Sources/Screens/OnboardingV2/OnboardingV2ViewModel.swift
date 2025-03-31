@@ -22,47 +22,79 @@
 import Entities
 import Foundation
 
-enum OnboardV2Step: Sendable {
-    case payment, biometric(BiometricType), autofill
+public protocol OnboardingV2Datasource: Sendable, AnyObject {
+    func getAvailablePlans() async throws -> [PlanUiModel]
+}
+
+enum OnboardV2Step: Sendable, Equatable {
+    case payment([PlanUiModel]), biometric(BiometricType), autofill
 }
 
 @MainActor
 final class OnboardingV2ViewModel: ObservableObject {
-    @Published private(set) var currentStep: OnboardV2Step
+    @Published private(set) var currentStep: FetchableObject<OnboardV2Step> = .fetching
     @Published private(set) var finished = false
+    @Published var selectedPlan: PlanUiModel?
+    private let isFreeUser: Bool
     private let availableBiometricType: BiometricType?
 
+    private weak var datasource: (any OnboardingV2Datasource)?
+
     init(isFreeUser: Bool,
-         availableBiometricType: BiometricType?) {
-        if isFreeUser {
-            currentStep = .payment
-        } else if let availableBiometricType {
-            currentStep = .biometric(availableBiometricType)
-        } else {
-            currentStep = .autofill
-        }
+         availableBiometricType: BiometricType?,
+         datasource: (any OnboardingV2Datasource)?) {
+        self.isFreeUser = isFreeUser
         self.availableBiometricType = availableBiometricType
+        self.datasource = datasource
     }
 }
 
 extension OnboardingV2ViewModel {
+    func setUp() async {
+        do {
+            if isFreeUser {
+                guard let datasource else {
+                    assertionFailure("Datasource not set")
+                    currentStep = .fetched(.autofill)
+                    return
+                }
+                var plans = try await datasource.getAvailablePlans()
+                plans = plans.sorted { $0.recurrence > $1.recurrence }
+                assert(plans.count == 2, "Must have exactly 2 plans")
+                assert(plans.first?.recurrence == .yearly, "Yearly plan must be the first")
+                assert(plans.last?.recurrence == .monthly, "Montly plan must be the second")
+                selectedPlan = plans.first
+                currentStep = .fetched(.payment(plans))
+            } else if let availableBiometricType {
+                currentStep = .fetched(.biometric(availableBiometricType))
+            } else {
+                currentStep = .fetched(.autofill)
+            }
+        } catch {
+            currentStep = .error(error)
+        }
+    }
+
     /// Returns `true` if other steps are available,
     /// `false` if no more steps so the onboarding process could be ended
     func goNext() -> Bool {
-        switch currentStep {
+        switch currentStep.fetchedObject {
         case .payment:
             if let availableBiometricType {
-                currentStep = .biometric(availableBiometricType)
+                currentStep = .fetched(.biometric(availableBiometricType))
             } else {
-                currentStep = .autofill
+                currentStep = .fetched(.autofill)
             }
             return true
 
         case .biometric:
-            currentStep = .autofill
+            currentStep = .fetched(.autofill)
             return true
 
         case .autofill:
+            return false
+
+        default:
             return false
         }
     }

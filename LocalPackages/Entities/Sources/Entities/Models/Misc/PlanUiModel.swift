@@ -1,7 +1,7 @@
 //
-// DesignConstant.swift
-// Proton Pass - Created on 09/10/2023.
-// Copyright (c) 2023 Proton Technologies AG
+// PlanUiModel.swift
+// Proton Pass - Created on 31/03/2025.
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
 //
@@ -20,18 +20,21 @@
 
 import Foundation
 
-public enum DesignConstant {
-    public static let sectionPadding: CGFloat = 16
-    public static let defaultPickerHeight: CGFloat = 50
-    public static let searchBarHeight: CGFloat = 48
-    public static let previewBreachItemCount = 5
-    public static let onboardingPadding: CGFloat = 24
+public struct PlanUiModel: Sendable, Equatable, Identifiable {
+    public let id: String = UUID().uuidString
+    public let recurrence: Recurrence
+    public let price: Float
+    public let currency: String
 
-    // SwiftUI's default animation duration is 0.35
-    // https://developer.apple.com/documentation/swiftui/animation/linear#
-    public static let animationDuration: CGFloat = 0.35
+    public enum Recurrence: Sendable, Comparable {
+        case monthly, yearly
+    }
 
-    public enum Icons {
-        public static let defaultIconSize: CGFloat = 20
+    public init(recurrence: Recurrence,
+                price: Float,
+                currency: String) {
+        self.recurrence = recurrence
+        self.price = price
+        self.currency = currency
     }
 }

@@ -18,10 +18,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Entities
 import Screens
 import SwiftUI
 
 struct OnboardSection: View {
+    @StateObject private var viewModel = OnboardSectionViewModel()
     @State private var isShowingFullScreen = false
     @State private var isShowingSheet = false
     @State private var isShowingFullScreenV2 = false
@@ -65,6 +67,19 @@ private extension OnboardSection {
 
     var onboardingV2: some View {
         OnboardingV2View(isFreeUser: true,
-                         availableBiometricType: .faceID)
+                         availableBiometricType: .faceID,
+                         datasource: viewModel)
+    }
+}
+
+@MainActor
+private final class OnboardSectionViewModel: ObservableObject {}
+
+extension OnboardSectionViewModel: OnboardingV2Datasource {
+    func getAvailablePlans() async throws -> [PlanUiModel] {
+        [
+            .init(recurrence: .yearly, price: 85.0, currency: "CHF"),
+            .init(recurrence: .monthly, price: 11, currency: "CHF")
+        ]
     }
 }

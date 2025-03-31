@@ -29,23 +29,64 @@ public struct OnboardingV2View: View {
     @StateObject private var viewModel: OnboardingV2ViewModel
 
     public init(isFreeUser: Bool,
-                availableBiometricType: BiometricType?) {
+                availableBiometricType: BiometricType?,
+                datasource: OnboardingV2Datasource?) {
         _viewModel = .init(wrappedValue: .init(isFreeUser: isFreeUser,
-                                               availableBiometricType: availableBiometricType))
+                                               availableBiometricType: availableBiometricType,
+                                               datasource: datasource))
     }
 
     public var body: some View {
+        ZStack {
+            switch viewModel.currentStep {
+            case .fetching:
+                ProgressView()
+
+            case let .fetched(step):
+                mainContainer(currentStep: step)
+
+            case let .error(error):
+                VStack(alignment: .center) {
+                    RetryableErrorView(mode: .defaultHorizontal,
+                                       error: error,
+                                       onRetry: { Task { await viewModel.setUp() } })
+                    skipButton
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+            }
+        }
+        .task { await viewModel.setUp() }
+    }
+}
+
+private extension OnboardingV2View {
+    func mainContainer(currentStep: OnboardV2Step) -> some View {
         VStack {
-            skipButton
-            ctaButton
+            HStack {
+                Spacer()
+                skipButton
+                    .padding([.top, .trailing], DesignConstant.onboardingPadding)
+            }
+            content(for: currentStep)
+            ctaButton(for: currentStep)
+                .padding(.horizontal, DesignConstant.onboardingPadding)
         }
         .onChange(of: viewModel.finished) { _ in
             dismiss()
         }
     }
-}
 
-private extension OnboardingV2View {
+    @ViewBuilder
+    func content(for step: OnboardV2Step) -> some View {
+        switch step {
+        case let .payment(plans):
+            OnboardingPaymentStep(plans: plans,
+                                  selectedPlan: $viewModel.selectedPlan)
+        default:
+            EmptyView()
+        }
+    }
+
     var skipButton: some View {
         Button(action: {
             if !viewModel.goNext() {
@@ -57,8 +98,8 @@ private extension OnboardingV2View {
         })
     }
 
-    var ctaButton: some View {
-        CapsuleTextButton(title: viewModel.currentStep.ctaTitle,
+    func ctaButton(for step: OnboardV2Step) -> some View {
+        CapsuleTextButton(title: step.ctaTitle,
                           titleColor: PassColor.interactionNormMajor2,
                           backgroundColor: PassColor.interactionNormMinor1,
                           height: 52,
