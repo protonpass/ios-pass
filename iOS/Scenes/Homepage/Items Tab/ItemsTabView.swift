@@ -285,7 +285,7 @@ private extension ItemsTabView {
 
     @ViewBuilder
     func itemRow(_ item: ItemUiModel) -> ItemRow {
-        let isTrashed = viewModel.appContentManager.vaultSelection == .trash
+        let isTrashed = item.state == .trashed
         let isSwipeEnabled = !viewModel.appContentManager.vaultSelection.isShared
         let isEditable = viewModel.isEditable(item)
         let isSelected = viewModel.isSelected(item)
