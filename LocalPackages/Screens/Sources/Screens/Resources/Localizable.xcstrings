@@ -9736,6 +9736,16 @@
         }
       }
     },
+    "None" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
+          }
+        }
+      }
+    },
     "Not Now" : {
       "localizations" : {
         "be" : {
