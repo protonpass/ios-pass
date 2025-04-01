@@ -852,6 +852,14 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                                                 ctaTitle: #localized("Get Pass Plus"))
         router.present(for: .upselling(config))
     }
+
+    func showLoadingIndicator() {
+        router.display(element: .globalLoading(shouldShow: true))
+    }
+
+    func hideLoadingIndicator() {
+        router.display(element: .globalLoading(shouldShow: false))
+    }
 }
 
 extension BaseCreateEditItemViewModel: FileAttachmentPreviewHandler {

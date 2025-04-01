@@ -128,6 +128,8 @@ private extension FileAttachmentsButtonViewModel {
         selectedPhotosTask?.cancel()
         selectedPhotosTask = Task { [weak self] in
             guard let self, let photo = photos.first else { return }
+            defer { handler.hideLoadingIndicator() }
+            handler.showLoadingIndicator()
             do {
                 guard let url = try await photo.loadTransferable(type: TempDirectoryTransferableUrl.self) else {
                     throw PassError.fileAttachment(.failedToProcessPickedPhotos)
