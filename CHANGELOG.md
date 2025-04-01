@@ -1,3 +1,7 @@
+# Version 1.16.2
+- Allow numbers as separators in password generation, even with "Include numbers" disabled
+- Fixed issues where some texts were not properly localized
+
 # Version 1.16.1
 Fixed an issue where search results failed to refresh after moving items to other vaults
 
