@@ -102,6 +102,7 @@ extension ItemEntity {
         lastUseTime = item.lastUseTime ?? 0
         modifyTime = item.modifyTime
         pinned = item.pinned
+        pinTime = Int64(item.pinTime ?? 0)
         revision = item.revision
         revisionTime = item.revisionTime
         shareID = symmetricallyEncryptedItem.shareId
