@@ -43,6 +43,8 @@ public protocol FileAttachmentsEditHandler: AnyObject {
     func retryUpload(attachment: FileAttachmentUiModel)
     func deleteAllAttachments()
     func upsellFileAttachments()
+    func showLoadingIndicator()
+    func hideLoadingIndicator()
 }
 
 public struct FileAttachmentsEditSection: View {
