@@ -99,6 +99,7 @@ public extension LocalItemDatasource {
             .init(format: "state = %d", ItemState.active.rawValue),
             .init(format: "userID = %@", userId)
         ])
+        fetchRequest.sortDescriptors = [.init(key: "pinTime", ascending: true)]
         let itemEntities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return try itemEntities.map { try $0.toEncryptedItem() }
     }
