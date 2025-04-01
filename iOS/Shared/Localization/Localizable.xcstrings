@@ -537,7 +537,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "\"%1$@\" đã được sao chép vào bộ nhớ tạm. Hết hạn trong %2$lld giây."
+                  "value" : "\"%1$@\" đã được sao chép vào bảng nhớ tạm. Hết hạn trong %2$lld giây."
                 }
               }
             }
@@ -1365,7 +1365,7 @@
         "vi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@, %2$@, %3$@ trong 14 ngày đần đây."
+            "value" : "%1$@, %2$@, %3$@ trong 14 ngày gần đây."
           }
         },
         "zh-Hans" : {
@@ -2402,7 +2402,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld bí danh đã vô hiệu hóa"
+                  "value" : "%lld bí danh đã bị vô hiệu hóa"
                 }
               }
             }
@@ -3928,7 +3928,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld khối"
+                  "value" : "%lld chặn"
                 }
               }
             }
@@ -6559,7 +6559,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld tiếng"
+                  "value" : "%lld giờ"
                 }
               }
             }
@@ -7701,13 +7701,13 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld nội dung"
+                  "value" : "%lld mục"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld nội dung"
+                  "value" : "%lld mục"
                 }
               }
             }
@@ -8251,7 +8251,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld nội dung đã được chuyển vào thùng rác"
+                  "value" : "%lld mục đã được chuyển vào thùng rác"
                 }
               }
             }
@@ -8789,7 +8789,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%1$lld nội dung đã được dời vào kho lưu trữ « %2$@ »"
+                  "value" : "%1$lld nội dung đã được dời vào kho « %2$@ »"
                 }
               }
             }
@@ -31411,6 +31411,12 @@
             "value" : "Nom de la banque"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama bank"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37312,6 +37318,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Classe"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kelas"
           }
         },
         "it" : {
@@ -43400,6 +43412,12 @@
             "value" : "Copier le SSID"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salin SSID"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43701,6 +43719,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pays"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Negara"
           }
         },
         "it" : {
@@ -44670,6 +44694,12 @@
             "value" : "Créer un élément personnalisé"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buat item khusus"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45628,6 +45658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Créer des éléments avec des champs entièrement personnalisés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buat item dengan kolom yang disesuaikan"
           }
         },
         "it" : {
@@ -47583,6 +47619,12 @@
             "value" : "Portefeuille de cryptomonnaies"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dompet Kripto"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48876,6 +48918,12 @@
             "value" : "Élément personnalisé"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item khusus"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49004,6 +49052,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'élément personnalisé a été créé."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item khusus dibuat"
           }
         },
         "it" : {
@@ -49136,6 +49190,12 @@
             "value" : "L'élément personnalisé a été mis dans la corbeille."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item khusus dipindahkan ke sampah"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49264,6 +49324,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'élément personnalisé a été définitivement supprimé."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item khusus dihapus secara permanen"
           }
         },
         "it" : {
@@ -49396,6 +49462,12 @@
             "value" : "L'élément personnalisé a été restauré."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item khusus dipulihkan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49526,6 +49598,12 @@
             "value" : "L'élément personnalisé a été mis à jour."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item khusus diperbarui"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49654,6 +49732,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Éléments personnalisés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Item khusus"
           }
         },
         "it" : {
@@ -50451,6 +50535,12 @@
             "value" : "Base de données"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Basis data"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50588,6 +50678,12 @@
             "value" : "Type de base de données"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jenis basis data"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50716,6 +50812,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Date"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanggal"
           }
         },
         "it" : {
@@ -50848,6 +50950,12 @@
             "value" : "Champ personnalisé de date"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kolom khusus tanggal"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50976,6 +51084,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Date de naissance"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanggal Lahir"
           }
         },
         "it" : {
@@ -66018,6 +66132,12 @@
             "value" : "La liste est filtrée par éléments personnalisés. Les éléments dans la corbeille ne s'affichent pas."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disaring berdasarkan item khusus. Item dalam sampah tidak ditampilkan."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66614,6 +66734,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Finance"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finansial"
           }
         },
         "it" : {
@@ -73841,6 +73967,12 @@
             "value" : "Nom du titulaire"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama pemegang"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74084,6 +74216,12 @@
             "value" : "Hôte"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hos"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74195,6 +74333,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom de l’hôte"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama hos"
           }
         },
         "it" : {
@@ -74637,6 +74781,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "IBAN"
+          }
+        },
+        "id" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "IBAN"
@@ -78853,6 +79003,12 @@
             "value" : "Adresse IP"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alamat IP"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78977,6 +79133,12 @@
             "value" : "Autorité de délivrance"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Otoritas penerbit"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79095,6 +79257,12 @@
             "value" : "Pays émetteur"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Negara penerbit"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79211,6 +79379,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pays ou état de délivrance"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wilayah/Negara Penerbit"
           }
         },
         "it" : {
@@ -85583,6 +85757,12 @@
             "value" : "Clé de licence"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci lisensi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90007,6 +90187,12 @@
             "value" : "Conditions médicales"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kondisi medis"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90124,6 +90310,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dossier médical"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekaman Medis"
           }
         },
         "it" : {
@@ -90245,6 +90437,12 @@
             "value" : "Traitements médicamenteux"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medikasi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90361,6 +90559,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID de membre"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID Anggota"
           }
         },
         "it" : {
@@ -90646,6 +90850,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom du membre"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama anggota"
           }
         },
         "it" : {
@@ -90934,6 +91144,12 @@
             "value" : "Abonnement"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keanggotaan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91050,6 +91266,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID de membre"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID Keanggotaan"
           }
         },
         "it" : {
@@ -94314,6 +94536,12 @@
             "value" : "Nom (SSID)"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama (SSID)"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94598,6 +94826,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réseau"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan"
           }
         },
         "it" : {
@@ -101786,6 +102020,12 @@
             "value" : "Ouvrir l'élément personnalisé"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buka item khusus"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -102532,6 +102772,12 @@
             "value" : "Ouvrir la clé SSH"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buka kunci SSH"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -102814,6 +103060,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ouvrir le réseau wifi"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buka jaringan WiFi"
           }
         },
         "it" : {
@@ -103568,6 +103820,12 @@
             "value" : "Nom de l'organisation"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama organisasi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -103685,6 +103943,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "SE"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OS"
           }
         },
         "it" : {
@@ -104801,6 +105065,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Passeport"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paspor"
           }
         },
         "it" : {
@@ -106083,6 +106353,12 @@
             "value" : "Coller depuis le presse-papier"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salin dari papan klip"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -106200,6 +106476,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom du patient"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama pasien"
           }
         },
         "it" : {
@@ -107522,6 +107804,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Autorisations"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perizinan"
           }
         },
         "it" : {
@@ -111549,6 +111837,12 @@
             "value" : "Solde de points"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saldo poin"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -111663,6 +111957,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Port"
+          }
+        },
+        "id" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Port"
@@ -112943,6 +113243,12 @@
             "value" : "Clé privée"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci pribadi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -113060,6 +113366,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Produit"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Produk"
           }
         },
         "it" : {
@@ -113346,6 +113658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nom du programme"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama program"
           }
         },
         "it" : {
@@ -115055,6 +115373,12 @@
             "value" : "Clé publique"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci publik"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -116169,6 +116493,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Numéro d'enregistrement"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nomor rekaman"
           }
         },
         "it" : {
@@ -123433,6 +123763,12 @@
             "value" : "Programme de récompense"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Program Hadiah"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -123550,6 +123886,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Numéro d’acheminement"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nomor perutean"
           }
         },
         "it" : {
@@ -124002,6 +124344,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scannez le QR code pour rejoindre"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pindai kode QR untuk bergabung"
           }
         },
         "it" : {
@@ -125778,6 +126126,12 @@
             "value" : "Secret"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Secret"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127393,6 +127747,12 @@
             "value" : "Type de sécurité"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jenis keamanan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -127992,6 +128352,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Phrase de récupération"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Frasa benih"
           }
         },
         "it" : {
@@ -129929,6 +130295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Serveur"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Server"
           }
         },
         "it" : {
@@ -134852,6 +135224,12 @@
             "value" : "Afficher le QR code du réseau"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tampilkan Kode QR Jaringan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137242,6 +137620,12 @@
             "value" : "Numéro de sécurité sociale"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nomor Induk Kependudukan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -137359,6 +137743,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Licence de logiciel"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisensi Software"
           }
         },
         "it" : {
@@ -137978,6 +138368,12 @@
             "value" : "Spotlight"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sorotan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138094,6 +138490,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Clé SSH"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci SSH"
           }
         },
         "it" : {
@@ -138215,6 +138617,12 @@
             "value" : "Clé SSH"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci SSH"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138331,6 +138739,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La clé SSH a été créée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci SSH dibuat"
           }
         },
         "it" : {
@@ -138451,6 +138865,12 @@
             "value" : "La clé SSH a été mise dans la corbeille."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci SSH dipindahkan ke sampah"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138567,6 +138987,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La clé SSH a été supprimée définitivement."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci SSH dihapus secara permanen"
           }
         },
         "it" : {
@@ -138687,6 +139113,12 @@
             "value" : "La clé SSH a été restaurée."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci SSH dipulihkan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138803,6 +139235,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La clé SSH a été mise à jour."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci SSH diperbarui"
           }
         },
         "it" : {
@@ -138923,6 +139361,12 @@
             "value" : "Clés SSH"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci SSH"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -139039,6 +139483,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le SSID a été copié."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID disalin"
           }
         },
         "it" : {
@@ -139324,6 +139774,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Démarrer sans données existantes"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mulai dari awal"
           }
         },
         "it" : {
@@ -141102,6 +141558,12 @@
           }
         },
         "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT/BIC"
+          }
+        },
+        "id" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "SWIFT/BIC"
@@ -143017,6 +143479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Technologie"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teknologi"
           }
         },
         "it" : {
@@ -146383,6 +146851,12 @@
             "value" : "Niveau"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tingkatan/Level"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -146500,6 +146974,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Niveau/Statut"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tingkatan/Status"
           }
         },
         "it" : {
@@ -152555,6 +153035,12 @@
             "value" : "Non spécifié"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Belum ditentukan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -154641,6 +155127,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Changer d'abonnement pour créer des éléments personnalisés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tingkatkan untuk membuat item khusus"
           }
         },
         "it" : {
@@ -161570,6 +162062,12 @@
             "value" : "Nom du portefeuille"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nama dompet"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164001,6 +164499,12 @@
             "value" : "Réseau wifi"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan WiFi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164124,6 +164628,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réseau wifi"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan WiFi"
           }
         },
         "it" : {
@@ -164250,6 +164760,12 @@
             "value" : "Le réseau wifi a été créé."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan WiFi dibuat"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164366,6 +164882,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le réseau wifi a été mis dans la corbeille."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan WiFI dipindahkan ke sampah"
           }
         },
         "it" : {
@@ -164486,6 +165008,12 @@
             "value" : "Le réseau wifi a été définitivement supprimé."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan WiFi dihapus secara permanen"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164602,6 +165130,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le réseau wifi a été restauré."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan WiFI dipulihkan"
           }
         },
         "it" : {
@@ -164728,6 +165262,12 @@
             "value" : "Le réseau wifi a été mis à jour."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan WiFi diperbarui"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -164850,6 +165390,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Réseaux wifi"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jaringan WiFi"
           }
         },
         "it" : {
