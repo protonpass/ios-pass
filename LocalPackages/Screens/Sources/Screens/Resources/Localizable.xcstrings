@@ -1756,13 +1756,13 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld nội dung"
+                  "value" : "%lld mục"
                 }
               },
               "zero" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld nội dung"
+                  "value" : "%lld mục"
                 }
               }
             }
@@ -2959,6 +2959,12 @@
             "value" : "Přidat sekci"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abschnitt hinzufügen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2974,7 +2980,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir una sección"
+            "value" : "Añadir sección"
           }
         },
         "es-419" : {
@@ -2989,6 +2995,18 @@
             "value" : "Ajouter une section"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tambah bagian"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiungi sezione"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3001,16 +3019,22 @@
             "value" : "Adicionar seção"
           }
         },
-        "sk" : {
+        "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pridať sekciu"
+            "value" : "Adăugare secțiune"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lägg till sektion"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增版块"
           }
         }
       }
@@ -6767,13 +6791,19 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Рэдагаваць загаловак раздзела"
+            "value" : "Рэдагаваць назву раздзела"
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upravit název sekce"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Titel des Abschnitts bearbeiten"
           }
         },
         "el" : {
@@ -6791,7 +6821,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Editar el título de la sección"
+            "value" : "Editar título de la sección"
           }
         },
         "es-419" : {
@@ -6806,10 +6836,22 @@
             "value" : "Modifier le titre de la section"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunting judul bagian"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifica il titolo della sezione"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sectie titel bewerken"
+            "value" : "Sectietitel bewerken"
           }
         },
         "pt-BR" : {
@@ -6818,16 +6860,22 @@
             "value" : "Editar título da seção"
           }
         },
-        "sk" : {
+        "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Upraviť názov sekcie"
+            "value" : "Editare titlu secțiune"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Redigera sektionens rubrik"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑版块标题"
           }
         }
       }
@@ -9738,10 +9786,88 @@
     },
     "None" : {
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Няма"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nic"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Καμία"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "None"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguno"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguno"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuna"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fără"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inget"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无"
           }
         }
       }
@@ -12194,10 +12320,16 @@
             "value" : "Odebrat sekci"
           }
         },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abschnitt entfernen"
+          }
+        },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Αφαίρεση ενότητας"
+            "value" : "Κατάργηση ενότητας"
           }
         },
         "en" : {
@@ -12224,6 +12356,18 @@
             "value" : "Retirer la section"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hapus bagian"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rimuovi la sezione"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12236,16 +12380,22 @@
             "value" : "Remover seção"
           }
         },
-        "sk" : {
+        "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odstrániť sekciu"
+            "value" : "Eliminare secțiune"
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ta bort sektion"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除版块"
           }
         }
       }
