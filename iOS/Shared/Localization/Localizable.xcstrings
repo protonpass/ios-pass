@@ -1371,7 +1371,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "过去 14 天内有 %1$@、%2$@、%3$@。"
+            "value" : "过去 14 天内有 %1$@、 %2$@、 %3$@。"
           }
         }
       }
@@ -3431,7 +3431,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 已屏蔽"
+                  "value" : "%lld 已屏蔽"
                 }
               }
             }
@@ -8053,25 +8053,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przeniesiono %lld elementy do Kosza"
+                  "value" : "Przeniesiono %lld elementy do kosza"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przeniesiono %lld elementów do Kosza"
+                  "value" : "Przeniesiono %lld elementów do kosza"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przeniesiono %lld element do Kosza"
+                  "value" : "Przeniesiono %lld element do kosza"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przeniesiono %lld elementów do Kosza"
+                  "value" : "Przeniesiono %lld elementów do kosza"
                 }
               }
             }
@@ -25602,7 +25602,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aliasy w Koszu będą nadal przekierowywać wiadomości. Wyłącz alias, jeśli chcesz zatrzymać otrzymywanie wiadomości na ten adres."
+            "value" : "Aliasy w koszu będą nadal przekierowywać wiadomości. Wyłącz alias, jeśli chcesz zatrzymać otrzymywanie wiadomości na ten adres."
           }
         },
         "pt-BR" : {
@@ -26747,7 +26747,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wszystkie elementy z Kosza zostaną trwale usunięte"
+            "value" : "Wszystkie elementy z kosza zostaną trwale usunięte"
           }
         },
         "pt-BR" : {
@@ -46833,7 +46833,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Karta płatnicza została przeniesiona do Kosza"
+            "value" : "Karta płatnicza została przeniesiona do kosza"
           }
         },
         "pt-BR" : {
@@ -57976,7 +57976,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opróżnij Kosz"
+            "value" : "Opróżnij kosz"
           }
         },
         "pt-BR" : {
@@ -75459,7 +75459,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tożsamość została przeniesiona do Kosza"
+            "value" : "Tożsamość została przeniesiona do kosza"
           }
         },
         "pt-BR" : {
@@ -87286,7 +87286,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dane logowania zostały przeniesione do Kosza"
+            "value" : "Dane logowania zostały przeniesione do kosza"
           }
         },
         "pt-BR" : {
@@ -88803,7 +88803,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "邮箱是转发发送给别名电子邮件的地方。这是您常用的邮箱，如 Gmail、Outlook、Proton Mail 等。"
+            "value" : "邮箱 是转发发送给别名电子邮件的地方。这是您常用的邮箱，如 Gmail、Outlook、Proton Mail 等。"
           }
         }
       }
@@ -94254,7 +94254,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Przenieś do Kosza"
+            "value" : "Przenieś do kosza"
           }
         },
         "pt-BR" : {
@@ -99271,7 +99271,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Notatka została przeniesiona do Kosza"
+            "value" : "Notatka została przeniesiona do kosza"
           }
         },
         "pt-BR" : {
@@ -109809,7 +109809,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sprawdź folder Spam w poszukiwaniu wiadomości \"Potwierdź adres e-mail w Proton Pass\"\n\n[Poproś o nowy kod], jeśli nie widzisz wiadomości\n(https://proton.me)."
+            "value" : "Sprawdź folder spam w poszukiwaniu wiadomości \"Potwierdź adres e-mail w Proton Pass\"\n\n[Poproś o nowy kod], jeśli nie widzisz wiadomości\n(https://proton.me)."
           }
         },
         "pt-BR" : {
@@ -109976,7 +109976,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sprawdź folder Spam w poszukiwaniu wiadomości \"Potwierdź skrzynkę odbiorczą %@\"\n\n[Poproś o nowy kod], jeśli nie widzisz wiadomości\n(https://proton.me)."
+            "value" : "Sprawdź folder spam w poszukiwaniu wiadomości \"Potwierdź skrzynkę odbiorczą %@\"\n\n[Poproś o nowy kod], jeśli nie widzisz wiadomości\n(https://proton.me)."
           }
         },
         "pt-BR" : {
@@ -129516,7 +129516,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zaznacz sejfy"
+            "value" : "Zaznaczone sejfy"
           }
         },
         "pt-BR" : {
@@ -136353,7 +136353,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pokaż Kosz"
+            "value" : "Pokaż kosz"
           }
         },
         "pt-BR" : {
@@ -137226,7 +137226,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "SimpleLogin备注与别名地址储存在同一位置，尽管该备注信息已通过静态加密进行保护，但由于未采用端到端加密（E2EE）技术，这意味着任何有权访问SimpleLogin数据库的人员均可读取其内容。"
+            "value" : "SimpleLogin备注与别名地址储存在同一位置，尽管该备注信息已通过静态加密进行保护，但由于未采用端到端加密技术，这意味着任何有权访问SimpleLogin数据库的人员均可读取其内容。"
           }
         }
       }
@@ -138357,6 +138357,12 @@
           }
         },
         "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotlight"
+          }
+        },
+        "fi" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spotlight"
