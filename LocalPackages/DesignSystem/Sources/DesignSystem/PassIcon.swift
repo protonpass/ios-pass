@@ -96,6 +96,7 @@ public extension PassIcon {
     static let onboardAuthentication = Self.icon(named: "OnboardAuthentication")
     static let onboardAuthenticationBackground = Self.icon(named: "OnboardAuthenticationBackground")
     static let onboardAuthenticationEnabled = Self.icon(named: "OnboardAuthenticationEnabled")
+    static let onboardAutoFill = Self.icon(named: "OnboardAutoFill")
     static let onboardAutoFillGradient = Self.icon(named: "OnboardAutoFillGradient")
     static let onboardAutoFillEnabled = Self.icon(named: "OnboardAutoFillEnabled")
     static let onboardAutoFillStep1 = Self.icon(named: "OnboardAutoFillStep1")
@@ -103,6 +104,7 @@ public extension PassIcon {
     static let onboardAutoFillStep3 = Self.icon(named: "OnboardAutoFillStep3")
     static let onboardAutoFillStep4 = Self.icon(named: "OnboardAutoFillStep4")
     static let onboardAutoFillStep5 = Self.icon(named: "OnboardAutoFillStep5")
+    static let onboardFaceID = Self.icon(named: "OnboardFaceID")
 
     static let firstLoginScreen = Self.icon(named: "FirstLoginScreen")
     static let secondLoginScreen = Self.icon(named: "SecondLoginScreen")

@@ -36,7 +36,7 @@ struct OnboardingPaymentStep: View {
     @Binding var selectedPlan: PlanUiModel?
 
     var body: some View {
-        VStack {
+        VStack(spacing: 0) {
             paidFeatures
             view(for: plans)
         }
@@ -51,7 +51,7 @@ private extension OnboardingPaymentStep {
                     Image(uiImage: feature.icon)
                         .resizable()
                         .scaledToFit()
-                        .frame(maxHeight: 180)
+                        .frame(maxHeight: 150)
                     Text(feature.title)
                         .font(.title2)
                         .fontWeight(.bold)
@@ -91,7 +91,6 @@ private extension OnboardingPaymentStep {
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .multilineTextAlignment(.center)
                     .padding(.top, 4)
-                    .padding(.bottom, 56)
                     .animationsDisabled()
             }
         }
