@@ -4304,6 +4304,16 @@
         }
       }
     },
+    "Automatically enter your passwords in Safari and other apps in a really fast and easy way." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatically enter your passwords in Safari and other apps in a really fast and easy way."
+          }
+        }
+      }
+    },
     "By adding your domain, you can create aliases like hi@my-domain.com." : {
       "localizations" : {
         "be" : {
@@ -8134,6 +8144,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "启用触控 ID"
+          }
+        }
+      }
+    },
+    "Enjoy the magic of AutoFill" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enjoy the magic of AutoFill"
           }
         }
       }
@@ -13293,6 +13313,16 @@
         }
       }
     },
+    "Protect your most sensitive data" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protect your most sensitive data"
+          }
+        }
+      }
+    },
     "Quick actions on items" : {
       "localizations" : {
         "be" : {
@@ -15488,6 +15518,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Select your plan"
+          }
+        }
+      }
+    },
+    "Set Proton Pass to unlock with your face or fingerprint so only you have access." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Set Proton Pass to unlock with your face or fingerprint so only you have access."
           }
         }
       }

@@ -55,6 +55,7 @@ public struct OnboardingV2View: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             }
         }
+        .animation(.default, value: viewModel.currentStep)
         .task { await viewModel.setUp() }
     }
 }
@@ -68,9 +69,20 @@ private extension OnboardingV2View {
                     .padding([.top, .trailing], DesignConstant.onboardingPadding)
             }
             content(for: currentStep)
-            ctaButton(for: currentStep)
-                .padding(.horizontal, DesignConstant.onboardingPadding)
+
+            if let ctaTitle = currentStep.ctaTitle {
+                ctaButton(with: ctaTitle)
+                    .padding(DesignConstant.onboardingPadding)
+            }
         }
+        .background(LinearGradient(stops:
+            [
+                Gradient.Stop(color: Color(red: 0.81, green: 0.51, blue: 0.53), location: 0.00),
+                Gradient.Stop(color: Color(red: 0.29, green: 0.2, blue: 0.47), location: 0.59),
+                Gradient.Stop(color: Color(red: 0.12, green: 0.12, blue: 0.19), location: 1.00)
+            ],
+            startPoint: UnitPoint(x: 0, y: 0),
+            endPoint: UnitPoint(x: 0.66, y: 0.36)))
         .onChange(of: viewModel.finished) { _ in
             dismiss()
         }
@@ -84,11 +96,54 @@ private extension OnboardingV2View {
                                   selectedPlan: $viewModel.selectedPlan)
 
         case .biometric:
-            Text(verbatim: "Biometric")
+            descriptiveIllustration(illustration: PassIcon.onboardFaceID,
+                                    illustrationMaxHeight: 215,
+                                    title: "Protect your most sensitive data",
+                                    // swiftlint:disable:next line_length
+                                    description: "Set Proton Pass to unlock with your face or fingerprint so only you have access.")
 
         case .autofill:
-            Text(verbatim: "AutoFill")
+            descriptiveIllustration(illustration: PassIcon.onboardAutoFill,
+                                    illustrationMaxHeight: 204,
+                                    title: "Enjoy the magic of AutoFill",
+                                    // swiftlint:disable:next line_length
+                                    description: "Automatically enter your passwords in Safari and other apps in a really fast and easy way.")
+
+        case .createFirstLogin:
+            Text(verbatim: "Create first login")
         }
+    }
+
+    func descriptiveIllustration(illustration: UIImage,
+                                 illustrationMaxHeight: CGFloat,
+                                 title: LocalizedStringKey,
+                                 description: LocalizedStringKey) -> some View {
+        VStack(alignment: .center, spacing: DesignConstant.sectionPadding) {
+            Spacer()
+
+            Image(uiImage: illustration)
+                .resizable()
+                .scaledToFit()
+                .frame(maxHeight: illustrationMaxHeight)
+                .padding(.horizontal, 22)
+
+            Spacer(minLength: 24)
+
+            Text(title, bundle: .module)
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .padding(.horizontal, DesignConstant.onboardingPadding)
+
+            Text(description, bundle: .module)
+                .font(.title3)
+                .foregroundStyle(PassColor.textWeak.toColor)
+                .padding(.horizontal, DesignConstant.onboardingPadding)
+
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .multilineTextAlignment(.center)
     }
 
     var skipButton: some View {
@@ -104,17 +159,17 @@ private extension OnboardingV2View {
         })
     }
 
-    func ctaButton(for step: OnboardV2Step) -> some View {
-        CapsuleTextButton(title: step.ctaTitle,
-                          titleColor: PassColor.interactionNormMajor2,
-                          backgroundColor: PassColor.interactionNormMinor1,
+    func ctaButton(with title: String) -> some View {
+        CapsuleTextButton(title: title,
+                          titleColor: PassColor.textInvert,
+                          backgroundColor: PassColor.interactionNormMajor2,
                           height: 52,
                           action: { Task { await viewModel.performCta() } })
     }
 }
 
 private extension OnboardV2Step {
-    var ctaTitle: String {
+    var ctaTitle: String? {
         switch self {
         case .payment:
             #localized("Get Pass Plus", bundle: .module)
@@ -135,6 +190,9 @@ private extension OnboardV2Step {
 
         case .autofill:
             #localized("Turn on AutoFill", bundle: .module)
+
+        case .createFirstLogin:
+            nil
         }
     }
 }
