@@ -76,6 +76,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.onboardAuthentication
         _ = PassIcon.onboardAuthenticationBackground
         _ = PassIcon.onboardAuthenticationEnabled
+        _ = PassIcon.onboardAutoFill
         _ = PassIcon.onboardAutoFillGradient
         _ = PassIcon.onboardAutoFillEnabled
         _ = PassIcon.onboardAutoFillStep1
@@ -83,6 +84,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.onboardAutoFillStep3
         _ = PassIcon.onboardAutoFillStep4
         _ = PassIcon.onboardAutoFillStep5
+        _ = PassIcon.onboardFaceID
 
         _ = PassIcon.passCreditCardOneStripe
         _ = PassIcon.passCreditCardTwoStripes

@@ -26,18 +26,26 @@ import SwiftUI
 
 struct OnboardSection: View {
     @StateObject private var viewModel = OnboardSectionViewModel()
-    @State private var isShowingFullScreen = false
-    @State private var isShowingSheet = false
-    @State private var isShowingFullScreenV2 = false
-    @State private var isShowingSheetV2 = false
+    @Binding var sheet: QaModal?
+    @Binding var fullScreen: QaModal?
 
     var body: some View {
         Section(content: {
+            VStack(alignment: .leading) {
+                Toggle(isOn: $viewModel.onboarded) {
+                    Text(verbatim: "Onboarded")
+                }
+                Text(verbatim: "Automatically onboard after logging in with the first account")
+                    .foregroundStyle(.secondary)
+                    .font(.footnote)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
             Button(action: {
                 if UIDevice.current.isIpad {
-                    isShowingSheet.toggle()
+                    sheet = .onboarding
                 } else {
-                    isShowingFullScreen.toggle()
+                    fullScreen = .onboarding
                 }
             }, label: {
                 Text(verbatim: "Onboard")
@@ -45,9 +53,9 @@ struct OnboardSection: View {
 
             Button(action: {
                 if UIDevice.current.isIpad {
-                    isShowingSheetV2.toggle()
+                    sheet = .onboardingV2(viewModel, viewModel)
                 } else {
-                    isShowingFullScreenV2.toggle()
+                    fullScreen = .onboardingV2(viewModel, viewModel)
                 }
             }, label: {
                 Text(verbatim: "Onboard V2")
@@ -55,27 +63,20 @@ struct OnboardSection: View {
         }, header: {
             Text(verbatim: "👋")
         })
-        .fullScreenCover(isPresented: $isShowingFullScreen) { onboardingView }
-        .sheet(isPresented: $isShowingSheet) { onboardingView }
-        .fullScreenCover(isPresented: $isShowingFullScreenV2) { onboardingV2 }
-        .sheet(isPresented: $isShowingSheetV2) { onboardingV2 }
-    }
-}
-
-private extension OnboardSection {
-    var onboardingView: some View {
-        OnboardingView(onWatchTutorial: {})
-    }
-
-    var onboardingV2: some View {
-        OnboardingV2View(isFreeUser: true,
-                         datasource: viewModel,
-                         delegate: viewModel)
     }
 }
 
 @MainActor
 private final class OnboardSectionViewModel: ObservableObject {
+    @Published var onboarded = false {
+        didSet {
+            Task { [weak self] in
+                guard let self else { return }
+                try? await updateAppPreferences(\.onboarded, value: onboarded)
+            }
+        }
+    }
+
     @LazyInjected(\SharedServiceContainer.credentialManager)
     private var credentialManager
 
@@ -85,11 +86,24 @@ private final class OnboardSectionViewModel: ObservableObject {
     @LazyInjected(\SharedUseCasesContainer.checkBiometryType)
     private var checkBiometryType
 
+    @LazyInjected(\SharedUseCasesContainer.getAppPreferences)
+    private var getAppPreferences
+
+    @LazyInjected(\SharedUseCasesContainer.updateAppPreferences)
+    private var updateAppPreferences
+
     @LazyInjected(\SharedToolingContainer.localAuthenticationEnablingPolicy)
     private var policy
 
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
+
+    init() {
+        Task { [weak self] in
+            guard let self else { return }
+            onboarded = getAppPreferences().onboarded
+        }
+    }
 }
 
 extension OnboardSectionViewModel: OnboardingV2Datasource {

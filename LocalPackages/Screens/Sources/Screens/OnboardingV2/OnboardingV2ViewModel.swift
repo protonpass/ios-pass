@@ -39,7 +39,10 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
 }
 
 enum OnboardV2Step: Sendable, Equatable {
-    case payment([PlanUiModel]), biometric(LABiometryType), autofill
+    case payment([PlanUiModel])
+    case biometric(LABiometryType)
+    case autofill
+    case createFirstLogin
 }
 
 @MainActor
@@ -117,6 +120,11 @@ extension OnboardingV2ViewModel {
             return true
 
         case .autofill:
+            // swiftlint:disable:next todo
+            // TODO: [OnboardingV2] Support creating first login
+            return false
+
+        case .createFirstLogin:
             return false
 
         default:
