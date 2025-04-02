@@ -2989,6 +2989,12 @@
             "value" : "Agregar una sección"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää osio"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3029,6 +3035,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lägg till sektion"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bölüm ekle"
           }
         },
         "zh-Hans" : {
@@ -5268,7 +5280,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nie można znaleźć \"%@\" w Koszu"
+            "value" : "Nie można znaleźć \"%@\" w koszu"
           }
         },
         "pt-BR" : {
@@ -6830,6 +6842,12 @@
             "value" : "Editar el título de la sección"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muokkaa osion nimeä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6870,6 +6888,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Redigera sektionens rubrik"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bölüm başlığını düzenle"
           }
         },
         "zh-Hans" : {
@@ -9828,6 +9852,12 @@
             "value" : "Ninguno"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9862,6 +9892,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inget"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yok"
           }
         },
         "zh-Hans" : {
@@ -12350,6 +12386,12 @@
             "value" : "Eliminar la sección"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poista osio"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12390,6 +12432,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ta bort sektion"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bölümü kaldır"
           }
         },
         "zh-Hans" : {
@@ -16330,6 +16378,12 @@
             "value" : "Pulse **Exportar las contraseñas**"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Napauta **Vie salasanoja**"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17602,6 +17656,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Use alias de hide-my-email contra amenazas de phishing."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suojaudu tietojenkalastelulta Hide-My-Email-aliaksilla."
           }
         },
         "fr" : {
