@@ -23,16 +23,32 @@ import Entities
 import Foundation
 import LocalAuthentication
 
+public enum OnboardFirstLoginSuggestion: Sendable {
+    case none
+    case suggestedShare(shareId: String)
+}
+
+public struct OnboardFirstLoginPayload: Sendable, Equatable {
+    public let favIconUrl: String
+    public let title: String
+    public let email: String
+    public let username: String
+    public let password: String
+    public let website: String
+}
+
 public protocol OnboardingV2Datasource: Sendable, AnyObject {
     func getAvailablePlans() async throws -> [PlanUiModel]
     func getBiometryType() async throws -> LABiometryType?
     func isAutoFillEnabled() async -> Bool
+    func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion
 }
 
 public protocol OnboardingV2Delegate: Sendable, AnyObject {
     func purchase(_ plan: PlanUiModel) async throws
     func enableBiometric() async throws
     func enableAutoFill() async -> Bool
+    func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
 
     @MainActor
     func handle(_ error: any Error)
@@ -42,7 +58,8 @@ enum OnboardV2Step: Sendable, Equatable {
     case payment([PlanUiModel])
     case biometric(LABiometryType)
     case autofill
-    case createFirstLogin
+    case createFirstLogin(shareId: String)
+    case firstLoginCreated(OnboardFirstLoginPayload)
 }
 
 @MainActor
@@ -120,9 +137,13 @@ extension OnboardingV2ViewModel {
             return true
 
         case .autofill:
-            // swiftlint:disable:next todo
-            // TODO: [OnboardingV2] Support creating first login
-            return false
+            switch await datasource.getFirstLoginSuggestion() {
+            case .none:
+                return false
+            case let .suggestedShare(shareId):
+                currentStep = .fetched(.createFirstLogin(shareId: shareId))
+                return true
+            }
 
         case .createFirstLogin:
             return false
@@ -163,6 +184,20 @@ extension OnboardingV2ViewModel {
 
         if shouldGoToNextStep, await !goNext() {
             finished = true
+        }
+    }
+
+    func createFirstLogin(payload: OnboardFirstLoginPayload) async {
+        guard let delegate else {
+            assertionFailure("Delegate not set")
+            return
+        }
+
+        do {
+            try await delegate.createFirstLogin(payload: payload)
+            currentStep = .fetched(.firstLoginCreated(payload))
+        } catch {
+            delegate.handle(error)
         }
     }
 }

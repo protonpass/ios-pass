@@ -111,6 +111,9 @@ private extension OnboardingV2View {
 
         case .createFirstLogin:
             Text(verbatim: "Create first login")
+
+        case .firstLoginCreated:
+            Text(verbatim: "First login created")
         }
     }
 
@@ -191,7 +194,7 @@ private extension OnboardV2Step {
         case .autofill:
             #localized("Turn on AutoFill", bundle: .module)
 
-        case .createFirstLogin:
+        case .createFirstLogin, .firstLoginCreated:
             nil
         }
     }
