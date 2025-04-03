@@ -43,7 +43,8 @@ let package = Package(
                 .product(name: "Macro", package: "Macro"),
                 .product(name: "ProtonCoreLoginUI", package: "protoncore_ios"),
                 .product(name: "ProtonCoreUIFoundations", package: "protoncore_ios")
-            ])
+            ],
+            resources: [.process("Resources")])
     ],
     swiftLanguageModes: [.version("6")]
 )
