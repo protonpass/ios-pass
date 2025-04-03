@@ -27,6 +27,13 @@ import SwiftUI
 public struct OnboardingV2View: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: OnboardingV2ViewModel
+    @State private var topBar: TopBar = .skipButton
+
+    enum TopBar {
+        case skipButton
+        // swiftlint:disable:next discouraged_anyview
+        case custom(AnyView)
+    }
 
     public init(isFreeUser: Bool,
                 datasource: OnboardingV2Datasource?,
@@ -63,11 +70,18 @@ public struct OnboardingV2View: View {
 private extension OnboardingV2View {
     func mainContainer(currentStep: OnboardV2Step) -> some View {
         VStack {
-            HStack {
-                Spacer()
-                skipButton
-                    .padding([.top, .trailing], DesignConstant.onboardingPadding)
+            switch topBar {
+            case .skipButton:
+                HStack {
+                    Spacer()
+                    skipButton
+                }
+                .padding([.top, .trailing], DesignConstant.onboardingPadding)
+
+            case let .custom(view):
+                view
             }
+
             content(for: currentStep)
 
             if let ctaTitle = currentStep.ctaTitle {
@@ -109,11 +123,14 @@ private extension OnboardingV2View {
                                     // swiftlint:disable:next line_length
                                     description: "Automatically enter your passwords in Safari and other apps in a really fast and easy way.")
 
-        case .createFirstLogin:
-            Text(verbatim: "Create first login")
+        case let .createFirstLogin(shareId, services):
+            OnboardingCreateFirstLoginStep(topBar: $topBar,
+                                           shareId: shareId,
+                                           services: services,
+                                           onCreate: viewModel.createFirstLogin(payload:))
 
-        case .firstLoginCreated:
-            Text(verbatim: "First login created")
+        case let .firstLoginCreated(payload):
+            OnboardingFirstLoginCreatedStep(payload: payload)
         }
     }
 
