@@ -29,12 +29,24 @@ public enum OnboardFirstLoginSuggestion: Sendable {
 }
 
 public struct OnboardFirstLoginPayload: Sendable, Equatable {
+    public let shareId: String
     public let favIconUrl: String
     public let title: String
     public let email: String
     public let username: String
     public let password: String
     public let website: String
+}
+
+struct KnownService: Sendable, Decodable, Equatable {
+    let name: String
+    let url: String
+    let favIconUrl: String
+    let loginType: LoginType
+
+    enum LoginType: String, Sendable, Decodable {
+        case email, username, both
+    }
 }
 
 public protocol OnboardingV2Datasource: Sendable, AnyObject {
@@ -51,6 +63,12 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
 
     @MainActor
+    func showLoadingIndicator()
+
+    @MainActor
+    func hideLoadingIndicator()
+
+    @MainActor
     func handle(_ error: any Error)
 }
 
@@ -58,7 +76,7 @@ enum OnboardV2Step: Sendable, Equatable {
     case payment([PlanUiModel])
     case biometric(LABiometryType)
     case autofill
-    case createFirstLogin(shareId: String)
+    case createFirstLogin(shareId: String, [KnownService])
     case firstLoginCreated(OnboardFirstLoginPayload)
 }
 
@@ -111,6 +129,7 @@ extension OnboardingV2ViewModel {
         }
     }
 
+    // swiftlint:disable cyclomatic_complexity
     /// Returns `true` if other steps are available,
     /// `false` if no more steps so the onboarding process could be ended
     func goNext() async -> Bool {
@@ -141,8 +160,14 @@ extension OnboardingV2ViewModel {
             case .none:
                 return false
             case let .suggestedShare(shareId):
-                currentStep = .fetched(.createFirstLogin(shareId: shareId))
-                return true
+                do {
+                    let services = try fetchKnownServices()
+                    currentStep = .fetched(.createFirstLogin(shareId: shareId, services))
+                    return true
+                } catch {
+                    currentStep = .error(error)
+                    return false
+                }
             }
 
         case .createFirstLogin:
@@ -152,6 +177,8 @@ extension OnboardingV2ViewModel {
             return false
         }
     }
+
+    // swiftlint:enable cyclomatic_complexity
 
     func performCta() async {
         guard let delegate else {
@@ -187,17 +214,35 @@ extension OnboardingV2ViewModel {
         }
     }
 
-    func createFirstLogin(payload: OnboardFirstLoginPayload) async {
+    func createFirstLogin(payload: OnboardFirstLoginPayload) {
         guard let delegate else {
             assertionFailure("Delegate not set")
             return
         }
 
-        do {
-            try await delegate.createFirstLogin(payload: payload)
-            currentStep = .fetched(.firstLoginCreated(payload))
-        } catch {
-            delegate.handle(error)
+        Task { [weak self] in
+            guard let self else { return }
+            defer { delegate.hideLoadingIndicator() }
+            delegate.showLoadingIndicator()
+            do {
+                try await delegate.createFirstLogin(payload: payload)
+                currentStep = .fetched(.firstLoginCreated(payload))
+            } catch {
+                delegate.handle(error)
+            }
         }
+    }
+}
+
+private extension OnboardingV2ViewModel {
+    func fetchKnownServices() throws -> [KnownService] {
+        guard let url = Bundle.module.url(forResource: "Top100services",
+                                          withExtension: "json") else {
+            assertionFailure("Failed to load list of known services")
+            return []
+        }
+
+        let data = try Data(contentsOf: url)
+        return try JSONDecoder().decode([KnownService].self, from: data)
     }
 }

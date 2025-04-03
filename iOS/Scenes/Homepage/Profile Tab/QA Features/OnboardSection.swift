@@ -145,6 +145,16 @@ extension OnboardSectionViewModel: OnboardingV2Delegate {
     }
 
     @MainActor
+    func showLoadingIndicator() {
+        router.display(element: .globalLoading(shouldShow: true))
+    }
+
+    @MainActor
+    func hideLoadingIndicator() {
+        router.display(element: .globalLoading(shouldShow: false))
+    }
+
+    @MainActor
     func handle(_ error: any Error) {
         router.display(element: .displayErrorBanner(error))
     }

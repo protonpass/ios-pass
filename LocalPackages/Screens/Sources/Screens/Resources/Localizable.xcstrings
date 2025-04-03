@@ -6395,6 +6395,16 @@
         }
       }
     },
+    "Create your first login" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create your first login"
+          }
+        }
+      }
+    },
     "Default SimpleLogin vault" : {
       "localizations" : {
         "be" : {
@@ -7186,6 +7196,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您知道吗？"
+          }
+        }
+      }
+    },
+    "E.g. LinkedIn" : {
+      "comment" : "Placeholder of \"Create your first login\" text field",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E.g. LinkedIn"
           }
         }
       }
@@ -15522,6 +15543,16 @@
         }
       }
     },
+    "Service" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Service"
+          }
+        }
+      }
+    },
     "Set Proton Pass to unlock with your face or fingerprint so only you have access." : {
       "localizations" : {
         "en" : {
@@ -20096,6 +20127,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Which service do you want to create the login for?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which service do you want to create the login for?"
           }
         }
       }
