@@ -121,6 +121,10 @@ extension OnboardSectionViewModel: OnboardingV2Datasource {
     func isAutoFillEnabled() async -> Bool {
         await credentialManager.isAutoFillEnabled
     }
+
+    func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion {
+        .suggestedShare(shareId: "")
+    }
 }
 
 extension OnboardSectionViewModel: OnboardingV2Delegate {
@@ -134,6 +138,10 @@ extension OnboardSectionViewModel: OnboardingV2Delegate {
 
     func enableAutoFill() async -> Bool {
         await enableAutoFillUseCase()
+    }
+
+    func createFirstLogin(payload: OnboardFirstLoginPayload) async throws {
+        print(#function)
     }
 
     @MainActor
