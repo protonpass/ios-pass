@@ -80,7 +80,7 @@ final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
     func save() {
         guard let selectedService else { return }
         onCreate(.init(shareId: shareId,
-                       favIconUrl: selectedService.favIconUrl,
+                       service: selectedService,
                        title: title,
                        email: email,
                        username: username,

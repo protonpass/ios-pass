@@ -30,15 +30,19 @@ public enum OnboardFirstLoginSuggestion: Sendable {
 
 public struct OnboardFirstLoginPayload: Sendable, Equatable {
     public let shareId: String
-    public let favIconUrl: String
+    public let service: KnownService
     public let title: String
     public let email: String
     public let username: String
     public let password: String
     public let website: String
+
+    var emailOrUsername: String {
+        email.isEmpty ? username : email
+    }
 }
 
-struct KnownService: Sendable, Decodable, Equatable {
+public struct KnownService: Sendable, Decodable, Equatable {
     let name: String
     let url: String
     let favIconUrl: String
@@ -148,7 +152,8 @@ extension OnboardingV2ViewModel {
 
         case .biometric:
             if await datasource.isAutoFillEnabled() {
-                return false
+                // swiftlint:disable:next fallthrough
+                fallthrough
             } else {
                 currentStep = .fetched(.autofill)
                 return true

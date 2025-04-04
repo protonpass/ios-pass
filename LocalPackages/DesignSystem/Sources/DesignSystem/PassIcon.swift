@@ -105,6 +105,7 @@ public extension PassIcon {
     static let onboardAutoFillStep4 = Self.icon(named: "OnboardAutoFillStep4")
     static let onboardAutoFillStep5 = Self.icon(named: "OnboardAutoFillStep5")
     static let onboardFaceID = Self.icon(named: "OnboardFaceID")
+    static let onboardLoginCreatedSparkle = Self.icon(named: "OnboardLoginCreatedSparkle")
 
     static let firstLoginScreen = Self.icon(named: "FirstLoginScreen")
     static let secondLoginScreen = Self.icon(named: "SecondLoginScreen")
