@@ -141,17 +141,8 @@ extension OnboardSectionViewModel: OnboardingV2Delegate {
     }
 
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws {
+        try await Task.sleep(seconds: 2)
         print(#function)
-    }
-
-    @MainActor
-    func showLoadingIndicator() {
-        router.display(element: .globalLoading(shouldShow: true))
-    }
-
-    @MainActor
-    func hideLoadingIndicator() {
-        router.display(element: .globalLoading(shouldShow: false))
     }
 
     @MainActor

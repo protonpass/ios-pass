@@ -61,13 +61,6 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
     func enableBiometric() async throws
     func enableAutoFill() async -> Bool
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
-
-    @MainActor
-    func showLoadingIndicator()
-
-    @MainActor
-    func hideLoadingIndicator()
-
     @MainActor
     func handle(_ error: any Error)
 }
@@ -83,6 +76,7 @@ enum OnboardV2Step: Sendable, Equatable {
 @MainActor
 final class OnboardingV2ViewModel: ObservableObject {
     @Published private(set) var currentStep: FetchableObject<OnboardV2Step> = .fetching
+    @Published private(set) var isSaving = false
     @Published private(set) var finished = false
     @Published var selectedPlan: PlanUiModel?
     private let isFreeUser: Bool
@@ -138,7 +132,12 @@ extension OnboardingV2ViewModel {
             return false
         }
 
-        switch currentStep.fetchedObject {
+        guard let step = currentStep.fetchedObject else {
+            assertionFailure("Current step is not initialized")
+            return false
+        }
+
+        switch step {
         case .payment:
             if let availableBiometryType, availableBiometryType != .none {
                 currentStep = .fetched(.biometric(availableBiometryType))
@@ -152,8 +151,8 @@ extension OnboardingV2ViewModel {
                 return false
             } else {
                 currentStep = .fetched(.autofill)
+                return true
             }
-            return true
 
         case .autofill:
             switch await datasource.getFirstLoginSuggestion() {
@@ -171,9 +170,10 @@ extension OnboardingV2ViewModel {
             }
 
         case .createFirstLogin:
+            // Not applicable
             return false
 
-        default:
+        case .firstLoginCreated:
             return false
         }
     }
@@ -222,8 +222,8 @@ extension OnboardingV2ViewModel {
 
         Task { [weak self] in
             guard let self else { return }
-            defer { delegate.hideLoadingIndicator() }
-            delegate.showLoadingIndicator()
+            defer { isSaving = false }
+            isSaving = true
             do {
                 try await delegate.createFirstLogin(payload: payload)
                 currentStep = .fetched(.firstLoginCreated(payload))

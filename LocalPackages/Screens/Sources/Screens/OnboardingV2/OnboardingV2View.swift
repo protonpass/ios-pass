@@ -28,6 +28,7 @@ import SwiftUI
 public struct OnboardingV2View: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: OnboardingV2ViewModel
+    @State private var saveable = false
     @State private var topBar: TopBar = .skipButton
 
     enum TopBar {
@@ -73,35 +74,7 @@ public struct OnboardingV2View: View {
 private extension OnboardingV2View {
     func mainContainer(currentStep: OnboardV2Step) -> some View {
         VStack {
-            HStack {
-                switch topBar {
-                case .none:
-                    EmptyView()
-
-                case .skipButton:
-                    Spacer()
-                    skipButton
-
-                case let .createFirstLogin(service, onClose, onSave):
-                    CircleButton(icon: IconProvider.cross,
-                                 iconColor: PassColor.interactionNormMajor2,
-                                 backgroundColor: .black.withAlphaComponent(0.15),
-                                 action: onClose)
-
-                    Spacer()
-
-                    KnownServiceThumbnail(service: service)
-
-                    Spacer()
-
-                    CapsuleTextButton(title: #localized("Save", bundle: .module),
-                                      titleColor: PassColor.textInvert,
-                                      backgroundColor: PassColor.interactionNormMajor2,
-                                      maxWidth: nil,
-                                      action: onSave)
-                }
-            }
-            .padding(DesignConstant.onboardingPadding)
+            topBarView
 
             content(for: currentStep)
 
@@ -118,9 +91,58 @@ private extension OnboardingV2View {
             ],
             startPoint: UnitPoint(x: 0, y: 0),
             endPoint: UnitPoint(x: 0.66, y: 0.36)))
+        .onChange(of: viewModel.isSaving) { newValue in
+            if !newValue {
+                topBar = .none
+            }
+        }
         .onChange(of: viewModel.finished) { _ in
             dismiss()
         }
+    }
+
+    var topBarView: some View {
+        HStack {
+            switch topBar {
+            case .none:
+                EmptyView()
+
+            case .skipButton:
+                Spacer()
+                skipButton
+
+            case let .createFirstLogin(service, onClose, onSave):
+                ZStack {
+                    HStack {
+                        CircleButton(icon: IconProvider.cross,
+                                     iconColor: PassColor.interactionNormMajor2,
+                                     backgroundColor: .black.withAlphaComponent(0.15),
+                                     accessibilityLabel: "Close",
+                                     action: onClose)
+
+                        Spacer()
+
+                        if viewModel.isSaving {
+                            ProgressView()
+                        } else {
+                            DisablableCapsuleTextButton(title: #localized("Save", bundle: .module),
+                                                        titleColor: PassColor.textInvert,
+                                                        disableTitleColor: PassColor.textHint,
+                                                        backgroundColor: PassColor.interactionNormMajor1,
+                                                        disableBackgroundColor: PassColor.interactionNormMinor1,
+                                                        disabled: !saveable,
+                                                        maxWidth: nil,
+                                                        action: onSave)
+                                .accessibilityLabel("Save")
+                        }
+                    }
+
+                    KnownServiceThumbnail(service: service)
+                }
+            }
+        }
+        .padding(DesignConstant.onboardingPadding)
+        .animation(.default, value: viewModel.isSaving)
     }
 
     @ViewBuilder
@@ -145,7 +167,8 @@ private extension OnboardingV2View {
                                     description: "Automatically enter your passwords in Safari and other apps in a really fast and easy way.")
 
         case let .createFirstLogin(shareId, services):
-            OnboardingCreateFirstLoginStep(topBar: $topBar,
+            OnboardingCreateFirstLoginStep(saveable: $saveable,
+                                           topBar: $topBar,
                                            shareId: shareId,
                                            services: services,
                                            onCreate: viewModel.createFirstLogin(payload:))
@@ -233,8 +256,11 @@ private extension OnboardV2Step {
         case .autofill:
             #localized("Turn on AutoFill", bundle: .module)
 
-        case .createFirstLogin, .firstLoginCreated:
+        case .createFirstLogin:
             nil
+
+        case .firstLoginCreated:
+            #localized("Get Started", bundle: .module)
         }
     }
 }
