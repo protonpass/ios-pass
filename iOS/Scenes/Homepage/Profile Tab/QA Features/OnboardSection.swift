@@ -129,7 +129,7 @@ extension OnboardSectionViewModel: OnboardingV2Datasource {
 
 extension OnboardSectionViewModel: OnboardingV2Delegate {
     func purchase(_ plan: PlanUiModel) async throws {
-        print(#function)
+        print(plan)
     }
 
     func enableBiometric() async throws {
@@ -142,7 +142,7 @@ extension OnboardSectionViewModel: OnboardingV2Delegate {
 
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws {
         try await Task.sleep(seconds: 2)
-        print(#function)
+        print(payload)
     }
 
     @MainActor

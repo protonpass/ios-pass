@@ -31,19 +31,90 @@ private enum PaidFeature: CaseIterable {
     case protonSentinel
 }
 
+private enum PassFeature: CaseIterable {
+    case unlimitedLoginsNotesDevices
+    case unlimitedAliases
+    case twoFaAuthenticator
+    case vaultSharing
+    case secureLinks
+    case unlimitedCreditCards
+    case darkWebMonitoring
+    case fileAttachments
+    case advancedAliasManagement
+}
+
+private let kAvailabilityColumnWidth: CGFloat = 66
+
 struct OnboardingPaymentStep: View {
     let plans: [PlanUiModel]
     @Binding var selectedPlan: PlanUiModel?
 
     var body: some View {
-        VStack(spacing: 0) {
-            paidFeatures
-            view(for: plans)
+        ScrollView(showsIndicators: false) {
+            VStack(spacing: 0) {
+                ZStack {
+                    HStack {
+                        Spacer()
+                        Color(red: 0.19, green: 0.18, blue: 0.27)
+                            .frame(width: kAvailabilityColumnWidth)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                    }
+                    featureTable
+                }
+                //            paidFeatures
+                view(for: plans)
+            }
         }
+        .padding(.horizontal, DesignConstant.onboardingPadding)
     }
 }
 
 private extension OnboardingPaymentStep {
+    var featureTable: some View {
+        LazyVGrid(columns:
+            [
+                .init(.flexible()),
+                .init(.fixed(kAvailabilityColumnWidth)),
+                .init(.fixed(kAvailabilityColumnWidth))
+            ],
+            spacing: DesignConstant.sectionPadding) {
+                Text(verbatim: "")
+
+                // swiftlint:disable:next todo
+                // TODO: [OnboardingV2] Localize this
+                Text(verbatim: "FREE")
+                    .fontWeight(.bold)
+
+                Image(uiImage: PassIcon.passSubscriptionBadge)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 42)
+
+                ForEach(PassFeature.allCases, id: \.self) { feature in
+                    Text(feature.title)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    if feature.isFree {
+                        checkmark
+                    } else {
+                        Image(systemName: "minus")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 16)
+                    }
+                    checkmark
+                }
+            }
+            .foregroundStyle(PassColor.textNorm.toColor)
+            .padding(.vertical)
+    }
+
+    var checkmark: some View {
+        Image(systemName: "checkmark")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 16)
+    }
+
     var paidFeatures: some View {
         TabView {
             ForEach(PaidFeature.allCases, id: \.self) { feature in
@@ -150,6 +221,41 @@ private struct PlanCell: View {
         }
         .contentShape(.rect)
         .onTapGesture(perform: onSelect)
+    }
+}
+
+private extension PassFeature {
+    var isFree: Bool {
+        if case .unlimitedLoginsNotesDevices = self {
+            true
+        } else {
+            false
+        }
+    }
+
+    // swiftlint:disable:next todo
+    // TODO: [OnboardingV2] Localize these copies
+    var title: String {
+        switch self {
+        case .unlimitedLoginsNotesDevices:
+            "Unlimited logins, notes, and devices"
+        case .unlimitedAliases:
+            "Unlimited hide-my-email aliases"
+        case .twoFaAuthenticator:
+            "2FA authenticator"
+        case .vaultSharing:
+            "Secure vault sharing"
+        case .secureLinks:
+            "Secure link sharing"
+        case .unlimitedCreditCards:
+            "Unlimited credit cards"
+        case .darkWebMonitoring:
+            "Dark Web Monitoring"
+        case .fileAttachments:
+            "File attachments"
+        case .advancedAliasManagement:
+            "Advanced alias management"
+        }
     }
 }
 
