@@ -167,6 +167,7 @@ private struct ServiceSelectionView: View {
 
 struct KnownServiceThumbnail: View {
     let service: KnownService
+    var height: CGFloat = 32
 
     var body: some View {
         if let url = URL(string: service.favIconUrl) {
@@ -175,11 +176,11 @@ struct KnownServiceThumbnail: View {
                            image.resizable()
                                .scaledToFit()
                                .padding(4)
-                               .frame(width: 32, height: 32)
+                               .frame(width: height, height: height)
                        },
                        placeholder: {
                            ProgressView()
-                               .frame(width: 32, height: 32)
+                               .frame(width: height, height: height)
                        })
                        .background(.white)
                        .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -187,7 +188,7 @@ struct KnownServiceThumbnail: View {
             SquircleThumbnail(data: .initials(service.name.prefix(2).uppercased()),
                               tintColor: PassColor.interactionNormMajor2,
                               backgroundColor: PassColor.interactionNormMinor1,
-                              height: 32)
+                              height: height)
         }
     }
 }
