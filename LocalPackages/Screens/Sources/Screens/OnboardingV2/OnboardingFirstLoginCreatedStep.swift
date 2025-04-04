@@ -25,6 +25,11 @@ struct OnboardingFirstLoginCreatedStep: View {
     let payload: OnboardFirstLoginPayload
 
     var body: some View {
-        Text(verbatim: "OnboardingFirstLoginCreatedStep")
+        VStack {
+            Spacer()
+            Text(verbatim: "OnboardingFirstLoginCreatedStep")
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }

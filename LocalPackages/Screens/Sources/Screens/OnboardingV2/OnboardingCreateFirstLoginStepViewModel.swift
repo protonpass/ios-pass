@@ -25,7 +25,15 @@ import Foundation
 @MainActor
 final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
     @Published var serviceName = ""
-    @Published var selectedService: KnownService?
+    @Published var selectedService: KnownService? {
+        didSet {
+            if let selectedService {
+                title = selectedService.name
+                website = selectedService.url
+            }
+        }
+    }
+
     @Published private(set) var suggestions = [KnownService]()
 
     @Published var title = ""
@@ -33,6 +41,12 @@ final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
     @Published var username = ""
     @Published var password = ""
     @Published var website = ""
+
+    var saveable: Bool {
+        !title.isEmpty &&
+            (!email.isEmpty || !username.isEmpty) &&
+            !password.isEmpty
+    }
 
     private var cancellables = Set<AnyCancellable>()
     private let shareId: String
@@ -54,6 +68,11 @@ final class OnboardingCreateFirstLoginStepViewModel: ObservableObject {
                 suggestions = services.filter {
                     $0.name.lowercased().contains(name.lowercased())
                 }
+                .sorted(by: {
+                    // Prioritize matches at the beginning of service's names
+                    $0.name.lowercased().hasPrefix(name.lowercased()) &&
+                        !$1.name.lowercased().hasPrefix(name.lowercased())
+                })
             }
             .store(in: &cancellables)
     }

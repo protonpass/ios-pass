@@ -20,21 +20,26 @@
 //
 
 import DesignSystem
+import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
 
 struct OnboardingCreateFirstLoginStep: View {
     @StateObject private var viewModel: OnboardingCreateFirstLoginStepViewModel
-    @FocusState private var focusedField: Field?
+    @FocusState private var focusedServiceName
+    @Binding var saveable: Bool
     @Binding var topBar: OnboardingV2View.TopBar
 
     enum Field: Hashable {
-        case serviceName, title
+        case serviceName
     }
 
-    init(topBar: Binding<OnboardingV2View.TopBar>,
+    init(saveable: Binding<Bool>,
+         topBar: Binding<OnboardingV2View.TopBar>,
          shareId: String,
          services: [KnownService],
          onCreate: @escaping (OnboardFirstLoginPayload) -> Void) {
+        _saveable = saveable
         _topBar = topBar
         _viewModel = .init(wrappedValue: .init(shareId: shareId,
                                                services: services,
@@ -44,56 +49,48 @@ struct OnboardingCreateFirstLoginStep: View {
     var body: some View {
         ZStack {
             ServiceSelectionView(serviceName: $viewModel.serviceName,
+                                 selectedService: $viewModel.selectedService,
                                  suggestions: viewModel.suggestions,
-                                 field: .serviceName,
-                                 focusedField: $focusedField,
-                                 onSelect: { service in
-                                     viewModel.selectedService = service
-                                     focusedField = .title
-                                 })
-                                 .opacity(viewModel.selectedService == nil ? 1 : 0)
+                                 focused: $focusedServiceName).opacity(viewModel.selectedService == nil ? 1 : 0)
             if let selectedService = viewModel.selectedService {
-                view(for: selectedService)
+                CreateFirstLoginView(title: $viewModel.title,
+                                     email: $viewModel.email,
+                                     username: $viewModel.username,
+                                     password: $viewModel.password,
+                                     website: $viewModel.website,
+                                     service: selectedService)
             }
         }
         .animation(.default, value: viewModel.selectedService)
         .tint(PassColor.interactionNorm.toColor)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.bottom, DesignConstant.onboardingPadding)
         .onChange(of: viewModel.selectedService) { _ in
             if let selectedService = viewModel.selectedService {
                 topBar = .createFirstLogin(selectedService,
                                            onClose: { viewModel.selectedService = nil },
                                            onSave: viewModel.save)
             } else {
+                focusedServiceName = true
                 topBar = .skipButton
             }
         }
+        .onChange(of: viewModel.saveable) { newValue in
+            saveable = newValue
+        }
         .onAppear {
-            focusedField = .serviceName
+            focusedServiceName = true
         }
     }
 }
 
-private extension OnboardingCreateFirstLoginStep {
-    func view(for service: KnownService) -> some View {
-        VStack {
-            TextField(text: $viewModel.title) { EmptyView() }
+// MARK: - ServiceSelectionView
 
-            TextField(text: $viewModel.email) { EmptyView() }
-
-            SecureField(text: $viewModel.password) { EmptyView() }
-
-            Spacer()
-        }
-    }
-}
-
-private struct ServiceSelectionView<Field: Hashable>: View {
+private struct ServiceSelectionView: View {
     @Binding var serviceName: String
+    @Binding var selectedService: KnownService?
     let suggestions: [KnownService]
-    let field: Field
-    let focusedField: FocusState<Field>.Binding
-    let onSelect: (KnownService) -> Void
+    let focused: FocusState<Bool>.Binding
 
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
@@ -117,13 +114,12 @@ private struct ServiceSelectionView<Field: Hashable>: View {
 
                 TextField("E.g. LinkedIn", text: $serviceName)
                     .autocorrectionDisabled()
-                    .focused(focusedField, equals: field)
+                    .focused(focused)
                     .foregroundStyle(PassColor.textNorm.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(DesignConstant.sectionPadding)
-            .overlay(RoundedRectangle(cornerRadius: 16)
-                .stroke(PassColor.inputBorderNorm.toColor, lineWidth: 1))
+            .roundedEditableSection(backgroundColor: .clear)
 
             ScrollView {
                 VStack {
@@ -155,7 +151,7 @@ private struct ServiceSelectionView<Field: Hashable>: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
         .onTapGesture {
-            onSelect(service)
+            selectedService = service
         }
     }
 
@@ -193,5 +189,196 @@ struct KnownServiceThumbnail: View {
                               backgroundColor: PassColor.interactionNormMinor1,
                               height: 32)
         }
+    }
+}
+
+// MARK: - CreateFirstLoginView
+
+private struct CreateFirstLoginView: View {
+    @FocusState private var focusedField: Field?
+    @Binding var title: String
+    @Binding var email: String
+    @Binding var username: String
+    @Binding var password: String
+    @Binding var website: String
+    let service: KnownService
+
+    enum Field: Hashable {
+        case email, username, password
+    }
+
+    var body: some View {
+        VStack {
+            titleSection
+            emailUsernamePasswordSection
+            websiteSection
+            Spacer()
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding(.horizontal, DesignConstant.onboardingPadding)
+        .animation(.default, value: focusedField)
+        .onAppear {
+            switch service.loginType {
+            case .both, .email:
+                focusedField = .email
+            case .username:
+                focusedField = .username
+            }
+        }
+    }
+}
+
+private extension CreateFirstLoginView {
+    var titleSection: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Title", bundle: .module)
+                    .editableSectionTitleText(for: title)
+
+                TextField("Untitled", text: $title)
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ClearTextButton(text: $title)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection(backgroundColor: .clear)
+    }
+
+    var emailUsernamePasswordSection: some View {
+        VStack(alignment: .leading, spacing: DesignConstant.sectionPadding) {
+            switch service.loginType {
+            case .email:
+                emailTextField
+                PassSectionDivider()
+            case .username:
+                usernameTextField
+                PassSectionDivider()
+            case .both:
+                emailTextField
+                PassSectionDivider()
+                usernameTextField
+                PassSectionDivider()
+            }
+
+            passwordTextField
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, DesignConstant.sectionPadding)
+        .roundedEditableSection(backgroundColor: .clear)
+    }
+
+    var emailTextField: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.envelope)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Email address")
+                    .editableSectionTitleText(for: email)
+
+                TrimmingTextField("Add email address", text: $email)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .focused($focusedField, equals: .email)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .keyboardType(.emailAddress)
+                    .submitLabel(.next)
+                    .onSubmit {
+                        if case .both = service.loginType {
+                            focusedField = .username
+                        } else {
+                            focusedField = .password
+                        }
+                    }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ClearTextButton(text: $email)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: email.isEmpty)
+    }
+
+    var usernameTextField: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.user)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Username")
+                    .editableSectionTitleText(for: username)
+
+                TrimmingTextField("Add username", text: $username)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .focused($focusedField, equals: .username)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .keyboardType(.emailAddress)
+                    .submitLabel(.next)
+                    .onSubmit {
+                        focusedField = .password
+                    }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ClearTextButton(text: $username)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: username.isEmpty)
+    }
+
+    var passwordTextField: some View {
+        HStack(spacing: DesignConstant.sectionPadding) {
+            ItemDetailSectionIcon(icon: IconProvider.key)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Password")
+                    .editableSectionTitleText(for: password)
+
+                SensitiveTextField(text: $password,
+                                   placeholder: #localized("Add password"),
+                                   focusedField: $focusedField,
+                                   field: .password,
+                                   font: .body.monospacedFont(for: password),
+                                   onSubmit: { focusedField = nil })
+                    .keyboardType(.asciiCapable)
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .submitLabel(.next)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+
+            ClearTextButton(text: $password)
+        }
+        .padding(.horizontal, DesignConstant.sectionPadding)
+        .animation(.default, value: password.isEmpty)
+    }
+
+    var websiteSection: some View {
+        HStack {
+            ItemDetailSectionIcon(icon: IconProvider.globe)
+
+            VStack(alignment: .leading, spacing: DesignConstant.sectionPadding / 4) {
+                Text("Website", bundle: .module)
+                    .editableSectionTitleText(for: website)
+
+                TextField(text: $website) {
+                    Text(verbatim: "https://")
+                }
+                .autocorrectionDisabled()
+                .keyboardType(.URL)
+                .textInputAutocapitalization(.never)
+                .foregroundStyle(PassColor.textNorm.toColor)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            ClearTextButton(text: $website)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedEditableSection(backgroundColor: .clear)
     }
 }
