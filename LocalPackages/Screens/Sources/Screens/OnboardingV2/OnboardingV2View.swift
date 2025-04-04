@@ -22,6 +22,7 @@
 import DesignSystem
 import Entities
 import Macro
+import ProtonCoreUIFoundations
 import SwiftUI
 
 public struct OnboardingV2View: View {
@@ -30,9 +31,11 @@ public struct OnboardingV2View: View {
     @State private var topBar: TopBar = .skipButton
 
     enum TopBar {
+        case none
         case skipButton
-        // swiftlint:disable:next discouraged_anyview
-        case custom(AnyView)
+        case createFirstLogin(KnownService,
+                              onClose: () -> Void,
+                              onSave: () -> Void)
     }
 
     public init(isFreeUser: Bool,
@@ -70,17 +73,35 @@ public struct OnboardingV2View: View {
 private extension OnboardingV2View {
     func mainContainer(currentStep: OnboardV2Step) -> some View {
         VStack {
-            switch topBar {
-            case .skipButton:
-                HStack {
+            HStack {
+                switch topBar {
+                case .none:
+                    EmptyView()
+
+                case .skipButton:
                     Spacer()
                     skipButton
-                }
-                .padding([.top, .trailing], DesignConstant.onboardingPadding)
 
-            case let .custom(view):
-                view
+                case let .createFirstLogin(service, onClose, onSave):
+                    CircleButton(icon: IconProvider.cross,
+                                 iconColor: PassColor.interactionNormMajor2,
+                                 backgroundColor: .black.withAlphaComponent(0.15),
+                                 action: onClose)
+
+                    Spacer()
+
+                    KnownServiceThumbnail(service: service)
+
+                    Spacer()
+
+                    CapsuleTextButton(title: #localized("Save", bundle: .module),
+                                      titleColor: PassColor.textInvert,
+                                      backgroundColor: PassColor.interactionNormMajor2,
+                                      maxWidth: nil,
+                                      action: onSave)
+                }
             }
+            .padding(DesignConstant.onboardingPadding)
 
             content(for: currentStep)
 
@@ -167,16 +188,17 @@ private extension OnboardingV2View {
     }
 
     var skipButton: some View {
-        Button(action: {
-            Task {
-                if await !viewModel.goNext() {
-                    dismiss()
-                }
-            }
-        }, label: {
-            Text("Skip", bundle: .main)
-                .foregroundStyle(.white)
-        })
+        CapsuleTextButton(title: #localized("Skip", bundle: .module),
+                          titleColor: .white,
+                          backgroundColor: .clear,
+                          maxWidth: nil,
+                          action: {
+                              Task {
+                                  if await !viewModel.goNext() {
+                                      dismiss()
+                                  }
+                              }
+                          })
     }
 
     func ctaButton(with title: String) -> some View {
