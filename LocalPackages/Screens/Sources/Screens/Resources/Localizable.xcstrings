@@ -9009,6 +9009,16 @@
         }
       }
     },
+    "First login created" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First login created"
+          }
+        }
+      }
+    },
     "For security reasons, your access needs to be confirmed" : {
       "comment" : "New users have to wait for an admin to confirm his access to the shared vault",
       "localizations" : {
@@ -21642,6 +21652,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Which service do you want to create the login for?"
+          }
+        }
+      }
+    },
+    "You are ready to get the most out of Proton Pass: the magic of AutoFill, the privacy of Aliases and much more." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are ready to get the most out of Proton Pass: the magic of AutoFill, the privacy of Aliases and much more."
           }
         }
       }

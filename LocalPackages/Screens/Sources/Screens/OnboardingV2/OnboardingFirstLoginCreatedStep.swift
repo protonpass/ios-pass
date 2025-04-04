@@ -19,17 +19,62 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
+import DesignSystem
 import SwiftUI
 
 struct OnboardingFirstLoginCreatedStep: View {
     let payload: OnboardFirstLoginPayload
 
     var body: some View {
-        VStack {
+        VStack(alignment: .center, spacing: 0) {
             Spacer()
-            Text(verbatim: "OnboardingFirstLoginCreatedStep")
+            sparkledLogin
+            Text("First login created")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundStyle(PassColor.textNorm.toColor)
+                .padding(.top, 50)
+                .padding(.bottom, DesignConstant.sectionPadding)
+            // swiftlint:disable:next line_length
+            Text("You are ready to get the most out of Proton Pass: the magic of AutoFill, the privacy of Aliases and much more.")
+                .font(.title3)
+                .foregroundStyle(PassColor.textWeak.toColor)
             Spacer()
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+        .multilineTextAlignment(.center)
+        .padding(40)
+    }
+}
+
+private extension OnboardingFirstLoginCreatedStep {
+    var sparkledLogin: some View {
+        ZStack(alignment: .trailing) {
+            Image(uiImage: PassIcon.onboardLoginCreatedSparkle)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 67)
+                .padding(.trailing, 40)
+                .padding(.top, -75)
+            login
+        }
+    }
+
+    var login: some View {
+        HStack {
+            KnownServiceThumbnail(service: payload.service, height: 40)
+            VStack(alignment: .leading) {
+                Text(payload.title)
+                    .foregroundStyle(PassColor.textNorm.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text(payload.emailOrUsername)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection(backgroundColor: PassColor.inputBackgroundNorm)
+        .padding(.horizontal)
     }
 }

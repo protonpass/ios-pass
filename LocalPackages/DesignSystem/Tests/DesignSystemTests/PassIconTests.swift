@@ -85,6 +85,7 @@ final class PassIconTests: XCTestCase {
         _ = PassIcon.onboardAutoFillStep4
         _ = PassIcon.onboardAutoFillStep5
         _ = PassIcon.onboardFaceID
+        _ = PassIcon.onboardLoginCreatedSparkle
 
         _ = PassIcon.passCreditCardOneStripe
         _ = PassIcon.passCreditCardTwoStripes
