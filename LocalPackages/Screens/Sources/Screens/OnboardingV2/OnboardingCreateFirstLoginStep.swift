@@ -56,12 +56,14 @@ struct OnboardingCreateFirstLoginStep: View {
                 view(for: selectedService)
             }
         }
+        .animation(.default, value: viewModel.selectedService)
         .tint(PassColor.interactionNorm.toColor)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onChange(of: viewModel.selectedService) { _ in
             if let selectedService = viewModel.selectedService {
-                // swiftlint:disable:next discouraged_anyview
-                topBar = .custom(AnyView(topBar(for: selectedService)))
+                topBar = .createFirstLogin(selectedService,
+                                           onClose: { viewModel.selectedService = nil },
+                                           onSave: viewModel.save)
             } else {
                 topBar = .skipButton
             }
@@ -73,28 +75,6 @@ struct OnboardingCreateFirstLoginStep: View {
 }
 
 private extension OnboardingCreateFirstLoginStep {
-    func topBar(for service: KnownService) -> some View {
-        HStack {
-            Button(action: {
-                viewModel.selectedService = nil
-            }, label: {
-                Text(verbatim: "Close")
-            })
-
-            Spacer()
-
-            Text(verbatim: service.name)
-                .foregroundStyle(PassColor.textNorm.toColor)
-
-            Spacer()
-
-            Button(action: viewModel.save) {
-                Text(verbatim: "Save")
-            }
-        }
-        .padding(DesignConstant.onboardingPadding)
-    }
-
     func view(for service: KnownService) -> some View {
         VStack {
             TextField(text: $viewModel.title) { EmptyView() }
@@ -170,26 +150,7 @@ private struct ServiceSelectionView<Field: Hashable>: View {
             name(for: service)
                 .foregroundStyle(PassColor.textNorm.toColor)
         }, icon: {
-            if let url = URL(string: service.favIconUrl) {
-                AsyncImage(url: url,
-                           content: { image in
-                               image.resizable()
-                                   .scaledToFit()
-                                   .padding(4)
-                                   .frame(width: 32, height: 32)
-                           },
-                           placeholder: {
-                               ProgressView()
-                                   .frame(width: 32, height: 32)
-                           })
-                           .background(.white)
-                           .clipShape(RoundedRectangle(cornerRadius: 8))
-            } else {
-                SquircleThumbnail(data: .initials(service.name.prefix(2).uppercased()),
-                                  tintColor: PassColor.interactionNormMajor2,
-                                  backgroundColor: PassColor.interactionNormMinor1,
-                                  height: 32)
-            }
+            KnownServiceThumbnail(service: service)
         })
         .frame(maxWidth: .infinity, alignment: .leading)
         .contentShape(.rect)
@@ -205,5 +166,32 @@ private struct ServiceSelectionView<Field: Hashable>: View {
             string[attributedRange].font = .body.bold()
         }
         return Text(string)
+    }
+}
+
+struct KnownServiceThumbnail: View {
+    let service: KnownService
+
+    var body: some View {
+        if let url = URL(string: service.favIconUrl) {
+            AsyncImage(url: url,
+                       content: { image in
+                           image.resizable()
+                               .scaledToFit()
+                               .padding(4)
+                               .frame(width: 32, height: 32)
+                       },
+                       placeholder: {
+                           ProgressView()
+                               .frame(width: 32, height: 32)
+                       })
+                       .background(.white)
+                       .clipShape(RoundedRectangle(cornerRadius: 8))
+        } else {
+            SquircleThumbnail(data: .initials(service.name.prefix(2).uppercased()),
+                              tintColor: PassColor.interactionNormMajor2,
+                              backgroundColor: PassColor.interactionNormMinor1,
+                              height: 32)
+        }
     }
 }
