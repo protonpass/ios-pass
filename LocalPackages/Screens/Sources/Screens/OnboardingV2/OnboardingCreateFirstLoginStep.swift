@@ -30,10 +30,6 @@ struct OnboardingCreateFirstLoginStep: View {
     @Binding var saveable: Bool
     @Binding var topBar: OnboardingV2View.TopBar
 
-    enum Field: Hashable {
-        case serviceName
-    }
-
     init(saveable: Binding<Bool>,
          topBar: Binding<OnboardingV2View.TopBar>,
          shareId: String,
