@@ -39,7 +39,6 @@ final class ShareElementViewModel: ObservableObject {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let setShareInviteVault = resolve(\UseCasesContainer.setShareInviteVault)
     private let upgradeChecker = resolve(\SharedServiceContainer.upgradeChecker)
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
     @LazyInjected(\SharedServiceContainer.userManager) var userManager
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private(set) var accessRepository
@@ -53,10 +52,7 @@ final class ShareElementViewModel: ObservableObject {
     }
 
     var showSecureLinkCreation: Bool {
-        !itemContent
-            .isAlias &&
-            (share.shareType == .vault ? share.shareRole == .admin : share
-                .shareRole == .admin && getFeatureFlagStatus(for: FeatureFlagType.passSecureLinkCryptoChangeV1))
+        !itemContent.isAlias && share.shareRole == .admin
     }
 
     init(share: Share, itemContent: ItemContent, itemCount: Int?) {

@@ -27,7 +27,6 @@ import ProtonCoreFeatureFlags
 ///    case passSharingV1 = "PassSharingV1"
 public enum FeatureFlagType: String, CaseIterable, FeatureFlagTypeProtocol {
     case passFileAttachmentsV1 = "PassFileAttachmentsV1"
-    case passSecureLinkCryptoChangeV1 = "PassSecureLinkCryptoChangeV1"
     case passCustomTypeV1 = "PassCustomTypeV1"
     case passFileAttachmentEncryptionV2 = "PassFileAttachmentEncryptionV2"
 }

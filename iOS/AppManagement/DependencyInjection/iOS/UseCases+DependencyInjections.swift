@@ -540,8 +540,7 @@ extension UseCasesContainer {
         self { CreateSecureLink(datasource: self.remoteSecureLinkDatasource,
                                 getSecureLinkKeys: self.getSecureLinkKeys(),
                                 userManager: self.userManager,
-                                manager: self.secureLinkManager,
-                                getFeatureFlagStatus: SharedUseCasesContainer.shared.getFeatureFlagStatus()) }
+                                manager: self.secureLinkManager) }
     }
 
     var getSecureLinkKeys: Factory<any GetSecureLinkKeysUseCase> {
