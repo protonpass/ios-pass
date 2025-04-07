@@ -26,8 +26,6 @@ import SwiftUI
 
 struct OnboardSection: View {
     @StateObject private var viewModel = OnboardSectionViewModel()
-    @Binding var sheet: QaModal?
-    @Binding var fullScreen: QaModal?
 
     var body: some View {
         Section(content: {
@@ -42,21 +40,15 @@ struct OnboardSection: View {
             .frame(maxWidth: .infinity, alignment: .leading)
 
             Button(action: {
-                if UIDevice.current.isIpad {
-                    sheet = .onboarding
-                } else {
-                    fullScreen = .onboarding
-                }
+                viewModel.present(view: OnboardingView(onWatchTutorial: {}))
             }, label: {
                 Text(verbatim: "Onboard")
             })
 
             Button(action: {
-                if UIDevice.current.isIpad {
-                    sheet = .onboardingV2(viewModel, viewModel)
-                } else {
-                    fullScreen = .onboardingV2(viewModel, viewModel)
-                }
+                viewModel.present(view: OnboardingV2View(isFreeUser: true,
+                                                         datasource: viewModel,
+                                                         delegate: viewModel))
             }, label: {
                 Text(verbatim: "Onboard V2")
             })
@@ -102,6 +94,14 @@ private final class OnboardSectionViewModel: ObservableObject {
         Task { [weak self] in
             guard let self else { return }
             onboarded = getAppPreferences().onboarded
+        }
+    }
+
+    func present(view: some View) {
+        if UIDevice.current.isIpad {
+            router.navigate(to: .sheet(view))
+        } else {
+            router.navigate(to: .fullScreen(view))
         }
     }
 }

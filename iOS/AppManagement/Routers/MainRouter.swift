@@ -112,9 +112,9 @@ enum SheetDestination: Equatable, Hashable, Sendable {
     case passwordHistory
 }
 
-enum GenericDestination {
-    case presentView(view: any View, dismissible: Bool)
-    case itemDetail(view: any View, asSheet: Bool)
+enum ItemDestination {
+    case createEdit(view: any View, dismissible: Bool)
+    case detail(view: any View, asSheet: Bool)
 }
 
 enum UIElementDisplay: Sendable {
@@ -144,58 +144,59 @@ enum DeeplinkDestination: Sendable {
     case error(any Error)
 }
 
-final class MainUIKitSwiftUIRouter: Sendable {
+enum GenericDestination: Sendable {
+    case sheet(any View)
+    case fullScreen(any View)
+}
+
+@MainActor
+final class MainUIKitSwiftUIRouter {
     nonisolated let newPresentationDestination: PassthroughSubject<RouterDestination, Never> = .init()
     nonisolated let newSheetDestination: PassthroughSubject<SheetDestination, Never> = .init()
     nonisolated let globalElementDisplay: PassthroughSubject<UIElementDisplay, Never> = .init()
     nonisolated let alertDestination: PassthroughSubject<AlertDestination, Never> = .init()
     nonisolated let actionDestination: PassthroughSubject<ActionDestination, Never> = .init()
-    nonisolated let itemDestinations: PassthroughSubject<GenericDestination, Never> = .init()
+    nonisolated let itemDestination: PassthroughSubject<ItemDestination, Never> = .init()
+    nonisolated let genericDestination: PassthroughSubject<GenericDestination, Never> = .init()
 
-    @MainActor
     private var pendingDeeplinkDestination: DeeplinkDestination?
 
-    @MainActor
     func navigate(to destination: RouterDestination) {
         newPresentationDestination.send(destination)
     }
 
-    @MainActor
     func present(for destination: SheetDestination) {
         newSheetDestination.send(destination)
     }
 
-    @MainActor
-    func navigate(to destination: GenericDestination) {
-        itemDestinations.send(destination)
+    func navigate(to destination: ItemDestination) {
+        itemDestination.send(destination)
     }
 
-    @MainActor
+    func navigate(to destination: GenericDestination) {
+        genericDestination.send(destination)
+    }
+
     func display(element: UIElementDisplay) {
         globalElementDisplay.send(element)
     }
 
-    @MainActor
     func alert(_ destination: AlertDestination) {
         alertDestination.send(destination)
     }
 
-    @MainActor
     func action(_ destination: ActionDestination) {
         actionDestination.send(destination)
     }
 
-    @MainActor
     func requestDeeplink(_ destination: DeeplinkDestination) {
         pendingDeeplinkDestination = destination
     }
 
-    @MainActor
     func getDeeplink() -> DeeplinkDestination? {
         pendingDeeplinkDestination
     }
 
-    @MainActor
     func resolveDeeplink() {
         pendingDeeplinkDestination = nil
     }
