@@ -57,22 +57,19 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
     private let cancelAutoFill: any CancelAutoFillUseCase
     private let completeAutoFill: any CompleteAutoFillUseCase
     private let userManager: any UserManagerProtocol
-    private let getFeatureFlagStatus: any GetFeatureFlagStatusUseCase
 
     init(credentialProvider: any AuthManagerProtocol,
          userManager: any UserManagerProtocol,
          canSkipLocalAuthentication: any CanSkipLocalAuthenticationUseCase,
          generateAuthorizationCredential: any GenerateAuthorizationCredentialUseCase,
          cancelAutoFill: any CancelAutoFillUseCase,
-         completeAutoFill: any CompleteAutoFillUseCase,
-         getFeatureFlagStatus: any GetFeatureFlagStatusUseCase) {
+         completeAutoFill: any CompleteAutoFillUseCase) {
         self.credentialProvider = credentialProvider
         self.canSkipLocalAuthentication = canSkipLocalAuthentication
         self.generateAuthorizationCredential = generateAuthorizationCredential
         self.cancelAutoFill = cancelAutoFill
         self.completeAutoFill = completeAutoFill
         self.userManager = userManager
-        self.getFeatureFlagStatus = getFeatureFlagStatus
     }
 
     func execute(_ request: AutoFillRequest,
@@ -81,11 +78,10 @@ final class CheckAndAutoFill: CheckAndAutoFillUseCase {
                  localAuthenticationMethod: LocalAuthenticationMethod,
                  appLockTime: AppLockTime,
                  lastActiveTimestamp: TimeInterval?) async throws {
-        let betterAuthentication = getFeatureFlagStatus(for: FeatureFlagType.passIOSBetterAuthentication)
         let canSkip = canSkipLocalAuthentication(appLockTime: appLockTime,
                                                  lastActiveTimestamp: lastActiveTimestamp)
         guard credentialProvider.isAuthenticated(userId: userId),
-              localAuthenticationMethod == .none || (canSkip && betterAuthentication) else {
+              localAuthenticationMethod == .none || canSkip else {
             cancelAutoFill(reason: .userInteractionRequired, context: context)
             return
         }
