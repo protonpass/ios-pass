@@ -21,20 +21,7 @@
 import Core
 import DesignSystem
 import ProtonCoreUIFoundations
-import Screens
 import SwiftUI
-
-enum QaModal: Identifiable {
-    case onboarding
-    case onboardingV2(any OnboardingV2Datasource, any OnboardingV2Delegate)
-
-    var id: String {
-        switch self {
-        case .onboarding: "onboarding"
-        case .onboardingV2: "onboardingV2"
-        }
-    }
-}
 
 struct QAFeaturesView: View {
     @Environment(\.dismiss) private var dismiss
@@ -51,13 +38,10 @@ struct QAFeaturesView: View {
     @AppStorage(Constants.QA.useSwiftUIList, store: kSharedUserDefaults)
     private var useSwiftUIList = false
 
-    @State private var sheet: QaModal?
-    @State private var fullScreen: QaModal?
-
     var body: some View {
         NavigationStack {
             Form {
-                OnboardSection(sheet: $sheet, fullScreen: $fullScreen)
+                OnboardSection()
                 if #available(iOS 17, *) {
                     FeatureFlagsSection()
                 }
@@ -121,21 +105,5 @@ struct QAFeaturesView: View {
             }
         }
         .tint(PassColor.interactionNorm.toColor)
-        .sheet(item: $sheet) { view(for: $0) }
-        .fullScreenCover(item: $sheet) { view(for: $0) }
-    }
-}
-
-private extension QAFeaturesView {
-    @ViewBuilder
-    func view(for modal: QaModal) -> some View {
-        switch modal {
-        case .onboarding:
-            OnboardingView(onWatchTutorial: {})
-        case let .onboardingV2(datasource, delegate):
-            OnboardingV2View(isFreeUser: true,
-                             datasource: datasource,
-                             delegate: delegate)
-        }
     }
 }
