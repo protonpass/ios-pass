@@ -48,10 +48,6 @@ final class ShareElementViewModel: ObservableObject {
 
     weak var sheetPresentation: UISheetPresentationController?
 
-    var itemSharingEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
-    }
-
     var isShared: Bool {
         share.shared || itemContent.shared
     }
@@ -146,7 +142,7 @@ private extension ShareElementViewModel {
             do {
                 let userId = try await userManager.getActiveUserId()
                 let passUserInfos = try await accessRepository.getPassUserInformation(userId: userId)
-                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery && itemSharingEnabled
+                canDisplayFeatureDiscovery = passUserInfos.canDisplayFeatureDiscovery
             } catch {
                 router.display(element: .displayErrorBanner(error))
             }
