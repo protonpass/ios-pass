@@ -106,6 +106,12 @@
             "value" : "Camera niet beschikbaar"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aparat jest niedostępny"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",

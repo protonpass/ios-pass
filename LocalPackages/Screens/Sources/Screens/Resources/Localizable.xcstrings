@@ -3019,6 +3019,12 @@
             "value" : "Sectie toevoegen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj sekcję"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8687,6 +8693,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Імпортувати з Chrome"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nhập từ Chrome"
           }
         },
         "zh-Hans" : {
@@ -14470,7 +14482,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bezpiecznie i bez wysiłku udostępniaj hasła i poufne informacje."
+            "value" : "Udostępniaj hasła i poufne informacje w bezpieczny i łatwy sposób."
           }
         },
         "pt-BR" : {
