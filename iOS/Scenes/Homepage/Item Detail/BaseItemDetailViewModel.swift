@@ -135,10 +135,6 @@ class BaseItemDetailViewModel: ObservableObject {
             (!files.isFetched || files.fetchedObject?.isEmpty == false)
     }
 
-    var itemSharingEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
-    }
-
     var canShareItem: Bool {
         vault?.vault.shareRole != .read && !itemContent.isAlias
     }
@@ -398,7 +394,6 @@ private extension BaseItemDetailViewModel {
     }
 
     func checkItemSharingDiscoveryEligibility() {
-        guard itemSharingEnabled else { return }
         Task { [weak self] in
             guard let self else { return }
             do {

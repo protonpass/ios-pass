@@ -61,7 +61,6 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
     private let router = resolve(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private let accessRepository = resolve(\SharedRepositoryContainer.accessRepository)
     private var fetchingTask: Task<Void, Never>?
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
     @LazyInjected(\SharedRepositoryContainer.organizationRepository)
     private var organizationRepository
 
@@ -90,10 +89,6 @@ final class ManageSharedShareViewModel: ObservableObject, @unchecked Sendable {
         }
 
         return reachedLimit
-    }
-
-    var itemSharingEnabled: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passItemSharingV1)
     }
 
     private let displayType: ManageSharedDisplay
