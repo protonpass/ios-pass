@@ -141,7 +141,8 @@ private extension OnboardingV2View {
                 }
             }
         }
-        .padding(DesignConstant.onboardingPadding)
+        .padding(.horizontal, DesignConstant.onboardingPadding)
+        .padding(.vertical, DesignConstant.onboardingPadding / 2)
         .animation(.default, value: viewModel.isSaving)
     }
 

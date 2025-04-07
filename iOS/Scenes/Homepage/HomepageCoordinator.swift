@@ -486,14 +486,14 @@ extension HomepageCoordinator {
             .store(in: &cancellables)
 
         router
-            .itemDestinations
+            .itemDestination
             .receive(on: DispatchQueue.main)
             .sink { [weak self] destination in
                 guard let self else { return }
                 switch destination {
-                case let .presentView(view, dismissible):
+                case let .createEdit(view, dismissible):
                     createEditItemCoordinatorWantsToPresent(view: view, dismissable: dismissible)
-                case let .itemDetail(view, asSheet):
+                case let .detail(view, asSheet):
                     itemDetailCoordinatorWantsToPresent(view: view, asSheet: asSheet)
                 }
             }
@@ -677,6 +677,19 @@ extension HomepageCoordinator {
                     case .all:
                         dismissAllViewControllers(animated: true, completion: nil)
                     }
+                }
+            }
+            .store(in: &cancellables)
+
+        router.genericDestination
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] destination in
+                guard let self else { return }
+                switch destination {
+                case let .sheet(view):
+                    present(view)
+                case let .fullScreen(view):
+                    present(view, fullScreen: true)
                 }
             }
             .store(in: &cancellables)
@@ -1095,8 +1108,14 @@ extension HomepageCoordinator {
     func present(_ view: some View,
                  animated: Bool = true,
                  dismissible: Bool = true,
+                 fullScreen: Bool = false,
                  uniquenessTag: (any RawRepresentable<Int>)? = nil) {
-        present(UIHostingController(rootView: view),
+        let vc = UIHostingController(rootView: view)
+        if fullScreen {
+            vc.modalPresentationStyle = .fullScreen
+            vc.isModalInPresentation = true
+        }
+        present(vc,
                 animated: animated,
                 dismissible: dismissible,
                 uniquenessTag: uniquenessTag)
