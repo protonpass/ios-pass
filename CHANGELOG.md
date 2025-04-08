@@ -1,3 +1,7 @@
+# Version 1.16.3
+- File attachment v2
+- Core libraries upgraded from 30.0.2 to 30.0.4
+
 # Version 1.16.2
 - Allow numbers as separators in password generation, even with "Include numbers" disabled
 - Fixed issues where some texts were not properly localized
