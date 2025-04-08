@@ -20,17 +20,8 @@
 //
 
 import DesignSystem
-import Entities
-import Macro
 import ProtonCorePaymentsV2
 import SwiftUI
-
-private enum PaidFeature: CaseIterable {
-    case unlimitedAliases
-    case darkWebMonitoring
-    case secureLinks
-    case protonSentinel
-}
 
 private enum PassFeature: CaseIterable {
     case unlimitedLoginsNotesDevices
@@ -62,7 +53,6 @@ struct OnboardingPaymentStep: View {
                     }
                     featureTable
                 }
-                //            paidFeatures
                 view(for: plans)
             }
         }
@@ -114,31 +104,6 @@ private extension OnboardingPaymentStep {
             .resizable()
             .scaledToFit()
             .frame(width: 16)
-    }
-
-    var paidFeatures: some View {
-        TabView {
-            ForEach(PaidFeature.allCases, id: \.self) { feature in
-                VStack(alignment: .center) {
-                    Image(uiImage: feature.icon)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 150)
-                    Text(feature.title)
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundStyle(PassColor.textNorm.toColor)
-                        .padding(.horizontal, DesignConstant.onboardingPadding)
-                    Text(feature.description)
-                        .font(.headline)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                        .padding(.horizontal, DesignConstant.onboardingPadding)
-                }
-                .multilineTextAlignment(.center)
-            }
-        }
-        .tabViewStyle(.page)
-        .indexViewStyle(.page(backgroundDisplayMode: .never))
     }
 
     func view(for plans: [ComposedPlan]) -> some View {
@@ -233,40 +198,6 @@ private extension PassFeature {
             "File attachments"
         case .advancedAliasManagement:
             "Advanced alias management"
-        }
-    }
-}
-
-// swiftlint:disable:next todo
-// TODO: [OnboardingV2] Localize & update these copies
-private extension PaidFeature {
-    var icon: UIImage {
-        PassIcon.stamp
-    }
-
-    var title: String {
-        switch self {
-        case .unlimitedAliases:
-            "Unlimited hide-my-email aliases"
-        case .darkWebMonitoring:
-            "Dark web monitoring"
-        case .secureLinks:
-            "Secure links"
-        case .protonSentinel:
-            "Proton Sentinel"
-        }
-    }
-
-    var description: String {
-        switch self {
-        case .unlimitedAliases:
-            "Create aliases to keep your actual email address protected."
-        case .darkWebMonitoring:
-            "Dark web monitoring description"
-        case .secureLinks:
-            "Secure links description"
-        case .protonSentinel:
-            "Proton Sentinel description"
         }
     }
 }
