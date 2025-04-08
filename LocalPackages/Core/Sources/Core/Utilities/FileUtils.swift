@@ -97,6 +97,7 @@ public extension FileUtils {
     struct FileBlockData: Sendable {
         public let index: Int
         public let value: Data
+        public let total: Int
     }
 
     static func processBlockByBlock(_ url: URL,
@@ -108,11 +109,19 @@ public extension FileUtils {
         let fileHandle = try FileHandle(forReadingFrom: url)
         defer { try? fileHandle.close() }
 
+        let fileSize = try fileHandle.seekToEnd()
+        // Reset file pointer to the beginning for reading block by block
+        try fileHandle.seek(toOffset: 0)
+
+        let totalBlocks = ceil(Double(fileSize) / Double(blockSizeInBytes))
+
         var index = 0
         while true {
             if let data = try fileHandle.read(upToCount: blockSizeInBytes),
                !data.isEmpty {
-                try await process(.init(index: index, value: data))
+                try await process(.init(index: index,
+                                        value: data,
+                                        total: Int(totalBlocks)))
                 index += 1
             } else {
                 break

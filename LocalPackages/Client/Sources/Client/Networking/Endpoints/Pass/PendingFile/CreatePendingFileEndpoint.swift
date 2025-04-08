@@ -24,10 +24,12 @@ import ProtonCoreNetworking
 struct CreatePendingFileRequest: Encodable, Sendable {
     let metadata: String
     let chunkCount: Int
+    let encryptionVersion: Int
 
     enum CodingKeys: String, CodingKey {
         case metadata = "Metadata"
         case chunkCount = "ChunkCount"
+        case encryptionVersion = "EncryptionVersion"
     }
 }
 
@@ -44,10 +46,12 @@ struct CreatePendingFileEndpoint: Endpoint {
     var method: HTTPMethod
     var body: CreatePendingFileRequest?
 
-    init(metadata: String, chunkCount: Int) {
+    init(metadata: String, chunkCount: Int, encryptionVersion: Int) {
         debugDescription = "Create a new pending file"
         path = "/pass/v1/file"
         method = .post
-        body = .init(metadata: metadata, chunkCount: chunkCount)
+        body = .init(metadata: metadata,
+                     chunkCount: chunkCount,
+                     encryptionVersion: encryptionVersion)
     }
 }
