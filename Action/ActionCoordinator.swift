@@ -34,7 +34,6 @@ final class ActionCoordinator {
     @LazyInjected(\SharedUseCasesContainer.setCoreLoggerEnvironment) private var setCoreLoggerEnvironment
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter) private var router
     @LazyInjected(\SharedUseCasesContainer.sendErrorToSentry) private var sendErrorToSentry
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedToolingContainer.logManager) private var logManager
@@ -68,10 +67,6 @@ extension ActionCoordinator {
     func start() async {
         do {
             try await setUpBeforeLaunching(rootContainer: .viewController(rootViewController))
-            guard getFeatureFlagStatus(for: FeatureFlagType.passIOSImportCsv) else {
-                dismissExtension()
-                return
-            }
             await beginFlow()
         } catch {
             alert(error: error) { [weak self] in

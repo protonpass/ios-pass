@@ -118,10 +118,6 @@ final class ProfileTabViewModel: ObservableObject, DeinitPrintable {
     private var cancellables = Set<AnyCancellable>()
     weak var delegate: (any ProfileTabViewModelDelegate)?
 
-    var isCsvImportActive: Bool {
-        getFeatureFlagStatus(for: FeatureFlagType.passIOSImportCsv)
-    }
-
     var isChromeInstalled: Bool {
         #if DEBUG
         return true
