@@ -210,7 +210,7 @@ private extension OnboardingV2View {
     }
 
     var skipButton: some View {
-        CapsuleTextButton(title: #localized("Skip", bundle: .module),
+        CapsuleTextButton(title: #localized("Not now", bundle: .module),
                           titleColor: .white,
                           backgroundColor: .clear,
                           maxWidth: nil,
