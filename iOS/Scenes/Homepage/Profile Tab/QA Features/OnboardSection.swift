@@ -22,8 +22,10 @@ import Core
 import Entities
 import Factory
 import LocalAuthentication
+import ProtonCorePaymentsUIV2
 import ProtonCorePaymentsV2
 import Screens
+import StoreKit
 import SwiftUI
 
 struct OnboardSection: View {
@@ -103,6 +105,8 @@ private final class OnboardSectionViewModel: ObservableObject {
     @LazyInjected(\SharedToolingContainer.appVersion)
     private var appVersion
 
+    private var plansManager: ProtonPlansManager?
+
     init() {
         Task { [weak self] in
             guard let self else { return }
@@ -119,17 +123,20 @@ private final class OnboardSectionViewModel: ObservableObject {
     }
 }
 
-extension OnboardSectionViewModel: OnboardingV2Datasource {
-    func getAvailablePlans() async throws -> [ComposedPlan] {
+private extension OnboardSectionViewModel {
+    func getPlansManager() async throws -> ProtonPlansManager? {
+        if let plansManager {
+            return plansManager
+        }
         guard let doh = doh as? ProtonPassDoH else {
             assertionFailure("DoH should be ProtonPassDoH")
-            return []
+            return nil
         }
 
         let userId = try await userManager.getActiveUserId()
         guard let credentials = credentialProvider.getCredential(userId: userId) else {
             assertionFailure("No credentials for current user")
-            return []
+            return nil
         }
 
         let remoteManager = RemoteManager(sessionID: credentials.sessionID,
@@ -137,6 +144,16 @@ extension OnboardSectionViewModel: OnboardingV2Datasource {
                                           appVersion: appVersion)
         let manager = ProtonPlansManager(doh: doh,
                                          remoteManager: remoteManager)
+        plansManager = manager
+        return manager
+    }
+}
+
+extension OnboardSectionViewModel: OnboardingV2Datasource {
+    func getAvailablePlans() async throws -> [ComposedPlan] {
+        guard let manager = try await getPlansManager() else {
+            return []
+        }
         return try await manager.getAvailablePlans()
     }
 
@@ -149,13 +166,22 @@ extension OnboardSectionViewModel: OnboardingV2Datasource {
     }
 
     func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion {
-        .suggestedShare(shareId: "")
+        .none
     }
 }
 
 extension OnboardSectionViewModel: OnboardingV2Delegate {
     func purchase(_ plan: ComposedPlan) async throws {
-        print(plan)
+        guard let manager = try await getPlansManager() else { return }
+
+        guard let product = plan.product as? Product else {
+            assertionFailure("Failed to parse product")
+            return
+        }
+        let cycle = BillingCycle(rawValue: plan.instance.cycle) ?? .all
+        _ = try await manager.purchase(product,
+                                       planName: plan.plan.name ?? "",
+                                       planCycle: cycle.rawValue)
     }
 
     func enableBiometric() async throws {
