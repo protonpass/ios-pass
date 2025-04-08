@@ -186,7 +186,7 @@ extension OnboardingV2ViewModel {
             return
         }
 
-        var shouldGoToNextStep = true
+        var shouldGoToNextStep = false
         do {
             switch currentStep.fetchedObject {
             case .payment:
@@ -195,15 +195,17 @@ extension OnboardingV2ViewModel {
                     return
                 }
                 try await delegate.purchase(selectedPlan)
+                shouldGoToNextStep = true
 
             case .biometric:
+                shouldGoToNextStep = true
                 try await delegate.enableBiometric()
 
             case .autofill:
                 shouldGoToNextStep = await delegate.enableAutoFill()
 
             default:
-                break
+                shouldGoToNextStep = true
             }
         } catch {
             delegate.handle(error)
