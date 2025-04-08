@@ -447,6 +447,7 @@
 		5335C6DD2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */; };
 		5335C6DE2D7889FA00190897 /* CreateEditCustomSections.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5335C6DB2D7889DF00190897 /* CreateEditCustomSections.swift */; };
 		533EAB952D3F975E00217171 /* AliasDiscoverySection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 533EAB942D3F974B00217171 /* AliasDiscoverySection.swift */; };
+		533F20342DA5ADC600CE1C5E /* ProtonCorePaymentsV2 in Frameworks */ = {isa = PBXBuildFile; productRef = 533F20332DA5ADC600CE1C5E /* ProtonCorePaymentsV2 */; };
 		534090592D709856002E42F8 /* CreateEditSshKeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 534090582D70984A002E42F8 /* CreateEditSshKeyView.swift */; };
 		5340905C2D70988C002E42F8 /* CreateEditWifiView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5340905B2D709885002E42F8 /* CreateEditWifiView.swift */; };
 		5340905E2D70991C002E42F8 /* CreateEditCustomItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5340905D2D709917002E42F8 /* CreateEditCustomItemView.swift */; };
@@ -1357,6 +1358,7 @@
 			files = (
 				5379EAA52D59EEAD00F56DBC /* ProtonCoreForceUpgrade in Frameworks */,
 				5347B5802D58BA960014013F /* MBProgressHUD in Frameworks */,
+				533F20342DA5ADC600CE1C5E /* ProtonCorePaymentsV2 in Frameworks */,
 				5379EAA12D59EE9D00F56DBC /* Factory in Frameworks */,
 				5379EAA72D59EEB800F56DBC /* ProtonCorePasswordChange in Frameworks */,
 				5347B5842D58BABB0014013F /* Core in Frameworks */,
@@ -3146,6 +3148,7 @@
 				5379EAA42D59EEAD00F56DBC /* ProtonCoreForceUpgrade */,
 				5379EAA62D59EEB800F56DBC /* ProtonCorePasswordChange */,
 				5379EAA82D59EEBC00F56DBC /* UseCases */,
+				533F20332DA5ADC600CE1C5E /* ProtonCorePaymentsV2 */,
 			);
 			productName = Action;
 			productReference = 538548E62D58ACF300AEFB66 /* Action.appex */;
@@ -6315,6 +6318,11 @@
 		};
 		40EC90992D1AE451004FCA37 /* ProtonCorePaymentsV2 */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = ProtonCorePaymentsV2;
+		};
+		533F20332DA5ADC600CE1C5E /* ProtonCorePaymentsV2 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 57459FC02AE5A72100280A10 /* XCRemoteSwiftPackageReference "protoncore_ios" */;
 			productName = ProtonCorePaymentsV2;
 		};
 		5347B57F2D58BA960014013F /* MBProgressHUD */ = {

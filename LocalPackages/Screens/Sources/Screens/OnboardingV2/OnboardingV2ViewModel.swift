@@ -22,6 +22,7 @@
 import Entities
 import Foundation
 import LocalAuthentication
+import ProtonCorePaymentsV2
 
 public enum OnboardFirstLoginSuggestion: Sendable {
     case none
@@ -54,14 +55,14 @@ public struct KnownService: Sendable, Decodable, Equatable {
 }
 
 public protocol OnboardingV2Datasource: Sendable, AnyObject {
-    func getAvailablePlans() async throws -> [PlanUiModel]
+    func getAvailablePlans() async throws -> [ComposedPlan]
     func getBiometryType() async throws -> LABiometryType?
     func isAutoFillEnabled() async -> Bool
     func getFirstLoginSuggestion() async -> OnboardFirstLoginSuggestion
 }
 
 public protocol OnboardingV2Delegate: Sendable, AnyObject {
-    func purchase(_ plan: PlanUiModel) async throws
+    func purchase(_ plan: ComposedPlan) async throws
     func enableBiometric() async throws
     func enableAutoFill() async -> Bool
     func createFirstLogin(payload: OnboardFirstLoginPayload) async throws
@@ -70,7 +71,7 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
 }
 
 enum OnboardV2Step: Sendable, Equatable {
-    case payment([PlanUiModel])
+    case payment([ComposedPlan])
     case biometric(LABiometryType)
     case autofill
     case createFirstLogin(shareId: String, [KnownService])
@@ -82,17 +83,14 @@ final class OnboardingV2ViewModel: ObservableObject {
     @Published private(set) var currentStep: FetchableObject<OnboardV2Step> = .fetching
     @Published private(set) var isSaving = false
     @Published private(set) var finished = false
-    @Published var selectedPlan: PlanUiModel?
-    private let isFreeUser: Bool
+    @Published var selectedPlan: ComposedPlan?
     private var availableBiometryType: LABiometryType?
 
     private weak var datasource: (any OnboardingV2Datasource)?
     private weak var delegate: (any OnboardingV2Delegate)?
 
-    init(isFreeUser: Bool,
-         datasource: (any OnboardingV2Datasource)?,
+    init(datasource: (any OnboardingV2Datasource)?,
          delegate: (any OnboardingV2Delegate)?) {
-        self.isFreeUser = isFreeUser
         self.datasource = datasource
         self.delegate = delegate
     }
@@ -109,12 +107,9 @@ extension OnboardingV2ViewModel {
 
             availableBiometryType = try await datasource.getBiometryType()
 
-            if isFreeUser {
-                var plans = try await datasource.getAvailablePlans()
-                plans = plans.sorted { $0.recurrence > $1.recurrence }
-                assert(plans.count == 2, "Must have exactly 2 plans")
-                assert(plans.first?.recurrence == .yearly, "Yearly plan must be the first")
-                assert(plans.last?.recurrence == .monthly, "Montly plan must be the second")
+            let plans = try await datasource.getAvailablePlans()
+            // When user is paid, no plans are fetched
+            if !plans.isEmpty {
                 selectedPlan = plans.first
                 currentStep = .fetched(.payment(plans))
             } else if let availableBiometryType, availableBiometryType != .none {

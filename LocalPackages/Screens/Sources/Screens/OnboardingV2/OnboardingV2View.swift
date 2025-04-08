@@ -39,11 +39,9 @@ public struct OnboardingV2View: View {
                               onSave: () -> Void)
     }
 
-    public init(isFreeUser: Bool,
-                datasource: OnboardingV2Datasource?,
+    public init(datasource: OnboardingV2Datasource?,
                 delegate: OnboardingV2Delegate?) {
-        _viewModel = .init(wrappedValue: .init(isFreeUser: isFreeUser,
-                                               datasource: datasource,
+        _viewModel = .init(wrappedValue: .init(datasource: datasource,
                                                delegate: delegate))
     }
 

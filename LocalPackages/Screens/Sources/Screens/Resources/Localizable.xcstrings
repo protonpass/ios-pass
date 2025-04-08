@@ -1,28 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "/month" : {
-      "comment" : "Used to construct monthly subscription price. Sample final string \"$10/month\"",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/month"
-          }
-        }
-      }
-    },
-    "/year" : {
-      "comment" : "Used to construct yearly subscription price. Sample final string \"$100/year\"",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "/year"
-          }
-        }
-      }
-    },
     "%1$@ of %2$@" : {
       "comment" : "For displaying storage usage. For example \"100MB of 2.5GB\".",
       "localizations" : {
@@ -2333,28 +2311,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "1 month" : {
-      "comment" : "Title of the monthly subscription",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 month"
-          }
-        }
-      }
-    },
-    "1 year" : {
-      "comment" : "Title of the yearly subscription",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "1 year"
           }
         }
       }
