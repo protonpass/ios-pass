@@ -11873,7 +11873,7 @@
         }
       }
     },
-    "Not Now" : {
+    "Not now" : {
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -11908,7 +11908,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Not Now"
+            "value" : "Not now"
           }
         },
         "es" : {
@@ -17491,16 +17491,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已登出"
-          }
-        }
-      }
-    },
-    "Skip" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skip"
           }
         }
       }
