@@ -22,6 +22,7 @@
 import DesignSystem
 import Entities
 import Macro
+import ProtonCorePaymentsV2
 import SwiftUI
 
 private enum PaidFeature: CaseIterable {
@@ -46,8 +47,8 @@ private enum PassFeature: CaseIterable {
 private let kAvailabilityColumnWidth: CGFloat = 66
 
 struct OnboardingPaymentStep: View {
-    let plans: [PlanUiModel]
-    @Binding var selectedPlan: PlanUiModel?
+    let plans: [ComposedPlan]
+    @Binding var selectedPlan: ComposedPlan?
 
     var body: some View {
         ScrollView(showsIndicators: false) {
@@ -140,7 +141,7 @@ private extension OnboardingPaymentStep {
         .indexViewStyle(.page(backgroundDisplayMode: .never))
     }
 
-    func view(for plans: [PlanUiModel]) -> some View {
+    func view(for plans: [ComposedPlan]) -> some View {
         VStack(alignment: .center, spacing: 12) {
             Text("Select your plan")
                 .foregroundStyle(PassColor.textWeak.toColor)
@@ -148,16 +149,12 @@ private extension OnboardingPaymentStep {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.bottom, 4)
 
-            ForEach(plans) { plan in
-                PlanCell(plan: plan,
-                         selected: selectedPlan == plan,
-                         onSelect: { selectedPlan = plan })
+            ForEach(plans, id: \.product.id) { plan in
+                PlanCell(plan: plan, selectedPlan: $selectedPlan)
             }
 
             if let selectedPlan {
-                let price = String(format: "%.2f", selectedPlan.price)
-                let fullPrice = "\(selectedPlan.currency) \(price)\(selectedPlan.recurrence.cycleUnit)"
-                Text("Subscription auto renews at \(fullPrice)")
+                Text("Subscription auto renews at \(selectedPlan.product.displayPrice)")
                     .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
                     .multilineTextAlignment(.center)
@@ -172,43 +169,22 @@ private extension OnboardingPaymentStep {
 }
 
 private struct PlanCell: View {
-    let plan: PlanUiModel
-    let selected: Bool
-    let onSelect: () -> Void
+    let plan: ComposedPlan
+    @Binding var selectedPlan: ComposedPlan?
 
     var body: some View {
+        let selected = plan.product.id == selectedPlan?.product.id
         HStack {
-            Text(plan.recurrence.title)
+            Text(plan.product.displayName)
                 .font(.headline)
                 .foregroundStyle(PassColor.textNorm.toColor)
 
-            if plan.recurrence == .yearly {
-                Text(verbatim: "-35%")
-                    .font(.caption)
-                    .foregroundStyle(PassColor.textInvert.toColor)
-                    .padding(4)
-                    .background(PassColor.noteInteractionNormMajor1.toColor)
-                    .clipShape(RoundedRectangle(cornerRadius: 4))
-            }
-
             Spacer()
 
-            VStack {
-                Text(verbatim: "\(plan.currency) \(String(format: "%.2f", plan.price)) ")
-                    .font(.headline)
-                    .fontWeight(.bold)
-                    .adaptiveForegroundStyle(PassColor.textNorm.toColor) +
-                    Text(plan.recurrence.cycleUnit)
-                    .font(.callout)
-                    .adaptiveForegroundStyle(PassColor.textWeak.toColor)
-
-                if plan.recurrence == .yearly {
-                    let monthlyPrice = String(format: "%.2f", plan.price / 12)
-                    Text(verbatim: "\(plan.currency) \(monthlyPrice)\(PlanUiModel.Recurrence.monthly.cycleUnit)")
-                        .font(.callout)
-                        .foregroundStyle(PassColor.textWeak.toColor)
-                }
-            }
+            Text(verbatim: plan.product.displayPrice)
+                .font(.headline)
+                .fontWeight(.bold)
+                .foregroundStyle(PassColor.textNorm.toColor)
         }
         .padding()
         .frame(height: 64)
@@ -220,7 +196,9 @@ private struct PlanCell: View {
                               lineWidth: selected ? 2 : 1)
         }
         .contentShape(.rect)
-        .onTapGesture(perform: onSelect)
+        .onTapGesture {
+            selectedPlan = plan
+        }
     }
 }
 
@@ -289,22 +267,6 @@ private extension PaidFeature {
             "Secure links description"
         case .protonSentinel:
             "Proton Sentinel description"
-        }
-    }
-}
-
-private extension PlanUiModel.Recurrence {
-    var title: LocalizedStringKey {
-        switch self {
-        case .monthly: "1 month"
-        case .yearly: "1 year"
-        }
-    }
-
-    var cycleUnit: String {
-        switch self {
-        case .monthly: #localized("/month", bundle: .module)
-        case .yearly: #localized("/year", bundle: .module)
         }
     }
 }

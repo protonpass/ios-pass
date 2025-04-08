@@ -18,9 +18,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 
+import Core
 import Entities
 import Factory
 import LocalAuthentication
+import ProtonCorePaymentsV2
 import Screens
 import SwiftUI
 
@@ -46,8 +48,7 @@ struct OnboardSection: View {
             })
 
             Button(action: {
-                viewModel.present(view: OnboardingV2View(isFreeUser: true,
-                                                         datasource: viewModel,
+                viewModel.present(view: OnboardingV2View(datasource: viewModel,
                                                          delegate: viewModel))
             }, label: {
                 Text(verbatim: "Onboard V2")
@@ -90,6 +91,18 @@ private final class OnboardSectionViewModel: ObservableObject {
     @LazyInjected(\SharedRouterContainer.mainUIKitSwiftUIRouter)
     private var router
 
+    @LazyInjected(\SharedToolingContainer.doh)
+    private var doh
+
+    @LazyInjected(\SharedDataContainer.credentialProvider)
+    private var credentialProvider
+
+    @LazyInjected(\SharedServiceContainer.userManager)
+    private var userManager
+
+    @LazyInjected(\SharedToolingContainer.appVersion)
+    private var appVersion
+
     init() {
         Task { [weak self] in
             guard let self else { return }
@@ -107,11 +120,24 @@ private final class OnboardSectionViewModel: ObservableObject {
 }
 
 extension OnboardSectionViewModel: OnboardingV2Datasource {
-    func getAvailablePlans() async throws -> [PlanUiModel] {
-        [
-            .init(recurrence: .yearly, price: 85.0, currency: "CHF"),
-            .init(recurrence: .monthly, price: 11, currency: "CHF")
-        ]
+    func getAvailablePlans() async throws -> [ComposedPlan] {
+        guard let doh = doh as? ProtonPassDoH else {
+            assertionFailure("DoH should be ProtonPassDoH")
+            return []
+        }
+
+        let userId = try await userManager.getActiveUserId()
+        guard let credentials = credentialProvider.getCredential(userId: userId) else {
+            assertionFailure("No credentials for current user")
+            return []
+        }
+
+        let remoteManager = RemoteManager(sessionID: credentials.sessionID,
+                                          authToken: credentials.accessToken,
+                                          appVersion: appVersion)
+        let manager = ProtonPlansManager(doh: doh,
+                                         remoteManager: remoteManager)
+        return try await manager.getAvailablePlans()
     }
 
     func getBiometryType() async throws -> LABiometryType? {
@@ -128,7 +154,7 @@ extension OnboardSectionViewModel: OnboardingV2Datasource {
 }
 
 extension OnboardSectionViewModel: OnboardingV2Delegate {
-    func purchase(_ plan: PlanUiModel) async throws {
+    func purchase(_ plan: ComposedPlan) async throws {
         print(plan)
     }
 
