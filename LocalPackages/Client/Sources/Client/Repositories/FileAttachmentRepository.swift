@@ -86,10 +86,12 @@ public extension FileAttachmentRepository {
                            file: PendingFileAttachment) async throws -> RemotePendingFile {
         let metadata = try generateEncryptedMetadata(name: file.metadata.name,
                                                      mimeType: file.metadata.mimeType,
-                                                     key: file.key)
+                                                     key: file.key,
+                                                     encryptionVersion: file.encryptionVersion)
         return try await remoteFileDatasource.createPendingFile(userId: userId,
                                                                 metadata: metadata,
-                                                                chunkCount: file.chunkCount)
+                                                                chunkCount: file.chunkCount,
+                                                                encryptionVersion: file.encryptionVersion)
     }
 
     func uploadFile(userId: String,
@@ -112,9 +114,12 @@ public extension FileAttachmentRepository {
                     continuation.finish(throwing: PassError.deallocatedSelf)
                     return
                 }
+                let associatedData = AssociatedData.fileData(version: file.encryptionVersion,
+                                                             chunkIndex: blockData.index,
+                                                             chunkCount: blockData.total)
                 let encryptedData = try AES.GCM.seal(blockData.value,
                                                      key: file.key,
-                                                     associatedData: .fileData)
+                                                     associatedData: associatedData)
                 let infos: [MultipartInfo] = [
                     .init(name: "ChunkIndex", data: blockData.index.toAsciiData),
                     .init(name: "ChunkData",
@@ -152,7 +157,8 @@ public extension FileAttachmentRepository {
         }
         let metadata = try generateEncryptedMetadata(name: newName,
                                                      mimeType: file.metadata.mimeType,
-                                                     key: file.key)
+                                                     key: file.key,
+                                                     encryptionVersion: file.encryptionVersion)
         return try await remoteFileDatasource.updatePendingFileMetadata(userId: userId,
                                                                         fileId: remoteId,
                                                                         metadata: metadata)
@@ -182,7 +188,8 @@ public extension FileAttachmentRepository {
 
         let metadata = try generateEncryptedMetadata(name: newName,
                                                      mimeType: mimeType,
-                                                     key: fileKey)
+                                                     key: fileKey,
+                                                     encryptionVersion: file.encryptionVersion)
         var updatedFile = try await remoteFileDatasource.updateFileMetadata(userId: userId,
                                                                             item: item,
                                                                             fileId: file.fileID,
@@ -337,7 +344,8 @@ private extension FileAttachmentRepository {
 
                 let decryptedMetadata = try AES.GCM.open(encryptedMetadata,
                                                          key: decryptedFileKey,
-                                                         associatedData: .fileData)
+                                                         associatedData: .fileMetadata(version: file
+                                                             .encryptionVersion))
                 let metadata = try FileMetadata(serializedBytes: decryptedMetadata)
                 file.name = metadata.name
                 file.mimeType = metadata.mimeType
@@ -352,14 +360,15 @@ private extension FileAttachmentRepository {
 
     func generateEncryptedMetadata(name: String,
                                    mimeType: String,
-                                   key: Data) throws -> String {
+                                   key: Data,
+                                   encryptionVersion: Int) throws -> String {
         var protobuf = FileMetadata()
         protobuf.name = name
         protobuf.mimeType = mimeType
         let serializedProtobuf = try protobuf.serializedData()
         let encryptedProtobuf = try AES.GCM.seal(serializedProtobuf,
                                                  key: key,
-                                                 associatedData: .fileData)
+                                                 associatedData: .fileMetadata(version: encryptionVersion))
         return encryptedProtobuf.base64EncodedString()
     }
 

@@ -110,7 +110,8 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
                 continuation.finish(throwing: PassError.deallocatedSelf)
                 return
             }
-            for chunk in file.chunks {
+            let chunkCount = file.chunks.count
+            for (index, chunk) in file.chunks.enumerated() {
                 let path =
                     "/pass/v1/share/\(item.shareId)/item/\(item.itemId)/file/\(file.fileID)/chunk/\(chunk.chunkID)"
                 let stream = try await apiService.download(path: path,
@@ -122,9 +123,12 @@ public actor DownloadAndDecryptFile: DownloadAndDecryptFileUseCase {
                                                                     chunkSize: chunk.size)
                         continuation.yield(.progress(overall))
                     case let .result(encryptedData):
+                        let associatedData = AssociatedData.fileData(version: file.encryptionVersion,
+                                                                     chunkIndex: index,
+                                                                     chunkCount: chunkCount)
                         let decrypted = try AES.GCM.open(encryptedData,
                                                          key: fileKey,
-                                                         associatedData: .fileData)
+                                                         associatedData: associatedData)
                         try fileHandle.write(contentsOf: decrypted)
                     }
                 }

@@ -28,6 +28,7 @@ public struct ItemFile: Decodable, Sendable, Equatable, Hashable {
     public let fileKey: String
     public let itemKeyRotation: Int
     public let chunks: [FileChunk]
+    public let encryptionVersion: Int
     public let revisionAdded: Int
     public let revisionRemoved: Int?
     public let persistentFileUID: String
@@ -44,6 +45,7 @@ public struct ItemFile: Decodable, Sendable, Equatable, Hashable {
                 fileKey: String,
                 itemKeyRotation: Int,
                 chunks: [FileChunk],
+                encryptionVersion: Int,
                 revisionAdded: Int,
                 revisionRemoved: Int,
                 persistentFileUID: String,
@@ -55,6 +57,7 @@ public struct ItemFile: Decodable, Sendable, Equatable, Hashable {
         self.fileKey = fileKey
         self.itemKeyRotation = itemKeyRotation
         self.chunks = chunks
+        self.encryptionVersion = encryptionVersion
         self.revisionAdded = revisionAdded
         self.revisionRemoved = revisionRemoved
         self.persistentFileUID = persistentFileUID
