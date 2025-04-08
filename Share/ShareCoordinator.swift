@@ -92,7 +92,6 @@ final class ShareCoordinator {
     @LazyInjected(\SharedUseCasesContainer.parseCsvLogins) private var parseCsvLogins
     @LazyInjected(\SharedUseCasesContainer.createVaultAndImportLogins)
     private var createVaultAndImportLogins
-    @LazyInjected(\SharedUseCasesContainer.getFeatureFlagStatus) private var getFeatureFlagStatus
 
     private var lastChildViewController: UIViewController?
     private weak var rootViewController: UIViewController?
@@ -196,7 +195,6 @@ private extension ShareCoordinator {
 
         let parseUrl: (URL, SharedContent) -> SharedContent = { [weak self] url, fallback in
             guard let self,
-                  getFeatureFlagStatus(for: FeatureFlagType.passIOSImportCsv),
                   url.absoluteString.hasPrefix("file://"),
                   url.absoluteString.hasSuffix(".csv"),
                   let data = try? Data(contentsOf: url) else { return fallback }
