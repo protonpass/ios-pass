@@ -298,6 +298,10 @@ extension ProfileTabViewModel {
         router.present(for: .aliasesSyncConfiguration)
     }
 
+    func showPasswordHistory() {
+        router.present(for: .passwordHistory)
+    }
+
     func showPrivacyPolicy() {
         router.navigate(to: .urlPage(urlString: ProtonLink.privacyPolicy))
     }

@@ -30,12 +30,12 @@ public struct GeneratedPassword: Sendable {
     }
 }
 
-public struct GeneratedPasswordUiModel: Sendable, Identifiable {
+public struct GeneratedPasswordUiModel: Sendable, Identifiable, Equatable {
     public let id: String
     public let relativeCreationDate: String
     public let state: State
 
-    public enum State: Sendable {
+    public enum State: Sendable, Equatable {
         case masked
         case unmasked(String)
         /// Should never happen in practice where the value of password is not found for a given password ID

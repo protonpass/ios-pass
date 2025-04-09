@@ -4883,6 +4883,16 @@
         }
       }
     },
+    "Clear history" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clear history"
+          }
+        }
+      }
+    },
     "Close" : {
       "localizations" : {
         "be" : {
@@ -8115,6 +8125,26 @@
         }
       }
     },
+    "Generated passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generated passwords"
+          }
+        }
+      }
+    },
+    "Generated passwords will be stored for a period of 2 weeks." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generated passwords will be stored for a period of 2 weeks."
+          }
+        }
+      }
+    },
     "Get alerts when your email is found on the Dark web." : {
       "localizations" : {
         "be" : {
@@ -9555,6 +9585,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "管理账户"
+          }
+        }
+      }
+    },
+    "No history" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No history"
           }
         }
       }
