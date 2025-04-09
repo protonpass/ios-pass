@@ -87,7 +87,7 @@ public extension PasswordHistoryRepository {
             let relativeString = relativeDateFormatter.localizedString(for: date, relativeTo: .now)
             return .init(id: password.id,
                          relativeCreationDate: "\(dateString) (\(relativeString))",
-                         state: .masked)
+                         visibility: .masked)
         }
     }
 

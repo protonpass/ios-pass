@@ -21,6 +21,7 @@
 import DesignSystem
 import Factory
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 enum FullScreenData: Sendable {

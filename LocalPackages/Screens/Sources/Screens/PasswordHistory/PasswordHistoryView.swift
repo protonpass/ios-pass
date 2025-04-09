@@ -21,6 +21,7 @@
 
 import Client
 import DesignSystem
+import Entities
 import ProtonCoreUIFoundations
 import SwiftUI
 
@@ -52,8 +53,7 @@ public struct PasswordHistoryView: View {
         .animation(.default, value: viewModel.passwords)
         .animation(.default, value: viewModel.error == nil)
         .toolbar { toolbarContent }
-        .navigationBarTitle(Text("Generated passwords", bundle: .module)
-            .adaptiveForegroundStyle(PassColor.textNorm.toColor))
+        .navigationBarTitle(Text("Generated passwords", bundle: .module))
         .navigationStackEmbeded()
         .task {
             await viewModel.loadPasswords()
@@ -77,7 +77,10 @@ private extension PasswordHistoryView {
                 Menu(content: {
                     Button(role: .destructive,
                            action: viewModel.clearHistory,
-                           label: { Label("Clear history", uiImage: PassIcon.clearHistory) })
+                           label: {
+                               Label(title: { Text("Clear history", bundle: .module) },
+                                     icon: { Image(uiImage: PassIcon.clearHistory) })
+                           })
                 }, label: {
                     CircleButton(icon: IconProvider.threeDotsVertical,
                                  iconColor: PassColor.passwordInteractionNormMajor2,
@@ -93,21 +96,101 @@ private extension PasswordHistoryView {
             Text("No history", bundle: .module)
                 .font(.title3)
                 .fontWeight(.bold)
-                .foregroundStyle(PassColor.textNorm.toColor)
-            Text("Generated passwords will be stored for a period of 2 weeks.", bundle: .module)
-                .foregroundStyle(PassColor.textNorm.toColor)
+                .foregroundStyle(PassColor.textWeak.toColor)
+            twoWeeksNotice(font: .headline)
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .multilineTextAlignment(.center)
     }
 
+    func twoWeeksNotice(font: Font) -> some View {
+        Text("Generated passwords will be stored for a period of 2 weeks.", bundle: .module)
+            .font(font)
+            .foregroundStyle(PassColor.textWeak.toColor)
+            .multilineTextAlignment(.center)
+            .frame(maxWidth: .infinity)
+    }
+
     var history: some View {
-        LazyVStack {
+        LazyVStack(spacing: DesignConstant.sectionPadding) {
             ForEach(viewModel.passwords) { password in
-                Text(verbatim: password.relativeCreationDate)
+                GeneratedPasswordRow(password: password,
+                                     onToggleVisibility: { viewModel.toggleVisibility(for: password) },
+                                     onCreateLogin: {},
+                                     onRemove: {})
             }
+
+            twoWeeksNotice(font: .body)
         }
+        .padding(DesignConstant.sectionPadding)
         .scrollViewEmbeded()
+    }
+}
+
+private struct GeneratedPasswordRow: View {
+    let password: GeneratedPasswordUiModel
+    let onToggleVisibility: () -> Void
+    let onCreateLogin: () -> Void
+    let onRemove: () -> Void
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                switch password.visibility {
+                case .masked:
+                    Text(verbatim: String(repeating: "•", count: 12))
+                        .foregroundStyle(PassColor.textNorm.toColor)
+
+                case let .unmasked(clearPassword):
+                    Text(PasswordUtils.generateColoredPassword(clearPassword))
+                        .foregroundStyle(PassColor.textNorm.toColor)
+
+                case .failedToUnmask:
+                    Image(systemName: "exclamationmark.3")
+                        .resizable()
+                        .scaledToFit()
+                        .foregroundStyle(PassColor.signalWarning.toColor)
+                        .frame(width: 24)
+                }
+
+                Text(verbatim: password.relativeCreationDate)
+                    .foregroundStyle(PassColor.textWeak.toColor)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            visibilityButton
+            otherOptionsButton
+        }
+        .padding(DesignConstant.sectionPadding)
+        .roundedDetailSection()
+        .animation(.default, value: password.visibility)
+    }
+
+    private var visibilityButton: some View {
+        CircleButton(icon: password.visibility.isUnmasked ? IconProvider.eyeSlash : IconProvider.eye,
+                     iconColor: PassColor.passwordInteractionNormMajor2,
+                     backgroundColor: PassColor.passwordInteractionNormMinor2,
+                     accessibilityLabel: password.visibility.isUnmasked ? "Show password" : "Hide password",
+                     action: onToggleVisibility)
+            .fixedSize(horizontal: true, vertical: true)
+    }
+
+    private var otherOptionsButton: some View {
+        Menu(content: {
+            Button(action: onCreateLogin) {
+                Label(title: { Text("Create login", bundle: .module) },
+                      icon: { Image(uiImage: IconProvider.user) })
+            }
+
+            Button(action: onRemove) {
+                Label(title: { Text("Remove from history", bundle: .module) },
+                      icon: { Image(uiImage: IconProvider.trashCross) })
+            }
+        }, label: {
+            CircleButton(icon: IconProvider.threeDotsVertical,
+                         iconColor: PassColor.passwordInteractionNormMajor2,
+                         backgroundColor: .clear)
+        })
     }
 }
