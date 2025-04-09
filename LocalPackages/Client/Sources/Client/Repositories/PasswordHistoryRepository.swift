@@ -39,23 +39,27 @@ public actor PasswordHistoryRepository: PasswordHistoryRepositoryProtocol {
     let currentDateProvider: any CurrentDateProviderProtocol
     let randomUuidProvider: any RandomUuidProviderProtocol
     let symmetricKeyProvider: any SymmetricKeyProvider
+    let logger: Logger
     let retentionDayCount: Int
 
     public init(datasource: any LocalPasswordDatasourceProtocol,
                 currentDateProvider: any CurrentDateProviderProtocol,
                 randomUuidProvider: any RandomUuidProviderProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
+                logManager: any LogManagerProtocol,
                 retentionDayCount: Int = 14) {
         self.datasource = datasource
         self.currentDateProvider = currentDateProvider
         self.randomUuidProvider = randomUuidProvider
         self.symmetricKeyProvider = symmetricKeyProvider
+        logger = .init(manager: logManager)
         self.retentionDayCount = retentionDayCount
     }
 }
 
 public extension PasswordHistoryRepository {
     func insertPassword(_ clearPassword: String) async throws {
+        logger.trace("Inserting password")
         let id = randomUuidProvider.randomUuid()
         let currentDate = currentDateProvider.getCurrentDate()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
@@ -63,10 +67,13 @@ public extension PasswordHistoryRepository {
         try await datasource.insertPassword(id: id,
                                             symmetricallyEncryptedValue: encryptedPassword,
                                             creationTime: currentDate.timeIntervalSince1970)
+        logger.debug("Inserted password")
     }
 
     func getAllPasswords() async throws -> [GeneratedPasswordUiModel] {
+        logger.trace("Getting all passwords")
         let passwords = try await datasource.getAllPasswords()
+        logger.trace("Found \(passwords.count) passwords")
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
@@ -85,24 +92,34 @@ public extension PasswordHistoryRepository {
     }
 
     func getClearPassword(id: String) async throws -> String? {
+        logger.trace("Getting clear password for id \(id)")
         guard let encryptedPassword = try await datasource.getEncryptedPassword(id: id) else {
+            logger.warning("No encrypted password found for id \(id)")
             return nil
         }
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
-        return try symmetricKey.decrypt(encryptedPassword)
+        let clearPassword = try symmetricKey.decrypt(encryptedPassword)
+        logger.trace("Got clear password for id \(id)")
+        return clearPassword
     }
 
     func deletePassword(id: String) async throws {
+        logger.trace("Deleting password for id \(id)")
         try await datasource.deletePassword(id: id)
+        logger.trace("Deleted password for id \(id)")
     }
 
     func deleteAllPasswords() async throws {
+        logger.trace("Deleting all passwords")
         try await datasource.deleteAllPasswords()
+        logger.trace("Deleted all passwords")
     }
 
     func cleanUpOldPasswords() async throws {
+        logger.trace("Cleaning up old passwords")
         let currentDate = currentDateProvider.getCurrentDate()
         let cutOffDate = currentDate.adding(component: .day, value: -retentionDayCount)
         try await datasource.deletePasswords(cutOffTimestamp: Int(cutOffDate.timeIntervalSince1970))
+        logger.trace("Cleaned up old passwords")
     }
 }

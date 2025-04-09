@@ -81,6 +81,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.shareRepository) var shareRepository
     @LazyInjected(\SharedRepositoryContainer.passMonitorRepository) var passMonitorRepository
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
+    @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
+    private var passwordHistoryRepository
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -146,6 +148,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
         doLogOutExcessFreeAccounts()
+        cleanUpPasswordHistory()
     }
 }
 
@@ -417,6 +420,17 @@ private extension HomepageCoordinator {
                     let message = #localized("You're logged out from other free accounts")
                     bannerManager.displayBottomInfoMessage(message)
                 }
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
+    func cleanUpPasswordHistory() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await passwordHistoryRepository.cleanUpOldPasswords()
             } catch {
                 handle(error: error)
             }

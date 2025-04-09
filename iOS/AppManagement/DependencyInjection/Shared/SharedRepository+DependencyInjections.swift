@@ -410,7 +410,8 @@ extension SharedRepositoryContainer {
         self { PasswordHistoryRepository(datasource: self.localPasswordDatasource(),
                                          currentDateProvider: self.currentDateProvider,
                                          randomUuidProvider: self.randomUuidProvider,
-                                         symmetricKeyProvider: self.symmetricKeyProvider) }
+                                         symmetricKeyProvider: self.symmetricKeyProvider,
+                                         logManager: self.logManager) }
     }
 }
 
