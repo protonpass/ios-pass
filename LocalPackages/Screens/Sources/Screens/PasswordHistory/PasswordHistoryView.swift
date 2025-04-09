@@ -28,9 +28,15 @@ import SwiftUI
 public struct PasswordHistoryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var viewModel: PasswordHistoryViewModel
+    let onCreateLogin: (String) -> Void
+    let onCopy: (String) -> Void
 
-    public init(repository: any PasswordHistoryRepositoryProtocol) {
+    public init(repository: any PasswordHistoryRepositoryProtocol,
+                onCreateLogin: @escaping (String) -> Void,
+                onCopy: @escaping (String) -> Void) {
         _viewModel = .init(wrappedValue: .init(repository: repository))
+        self.onCreateLogin = onCreateLogin
+        self.onCopy = onCopy
     }
 
     public var body: some View {
@@ -65,7 +71,7 @@ private extension PasswordHistoryView {
     @ToolbarContentBuilder
     var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            CircleButton(icon: IconProvider.cross,
+            CircleButton(icon: IconProvider.chevronDown,
                          iconColor: PassColor.passwordInteractionNormMajor2,
                          backgroundColor: PassColor.passwordInteractionNormMinor1,
                          accessibilityLabel: "Close",
@@ -116,20 +122,32 @@ private extension PasswordHistoryView {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
             ForEach(viewModel.passwords) { password in
                 GeneratedPasswordRow(password: password,
+                                     onCopy: onCopy,
                                      onToggleVisibility: { viewModel.toggleVisibility(for: password) },
-                                     onCreateLogin: {},
-                                     onRemove: {})
+                                     onCreateLogin: { handleLoginCreation(for: password) },
+                                     onRemove: { viewModel.delete(password) })
             }
 
-            twoWeeksNotice(font: .body)
+            twoWeeksNotice(font: .callout)
         }
         .padding(DesignConstant.sectionPadding)
         .scrollViewEmbeded()
     }
 }
 
+private extension PasswordHistoryView {
+    func handleLoginCreation(for password: GeneratedPasswordUiModel) {
+        Task {
+            if let clearPassword = await viewModel.getClearPassword(for: password) {
+                onCreateLogin(clearPassword)
+            }
+        }
+    }
+}
+
 private struct GeneratedPasswordRow: View {
     let password: GeneratedPasswordUiModel
+    let onCopy: (String) -> Void
     let onToggleVisibility: () -> Void
     let onCreateLogin: () -> Void
     let onRemove: () -> Void
@@ -155,9 +173,18 @@ private struct GeneratedPasswordRow: View {
                 }
 
                 Text(verbatim: password.relativeCreationDate)
+                    .font(.callout)
                     .foregroundStyle(PassColor.textWeak.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+            .onTapGesture {
+                if case let .unmasked(clearPassword) = password.visibility {
+                    onCopy(clearPassword)
+                } else {
+                    onToggleVisibility()
+                }
+            }
 
             visibilityButton
             otherOptionsButton
@@ -171,7 +198,7 @@ private struct GeneratedPasswordRow: View {
         CircleButton(icon: password.visibility.isUnmasked ? IconProvider.eyeSlash : IconProvider.eye,
                      iconColor: PassColor.passwordInteractionNormMajor2,
                      backgroundColor: PassColor.passwordInteractionNormMinor2,
-                     accessibilityLabel: password.visibility.isUnmasked ? "Show password" : "Hide password",
+                     accessibilityLabel: password.visibility.isUnmasked ? "Hide password" : "Show password",
                      action: onToggleVisibility)
             .fixedSize(horizontal: true, vertical: true)
     }
