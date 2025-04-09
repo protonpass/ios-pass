@@ -23,6 +23,7 @@ import Core
 import DesignSystem
 import Entities
 import Factory
+import Screens
 import SwiftUI
 
 @MainActor
@@ -33,24 +34,6 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 @MainActor
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
     func generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: Bool)
-}
-
-enum PasswordUtils {
-    static func generateColoredPassword(_ password: String) -> AttributedString {
-        let attributedChars = password.map { char in
-            var attributedChar = AttributedString("\(char)", attributes: .lineBreakHyphenErasing)
-            attributedChar.foregroundColor = if AllowedCharacter.digit.rawValue.contains(char) {
-                PassColor.loginInteractionNormMajor2
-            } else if AllowedCharacter.special.rawValue.contains(char) ||
-                AllowedCharacter.separator.rawValue.contains(char) {
-                PassColor.aliasInteractionNormMajor2
-            } else {
-                PassColor.textNorm
-            }
-            return attributedChar
-        }
-        return attributedChars.reduce(into: .init()) { $0 += $1 }
-    }
 }
 
 @MainActor

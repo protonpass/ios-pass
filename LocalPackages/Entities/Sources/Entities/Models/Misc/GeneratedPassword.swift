@@ -33,18 +33,26 @@ public struct GeneratedPassword: Sendable {
 public struct GeneratedPasswordUiModel: Sendable, Identifiable, Equatable {
     public let id: String
     public let relativeCreationDate: String
-    public let state: State
+    public var visibility: Visibility
 
-    public enum State: Sendable, Equatable {
+    public enum Visibility: Sendable, Equatable {
         case masked
         case unmasked(String)
         /// Should never happen in practice where the value of password is not found for a given password ID
         case failedToUnmask
+
+        public var isUnmasked: Bool {
+            if case .unmasked = self {
+                true
+            } else {
+                false
+            }
+        }
     }
 
-    public init(id: String, relativeCreationDate: String, state: State) {
+    public init(id: String, relativeCreationDate: String, visibility: Visibility) {
         self.id = id
         self.relativeCreationDate = relativeCreationDate
-        self.state = state
+        self.visibility = visibility
     }
 }

@@ -39,20 +39,20 @@ struct LocalPasswordDatasourceTests {
         let id2 = String.random()
         let id3 = String.random()
         let id4 = String.random()
-        try await insertPassword(id: id1)
-        try await insertPassword(id: id2)
-        try await insertPassword(id: id3)
-        try await insertPassword(id: id4)
+        try await insertPassword(id: id1, creationTime: 4)
+        try await insertPassword(id: id2, creationTime: 8)
+        try await insertPassword(id: id3, creationTime: 1)
+        try await insertPassword(id: id4, creationTime: 9)
 
         // When
         let passwords = try await sut.getAllPasswords()
 
         // Then
         #expect(passwords.count == 4)
-        #expect(passwords.contains(where: { $0.id == id1 }))
-        #expect(passwords.contains(where: { $0.id == id2}))
-        #expect(passwords.contains(where: { $0.id == id3 }))
-        #expect(passwords.contains(where: { $0.id == id4}))
+        #expect(passwords[0].id == id4)
+        #expect(passwords[1].id == id2)
+        #expect(passwords[2].id == id1)
+        #expect(passwords[3].id == id3)
     }
 
     @Test("Get encrypted password")
