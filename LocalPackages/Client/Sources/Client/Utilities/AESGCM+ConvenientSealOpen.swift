@@ -22,15 +22,41 @@ import CryptoKit
 import Entities
 import Foundation
 
-public enum AssociatedData: String {
-    case itemContent = "itemcontent"
-    case itemKey = "itemkey"
-    case vaultContent = "vaultcontent"
-    case linkKey = "linkkey"
-    case fileData = "filedata"
-    case fileKey = "filekey"
+public enum AssociatedData: Sendable {
+    case itemContent
+    case itemKey
+    case vaultContent
+    case linkKey
+    case fileMetadata(version: Int)
+    case fileData(version: Int, chunkIndex: Int, chunkCount: Int)
+    case fileKey
 
-    var data: Data { rawValue.data(using: .utf8) ?? .init() }
+    var data: Data {
+        let value = switch self {
+        case .itemContent:
+            "itemcontent"
+
+        case .itemKey:
+            "itemkey"
+
+        case .vaultContent:
+            "vaultcontent"
+
+        case .linkKey:
+            "linkkey"
+
+        case let .fileMetadata(version):
+            version == 1 ? "filedata" : "v\(version);filemetadata.item.pass.proton"
+
+        case let .fileData(version, chunkIndex, chunkCount):
+            version == 1 ?
+                "filedata" : "v\(version);\(chunkIndex);\(chunkCount);filedata.item.pass.proton"
+
+        case .fileKey:
+            "filekey"
+        }
+        return value.data(using: .utf8) ?? .init()
+    }
 }
 
 public extension AES.GCM {

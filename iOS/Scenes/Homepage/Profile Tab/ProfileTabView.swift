@@ -389,7 +389,7 @@ struct ProfileTabView: View {
     private var importSection: some View {
         TextOptionRow(title: #localized("Import to Proton Pass"),
                       action: {
-                          if viewModel.isCsvImportActive, viewModel.isChromeInstalled {
+                          if viewModel.isChromeInstalled {
                               showImportOptions.toggle()
                           } else {
                               viewModel.showImportInstructions()
