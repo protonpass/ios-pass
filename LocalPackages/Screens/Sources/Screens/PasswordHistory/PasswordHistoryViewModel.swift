@@ -47,6 +47,30 @@ extension PasswordHistoryViewModel {
         }
     }
 
+    func toggleVisibility(for password: GeneratedPasswordUiModel) {
+        guard let index = passwords.firstIndex(where: { $0.id == password.id }) else {
+            assertionFailure("No password found for id \(password.id)")
+            return
+        }
+
+        if passwords[index].visibility.isUnmasked {
+            passwords[index].visibility = .masked
+        } else {
+            Task { [weak self] in
+                guard let self else { return }
+                do {
+                    if let clearPassword = try await repository.getClearPassword(id: password.id) {
+                        passwords[index].visibility = .unmasked(clearPassword)
+                    } else {
+                        passwords[index].visibility = .failedToUnmask
+                    }
+                } catch {
+                    self.error = error
+                }
+            }
+        }
+    }
+
     func clearHistory() {
         Task { [weak self] in
             guard let self else { return }

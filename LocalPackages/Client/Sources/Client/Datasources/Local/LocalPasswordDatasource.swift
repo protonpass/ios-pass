@@ -55,7 +55,7 @@ public extension LocalPasswordDatasource {
     func getAllPasswords() async throws -> [GeneratedPassword] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = PasswordEntity.fetchRequest()
-        fetchRequest.sortDescriptors = [.init(key: "creationTime", ascending: true)]
+        fetchRequest.sortDescriptors = [.init(key: "creationTime", ascending: false)]
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return entities.map(\.toGeneratedPassword)
     }
