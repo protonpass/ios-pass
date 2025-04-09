@@ -612,6 +612,8 @@ extension HomepageCoordinator {
                         guard let self else { return }
                         present(AddCustomEmailView(viewModel: .init(validationType: .mailbox(nil))))
                     }
+                case .passwordHistory:
+                    present(PasswordHistoryView(repository: passwordHistoryRepository))
                 }
             }
             .store(in: &cancellables)

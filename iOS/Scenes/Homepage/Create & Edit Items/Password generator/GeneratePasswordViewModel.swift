@@ -150,6 +150,8 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
+    private var passwordHistoryRepository
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -199,7 +201,16 @@ extension GeneratePasswordViewModel {
     }
 
     func confirm() {
-        delegate?.generatePasswordViewModelDidConfirm(password: password)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await passwordHistoryRepository.insertPassword(password)
+            } catch {
+                logger.error(error)
+            }
+
+            delegate?.generatePasswordViewModelDidConfirm(password: password)
+        }
     }
 }
 
