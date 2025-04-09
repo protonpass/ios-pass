@@ -48,6 +48,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
     private let userDataDatasource: any LocalUserDataDatasourceProtocol
     private let userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol
     private let inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol
+    private let passwordDatasource: any LocalPasswordDatasourceProtocol
 
     public init(accessDatasource: any LocalAccessDatasourceProtocol,
                 authCredentialDatasource: any LocalAuthCredentialDatasourceProtocol,
@@ -62,7 +63,8 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
                 telemetryEventDatasource: any LocalTelemetryEventDatasourceProtocol,
                 userDataDatasource: any LocalUserDataDatasourceProtocol,
                 userPreferencesDatasource: any LocalUserPreferencesDatasourceProtocol,
-                inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol) {
+                inAppNotificationDatasource: any LocalInAppNotificationDatasourceProtocol,
+                passwordDatasource: any LocalPasswordDatasourceProtocol) {
         self.accessDatasource = accessDatasource
         self.authCredentialDatasource = authCredentialDatasource
         self.itemDatasource = itemDatasource
@@ -77,6 +79,7 @@ public final class RemoveUserLocalData: Sendable, RemoveUserLocalDataUseCase {
         self.userDataDatasource = userDataDatasource
         self.userPreferencesDatasource = userPreferencesDatasource
         self.inAppNotificationDatasource = inAppNotificationDatasource
+        self.passwordDatasource = passwordDatasource
     }
 }
 
@@ -97,6 +100,7 @@ public extension RemoveUserLocalData {
         async let removeUserPrefs: () = userPreferencesDatasource.removePreferences(for: userId)
         async let removeInAppNotifications: () = inAppNotificationDatasource
             .removeAllNotifications(userId: userId)
+        async let removePasswords: () = passwordDatasource.deleteAllPasswords()
 
         _ = try await (removeAccess,
                        removeAuthCreds,
@@ -111,6 +115,7 @@ public extension RemoveUserLocalData {
                        removeTelemetryEvents,
                        removeUserData,
                        removeUserPrefs,
-                       removeInAppNotifications)
+                       removeInAppNotifications,
+                       removePasswords)
     }
 }
