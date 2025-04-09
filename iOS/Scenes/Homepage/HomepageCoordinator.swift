@@ -613,7 +613,7 @@ extension HomepageCoordinator {
                         present(AddCustomEmailView(viewModel: .init(validationType: .mailbox(nil))))
                     }
                 case .passwordHistory:
-                    present(PasswordHistoryView(repository: passwordHistoryRepository))
+                    presentPasswordHistoryView()
                 }
             }
             .store(in: &cancellables)
@@ -1023,6 +1023,27 @@ extension HomepageCoordinator {
             let navigationController = UINavigationController(rootViewController: viewController)
             present(navigationController)
         }
+    }
+
+    func presentPasswordHistoryView() {
+        let createLogin: (String) -> Void = { [weak self] clearPassword in
+            guard let self else { return }
+            dismissTopMostViewController(animated: true) { [weak self] in
+                guard let self else { return }
+                presentCreateEditLoginView(mode: .create(shareId: nil,
+                                                         type: .login(password: clearPassword,
+                                                                      autofill: false)))
+            }
+        }
+        let view = PasswordHistoryView(repository: passwordHistoryRepository,
+                                       onCreateLogin: createLogin,
+                                       onCopy: { [weak self] password in
+                                           guard let self else { return }
+                                           copyToClipboard(password,
+                                                           bannerMessage: #localized("Password copied"),
+                                                           bannerDisplay: bannerManager)
+                                       })
+        present(view)
     }
 
     private func filledUserInfo(userData: UserData) async throws -> UserInfo {

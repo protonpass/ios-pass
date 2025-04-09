@@ -47,6 +47,19 @@ extension PasswordHistoryViewModel {
         }
     }
 
+    func getClearPassword(for password: GeneratedPasswordUiModel) async -> String? {
+        if case let .unmasked(clearPassword) = password.visibility {
+            return clearPassword
+        } else {
+            do {
+                return try await repository.getClearPassword(id: password.id)
+            } catch {
+                self.error = error
+                return nil
+            }
+        }
+    }
+
     func toggleVisibility(for password: GeneratedPasswordUiModel) {
         guard let index = passwords.firstIndex(where: { $0.id == password.id }) else {
             assertionFailure("No password found for id \(password.id)")
@@ -77,6 +90,18 @@ extension PasswordHistoryViewModel {
             do {
                 try await repository.deleteAllPasswords()
                 passwords.removeAll()
+            } catch {
+                self.error = error
+            }
+        }
+    }
+
+    func delete(_ password: GeneratedPasswordUiModel) {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await repository.deletePassword(id: password.id)
+                passwords.removeAll { $0.id == password.id }
             } catch {
                 self.error = error
             }
