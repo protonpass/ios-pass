@@ -1248,7 +1248,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		538548F92D58ACF300AEFB66 /* Exceptions for "Action" folder in "Action" target */ = {
+		538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -1258,18 +1258,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		538548E92D58ACF300AEFB66 /* Action */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				538548F92D58ACF300AEFB66 /* Exceptions for "Action" folder in "Action" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Action;
-			sourceTree = "<group>";
-		};
+		538548E92D58ACF300AEFB66 /* Action */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (538548F92D58ACF300AEFB66 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Action; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
