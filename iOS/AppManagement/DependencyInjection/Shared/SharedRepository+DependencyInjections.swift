@@ -55,6 +55,10 @@ private extension SharedRepositoryContainer {
         SharedToolingContainer.shared.currentDateProvider()
     }
 
+    var randomUuidProvider: any RandomUuidProviderProtocol {
+        SharedToolingContainer.shared.randomUuidProvider()
+    }
+
     var databaseService: any DatabaseServiceProtocol {
         SharedServiceContainer.shared.databaseService()
     }
@@ -227,6 +231,10 @@ extension SharedRepositoryContainer {
     var remoteFileDatasource: Factory<any RemoteFileDatasourceProtocol> {
         self { RemoteFileDatasource(apiServicing: self.apiManager) }
     }
+
+    var localPasswordDatasource: Factory<any LocalPasswordDatasourceProtocol> {
+        self { LocalPasswordDatasource(databaseService: self.databaseService) }
+    }
 }
 
 // MARK: Repositories
@@ -396,6 +404,13 @@ extension SharedRepositoryContainer {
                                      apiServiceLite: SharedToolingContainer.shared.apiServiceLite(),
                                      keyManager: self.passKeyManager())
         }
+    }
+
+    var passwordHistoryRepository: Factory<any PasswordHistoryRepositoryProtocol> {
+        self { PasswordHistoryRepository(datasource: self.localPasswordDatasource(),
+                                         currentDateProvider: self.currentDateProvider,
+                                         randomUuidProvider: self.randomUuidProvider,
+                                         symmetricKeyProvider: self.symmetricKeyProvider) }
     }
 }
 
