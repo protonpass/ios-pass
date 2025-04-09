@@ -704,6 +704,8 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                 let fileGroup = getFileGroup(mimeType: mimeType)
                 let formattedFileSize = formatFileAttachmentSize(fileSize)
                 let chunkCount = ceil(Float(fileSize) / Float(Constants.Attachment.maxChunkSizeInBytes))
+                let encryptionVersion = getFeatureFlagStatus(for: FeatureFlagType.passFileAttachmentEncryptionV2) ?
+                    2 : 1
                 let file = try PendingFileAttachment(id: fileId,
                                                      key: .random(),
                                                      metadata: .init(url: url,
@@ -711,7 +713,8 @@ extension BaseCreateEditItemViewModel: FileAttachmentsEditHandler {
                                                                      fileGroup: fileGroup,
                                                                      size: fileSize,
                                                                      formattedSize: formattedFileSize),
-                                                     chunkCount: Int(chunkCount))
+                                                     chunkCount: Int(chunkCount),
+                                                     encryptionVersion: encryptionVersion)
                 try await createEncryptAndUpload(file)
             } catch {
                 if let file = files.first(where: { $0.id == fileId }),
