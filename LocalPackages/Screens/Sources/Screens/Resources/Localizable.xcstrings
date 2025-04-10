@@ -4768,6 +4768,16 @@
         }
       }
     },
+    "Built-in 2FA" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Built-in 2FA"
+          }
+        }
+      }
+    },
     "By adding your domain, you can create aliases like hi@my-domain.com." : {
       "localizations" : {
         "be" : {
@@ -6855,6 +6865,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Create your first login"
+          }
+        }
+      }
+    },
+    "Credit cards" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Credit cards"
+          }
+        }
+      }
+    },
+    "Dark Web Monitoring" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web Monitoring"
           }
         }
       }
@@ -8965,6 +8995,16 @@
         }
       }
     },
+    "File attachments" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File attachments"
+          }
+        }
+      }
+    },
     "First login created" : {
       "localizations" : {
         "en" : {
@@ -9470,6 +9510,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "转发至"
+          }
+        }
+      }
+    },
+    "Free" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
           }
         }
       }
@@ -10189,6 +10239,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "隐藏密码"
+          }
+        }
+      }
+    },
+    "Hide-my-email aliases" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email aliases"
           }
         }
       }
@@ -20918,6 +20978,16 @@
         }
       }
     },
+    "Vault, item & link sharing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vault, item & link sharing"
+          }
+        }
+      }
+    },
     "We detected that you have %lld aliases that are present in SimpleLogin but missing in Proton Pass. Would you like to import them?" : {
       "localizations" : {
         "be" : {
@@ -21588,6 +21658,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "网站"
+          }
+        }
+      }
+    },
+    "What's included" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's included"
           }
         }
       }

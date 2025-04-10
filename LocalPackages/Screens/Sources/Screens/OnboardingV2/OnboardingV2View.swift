@@ -236,7 +236,7 @@ private extension OnboardV2Step {
     var ctaTitle: String? {
         switch self {
         case .payment:
-            #localized("Get Pass Plus", bundle: .module)
+            nil
 
         case let .biometric(type):
             switch type {
