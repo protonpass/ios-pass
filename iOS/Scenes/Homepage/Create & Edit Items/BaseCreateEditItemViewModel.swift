@@ -72,6 +72,7 @@ enum ItemCreationType: Equatable, Hashable {
     case alias
     // swiftlint:disable:next enum_case_associated_values_count
     case login(title: String? = nil,
+               password: String? = nil,
                url: String? = nil,
                note: String? = nil,
                totpUri: String? = nil,

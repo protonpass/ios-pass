@@ -41,10 +41,6 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
 
-    var coloredPassword: AttributedString {
-        PasswordUtils.generateColoredPassword(password)
-    }
-
     var isAlias: Bool {
         aliasItem != nil
     }

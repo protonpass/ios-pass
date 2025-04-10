@@ -70010,6 +70010,16 @@
         }
       }
     },
+    "Generated passwords" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Generated passwords"
+          }
+        }
+      }
+    },
     "Get an email alias to use on new apps" : {
       "localizations" : {
         "be" : {
