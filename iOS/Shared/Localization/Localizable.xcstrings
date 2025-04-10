@@ -1323,7 +1323,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@, %2$@, %3$@ w ciągu ostatnich 14 dni."
+            "value" : "W ciągu ostatnich 14 dni %1$@, %2$@ i %3$@."
           }
         },
         "pt-BR" : {
@@ -3251,25 +3251,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "zablokowano %lld"
+                  "value" : "%lld zablokowane"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "zablokowano %lld"
+                  "value" : "%lld zablokowanych"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "zablokowano %lld"
+                  "value" : "%lld zablokowana"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "zablokowano %lld"
+                  "value" : "%lld zablokowanych"
                 }
               }
             }
@@ -3760,25 +3760,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "zablokowano %lld"
+                  "value" : "%lld zablokowane"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "zablokowano %lld"
+                  "value" : "%lld zablokowanych"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "zablokowano %lld"
+                  "value" : "%lld zablokowana"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "zablokowano %lld"
+                  "value" : "%lld zablokowanych"
                 }
               }
             }
@@ -5345,25 +5345,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przekierowano %lld"
+                  "value" : "%lld przekierowane"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przekierowano %lld"
+                  "value" : "%lld przekierowanych"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przekierowano %lld"
+                  "value" : "%lld przekierowana"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przekierowano %lld"
+                  "value" : "%lld przekierowanych"
                 }
               }
             }
@@ -5853,25 +5853,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przekierowano %lld"
+                  "value" : "%lld przekierowane"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przekierowano %lld"
+                  "value" : "%lld przekierowanych"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przekierowano %lld"
+                  "value" : "%lld przekierowana"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Przekierowano %lld"
+                  "value" : "%lld przekierowanych"
                 }
               }
             }
@@ -11664,25 +11664,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld odpowiedzi"
+                  "value" : "%lld wysłane"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld odpowiedzi"
+                  "value" : "%lld wysłanych"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld odpowiedź"
+                  "value" : "%lld wysłana"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld odpowiedzi"
+                  "value" : "%lld wysłanych"
                 }
               }
             }
@@ -28069,6 +28069,12 @@
             "value" : "API-toegangscode"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poświadczenia API"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28203,6 +28209,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "API-sleutel"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klucz API"
           }
         },
         "pt-BR" : {
@@ -29686,6 +29698,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Minstens één van de geselecteerde items wordt momenteel gedeeld. Als u het naar een andere kluis verplaatst, wordt de toegang voor alle andere gebruikers verwijderd."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Co najmniej jeden zaznaczony element jest udostępniony. Przeniesienie go do innego sejfu spowoduje zatrzymanie udostępniania."
           }
         },
         "pt-BR" : {
@@ -33600,6 +33618,12 @@
             "value" : "Dit item kan worden bewerkt en verwijderd."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Może edytować i usuwać element."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33752,6 +33776,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kan toegang tot dit item verlenen en intrekken."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Może zarządzać dostępem do elementu."
           }
         },
         "pt-BR" : {
@@ -33911,7 +33941,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zarządza dostępem do sejfu"
+            "value" : "Może zarządzać dostępem do sejfu"
           }
         },
         "pt-BR" : {
@@ -42493,6 +42523,12 @@
             "value" : "Kopieer doorschakeladres"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj adres przekierowania"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45712,6 +45748,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Creëer items met volledig aangepaste velden"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twórz elementy z niestandardowymi polami"
           }
         },
         "pt-BR" : {
@@ -51058,6 +51100,12 @@
             "value" : "Datum aangepast veld"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pole niestandardowe daty"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54622,6 +54670,12 @@
             "value" : "Dokter"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lekarz"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55109,6 +55163,12 @@
             "value" : "Gedownloade bestanden gewist"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pobrane pliki zostały wyczyszczone"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55244,6 +55304,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rijbewijs"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prawo jazdy"
           }
         },
         "pt-BR" : {
@@ -57401,7 +57467,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wiadomość wysłana na ten adres będzie wyglądała na wysłaną z adresu %@."
+            "value" : "Wiadomość będzie wyglądała na wysłaną z adresu %@."
           }
         },
         "pt-BR" : {
@@ -61525,6 +61591,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elke keer dat uw alias een e-mail van iemand ontvangt, wordt automatisch een nieuwe contactpersoon aangemaakt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za każdym razem, gdy Twój alias otrzyma wiadomość, zostanie automatycznie utworzony nowy kontakt."
           }
         },
         "pt-BR" : {
@@ -65660,6 +65732,12 @@
             "value" : "Bestandsbijlagen zijn beschikbaar met Pass Plus. Upgrade voor directe toegang."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Załączniki są dostępne w planie Pass Plus. Ulepsz konto, aby uzyskać natychmiastowy dostęp."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66276,6 +66354,12 @@
             "value" : "Gefilterd op aangepaste items. Items in de prullenbak worden niet getoond."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filtrowane przez niestandardowe elementy. Usunięte elementy nie będą pokazywane."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -66884,6 +66968,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Financiën"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finanse"
           }
         },
         "pt-BR" : {
@@ -74141,6 +74231,12 @@
             "value" : "Naam rekeninghouder"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa właściciela"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74269,6 +74365,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ziekenhuis"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szpital"
           }
         },
         "pt-BR" : {
@@ -74402,6 +74504,12 @@
             "value" : "Host"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Host"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -74525,6 +74633,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hostnaam"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa hosta"
           }
         },
         "pt-BR" : {
@@ -74982,6 +75096,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "IBAN"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numer IBAN"
           }
         },
         "pt-BR" : {
@@ -78786,6 +78906,12 @@
             "value" : "Nodig meer gebruikers uit voor het item"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaproś więcej użytkowników do elementu"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -78938,6 +79064,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nodig meer gebruikers uit voor de kluis"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaproś więcej użytkowników do sejfu"
           }
         },
         "pt-BR" : {
@@ -79373,6 +79505,12 @@
             "value" : "Uitgevende autoriteit"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Organ wydający"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79503,6 +79641,12 @@
             "value" : "Land van uitgifte"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kraj wydający"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -79631,6 +79775,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Staat/Land van uitgifte"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kraj / stan wydający"
           }
         },
         "pt-BR" : {
@@ -80117,6 +80267,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Item historiek succesvol gereset"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Historia elementu została usunięta"
           }
         },
         "pt-BR" : {
@@ -81142,6 +81298,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Item delen: %lld gebruikers"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Udostępnianie elementu: %lld użytkowników"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Udostępnianie elementu: %lld użytkowników"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Udostępnianie elementu: %lld użytkownik"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Udostępnianie elementu: %lld użytkowników"
                 }
               }
             }
@@ -90499,6 +90685,12 @@
             "value" : "Medische aandoeningen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stan zdrowia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90628,6 +90820,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medisch dossier"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dokumentacja medyczna"
           }
         },
         "pt-BR" : {
@@ -90761,6 +90959,12 @@
             "value" : "Geneesmiddelen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leki"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -90889,6 +91093,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lid-ID"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identyfikator członka"
           }
         },
         "pt-BR" : {
@@ -91186,6 +91396,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Naam lid"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa członka"
           }
         },
         "pt-BR" : {
@@ -91486,6 +91702,12 @@
             "value" : "Lidmaatschap"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Członkostwo"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -91614,6 +91836,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lidmaatschap ID"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Identyfikator członkostwa"
           }
         },
         "pt-BR" : {
@@ -96853,6 +97081,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er worden geen items met u gedeeld"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak elementów udostępnionych Tobie"
           }
         },
         "pt-BR" : {
@@ -104288,6 +104522,12 @@
             "value" : "Naam organisatie"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa organizacji"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -108326,6 +108566,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Machtigingen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uprawnienia"
           }
         },
         "pt-BR" : {
@@ -112399,6 +112645,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Punten saldo"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saldo punktów"
           }
         },
         "pt-BR" : {
@@ -118125,6 +118377,12 @@
             "value" : "Verwijder bijlagen van vorige downloads uit de cache"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń załączniki z pamięci podręcznej z poprzednich pobrań"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -120919,6 +121177,12 @@
             "value" : "Historiek van dit item resetten"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usunąć historię elementu?"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -121071,6 +121335,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Het resetten van de historiek zal alle voorgaande versies definitief verwijderen en kan niet ongedaan worden gemaakt."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usunięcie historii spowoduje trwałe usunięcie wszystkich poprzednich wersji. Nie możesz cofnąć tej akcji."
           }
         },
         "pt-BR" : {
@@ -124435,6 +124705,12 @@
             "value" : "Beloningsprogramma"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Program lojalnościowy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -124564,6 +124840,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Routeringsnummer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numer rozliczeniowy"
           }
         },
         "pt-BR" : {
@@ -125028,6 +125310,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scan de QR-code om deel te nemen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zeskanuj kod QR, aby dołączyć"
           }
         },
         "pt-BR" : {
@@ -128467,6 +128755,12 @@
             "value" : "Beveiligingstype"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Typ zabezpieczenia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -128788,6 +129082,12 @@
             "value" : "Zie de leden en permissies overzicht"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobacz użytkowników i sprawdź uprawnienia"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -129084,6 +129384,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herstel zin"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fraza seed"
           }
         },
         "pt-BR" : {
@@ -136810,6 +137116,12 @@
             "value" : "Toon gedeeld met mij"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż udostępnione dla mnie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138418,6 +138730,12 @@
             "value" : "Nummer Sociale Zekerheid"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Numer ubezpieczenia społecznego"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -138547,6 +138865,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Software Licentie"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Licencja oprogramowania"
           }
         },
         "pt-BR" : {
@@ -139182,6 +139506,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Spotlicht"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spotlight"
           }
         },
         "pt-BR" : {
@@ -139859,6 +140189,12 @@
             "value" : "SSH-sleutel permanent verwijderd"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klucz SSH został trwale usunięty"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140397,6 +140733,12 @@
             "value" : "SSID gekopieerd"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SSID został skopiowany"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140692,6 +141034,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Begin opnieuw"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozpocznij od początku"
           }
         },
         "pt-BR" : {
@@ -142487,6 +142835,12 @@
             "value" : "SWIFT/BIC"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SWIFT / BIC"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -144139,6 +144493,12 @@
             "value" : "Tik hier voor details"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kliknij, aby uzyskać szczegóły"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -144291,6 +144651,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tik op het tandwielpictogram om de alias aan te passen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kliknij ikonę koła zębatego, aby dostosować alias do swoich potrzeb."
           }
         },
         "pt-BR" : {
@@ -145575,6 +145941,12 @@
             "value" : "Het geselecteerde bestand overschrijdt de grootte limiet. Kies een bestand kleiner dan 100 MB."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przekroczono maksymalny rozmiar pliku. Wybierz plik mniejszy niż 100 MB."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -145727,6 +146099,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Het geselecteerde bestand is leeg. Controleer het bestand en probeer opnieuw."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plik jest pusty. Sprawdź plik i spróbuj ponownie."
           }
         },
         "pt-BR" : {
@@ -146548,6 +146926,12 @@
             "value" : "Dit item wordt momenteel gedeeld. Als u het verwijdert, wordt de toegang voor alle andere gebruikers uitgeschakeld."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element jest udostępniony. Usunięcie go spowoduje zatrzymanie udostępniania."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -146700,6 +147084,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dit item wordt momenteel gedeeld. Als u het naar een andere kluis verplaatst, wordt de toegang voor alle andere gebruikers geblokkeerd."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Element jest udostępniony. Przeniesienie go do innego sejfu spowoduje zatrzymanie udostępniania."
           }
         },
         "pt-BR" : {
@@ -147823,6 +148213,12 @@
             "value" : "Rang/Niveau"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poziom"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -147946,6 +148342,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rang/Status"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poziom / status"
           }
         },
         "pt-BR" : {
@@ -154007,6 +154409,12 @@
             "value" : "Ongespecificeerd"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie określono"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -156099,6 +156507,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgrade om aangepaste items te maken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulepsz konto, aby utworzyć niestandardowe elementy"
           }
         },
         "pt-BR" : {
@@ -159442,7 +159856,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udostępniony sejf"
+            "value" : "Udostępniony Ci sejf"
           }
         },
         "pt-BR" : {
@@ -159976,6 +160390,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Kluis delen: %lld leden"
+                }
+              }
+            }
+          }
+        },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Udostępnianie sejfu: %lld użytkowników"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Udostępnianie sejfu: %lld użytkowników"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Udostępnianie sejfu: %lld użytkownik"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Udostępnianie sejfu: %lld użytkowników"
                 }
               }
             }
@@ -165732,6 +166176,12 @@
             "value" : "Wifi-netwerk aangemaakt"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieć Wi-Fi została utworzona"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165856,6 +166306,12 @@
             "value" : "Wifi-netwerk verplaatst naar prullenbak"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieć Wi-Fi została przeniesiona do kosza"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165978,6 +166434,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wifi-netwerk permanent verwijderd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieć Wi-Fi została trwale usunięta"
           }
         },
         "pt-BR" : {
@@ -166110,6 +166572,12 @@
             "value" : "Wifi-netwerk hersteld"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieć Wi-Fi została przywrócona"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -166238,6 +166706,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wifi-netwerk bijgewerkt"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieć Wi-Fi została zaktualizowana"
           }
         },
         "pt-BR" : {
@@ -166504,6 +166978,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wifi wachtwoord gekopieerd"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sieć Wi-Fi została skopiowana"
           }
         },
         "pt-BR" : {
@@ -167477,6 +167957,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wilt u \"%1$@\" associëren met \"%2$@\"?"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czy chcesz powiązać \"%1$@\" z \"%2$@\"?"
           }
         },
         "pt-BR" : {
@@ -172270,6 +172756,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "U zult toegang tot dit item en de bijbehorende gegevens. Wilt u doorgaan"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stracisz dostęp do elementu i jego szczegółów. Czy chcesz kontynuować?"
           }
         },
         "pt-BR" : {
