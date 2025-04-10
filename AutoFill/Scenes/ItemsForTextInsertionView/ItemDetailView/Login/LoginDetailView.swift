@@ -228,7 +228,7 @@ private extension LoginDetailView {
                         .placeholderText()
                 } else {
                     if showPassword {
-                        Text(viewModel.coloredPassword)
+                        Text(viewModel.password.coloredPassword())
                             .font(.body.monospaced())
                     } else {
                         Text(String(repeating: "•", count: 12))
