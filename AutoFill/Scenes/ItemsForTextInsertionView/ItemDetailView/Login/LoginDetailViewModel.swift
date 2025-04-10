@@ -21,7 +21,6 @@
 import Entities
 import Factory
 import Foundation
-import Screens
 import UseCases
 
 @MainActor
@@ -41,10 +40,6 @@ final class LoginDetailViewModel: BaseItemDetailViewModel {
     @LazyInjected(\SharedUseCasesContainer.getPasswordStrength) private var getPasswordStrength
     @LazyInjected(\SharedRepositoryContainer.itemRepository) private var itemRepository
     @LazyInjected(\SharedRepositoryContainer.shareRepository) private var shareRepository
-
-    var coloredPassword: AttributedString {
-        PasswordUtils.generateColoredPassword(password)
-    }
 
     var isAlias: Bool {
         aliasItem != nil

@@ -22,7 +22,6 @@ import Combine
 import Core
 import Entities
 import Factory
-import Screens
 import SwiftUI
 
 @MainActor
@@ -105,10 +104,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
 
     weak var delegate: (any GeneratePasswordViewModelDelegate)?
     weak var uiDelegate: (any GeneratePasswordViewModelUiDelegate)?
-
-    var coloredPassword: AttributedString {
-        PasswordUtils.generateColoredPassword(password)
-    }
 
     var shouldDisplayTypeSelection: Bool {
         if let randomPasswordAllowed = passwordPolicy?.randomPasswordAllowed, !randomPasswordAllowed {

@@ -128,7 +128,7 @@ private struct FullScreenTextView: View {
 
             switch data {
             case let .password(password):
-                Text(PasswordUtils.generateColoredPassword(password))
+                Text(password.coloredPassword())
                     .font(.system(size: (percentage + 1) * 24))
                     .fontWeight(.semibold)
             case let .text(text):

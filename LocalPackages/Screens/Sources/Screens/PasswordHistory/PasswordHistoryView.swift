@@ -169,7 +169,7 @@ private struct GeneratedPasswordRow: View {
                         .foregroundStyle(PassColor.textNorm.toColor)
 
                 case let .unmasked(clearPassword):
-                    Text(PasswordUtils.generateColoredPassword(clearPassword))
+                    Text(clearPassword.coloredPassword())
                         .foregroundStyle(PassColor.textNorm.toColor)
                         .onTapGesture(perform: onCopy)
 
