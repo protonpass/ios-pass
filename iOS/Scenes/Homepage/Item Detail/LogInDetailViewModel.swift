@@ -54,10 +54,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
 
-    var coloredPassword: AttributedString {
-        PasswordUtils.generateColoredPassword(password)
-    }
-
     private var fetchSimilarPasswordItemsTask: Task<Void, Never>?
 
     init(isShownAsSheet: Bool,

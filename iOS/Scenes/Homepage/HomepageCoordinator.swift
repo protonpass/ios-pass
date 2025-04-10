@@ -81,6 +81,8 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
     @LazyInjected(\SharedRepositoryContainer.shareRepository) var shareRepository
     @LazyInjected(\SharedRepositoryContainer.passMonitorRepository) var passMonitorRepository
     @LazyInjected(\SharedRepositoryContainer.aliasRepository) var aliasRepository
+    @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
+    private var passwordHistoryRepository
 
     // Use cases
     private let refreshFeatureFlags = resolve(\SharedUseCasesContainer.refreshFeatureFlags)
@@ -146,6 +148,7 @@ final class HomepageCoordinator: Coordinator, DeinitPrintable {
         refreshFeatureFlags()
         sendAllEventsIfApplicable()
         doLogOutExcessFreeAccounts()
+        cleanUpPasswordHistory()
     }
 }
 
@@ -423,6 +426,17 @@ private extension HomepageCoordinator {
         }
     }
 
+    func cleanUpPasswordHistory() {
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await passwordHistoryRepository.cleanUpOldPasswords()
+            } catch {
+                handle(error: error)
+            }
+        }
+    }
+
     func increaseCreatedItemsCountAndAskForReviewIfNecessary() {
         Task { [weak self] in
             guard let self else { return }
@@ -598,6 +612,8 @@ extension HomepageCoordinator {
                         guard let self else { return }
                         present(AddCustomEmailView(viewModel: .init(validationType: .mailbox(nil))))
                     }
+                case .passwordHistory:
+                    presentPasswordHistoryView()
                 }
             }
             .store(in: &cancellables)
@@ -1007,6 +1023,27 @@ extension HomepageCoordinator {
             let navigationController = UINavigationController(rootViewController: viewController)
             present(navigationController)
         }
+    }
+
+    func presentPasswordHistoryView() {
+        let createLogin: (String) -> Void = { [weak self] clearPassword in
+            guard let self else { return }
+            dismissTopMostViewController(animated: true) { [weak self] in
+                guard let self else { return }
+                presentCreateEditLoginView(mode: .create(shareId: nil,
+                                                         type: .login(password: clearPassword,
+                                                                      autofill: false)))
+            }
+        }
+        let view = PasswordHistoryView(repository: passwordHistoryRepository,
+                                       onCreateLogin: createLogin,
+                                       onCopy: { [weak self] password in
+                                           guard let self else { return }
+                                           copyToClipboard(password,
+                                                           bannerMessage: #localized("Password copied"),
+                                                           bannerDisplay: bannerManager)
+                                       })
+        present(view)
     }
 
     private func filledUserInfo(userData: UserData) async throws -> UserInfo {

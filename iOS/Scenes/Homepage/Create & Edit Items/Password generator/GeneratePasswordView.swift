@@ -23,6 +23,7 @@ import Entities
 import Factory
 import Macro
 import ProtonCoreUIFoundations
+import Screens
 import SwiftUI
 
 struct GeneratePasswordView: View {
@@ -36,7 +37,7 @@ struct GeneratePasswordView: View {
     var body: some View {
         NavigationStack {
             VStack {
-                Text(viewModel.coloredPassword)
+                Text(viewModel.password.coloredPassword())
                     .font(.title3.monospaced())
                     .minimumScaleFactor(0.5)
                     .frame(maxHeight: .infinity, alignment: .center)

@@ -416,7 +416,8 @@ extension SharedUseCasesContainer {
                                        telemetryEventDatasource: container.localTelemetryEventDatasource(),
                                        userDataDatasource: container.localUserDataDatasource(),
                                        userPreferencesDatasource: container.userPreferencesDatasource(),
-                                       inAppNotificationDatasource: container.localInAppNotificationDatasource())
+                                       inAppNotificationDatasource: container.localInAppNotificationDatasource(),
+                                       passwordDatasource: container.localPasswordDatasource())
         }
     }
 

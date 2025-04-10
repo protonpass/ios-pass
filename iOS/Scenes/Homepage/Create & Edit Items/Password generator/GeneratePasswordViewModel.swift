@@ -20,7 +20,6 @@
 
 import Combine
 import Core
-import DesignSystem
 import Entities
 import Factory
 import SwiftUI
@@ -33,24 +32,6 @@ protocol GeneratePasswordViewModelDelegate: AnyObject {
 @MainActor
 protocol GeneratePasswordViewModelUiDelegate: AnyObject {
     func generatePasswordViewModelWantsToUpdateSheetHeight(isShowingAdvancedOptions: Bool)
-}
-
-enum PasswordUtils {
-    static func generateColoredPassword(_ password: String) -> AttributedString {
-        let attributedChars = password.map { char in
-            var attributedChar = AttributedString("\(char)", attributes: .lineBreakHyphenErasing)
-            attributedChar.foregroundColor = if AllowedCharacter.digit.rawValue.contains(char) {
-                PassColor.loginInteractionNormMajor2
-            } else if AllowedCharacter.special.rawValue.contains(char) ||
-                AllowedCharacter.separator.rawValue.contains(char) {
-                PassColor.aliasInteractionNormMajor2
-            } else {
-                PassColor.textNorm
-            }
-            return attributedChar
-        }
-        return attributedChars.reduce(into: .init()) { $0 += $1 }
-    }
 }
 
 @MainActor
@@ -124,10 +105,6 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     weak var delegate: (any GeneratePasswordViewModelDelegate)?
     weak var uiDelegate: (any GeneratePasswordViewModelUiDelegate)?
 
-    var coloredPassword: AttributedString {
-        PasswordUtils.generateColoredPassword(password)
-    }
-
     var shouldDisplayTypeSelection: Bool {
         if let randomPasswordAllowed = passwordPolicy?.randomPasswordAllowed, !randomPasswordAllowed {
             return false
@@ -150,6 +127,8 @@ final class GeneratePasswordViewModel: DeinitPrintable, ObservableObject {
     @LazyInjected(\SharedRepositoryContainer.accessRepository) private var accessRepository
     @LazyInjected(\SharedToolingContainer.logger) private var logger
     @LazyInjected(\SharedServiceContainer.userManager) private var userManager
+    @LazyInjected(\SharedRepositoryContainer.passwordHistoryRepository)
+    private var passwordHistoryRepository
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -199,7 +178,16 @@ extension GeneratePasswordViewModel {
     }
 
     func confirm() {
-        delegate?.generatePasswordViewModelDidConfirm(password: password)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await passwordHistoryRepository.insertPassword(password)
+            } catch {
+                logger.error(error)
+            }
+
+            delegate?.generatePasswordViewModelDidConfirm(password: password)
+        }
     }
 }
 
