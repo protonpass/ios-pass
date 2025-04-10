@@ -2216,6 +2216,12 @@
             "value" : "Zoeken in items gedeeld met mij"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przeszukaj elementy udostępnione dla mnie"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3186,7 +3192,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nie masz żadnych sejfów z dostępem edytora lub administratora. Spróbuj utworzyć jeden w głównej aplikacji lub poproś administratora swojej organizacji o wsparcie."
+            "value" : "Nie masz żadnych sejfów z dostępem edytora lub administratora. Spróbuj utworzyć sejf w głównej aplikacji lub poproś administratora organizacji o wsparcie."
           }
         },
         "pt-BR" : {
