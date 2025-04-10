@@ -55,10 +55,6 @@ private extension SharedRepositoryContainer {
         SharedToolingContainer.shared.currentDateProvider()
     }
 
-    var randomUuidProvider: any RandomUuidProviderProtocol {
-        SharedToolingContainer.shared.randomUuidProvider()
-    }
-
     var databaseService: any DatabaseServiceProtocol {
         SharedServiceContainer.shared.databaseService()
     }
@@ -409,7 +405,6 @@ extension SharedRepositoryContainer {
     var passwordHistoryRepository: Factory<any PasswordHistoryRepositoryProtocol> {
         self { PasswordHistoryRepository(datasource: self.localPasswordDatasource(),
                                          currentDateProvider: self.currentDateProvider,
-                                         randomUuidProvider: self.randomUuidProvider,
                                          symmetricKeyProvider: self.symmetricKeyProvider,
                                          logManager: self.logManager) }
     }

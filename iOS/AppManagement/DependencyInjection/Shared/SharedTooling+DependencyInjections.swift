@@ -131,10 +131,6 @@ extension SharedToolingContainer {
         self { CurrentDateProvider() }
     }
 
-    var randomUuidProvider: Factory<any RandomUuidProviderProtocol> {
-        self { RandomUuidProvider() }
-    }
-
     var preferencesManager: Factory<any PreferencesManagerProtocol> {
         self {
             let cont = SharedRepositoryContainer.shared
