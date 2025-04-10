@@ -281,7 +281,7 @@ private extension LogInDetailView {
                         .placeholderText()
                 } else {
                     if isShowingPassword {
-                        Text(viewModel.coloredPassword)
+                        Text(viewModel.password.coloredPassword())
                             .font(.body.monospaced())
                     } else {
                         Text(String(repeating: "•", count: 12))

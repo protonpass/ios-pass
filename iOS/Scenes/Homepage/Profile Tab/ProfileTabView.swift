@@ -96,8 +96,11 @@ struct ProfileTabView: View {
                     autoFillDisabledSection
                 }
 
+                passwordHistorySection
+                    .padding(.top)
+
                 aliasesSection
-                    .padding(.vertical)
+                    .padding(.top)
 
                 secureLinkSection
                     .padding(.top)
@@ -408,6 +411,13 @@ struct ProfileTabView: View {
         }
         .roundedEditableSection()
         .padding(.horizontal)
+    }
+
+    private var passwordHistorySection: some View {
+        TextOptionRow(title: #localized("Generated passwords"), action: { viewModel.showPasswordHistory() })
+            .frame(height: 75)
+            .roundedEditableSection()
+            .padding(.horizontal)
     }
 
     private var aliasesSection: some View {

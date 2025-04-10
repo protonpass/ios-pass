@@ -227,6 +227,10 @@ extension SharedRepositoryContainer {
     var remoteFileDatasource: Factory<any RemoteFileDatasourceProtocol> {
         self { RemoteFileDatasource(apiServicing: self.apiManager) }
     }
+
+    var localPasswordDatasource: Factory<any LocalPasswordDatasourceProtocol> {
+        self { LocalPasswordDatasource(databaseService: self.databaseService) }
+    }
 }
 
 // MARK: Repositories
@@ -396,6 +400,13 @@ extension SharedRepositoryContainer {
                                      apiServiceLite: SharedToolingContainer.shared.apiServiceLite(),
                                      keyManager: self.passKeyManager())
         }
+    }
+
+    var passwordHistoryRepository: Factory<any PasswordHistoryRepositoryProtocol> {
+        self { PasswordHistoryRepository(datasource: self.localPasswordDatasource(),
+                                         currentDateProvider: self.currentDateProvider,
+                                         symmetricKeyProvider: self.symmetricKeyProvider,
+                                         logManager: self.logManager) }
     }
 }
 
