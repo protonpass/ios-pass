@@ -29,7 +29,8 @@ struct OnboardingPaymentStep: View {
 
     var body: some View {
         ScrollView(showsIndicators: false) {
-            OnboardingPassPlusView()
+//            OnboardingPassPlusView()
+            OnboardingProtonUnlimitedView()
         }
         .padding(.horizontal, DesignConstant.onboardingPadding)
     }
