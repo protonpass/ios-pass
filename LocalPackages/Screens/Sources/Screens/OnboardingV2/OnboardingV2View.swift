@@ -147,8 +147,9 @@ private extension OnboardingV2View {
     @ViewBuilder
     func content(for step: OnboardV2Step) -> some View {
         switch step {
-        case let .payment(plans):
-            OnboardingPaymentStep(plans: plans,
+        case let .payment(plus, unlimited):
+            OnboardingPaymentStep(plusPlan: plus,
+                                  unlimitedPlan: unlimited,
                                   selectedPlan: $viewModel.selectedPlan)
 
         case .biometric:

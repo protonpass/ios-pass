@@ -16452,17 +16452,6 @@
         }
       }
     },
-    "Select your plan" : {
-      "comment" : "Title of the subscriptions section",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Select your plan"
-          }
-        }
-      }
-    },
     "Service" : {
       "localizations" : {
         "en" : {
@@ -18091,17 +18080,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "存储"
-          }
-        }
-      }
-    },
-    "Subscription auto renews at %@" : {
-      "comment" : "Placeholder is the subscription price",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Subscription auto renews at %@"
           }
         }
       }

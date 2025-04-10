@@ -23,6 +23,7 @@ import Entities
 import Foundation
 import LocalAuthentication
 import ProtonCorePaymentsV2
+import StoreKit
 
 public enum OnboardFirstLoginSuggestion: Sendable {
     case none
@@ -71,7 +72,7 @@ public protocol OnboardingV2Delegate: Sendable, AnyObject {
 }
 
 enum OnboardV2Step: Sendable, Equatable {
-    case payment([ComposedPlan])
+    case payment(plus: PlanUiModel, unlimited: PlanUiModel)
     case biometric(LABiometryType)
     case autofill
     case createFirstLogin(shareId: String, [KnownService])
@@ -83,7 +84,7 @@ final class OnboardingV2ViewModel: ObservableObject {
     @Published private(set) var currentStep: FetchableObject<OnboardV2Step> = .fetching
     @Published private(set) var isSaving = false
     @Published private(set) var finished = false
-    @Published var selectedPlan: ComposedPlan?
+    @Published var selectedPlan: PlanUiModel?
     private var availableBiometryType: LABiometryType?
 
     private weak var datasource: (any OnboardingV2Datasource)?
@@ -109,9 +110,14 @@ extension OnboardingV2ViewModel {
 
             let plans = try await datasource.getAvailablePlans()
             // When user is paid, no plans are fetched
-            if !plans.isEmpty {
-                selectedPlan = plans.first
-                currentStep = .fetched(.payment(plans))
+            let plusId = "iospass_pass2023_12_usd_auto_renewing"
+            let unlimitedId = "iospass_bundle2022_12_usd_auto_renewing"
+            if !plans.isEmpty,
+               let plusComposedPlan = plans.first(where: { $0.product.id == plusId }),
+               let plusPlan = PlanUiModel(plan: plusComposedPlan),
+               let unlimitedComposedPlan = plans.first(where: { $0.product.id == unlimitedId }),
+               let unlimitedPlan = PlanUiModel(plan: unlimitedComposedPlan) {
+                currentStep = .fetched(.payment(plus: plusPlan, unlimited: unlimitedPlan))
             } else if let availableBiometryType, availableBiometryType != .none {
                 currentStep = .fetched(.biometric(availableBiometryType))
             } else {
@@ -194,7 +200,7 @@ extension OnboardingV2ViewModel {
                     assertionFailure("No selected plan")
                     return
                 }
-                try await delegate.purchase(selectedPlan)
+                try await delegate.purchase(selectedPlan.plan)
                 shouldGoToNextStep = true
 
             case .biometric:
