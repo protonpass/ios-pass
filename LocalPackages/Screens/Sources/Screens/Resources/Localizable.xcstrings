@@ -482,6 +482,36 @@
             }
           }
         },
+        "pl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Masz %lld aliasy SimpleLogin, który nie są widoczne w Proton Pass."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Masz %lld aliasów SimpleLogin, które nie są widoczne w Proton Pass."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Masz %lld alias SimpleLogin, który nie jest widoczny w Proton Pass."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Masz %lld aliasów SimpleLogin, które nie są widoczne w Proton Pass."
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -4316,6 +4346,12 @@
             "value" : "Door uw domein toe te voegen, kunt u aliassen zoals hi@my-domain.com maken."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Po dodaniu domeny możesz utworzyć aliasy, takie jak hej@moja-domena.pl."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6878,6 +6914,12 @@
             "value" : "Sectietitel bewerken"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edytuj tytuł sekcji"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8180,7 +8222,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Otrzymuj powiadomienia, gdy Twój adres e-mail zostanie znaleziony w Darknecie."
+            "value" : "Otrzymaj powiadomienie, gdy Twój adres e-mail zostanie znaleziony w sieci dark web."
           }
         },
         "pt-BR" : {
@@ -8972,7 +9014,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pomyślnie zaimportowano"
+            "value" : "Importowanie zostało zakończone"
           }
         },
         "pt-BR" : {
@@ -9621,6 +9663,12 @@
             "value" : "Er kon geen tekst worden gevonden in de afbeelding. Probeer het nog een keer ervoor zorgend dat de tekst duidelijk en goed is en binnen de focus van de camera."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie można wykryć tekstu. Spróbuj ponownie. Upewnij się, że tekst jest wyraźny i dobrze oświetlony."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9886,6 +9934,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak"
           }
         },
         "pt-BR" : {
@@ -12428,6 +12482,12 @@
             "value" : "Sectie verwijderen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usuń sekcję"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14335,6 +14395,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deel aliassen met anderen door hun inbox toe te voegen als extra mailbox."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Udostępniaj aliasy innym użytkownikom, dodając ich adres jako dodatkową skrzynkę pocztową."
           }
         },
         "pt-BR" : {
@@ -17260,6 +17326,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upgrade om uw opslagcapaciteit te vergroten."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulepsz konto, aby zwiększyć przestrzeń dyskową."
           }
         },
         "pt-BR" : {

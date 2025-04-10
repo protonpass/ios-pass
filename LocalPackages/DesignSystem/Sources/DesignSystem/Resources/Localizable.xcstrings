@@ -1257,6 +1257,12 @@
             "value" : "Privacy of restricties instellingen hebben het gebruik van de camera uitgeschakeld. U kunt dit wijzigen in Instellingen."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustawienia prywatności uniemożliwiają dostęp do aparatu. Możesz to zmienić w ustawieniach."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
