@@ -122,7 +122,7 @@ private extension PasswordHistoryView {
         LazyVStack(spacing: DesignConstant.sectionPadding) {
             ForEach(viewModel.passwords) { password in
                 GeneratedPasswordRow(password: password,
-                                     onCopy: onCopy,
+                                     onCopy: { handleCopy(for: password) },
                                      onToggleVisibility: { viewModel.toggleVisibility(for: password) },
                                      onCreateLogin: { handleLoginCreation(for: password) },
                                      onRemove: { viewModel.delete(password) })
@@ -143,11 +143,19 @@ private extension PasswordHistoryView {
             }
         }
     }
+
+    func handleCopy(for password: GeneratedPasswordUiModel) {
+        Task {
+            if let clearPassword = await viewModel.getClearPassword(for: password) {
+                onCopy(clearPassword)
+            }
+        }
+    }
 }
 
 private struct GeneratedPasswordRow: View {
     let password: GeneratedPasswordUiModel
-    let onCopy: (String) -> Void
+    let onCopy: () -> Void
     let onToggleVisibility: () -> Void
     let onCreateLogin: () -> Void
     let onRemove: () -> Void
@@ -163,6 +171,7 @@ private struct GeneratedPasswordRow: View {
                 case let .unmasked(clearPassword):
                     Text(PasswordUtils.generateColoredPassword(clearPassword))
                         .foregroundStyle(PassColor.textNorm.toColor)
+                        .onTapGesture(perform: onCopy)
 
                 case .failedToUnmask:
                     Image(systemName: "exclamationmark.3")
@@ -177,14 +186,6 @@ private struct GeneratedPasswordRow: View {
                     .foregroundStyle(PassColor.textWeak.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .contentShape(.rect)
-            .onTapGesture {
-                if case let .unmasked(clearPassword) = password.visibility {
-                    onCopy(clearPassword)
-                } else {
-                    onToggleVisibility()
-                }
-            }
 
             visibilityButton
             otherOptionsButton
@@ -205,6 +206,11 @@ private struct GeneratedPasswordRow: View {
 
     private var otherOptionsButton: some View {
         Menu(content: {
+            Button(action: onCopy) {
+                Label(title: { Text("Copy password", bundle: .module) },
+                      icon: { Image(uiImage: IconProvider.key) })
+            }
+
             Button(action: onCreateLogin) {
                 Label(title: { Text("Create login", bundle: .module) },
                       icon: { Image(uiImage: IconProvider.user) })
