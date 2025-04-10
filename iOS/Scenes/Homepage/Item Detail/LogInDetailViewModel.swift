@@ -24,7 +24,6 @@ import Core
 import Entities
 import Factory
 import Macro
-import Screens
 import SwiftUI
 import UIKit
 
@@ -54,10 +53,6 @@ final class LogInDetailViewModel: BaseItemDetailViewModel, DeinitPrintable {
     private let passMonitorRepository = resolve(\SharedRepositoryContainer.passMonitorRepository)
 
     let totpManager = resolve(\SharedServiceContainer.totpManager)
-
-    var coloredPassword: AttributedString {
-        PasswordUtils.generateColoredPassword(password)
-    }
 
     private var fetchSimilarPasswordItemsTask: Task<Void, Never>?
 

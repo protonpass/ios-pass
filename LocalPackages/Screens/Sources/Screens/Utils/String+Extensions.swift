@@ -1,6 +1,6 @@
 //
-// PasswordUtils.swift
-// Proton Pass - Created on 09/04/2025.
+// String+Extensions.swift
+// Proton Pass - Created on 10/04/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -17,15 +17,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
-//
 
 import Core
 import DesignSystem
 import SwiftUI
 
-public enum PasswordUtils {
-    public static func generateColoredPassword(_ password: String) -> AttributedString {
-        let attributedChars = password.map { char in
+public extension String {
+    func coloredPassword() -> AttributedString {
+        let attributedChars = map { char in
             var attributedChar = AttributedString("\(char)", attributes: .lineBreakHyphenErasing)
             attributedChar.foregroundColor = if AllowedCharacter.digit.rawValue.contains(char) {
                 PassColor.loginInteractionNormMajor2
