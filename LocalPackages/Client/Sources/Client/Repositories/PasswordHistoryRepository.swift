@@ -37,20 +37,17 @@ public protocol PasswordHistoryRepositoryProtocol: Sendable {
 public actor PasswordHistoryRepository: PasswordHistoryRepositoryProtocol {
     let datasource: any LocalPasswordDatasourceProtocol
     let currentDateProvider: any CurrentDateProviderProtocol
-    let randomUuidProvider: any RandomUuidProviderProtocol
     let symmetricKeyProvider: any SymmetricKeyProvider
     let logger: Logger
     let retentionDayCount: Int
 
     public init(datasource: any LocalPasswordDatasourceProtocol,
                 currentDateProvider: any CurrentDateProviderProtocol,
-                randomUuidProvider: any RandomUuidProviderProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol,
                 retentionDayCount: Int = 14) {
         self.datasource = datasource
         self.currentDateProvider = currentDateProvider
-        self.randomUuidProvider = randomUuidProvider
         self.symmetricKeyProvider = symmetricKeyProvider
         logger = .init(manager: logManager)
         self.retentionDayCount = retentionDayCount
@@ -60,11 +57,10 @@ public actor PasswordHistoryRepository: PasswordHistoryRepositoryProtocol {
 public extension PasswordHistoryRepository {
     func insertPassword(_ clearPassword: String) async throws {
         logger.trace("Inserting password")
-        let id = randomUuidProvider.randomUuid()
         let currentDate = currentDateProvider.getCurrentDate()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let encryptedPassword = try symmetricKey.encrypt(clearPassword)
-        try await datasource.insertPassword(id: id,
+        try await datasource.insertPassword(id: UUID().uuidString,
                                             symmetricallyEncryptedValue: encryptedPassword,
                                             creationTime: currentDate.timeIntervalSince1970)
         logger.debug("Inserted password")
