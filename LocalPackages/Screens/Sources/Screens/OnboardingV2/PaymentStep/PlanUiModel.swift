@@ -1,6 +1,6 @@
 //
-// OnboardingPaymentStep.swift
-// Proton Pass - Created on 28/03/2025.
+// PlanUiModel.swift
+// Proton Pass - Created on 10/04/2025.
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Pass.
@@ -19,20 +19,27 @@
 // along with Proton Pass. If not, see https://www.gnu.org/licenses/.
 //
 
-import DesignSystem
 import ProtonCorePaymentsV2
-import SwiftUI
+import StoreKit
 
-struct OnboardingPaymentStep: View {
-    let plusPlan: PlanUiModel
-    let unlimitedPlan: PlanUiModel
-    @Binding var selectedPlan: PlanUiModel?
+struct PlanUiModel: Equatable {
+    let plan: ComposedPlan
+    let currencySymbol: String
+    let monthlyPrice: Decimal
+    let yearlyPrice: Decimal
 
-    var body: some View {
-        ScrollView(showsIndicators: false) {
-//            OnboardingPassPlusView()
-            OnboardingProtonUnlimitedView()
+    init?(plan: ComposedPlan) {
+        self.plan = plan
+        guard let product = plan.product as? Product else {
+            return nil
         }
-        .padding(.horizontal, DesignConstant.onboardingPadding)
+        let priceFormat = product.priceFormatStyle
+        currencySymbol = priceFormat.locale.currencySymbol ?? priceFormat.currencyCode
+        monthlyPrice = product.price / 12
+        yearlyPrice = product.price
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        lhs.plan.plan.id == rhs.plan.plan.id
     }
 }
