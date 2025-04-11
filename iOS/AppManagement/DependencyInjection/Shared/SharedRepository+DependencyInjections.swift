@@ -404,6 +404,7 @@ extension SharedRepositoryContainer {
 
     var passwordHistoryRepository: Factory<any PasswordHistoryRepositoryProtocol> {
         self { PasswordHistoryRepository(datasource: self.localPasswordDatasource(),
+                                         userManager: self.userManager,
                                          currentDateProvider: self.currentDateProvider,
                                          symmetricKeyProvider: self.symmetricKeyProvider,
                                          logManager: self.logManager) }
