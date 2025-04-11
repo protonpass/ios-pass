@@ -174,7 +174,6 @@ private struct GeneratedPasswordRow: View {
                 case let .unmasked(clearPassword):
                     Text(clearPassword.coloredPassword())
                         .foregroundStyle(PassColor.textNorm.toColor)
-                        .onTapGesture(perform: onCopy)
 
                 case .failedToUnmask:
                     Image(systemName: "exclamationmark.3")
@@ -189,6 +188,8 @@ private struct GeneratedPasswordRow: View {
                     .foregroundStyle(PassColor.textWeak.toColor)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+            .contentShape(.rect)
+            .onTapGesture(perform: onCopy)
 
             visibilityButton
             otherOptionsButton
