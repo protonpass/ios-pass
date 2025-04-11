@@ -108,10 +108,11 @@ private extension PasswordHistoryView {
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .multilineTextAlignment(.center)
+        .padding(DesignConstant.sectionPadding)
     }
 
     func twoWeeksNotice(font: Font) -> some View {
-        Text("Generated passwords will be stored for a period of 2 weeks.", bundle: .module)
+        Text("Generated passwords will be stored for 2 weeks.", bundle: .module)
             .font(font)
             .foregroundStyle(PassColor.textWeak.toColor)
             .multilineTextAlignment(.center)
