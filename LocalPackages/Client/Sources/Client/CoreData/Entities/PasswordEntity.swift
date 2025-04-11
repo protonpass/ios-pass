@@ -32,6 +32,7 @@ extension PasswordEntity {
         NSFetchRequest<PasswordEntity>(entityName: "PasswordEntity")
     }
 
+    @NSManaged var userID: String
     @NSManaged var id: String
     @NSManaged var creationTime: Int64
     @NSManaged var symmetricallyEncryptedValue: String
@@ -42,7 +43,11 @@ extension PasswordEntity {
         .init(id: id, creationTimestamp: Int(creationTime))
     }
 
-    func hydrate(id: String, creationTime: TimeInterval, symmetricallyEncryptedValue: String) {
+    func hydrate(userID: String,
+                 id: String,
+                 creationTime: TimeInterval,
+                 symmetricallyEncryptedValue: String) {
+        self.userID = userID
         self.id = id
         self.creationTime = Int64(creationTime)
         self.symmetricallyEncryptedValue = symmetricallyEncryptedValue
