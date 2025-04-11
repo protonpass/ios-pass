@@ -8301,12 +8301,12 @@
         }
       }
     },
-    "Generated passwords will be stored for a period of 2 weeks." : {
+    "Generated passwords will be stored for 2 weeks." : {
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Generated passwords will be stored for a period of 2 weeks."
+            "value" : "Generated passwords will be stored for 2 weeks."
           }
         }
       }

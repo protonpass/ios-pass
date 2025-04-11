@@ -36,17 +36,20 @@ public protocol PasswordHistoryRepositoryProtocol: Sendable {
 
 public actor PasswordHistoryRepository: PasswordHistoryRepositoryProtocol {
     let datasource: any LocalPasswordDatasourceProtocol
+    let userManager: any UserManagerProtocol
     let currentDateProvider: any CurrentDateProviderProtocol
     let symmetricKeyProvider: any SymmetricKeyProvider
     let logger: Logger
     let retentionDayCount: Int
 
     public init(datasource: any LocalPasswordDatasourceProtocol,
+                userManager: any UserManagerProtocol,
                 currentDateProvider: any CurrentDateProviderProtocol,
                 symmetricKeyProvider: any SymmetricKeyProvider,
                 logManager: any LogManagerProtocol,
                 retentionDayCount: Int = 14) {
         self.datasource = datasource
+        self.userManager = userManager
         self.currentDateProvider = currentDateProvider
         self.symmetricKeyProvider = symmetricKeyProvider
         logger = .init(manager: logManager)
@@ -56,20 +59,23 @@ public actor PasswordHistoryRepository: PasswordHistoryRepositoryProtocol {
 
 public extension PasswordHistoryRepository {
     func insertPassword(_ clearPassword: String) async throws {
-        logger.trace("Inserting password")
+        let userId = try await userManager.getActiveUserId()
+        logger.trace("Inserting password for user \(userId)")
         let currentDate = currentDateProvider.getCurrentDate()
         let symmetricKey = try await symmetricKeyProvider.getSymmetricKey()
         let encryptedPassword = try symmetricKey.encrypt(clearPassword)
-        try await datasource.insertPassword(id: UUID().uuidString,
+        try await datasource.insertPassword(userId: userId,
+                                            id: UUID().uuidString,
                                             symmetricallyEncryptedValue: encryptedPassword,
                                             creationTime: currentDate.timeIntervalSince1970)
-        logger.debug("Inserted password")
+        logger.debug("Inserted password for user \(userId)")
     }
 
     func getAllPasswords() async throws -> [GeneratedPasswordUiModel] {
-        logger.trace("Getting all passwords")
-        let passwords = try await datasource.getAllPasswords()
-        logger.trace("Found \(passwords.count) passwords")
+        let userId = try await userManager.getActiveUserId()
+        logger.trace("Getting all passwords for user \(userId)")
+        let passwords = try await datasource.getAllPasswords(userId: userId)
+        logger.trace("Found \(passwords.count) passwords for user \(userId)")
 
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .full
@@ -106,9 +112,10 @@ public extension PasswordHistoryRepository {
     }
 
     func deleteAllPasswords() async throws {
-        logger.trace("Deleting all passwords")
-        try await datasource.deleteAllPasswords()
-        logger.trace("Deleted all passwords")
+        let userId = try await userManager.getActiveUserId()
+        logger.trace("Deleting all passwords for user \(userId)")
+        try await datasource.deleteAllPasswords(userId: userId)
+        logger.trace("Deleted all passwords for user \(userId)")
     }
 
     func cleanUpOldPasswords() async throws {
