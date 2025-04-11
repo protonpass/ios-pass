@@ -22,12 +22,13 @@ import CoreData
 import Entities
 
 public protocol LocalPasswordDatasourceProtocol: Sendable {
-    func insertPassword(id: String,
+    func insertPassword(userId: String,
+                        id: String,
                         symmetricallyEncryptedValue: String,
                         creationTime: TimeInterval) async throws
-    func getAllPasswords() async throws -> [GeneratedPassword]
+    func getAllPasswords(userId: String) async throws -> [GeneratedPassword]
     func getEncryptedPassword(id: String) async throws -> String?
-    func deleteAllPasswords() async throws
+    func deleteAllPasswords(userId: String) async throws
     func deletePassword(id: String) async throws
     func deletePasswords(cutOffTimestamp: Int) async throws
 }
@@ -36,7 +37,8 @@ public final class LocalPasswordDatasource: LocalDatasource, LocalPasswordDataso
     @unchecked Sendable {}
 
 public extension LocalPasswordDatasource {
-    func insertPassword(id: String,
+    func insertPassword(userId: String,
+                        id: String,
                         symmetricallyEncryptedValue: String,
                         creationTime: TimeInterval) async throws {
         try await upsert([symmetricallyEncryptedValue],
@@ -46,15 +48,17 @@ public extension LocalPasswordDatasource {
                              entity.id == id
                          },
                          hydrate: { _, entity in
-                             entity.hydrate(id: id,
+                             entity.hydrate(userID: userId,
+                                            id: id,
                                             creationTime: creationTime,
                                             symmetricallyEncryptedValue: symmetricallyEncryptedValue)
                          })
     }
 
-    func getAllPasswords() async throws -> [GeneratedPassword] {
+    func getAllPasswords(userId: String) async throws -> [GeneratedPassword] {
         let taskContext = newTaskContext(type: .fetch)
         let fetchRequest = PasswordEntity.fetchRequest()
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
         fetchRequest.sortDescriptors = [.init(key: "creationTime", ascending: false)]
         let entities = try await execute(fetchRequest: fetchRequest, context: taskContext)
         return entities.map(\.toGeneratedPassword)
@@ -69,9 +73,10 @@ public extension LocalPasswordDatasource {
         return entities.first?.symmetricallyEncryptedValue
     }
 
-    func deleteAllPasswords() async throws {
+    func deleteAllPasswords(userId: String) async throws {
         let taskContext = newTaskContext(type: .delete)
         let fetchRequest = NSFetchRequest<any NSFetchRequestResult>(entityName: "PasswordEntity")
+        fetchRequest.predicate = .init(format: "userID = %@", userId)
         try await execute(batchDeleteRequest: .init(fetchRequest: fetchRequest),
                           context: taskContext)
     }

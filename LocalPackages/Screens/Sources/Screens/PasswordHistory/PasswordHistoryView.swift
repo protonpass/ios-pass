@@ -103,12 +103,14 @@ private extension PasswordHistoryView {
                 .font(.title3)
                 .fontWeight(.bold)
                 .foregroundStyle(PassColor.textWeak.toColor)
-            twoWeeksNotice(font: .headline)
+                .padding(.bottom)
+            twoWeeksNotice(font: .body)
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .center)
         .multilineTextAlignment(.center)
         .padding(DesignConstant.sectionPadding)
+        .padding(.bottom, 40)
     }
 
     func twoWeeksNotice(font: Font) -> some View {
