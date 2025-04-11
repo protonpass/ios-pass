@@ -100,7 +100,7 @@ public extension RemoveUserLocalData {
         async let removeUserPrefs: () = userPreferencesDatasource.removePreferences(for: userId)
         async let removeInAppNotifications: () = inAppNotificationDatasource
             .removeAllNotifications(userId: userId)
-        async let removePasswords: () = passwordDatasource.deleteAllPasswords()
+        async let removePasswords: () = passwordDatasource.deleteAllPasswords(userId: userId)
 
         _ = try await (removeAccess,
                        removeAuthCreds,

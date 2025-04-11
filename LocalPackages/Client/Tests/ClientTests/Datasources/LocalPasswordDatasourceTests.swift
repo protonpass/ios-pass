@@ -35,24 +35,29 @@ struct LocalPasswordDatasourceTests {
     @Test("Get all passwords")
     func getAllPasswords() async throws {
         // Given
+        let userId1 = String.random()
+        let userId2 = String.random()
         let id1 = String.random()
         let id2 = String.random()
         let id3 = String.random()
         let id4 = String.random()
-        try await insertPassword(id: id1, creationTime: 4)
-        try await insertPassword(id: id2, creationTime: 8)
-        try await insertPassword(id: id3, creationTime: 1)
-        try await insertPassword(id: id4, creationTime: 9)
+        try await insertPassword(userId: userId1, id: id1, creationTime: 4)
+        try await insertPassword(userId: userId2, id: id2, creationTime: 8)
+        try await insertPassword(userId: userId1, id: id3, creationTime: 1)
+        try await insertPassword(userId: userId2, id: id4, creationTime: 9)
 
         // When
-        let passwords = try await sut.getAllPasswords()
+        let passwords1 = try await sut.getAllPasswords(userId: userId1)
+        let passwords2 = try await sut.getAllPasswords(userId: userId2)
 
         // Then
-        #expect(passwords.count == 4)
-        #expect(passwords[0].id == id4)
-        #expect(passwords[1].id == id2)
-        #expect(passwords[2].id == id1)
-        #expect(passwords[3].id == id3)
+        #expect(passwords1.count == 2)
+        #expect(passwords1[0].id == id1)
+        #expect(passwords1[1].id == id3)
+
+        #expect(passwords2.count == 2)
+        #expect(passwords2[0].id == id4)
+        #expect(passwords2[1].id == id2)
     }
 
     @Test("Get encrypted password")
@@ -77,13 +82,14 @@ struct LocalPasswordDatasourceTests {
     @Test("Delete all passwords")
     func deleteAllPasswords() async throws {
         // Given
+        let userId = String.random()
         for _ in 0..<10 {
-            try await insertPassword()
+            try await insertPassword(userId: userId)
         }
 
         // When
-        try await sut.deleteAllPasswords()
-        let passwords = try await sut.getAllPasswords()
+        try await sut.deleteAllPasswords(userId: userId)
+        let passwords = try await sut.getAllPasswords(userId: userId)
 
         // Then
         #expect(passwords.isEmpty)
@@ -92,19 +98,20 @@ struct LocalPasswordDatasourceTests {
     @Test("Delete a precise password")
     func deletePrecisePassword() async throws {
         // Given
+        let userId = String.random()
         let id1 = String.random()
         let id2 = String.random()
         let id3 = String.random()
         let id4 = String.random()
 
-        try await insertPassword(id: id1)
-        try await insertPassword(id: id2)
-        try await insertPassword(id: id3)
-        try await insertPassword(id: id4)
+        try await insertPassword(userId: userId, id: id1)
+        try await insertPassword(userId: userId, id: id2)
+        try await insertPassword(userId: userId, id: id3)
+        try await insertPassword(userId: userId, id: id4)
 
         // When
         try await sut.deletePassword(id: id2)
-        let passwords = try await sut.getAllPasswords()
+        let passwords = try await sut.getAllPasswords(userId: userId)
 
         // Then
         #expect(passwords.count == 3)
@@ -116,19 +123,20 @@ struct LocalPasswordDatasourceTests {
     @Test("Delete passwords with cut-off time")
     func deletePasswordsWithCutOffTime() async throws {
         // Given
+        let userId = String.random()
         let id1 = String.random()
         let id2 = String.random()
         let id3 = String.random()
         let id4 = String.random()
 
-        try await insertPassword(id: id1, creationTime: 1)
-        try await insertPassword(id: id2, creationTime: 2)
-        try await insertPassword(id: id3, creationTime: 3)
-        try await insertPassword(id: id4, creationTime: 4)
+        try await insertPassword(userId: userId, id: id1, creationTime: 1)
+        try await insertPassword(userId: userId, id: id2, creationTime: 2)
+        try await insertPassword(userId: userId, id: id3, creationTime: 3)
+        try await insertPassword(userId: userId, id: id4, creationTime: 4)
 
         // When
         try await sut.deletePasswords(cutOffTimestamp: 2)
-        let passwords = try await sut.getAllPasswords()
+        let passwords = try await sut.getAllPasswords(userId: userId)
 
         // Then
         #expect(passwords.count == 2)
@@ -138,10 +146,12 @@ struct LocalPasswordDatasourceTests {
 }
 
 private extension LocalPasswordDatasourceTests {
-    func insertPassword(id: String =  UUID().uuidString,
+    func insertPassword(userId: String = .random(),
+                        id: String =  UUID().uuidString,
                         creationTime: Int = .random(in: 1...1_000),
                         value: String = .random()) async throws {
-        try await sut.insertPassword(id: id,
+        try await sut.insertPassword(userId: userId,
+                                     id: id,
                                      symmetricallyEncryptedValue: value,
                                      creationTime: TimeInterval(creationTime))
     }
