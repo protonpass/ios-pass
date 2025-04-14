@@ -173,11 +173,9 @@ private extension PaymentsManager {
                     paymentsV2.dismissPayments()
                 case .transactionCancelledByUser:
                     completion(.success(false)) // to be updated
-                    paymentsV2.dismissPayments()
                 case .mismatchTransactionIDs, .transactionProcessError, .unableToGetUserTransactionUUID,
                      .unknownError:
                     completion(.success(false)) // to be updated
-                    paymentsV2.dismissPayments()
                 default:
                     debugPrint("\(value) not handled")
                 }
@@ -237,6 +235,9 @@ private extension PaymentsManager {
             completion(.success(true))
         case let .apiMightBeBlocked(message, originalError: error):
             logger.trace("\(message), error \(error)")
+            completion(.failure(error))
+        case let .planAlreadyPurchased(error: error):
+            logger.trace("Purchase failed with error \(error)")
             completion(.failure(error))
         }
     }
