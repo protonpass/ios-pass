@@ -50,7 +50,7 @@ struct UpgradeButton: View {
 
 /// Text button without background color
 struct UpgradeButtonLite: View {
-    var foregroundColor: UIColor = PassColor.loginInteractionNormMajor1
+    let foregroundColor: UIColor
     let action: () -> Void
 
     var body: some View {
