@@ -174,7 +174,7 @@ extension ItemType {
         case .identity:
             #localized("Identity")
         case .custom:
-            #localized("Custom item")
+            #localized("More")
         }
     }
 
@@ -193,7 +193,7 @@ extension ItemType {
         case .identity:
             #localized("Fill in your personal data")
         case .custom:
-            #localized("Create items with fully customized fields")
+            #localized("Save WiFi, passport, SSH, or go custom")
         }
     }
 }
