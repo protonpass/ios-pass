@@ -148,8 +148,7 @@ extension AutoFillUseCaseContainer {
                                 canSkipLocalAuthentication: self.canSkipLocalAuthentication(),
                                 generateAuthorizationCredential: self.generateAuthorizationCredential(),
                                 cancelAutoFill: self.cancelAutoFill(),
-                                completeAutoFill: self.completeAutoFill(),
-                                getFeatureFlagStatus: SharedUseCasesContainer.shared.getFeatureFlagStatus()) }
+                                completeAutoFill: self.completeAutoFill()) }
     }
 
     var autoFillCredentials: Factory<any AutoFillCredentialsUseCase> {

@@ -26,9 +26,7 @@ import SwiftUI
 
 extension HomepageCoordinator {
     func refreshInAppNotifications() {
-        guard inAppNotificationEnabled, authenticated else {
-            return
-        }
+        guard authenticated else { return }
         Task { [weak self] in
             guard let self else { return }
             do {

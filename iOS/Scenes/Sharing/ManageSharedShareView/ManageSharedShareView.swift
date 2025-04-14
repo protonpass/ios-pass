@@ -87,7 +87,7 @@ private extension ManageSharedShareView {
 private extension ManageSharedShareView {
     var inviteeList: some View {
         LazyVStack(spacing: 32) {
-            if viewModel.itemSharingEnabled, !viewModel.itemMembers.isEmpty {
+            if !viewModel.itemMembers.isEmpty {
                 inviteesSection(for: viewModel.itemMembers,
                                 isVaultSection: false,
                                 canExecuteActions: viewModel.share.shareRole == .admin,
