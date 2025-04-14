@@ -117,7 +117,7 @@ extension ItemType {
         case .identity:
             IconProvider.cardIdentity
         case .custom:
-            PassIcon.penSparks
+            IconProvider.wrench
         }
     }
 
